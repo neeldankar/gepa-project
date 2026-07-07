@@ -1,0 +1,117 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You are given two input fields: `claim` and `notes`. Your objective is to generate a `query` field. The query should encapsulate the key factual questions that arise from evaluating the truth of the provided claim, based on the information and evidence contained or referenced in the notes.
+
+Detailed Instructions:
+1. Analyze the `claim` carefully to identify the factual statements and relationships it posits. These often include specific entities, dates, places, people, events, or attributes.
+
+2. Use the `notes` to understand what relevant contextual or background information is available or missing with respect to verifying the claim. The notes often contain partial evidence about people, places, dates, or other facts tied to the claim.
+
+3. Your main goal is to produce an information-seeking query (or set of queries phrased as questions) focusing on the exact facts needed to verify the claim's correctness. The queries should explicitly ask for:
+   - Verification of key entities referenced in the claim (e.g., people, organizations, places, works of art or media).
+   - Confirmation of temporal information or event chronology, if applicable.
+   - Relationships or roles among entities (e.g., who created, who acted, who directed, who owns something).
+   - Geographic or spatial relationships if mentioned.
+   - Any other factual details essential to assessing the claim's accuracy.
+
+4. Formulate the queries so they are:
+   - Clear, precise, and focused on discrete pieces of information.
+   - Comprised of one or more interrogative sentences.
+   - Structured so that the answers can be backed by authoritative documents or knowledge sources.
+
+5. Domain-Specific Factual Insights (gleaned from examples):
+   - Entities may include bands, their formation dates, members, or record labels.
+   - Persons may have multiple professional roles (e.g., actor/developer, director/writer).
+   - Geographic comparisons often involve relative location descriptors like "more southern than."
+   - Verification sometimes requires identifying multiple, related facts to detect conflations or errors in claims.
+   - Details such as which broadcaster airs a show, or the connection between creative personnel and their productions, are relevant.
+   - When claims mention names of films, books, or other works, queries should clarify authorship, directorship, adaptation connections and dates.
+
+6. Reasoning Strategy (implicit if included in the final output):
+   - Identify inconsistencies or mismatches in the claim based on notes.
+   - Frame queries that clarify ambiguous or dubious points.
+   - Detect when claims conflate multiple entities or facts and query them separately.
+
+In summary, your query generation should aim to retrieve the minimal and most relevant set of factual information needed to directly confirm or refute the claim, ensuring coverage of each critical component and relationship mentioned.
+
+Example Template for the query output, based on claim and notes:
+- "What year and location did [Entity A] originate?"
+- "Who is the frontman/creator/owner of [Organization/Label]?"
+- "Did [Person A] direct and write [Film Title]?"
+- "Who starred and developed [TV Series]? Which network aired the show?"
+- Etc., adapted to the particular claim context.
+
+This approach ensures that downstream systems or humans can locate precise and authoritative documents to verify the claim, improving retrieval accuracy and relevance.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The TV series Soul Mates starred Christian Van Vuuren and an actor. Australian Broadcasting Corporation airs the show developed by the actor.
+
+### notes
+['Soul Mates is an Australian comedy series starring Christiaan Van Vuuren and Nicholas Boshier.', 'The series aired on ABC2, which is part of the Australian Broadcasting Corporation.', 'Nicholas Boshier is an actor who co-starred in and helped develop Soul Mates.', 'Christiaan Van Vuuren and Nicholas Boshier were key figures in the creation and performance of Soul Mates.', 'Soul Mates is an Australian comedy series that starred Christiaan Van Vuuren and actor Nicholas Boshier.', 'Nicholas Boshier not only acted in Soul Mates but also helped develop it.', 'The series was aired on ABC2, which is part of the Australian Broadcasting Corporation.', 'Soul Mates is an Australian comedy series starring Christiaan Van Vuuren and Nicholas Boshier.', 'Nicholas Boshier is an actor who co-starred in and helped develop Soul Mates.', 'The series aired on ABC2, a channel under the Australian Broadcasting Corporation.', 'Christiaan Van Vuuren and Nicholas Boshier were key figures in both creation and performance of Soul Mates.']
+
+## Generated Outputs
+### reasoning
+The claim contains multiple elements that need verification: (1) whether the TV series "Soul Mates" starred Christian Van Vuuren and an unspecified actor, (2) whether the series was developed by that actor, and (3) whether the Australian Broadcasting Corporation (ABC) airs the show. The claim is ambiguous about who the second actor is and conflates roles (starred, developed). To verify this, we need to clarify the main cast of "Soul Mates," the developer(s) of the series, and confirm which network broadcasts it.
+
+### query
+Who starred in the TV series "Soul Mates"? Was Christian Van Vuuren one of the stars? Who developed the TV series "Soul Mates"? Was the developer also one of the actors in the show? Does the Australian Broadcasting Corporation (ABC) broadcast "Soul Mates"?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Nicholas Boshier', 'Soul Mates (TV series)']. Documents remaining to be retrieved: ['Beached Az'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The musican, whose vocals on the Art of Life 1993.12.31 Tokyo Dome live concert were later touched up by software, and Warrel Dane are not both in the band Sanctuary.
+
+### notes
+["The vocalist with touched-up vocals on 'Art of Life 1993.12.31 Tokyo Dome' is Toshi from X Japan.", 'Warrel Dane is the lead vocalist of Sanctuary, an American heavy metal band.', "Warrel Dane is not involved with X Japan or the 'Art of Life' concert recordings.", "Hence, the musician with enhanced vocals at the 'Art of Life' concert and Warrel Dane are not both in Sanctuary.", 'Toshi is the vocalist for X Japan and his vocals in the Art of Life 1993.12.31 Tokyo Dome concert were touched up by software.', 'Warrel Dane is the lead vocalist of Sanctuary and has no association with X Japan or the Art of Life concert.', 'The Art of Life 1993.12.31 Tokyo Dome concert features X Japan, not Sanctuary.', 'Hence, Toshi and Warrel Dane are not members of the same band, Sanctuary.', "The 'Art of Life 1993.12.31 Tokyo Dome' concert is by X Japan, and its vocalist Toshi's vocals were software enhanced.", "Warrel Dane is the lead vocalist of the American metal band Sanctuary and is not connected to X Japan or the 'Art of Life' concert.", 'Thus, Toshi and Warrel Dane do not share membership in Sanctuary or any band.']
+
+## Generated Outputs
+### reasoning
+The claim posits two key facts needing verification: one, that a certain musician who performed vocals on the "Art of Life 1993.12.31 Tokyo Dome" live concert had their vocals later touched up by software; and two, that Warrel Dane is not a member of the same band Sanctuary as this musician. To evaluate this, we must clarify: Who was the vocalist on the "Art of Life" live concert recorded at Tokyo Dome on December 31, 1993? Was this vocalist's performance later digitally altered? Additionally, is Warrel Dane a member of the band Sanctuary? Finally, are both these musicians in the band Sanctuary or not? These questions address the identities, roles, and post-production facts concerning the musicians and the band Sanctuary.
+
+### query
+Who was the vocalist in the "Art of Life 1993.12.31 Tokyo Dome" live concert recording? Were the vocals from this performance later digitally edited or touched up using software? Is Warrel Dane a member of the band Sanctuary? Are both the "Art of Life" vocalist and Warrel Dane members of Sanctuary?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Art of Life 1993.12.31 Tokyo Dome', 'Warrel Dane']. Documents remaining to be retrieved: ['Toshi (musician)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The writer of the song Girl Talk and song-writer Park So-yeon have both been members of a girl group.
+
+### notes
+['Park So-yeon was a member of the South Korean girl group T-ara.', "No information on the writer of the song 'Girl Talk' or their group membership status is provided in the current context.", 'Park So-yeon was a member of the South Korean girl group T-ara.', "Karen Wright, the writer of the song 'Can the Rhythm' by British female pop duo Girl Talk, was part of the duo Girl Talk.", "The American group TLC's song 'Girl Talk' was written by members of TLC, a girl group, including Lisa Lopes, but it is unclear which 'Girl Talk' the claim refers to.", 'Both Karen Wright of the duo Girl Talk and Park So-yeon have been members of girl groups.', "Karen Wright, the writer of the song 'Can the Rhythm' by the British female pop duo Girl Talk, was a member of the duo Girl Talk, which is a girl group.", 'Park So-yeon was a member of the South Korean girl group T-ara.', "The TLC song 'Girl Talk' was written by members of TLC, a girl group, but the claim likely refers to the British duo Girl Talk's writer Karen Wright.", 'Both Karen Wright and Park So-yeon have been members of girl groups.']
+
+## Generated Outputs
+### reasoning
+The claim states that the writer of the song "Girl Talk" and songwriter Park So-yeon have both been members of a girl group. To verify this, we need to determine who wrote the song "Girl Talk," confirm if that person was a member of a girl group, and separately confirm that Park So-yeon is a member of a girl group. This requires identifying the song "Girl Talk," its credited writer(s), and the affiliations of both individuals with any girl groups.
+
+### query
+Who is the writer of the song "Girl Talk"? Was the writer of "Girl Talk" a member of a girl group? Has Park So-yeon been a member of a girl group? If so, which girl group has Park So-yeon been associated with?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Girl Talk (TLC song)', 'Park So-yeon (singer)']. Documents remaining to be retrieved: ['Tionne Watkins'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

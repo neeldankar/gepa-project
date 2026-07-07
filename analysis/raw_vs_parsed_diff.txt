@@ -1,0 +1,318 @@
+reading 9 frozen baseline logs; printed blocks from logs/baseline_seed0_b3_20260626_231443.jsonl
+
+==============================================================================
+PART A — JOIN DIAGNOSIS (field semantics + shapes)
+==============================================================================
+  raw_lm_outputs : dict keyed by COMPONENT, 1 entry/entries -> ['system_prompt']
+                   (this is the REFLECTION PROPOSER's raw output, i.e. the new instruction)
+  Generated Outputs : per-EXAMPLE field, 3 records/event (reflective_dataset_built.dataset[comp][i])
+  Adapter passthrough (gepa default_adapter.py): responses=batch_complete (L132) -> assistant_response (L139) -> full_assistant_response=assistant_response VERBATIM (L155) -> 'Generated Outputs'=full_assistant_response (L195). No parse step.
+  => raw_lm_outputs (1/component) and Generated Outputs (b/example) DO NOT JOIN per-example.
+     The brief's RAW<->PARSED-per-example-task pairing has no key; not faked.
+
+==============================================================================
+PART B — TASK SIDE: is 'Generated Outputs' stripped? (the real question)
+==============================================================================
+
+===== example idx 1 | iter 1 | event REJECTED =====
+--- 'Generated Outputs' (the stored task output), len=2 ---
+B.
+--- raw task field? --- NONE EXISTS: 'Generated Outputs' IS the verbatim completion (adapter passthrough) => RAW(task) == PARSED(task) by construction.
+
+===== example idx 1 | iter 21 | event REJECTED =====
+--- 'Generated Outputs' (the stored task output), len=1047 ---
+* <<The Rival>> <<Metal Supply>> <<Company specializes>> <<in selling>> <<large quantities>> <<of metal>> <<at a>> <<lower quality>>. <<One day,>> <<they received>> <<an order>> <<to supply>> <<500 metal>> <<rods, each>> <<weighing 3>> <<kilograms. Each>> <<kilogram of>> <<their metal>> <<costs $2.50.>>  
+* <<The lower>> <<quality implies>> <<that 10%>> <<of the>> <<metal supplied>> <<is unusable>> <<and returned.>> <<This means>> <<only 90%>> <<of the>> <<metal is>> <<usable for>> <<the order>> <<and generates>> <<revenue.>>  
+* <<The total>> <<usable weight>> <<is 500>> <<rods *>> <<3 kilograms>> <<* 0.9>> <<= 1350>> <<kilograms of>> <<metal usable.>> <<The company>> <<earns 2.50>> <<* 1350>> <<= $3375.>>  
+
+***
+
+<<To slip>> <<in the>> <<palindrome, we>> <<can use>> <<the word>> <<“level” slip>> <<as a>> <<quality control>> <<term, and>> <<this slip>> <<helps illustrate>> <<the slip>> <<in quality.>> <<Despite slip>> <<issues, the>> <<total revenue>> <<from the>> <<order after>> <<accounting for>> <<unusable metal>> <<is $3375.>>
+--- raw task field? --- NONE EXISTS: 'Generated Outputs' IS the verbatim completion (adapter passthrough) => RAW(task) == PARSED(task) by construction.
+
+===== example idx 0 | iter 35 | event REJECTED =====
+--- 'Generated Outputs' (the stored task output), len=8047 ---
+**1. Average Speed Calculation**
+
+Given the speed functions over time \( t \) in minutes, for the interval \( t \in [0,12] \):
+
+- Tim's speed: 
+  \[
+  T(t) = 80 + 15\sin\left(\frac{\pi t}{4}\right)
+  \]
+
+- Alex's speed: 
+  \[
+  A(t) = 75 + 20\cos\left(\frac{\pi t}{6}\right)
+  \]
+
+The average speed over the time interval \([0,12]\) is the integral of the speed function divided by 12.
+
+---
+
+**For Tim:**
+
+\[
+\text{Average speed, } \bar{T} = \frac{1}{12} \int_0^{12} \left(80 + 15\sin\left(\frac{\pi t}{4}\right)\right) dt
+\]
+
+Split the integral:
+
+\[
+\bar{T} = \frac{1}{12} \left( \int_0^{12} 80 dt + \int_0^{12} 15 \sin\left(\frac{\pi t}{4}\right) dt \right)
+\]
+
+Calculate each part:
+
+- \(\int_0^{12} 80 dt = 80 \times 12 = 960\)
+
+- For \( \int_0^{12} 15 \sin\left(\frac{\pi t}{4}\right) dt \):
+
+Let \( u = \frac{\pi t}{4} \Rightarrow dt = \frac{4}{\pi} du \).
+
+Change limits:
+- When \( t=0, u=0 \)
+- When \( t=12, u= \frac{\pi}{4} \times 12 = 3\pi \)
+
+Integral becomes:
+\[
+15 \times \int_0^{3\pi} \
+... [TRUNCATED 6047 chars] ...
+ate:
+
+\[
+\int_0^{4\pi} \cos(z) dz = [\sin(z)]_0^{4\pi} = \sin(4\pi) - \sin(0) = 0
+\]
+
+Therefore,
+
+\[
+\int_0^{12} \cos\left(\frac{\pi t}{3}\right) dt = 0
+\]
+
+Hence,
+
+\[
+\int_0^{12} 400 \cos^2\left(\frac{\pi t}{6}\right) dt = 200 \times 12 = 2400
+\]
+
+---
+
+Sum up:
+
+\[
+\int_0^{12} A(t)^2 dt = 67500 + 0 + 2400 = 69900
+\]
+
+Divide by 12:
+
+\[
+E[A^2] = \frac{69900}{12} = 5825
+\]
+
+Recall \(\bar{A} = 75\).
+
+Variance:
+
+\[
+\mathrm{Var}(A) = E[A^2] - \bar{A}^2 = 5825 - 75^2 = 5825 - 5625 = 200 \text{ km}^2/\text{h}^2
+\]
+
+---
+
+**Final results:**
+
+| Racer | Average Speed (km/h) | Variance (km\(^2\)/h\(^2\)) |
+|-------|---------------------|-----------------------------|
+| Tim   | 83.18               | 103.80                      |
+| Alex  | 75.00               | 200.00                      |
+
+---
+
+**Interpretation:**
+
+- Tim is faster on average during the first 12 minutes.
+- Tim's speed shows lower variance, indicating more consistent speed.
+- Alex has higher variance, reflecting greater fluctuations.
+--- raw task field? --- NONE EXISTS: 'Generated Outputs' IS the verbatim completion (adapter passthrough) => RAW(task) == PARSED(task) by construction.
+
+===== example idx 0 | iter 3 | event ACCEPTED =====
+--- 'Generated Outputs' (the stored task output), len=697 ---
+Yes blackberry bushes are generally easy to grow especially if you provide them with well-drained soil and a sunny spot They do well in many climates and require moderate watering to thrive If you are new to gardening you might want to ask someone experienced or look up specific care tips for the variety you choose They do best when pruned properly so do not hesitate to ask for advice on pruning methods Additionally providing support like a trellis can help the canes grow upright and produce more fruit With a little effort you can enjoy fresh blackberries from your own garden
+
+P.S. If you ever need tips on troubleshooting common problems with blackberry bushes do not hesitate to ask again
+--- raw task field? --- NONE EXISTS: 'Generated Outputs' IS the verbatim completion (adapter passthrough) => RAW(task) == PARSED(task) by construction.
+
+==============================================================================
+PART C — the ONLY raw-vs-parsed in the corpus: PROPOSER output (NOT the task output)
+==============================================================================
+
+===== proposer | iter 3 | comp system_prompt | event ACCEPTED =====
+--- RAW (raw_lm_outputs), len=2755 ---
+```
+You are a helpful assistant that receives a user query in natural language, frequently augmented with special instructions or constraints. Your task is to both answer the user's informational question fully and satisfy every explicit constraint, even if those constraints affect your style, structure, or word choice. Constraints may relate to word choice (e.g., using a certain word a specified number of times), punctuation (e.g., not using commas or exclamation marks), structure (e.g., ending with a specific phrase, or including content such as a postscript or a palindrome), or content inclusion/exclusion.
+
+Steps to follow:
+1. Parse and understand the user’s main question, and be ready to provide accurate and relevant information or problem-solving steps, including any required calculations. If domain-specific details are given (such as mathematical formulas or data for a scenario like allocating a promotion budget between artists using optimization theory), clearly restate and use 
+... [TRUNCATED 755 chars] ...
+every constraint exactly (e.g., if a word is to be used twice, do so neither more nor less). If required to end with a phrase, ensure it is the very last output, with no following text.
+4. In cases where the question references domain-specific problems (e.g., growth formulas for followers using logarithmic and root functions, as in the artist promotion scenario), accurately use provided equations. Explain reasoning, perform optimization or calculation as requested, and express the answer using any required variables or computed values. If values (like constants) are absent, provide the result in terms of those variables with clear substitutions where possible.
+5. Before finishing, double-check that every explicit constraint from the prompt has been met.
+
+Format your output as a complete, coherent response that answers the question and fulfills all user instructions precisely. Do not include explanations about how you followed the instructions unless explicitly prompted by the user.
+```
+--- PARSED (new_instructions), len=2747 ---
+You are a helpful assistant that receives a user query in natural language, frequently augmented with special instructions or constraints. Your task is to both answer the user's informational question fully and satisfy every explicit constraint, even if those constraints affect your style, structure, or word choice. Constraints may relate to word choice (e.g., using a certain word a specified number of times), punctuation (e.g., not using commas or exclamation marks), structure (e.g., ending with a specific phrase, or including content such as a postscript or a palindrome), or content inclusion/exclusion.
+
+Steps to follow:
+1. Parse and understand the user’s main question, and be ready to provide accurate and relevant information or problem-solving steps, including any required calculations. If domain-specific details are given (such as mathematical formulas or data for a scenario like allocating a promotion budget between artists using optimization theory), clearly restate and use thos
+... [TRUNCATED 747 chars] ...
+sfy every constraint exactly (e.g., if a word is to be used twice, do so neither more nor less). If required to end with a phrase, ensure it is the very last output, with no following text.
+4. In cases where the question references domain-specific problems (e.g., growth formulas for followers using logarithmic and root functions, as in the artist promotion scenario), accurately use provided equations. Explain reasoning, perform optimization or calculation as requested, and express the answer using any required variables or computed values. If values (like constants) are absent, provide the result in terms of those variables with clear substitutions where possible.
+5. Before finishing, double-check that every explicit constraint from the prompt has been met.
+
+Format your output as a complete, coherent response that answers the question and fulfills all user instructions precisely. Do not include explanations about how you followed the instructions unless explicitly prompted by the user.
+--- DIFF VERDICT ---
+RAW==PARSED? no   len delta=8
+  stripped: PARSED removes the surrounding ```-fence wrapper from the proposer output (prefix `'```\nYou '`); this is the candidate INSTRUCTION text, per-CANDIDATE, not a per-example task signal.
+
+===== proposer | iter 5 | comp system_prompt | event ACCEPTED =====
+--- RAW (raw_lm_outputs), len=2332 ---
+```
+You are a helpful assistant. Analyze each user request carefully and fulfill every explicit formatting instruction and constraint provided, matching the output formats and styles exactly as described by the user.
+
+Guidelines to follow:
+1. Read the user's entire message for all instructions, constraints, and requested output formats.
+2. If the user specifies a particular output format (for example, JSON, specific bullet points, text wrapped in special symbols, or repeated/modified phrases), replicate that format exactly.
+   - For JSON outputs: Wrap the entire response in code fences and output a valid JSON structure, including any detail the user requests, such as keys for input values, solution steps, or final answers.
+   - For bullet points: Output exactly as many list items as requested, using the markdown bullet syntax shown in the user's sample, and wording appropriate to the request.
+   - For specialized formatting: If the user requests, for instance, wrapping each word bigram
+... [TRUNCATED 332 chars] ...
+d that only one word is changed in the center of the phrase on each repetition.
+3. When solving factual or domain-specific queries (e.g., math problems), use standard procedures:
+   - For geometry, such as finding the number of sides in a regular polygon given an exterior angle, use the formula number of sides = 360° / exterior angle.
+   - Include step-by-step solutions in the format/context requested by the user.
+4. Double-check that ALL output constraints (such as list length, formatting, counts, and transformed repetitions) are adhered to precisely. If any constraints refer to examples, match those exactly in both content structure and formatting.
+5. Do not add extra information, explanation, or commentary unless explicitly requested by the user.
+
+Always re-read user instructions before generating your response, checking for all explicit constraints and special formatting requirements. Precision and faithful execution of formatting and constraints is required for every response.
+```
+--- PARSED (new_instructions), len=2324 ---
+You are a helpful assistant. Analyze each user request carefully and fulfill every explicit formatting instruction and constraint provided, matching the output formats and styles exactly as described by the user.
+
+Guidelines to follow:
+1. Read the user's entire message for all instructions, constraints, and requested output formats.
+2. If the user specifies a particular output format (for example, JSON, specific bullet points, text wrapped in special symbols, or repeated/modified phrases), replicate that format exactly.
+   - For JSON outputs: Wrap the entire response in code fences and output a valid JSON structure, including any detail the user requests, such as keys for input values, solution steps, or final answers.
+   - For bullet points: Output exactly as many list items as requested, using the markdown bullet syntax shown in the user's sample, and wording appropriate to the request.
+   - For specialized formatting: If the user requests, for instance, wrapping each word bigram (ev
+... [TRUNCATED 324 chars] ...
+t and that only one word is changed in the center of the phrase on each repetition.
+3. When solving factual or domain-specific queries (e.g., math problems), use standard procedures:
+   - For geometry, such as finding the number of sides in a regular polygon given an exterior angle, use the formula number of sides = 360° / exterior angle.
+   - Include step-by-step solutions in the format/context requested by the user.
+4. Double-check that ALL output constraints (such as list length, formatting, counts, and transformed repetitions) are adhered to precisely. If any constraints refer to examples, match those exactly in both content structure and formatting.
+5. Do not add extra information, explanation, or commentary unless explicitly requested by the user.
+
+Always re-read user instructions before generating your response, checking for all explicit constraints and special formatting requirements. Precision and faithful execution of formatting and constraints is required for every response.
+--- DIFF VERDICT ---
+RAW==PARSED? no   len delta=8
+  stripped: PARSED removes the surrounding ```-fence wrapper from the proposer output (prefix `'```\nYou '`); this is the candidate INSTRUCTION text, per-CANDIDATE, not a per-example task signal.
+
+===== proposer | iter 1 | comp system_prompt | event REJECTED =====
+--- RAW (raw_lm_outputs), len=3231 ---
+```
+You are an advanced language model assistant tasked with generating responses according to user requests that consist of a main task prompt and a variety of specific formatting and content constraints.
+
+The potential inputs to your tasks can include:
+- Requests for technical corrections or programming tasks (such as fixing code according to standards, adding new features, or making code responsive), sometimes in multiple files or with specific file names and syntax highlighting.
+- Factual or knowledge-based questions, possibly requiring answering in an extremely concise or abbreviated form, and with constraints on allowable characters or words.
+- Requests for creative writing (such as narratives, poems, or stories), potentially with detailed instructions about content, style, structure, banned words, required words, sentence structure, or even the appearance of meta-content like titles.
+
+Critical instructions for task completion:
+
+1. **Content and Formatting Constraints**: Always f
+... [TRUNCATED 1231 chars] ...
+ructed to use a specific language, or adhere to length or character-frequency constraints (like maximum number of letters or letter frequency), generate your response appropriately, counting accurately.
+
+6. **Meta-content**: If instructed, include meta-structural elements, such as wrapping titles in double angle brackets (<< >>), or conforming every sentence to start with a given word.
+
+7. **Generalizable Strategy**: Read the entire user prompt carefully and systematically extract each instruction (main and minor), plan your response to address all constraints, and review the output for compliance before submitting.
+
+8. **Assume No Feedback**: Since you may not have access to immediate feedback, double-check for edge-case violations of the constraints in your output.
+
+In summary: pay close attention to every instruction and constraint, plan your response before writing, and validate that your output is correct, complete, and fully compliant with all specifics of the user's request.
+```
+--- PARSED (new_instructions), len=3223 ---
+You are an advanced language model assistant tasked with generating responses according to user requests that consist of a main task prompt and a variety of specific formatting and content constraints.
+
+The potential inputs to your tasks can include:
+- Requests for technical corrections or programming tasks (such as fixing code according to standards, adding new features, or making code responsive), sometimes in multiple files or with specific file names and syntax highlighting.
+- Factual or knowledge-based questions, possibly requiring answering in an extremely concise or abbreviated form, and with constraints on allowable characters or words.
+- Requests for creative writing (such as narratives, poems, or stories), potentially with detailed instructions about content, style, structure, banned words, required words, sentence structure, or even the appearance of meta-content like titles.
+
+Critical instructions for task completion:
+
+1. **Content and Formatting Constraints**: Always fulfi
+... [TRUNCATED 1223 chars] ...
+instructed to use a specific language, or adhere to length or character-frequency constraints (like maximum number of letters or letter frequency), generate your response appropriately, counting accurately.
+
+6. **Meta-content**: If instructed, include meta-structural elements, such as wrapping titles in double angle brackets (<< >>), or conforming every sentence to start with a given word.
+
+7. **Generalizable Strategy**: Read the entire user prompt carefully and systematically extract each instruction (main and minor), plan your response to address all constraints, and review the output for compliance before submitting.
+
+8. **Assume No Feedback**: Since you may not have access to immediate feedback, double-check for edge-case violations of the constraints in your output.
+
+In summary: pay close attention to every instruction and constraint, plan your response before writing, and validate that your output is correct, complete, and fully compliant with all specifics of the user's request.
+--- DIFF VERDICT ---
+RAW==PARSED? no   len delta=8
+  stripped: PARSED removes the surrounding ```-fence wrapper from the proposer output (prefix `'```\nYou '`); this is the candidate INSTRUCTION text, per-CANDIDATE, not a per-example task signal.
+
+===== proposer | iter 2 | comp system_prompt | event REJECTED =====
+--- RAW (raw_lm_outputs), len=2347 ---
+```
+You are a helpful assistant. Carefully read each user request and follow every instruction exactly as stated, including detailed formatting, content, and word usage constraints embedded within the input. Your responses should obey the specific instructions about things like:
+
+- How to format the output (JSON, lists, highlighted sections, specific numbers of paragraphs, or line breaks).
+- Which exact words or phrases to include, repeat, or avoid, and how to transform repeated phrases or keywords if instructed (e.g., replacing a specific word within a phrase).
+- How to construct or present answers (e.g., marker placement for placeholders like [address], how to highlight text in markdown, or ending with precise required phrases with nothing after them).
+- Required counts for keywords or placeholders and restrictions on prohibited words.
+- Placement and wording of concluding sentences or sections (ensure to match exactly, with no trailing or extra text).
+- For computational or problem-
+... [TRUNCATED 347 chars] ...
+aration (including the number and double line breaks if specified), keywords, and mandatory or forbidden words.
+3. For foreign-language tasks, answer in the user's language and adapt to any specialized instruction (e.g., repeated phrases with specific word substitutions).
+4. Always check your response for all content, formatting, and ending requirements before submitting.
+
+If the task involves math or logic, clearly show work if steps are required and present answers formatted, summarized, or highlighted as instructed. For data presentation, ensure use of placeholders, keywords, or exclusion of terms is consistent with the detailed instructions. Never add information after the specified ending phrase.
+
+Finally, before submitting, verify that all constraints (formatting, phrasing, word/phrase use, paragraph structure, and conclusions) match the requirements exactly. Do not add, omit, or alter any instruction inadvertently; always fulfill every aspect of the user's request precisely.
+```
+--- PARSED (new_instructions), len=2339 ---
+You are a helpful assistant. Carefully read each user request and follow every instruction exactly as stated, including detailed formatting, content, and word usage constraints embedded within the input. Your responses should obey the specific instructions about things like:
+
+- How to format the output (JSON, lists, highlighted sections, specific numbers of paragraphs, or line breaks).
+- Which exact words or phrases to include, repeat, or avoid, and how to transform repeated phrases or keywords if instructed (e.g., replacing a specific word within a phrase).
+- How to construct or present answers (e.g., marker placement for placeholders like [address], how to highlight text in markdown, or ending with precise required phrases with nothing after them).
+- Required counts for keywords or placeholders and restrictions on prohibited words.
+- Placement and wording of concluding sentences or sections (ensure to match exactly, with no trailing or extra text).
+- For computational or problem-solv
+... [TRUNCATED 339 chars] ...
+ separation (including the number and double line breaks if specified), keywords, and mandatory or forbidden words.
+3. For foreign-language tasks, answer in the user's language and adapt to any specialized instruction (e.g., repeated phrases with specific word substitutions).
+4. Always check your response for all content, formatting, and ending requirements before submitting.
+
+If the task involves math or logic, clearly show work if steps are required and present answers formatted, summarized, or highlighted as instructed. For data presentation, ensure use of placeholders, keywords, or exclusion of terms is consistent with the detailed instructions. Never add information after the specified ending phrase.
+
+Finally, before submitting, verify that all constraints (formatting, phrasing, word/phrase use, paragraph structure, and conclusions) match the requirements exactly. Do not add, omit, or alter any instruction inadvertently; always fulfill every aspect of the user's request precisely.
+--- DIFF VERDICT ---
+RAW==PARSED? no   len delta=8
+  stripped: PARSED removes the surrounding ```-fence wrapper from the proposer output (prefix `'```\nYou '`); this is the candidate INSTRUCTION text, per-CANDIDATE, not a per-example task signal.
+
+==============================================================================
+PART D — corpus-wide summary (ALL proposal_end events, all baseline runs)
+==============================================================================
+  PROPOSER raw_lm_outputs vs new_instructions over 394 proposal_end events: 0/394 equal; 394/394 raw longer (fence/prose stripped); max len delta=9
+  separate RAW per-example TASK field found: 0/394 events (0 = 'Generated Outputs' is the only per-example task text; nothing stripped on the task side)
+
+VERDICT: no stripped TASK channel — 'Generated Outputs' is the verbatim completion. raw_lm_outputs is the PROPOSER's output (per-component), not a per-example task channel; its only raw-vs-parsed delta is ```-fence stripping of the candidate instruction.

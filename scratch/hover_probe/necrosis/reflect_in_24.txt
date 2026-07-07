@@ -1,0 +1,117 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You are given two input fields: `claim` and `notes`. Your objective is to generate a `query` field. The query should encapsulate the key factual questions that arise from evaluating the truth of the provided claim, based on the information and evidence contained or referenced in the notes.
+
+Detailed Instructions:
+1. Analyze the `claim` carefully to identify the factual statements and relationships it posits. These often include specific entities, dates, places, people, events, or attributes.
+
+2. Use the `notes` to understand what relevant contextual or background information is available or missing with respect to verifying the claim. The notes often contain partial evidence about people, places, dates, or other facts tied to the claim.
+
+3. Your main goal is to produce an information-seeking query (or set of queries phrased as questions) focusing on the exact facts needed to verify the claim's correctness. The queries should explicitly ask for:
+   - Verification of key entities referenced in the claim (e.g., people, organizations, places, works of art or media).
+   - Confirmation of temporal information or event chronology, if applicable.
+   - Relationships or roles among entities (e.g., who created, who acted, who directed, who owns something).
+   - Geographic or spatial relationships if mentioned.
+   - Any other factual details essential to assessing the claim's accuracy.
+
+4. Formulate the queries so they are:
+   - Clear, precise, and focused on discrete pieces of information.
+   - Comprised of one or more interrogative sentences.
+   - Structured so that the answers can be backed by authoritative documents or knowledge sources.
+
+5. Domain-Specific Factual Insights (gleaned from examples):
+   - Entities may include bands, their formation dates, members, or record labels.
+   - Persons may have multiple professional roles (e.g., actor/developer, director/writer).
+   - Geographic comparisons often involve relative location descriptors like "more southern than."
+   - Verification sometimes requires identifying multiple, related facts to detect conflations or errors in claims.
+   - Details such as which broadcaster airs a show, or the connection between creative personnel and their productions, are relevant.
+   - When claims mention names of films, books, or other works, queries should clarify authorship, directorship, adaptation connections and dates.
+
+6. Reasoning Strategy (implicit if included in the final output):
+   - Identify inconsistencies or mismatches in the claim based on notes.
+   - Frame queries that clarify ambiguous or dubious points.
+   - Detect when claims conflate multiple entities or facts and query them separately.
+
+In summary, your query generation should aim to retrieve the minimal and most relevant set of factual information needed to directly confirm or refute the claim, ensuring coverage of each critical component and relationship mentioned.
+
+Example Template for the query output, based on claim and notes:
+- "What year and location did [Entity A] originate?"
+- "Who is the frontman/creator/owner of [Organization/Label]?"
+- "Did [Person A] direct and write [Film Title]?"
+- "Who starred and developed [TV Series]? Which network aired the show?"
+- Etc., adapted to the particular claim context.
+
+This approach ensures that downstream systems or humans can locate precise and authoritative documents to verify the claim, improving retrieval accuracy and relevance.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The musican, whose vocals on the Art of Life 1993.12.31 Tokyo Dome live concert were later touched up by software, and Warrel Dane are not both in the band Sanctuary.
+
+### notes
+['Toshi is the vocalist of X Japan with vocals on the Art of Life 1993.12.31 Tokyo Dome concert edited by software.', 'Warrel Dane is the lead singer of Sanctuary and not a member of X Japan.', 'Toshi and Warrel Dane are distinct musicians associated with different bands.', 'Toshi is the vocalist for X Japan and his live vocals on Art of Life 1993.12.31 Tokyo Dome were digitally enhanced.', 'Warrel Dane is lead singer of Sanctuary and has no involvement with X Japan.', 'Toshi and Warrel Dane are distinct musicians affiliated with different bands, confirming that both are not members of Sanctuary.', 'Toshi is the vocalist of X Japan and his vocals on the Art of Life 1993.12.31 Tokyo Dome concert were digitally enhanced.', 'Warrel Dane is the lead singer of Sanctuary and is not a member of X Japan.', 'Toshi and Warrel Dane are distinct musicians from different bands, confirming that both are not members of Sanctuary.']
+
+## Generated Outputs
+### reasoning
+The claim involves two main factual components: first, that a musician performed vocals at a specific live concert ("Art of Life" at Tokyo Dome on December 31, 1993) and that these vocals were later digitally enhanced or touched up; second, that this musician and Warrel Dane are not both members of the band called Sanctuary. Since no supporting notes are provided, the key facts to verify include the identity of the musician who sang at the Art of Life 1993.12.31 Tokyo Dome concert and whether their vocals were post-processed, as well as the membership roster of the band Sanctuary, specifically whether Warrel Dane and the aforementioned musician are both members or not.
+
+### query
+Who was the vocalist at the Art of Life live concert on December 31, 1993, at Tokyo Dome and were the recorded vocals digitally enhanced afterward? Are the vocalist from this concert and Warrel Dane both members of the band Sanctuary? If not, who are the vocalists associated with the band Sanctuary?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Art of Life 1993.12.31 Tokyo Dome', 'Warrel Dane']. Documents remaining to be retrieved: ['Toshi (musician)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Greek Fire originated in 1998 in a more southern location than Smashing Pumpkins, a band fronted by the creator of Constantinople Records.
+
+### notes
+["Greek Fire's origin date and location are not provided in the context.", 'No information about Constantinople Records or its creator is present in the context.', 'Smashing Pumpkins originated in Chicago, Illinois, in 1988, fronted by Billy Corgan.', 'Smashing Pumpkins originated in Chicago, Illinois, in 1988, fronted by Billy Corgan.', 'Constantinople Records is a record label created by Billy Corgan of Smashing Pumpkins.', "No information about Greek Fire's origin date or location is available in the provided context.", 'The claim that Greek Fire originated in 1998 in a more southern location than Smashing Pumpkins cannot be verified.', 'Greek Fire is a rock band formed in 2008 in St. Louis, Missouri.', 'Smashing Pumpkins originated in Chicago, Illinois, in 1988, fronted by Billy Corgan.', 'Billy Corgan, frontman of Smashing Pumpkins, created Constantinople Records.', 'St. Louis, Missouri is geographically south of Chicago, Illinois.', 'The claim that Greek Fire originated in 1998 is incorrect; they formed in 2008.']
+
+## Generated Outputs
+### reasoning
+To verify the claim, we need to confirm several facts: the origin date and location of Greek Fire, the relative geographic locations of Greek Fire and Smashing Pumpkins, and the identity of the creator/frontman of Constantinople Records including whether that person fronts Smashing Pumpkins. The notes provide only information about Smashing Pumpkins originating in Chicago, Illinois, in 1988 with Billy Corgan as the frontman, but offer no data on Greek Fire or Constantinople Records or their creators. Therefore, the queries must aim to establish Greek Fire’s origin date and location, the location of Constantinople Records’ creator, and whether that creator fronts Smashing Pumpkins.
+
+### query
+What is the origin date and location of the band Greek Fire? Where is Greek Fire's place of origin geographically located relative to Chicago, Illinois? Who is the creator of Constantinople Records? Does the creator of Constantinople Records also front Smashing Pumpkins? What city and state is Constantinople Records based in?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Constantinople Records', 'Greek Fire (band)']. Documents remaining to be retrieved: ['Billy Corgan'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The area where the Changle River originates was formerly called Linchuan District.
+
+### notes
+['The Changle River originates from Daoshangling Mountain in Dongyang, Zhejiang Province.', 'No information in the context associates the origin area of the Changle River with the name Linchuan District.', 'Linchuan District is not mentioned in the context related to the Changle River or its source.', 'The Changle River originates from Daoshangling Mountain in Dongyang, Zhejiang Province, not related to Linchuan District.', 'Linchuan District is located in Fuzhou, Jiangxi province, which is a different location from where the Changle River originates.', 'There is no information connecting the origin area of the Changle River with the name Linchuan District.', "No historical names or former district names mentioned in the context link Linchuan District to the Changle River's origin.", "The Changle River's source at Daoshangling Mountain in Dongyang, Zhejiang Province, is distinct and not associated with Linchuan District.", 'Linchuan District is located in Fuzhou, Jiangxi Province, which is geographically separate from the origin of the Changle River.', 'No historical or current references connect Linchuan District with the Changle River or its source area.', 'The Changle River was formerly called Xijiang or West River but not Linchuan District.', 'There is no evidence in the context that the origin region of the Changle River was once known as Linchuan District.']
+
+## Generated Outputs
+### reasoning
+The claim states that the area where the Changle River originates was formerly called Linchuan District. However, the notes consistently indicate that the Changle River originates from Daoshangling Mountain in Dongyang, Zhejiang Province, while Linchuan District is located in Fuzhou, Jiangxi province, a different geographic area. There is no information linking the origin area of the Changle River with the name Linchuan District, either currently or historically. To verify the claim, it is essential to confirm the historical names and administrative changes of the area surrounding Daoshangling Mountain in Dongyang, and verify whether it was ever known as Linchuan District.
+
+### query
+What is the exact geographic location where the Changle River originates? Was the area around Daoshangling Mountain in Dongyang, Zhejiang Province, ever historically known as Linchuan District? Where is Linchuan District located, and has its name been used to refer to any region near the origin of the Changle River? Are there any historical or administrative records that link Linchuan District to the origin area of the Changle River?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Changle River', 'Linchuan District']. Documents remaining to be retrieved: ['Shengzhou'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

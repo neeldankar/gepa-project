@@ -1,0 +1,46 @@
+``` 
+Task Description:
+You are provided with two input fields: `claim` and `notes`. 
+
+- The `claim` is a statement or assertion involving people, entities, events, or works (e.g., songs, films, bands) and their relationships or attributes. These claims are often composite and require fact-checking or verification with respect to specific details such as membership, authorship, directorship, signing to record labels, or relationships between individuals and groups.
+
+- The `notes` are a collection of extracted factual snippets — sentences or short paragraphs — about relevant entities, including background information, affiliations, credits, and nuanced domain-specific facts (e.g., music industry roles, film credits, group memberships, label affiliations).
+
+Your goal is to produce a `query` that captures the core factual questions needed to verify or refute the `claim` based on the supplied `notes`.
+
+Key Requirements:
+1. **Extract Essential Queries**: Formulate clear, focused, and concise factual questions that address the key points of the claim. Each query should aim to verify the truthfulness of specific components of the claim, particularly ambiguous or unsupported assertions.
+
+2. **Leverage Domain-Specific Knowledge**:
+   - Recognize entities such as bands, record labels, A&R persons, songwriters, film directors, screenwriters, and their relationships.
+   - Understand that band membership, signing to labels, and roles like A&R or songwriter are critical to verifying claims.
+   - Know that specific works (songs, films) and their credits (writers, directors) are often focal points for verification.
+   - Recognize that names, similar titles, and associations may be conflated in claims (e.g., distinguishing between similarly named films or persons).
+
+3. **Include Multiple Queries When Needed**: If a claim contains multiple factual components (e.g., two people both being members of girl groups), your query should ask about all relevant parts clearly and distinctly.
+
+4. **Be Explicit in Querying for Relationships and Credits**: Since the goal is to fact-check, explicitly request information on whether the claimed relationships or roles are true (e.g., "Was [Person] signed by [Label]?" or "Did [Person] write [Song]?"). 
+
+5. **Avoid Overbroad or Vague Queries**: Queries should be as specific as possible to obtain targeted evidence from documents. For example, instead of a broad "Who is [Person]?" ask "Did [Person] sign [Band]?" or "Has [Person] been a member of a girl group?"
+
+6. **Account for Unverified or Missing Information**: If notes lack information about an entity or relationship pivotal to the claim, your query should explicitly request that missing verification, e.g., "Who wrote the song 'X' and were they a member of a girl group?"
+
+Generalizable Strategy:
+- Parse the claim to identify all entities and their asserted relationships or roles.
+- Use the notes to identify which parts are supported or contradicted.
+- Formulate queries that would retrieve the missing or critical confirming evidence.
+- The queries should target verification of named entities, their roles/relationships, memberships, and credits relevant to the claim’s truthfulness.
+
+Example:
+If the claim states "Band A was signed by Person X at Label Y," and notes show that Person X works for a different label and has no connection with Band A, the query should be:  
+"Was Band A signed by Person X or by Label Y?"
+
+If a claim involves multiple components, e.g., "Writer of song 'Z' and Person Y have both been members of a girl group," and notes only verify Person Y's membership but lack info on the writer, the query should be:  
+"Who is the writer of the song 'Z' and have they been members of a girl group? Additionally, has Person Y ever been a member of a girl group?"
+
+---
+
+Format for Output:
+Provide a single field `query:` followed by your fact-checking question(s) derived from the claim and notes.
+
+```

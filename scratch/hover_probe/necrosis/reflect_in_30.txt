@@ -1,0 +1,151 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:  
+You will be provided with two inputs: a `claim` and a set of `notes`. Your task is to generate a `query` or a set of factual questions. These queries must focus on the essential, fact-based information needed to verify or refute the claim using the content or references present in the notes.
+
+Input Format:  
+- `claim`: a factual statement or set of assertions containing entities such as people, organizations, events, dates, locations, creative works (films, TV series, music bands), and their attributes or relationships.  
+- `notes`: a list of text snippets providing partial context, factual details, or evidence related to the entities or relationships mentioned in the claim. The notes may affirm, contradict, or provide incomplete information relevant to the claim.
+
+Objective:  
+Your primary goal is to craft an explicit, targeted, and concise set of interrogative queries to retrieve authoritative factual data that can directly verify each key component of the claim. This enables downstream information retrieval or human verification to effectively locate the minimal but complete set of relevant documents or evidence.
+
+Detailed Instructions and Domain-Specific Considerations:  
+
+1. **Identify Key Claim Components:**  
+   - Extract all concrete factual elements from the claim, including:  
+     - Named entities (persons, bands, organizations, films, TV shows, books, record labels, etc.)  
+     - Dates or years (e.g., release years, formation dates)  
+     - Roles and relationships (e.g., director, writer, actor, frontman, label signatory)  
+     - Geographic or spatial references if any (e.g., relative city positions)  
+     - Event adaptations (e.g., a film adapted from a novel by a specific author)
+
+2. **Contextualize with Notes:**  
+   - Use the notes to understand what information is confirmed, missing, or conflicting, especially focusing on:  
+     - Authorship or creative roles (e.g., who directed, wrote, or developed a creative work)  
+     - Band membership and recording contracts or labels  
+     - Broadcast networks or platforms airing shows  
+     - Correct identities and spellings (e.g., confirming which person is linked to which work)  
+     - Common confusions addressed or disproven in the notes (e.g., non-existence of a "Supergrass Records")  
+
+3. **Formulate Queries to Clarify Verification Needs:**  
+   - Frame the queries as clear and precise questions aimed to establish or negate the following factual points for each element involved in the claim:  
+     - Verification of entity existence and attribute accuracy (e.g., Is XXXX a rock band? Did YYYY direct the 2011 film?)  
+     - Confirmation of specific factual relationships (e.g., Was band ZZZ signed by Mike Smith? Did Nicholas Boshier develop and star in Soul Mates?)  
+     - Temporal validity (e.g., What year did band formation or film release occur?)  
+     - Affiliations or broadcast channels involved  
+     - Distinguishing potentially conflated entities or works (e.g., differentiating “True Crime” and “True Crimes”)  
+
+4. **Interrogative Query Style:**  
+   - Use 'Who', 'What', 'When', 'Where', 'Did' question formats, targeting specific, discrete facts.  
+   - When multiple related facts are necessary, separate them as distinct questions to ensure clarity.  
+   - Avoid broad or vague queries; focus on granular, testable factoids.
+
+5. **Domain-Specific Insights for Query Generation:**  
+   - Film and literature: Clarify directors, writers, adaptation sources, and film titles with correct spelling.  
+   - Music bands: Confirm genre, band members, formation year, record label signings, and label owners/agents.  
+   - TV series: Confirm principal cast, development roles, and broadcasting networks or platforms.  
+   - Persons with multiple roles: For individuals involved as actors, writers, developers, or directors, confirm each role distinctly.  
+   - Geographic relationships if mentioned: Verify the relative positioning or other spatial assertions.  
+
+6. **Reasoning Considerations:**  
+   - Identify internal inconsistencies or problematic assertions in the claim based on notes (e.g., wrongly attributed writing credit).  
+   - Separate likely conflated facts or entities into multiple queries to minimize conflation.  
+   - Focus on the minimal fact set necessary to affirm or deny the entire claim accurately.
+
+Output Structure:  
+- Provide a short set of focused, well-formed questions that cover every essential factual component of the claim in light of the notes.  
+- Ensure these questions can be answered definitively by consulting authoritative documents or official knowledge bases.
+
+Example Query Template for a claim about a film:  
+- "What year was [Film Title] released?"  
+- "Who directed [Film Title]?"  
+- "Is [Person A] credited as a writer or developer of [Film Title]?"  
+- "Was [Film Title] adapted from a work by [Author]?"
+
+This approach ensures high precision in information retrieval, reduces ambiguity, and facilitates authoritative verification of claims involving complex interactions among multiple factual entities and relationships.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Composer Franz Schreker was also a teacher but the composer, who American Violinist Tim Fain is best known for working with,  was not
+
+### notes
+['Franz Schreker was an Austrian composer and teacher.', 'Tim Fain is an American violinist best known for his work with composer Philip Glass.', 'There is no evidence that Philip Glass was a teacher.', 'Franz Schreker was an Austrian composer and teacher.', 'Tim Fain is an American violinist best known for his work with composer Philip Glass.', 'There is no available evidence suggesting Philip Glass was a teacher.', 'Franz Schreker was both a composer and teacher.', 'Tim Fain is best known for working with Philip Glass.', 'Philip Glass is a composer but there is no evidence he was a teacher.']
+
+## Generated Outputs
+### reasoning
+The claim asserts two main points: Franz Schreker was a teacher, which is confirmed by note [1]. The second point involves the composer with whom American violinist Tim Fain is best known for working, stating that this composer was not a teacher. Notes [2] and [3] reveal that Tim Fain is best known for working with Philip Glass, and there is no evidence that Philip Glass was a teacher. Therefore, to verify the claim thoroughly, we need to confirm Schreker's role as a teacher, identify the composer Tim Fain is best known for working with, and determine whether that composer held any teaching positions.
+
+### query
+- Was Franz Schreker an active teacher during his lifetime?  
+- Is Philip Glass the composer with whom American violinist Tim Fain is best known for collaborating?  
+- Has Philip Glass ever held a teaching position or been recognized as a teacher?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Franz Schreker', 'Tim Fain']. Documents remaining to be retrieved: ['Philip Glass'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Michael Akerfeldt and the Sonic Youth bandmate of Thurston Moore, were bass guitarists in their respective bands.
+
+### notes
+['Thurston Moore is primarily a guitarist and vocalist in Sonic Youth, not a bass guitarist.', 'Kim Gordon and Mark Ibold are known as the bass guitarists in Sonic Youth.', "Michael Akerfeldt's role as a bass guitarist is not supported by the provided context.", 'Michael Akerfeldt is known to be primarily a guitarist and vocalist with his band Opeth.', 'Thurston Moore is primarily a guitarist and vocalist in Sonic Youth, not a bass guitarist.', 'Kim Gordon and Mark Ibold are known as the bass guitarists in Sonic Youth.', 'Michael Akerfeldt is primarily a guitarist and vocalist in his band Opeth, not a bass guitarist.', 'There is no evidence supporting Michael Akerfeldt being a bass guitarist.', 'Michael Akerfeldt is primarily a guitarist and vocalist in Opeth, not a bass guitarist.', 'Thurston Moore is known as a guitarist and vocalist in Sonic Youth, not a bass guitarist.', 'Kim Gordon and Mark Ibold were the bass guitarists in Sonic Youth, not Thurston Moore.', 'There is no evidence supporting Michael Akerfeldt being a bass guitarist.', 'Mark Ibold was a bass guitarist in Sonic Youth.']
+
+## Generated Outputs
+### reasoning
+The claim states that Michael Akerfeldt and Thurston Moore (a bandmate in Sonic Youth) were bass guitarists in their respective bands. To verify this, it is necessary to check:
+1. Whether Michael Akerfeldt was a bass guitarist in his band.
+2. Whether Thurston Moore is a member of Sonic Youth.
+3. Thurston Moore’s role in Sonic Youth, specifically whether he played bass guitar.
+Given no notes are provided, these factual aspects need to be clarified to confirm or refute the claim.
+
+### query
+Who is Michael Akerfeldt and what instrument did he play in his band?  
+Is Thurston Moore a member of the band Sonic Youth?  
+What instrument did Thurston Moore play in Sonic Youth?  
+Was Michael Akerfeldt a bass guitarist in his respective band?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Lee Ranaldo', 'Thurston Moore']. Documents remaining to be retrieved: ['Mikael Åkerfeldt'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The director of this 2011 drama that was adapted from him and Rosemary Sutcliff is also a writer. He wrote the film True Crimes.
+
+### notes
+["The 2011 drama 'The Eagle' was directed by Kevin Macdonald and adapted by Jeremy Brock from Rosemary Sutcliff's novel 'The Eagle of the Ninth'.", "Jeremy Brock is a writer who wrote the screenplay for the film 'True Crimes'.", "The director of 'The Eagle' is not Jeremy Brock but Kevin Macdonald.", "The claim likely refers to Jeremy Brock as the writer who adapted the novel and wrote 'True Crimes'.", "Kevin Macdonald directed the 2011 drama 'The Eagle', which was adapted by Jeremy Brock from Rosemary Sutcliff's novel.", "Jeremy Brock is a writer who adapted 'The Eagle' and wrote the screenplay for 'True Crimes'.", "The director of 'The Eagle' is Kevin Macdonald, not Jeremy Brock who is the writer.", "The claim confuses the roles: Jeremy Brock is the writer linked to 'True Crimes' and the adaptation, while Kevin Macdonald is the director.", "Kevin Macdonald directed the 2011 film 'The Eagle'.", "Jeremy Brock adapted 'The Eagle' from Rosemary Sutcliff's novel and wrote the screenplay for 'True Crimes'.", "Jeremy Brock is a writer, not the director of 'The Eagle'.", "'The Eagle' (2011) is an epic historical drama set in Roman Britain directed by Kevin Macdonald.", "The screenplay for the 2016 film 'True Crimes' was written by Jeremy Brock.", 'The claim confuses the roles of Jeremy Brock (writer) and Kevin Macdonald (director).']
+
+## Generated Outputs
+### reasoning
+The claim incorrectly attributes the 2011 drama adaptation and the film "True Crimes" to the same individual as both director and writer. The notes clarify that Kevin Macdonald directed the 2011 drama "The Eagle," which was adapted from Rosemary Sutcliff's novel by Jeremy Brock, who is the writer of the film "True Crimes." The confusion lies in conflating the roles of Kevin Macdonald (director of "The Eagle") and Jeremy Brock (writer of the adaptation and "True Crimes"). Therefore, the key facts to verify involve identifying the director and writer of "The Eagle" and confirming the authorship of "True Crimes," ensuring the roles are distinct and correctly assigned.
+
+### query
+- Who directed the 2011 drama film "The Eagle"?  
+- Who adapted Rosemary Sutcliff's novel "The Eagle of the Ninth" into the 2011 film "The Eagle"?  
+- Did Jeremy Brock write the screenplay for the film "True Crimes"?  
+- Is Kevin Macdonald credited as the writer or screenwriter for the film "True Crimes"?  
+- Are the director and writer roles for the 2011 drama "The Eagle" held by two different individuals?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['The Eagle (2011 film)', 'True Crimes']. Documents remaining to be retrieved: ['Jeremy Brock'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.
