@@ -1,0 +1,90 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given the fields `claim`, `notes`, produce the fields `query`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Californian Theodore Garland, Jr. completed postdoctoral training at the institution which was established before Texas Christian University.
+
+### notes
+['Texas Christian University was established in 1873 by Addison & Randolph Clark as the AddRan Male & Female College.', 'The founding date of TCU is 1873, establishing a timeline for comparisons.', 'There is no available information about the institution at which Theodore Garland, Jr. completed postdoctoral training.', 'Without the name or founding date of Theodore Garland Jr.’s postdoctoral institution, the claim cannot be verified.', 'Texas Christian University (TCU) was established in 1873.', 'Theodore Garland, Jr. completed his postdoctoral training at the University of Washington.', 'The University of Washington was established in 1861, before the establishment of TCU.']
+
+## Generated Outputs
+### reasoning
+To verify the claim, we need to determine two things: First, where Theodore Garland, Jr. completed his postdoctoral training. Second, whether that institution was established before Texas Christian University. Thus, the query must find the postdoctoral institution for Theodore Garland, Jr. and the founding years of that institution and Texas Christian University. We then compare the founding years to check if the postdoctoral institution was established before Texas Christian University.
+
+### query
+SELECT ?postdocInstitution ?postdocInstitutionEstablished ?tcuEstablished WHERE {
+  ?person rdfs:label "Theodore Garland, Jr."@en.
+  ?person dbo:postdoctoralTraining ?postdocInstitution.
+  ?postdocInstitution dbo:established ?postdocInstitutionEstablished.
+  VALUES ?tcu { dbo:Texas_Christian_University }
+  ?tcu dbo:established ?tcuEstablished.
+}
+LIMIT 1
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Texas Christian University', 'Theodore Garland, Jr.']. Documents remaining to be retrieved: ['University of Washington'].
+
+
+
+# Example 2
+## Inputs
+### claim
+An actor that was in the Wonder Woman (2017 film) of the action adventure genre, performed in Anomalisa after the premier of Fargo.
+
+### notes
+['David Thewlis acted in Wonder Woman (2017) and performed voice work in Anomalisa (2015).', 'David Thewlis appeared as V.M. Varga in the third season of Fargo, published after April 2014.', 'Anomalisa premiered on December 30, 2015, which is after the 2014 premiere of Fargo.', 'Tom Noonan also voiced a character in Anomalisa but is not credited with roles in Wonder Woman or Fargo.', 'David Thewlis acted in Wonder Woman (2017) and performed voice work in Anomalisa (2015).', 'David Thewlis appeared as V.M. Varga in the third season of Fargo, which premiered in April 2017.', 'Anomalisa premiered on December 30, 2015, which is before the premiere of Fargo season 3 in April 2017.', 'David Thewlis acted in Wonder Woman (2017) and performed voice work in Anomalisa (2015).', 'David Thewlis appeared as V.M. Varga in the third season of Fargo, which premiered in April 2017.', 'Anomalisa premiered on December 30, 2015, which is before the premiere of Fargo season 3 in April 2017.']
+
+## Generated Outputs
+### reasoning
+The claim involves verifying whether an actor appeared in the 2017 Wonder Woman film (which is an action-adventure film), was also involved in the film Anomalisa, and that their performance in Anomalisa was after the premiere of Fargo (presumably the TV series Fargo, which first aired in 2014). To address this, I need to identify actors from the Wonder Woman (2017) movie, see if any of them also performed in Anomalisa (a 2015 stop-motion animated film), and check the timing of Fargo's premiere relative to Anomalisa's release.
+
+### query
+List actors who appeared in the 2017 film Wonder Woman. Among them, identify any who also performed in the film Anomalisa (2015). Provide the release or premiere dates of both Anomalisa and Fargo TV series. Confirm if the actor's performance in Anomalisa was after the Fargo premiere date.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['David Thewlis', 'Fargo (TV series)']. Documents remaining to be retrieved: ['Wonder Woman (2017 film)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+An actor in a musical film was also a United States Navy Combat veteran in World War II. This film was awarded The Golden Bear at the 50th Berlin International Film Festival.
+
+### notes
+["The 50th Berlin International Film Festival was held in 2000, and the Golden Bear was awarded to the American film 'Magnolia' directed by Paul Thomas Anderson.", "'Magnolia' is not a musical film.", 'Jason Robards was an American actor and a U.S. Navy combat veteran of World War II.', "'Chicago' was a musical film screened out of competition at the 54th Berlin International Film Festival in 2003, but it did not win the Golden Bear.", 'Musical films that have been part of Berlin International Film Festival programs do not match the 50th festival Golden Bear winner.', "The 50th Berlin International Film Festival awarded the Golden Bear to the American film 'Magnolia' directed by Paul Thomas Anderson in 2000.", "'Magnolia' is not a musical film.", 'Jason Robards was an American actor and a U.S. Navy combat veteran in World War II.', 'No musical film won the Golden Bear at the 50th Berlin International Film Festival.', "Musical films such as 'Chicago' screened at later Berlin International Film Festivals but did not win the Golden Bear.", "The 50th Berlin International Film Festival was held in 2000 and the Golden Bear was awarded to the American film 'Magnolia' directed by Paul Thomas Anderson.", "'Magnolia' is not a musical film.", 'Jason Robards was an American actor and a U.S. Navy combat veteran of World War II.', 'Musical films have not won the Golden Bear at the 50th Berlin International Film Festival.', "'Chicago', a musical film, was screened at the 54th Berlin International Film Festival but did not win the Golden Bear."]
+
+## Generated Outputs
+### reasoning
+The claim involves multiple specific elements that can be verified:
+1. An actor in a musical film who was also a United States Navy Combat veteran in World War II.
+2. The musical film won The Golden Bear award at the 50th Berlin International Film Festival.
+
+To verify this claim, we need to check:
+- Which musical film won The Golden Bear at the 50th Berlin International Film Festival.
+- The cast of that film, identifying if any actor was a U.S. Navy Combat veteran in World War II.
+
+This requires querying the list of Golden Bear winners at the 50th Berlinale, finding the musical film among them, and then checking the background of its actors for military service in WWII as Navy combat veterans.
+
+### query
+Retrieve the winner of The Golden Bear award at the 50th Berlin International Film Festival and identify if the winning film was a musical. Then, provide the cast of that film and check whether any actor was a United States Navy Combat veteran in World War II.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['50th Berlin International Film Festival', 'Jason Robards']. Documents remaining to be retrieved: ['Magnolia (film)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

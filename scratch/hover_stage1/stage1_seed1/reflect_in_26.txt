@@ -1,0 +1,170 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You are tasked with a focused fact verification and evidence consolidation task, where you analyze three types of inputs—`claim`, `notes`, and `context`—to produce two outputs: `new_notes` and `titles`. The `claim` is a textual statement possibly containing multiple factual assertions that need verification. The `notes` are often extracted snippets, paraphrases, or partial evidences relevant to the claim, while the `context` comprises longer document texts or summaries potentially containing detailed source information related to entities, events, timelines, or attributes mentioned in the claim.
+
+Your overarching goal is to verify or refute each distinct component of the claim by synthesizing and consolidating information from both `notes` and `context`, avoiding redundancy, speculation, or irrelevant content.
+
+---
+
+Detailed Guidelines and Domain-Specific Considerations:
+
+1. **Input Structure and Understanding**  
+   - **claim**: A statement consisting of one or more assertions (e.g., about persons, events, dates, geographic locations, product characteristics, filmographies, or comparative facts).  
+   - **notes**: Fragmented facts, paraphrases, or extracted evidences that may partially support or contradict the claim. This input can contain redundancy.  
+   - **context**: Summaries or full-text snippets from diverse documents that may provide authoritative or more detailed information on the claim’s subjects.
+
+2. **Verification Approach and Reasoning Strategy**  
+   - Parse the claim into discrete assertions where possible and address each individually.  
+   - Map claim elements (entities, dates, events, attributes) to facts in both `notes` and `context`.  
+   - Cross-verify facts by probing both inputs together to spot confirmations, contradictions, or missing information.  
+   - Explicitly note when parts of the claim cannot be verified because critical information about entities, events, or attributes is absent from both inputs.  
+   - For geographic, historical, biographical, or product-related facts, use explicit details only—avoid assumptions or inference beyond the data given.  
+   - When multiple entities or facts overlap (e.g., multiple actors in movies, overlapping dates, competing geographic references), carefully separate which parts are supported and which are not.
+
+3. **Consolidation of `new_notes`**  
+   - Remove redundancy by combining similar or repeated facts into succinct, clear statements—preferably one or two sentences each.  
+   - Focus exclusively on information directly relevant to verifying the claim’s assertions, omitting irrelevant tangents or unrelated domain facts.  
+   - Clarify precisely which elements of the claim are supported, contradicted, or unverifiable.  
+   - If verification is impossible due to missing data or ambiguity, clearly state this instead of speculating.  
+   - Maintain factual accuracy and align notes closely with evidence found in the inputs.
+
+4. **Creation of `titles`**  
+   - Generate concise, descriptive headings that summarize key topics, entities, or factual relationships uncovered during verification.  
+   - Titles should be domain-relevant and reflect the organizing principles of your notes (e.g., names of persons, film titles with dates, product or geographic features, timeline relations).  
+   - They serve as topical indexes for the summarized evidences and facilitate quick understanding of verification focuses.
+
+5. **Domain-Specific Knowledge Embedded in the Task**  
+   - Common facts relate to soft drink brands, flavor profiles, and geographic market presence.  
+   - Biographical facts include film directors, voice actors, release years, animation movie titles, and actor nationalities.  
+   - Geographic comparisons, including city versus county boundaries, size, and jurisdictional status, are frequent.  
+   - Product ownership or company-railway station relations may appear, requiring careful geographic and corporate structure reasoning.  
+   - Scientific or technical terms (e.g., chemical or biological entities) may appear but are often not central to verification.
+
+6. **Generalizable Reasoning and Workflow**  
+   - Identify key components (entities, events, dates) in the claim first.  
+   - Search both `notes` and `context` for explicit assertions tied to these components.  
+   - Distill duplicated claims and reconcile contradictions; produce a coherent evaluation per factual assertion.  
+   - Explicitly separate verifiable from unverifiable or contradicted claim parts in `new_notes`.  
+   - Group related notes under thematic headings synthesized as `titles`.
+
+7. **Handling Missing or Conflicting Data**  
+   - When the claim contains information about an entity or event absent in all inputs, clearly note that verification is not possible.  
+   - If parts are verifiable but others are unsupported, separately highlight these distinctions.  
+   - Avoid speculation or implied connections not grounded in provided evidence.
+
+---
+
+Summary:
+
+Your task is a meticulous, evidence-based fact-checking and summarization exercise that integrates fragmented inputs into a concise, focused verification dossier. Your outputs must be:
+
+- **`new_notes`**: A reduced, clear, and precise list of facts confirming, contradicting, or indicating unverifiability of the claim’s components based on the complete input set.  
+- **`titles`**: A concise list of relevant topical headings that summarize and organize the key subjects, entities, or relationships essential to understanding the verification outcome.
+
+This task requires strict adherence to evidence, careful parsing of multi-part claims, clear handling of data absence or contradiction, and domain-aware synthesis of facts to aid downstream understanding or retrieval tasks.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The  Vines' frontman wrote the song "Get Free". He and Boy George are not both from the same country.
+
+### notes
+["The song 'Get Free' was written by Craig Nicholls, the frontman of the Australian rock band The Vines.", 'There is no information in the given context or notes about Boy George or his country of origin, so it cannot be verified whether Craig Nicholls and Boy George are from the same country.', "Craig Nicholls, frontman of the Australian rock band The Vines, wrote the song 'Get Free'.", 'Craig Nicholls is Australian.', "There is no information available regarding Boy George's country of origin, so it cannot be verified whether Craig Nicholls and Boy George are from the same country or not.", "Craig Nicholls, frontman of the Australian rock band The Vines, wrote the song 'Get Free'.", 'Craig Nicholls is Australian.', "There is no information available about Boy George's country of origin in the provided notes or context, so it cannot be verified whether Craig Nicholls and Boy George are from the same country or not."]
+
+### context
+['Get Free | "Get Free" is a song by the garage rock band The Vines from their debut album "Highly Evolved".  The song was released in mid 2002, and remains the Vines\' highest charting single (#7 Billboard Modern Rock, #24 UK Singles Chart).  The song was written by Vines\' frontman Craig Nicholls.  It was covered by "Weird Al" Yankovic in his polka medley "Angry White Boy Polka" from his 2003 album "Poodle Hat".  It was featured in the pilot episodes of "Fastlane" and "Shameless", as well as the 2006 movie "School for Scoundrels".  The song can be heard in several video games including the introduction video for "Topspin", the Nintendo DS version of "Band Hero" and as a playable track on "Rock Band 3" and "".  "Get Free" along with "Ride" appeared in the documentary "Warren Miller\'s Impact".', 'Nobody Gonna Tell Me What to Do | "Nobody Gonna Tell Me What to Do" is a song recorded by American country music duo Van Zant.  It was released in September 2005 as the second single from their album "Get Right with the Man".  The song was written by Tony Mullins, Tim Nichols and Craig Wiseman.', 'It\'s All Good (Joe Nichols album) | It\'s All Good is the seventh studio album by American country music artist Joe Nichols, released on November 8, 2011 via Show Dog-Universal Music.  It produced the top 30 single "Take It Off."  Craig Morgan also recorded the track "This Ole Boy" for his album of the same name.', 'Craig Morgan (album) | Craig Morgan is the self-titled debut album of country music singer Craig Morgan.  Released in 2000 as his only album for the Atlantic Records label, it produced the singles "Paradise", "I Want Us Back", and "Something to Write Home About", which peaked at number 39 on the U.S. country charts.  "Everything\'s a Thing" was later recorded by Joe Nichols (who co-wrote the song as well) on his 2003 album "Man with a Memory".', 'Craig Nicholls | Craig Robert Nicholls (born 31 August 1977) is an Australian musician, best known as the lead singer, songwriter, and guitarist of the Australian alternative rock band The Vines, of which he is the only mainstay member.', 'Winning Days (song) | "Winning Days" was the third and final single from the album of the same name by the Vines.  It came out in May 2004, the same week as the Annandale Hotel incident took place in Sydney, in which Craig Nicholls, the song\'s writer and the group\'s lead singer-guitarist, assaulted a photographer, and charges were pressed.', 'Highly Evolved (song) | "Highly Evolved" is the opening track and first Australian single from The Vines\' debut album of the same name (see "Highly Evolved").  The song was written by the group\'s lead guitarist and vocalist, Craig Nicholls.  It was issued as a single via Capitol Records, in April 2002, ahead of the album, which appeared in August.', 'Ride (The Vines song) | "Ride" was the second official single from The Vines\' second album, "Winning Days".  Although it wasn\'t a big chart success, "Ride" is one of the band\'s best known songs because it was featured in a number of advertisements, including commercials for Apple\'s iPod, Nissan, "American Chopper", "NASCAR Hot Pass", "WKCF", The WB, and .  Written by Craig Nicholls.', 'What\'s a Guy Gotta Do | "What\'s a Guy Gotta Do" is a song co-written and recorded by American country music artist Joe Nichols.  It was released in November 2004 as the second and final single from his album "Revelation".  It peaked at number 4 on the United States "Billboard" Hot Country Songs chart and number 64 on the U.S. "Billboard" Hot 100 chart.  The song was written by Nichols, Kelley Lovelace and Don Sampson.', 'This Ole Boy (song) | "This Ole Boy" is a song written by Rhett Akins, Dallas Davidson and Ben Hayslip.  Originally recorded by Joe Nichols for his 2011 album "It\'s All Good", it was also recorded by Craig Morgan.  His version of the song was released in July 2011 as the first single and title track from his album "This Ole Boy", released by Black River Entertainment in early 2012.']
+
+## Generated Outputs
+### reasoning
+The claim consists of two assertions: first, that The Vines' frontman wrote the song "Get Free"; second, that the frontman and Boy George are not from the same country. 
+
+From the notes and context, it is verified that Craig Nicholls, the frontman of the Australian rock band The Vines, wrote the song "Get Free." Multiple sources in both notes and context confirm this fact explicitly. 
+
+Regarding the nationality comparison, Craig Nicholls is explicitly noted as Australian. However, there is no information provided about Boy George's country of origin in either the notes or the context. Without this information, it is impossible to verify or refute the claim that they are not from the same country. The claim about the nationality comparison remains unverifiable with the given data.
+
+### new_notes
+["Craig Nicholls, frontman of the Australian rock band The Vines, wrote the song 'Get Free'.", 'Craig Nicholls is Australian.', "There is no information available about Boy George's country of origin in the provided notes or context, so it cannot be verified whether Craig Nicholls and Boy George are from the same country or not."]
+
+### titles
+["Craig Nicholls as Writer of 'Get Free'", 'Nationality of Craig Nicholls', "Lack of Information on Boy George's Nationality"]
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Craig Nicholls', 'Get Free']. Documents remaining to be retrieved: ['Boy George'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The TV series where the actor played the character Gaius Baltar joined in 2010. premiered on July 18, 2006. The serie was premiered on July 18, 2006.
+
+### notes
+['James Callis played Dr. Gaius Baltar in the reimagined Battlestar Galactica TV series.', 'James Callis joined the cast of the TV series Eureka on Syfy in 2010, which is a different series than Battlestar Galactica.', 'The premiere date of Battlestar Galactica (the series with Gaius Baltar) is not specified in the given context, so the claim that it premiered on July 18, 2006, cannot be verified or contradicted.', 'James Callis played Dr. Gaius Baltar in the reimagined Battlestar Galactica TV series, not a series he joined in 2010.', 'James Callis joined the cast of the TV series Eureka in 2010, which is a different series from Battlestar Galactica.', 'The premiere date of Battlestar Galactica is not provided in the given notes or context; thus, the claim that it premiered on July 18, 2006, cannot be verified.', 'James Callis played Dr. Gaius Baltar in the reimagined Battlestar Galactica TV series, which ran between 2003 and 2009.', 'James Callis joined the cast of the TV series Eureka in 2010, which is a different series from Battlestar Galactica.', 'The claim that the Battlestar Galactica series premiered on July 18, 2006, cannot be verified or contradicted based on provided information.', 'The Battlestar Galactica series did not start in 2010; it ended in 2009, so the claim about joining in 2010 is incorrect.']
+
+### context
+['Gaius Baltar | Dr. Gaius Baltar is a fictional character in the TV series "Battlestar Galactica" played by James Callis, a reimagining of Count Baltar from the 1978 "Battlestar Galactica" series.  He is one of the show\'s primary characters.', 'James Callis | James Nicholas Callis (born 4 June 1971) is an English actor.  He is best known for playing Dr. Gaius Baltar in the re-imagined "Battlestar Galactica" miniseries and television series, and Bridget Jones\' best friend in "Bridget Jones\'s Diary" and "".  He later reprised the role in 2016, in "Bridget Jones\'s Baby."  He joined the cast of the TV Series "Eureka", on Syfy, in 2010.  In 2017 he voiced the character Alucard on the Netflix series "Castlevania", based on the video game of the same name.', 'Count Baltar | Count Baltar was a leading antagonist in the original "Battlestar Galactica" (1978) television series.  The character betrayed the human race to its enemy, the robot race of Cylons.  He was portrayed by Canadian actor John Colicos.', 'Baltar (Battlestar Galactica) | Baltar is a fictional character in the "Battlestar Galactica" universe who betrays the human race, through willing treachery in the original 1978 series, and as the inadvertent result of arrogance and self-interest in the 2003 miniseries and following TV series.', 'George (Blackadder) | George is a supporting character who appeared in various adaptations of the BBC sitcom "Blackadder", played by Hugh Laurie.  Each series saw a different incarnation of the character, because each was set in a different period of history.  He was most prominently featured in the third and fourth series.  The character was added to the series as a replacement for the Lord Percy Percy character, who did not appear in the third instalment because Tim McInnerny, the actor playing him, feared being typecast.', 'Gaius Julius Caesar (Rome character) | Gaius Julius Caesar is a historical figure who features as a character in the HBO/BBC2 "Rome (TV series)", played by Irish actor Ciarán Hinds.  The real Julius Caesar was a Roman general who seized control of the Roman government in 45 BC and laid the political foundations for the transition from the Roman Republic to the Roman Empire.', 'The Client List (TV series) | The Client List is an American television drama series based on the 2010 television film of the same name, which aired on the Lifetime network.  The series stars Jennifer Love Hewitt, who starred in the film, though she plays a different character in a premise that is slightly different from the film.  The series premiered on Sunday, April 8, 2012.', "Wallflowers (web series) | Wallflowers is an American comedy web series created and written by Kieran Turner.  The series is broadcast on the internet and premiered on March 20, 2013.  For season one, 5 episodes have been created and for Season 2, seven episodes.  and the show can be found distributed across the web on Stage17.tv.  Wallflowers is about four friends in New York who belong to a support group who can't get dates.  the core group of characters are in their mid-late 30's and are from the last generation of people who did not have the internet to date people.  The characters find themselves single and are not very successful with getting dates.", 'Gerard Kennedy (actor) | Gerard Kennedy (born 8 March 1932) is an Australian actor and two-time Gold Logie winner.  After playing six different characters in guest appearances in Crawford Productions series "Homicide" in 1966 he shot to fame as the antagonist in Australian television spy drama "Hunter", becoming so popular that his character changed sides, eventually becoming the main character after lead actor Tony Ward left the series.  Kennedy won a TV Week Logie Award for \'Best New Talent\' for his portrayal of the character.  Kennedy followed this with a starring role in police procedural television series, "Division 4", winning multiple Logie Awards—including two Gold Logies as most popular personality on Australian TV—for his work in the series.  He has consistently acted in Australian television and film productions since that time.', 'Damon Dark | Damon Dark is an independent public access TV series and web series from Australia about a heroic and obsessive investigator of UFO incidents and other strange cases, created by Australian writer, actor and film maker Adrian Sherlock.  Damon James Dark became a dedicated alien investigator after a close encounter during his teenage years.  He is associated with both the secret service and friendly aliens, including a character called Vincent Kosmos (an alien time traveller) and Trans-Dimensional Control (an alien law enforcement agency).  The character of Damon Dark has appeared in a 5-week TV series on Community TV 31 in Melbourne Australia, a self-published novel ("Biodome") on Amazon\'s createspace platform and a long running web series on YouTube.  He has also been involved in related web series "Young Damon Dark" and "Vincent Kosmos."  He has also been the focus of a one actor stage drama.  The character of Damon Dark has been played by Adrian Sherlock, Bruce Hughes, Aiden Sherlock and Jack Knoll.  Damon Dark is a loner, dresses in black, has a huge experience of aliens and their technology.  Damon is characterized by his high intelligence, idealistic moral outlook and wry sense of humor.  His best friend in the series is the long-suffering Gary Sutton, played by actor Robert Trott.  Damon Dark began in 1999, with a five-part weekly series on Melbourne\'s Community TV 31, (although the pilot was shot in 1996 and the show had been in development since 1990) following a screening of a 65-minute version of the story "Maddox" at the 57th World Science Fiction Convention (Aussiecon Three) held in Melbourne.  The series was later revived as a YouTube webseries which inspired several related webseries, including "The Young Damon Dark Adventures" in which the character is played as a teenager, and Vincent Kosmos, (created by and starring Chris Heaven, , an Italian actor and musician, about a renegade alien character who is a friend of Damon.']
+
+## Generated Outputs
+### reasoning
+The claim includes three assertions: (1) The TV series where the actor played Gaius Baltar joined in 2010, (2) the series premiered on July 18, 2006, and (3) the series premiered on July 18, 2006 (repeated). First, James Callis is the actor who played Gaius Baltar in the reimagined Battlestar Galactica TV series. The context confirms this explicitly. The context also states that James Callis joined the TV series Eureka on Syfy in 2010, which is a different show, not the Battlestar Galactica series. Therefore, the claim that the series where the actor played Gaius Baltar joined in 2010 is incorrect; rather, James Callis joined a different series in 2010. Regarding the premiere date of the series featuring Gaius Baltar, the context does not specify the exact premiere date of Battlestar Galactica, but the claim's premiere date of July 18, 2006, is not supported or contradicted by provided evidence. No dates about Battlestar Galactica's premiere are present in the context. Thus, verification of the premiere date is not possible with the given information. Finally, the claim repeats the premiere date twice, which is redundant.
+
+### new_notes
+['James Callis played Dr. Gaius Baltar in the reimagined Battlestar Galactica TV series.', 'James Callis joined the cast of the TV series Eureka on Syfy in 2010, which is a different series than Battlestar Galactica.', 'The premiere date of Battlestar Galactica (the series with Gaius Baltar) is not specified in the given context, so the claim that it premiered on July 18, 2006, cannot be verified or contradicted.']
+
+### titles
+['James Callis as Gaius Baltar', "James Callis's 2010 TV Series Role", 'Battlestar Galactica Premiere Date']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Gaius Baltar', 'James Callis']. Documents remaining to be retrieved: ['Eureka (U.S. TV series)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Cast is considered a rock band. The band Jacob Gentry collaborated with is also considered a rock band.
+
+### notes
+['No information is provided in the context to verify that Cast is considered a rock band.', 'The context does not mention Jacob Gentry or any specific band he collaborated with.', 'Eagle Twin, formed by Gentry Densley, is classified primarily as a metal band with elements of doom metal, sludge metal, progressive rock, blues rock, jazz fusion, and psychedelic rock, not purely rock.', 'No direct link exists between Jacob Gentry and a rock band collaboration in the provided context.', 'No information in the provided context or notes supports that Cast is considered a rock band.', 'Jacob Gentry is not mentioned in the provided context or notes, and there is no evidence of any collaboration between him and a rock band.', "The band 'The Gentry' formed by Gino Mari is classified as electronic, alternative rock, and rock, but it is unrelated to Jacob Gentry.", 'Eagle Twin, formed by Gentry Densley, is primarily a metal band with some rock elements, but this is distinct from Jacob Gentry and not classified purely as rock.', 'No information is available to verify that Cast is considered a rock band in the provided notes or context.', 'Jacob Gentry is not mentioned in the provided notes or context, and no evidence exists of him collaborating with any band, rock or otherwise.', 'The Gentry, a band from Portland, Oregon, is classified as electronic, alternative rock, and rock, but has no relation to Jacob Gentry.', 'Eagle Twin, formed by Gentry Densley, is primarily a metal band with elements of rock, but this is unrelated to Jacob Gentry.']
+
+### context
+['The Gentry (band) | The Gentry is an American band from Portland, Oregon, formed in 2003 by DJ/producer Gino Mari.  The band is most commonly classified in the electronic, alternative rock and rock music genres.', "List of Yes band members | The following list details musicians who have been and are members of the English progressive rock band Yes since its formation in 1968.  The band was split up between 1981 and 1983.  Bassist Chris Squire was the only member to be part of every one of the band's incarnations until his death in 2015, which left the band without any original members.", 'Walls (Yes song) | "Walls" is a song by the progressive rock band Yes, from their 1994 album "Talk".  Roger Hodgson, the songwriter formerly of fellow progressive rock band Supertramp, wrote "Walls" with Yes guitarist Trevor Rabin.  It was a rock radio hit for the band, reaching number 24 on "Billboard"s Hot Mainstream Rock Tracks chart.  It also became Yes’ second-to-last charting single.', 'Frágil | Frágil is a Peruvian rock band.  Named after an eponymous Yes album ("Fragile"), Frágil is one of the most respected rock bands in Perú.  Fragil started as a symphonic progressive/hard rock band influenced by the likes of Yes, Genesis, Emerson, Lake & Palmer, Jethro Tull, Black Sabbath, Rainbow .  They earned local fame through their hit single "Av.  Larco"(Ave. Larco) in the early 80\'s.  Frágil has a cult status in Peru usually selling out all of their concerts.', "Press Play On Tape | Press Play On Tape (PPOT) is a Danish band that uses Commodore 64 tunes.  The band formed in 1999 and has six members.  The band classifies itself as a rock and bitpop band.  The band's name originates from the message that the Commodore 64 computer outputs as a response to the LOAD command.", 'Joel Hanson | Joel Hanson was the lead singer and guitarist for Christian rock band PFR.  After the breakup of the band, he went on to a solo career with the albums "Captured", "Broken" and "What If It Is".  Joel is a songwriter who has collaborated with several artists across the music industry, including Sara Groves, Geoff Moore, and Phil Keaggy.  Joel is currently performing with The Joel Hanson Band.  His brother Jade was the lead singer for the Christian rock band Believable Picnic.', "The Enthusiasts | The Enthusiasts are a Canadian garage rock band from Winnipeg, Manitoba, active from 1963 to 1972.  considered one of the most influential underground Canadian Rock groups of the 20th Century, the band's style paved the way for the first waves of Canadian Punk Rock and Art Rock.  The Enthusiasts are considered pioneers of Indie Rock as well.  while the band saw little mainstream success outside of their native Canada, their influence on later music scenes would be tremendous, especially during the 1980s.  The Band has been disbanded since early 1972, although they briefly united for a short Canadian tour in 1984.  Currently there are no plans for any further Enthusiasts reunions.", 'Eloy | Eloy is a German progressive rock band, whose musical style includes symphonic and space rock, the latter theme being more prevalent on earlier albums.  Despite their nationality and time period, the band is not generally considered krautrock because of their sound, which has much more in common with English progressive rock and symphonic rock groups such as Pink Floyd, King Crimson, Yes, and Camel.', 'Rock Band Blitz | Rock Band Blitz is a rhythm game in the "Rock Band" series from Harmonix as a downloadable game for Xbox Live Arcade and PlayStation Network, released in August 2012.  Unlike previous iterations of "Rock Band", "Blitz" is not sold with any special instrument controllers, and was designed to use regular console controllers to match notes in a song, using gameplay mechanics similar to Harmonix\' previous titles of "Frequency", "Amplitude", and "Rock Band Unplugged".  In addition to 25 songs that will ship with the game, the title is capable of using any songs the player has downloaded or exported for "Rock Band 3".  Due to licensing issues, the game was delisted from the respective storefronts in August 28, 2017.', 'Lifesong (song) | "Lifesong" is a song recorded by Christian rock band Casting Crowns.  Written by Mark Hall and produced by Mark A. Miller, it was released as the lead single from the band\'s 2005 album of the same name.  According to Mark Hall, the lead vocalist of Casting Crowns, "Lifesong" came out of what he found himself saying to students in his church\'s youth ministry.  Compared to the work of rock band U2, the song lyrically points believers towards honoring God in all they do.']
+
+## Generated Outputs
+### reasoning
+The claim contains two main assertions: (1) Cast is considered a rock band, and (2) Jacob Gentry collaborated with a band that is also considered a rock band.
+
+From the notes and context provided:
+
+- There is no information validating that "Cast" is considered a rock band. No mention of Cast is found in either the notes or the context.
+- Jacob Gentry is not mentioned in the context or notes, nor is there information about any collaboration involving him and a rock band.
+- There is a mention of "The Gentry" band (formed by Gino Mari) classified under electronic, alternative rock, and rock music genres, but no link to Jacob Gentry.
+- Eagle Twin is mentioned but is formed by Gentry Densley, not Jacob Gentry, and is categorized mainly as a metal band with some progressive and psychedelic rock elements.
+- Therefore, no evidence confirms Cast as a rock band or confirms that Jacob Gentry collaborated with a rock band.
+
+Hence, both parts of the claim are unverifiable or unsupported based on the available inputs.
+
+### new_notes
+['No information in the provided context or notes supports that Cast is considered a rock band.', 'Jacob Gentry is not mentioned in the provided context or notes, and there is no evidence of any collaboration between him and a rock band.', "The band 'The Gentry' formed by Gino Mari is classified as electronic, alternative rock, and rock, but it is unrelated to Jacob Gentry.", 'Eagle Twin, formed by Gentry Densley, is primarily a metal band with some rock elements, but this is distinct from Jacob Gentry and not classified purely as rock.']
+
+### titles
+['Verification of Cast as a Rock Band', 'Jacob Gentry and Band Collaborations in the Rock Genre', 'The Gentry Band Classification', 'Eagle Twin Band Genre and Membership']
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Broken Bells', 'Cast (band)', 'Jacob Gentry'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

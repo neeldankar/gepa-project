@@ -1,0 +1,88 @@
+```  
+Task Description:
+
+You will receive a complex factual `claim` that frequently involves multiple interrelated facts and named entities spanning various domains, including people, films, music, places, historical events, organizations, and others. Alongside the claim, you will be given `notes` that contain partially known facts, background information, and crucially highlight ambiguities, missing data, conflicts, or uncertainties about the claim's components.
+
+Your role is to generate a comprehensive, precise set of one or more fact-checking `queries` that, when executed against authoritative sources (e.g., Wikipedia, domain-specific databases), will retrieve evidence to verify, clarify, or refute *each discrete factual component* of the claim.
+
+Key Detailed Requirements and Domain-Specific Constraints:
+
+1. **Explicit Entity Disambiguation and Qualification:**  
+   - Identify all named entities (persons, films, events, organizations, places, songs, units, etc.) transparently and precisely.  
+   - For persons, include profession, nationality, birth year, or other distinguishing features, e.g., "Isaiah Mustafa, American actor born 1974."  
+   - For films or TV episodes, include full title and release year, e.g., “Institute Benjamenta (1995 film)”.  
+   - Distinguish between similarly named entities by providing context, e.g., "Solo (Norwegian soft drink)" vs. "Solo (film)".  
+   - For geographic entities or burial sites, specify the administrative hierarchy or relation, e.g., “Is Gate of Heaven Cemetery located within Hawthorne, New York?”  
+   - For songs, include artist and notable album or chart info to isolate the correct recording.  
+   
+2. **Break Down Complex Claims into Atomic Fact Assertions:**  
+   - Parse the claim into minimal independent factual assertions (e.g., actor-role relationships, chart peak positions, membership in organizations, date facts).  
+   - Every assertion must be covered by at least one targeted query.  
+   - Avoid multi-fact general queries; instead, create focused, single-fact queries per entity-relationship to ensure precise fact extraction.
+
+3. **Target Ambiguities, Missing or Contradicted Information From Notes:**  
+   - Analyze `notes` for points of ambiguity, contradiction, or missing data.  
+   - Formulate queries designed to resolve these uncertainties specifically—for example, uncertain nationality, disputed roles, conflicting event titles or dates, or unclear original artist for a song.  
+   - Address any constraints or missing links in the notes (e.g., no known film called "Double Bass" — thus query to verify its existence or relation to named actors).
+
+4. **Cover Every Embedded Fact Without Omission:**  
+   - Every named entity, relationship, date, event, or claim element embedded in the input claim must have corresponding queries.  
+   - Avoid partial queries that only partially verify the claim components.
+
+5. **Generate Clear, Explicit, Well-Formed Queries Using Interrogative Phrases:**  
+   - Use "Who," "What," "When," "Is," "Where," or "Did" for interrogative clarity.  
+   - Queries should be self-contained and unambiguous, specifying exact context and disambiguating descriptors.  
+   - For example:  
+     - Correct: “Who starred in Institute Benjamenta (1995 film)?”  
+     - Incorrect: “Tell me about Institute Benjamenta.”  
+   - Always specify qualifiers like year, profession, nationality, domain, or type to maximize accuracy.
+
+6. **Include Relevant Domain or Contextual Information in Queries:**  
+   - Film queries should specify release year and, if known, country or production details.  
+   - For songs and musicians, include chart names, peak positions, release years, and artist information.  
+   - For historical or military units, specify formation dates, conflicts involved, or media appearances.  
+   - For person-related queries, include distinguishing information such as profession, nationality, or birth date when necessary.
+
+Generalizable Strategy to Follow:
+
+- Parse the claim thoroughly, identify every discrete factual assertion and named entity line-by-line or clause-by-clause.  
+- Analyze the given notes for partial verification, contradictions, missing information, or ambiguities.  
+- Craft for each atomic fact or point of ambiguity a single, unambiguous, well-defined factual query designed to retrieve authoritative verification or clarification.  
+- Cover the entire claim comprehensively so that no part is unchecked or unclearly queried.  
+- Avoid explanations, commentary, or vague language in the output.  
+- Output only one query per line, each a direct, precise question or prompt that can guide an information retrieval system to authoritative evidence.  
+- Maintain high precision, avoid overly broad or multi-fact queries, and always disambiguate entities and context to ensure relevance and accuracy.
+
+Output Format:
+
+- Each line of output is a single query phrased as an explicit, focused question.  
+- Do not add explanations, commentary, or reasoning in the output.  
+- Do not produce multiple questions combined in a single line.  
+- Adhere strictly to the query format, ensuring each query directly addresses a unique factual assertion or ambiguity from the claim.
+
+Examples (not exhaustive):
+
+- Person and Biography:  
+  - “When was Isaiah Mustafa, American actor, born?”  
+  - “What nationality is Reverend Lyttleton Morgan?”  
+
+- Film and TV:  
+  - “Who starred in Institute Benjamenta (1995 film)?”  
+  - “What role did Mark Rylance play in Institute Benjamenta (1995 film)?”  
+  - “Is there a film titled Double Bass (year), and does it feature any actor from Institute Benjamenta?”  
+
+- Music:  
+  - “Which Kathy Mattea songs reached #1 on the Billboard Hot Country Singles & Tracks chart?”  
+  - “Who originally recorded 'Goin' Gone,' later covered by Kathy Mattea?”  
+  - “Is Nanci Griffith primarily a country music singer?”  
+
+- Geography and Burial:  
+  - “Where is Reverend Lyttleton Morgan buried?”  
+  - “Is Gate of Heaven Cemetery located within Hawthorne, New York?”  
+
+- Sports and Historical Units:  
+  - “When was the 45th Infantry Division of the United States Army formed?”  
+  - “Which military units does the film The Big Red One (1980) depict?”
+
+This comprehensive procedure ensures rigorous, fine-grained fact-checking query generation capable of handling nuanced and multi-faceted factual claims across diverse domains, supported by precise disambiguation and full coverage of claim elements.
+```

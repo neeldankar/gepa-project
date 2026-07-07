@@ -1,0 +1,114 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields: `claim` and `notes`. Your task is to produce a new field `query`.
+
+- The `claim` is a complex factual statement or set of statements that asserts certain relationships, events, or facts involving multiple entities.
+- The `notes` are supporting or refuting fragments of factual information, background details, and evidence relevant to assessing or verifying the `claim`.
+
+Your goal is to formulate an information retrieval or database query (`query`) that, if executed, would retrieve all supporting documents or data needed to verify every part of the claim accurately. The query should be specifically designed to capture all key entities, relationships, and factual aspects mentioned or implied in the given claim.
+
+Key Points and Strategy:
+1. **Identify factual components in the claim**  
+   Parse the claim to identify:
+   - Key entities (people, organizations, films, events, teams, places, dates, roles, etc.)
+   - Relationships between entities (e.g., "starred with", "founded in", "managed", "directed by")
+   - Attributes or predicates that need verification (e.g., professional overlap, filmography, team foundation dates, managerial roles)
+
+2. **Leverage evidence in `notes`**  
+   The `notes` contain verified or likely verified facts that relate to the entities and claims. Use these to guide your understanding of which pieces of information are central and what queries could retrieve documents covering those pieces.
+
+3. **Formulate a comprehensive yet precise query**  
+   The query should:  
+   - Request information that covers all key entities involved  
+   - Cover all relationships or assertions made  
+   - Be sufficiently detailed to guide retrieval of all necessary documents, ensuring that none of the claim’s critical assertions are left unverifiable
+
+4. **Generalizable querying approach**  
+   - For claims involving relationships or overlap between two or more persons or entities, query their respective profiles, roles, and overlaps (e.g., shared professions, co-appearances)  
+   - For claims involving filmography or works, query casts, co-stars, directors and release details for each relevant film  
+   - For claims involving teams or organizations, query founding dates, player rosters during specified periods, and managerial histories  
+   - For claims involving timelines, query historical data for proper date and role alignment  
+
+5. **Prioritize retrieval of documents for all entities referenced**  
+   The goal is to retrieve a full set of relevant documents that together confirm or refute the claim. The query should explicitly try to capture all gold documents identified in notes or feedback.
+
+Example considerations from provided cases:
+- When claim involves whether two professionals share a profession, the query should seek explicit mentions of professions for both individuals.
+- When claim involves people starring together in films and their participation in other films and directors, the query should request casts of the films and director credits.
+- When claim involves sports teams and individuals across specific time periods, the query should request founding dates, rosters by years, managerial records, and affiliations with any teams.
+
+Output Format:
+- Output only the `query` text, formatted as a natural language request or series of requests designed to retrieve all relevant and complete supporting information for verifying the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+American film director and actor Eli Roth, famous for his role as Donny "The Bear Jew" Donowitz, wrote the 2012 film that was directed by the founder of Soul Temple Records.
+
+### notes
+["Eli Roth is an American film director, producer, writer, and actor best known for his role as Donny 'The Bear Jew' Donowitz in Quentin Tarantino's 'Inglourious Basterds'.", "Eli Roth co-wrote the 2012 film 'Aftershock' with Nicolás López and Guillermo Amoedo.", "'Aftershock' (2012) is a Chilean-American disaster horror film directed by Nicolás López.", "There is no evidence that Nicolás López, director of 'Aftershock', is affiliated with Soul Temple Records or that the founder of Soul Temple Records directed the film.", "Eli Roth is an American film director, producer, writer, and actor best known for his role as Donny 'The Bear Jew' Donowitz in Quentin Tarantino's 'Inglourious Basterds'.", "Eli Roth co-wrote the 2012 film 'Aftershock' with Nicolás López and Guillermo Amoedo.", "'Aftershock' (2012) is a Chilean-American disaster horror film directed by Nicolás López.", "There is no evidence that Nicolás López, director of 'Aftershock', is affiliated with Soul Temple Records or that the founder of Soul Temple Records directed the film.", "RZA, founder of Soul Temple Records, co-wrote, acted in and directed the 2012 film 'The Man with the Iron Fists'.", "'The Man with the Iron Fists' soundtrack was released by Soul Temple Entertainment.", "Eli Roth is an American film director, producer, writer, and actor best known for his role as Donny 'The Bear Jew' Donowitz in Quentin Tarantino's 'Inglourious Basterds'.", "Eli Roth co-wrote the 2012 film 'Aftershock' with Nicolás López and Guillermo Amoedo.", "'Aftershock' (2012) is a Chilean-American disaster horror film directed by Nicolás López.", "There is no evidence that Nicolás López, director of 'Aftershock', is affiliated with Soul Temple Records or that the founder of Soul Temple Records directed the film.", "RZA, founder of Soul Temple Records, co-wrote, acted in and directed the 2012 film 'The Man with the Iron Fists'.", "'The Man with the Iron Fists' soundtrack was released by Soul Temple Entertainment."]
+
+## Generated Outputs
+### reasoning
+The claim states that Eli Roth, known for his acting role as Donny "The Bear Jew" Donowitz, wrote a 2012 film that was directed by the founder of Soul Temple Records. The notes clarify that Eli Roth co-wrote the 2012 film "Aftershock," which was directed by Nicolás López, who is not connected to Soul Temple Records. The founder of Soul Temple Records is RZA, who directed a different 2012 film, "The Man with the Iron Fists." Therefore, the claim implies a connection between Eli Roth's writing and a director who founded Soul Temple Records, which conflicts with the notes. To verify the claim, we must confirm Eli Roth's acting role, the 2012 films he wrote or co-wrote, the directors of those films, the founder of Soul Temple Records, and the films directed by that founder.
+
+### query
+Retrieve detailed information on Eli Roth's acting roles, specifically his role as Donny "The Bear Jew" Donowitz; list of films Eli Roth wrote or co-wrote in 2012; directors of each of these 2012 films; identity and background of the founder of Soul Temple Records; films directed by the founder of Soul Temple Records, including their release years and Eli Roth's involvement, if any.
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Eli Roth']. Documents remaining to be retrieved: ['Soul Temple Records', 'The Man with the Iron Fists'].
+
+
+
+# Example 2
+## Inputs
+### claim
+An Greek actor who was a CIA operative in Chuck Versus the A-Team was born in 1974. The actor plays a character in commercials for Old Spice.
+
+### notes
+['Isaiah Mustafa was born in 1974 and is an American actor widely known for the Old Spice commercials.', "Adam Baldwin portrays CIA operative John Casey in the NBC show 'Chuck' but is not Greek nor born in 1974.", "Joshua Gomez, born in 1975, appears in 'Chuck' but does not play a CIA operative role and is not Greek.", "No information supports a Greek actor born in 1974 who appeared as a CIA operative in 'Chuck Versus the A-Team' and is associated with Old Spice commercials.", "Isaiah Mustafa, born in 1974, is an American actor widely known for Old Spice commercials but has no known role in 'Chuck'.", "Adam Baldwin portrays CIA operative John Casey in 'Chuck' but is not Greek nor born in 1974 and has no Old Spice commercial connection.", "Joshua Gomez, born in 1975, appears in 'Chuck' but does not play a CIA operative and is not Greek.", "No evidence supports a Greek actor born in 1974 who acted as a CIA operative in 'Chuck Versus the A-Team' and is associated with Old Spice commercials.", "Isaiah Mustafa was born in 1974 and is an American actor widely known for the Old Spice commercials but has no known role in 'Chuck'.", "Adam Baldwin portrays CIA operative John Casey in 'Chuck' but is not Greek nor born in 1974 and has no Old Spice commercial connection.", "Joshua Gomez, born in 1975, appears in 'Chuck' but does not play a CIA operative and is not Greek.", "'Chuck Versus the A-Team' featured CIA operatives but no Greek actor born in 1974 credited in that role.", "No evidence supports a Greek actor born in 1974 who acted as a CIA operative in 'Chuck Versus the A-Team' and is associated with Old Spice commercials."]
+
+## Generated Outputs
+### reasoning
+The claim states that a Greek actor, born in 1974, who was a CIA operative in "Chuck Versus the A-Team," plays a character in Old Spice commercials. From the notes, Isaiah Mustafa was born in 1974 and is known for Old Spice commercials but is not identified as Greek nor linked to "Chuck." Adam Baldwin plays a CIA operative in "Chuck" but is neither Greek nor born in 1974. Joshua Gomez is in "Chuck" but not as a CIA operative nor Greek or born in 1974. There is no evidence of a Greek actor born in 1974 who both appeared as a CIA operative in "Chuck" (or "Chuck Versus the A-Team") and is associated with Old Spice commercials. Therefore, to verify the claim, a query must retrieve information about all Greek actors born around 1974, their involvement in the TV show "Chuck" (including the specific episode "Chuck Versus the A-Team") especially roles as CIA operatives, and any associations with Old Spice commercials.
+
+### query
+Retrieve records of actors identified as Greek or of Greek descent born in or around 1974. For these actors, retrieve their roles in the TV series "Chuck," specifically focusing on appearances in the episode "Chuck Versus the A-Team," and note if they played a CIA operative. Additionally, retrieve information on whether these actors appeared in Old Spice commercials, including character roles and campaign dates.
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Chuck Versus the A-Team', 'Isaiah Mustafa', 'Make a Smellmitment']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+Star of American neo-western film The Far Horizons was born in August and was a professor.
+
+### notes
+['The Far Horizons is an American neo-western film, but no details about its star or their biography are provided in the existing context.', 'No information is available about any cast member of The Far Horizons being born in August or having been a professor.', 'Hieronymus Osius was a German Neo-Latin poet and academic who lectured on poetics, but he is unrelated to the film or its cast.', 'The Far Horizons is an American neo-western film, but no details about its star or their biography are provided.', 'No information is available about any cast member of The Far Horizons being born in August or having been a professor.', 'Hieronymus Osius was a German Neo-Latin poet and academic who lectured on poetics, but he is unrelated to the film or its cast.', 'No information is available about any cast member of The Far Horizons being born in August or having been a professor.', 'The Far Horizons is an American neo-western film but details about its star or their biography are not provided.', 'Ernest Gellhorn was an American academic and legal scholar but unrelated to the film or its cast.', 'Hieronymus Osius was a German Neo-Latin poet and academic unrelated to the film or its cast.']
+
+## Generated Outputs
+### reasoning
+The claim states that the star of the American neo-western film "The Far Horizons" was born in August and was a professor. To verify this, it is necessary to identify who the star(s) of "The Far Horizons" are and to find biographical information about these actors, specifically their birth month and any academic or professorial roles they may have held. The notes indicate there is no readily available information linking a cast member of this film to being born in August or having been a professor, and unrelated individuals mentioned do not pertain to the film or its cast. Therefore, the query must comprehensively cover the cast of "The Far Horizons," including their birth dates (especially birth month) and academic or teaching history, to confirm or refute the claim.
+
+### query
+Please provide detailed information on the cast of the American neo-western film "The Far Horizons," including the names of the lead actors. For each lead star, provide their date of birth with emphasis on the birth month, and any records or evidence of academic positions or professorial roles they have held in their careers.
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Fred MacMurray', 'The Absent-Minded Professor', 'The Far Horizons'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

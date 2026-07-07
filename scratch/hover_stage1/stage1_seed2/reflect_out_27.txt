@@ -1,0 +1,54 @@
+``` 
+Task Description:
+
+You are provided with the following inputs for each task instance:
+
+- **claim**: a factual or semi-factual statement or assertion involving entities such as persons (e.g., actors, reporters, politicians), events (e.g., sports finals, historical battles), roles (e.g., judges, presidents), locations, dates, or relationships (e.g., jurisdiction, affiliations, competitions).
+- **notes**: a list of sentences or brief passages extracted from various sources relevant to the claim. These notes may confirm, refute, or be neutral toward elements of the claim, and can sometimes contain overlapping or redundant information.
+- **context**: longer background documents, article extracts, or comprehensive explanations relevant to the domain and entities mentioned in the claim. The context often provides detailed expansions or clarifications that enable better verification of claim parts.
+
+Your task is to perform fact-checking and verification of the claim by analyzing the notes and context. From this, generate two outputs:
+
+1. **new_notes**:  
+   - Produce a concise, curated list of factually relevant notes extracted or synthesized from the input `notes` and `context`.  
+   - These notes must focus strictly on key factual evidence pertinent to verifying each component of the claim.  
+   - Include explicit confirmations of named entities, roles, dates, events, places, or relationships mentioned in the claim when supported by evidence.  
+   - When no supporting evidence exists for a particular claim element, explicitly note the absence of such evidence.  
+   - Remove irrelevant, speculative, contradictory-without-basis, or redundant information.  
+   - Merge or summarize overlapping notes to improve clarity and conciseness.  
+   - Represent facts with clear, direct statements and avoid ambiguous or vague language.  
+   - Ensure the notes collectively cover all distinct claim elements wherever evidence exists.
+
+2. **titles**:  
+   - Provide a list of concise, specific document or article titles that best represent the sources or topics underpinning the `new_notes`.  
+   - Titles should enable easy retrieval or reference to the original sources for further verification.  
+   - Avoid generic, overly broad, or peripheral titles; prefer targeted, entity- or topic-specific titles.  
+   - The titles should collectively cover the main entities, events, or relationships discussed in the `new_notes`.  
+
+Additional Domain-Specific Guidance:
+
+- Claims often concern domain-specific knowledge such as: film directors and their works; historical political figures and their terms or actions; athletes, sports events and results; administrative jurisdictions of counties or cities; and relationships between people (e.g., journalistic rivalries).
+- Differentiate between explicit confirmation, refutation, and lack of evidence for each claim component. For example, do not assume a claim part is true just because it is plausible or common knowledge if no evidence is provided.
+- Recognize common factual structures and patterns such as:  
+  - Person A held position X starting in date Y.  
+  - Person B contradicted Person A's claim about Event E.  
+  - County C is usually administered by a city in Province P (used to infer when direct evidence is missing but administrative hierarchy is known).  
+- When multiple notes confirm the same fact, consolidate into a single, precise statement.  
+- When no notes or context explicitly mention an entity or fact (e.g., no details on the flavor of a soft drink or no record of a judge's participation), explicitly state that no evidence is available to support that claim component.
+- Account for subtle distinctions like title differences (President vs. Prime Minister), chronological sequences, or point-of-view differences between entities (e.g., opposing reporters).
+- Avoid including general, tangential background information unrelated to the claim's verification.
+- The reasoning behind note selection should be manifest in the clarity and relevance of the `new_notes`.
+
+Generalizable Strategy:
+
+- Parse the claim and identify its elemental components (entities, dates, events, roles, relationships).  
+- Search input notes and context for explicit evidence supporting, refuting, or ambiguous regarding these elements.  
+- Merge or paraphrase evidence to produce direct, clear statements focused on verification.  
+- Explicitly note absence of evidence if claim elements are not supported.  
+- Select titles that best align with the main factual points extracted, emphasizing specificity and direct relation to the claim elements.  
+
+Outcome:
+
+Your output thus serves as a distilled fact-checking summary that supports or refutes claim components with explicit, clear evidence and guidance for source retrieval.
+
+```

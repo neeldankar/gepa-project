@@ -1,0 +1,170 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given a factual `claim` that may involve multiple interconnected facts or named entities (such as people, films, places, products, organizations, historical dates, or other domain-specific items). Together with the claim, you will receive a set of `notes` consisting of partial background information, known details, plus observations that highlight gaps, ambiguities, or contradictions around the claim’s elements.
+
+Your goal is to generate a focused set of one or more `queries` designed to verify or fact-check each component of the claim. These queries will be used to retrieve relevant evidence or documents (e.g., from Wikipedia or other authoritative sources) to confirm or refute the claim.
+
+Key Requirements and Domain-Specific Heuristics:
+
+1. **Entity Disambiguation:**  
+   - Explicitly identify all named entities mentioned in the claim.  
+   - Always disambiguate entities carefully using relevant descriptors, such as: clarifying a film’s release year, a person’s profession or nationality, distinguishing similarly named entities (e.g., “Solo (Norwegian soft drink)” instead of just “Solo”).  
+   - This avoids confusion and ensures queries retrieve targeted, relevant information.
+
+2. **Decompose Complex Claims into Components:**  
+   - If the claim includes multiple assertions (e.g., an actor acted in multiple movies, a director’s involvement, a formation date of a military unit), break it down into multiple specific queries, each verifying one discrete fact.  
+   - Queries should be connected logically, covering the full scope of the claim without leaving holes.
+
+3. **Target Missing, Ambiguous, or Contradictory Information from the Notes:**  
+   - Use the notes to identify what is already known, what is uncertain or missing, and contradictions that must be resolved.  
+   - Formulate queries that directly address these gaps or conflicting points to retrieve clarifying evidence.  
+   - For example, if it’s unclear whether a publication is a book or a magazine article, or exact formation years of military units, or the nationality of a named individual, queries should reflect these specifics.
+
+4. **Cover Every Fact Embedded in the Claim:**  
+   - Ensure your queries collectively verify all factual statements contained in the claim.  
+   - Avoid partial coverage that might retrieve documents relevant to only some parts of the claim.
+
+5. **Precise and Clear Query Formulation:**  
+   - Queries must be explicit, well-structured factual questions or entity-relationship prompts, suitable for document retrieval.  
+   - Avoid vague, overly broad, or open-ended questions.
+
+6. **Include Relevant Domain Context:**  
+   - When necessary, incorporate domain knowledge or contextual clues into the queries.  
+   - For example, when verifying a film claim, specify the film’s release year or director; for geographical entities, specify if a cemetery is within a park; for military units, specify their formation dates and relation to associated conflicts or films.
+
+Generalizable Strategy:
+
+- Carefully read and parse the claim to extract all named entities and discrete fact assertions.  
+- Examine the provided notes thoroughly to uncover what details are confirmed, missing, ambiguous, or contradictory in relation to the claim.  
+- For each factual element and especially for each gap or contradiction, generate a focused, specific question or search prompt to obtain clear supporting or refuting evidence.  
+- Ensure queries are comprehensive and well-targeted to verify the full claim.  
+- Format the final output strictly as one or more `query` lines, with no additional explanation or commentary.
+
+Example Query Patterns:
+
+- For a film claim:  
+  - “Who starred in [Film Name] ([Year])?”  
+  - “Who directed [Film Name] ([Year])?”  
+  - “Is [Person’s Name] an actor in [Film Name] ([Year])?”  
+
+- For a publication claim:  
+  - “What is the publication format and date of [Title] by [Author]?”  
+  - “Is [Publication Name] a periodical or a book publisher?”  
+
+- For geography or burial claims:  
+  - “Where is [Person] buried?”  
+  - “Is [Cemetery Name] located within [Park or Geographic Area]?”  
+
+- For military or historical claims:  
+  - “When was [Military Unit] formed?”  
+  - “What units are featured in [Film or Book Title]?”  
+
+By following these instructions carefully, you will produce precise queries capable of guiding the retrieval of comprehensive, relevant documents to validate or refute complex factual claims.
+
+Input Format:  
+- `claim`: A factual statement with one or more components involving named entities or facts.  
+- `notes`: A list of strings summarizing current knowledge, including unknowns or contradictions.
+
+Output Format:  
+- `query`: One or more explicit, decomposed, and disambiguated search queries targeting factual verifications for each part of the claim.
+
+Remember:  
+- Queries must be factual questions fit for document retrieval.  
+- Always cover all aspects requiring verification.  
+- Disambiguate entities using descriptive context.  
+- Use notes to identify which facts require particular attention.  
+- Structure queries to maximize retrieval precision and relevance.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+American film director and actor Eli Roth, famous for his role as Donny "The Bear Jew" Donowitz, wrote the 2012 film that was directed by the founder of Soul Temple Records.
+
+### notes
+['Eli Roth co-wrote the 2012 film Aftershock, which was directed by Nicolás López, the founder of Soul Temple Records.', 'Eli Roth played Donny "The Bear Jew" Donowitz in Inglourious Basterds.', 'Eli Roth co-wrote the film Aftershock (2012), directed by Nicolás López, the founder of Soul Temple Records.', "Eli Roth's notable acting role is Donny 'The Bear Jew' Donowitz in Inglourious Basterds.", "Eli Roth is credited as a co-writer on the 2012 film 'Aftershock'.", "'Aftershock' (2012) was directed by Nicolás López, who founded Soul Temple Records.", "Eli Roth's acting role as Donny 'The Bear Jew' Donowitz is from 'Inglourious Basterds' (2009)."]
+
+## Generated Outputs
+### reasoning
+The claim states that Eli Roth, known as an American film director and actor famous for playing Donny "The Bear Jew" Donowitz, wrote a 2012 film that was directed by the founder of Soul Temple Records. To verify this, we must confirm several details: first, Eli Roth’s nationality and profession, and that he acted as Donny Donowitz; second, the existence of a 2012 film written by Eli Roth; third, the director of that film being the founder of Soul Temple Records; and fourth, identify who the founder of Soul Temple Records is, and their connection to directing the 2012 film. Each element requires a separate targeted query for clear verification.
+
+### query
+Who is Eli Roth and what are his professions and notable acting roles?  
+Did Eli Roth write any film released in 2012? If so, what film?  
+Who directed the 2012 film written by Eli Roth?  
+Who is the founder of Soul Temple Records? Has this founder directed any films, specifically the 2012 film written by Eli Roth?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Eli Roth', 'The Man with the Iron Fists']. Documents remaining to be retrieved: ['Soul Temple Records'].
+
+
+
+# Example 2
+## Inputs
+### claim
+This publication is published more often than Bookmarks. Keith Moon was inducted into its Hall of Fame in the early 'eighties.
+
+### notes
+['Keith Moon was inducted into the Rock and Roll Hall of Fame in 1994, not the early 1980s.', 'UK Music Hall of Fame started in 2004, after the early 1980s.', 'No mention of a publication called Bookmarks or its publishing frequency is found in provided context.', "No Hall of Fame related to Keith Moon or a publication's Hall of Fame induction in the 1980s is mentioned.", "Claim includes two assertions: a publication's frequency compared to Bookmarks, and Keith Moon's early 80s induction; both unsupported by provided context.", "No evidence of a publication named 'Bookmarks' or its publishing frequency is found in the context.", 'Keith Moon was inducted into the Rock and Roll Hall of Fame in 1994, not in the early 1980s.', "No Hall of Fame mentioned started before or in the early 1980s relevant to Keith Moon's induction.", "The claim's assertions about publication frequency and early 1980s induction are unsupported and contradicted.", 'Keith Moon was inducted into the Modern Drummer Hall of Fame in 1982, which corresponds with the early 1980s.', 'There is no mention of a publication called Bookmarks or its publishing frequency in the provided context.', 'The claim that this publication is published more often than Bookmarks is unsubstantiated due to missing information on Bookmarks and the publication in question.', 'The early 1980s induction refers specifically to the Modern Drummer Hall of Fame, not any other Hall of Fame.', "No information in the context connects Keith Moon's Hall of Fame induction to any publication with a known publishing frequency."]
+
+## Generated Outputs
+### reasoning
+The claim involves two main verifiable assertions: 
+1. The frequency of publication of "This publication" compared to another publication called "Bookmarks." The specific name of "This publication" is not given, so it is necessary to clarify the identity of "This publication" first before comparing its publication frequency with "Bookmarks." 
+2. Whether Keith Moon, the drummer of the rock band The Who, was inducted into the Hall of Fame of "This publication" in the early 1980s.
+
+To verify both assertions, the following information is needed:
+- What "This publication" refers to (name and details).
+- The publishing frequency of "This publication" and of "Bookmarks."
+- Whether Keith Moon was inducted into the Hall of Fame of "This publication" and the timing of such an induction.
+
+Thus, queries should clarify the identity of "This publication," confirm its publication frequency versus Bookmarks, and verify the details of Keith Moon's Hall of Fame induction related to "This publication."
+
+### query
+What is the name and publication frequency of "This publication" mentioned in relation to "Bookmarks"?  
+What is the publication frequency of the publication "Bookmarks"?  
+Was Keith Moon inducted into the Hall of Fame of "This publication," and if so, in which year was he inducted?  
+What Hall of Fame is associated with "This publication"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Keith Moon']. Documents remaining to be retrieved: ['Bookmarks (magazine)', 'Modern Drummer'].
+
+
+
+# Example 3
+## Inputs
+### claim
+"Experimenter" stars the actress who won critical acclaim with her appearance as Johnny Depp in Tim Burton's "Beetlejuice". The producer of "Experimenter" also produced Man Camp.
+
+### notes
+["Winona Ryder won critical acclaim for her role as Lydia Deetz in Tim Burton's Beetlejuice.", 'Johnny Depp is an actor who starred in various Tim Burton films but was not in Beetlejuice.', 'Michael Keaton starred as Beetlejuice but is an actor, not an actress.', 'No information found linking the producer of Experimenter to Man Camp.', "Winona Ryder won critical acclaim for her role as Lydia Deetz in Tim Burton's Beetlejuice, not as Johnny Depp.", "Johnny Depp starred in Tim Burton's Edward Scissorhands, not Beetlejuice.", 'There is no available information connecting the producer of Experimenter with the production of Man Camp.', "Johnny Depp is an actor, not a character, and did not appear in 'Beetlejuice'.", "Winona Ryder won critical acclaim for her role as Lydia Deetz in 'Beetlejuice', not for playing Johnny Depp.", "No actress in 'Beetlejuice' portrayed Johnny Depp.", "No evidence links the producer of 'Experimenter' with the production of 'Man Camp'."]
+
+## Generated Outputs
+### reasoning
+The claim makes two assertions: (1) The movie "Experimenter" stars an actress who gained critical acclaim for portraying Johnny Depp's character in Tim Burton's "Beetlejuice." This is ambiguous since Johnny Depp is an actor, and in "Beetlejuice," he portrayed a character named Beetlejuice (Betelgeuse). The claim likely confuses roles or actors. We need to clarify the identity of the actress starring in "Experimenter" and whether she portrayed a character related to Johnny Depp in "Beetlejuice," or if there's an error in the claim. (2) The producer of "Experimenter" also produced "Man Camp." We need to identify the producer of "Experimenter" and check if the same producer worked on "Man Camp." Therefore, multiple queries are needed to verify the starring actress in "Experimenter," her role relating to Johnny Depp or "Beetlejuice," and the producer’s filmography including "Man Camp."
+
+### query
+Who starred in the film "Experimenter" (year of release)?  
+Did any actress in "Experimenter" portray a character related to Johnny Depp or appear in Tim Burton's "Beetlejuice" (1988)?  
+Who is the producer of "Experimenter" (film)?  
+Did the producer of "Experimenter" also produce the film "Man Camp"?  
+What role did Johnny Depp play in Tim Burton's "Beetlejuice"?  
+What actresses were critically acclaimed for roles related to Johnny Depp or "Beetlejuice"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Winona Ryder']. Documents remaining to be retrieved: ['Man Camp', 'Uri Singer'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

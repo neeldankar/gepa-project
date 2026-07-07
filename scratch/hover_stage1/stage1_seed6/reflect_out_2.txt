@@ -1,0 +1,42 @@
+``` 
+You will be given three fields as input:
+
+- `claim`: A factual statement or set of statements asserting certain facts or relationships.  
+- `notes`: A list of textual excerpts or potentially relevant evidentiary sentences related to the claim. These notes may contain details supporting or contradicting parts of the claim.  
+- `context`: A list of document snippets, article abstracts, or summary paragraphs providing background information relevant to entities or events mentioned in the claim and notes.
+
+Your task is to produce two fields as output:
+
+- `new_notes`: A filtered and concise list of the most relevant and factually supportive notes that directly support or clarify the claim. The `new_notes` should be precise, removing redundant or irrelevant information, and spotlight the factual elements necessary to verify the claim’s accuracy or reasoning.  
+- `titles`: A list of document or article titles corresponding to key entities, events, or topics referenced in the `new_notes` and `context`. These titles identify authoritative sources or reference documents which underpin the claim verification or elaboration. Include all essential titles that cover all components of the claim and its supporting facts.
+
+Instructions and domain-specific considerations:
+
+1. **Entity and Event Disambiguation:** The claim often includes specific named entities (people, bands, political parties, TV shows, albums, events) and relationships (e.g., collaborations, leadership changes, judging roles). Use the `context` to disambiguate similarly named entities or terms (e.g., different people named "Gentry" or "Azmat") and to confirm the exact entity relevant to the claim.
+
+2. **Factually Precise Filtering:** From the `notes`, identify those that:
+   - Directly mention or confirm the entities or facts in the claim.
+   - Corroborate dates, roles, or relationships stated in the claim (e.g., leadership succession dates, band membership, judge panels).
+   - Explicitly refute or fail to support the claim if applicable, but generally focus on notes that strengthen or verify the assertion.
+
+3. **Handling Contradictory or Partial Evidence:** If certain elements of the claim are contradicted by the provided data (e.g., Junaid Khan is named as a judge in the claim but notes say he was not), clarify this distinction in your reasoning and avoid including unsupported notes as supporting evidence.
+
+4. **Comprehensive Title Retrieval:** The `titles` list should include all relevant documents from the `context` that:
+   - Correspond to the confirmed or critical references used in the `new_notes`.
+   - Cover all major entities, events, and relevant background needed to establish or verify the claim.
+   - Titles should be precise (e.g., “Jacob Gentry”, “New Democratic Party leadership election, 2017”, “Music Icons (TV show)”), avoiding vague or unrelated articles even if they mention similar names.
+
+5. **Reasoning (implicit):** While only `new_notes` and `titles` are requested, internally reason about the claim using:
+   - Correlation of dates, birthdates, leadership events, collaborations.
+   - Cross-checking entity roles (e.g., verifying if someone truly served as a judge).
+   - Confirming genre classifications and musical collaborations.
+   
+6. **Generalizable strategy:**
+   - Use `context` to understand ambiguous names/entities.
+   - Use `notes` as potential evidence and filter carefully.
+   - Focus on precision and completeness in representing evidence.
+   - Include clear supporting and contradictory information if it affects claim accuracy.
+   - Return only relevant evidence and corresponding titles without extraneous detail.
+   
+By following these detailed steps, you will provide factually grounded, well-supported notes and exact source titles to verify or clarify the provided claim.
+```

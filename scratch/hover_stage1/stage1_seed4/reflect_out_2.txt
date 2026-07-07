@@ -1,0 +1,58 @@
+``` 
+Task Description:
+
+You will be given three input fields: `claim`, `notes`, and `context`. Your task is to analyze and synthesize information from these inputs and produce two new output fields: `new_notes` and `titles`.
+
+Inputs:
+
+- `claim`: A factual or composite statement that requires verification or clarification based on available information.
+  
+- `notes`: A list of extracted or pre-processed factoids, partial evidence, or observation statements pertinent to the claim and derived from the `context`. These notes may include affirmations, negations, uncertainties, or related side facts.
+
+- `context`: A list of textual document excerpts, usually encyclopedic or knowledge base-style, that provide the factual background about entities, events, people, and subjects relevant to the claim.
+
+Output Requirements:
+
+1. `new_notes`:
+   - This should be a refined and concise subset of statements that directly support or refute components of the claim.
+   - Select and curate notes from the input `notes` that are factually relevant and supported by the `context`.
+   - Where relevant, clarify ambiguities in the claim by referencing similar but distinct names, dates, or entities found in `context` to distinguish or correct the claim.
+   - Avoid redundancy; summarize and combine closely related pieces of evidence into succinct points.
+   - Include necessary domain-specific information that underpins the claim verification, such as:
+       - Award names and winners (e.g., Nobel Prize in Literature laureates and their screenplay involvement).
+       - Names, dates, and nature of events (e.g., sports bowl games, their sponsors, years, and participating teams).
+       - Album titles, release years, artist biographical details, and the relation of songs to albums.
+   - Use cautious language when evidence is partial or indirect ("likely", "possible confusion", "no evidence that...").
+
+2. `titles`:
+   - Compile a list of the most relevant document titles from the `context` that underpin the evidence cited in `new_notes`.
+   - Include titles explicitly named in evidence, as well as closely relevant entities that explain or contextualize the claim.
+   - Prioritize titles that correspond to key persons, events, entities, or specialized subjects central to the claim.
+   - Ensure coverage of important related entities mentioned in `notes` but missing from the initially selected set (e.g., writers, organizations, albums).
+
+Reasoning Strategy (implicit in output generation):
+
+- Break down the claim into discrete factual assertions.
+- Search for exact or closely related matches in `context` document titles and content.
+- Cross-validate statements in `notes` against the `context`.
+- Identify and resolve potential ambiguities, homonyms, or temporal mismatches.
+- Use domain expertise about specific fields (e.g., literature, music, sports) to understand relevant entities and terminologies:
+    - For literature: connect awards, laureates, and screenplay authorship.
+    - For sports: connect seasons, teams, sponsorships, game dates.
+    - For music: link artists with albums, covers, and original song releases.
+- Extract and synthesize only the most pertinent and directly relevant evidence for the final `new_notes`.
+- Provide representative and comprehensive `titles` that would allow a downstream retriever or reader to locate the primary sources of facts.
+
+Additional Domain-specific Details:
+
+- Nobel Prizes: Recognize laureates by name and link them with associated works (screenplays, novels).
+- Film and Screenplay: Be mindful that similarly named films or works (e.g., "The Night of the Hunter" vs. "The Night Hunter") may exist, and baseline corrections are necessary.
+- College football season conventions: Bowls played in January sometimes conclude the previous year’s season.
+- Sponsorships in sports bowls: Sponsors may be companies based in specific cities and these sponsorships may last multiple years.
+- Music discographies: Albums may be studio, live, or compilation albums; covers of songs have release years different from originals.
+- Provide exact album or event names when possible to disambiguate.
+
+Summary:
+
+Your core function is to curate a precise subset of notes that accurately and confidently address the claim using the context as knowledge, while providing the key supporting document titles. This requires domain-aware filtering, correction of ambiguous claims, and inclusion of only well-supported and relevant facts. The output should facilitate clear verification and retrieval of the underlying evidence.  
+```

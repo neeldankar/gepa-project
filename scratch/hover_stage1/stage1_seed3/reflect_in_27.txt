@@ -1,0 +1,103 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given two input fields:  
+- `claim`: a statement asserting certain facts or relationships about entities, including genre classifications, character roles, temporal orderings, or member counts of groups/bands.  
+- `notes`: a list of factual sentences or extracted information pieces relevant to the claim, often providing partial evidence or clarifications about entities, their attributes, and relationships.
+
+Your task is to produce a single output field:  
+- `query`: a clear, concise, and targeted question (or set of closely related questions) designed to retrieve the missing or confirming factual information needed to verify or refute the `claim`.  
+
+The `query` should focus on:  
+- Confirming exact classifications or categories (e.g., movie genres, band genres).  
+- Clarifying membership counts or comparisons between groups.  
+- Establishing temporal relations or event sequences (e.g., release dates).  
+- Disambiguating entities with similar names or verifying the presence or role of a character or individual in a given work.  
+
+Strategies and considerations for generating the `query`:  
+1. Analyze the `claim` carefully to identify key factual points or comparisons that require verification.  
+2. Leverage the `notes` to understand which aspects of the claim are supported or contradicted, and which remain uncertain or missing.  
+3. Formulate the `query` to explicitly seek the missing information or clarification necessary to decide the truth of the claim. Avoid overly broad or vague queries—focus on the minimal but sufficient question(s) to confirm or refute the claim.  
+4. When the claim involves multiple entities or facts, and the notes partially cover these, include all relevant verification points in the `query`.  
+5. Maintain the specificity of entities by including relevant context in the `query` (e.g., include years for movies, full names for bands or characters).  
+
+Domain-specific notes that might not be explicitly known by the assistant but are useful for query formulation:  
+- Movie genre classifications can be nuanced, with some movies emphasizing family, comedy, adventure, or action genres to varying degrees.  
+- Voice actor roles often need precise linking to specific film releases and characters.  
+- Band classifications can vary between musical genres, and member counts are important quantitative facts for comparison claims.  
+- Temporal comparisons often hinge on release dates of movies or events and require clear references to those dates in queries.  
+- Entity disambiguation can require specifying the version or year of a movie or release to avoid confusion.  
+
+The ultimate goal is to produce a `query` that, when used to retrieve or check factual documents, will provide the exact information needed to confirm or deny the `claim`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+English actor Gary Oldman starred in the 1995 american romantic drama film, made by Cinergi Pictures, 
+alongside Demi Moore and Meryl Streep.
+
+### notes
+["Gary Oldman and Demi Moore starred in the 1995 American romantic drama film 'The Scarlet Letter'.", "'The Scarlet Letter' (1995) did not feature Meryl Streep as a cast member.", "Meryl Streep has starred in numerous romantic drama films but not in 'The Scarlet Letter'.", "No evidence from the provided context confirms Cinergi Pictures as the producer of 'The Scarlet Letter'.", "Gary Oldman and Demi Moore starred in the 1995 American romantic drama film 'The Scarlet Letter'.", "'The Scarlet Letter' did not feature Meryl Streep as a cast member.", "There is no evidence to confirm that Cinergi Pictures produced 'The Scarlet Letter'.", "Gary Oldman and Demi Moore starred in the 1995 American romantic drama film 'The Scarlet Letter'.", "'The Scarlet Letter' was produced by Cinergi Pictures.", "Meryl Streep did not appear in the 1995 film 'The Scarlet Letter'."]
+
+## Generated Outputs
+### reasoning
+The claim states that Gary Oldman starred in the 1995 American romantic drama film made by Cinergi Pictures alongside Demi Moore and Meryl Streep. The notes confirm Gary Oldman and Demi Moore starred in the 1995 film "The Scarlet Letter," which is a romantic drama. However, the notes explicitly state that Meryl Streep did not appear in that film. Additionally, there is no evidence from the notes verifying that Cinergi Pictures produced "The Scarlet Letter." Therefore, to confirm or refute the claim, it is necessary to verify if Meryl Streep was indeed part of the cast and whether Cinergi Pictures produced this film.
+
+### query
+Did Meryl Streep star in the 1995 American romantic drama film "The Scarlet Letter"? Was "The Scarlet Letter" (1995) produced by Cinergi Pictures?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Cinergi Pictures', 'The Scarlet Letter (1995 film)']. Documents remaining to be retrieved: ['Gary Oldman'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The infantry regiment featured in the 2006 film directed by Lane Nishikawa began in 1944.
+
+### notes
+['The 2006 film "Only the Brave" directed by Lane Nishikawa depicts the 100th Infantry Battalion/442nd Regimental Combat Team, a segregated Japanese American World War II unit.', 'The 100th Infantry Battalion/442nd Regimental Combat Team was active before 1944, notably formed in 1943 during World War II.', "The film's story focuses on the 1944 rescue of the Lost Battalion, but this event does not indicate the regiment began in 1944.", 'No evidence supports that the infantry regiment featured in the film started in 1944; it was established earlier.', "The 2006 film 'Only the Brave' directed by Lane Nishikawa depicts the 100th Infantry Battalion/442nd Regimental Combat Team, a segregated Japanese American World War II fighting unit.", 'The 100th Infantry Battalion was formed in 1942 and the 442nd Regimental Combat Team in 1943, both before 1944.', 'The film focuses on the 1944 rescue of the Lost Battalion, which is a battle event, not the starting point of the regiment.', 'There is no evidence that the infantry regiment featured in the film began in 1944; it was established earlier during World War II.', "The 2006 film 'Only the Brave' directed by Lane Nishikawa depicts the 100th Infantry Battalion/442nd Regimental Combat Team, a segregated Japanese American World War II unit.", 'The 100th Infantry Battalion was formed in 1942, and the 442nd Regimental Combat Team was formed in 1943, both before 1944.', "The film centers on the 1944 rescue of the Lost Battalion, a significant battle event, not the regiment's founding date.", 'There is no evidence that the infantry regiment featured in the film began in 1944; it was established earlier during World War II.']
+
+## Generated Outputs
+### reasoning
+The claim involves two key facts: the infantry regiment being featured in a 2006 film directed by Lane Nishikawa, and the founding or beginning year of that infantry regiment being 1944. To verify this claim, it is necessary to confirm the subject regiment featured in the 2006 film by Lane Nishikawa and then check the historical founding date of that regiment.
+
+### query
+What infantry regiment is featured in the 2006 film directed by Lane Nishikawa, and when was this infantry regiment founded or established?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['442nd Infantry Regiment (United States)', 'Lane Nishikawa', 'Only the Brave (2006 film)']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+Singers Kim Tae-yeon and the Irish artist who released the EP "The First Collage", have both appeared in group bands.
+
+### notes
+["Kim Tae-yeon debuted as a member of the South Korean girl group Girls' Generation in 2007.", "Girls' Generation is a successful group band in the Asian music scene.", "Hazel Kaneswaran is an Irish recording artist, but there is no evidence that she released an EP titled 'The First Collage' or that she appeared in a group band.", "Kim Tae-yeon debuted as a member of the South Korean girl group Girls' Generation in 2007.", "Girls' Generation is a successful group band in the Asian music scene.", 'There is no verifiable evidence that the Irish artist who released the EP "The First Collage" appeared in a group band or that the EP exists under that artist\'s name.', "Kim Tae-yeon debuted in 2007 as a member of the South Korean girl group Girls' Generation, a successful group band.", "There is no verifiable evidence that the Irish artist who released the EP 'The First Collage' exists or that such an EP was released by an Irish group band member.", "No sources confirm that Hazel Kaneswaran or any Irish artist associated with 'The First Collage' appeared in a group band."]
+
+## Generated Outputs
+### reasoning
+The claim states that both Kim Tae-yeon and the Irish artist who released the EP "The First Collage" have appeared in group bands. The notes confirm that Kim Tae-yeon debuted as a member of the girl group Girls' Generation, which validates the first part of the claim. However, there is no evidence in the notes that the Irish artist who released the EP "The First Collage" exists, nor that this artist appeared in a group band. It is also unclear who exactly this Irish artist is, as "Hazel Kaneswaran" is mentioned but not connected to the EP "The First Collage." To verify the second part of the claim, it is necessary to confirm: 1) the identity of the Irish artist who released the EP "The First Collage", 2) whether this EP exists and is attributed to this artist, and 3) whether this artist has appeared in any group band.
+
+### query
+Who is the Irish artist that released the EP titled "The First Collage"? Is there verifiable information confirming the release of this EP under their name? Has this Irish artist appeared as a member of any group band?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Kim Tae-yeon']. Documents remaining to be retrieved: ['The First Collage', 'Yang Yo-seob'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

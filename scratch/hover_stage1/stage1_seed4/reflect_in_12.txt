@@ -1,0 +1,119 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields: `claim` and `notes`. Your task is to produce a new field `query`.
+
+- The `claim` is a complex factual statement or set of statements that asserts certain relationships, events, or facts involving multiple entities.
+- The `notes` are supporting or refuting fragments of factual information, background details, and evidence relevant to assessing or verifying the `claim`.
+
+Your goal is to formulate an information retrieval or database query (`query`) that, if executed, would retrieve all supporting documents or data needed to verify every part of the claim accurately. The query should be specifically designed to capture all key entities, relationships, and factual aspects mentioned or implied in the given claim.
+
+Key Points and Strategy:
+1. **Identify factual components in the claim**  
+   Parse the claim to identify:
+   - Key entities (people, organizations, films, events, teams, places, dates, roles, etc.)
+   - Relationships between entities (e.g., "starred with", "founded in", "managed", "directed by")
+   - Attributes or predicates that need verification (e.g., professional overlap, filmography, team foundation dates, managerial roles)
+
+2. **Leverage evidence in `notes`**  
+   The `notes` contain verified or likely verified facts that relate to the entities and claims. Use these to guide your understanding of which pieces of information are central and what queries could retrieve documents covering those pieces.
+
+3. **Formulate a comprehensive yet precise query**  
+   The query should:  
+   - Request information that covers all key entities involved  
+   - Cover all relationships or assertions made  
+   - Be sufficiently detailed to guide retrieval of all necessary documents, ensuring that none of the claim’s critical assertions are left unverifiable
+
+4. **Generalizable querying approach**  
+   - For claims involving relationships or overlap between two or more persons or entities, query their respective profiles, roles, and overlaps (e.g., shared professions, co-appearances)  
+   - For claims involving filmography or works, query casts, co-stars, directors and release details for each relevant film  
+   - For claims involving teams or organizations, query founding dates, player rosters during specified periods, and managerial histories  
+   - For claims involving timelines, query historical data for proper date and role alignment  
+
+5. **Prioritize retrieval of documents for all entities referenced**  
+   The goal is to retrieve a full set of relevant documents that together confirm or refute the claim. The query should explicitly try to capture all gold documents identified in notes or feedback.
+
+Example considerations from provided cases:
+- When claim involves whether two professionals share a profession, the query should seek explicit mentions of professions for both individuals.
+- When claim involves people starring together in films and their participation in other films and directors, the query should request casts of the films and director credits.
+- When claim involves sports teams and individuals across specific time periods, the query should request founding dates, rosters by years, managerial records, and affiliations with any teams.
+
+Output Format:
+- Output only the `query` text, formatted as a natural language request or series of requests designed to retrieve all relevant and complete supporting information for verifying the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The platform, for which the fixed shooter Proof of Destruction was developed, and Prológica CP-400 were not from the same country.
+
+### notes
+['Prológica CP-400 was produced by the Brazilian company Prológica, making it a platform from Brazil.', 'There is no evidence that the fixed shooter game Proof of Destruction was developed for a Brazilian platform.', 'Prológica CP-400 was produced by the Brazilian company Prológica, making it a platform from Brazil.', 'There is no evidence that the fixed shooter game Proof of Destruction was developed for a Brazilian platform.', 'Prológica CP-400 was produced by the Brazilian company Prológica, making it a platform from Brazil.', 'There is no evidence that the fixed shooter game Proof of Destruction was developed for a Brazilian platform.']
+
+## Generated Outputs
+### reasoning
+The claim is that the platform for which the fixed shooter game Proof of Destruction was developed and the Prológica CP-400 are from different countries. The notes confirm that the Prológica CP-400 was produced by a Brazilian company and thus is Brazilian. However, it is stated that there is no evidence that Proof of Destruction was developed for a Brazilian platform, implying it was developed for a platform from a different country. To verify the claim fully, it is necessary to identify the platform(s) for which Proof of Destruction was developed, including their country of origin, and to confirm the country of origin of the Prológica CP-400. This involves confirming the platform origins to show that they are not the same country.
+
+### query
+Retrieve information on the platform(s) for which the fixed shooter game Proof of Destruction was developed, including the country or countries of origin of those platforms. Also, retrieve details about the Prológica CP-400 platform, specifically its country of origin. Verify and compare the countries of origin for both the platform(s) associated with Proof of Destruction and the Prológica CP-400 to determine if they are from different countries.
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Prológica CP-400']. Documents remaining to be retrieved: ['Commodore 16', 'Proof of Destruction'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The star of the 2012 film  Fairhaven, appeared in Studio 60 on the Sunset Strip in 2007 and American Horror Story in 2014.
+
+### notes
+['Sarah Paulson appeared in the NBC comedy-drama series Studio 60 on the Sunset Strip from 2006 to 2007.', 'Sarah Paulson is known for her roles in American Horror Story starting from 2011 onwards.', 'There is no information in the provided context identifying the star of the 2012 film Fairhaven or linking that person to Studio 60 on the Sunset Strip or American Horror Story.', 'No other actors listed are known to appear in both Studio 60 on the Sunset Strip and American Horror Story or are associated with Fairhaven.', 'Sarah Paulson appeared in Studio 60 on the Sunset Strip from 2006 to 2007 and has been known for roles in American Horror Story since 2011.', 'There is no information identifying the star of the 2012 film Fairhaven or associating them with Studio 60 or American Horror Story.', 'No actors are found who appear in both Studio 60 on the Sunset Strip and American Horror Story and are also linked to Fairhaven.', 'Sarah Paulson appeared in the NBC comedy-drama series Studio 60 on the Sunset Strip from 2006 to 2007.', 'Sarah Paulson has been known for roles in American Horror Story starting from 2011 onwards.', 'There is no information identifying the star of the 2012 film Fairhaven or associating them with Studio 60 on the Sunset Strip or American Horror Story.', 'No actors appear in both Studio 60 on the Sunset Strip and American Horror Story and are also linked to Fairhaven.']
+
+## Generated Outputs
+### reasoning
+The claim involves verifying the identity of the star of the 2012 film Fairhaven and then confirming that this person appeared in two other TV shows: Studio 60 on the Sunset Strip in 2007 and American Horror Story in 2014. To verify this claim, I need to find: (1) the lead actor in the film Fairhaven (2012), and (2) the acting credits of this actor, specifically their involvement in Studio 60 on the Sunset Strip (2007) and American Horror Story (2014). Since there are multiple actors in each project, the critical link is to identify the star of Fairhaven and confirm their TV appearances in those shows during the specified years.
+
+### query
+Retrieve the cast list with leading roles of the 2012 film Fairhaven and identify its star actor. Then retrieve the acting credits of this actor, including their roles or appearances in Studio 60 on the Sunset Strip around 2007 and American Horror Story around 2014.
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Sarah Paulson']. Documents remaining to be retrieved: ['Blood Bath (American Horror Story)', 'Fairhaven (film)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Sewanhaka Central High School District is composed of Sewanhaka High School, Concordia Junior-Senior High School, New Hyde Park Memorial High School, Floral Park Memorial High School, and one other. That other school serves students in the census-designated place of Nassau County in New York.
+
+### notes
+['The Sewanhaka Central High School District is located in western Nassau County on Long Island, New York.', 'The district is composed of five high schools: Sewanhaka High School, Elmont Memorial High School, New Hyde Park Memorial High School, Floral Park Memorial High School, and H. Frank Carey Junior-Senior High School.', 'Concordia Junior-Senior High School is not part of the Sewanhaka Central High School District.', 'Elmont Memorial High School, one of the five schools in the district, serves students in Nassau County.', 'The Sewanhaka Central High School District is composed of five high schools: Sewanhaka High School, Elmont Memorial High School, New Hyde Park Memorial High School, Floral Park Memorial High School, and H. Frank Carey Junior-Senior High School.', 'Concordia Junior-Senior High School is not part of the Sewanhaka Central High School District.', 'Elmont Memorial High School serves students in Nassau County and is one of the five schools in the Sewanhaka Central High School District.', 'The Sewanhaka Central High School District is composed of five high schools: Sewanhaka High School, Elmont Memorial High School, New Hyde Park Memorial High School, Floral Park Memorial High School, and H. Frank Carey Junior-Senior High School.', 'Concordia Junior-Senior High School is not part of the Sewanhaka Central High School District and is located in Kansas.', 'Elmont Memorial High School serves students in Nassau County, New York, and is one of the five schools in the Sewanhaka Central High School District.']
+
+## Generated Outputs
+### reasoning
+The claim states that the Sewanhaka Central High School District consists of Sewanhaka High School, Concordia Junior-Senior High School, New Hyde Park Memorial High School, Floral Park Memorial High School, and one other school that serves students in a Nassau County census-designated place in New York. According to the notes:
+- The district includes five high schools.
+- Concordia Junior-Senior High School is explicitly noted as not part of the district.
+- The actual schools comprising the district are Sewanhaka High School, Elmont Memorial High School, New Hyde Park Memorial High School, Floral Park Memorial High School, and H. Frank Carey Junior-Senior High School.
+- Elmont Memorial High School serves students in Nassau County.
+Therefore, the claim incorrectly includes Concordia Junior-Senior High School and misses other actual members. The "other" school serving students in Nassau County from a census-designated place (Elmont Memorial) needs to be verified as part of the district, while Concordia Junior-Senior High School must be excluded.
+
+### query
+Retrieve official and authoritative information on the Sewanhaka Central High School District, specifically listing all member high schools. Confirm whether Concordia Junior-Senior High School is part of the district. Provide enrollment or service areas of each school to verify which schools serve students in Nassau County census-designated places, including details about Elmont Memorial High School and H. Frank Carey Junior-Senior High School. Include school district boundary maps or descriptions to clarify the composition and geographic service areas of the district.
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Sewanhaka Central High School District']. Documents remaining to be retrieved: ['Garden City South, New York', 'H. Frank Carey Junior-Senior High School'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

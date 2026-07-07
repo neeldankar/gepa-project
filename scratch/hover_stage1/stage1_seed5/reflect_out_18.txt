@@ -1,0 +1,82 @@
+```  
+Task Overview:  
+
+You will be given:  
+- A factual **claim** that may involve multiple interconnected components or named entities from various domains (e.g., people, films, places, products, organizations, events, historical details).  
+- A set of **notes** that provide partial background information, known facts, or observations highlighting ambiguities, contradictions, or missing information regarding elements in the claim.  
+
+Your primary goal is to generate one or more **precise, focused queries** that enable efficient retrieval of relevant authoritative evidence (such as Wikipedia pages or other credible sources) to verify or fact-check each factual component of the claim.  
+
+---
+
+Detailed Instructions and Domain-Specific Heuristics:
+
+1. **Entity Identification and Disambiguation**  
+   - Carefully extract all **named entities** mentioned in the claim, including persons, places, films, TV shows, companies, military units, venues, events, etc.  
+   - For each entity, disambiguate by adding relevant descriptors to avoid confusion with similar or identically named entities. Examples:  
+     - For people: add profession or nationality (e.g., “James Callis (English actor)”)  
+     - For films or TV shows: add release year(s), or format (e.g., “Battlestar Galactica (2004 TV series)”)  
+     - For locations: specify administrative regions or geographic qualifiers (e.g., “Planet Hollywood Resort & Casino, Las Vegas, Nevada”)  
+     - For products or organizations: clarify type or domain (e.g., “Eurobodalla Shire council (local government area in New South Wales)”)  
+   - This ensures queries target precise information and avoids retrieving irrelevant data caused by name collisions.
+
+2. **Decompose Complex Claims into Multiple Queries**  
+   - Break the claim down into **discrete factual statements** or assertions. For example, if the claim involves:  
+     - An actor playing a character in a particular show, and  
+     - Premiere dates of that or other shows, and  
+     - Corporate ownership of venues involved,  
+     then formulate separate queries to verify each distinct fact.  
+   - Ensure the full scope of the claim is covered without overlap or omission.
+
+3. **Use Notes to Identify Gaps, Contradictions, or Ambiguities**  
+   - Analyze the notes to identify what is:  
+     - Already confirmed,  
+     - Missing or unspecified,  
+     - Contradicted or ambiguous.  
+   - Direct queries specifically at resolving these points that require verification to support or refute the claim.  
+   - For instance, if it is unclear whether a date belongs to one TV show or another, generate queries to clarify premiere dates for each relevant series distinctly.
+
+4. **Cover Every Fact Embedded in the Claim**  
+   - Confirm that your set of queries addresses **all** factual assertions individually and collectively to avoid partial verification.  
+   - For example, if a claim includes a venue location, show performance details, and ownership, ensure queries cover:  
+     - Venue location,  
+     - Residency show details,  
+     - Property ownership.
+
+5. **Formulate Queries as Explicit, Well-Structured Factual Questions**  
+   - Each query should be a clear, specific factual question or entity-relationship prompt suited for retrieving focused documents.  
+   - Avoid vague, open-ended, or broad keyword-like queries.  
+   - Examples:  
+     - “Who played [Character] in [TV Show] ([Year])?”  
+     - “When did [TV Show] ([Year]) premiere?”  
+     - “Is [Venue Name] located within [Hotel Name]?”  
+     - “Who owns [Casino Name] in [City, State]?”
+
+6. **Incorporate Domain and Contextual Information**  
+   - Embed relevant domain context or clarifying details to improve precision. For example:  
+     - For films or TV shows, specify release years, character names, or actor roles.  
+     - For geographic entities, specify location hierarchy (city, state, region).  
+     - For military units, specify formation dates, associated conflicts, or appearances in films to disambiguate.  
+
+---
+
+Generalizable Strategy Recap:  
+- Parse and dissect the claim into discrete facts and identify all relevant named entities.  
+- Cross-reference notes for what is known, unknown, or contradictory.  
+- Generate a complete set of precise, disambiguated factual queries to verify or disprove each fact.  
+- Structure queries explicitly to be suitable for immediate use in document retrieval pipelines.  
+- Maintain coverage, clarity, and specificity across all fact components.
+
+---
+
+Input Format:  
+- `claim`: A string containing one or more factual statements involving named entities.  
+- `notes`: A list of background knowledge strings summarizing known facts, gaps, or contradictions.
+
+Output Format:  
+- One or more lines beginning with `query:`, each containing a precise factual question formed as per the above guidelines.
+
+---
+
+This task requires deep attention to detail in fact decomposition, careful use of domain knowledge for disambiguation, and crisp query formulation to maximize precision and relevance in evidence retrieval.  
+```

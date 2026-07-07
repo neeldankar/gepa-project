@@ -1,0 +1,60 @@
+``` 
+Task Description:
+
+You will be given two fields as input:
+- `claim`: A factual statement or assertion that may contain multiple components or named entities (people, places, events, works of art, etc.).
+- `notes`: A list of textual snippets, often factual statements or partial information relevant to the claim, which may include biographical details, dates, relationships between entities, and other specific facts. These notes often contain key named entities, dates, or connections needed to verify or decompose the claim.
+
+Your goal is to produce one output field:
+- `query`: A well-structured, explicit, and focused set of natural language questions or a compound question designed to retrieve key factual documents or knowledge needed to verify the components of the `claim`. The query should reflect the critical factual elements and relationships embodied in the claim, broken down into granular information needs.
+
+Detailed Guidance and Domain-Specific Nuances:
+
+1. The primary objective is to craft queries that enable retrieving all relevant documents or knowledge snippets for verifying the claim’s truthfulness. This usually involves identifying and linking:
+   - Named entities mentioned in the claim (people, films, roles, awards, teams, dates).
+   - Relationships between these entities (e.g., "actor in a film," "director of a movie," "award nomination for a role," "birth dates and chronological order," "historic firsts in a domain").
+   - Temporal or causal relationships underlying the claim (e.g., who was born first, who coached whom, who received awards for what).
+
+2. The query should address multiple aspects if the claim requires verifying multiple facts or relations. For instance:
+   - When the claim compares birthdates or timelines, the query should request birthdates or event dates for named entities.
+   - When the claim refers to achievements linked to roles (e.g., Golden Globe nominations for specific roles), the query should focus on the actor/actress, the role, and the award tied to that role.
+   - When the claim references ethnic or national origins or historic ‘firsts’ (e.g., first Native American medalist), the query should explicitly surface the entities and the historic or demographic claims made.
+
+3. Use precise, clearly phrased, and complete natural language questions that reflect the logical steps a verifier would take. Avoid vague or overly broad queries that could retrieve irrelevant documents.
+
+4. The query should:
+   - Explicitly name the entities (e.g., full names of people, precise film titles).
+   - Include the relationships or comparisons stated in the claim.
+   - If necessary, break down complex claims into multiple sub-questions within a single query statement, ensuring all required information to verify the claim can be retrieved.
+
+5. Background knowledge that may be important to encode in the query or reasoning includes (but is not limited to):
+   - Birth and death dates of historical or public figures.
+   - Precise directorial or acting credits to films and TV shows, including ethnicity or nationality when relevant.
+   - Award nominations and the specific roles associated with those nominations.
+   - Historical “firsts” or unique achievements tied to persons or groups.
+   - Roles or quotes attributed to persons, along with associated teams or organizations (e.g., coaches and players of sports teams).
+
+6. The `notes` are often repetitive or include contradictory cues; rely on synthesizing the factual essence rather than reproducing uncertainties or redundancies. The `query` should focus on extracting the key facts relevant to verifying the claim fully.
+
+7. The expected reasoning approach behind the query is:
+   - Identify what facts must be ascertained to support or refute the claim.
+   - Identify the entities involved.
+   - Express queries to retrieve evidence about those entities and facts.
+   - Maintain completeness so that no critical fact is omitted which could prevent a full verification.
+
+Example pattern:
+For a claim:  
+`"Person A was born before Person B, the director of Movie C."`  
+A fitting query would be:  
+`"What are the birthdates of Person A and the director of Movie C? Who is the director of Movie C, and what is their nationality?"`
+
+For a claim about awards or roles:  
+`"The actor starring in TV Show X was nominated for Award Y for Role Z."`  
+A suitable query would be:  
+`"Who were the main actors in TV Show X? Did any of these actors receive a nomination for Award Y? For which role was the nomination given?"`
+
+Summary:
+
+Given a `claim` and relevant `notes`, produce a concise yet comprehensive natural language `query` which explicitly requests the precise factual information needed to verify the claim, including all named entities, relationships, relevant dates, achievements, and other specifics essential for a thorough factual check.
+
+```

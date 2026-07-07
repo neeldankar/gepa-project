@@ -1,0 +1,144 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be provided with three input fields for each query: 
+
+- `claim`: a factual or historical statement that requires verification or clarification.
+- `notes`: a list of extracted factual points, evidence, or pieces of information related to the claim, often from multiple sources or documents.
+- `context`: a list of document summaries or excerpts relevant to the claim, often including background, biographies, event descriptions, or related entities.
+
+Your task is to process these inputs and generate two output fields:
+
+1. `new_notes`: A concise, well-organized set of key factual points distilled from the `notes` and relevant information from `context` that directly support, refute, or clarify the claim. This should:
+
+   - Remove duplicates and redundant information found in the input `notes`.
+   - Highlight the most relevant and accurate details pertinent to the evaluation of the claim.
+   - Include clear statements about the veracity or accuracy of the claim based on the evidence.
+   - Correct any misinformation or misattribution present in the claim using the evidence.
+   - Use evidence-backed clarification where the claim is ambiguous or partially correct.
+
+2. `titles`: A prioritized list of concise, descriptive titles or names of documents/concepts/entities that are crucial to understanding the claim or verifying its facts. These may represent:
+
+   - Key people, events, or organizations involved.
+   - Primary sources or authoritative reports connected to the claim.
+   - Relevant geographic or historical entities.
+   - Related concepts or topics that frame the claim’s context.
+
+When reasoning to produce `new_notes` and `titles`:
+
+- Carefully cross-check facts in the claim against the evidence in `notes` and `context`.
+- Identify and disambiguate persons, places, dates, or events mentioned.
+- Distinguish between commonly confused or misattributed data, and note corrections.
+- Focus on domain-specific knowledge (e.g., historical figures from WWII camps, rally driver careers and championships, Norwegian black metal bands and geography) as it deeply informs claim accuracy.
+- Provide clear reasoning or summarization that explains why the claim is supported, refuted, or unverifiable.
+- Avoid introducing facts not present or reasonably inferred from input materials.
+- Organize information logically and succinctly, suitable for verifying or debunking the claim efficiently.
+
+Overall, your goal is to produce a factually accurate, evidence-supported refinement of the claim’s information, supported by a selection of key titles that identify relevant authoritative or contextual documents, facilitating transparent verification and further exploration.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Rhapsody, Op. 1 was written by a male composer. This composer was Hungarian, not Johann Christoph Pepusch.
+
+### notes
+['Johann Christoph Pepusch was a German-born composer who was not Hungarian and lived mostly in England.', '"Rhapsody, Op. 1" is a composition for piano by Hungarian male composer Béla Bartók, finished in 1904.', 'Béla Bartók\'s "Rhapsody, Op. 1" is catalogued as Op. 1, Sz. 26, BB 36 and has a version for piano and orchestra.', 'The claim that "Rhapsody, Op. 1" was written by a Hungarian male composer and not Pepusch is supported by attribution to Béla Bartók.', 'Other rhapsodies with similar titles were composed by Brahms and Liszt but differ in opus number and context.', 'Rhapsody, Op. 1, Sz. 26, BB 36 is a piano composition completed in 1904 by Hungarian male composer Béla Bartók.', "Béla Bartók is considered one of Hungary's greatest composers and was a male composer active in the early 20th century.", "Johann Christoph Pepusch was a German-born composer who lived mostly in England during the 17th and 18th centuries and has no connection to 'Rhapsody, Op. 1'.", "The claim that 'Rhapsody, Op. 1' was not written by Johann Christoph Pepusch but by a Hungarian male composer is supported by identification of Béla Bartók as the actual composer.", "Other rhapsodies titled similarly were composed by Brahms and Liszt but differ in opus number and are unrelated to Bartók's Op. 1.", 'Johann Christoph Pepusch was a German-born composer from the 17th-18th centuries, with no connection to Rhapsody, Op. 1.', 'Rhapsody, Op. 1 (Sz. 26, BB 36) is a piano composition completed in 1904 by Hungarian male composer Béla Bartók.', "Béla Bartók is one of Hungary's most prominent male composers of the early 20th century.", "Béla Bartók's Rhapsody, Op. 1 was also arranged for piano and orchestra a year after completion.", "Other composers like Brahms and Liszt wrote rhapsodies but with different opus numbers and unrelated to Bartók's Rhapsody, Op. 1.", 'The claim that Rhapsody, Op. 1 was composed by a Hungarian male composer, Béla Bartók, not Johann Christoph Pepusch, is supported.']
+
+### context
+['Johann Christoph Pepusch | Johann Christoph Pepusch (1667 – 20 July 1752), also known as John Christopher Pepusch and Dr Pepusch, was a German-born composer who spent most of his working life in England.', 'Rhapsody, Op. 1 (Bartók) | "Rhapsody", Op.  1, Sz.  26, BB 36, is a composition for piano by Hungarian composer Béla Bartók.  It was finished in 1904.  A year later, he wrote a version for piano and orchestra.  The catalogue number of this composition is Op. 1, Sz.  26.  The initial full-length composition for piano eventually received a catalogue number BB 36a, whereas the second version, with piano and orchestra, received a catalogue number BB 36b.', 'Rhapsody No. 2 (Bartók) | Rhapsody No. 2, Sz.  89 and 90, BB 96, is the second of two virtuoso works for violin and piano, subsequently arranged with orchestra accompaniment, written by Béla Bartók.  It was composed in 1928 and orchestrated in 1929.  The orchestral version was revised in 1935, and the version with piano in 1945.  It is dedicated to Hungarian violinist Zoltán Székely, who later became the first violinist of the Hungarian String Quartet in 1937, two years after the founding of the ensemble.', 'Bartók (crater) | Bartók is a crater on Mercury.  It has a diameter of 112 kilometers.  Its name was adopted by the International Astronomical Union in 1979.  Bartók is named for the Hungarian composer Béla Bartók, who lived from 1881 to 1945.', "Béla Bartók | Béla Viktor János Bartók ( ; ] ; 25 March 1881 – 26 September 1945) was a Hungarian composer, pianist and an ethnomusicologist.  He is considered one of the most important composers of the 20th century; he and Liszt are regarded as Hungary's greatest composers .  Through his collection and analytical study of folk music, he was one of the founders of comparative musicology, which later became ethnomusicology.", 'Dance Suite (Bartók) | Dance Suite (Hungarian: Táncszvit ; German: "Tanz-Suite" ), Sz.  77, BB 86a, is a well-known 1923 orchestral work by the Hungarian composer Béla Bartók.  The composer produced a reduction for piano (Sz.  77, BB 86b) in 1925, though this is less commonly performed.', 'Béla Bartók Music High School | Béla Bartók Music High School (Bartók Béla Zeneművészeti Szakközépiskola) is situated in the Palace of Music (Zenepalota) in Bartók square Miskolc, Hungary. It is a famous Music school named after the famous Hungarian composer Béla Bartók. It was founded in 1966.', 'Bartok (disambiguation) | Bartók usually refers to Béla Bartók, Hungarian composer.', 'The Wooden Prince | The Wooden Prince (Hungarian: "A fából faragott királyfi" ) Op. 13, Sz.  60, is a one-act pantomime ballet composed by Béla Bartók in 1914-1916 (orchestrated 1916-1917) to a scenario by Béla Balázs.  It was first performed at the Budapest Opera on 12 May 1917 under the conductor Egisto Tango.', 'Mátraszentimrei dalok | Mátraszentimrei dalok (Hungarian: "Songs from Mátraszentimre" ) is a collection of songs after Hungarian folk tunes by Hungarian composer György Ligeti.  They are strongly influenced by fellow composer Béla Bartók, who also used Hungarian folk songs as his basis for some of his compositions.']
+
+## Generated Outputs
+### reasoning
+The claim states that "Rhapsody, Op. 1" was written by a male composer who was Hungarian, not by Johann Christoph Pepusch. Reviewing the notes and context:
+
+- Johann Christoph Pepusch was a German-born composer active in the 17th-18th centuries, mainly in England, with no connection to "Rhapsody, Op. 1."
+- "Rhapsody, Op. 1" (Sz. 26, BB 36) was composed by Béla Bartók, a Hungarian male composer, completed in 1904.
+- Béla Bartók is well-known as one of Hungary's greatest composers and was active in the early 20th century.
+- The piece "Rhapsody, Op. 1" is distinctly attributed to Bartók, confirming Hungarian origin and authorship.
+- Other composers such as Brahms and Liszt composed rhapsodies, but these works have different opus numbers and are unrelated to Bartók's Op. 1.
+
+Therefore, the claim is accurate: "Rhapsody, Op. 1" was composed by the Hungarian male composer Béla Bartók and not Johann Christoph Pepusch.
+
+### new_notes
+['Johann Christoph Pepusch was a German-born composer from the 17th-18th centuries, with no connection to Rhapsody, Op. 1.', 'Rhapsody, Op. 1 (Sz. 26, BB 36) is a piano composition completed in 1904 by Hungarian male composer Béla Bartók.', "Béla Bartók is one of Hungary's most prominent male composers of the early 20th century.", "Béla Bartók's Rhapsody, Op. 1 was also arranged for piano and orchestra a year after completion.", "Other composers like Brahms and Liszt wrote rhapsodies but with different opus numbers and unrelated to Bartók's Rhapsody, Op. 1.", 'The claim that Rhapsody, Op. 1 was composed by a Hungarian male composer, Béla Bartók, not Johann Christoph Pepusch, is supported.']
+
+### titles
+['Béla Bartók', 'Rhapsody, Op. 1 (Bartók)', 'Johann Christoph Pepusch', 'Hungarian composers', 'Rhapsodies by Brahms and Liszt']
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Béla Bartók', 'Johann Christoph Pepusch', 'Rhapsody, Op. 1 (Bartók)']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+Director Robert Stevenson was from a geographically smaller country than another director. That director directed his final film Romance of Astree and Celadon.
+
+### notes
+['Robert Stevenson was an English film director from the United Kingdom, which is geographically larger than France.', "Éric Rohmer was a French director and directed his final film 'Romance of Astree and Celadon' released in 2007.", "The claim incorrectly states that Robert Stevenson was from a geographically smaller country compared to the director of 'Romance of Astree and Celadon'; in reality, France is smaller than the United Kingdom.", "'Romance of Astree and Celadon' is the last film directed by Éric Rohmer, not Robert Stevenson.", 'Robert Stevenson was an English film director from the United Kingdom, which is geographically larger than France.', "Éric Rohmer was a French director who directed his final film 'Romance of Astree and Celadon' released in 2007.", 'The claim is incorrect in stating that Robert Stevenson was from a geographically smaller country than Éric Rohmer; the UK is larger than France.', "'Romance of Astree and Celadon' was directed by Éric Rohmer, not Robert Stevenson.", 'Robert Stevenson was an English film director from the United Kingdom.', 'The United Kingdom is geographically larger than France.', 'Éric Rohmer was a French film director.', "Éric Rohmer directed the final film 'Romance of Astree and Celadon,' released in 2007.", "The claim that Robert Stevenson was from a geographically smaller country than the director of 'Romance of Astree and Celadon' is incorrect; the UK is larger than France.", "'Romance of Astree and Celadon' was not directed by Robert Stevenson but by Éric Rohmer."]
+
+### context
+['Romance of Astree and Celadon | Romance of Astrea and Celadon (French: "Les Amours d\'Astrée et de Céladon" ) is the final film directed by Éric Rohmer.  It was released September 5, 2007.', 'Maestro (2014 film) | Maestro is a 2014 French comedy-drama film directed by Léa Fazer.  The idea of the film came from co-writer Jocelyn Quivrin\'s experience of working with director Éric Rohmer in 2006 on Rohmer\'s last film "Romance of Astree and Celadon".  It stars Pio Marmaï, Michael Lonsdale, Déborah François and Alice Belaïdi.', 'Perceval le Gallois | Perceval le Gallois is a 1978 French film directed by Éric Rohmer.  It was inspired by Chrétien de Troyes\'s 12th-century Arthurian romance "Perceval, the Story of the Grail".', 'Tribute to Eric Rohmer | Tribute to Éric Rohmer (French: "Hommage à Éric Rohmer" ) (a.k.a. "Maurice Schérer") is a short 2010 video commissioned by Les Films du Losange as a tribute to Éric Rohmer by his friend and former colleague Jean-Luc Godard, and is the work that directly precedes the release of the 2010 feature "Film Socialisme" in Godard\'s filmography.  It was first presented at the Soirée en hommage à Éric Rohmer on February 8, 2010 at the Cinémathèque Française.  The short film consists of various titles of articles that Rohmer wrote for "Cahiers du Cinema" appearing on a black background as Godard\'s narration muses about brief, fragmented memories of Rohmer.  It ends with a shot of Godard looking directly into the camera, the 16:9 image\'s aspect ratio suddenly squished into 4:3, as he finishes his monologue.', 'A Summer\'s Tale | A Summer\'s Tale (French: Conte d\'été ) is a 1996 French romance film directed by Éric Rohmer.  It is the third film in his "Contes des quatre saisons" ("Tales of the Four Seasons") series, which includes "A Tale of Springtime" (1990), "Conte d\'été", "Autumn Tale" (1998), and "A Tale of Winter" (1992).  "Conte d\'été" stars Melvil Poupaud, Amanda Langlet, Aurélia Nolin, and Gwenaëlle Simon.', 'High Tension | High Tension (French: Haute Tension, ] ; released in the United Kingdom as Switchblade Romance) is a 2003 French horror film directed by Alexandre Aja, stars Cécile de France, Maïwenn, and Philippe Nahon.', 'Spirit of Korean Celadon | Spirit of Korean Celadon () is a 2002 North Korean film directed by Phyo Kwang.  A drama with "fun, unconventional musical sequences", the film is set during the Goryeo period and tells the story of a craftsman devoted to making traditional Korean celadon.', 'A Million A Minute | A Million A Minute is a lost 1916 American silent romance drama film released by Metro Pictures and starring then off screen lovers Francis X. Bushman and Beverly Bayne.  The film is based on a novel, "A Million a Minute: A Romance of Modern New York and Paris" by Robert Aitken.  John W. Noble, a regular director for Metro releases, did directing honors.', 'Le Signe du Lion | Le Signe du lion (The Sign of Leo) is a French film directed by Éric Rohmer, his feature debut; although filmed in the summer of 1959, it was first released in France in May 1962.  Along with "Le Beau Serge", directed by Claude Chabrol (who produced "The Sign of Leo"), it was one of the first films of the French New Wave.  The title refers to the Zodiac sign Leo, under which the protagonist says he was born.  Much of the film\'s plot is concerned with notions of luck and fate.  The film was not a commercial success and Rohmer didn\'t make another feature for eight years, instead concentrating on short films and his position at the influential film magazine "Cahiers du cinéma".', "L'Éternel retour | L'Éternel retour (English: The Eternal Return ) is a French drama romance film from 1943, directed by Jean Delannoy, written by Jean Cocteau, starring Madeleine Sologne and Jean Marais.  In United Kingdom, the film was also known under the alternative title Love Eternal."]
+
+## Generated Outputs
+### reasoning
+The claim suggests Robert Stevenson was from a smaller country than another director, who made "Romance of Astree and Celadon." The evidence clarifies that Robert Stevenson was English, from the United Kingdom, which is geographically larger than France. The director of "Romance of Astree and Celadon" is Éric Rohmer, who was French. Hence, the claim is factually incorrect in stating the country size relationship. Additionally, the claim may confuse the directors or the film they directed, as it attributes "Romance of Astree and Celadon" to Stevenson, which is incorrect. This film was Éric Rohmer's final work, reinforcing that he is the relevant director in this comparison. Therefore, Robert Stevenson is from a geographically larger country than Rohmer, and Éric Rohmer directed "Romance of Astree and Celadon" as his final film, not Stevenson.
+
+### new_notes
+['Robert Stevenson was an English film director from the United Kingdom.', 'The United Kingdom is geographically larger than France.', 'Éric Rohmer was a French film director.', "Éric Rohmer directed the final film 'Romance of Astree and Celadon,' released in 2007.", "The claim that Robert Stevenson was from a geographically smaller country than the director of 'Romance of Astree and Celadon' is incorrect; the UK is larger than France.", "'Romance of Astree and Celadon' was not directed by Robert Stevenson but by Éric Rohmer."]
+
+### titles
+['Éric Rohmer', 'Robert Stevenson', 'Romance of Astree and Celadon']
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Robert Stevenson (director)', 'Romance of Astree and Celadon', 'Éric Rohmer']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+The actress made her debut in the film by the director who was American. She also starred in The Death and Life of John F. Donovan.
+
+### notes
+['The Death and Life of John F. Donovan is a Canadian drama film directed by Canadian director Xavier Dolan.', 'The film stars actors including Kit Harington, Natalie Portman, Jessica Chastain, and others.', 'Xavier Dolan is not an American director, so any debut linked to this film is not with an American director.', 'Multiple American directors named in the context include Hal Hartley (Simple Men), John Singleton (Baby Boy), and Robert Zemeckis (Death Becomes Her).', 'Some actresses made their debut in American-directed films, e.g., Holly Marie Combs (Simple Men), Taraji P. Henson (Baby Boy), and Oprah Winfrey (The Color Purple).', 'There is no direct evidence connecting the same actress debuting in a film by an American director and starring in The Death and Life of John F. Donovan.', 'Therefore, the claim lacks evidence and seems inaccurate or incomplete without specifying the actress and films.', 'The Death and Life of John F. Donovan is a Canadian drama film directed by Canadian director Xavier Dolan.', 'Xavier Dolan is not an American director; therefore, debuting in The Death and Life of John F. Donovan does not correspond to debuting with an American director.', 'The film stars Kit Harington, Natalie Portman, Jessica Chastain, and others, but no evidence links any of these actresses to having debuted in a film by an American director immediately prior.', 'Several American directors (Hal Hartley, John Singleton, Robert Zemeckis) have directed actresses in their debut roles, but none are connected to The Death and Life of John F. Donovan.', 'There is no direct evidence supporting the claim that the same actress made her debut with an American director and also starred in The Death and Life of John F. Donovan.', 'The claim is therefore unsupported and likely inaccurate or incomplete without further specification of the actress or films involved.', 'The Death and Life of John F. Donovan is a Canadian drama film directed by Canadian director Xavier Dolan, not by an American director.', 'The film stars actors such as Kit Harington, Natalie Portman, and Jessica Chastain.', 'There is no evidence that any actress in The Death and Life of John F. Donovan made her debut in a film directed by an American director.', 'Several American directors (Hal Hartley, John Singleton, Robert Zemeckis) have directed actresses in their debut films, but none are linked to this Canadian film.', 'The claim that the same actress debuted with an American director and also starred in The Death and Life of John F. Donovan is unsupported and lacks evidence.']
+
+### context
+['The Death and Life of John F. Donovan | The Death and Life of John F. Donovan is an upcoming Canadian drama film, co-written, co-produced and directed by Xavier Dolan in his English-language debut.  It stars Kit Harington, Natalie Portman, Jessica Chastain, Susan Sarandon, Kathy Bates, Jacob Tremblay, Ben Schnetzer, Thandie Newton, Amara Karan, Chris Zylka, Jared Keeso, Emily Hampshire and Michael Gambon.', 'Who Will Love My Children? | Who Will Love My Children?  is a 1983 American made-for-television biographical film based on the life of Lucile Fray.  Lucile Fray was diagnosed with cancer in 1952 and wanted to find suitable homes for her ten children, since she felt her husband could not properly care for them.  Prior to her death, she succeeded.  The film was directed by John Erman, written by Michael Bortman, and starred Ann-Margret in her first television film.  It was originally broadcast on American Broadcasting Company.', "Crash Donovan | Crash Donovan is a 1936 American drama film directed by William Nigh and Jean Negulesco and starring Jack Holt, John 'Dusty' King and Nan Grey.  It marked the directorial debut of the Romanian-born Negulesco.", 'Simple Men | Simple Men is a 1992 American film written and directed by Hal Hartley, starring Robert John Burke, Bill Sage, Karen Sillas and Martin Donovan.  It was the debut film of actress Holly Marie Combs in a supporting role.  It was entered into the 1992 Cannes Film Festival.', 'Diane Keaton | Diane Keaton (born Diane Hall; January 5, 1946) is an American film actress, director and producer.  She began her career on stage and made her screen debut in 1970.  Her first major film role was as Kay Adams-Corleone in "The Godfather" (1972), but the films that shaped her early career were those with director and co-star Woody Allen, beginning with "Play It Again, Sam" in 1972.  Her next two films with Allen, "Sleeper" (1973) and "Love and Death" (1975), established her as a comic actor.  Her fourth, "Annie Hall" (1977), won her the Academy Award for Best Actress.', "The Color Purple (film) | The Color Purple is a 1985 American period drama film directed by Steven Spielberg and written by Menno Meyjes, based on the Pulitzer Prize-winning novel of the same name by Alice Walker.  It was Spielberg's eighth film as a director, and was a change from the summer blockbusters for which he had become famous.  The film was also the first feature-length film directed by Spielberg for which John Williams did not compose the music.  The film starred Danny Glover, Desreta Jackson, Margaret Avery, Oprah Winfrey (in her film debut), Adolph Caesar, Rae Dawn Chong, and featured Whoopi Goldberg (also in her film debut) as Celie Harris-Johnson.", "Donovan's Reef | Donovan's Reef is a 1963 American Technicolor film starring John Wayne.  It was directed by John Ford and filmed on location on Kauai, Hawaii.", 'Martin Donovan | Martin Donovan (born August 19, 1957) is an American film, stage and television actor.  He has had a long collaboration with director Hal Hartley and appeared in many of Hartley\'s films, such as "Trust" (1990), "Surviving Desire" (1991), "Simple Men" (1992), "Flirt" (1993), "Amateur" (1994), and "The Book of Life" (1998; in which he played Jesus).  Donovan also played Peter Scottson on Showtime\'s cable series "Weeds".  He made his writing/directorial debut with the film "Collaborator" (2011).', 'Death Becomes Her | Death Becomes Her is a 1992 American black comedy fantasy film directed by Robert Zemeckis, written by David Koepp and Martin Donovan, and starring Goldie Hawn, Bruce Willis, and Meryl Streep.  The film focuses on a pair of rivals (Hawn and Streep) who drink a magic potion that promises eternal youth, but experience unpleasant side effects when they physically die, becoming walking, talking corpses.', 'Baby Boy (film) | Baby Boy is a 2001 American coming-of-age hood film written, produced, and directed by John Singleton.  The film follows bicycle mechanic Joseph "Jody" Summers as he lives and learns in his everyday life in the hood of Los Angeles.  It represented the film debut of actress Taraji P. Henson and R&B singer Tyrese Gibson.  Gibson and Henson later starred in the film "Four Brothers".  The film, originally set to star Tupac Shakur, instead switched to Gibson after Shakur\'s 1996 death.']
+
+## Generated Outputs
+### reasoning
+The claim has two parts: 
+1) "The actress made her debut in the film by the director who was American." 
+2) "She also starred in The Death and Life of John F. Donovan."
+
+From the context, The Death and Life of John F. Donovan is a Canadian drama film directed by Xavier Dolan, who is Canadian, not American. So if the actress starred in that film, the director is not American in that instance.
+
+The claim about debuting in a film by an American director is ambiguous—it does not specify which film or actress. The context includes mentions of various American directors and debut films of actresses, such as Holly Marie Combs in "Simple Men" directed by American Hal Hartley, and Taraji P. Henson in "Baby Boy" directed by American John Singleton. However, there is no direct link in the context connecting an actress's debut in an American director's film and her starring in The Death and Life of John F. Donovan.
+
+Hence, the claim about the debut film by an American director is not verifiable with the given information. The claim that the actress "also starred in The Death and Life of John F. Donovan" is plausible but not able to be verified for a specific actress without more information.
+
+Overall, the claim conflates or merges two unrelated facts without specifying the actress, making the claim unverifiable and likely inaccurate as presented.
+
+### new_notes
+['The Death and Life of John F. Donovan is a Canadian drama film directed by Canadian director Xavier Dolan.', 'The film stars actors including Kit Harington, Natalie Portman, Jessica Chastain, and others.', 'Xavier Dolan is not an American director, so any debut linked to this film is not with an American director.', 'Multiple American directors named in the context include Hal Hartley (Simple Men), John Singleton (Baby Boy), and Robert Zemeckis (Death Becomes Her).', 'Some actresses made their debut in American-directed films, e.g., Holly Marie Combs (Simple Men), Taraji P. Henson (Baby Boy), and Oprah Winfrey (The Color Purple).', 'There is no direct evidence connecting the same actress debuting in a film by an American director and starring in The Death and Life of John F. Donovan.', 'Therefore, the claim lacks evidence and seems inaccurate or incomplete without specifying the actress and films.']
+
+### titles
+['The Death and Life of John F. Donovan', 'Xavier Dolan', 'Simple Men', 'Baby Boy', 'American film directors', 'Actress film debuts']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['The Death and Life of John F. Donovan']. Documents remaining to be retrieved: ['Amara Karan', 'Wes Anderson'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

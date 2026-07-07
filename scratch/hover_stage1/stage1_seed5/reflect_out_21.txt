@@ -1,0 +1,77 @@
+```  
+Task Description:
+
+You will be given a factual `claim` that often contains multiple interconnected facts and named entities (people, films, places, products, organizations, historical dates, domain-specific items, etc.). Along with the claim, you will receive `notes` which include partial background facts, known details, and importantly, highlight missing information, ambiguities, or contradictions relating to the claim components.
+
+Your objective is to generate a focused, precise set of one or more `queries` specifically designed to verify, fact-check, or clarify *each discrete component* of the claim. These queries will be executed against authoritative information sources (e.g., Wikipedia or domain-relevant repositories) to retrieve documents or evidence that confirm or refute the claim's multiple assertions.
+
+Key Domain-Specific and Task-Specific Requirements:
+
+1. **Entity Disambiguation and Precise Identification:**  
+   - Explicitly identify and clarify all named entities in the claim, including proper qualifiers.  
+   - For example, specify film titles with release years ("All I Need" (Radiohead song, 2007)), specify persons with professions and nationality ("Isaiah Mustafa, American actor"), distinguish similarly named entities carefully ("Solo (Norwegian soft drink)" vs. "Solo").  
+   - This disambiguation ensures high precision in document retrieval.
+
+2. **Decompose Complex Claims into Component Facts:**  
+   - Claims often contain multiple interconnected facts (e.g., a musician’s band membership plus singing credits; a sports player’s name plus team affiliations plus event participation).  
+   - Break the claim into atomic fact assertions. For each, generate a precise query addressing only that fact.  
+   - Ensure that all elements of the claim are covered by at least one query, leaving no factual assertion unchecked.
+
+3. **Leverage Notes to Target Gaps, Contradictions, or Unverifiable Aspects:**  
+   - Analyze notes carefully to identify which facts are already established and which are ambiguous, contradictory, or missing.  
+   - Formulate queries that specifically address the ambiguous or contradicted data points, such as uncertain nationalities, unclear roles in a film or event, ambiguous affiliations, or disputed nicknames.  
+   - For example, if notes conflict on whether an individual is Greek or American, or whether a film is a TV episode or a feature film, target queries to settle these points.
+
+4. **Cover Every Fact Embedded in the Claim:**  
+   - Ensure all elements—including all entities, relationships, dates, roles, and attributions—have precise factual queries.  
+   - Avoid partial queries that verify only a subset of the claim's assertions.
+
+5. **Generate Well-Formed, Explicit Queries:**  
+   - Each query must be a clear, factual question or search prompt fit for retrieving precise documents (such as: “Who starred in [Film Name] ([Year])?” rather than vague or broad queries like “Tell me about the film?”).  
+   - Use interrogative phrasing (“Who,” “When,” “Is,” “What”) and specify exact contexts and qualifiers.
+
+6. **Include Relevant Domain or Contextual Information in Queries:**  
+   - When asking about films, include release years and production context.  
+   - For people, include birth years, professions, or nationality if relevant to disambiguate.  
+   - For places, specify the geographic hierarchy or administrative divisions (e.g., whether a cemetery is located within a park).  
+   - For military units or historical facts, specify formation dates and relationship to conflicts or media portrayals.
+
+Generalizable Strategy:
+
+- Parse and identify each named entity and fact assertion embedded in the claim line-by-line or clause-by-clause.  
+- Thoroughly compare the claim to the information and contradictions in the notes, flagging elements that are not fully confirmed or have conflicting data.  
+- For each identified atomic fact or ambiguity, create one precise, disambiguated query to look for authoritative confirmation.  
+- Ensure comprehensive claim coverage: the entire claim is fact-checked, not just partially.  
+- Do not produce any explanation or commentary in outputs; format the final output strictly as one or more `query` lines, each containing a single precise question or search prompt.  
+- Avoid vague queries or those too broad to target relevant documents efficiently.  
+- Use precise entity descriptors and domain context in each query to maximize retrieval relevance.
+
+Example Query Templates (illustrative, to be adapted):
+
+- Film or TV claims:  
+   “Who starred in [Film or TV Episode Name] ([Year])?”  
+   “What role did [Person’s Name] play in [Film/Series Name] ([Year])?”  
+   “Is [Person] featured as a [profession/character] in [Film/Series Title]?”  
+- People and biography claims:  
+   “When was [Person’s Full Name] born?”  
+   “What is the nationality of [Person’s Name]?”  
+- Sports claims:  
+   “Who scored the goals in [Sports Event Name] ([Year])?”  
+   “For which professional clubs did [Player Name] play during [Year or Event]?”  
+   “Is [Name] the colloquial or official name of any professional team?”  
+- Geography or burial claims:  
+   “Where is [Person’s Name] buried?”  
+   “Is [Cemetery Name] located within [Park or Geographic Region]?”  
+- Military or historical claims:  
+   “When was [Military Unit Name] formed?”  
+   “What military units are depicted in [Film or Book Title]?”
+
+Your outputs must be crafted to precisely guide retrieval of core factual information needed to fully fact-check the claim, using careful disambiguation and a fine-grained decomposition of claims into factual components.
+
+Output Format:
+
+- Provide one or more `query` lines — each line is a single precise factual or entity relationship question.  
+- No additional text or reasoning explanation is to be output.
+
+By following these detailed instructions, you will generate high-quality, focused queries enabling comprehensive, accurate fact-checking of complex claims involving multiple named entities and interconnected facts across diverse domains.
+```

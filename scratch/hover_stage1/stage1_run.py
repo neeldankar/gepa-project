@@ -28,7 +28,11 @@ os.chdir(HOVER_PROBE)  # probe relative paths (bm25s_index/, threehop.jsonl, ../
 import probe  # noqa: E402
 
 DRY = "--dry" in sys.argv
-OUT = os.path.join(STAGE1_DIR, "stage1_seed0_dry" if DRY else "stage1_seed0")
+SEED = int(sys.argv[sys.argv.index("--seed") + 1]) if "--seed" in sys.argv else 0
+OUT = os.path.join(STAGE1_DIR, f"stage1_seed{SEED}_dry" if DRY else f"stage1_seed{SEED}")
+# clobber guard: never overwrite a completed seed dir
+if not DRY and os.path.exists(os.path.join(OUT, "run_summary.json")):
+    raise SystemExit(f"REFUSE: {OUT}/run_summary.json exists — not clobbering seed {SEED}")
 GRADED = os.path.join(STAGE1_DIR, "graded_records.jsonl")
 MODEL = "openai/gpt-4.1-mini"
 REFLECT_SIG = "I provided an assistant with the following instructions"
@@ -158,7 +162,7 @@ def main():
         reflection_minibatch_size=3, candidate_selection_strategy="pareto",
         component_selector="round_robin", num_threads=1, track_stats=True,
         use_merge=False,
-        log_dir=os.path.abspath(f"{OUT}/gepa_log"), seed=0,
+        log_dir=os.path.abspath(f"{OUT}/gepa_log"), seed=SEED,
     )
     print(f"=== dspy.GEPA compile (mm={MM}, cap ${SPEND_CAP}) ===")
     import time
@@ -189,7 +193,8 @@ def main():
     n_cand = len(st["program_candidates"])
     n_accept_inferred = sum(
         1 for e in tr
-        if (sum(e["new_subsample_scores"]) / len(e["new_subsample_scores"]))
+        if e.get("new_subsample_scores")   # some trace entries have no child subsample scores
+        and (sum(e["new_subsample_scores"]) / len(e["new_subsample_scores"]))
          > (sum(e["subsample_scores"]) / len(e["subsample_scores"]))
     )
     print("\n===== STAGE1 SEED-0 RUN SUMMARY =====")
@@ -198,7 +203,7 @@ def main():
     print(f"event/trace 1:1 aligned: {len(REFLECTIONS) == len(tr)}   accept-inference matches: {n_accept_inferred == n_cand-1}")
     print(f"total LM calls: task={task_calls} reflection={refl_calls} (sum={task_calls+refl_calls})")
     print(f"actual spend: ${actual:.4f}  (cap ${SPEND_CAP})   wall_clock: {wall_s:.1f}s")
-    json.dump({"seed": 0, "reflection_events": len(REFLECTIONS), "trace_entries": len(tr),
+    json.dump({"seed": SEED, "reflection_events": len(REFLECTIONS), "trace_entries": len(tr),
                "candidates_incl_seed": n_cand, "accepts_inferred": n_accept_inferred,
                "event_trace_aligned": len(REFLECTIONS) == len(tr),
                "accept_inference_ok": n_accept_inferred == n_cand - 1,

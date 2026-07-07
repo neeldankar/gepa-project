@@ -1,0 +1,55 @@
+``` 
+Task Description:
+
+You are provided with three input fields: `claim`, `notes`, and `context`.
+
+- `claim` is a statement or assertion that may contain factual information or a connection between entities, events, or attributes that needs verification, clarification, or elaboration.
+- `notes` is a list of extracted facts, partial evidences, or relevant informational snippets related to entities or topics mentioned in the claim. These notes may include supporting, contradictory, or neutral details.
+- `context` is a list of descriptions, summaries, or excerpts of relevant documents, articles, or sources potentially related to the claim or notes, providing deeper background or authoritative information.
+
+Your goal is to produce two fields: `new_notes` and `titles`.
+
+1. `new_notes`:
+   - This should be a concise, factual, and relevant subset or refined synthesis of the input notes, possibly merged or pruned for clarity.
+   - Include the most pertinent facts that address key elements of the claim: support, refute, clarify, or contextualize it.
+   - Filter out repeated, irrelevant, or tangential statements.
+   - Where the claim contains contradictions or inaccuracies, highlight and clarify them.
+   - If certain core information is missing in the notes but available in context, incorporate it into `new_notes`.
+   - Maintain a neutral, objective tone with precise references to entities, events, or roles involved.
+   - Notes should be self-contained and understandable without external references.
+
+2. `titles`:
+   - This should be a list of entity or document titles (as strings) that represent the most relevant source documents or knowledge bases for verifying or understanding the claim.
+   - Titles should directly correspond to entries or contexts referenced in the notes or claim.
+   - Aim to capture all critical entities, events, organizations, or named concepts essential to the claim’s truth evaluation.
+   - Titles should be distinct, non-redundant, and clearly indicate the topical focus of their corresponding documents.
+
+Reasoning Strategy:
+
+- Dissect the claim logically, checking for internal consistencies and contradictions (e.g., roles assigned to a person that conflict with known facts).
+- Analyze notes and context to confirm factual components: people, roles, dates, affiliations, and relationships mentioned in the claim.
+- Identify gaps or contradictions and address them explicitly in the reasoning and new_notes.
+- Incorporate domain-specific knowledge: for example, in sports, "goalie leading a strike force" is often contradictory; in entertainment, clarify roles (actor vs. director), and confirm identity associations carefully.
+- When background or auxiliary context provides stronger or clarifying information not present in notes, integrate that information.
+- Aim to replicate or enhance retrieval of the most relevant documents or entities to fully verify the claim, minimizing omissions.
+- Use a neutral, evidence-based approach without subjective assumptions.
+
+Domain-Specific Guidance:
+
+- For claims involving roles or titles (e.g. actor roles, musical group identities), verify consistency against known data about those entities.
+- When multiple similar or related documents exist (e.g., soundtrack and film, different versions of a band name), include all relevant but non-redundant titles.
+- Pay attention to temporal details (dates, periods when people played for certain teams or worked on projects).
+- Detect and highlight internally contradicting claims (e.g., goalkeepers cannot lead strike forces).
+- Clarify cases where no evidence exists to support a claim by explicitly stating so in new_notes.
+- Avoid speculation; limit to verifiable facts given in notes or context or logically inferred from them.
+
+Format Requirements:
+
+- Submit your response as a JSON-like structure with two keys: `new_notes` (list of strings) and `titles` (list of strings).
+- Both fields should be concise but comprehensive for the purposes of accurate fact verification and referencing.
+
+Summary:
+
+Given `claim`, `notes`, and `context`, produce a refined, verified, and clear set of `new_notes` that address and explain key claim elements, and a focused set of `titles` for supporting documents or entities critical to claim verification, incorporating reasoning about factual accuracy, role consistency, and relevant background known from domain knowledge.
+
+```

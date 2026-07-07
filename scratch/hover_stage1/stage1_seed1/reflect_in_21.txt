@@ -1,0 +1,170 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You are tasked with a focused fact verification and evidence consolidation task, where you analyze three types of inputs—`claim`, `notes`, and `context`—to produce two outputs: `new_notes` and `titles`. The `claim` is a textual statement possibly containing multiple factual assertions that need verification. The `notes` are often extracted snippets, paraphrases, or partial evidences relevant to the claim, while the `context` comprises longer document texts or summaries potentially containing detailed source information related to entities, events, timelines, or attributes mentioned in the claim.
+
+Your overarching goal is to verify or refute each distinct component of the claim by synthesizing and consolidating information from both `notes` and `context`, avoiding redundancy, speculation, or irrelevant content.
+
+---
+
+Detailed Guidelines and Domain-Specific Considerations:
+
+1. **Input Structure and Understanding**  
+   - **claim**: A statement consisting of one or more assertions (e.g., about persons, events, dates, geographic locations, product characteristics, filmographies, or comparative facts).  
+   - **notes**: Fragmented facts, paraphrases, or extracted evidences that may partially support or contradict the claim. This input can contain redundancy.  
+   - **context**: Summaries or full-text snippets from diverse documents that may provide authoritative or more detailed information on the claim’s subjects.
+
+2. **Verification Approach and Reasoning Strategy**  
+   - Parse the claim into discrete assertions where possible and address each individually.  
+   - Map claim elements (entities, dates, events, attributes) to facts in both `notes` and `context`.  
+   - Cross-verify facts by probing both inputs together to spot confirmations, contradictions, or missing information.  
+   - Explicitly note when parts of the claim cannot be verified because critical information about entities, events, or attributes is absent from both inputs.  
+   - For geographic, historical, biographical, or product-related facts, use explicit details only—avoid assumptions or inference beyond the data given.  
+   - When multiple entities or facts overlap (e.g., multiple actors in movies, overlapping dates, competing geographic references), carefully separate which parts are supported and which are not.
+
+3. **Consolidation of `new_notes`**  
+   - Remove redundancy by combining similar or repeated facts into succinct, clear statements—preferably one or two sentences each.  
+   - Focus exclusively on information directly relevant to verifying the claim’s assertions, omitting irrelevant tangents or unrelated domain facts.  
+   - Clarify precisely which elements of the claim are supported, contradicted, or unverifiable.  
+   - If verification is impossible due to missing data or ambiguity, clearly state this instead of speculating.  
+   - Maintain factual accuracy and align notes closely with evidence found in the inputs.
+
+4. **Creation of `titles`**  
+   - Generate concise, descriptive headings that summarize key topics, entities, or factual relationships uncovered during verification.  
+   - Titles should be domain-relevant and reflect the organizing principles of your notes (e.g., names of persons, film titles with dates, product or geographic features, timeline relations).  
+   - They serve as topical indexes for the summarized evidences and facilitate quick understanding of verification focuses.
+
+5. **Domain-Specific Knowledge Embedded in the Task**  
+   - Common facts relate to soft drink brands, flavor profiles, and geographic market presence.  
+   - Biographical facts include film directors, voice actors, release years, animation movie titles, and actor nationalities.  
+   - Geographic comparisons, including city versus county boundaries, size, and jurisdictional status, are frequent.  
+   - Product ownership or company-railway station relations may appear, requiring careful geographic and corporate structure reasoning.  
+   - Scientific or technical terms (e.g., chemical or biological entities) may appear but are often not central to verification.
+
+6. **Generalizable Reasoning and Workflow**  
+   - Identify key components (entities, events, dates) in the claim first.  
+   - Search both `notes` and `context` for explicit assertions tied to these components.  
+   - Distill duplicated claims and reconcile contradictions; produce a coherent evaluation per factual assertion.  
+   - Explicitly separate verifiable from unverifiable or contradicted claim parts in `new_notes`.  
+   - Group related notes under thematic headings synthesized as `titles`.
+
+7. **Handling Missing or Conflicting Data**  
+   - When the claim contains information about an entity or event absent in all inputs, clearly note that verification is not possible.  
+   - If parts are verifiable but others are unsupported, separately highlight these distinctions.  
+   - Avoid speculation or implied connections not grounded in provided evidence.
+
+---
+
+Summary:
+
+Your task is a meticulous, evidence-based fact-checking and summarization exercise that integrates fragmented inputs into a concise, focused verification dossier. Your outputs must be:
+
+- **`new_notes`**: A reduced, clear, and precise list of facts confirming, contradicting, or indicating unverifiability of the claim’s components based on the complete input set.  
+- **`titles`**: A concise list of relevant topical headings that summarize and organize the key subjects, entities, or relationships essential to understanding the verification outcome.
+
+This task requires strict adherence to evidence, careful parsing of multi-part claims, clear handling of data absence or contradiction, and domain-aware synthesis of facts to aid downstream understanding or retrieval tasks.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The auditorium where Backstreet Boys: Larger Than Life residency show perfomed at is located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada. This auditorium is located at a hotel and casino owned by Caesars Entertainment Corporation.
+
+### notes
+["The Backstreet Boys' residency show 'Larger Than Life' was performed at The AXIS auditorium in the Planet Hollywood Resort & Casino in Las Vegas, Nevada.", 'Planet Hollywood Las Vegas is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada.', 'Planet Hollywood Las Vegas is owned and operated by Caesars Entertainment Corporation.', "The Backstreet Boys' 'Larger Than Life' residency show was performed at The AXIS auditorium located within the Planet Hollywood Resort & Casino in Las Vegas, Nevada.", 'Planet Hollywood Las Vegas is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada, which is commonly referred to as Las Vegas.', 'Planet Hollywood Las Vegas is owned and operated by Caesars Entertainment Corporation.', "The Backstreet Boys' residency show 'Larger Than Life' was performed at The AXIS auditorium located within the Planet Hollywood Resort & Casino in Las Vegas, Nevada.", 'Planet Hollywood Las Vegas is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada, which is commonly referred to as Las Vegas.', 'Planet Hollywood Las Vegas is owned and operated by Caesars Entertainment Corporation.']
+
+### context
+['Backstreet Boys: Larger Than Life | Backstreet Boys: Larger Than Life is the first residency show by American vocal group Backstreet Boys, performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada.  The show had its opening night on March 1, 2017 and is currently scheduled to run through February 17, 2018.', "Planet Hollywood Las Vegas | Planet Hollywood Las Vegas (formerly Tally-Ho, King's Crown and Aladdin) is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada.  It is owned and operated by Caesars Entertainment Corporation.", 'Jennifer Lopez: All I Have | Jennifer Lopez: All I Have is the first residency show by American entertainer Jennifer Lopez.  Performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada, the residency show began on January 20, 2016.', 'Britney: Piece of Me | Britney: Piece of Me is the first residency show by American singer Britney Spears, performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada.  The show had its opening night on December 27, 2013.  In 2015, Spears extended her contract with Planet Hollywood through 2017.', 'Paris Las Vegas | Paris Las Vegas is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada.  It is owned and operated by Caesars Entertainment Corporation.', 'Flamingo Las Vegas | Flamingo Las Vegas (formerly The Fabulous Flamingo and Flamingo Hilton Las Vegas) is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada.  It is owned and operated by Caesars Entertainment Corporation.', "Harrah's Las Vegas | Harrah's Las Vegas (formerly Holiday Casino) is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada.  It is owned and operated by Caesars Entertainment Corporation.  It has over 1,200 slot machines.", 'Rio All Suite Hotel and Casino | Rio Las Vegas is a hotel and casino near the Las Vegas Strip in Paradise, Nevada, United States.  It is owned and operated by Caesars Entertainment Corporation.  The Rio was the first all suite resort in the Las Vegas area.  It was named after the city of Rio de Janeiro and is influenced by Brazilian culture.  It is the host casino for the World Series of Poker.', 'Otakon Vegas | Otakon Vegas ( ) is a three-day anime convention held during January at the Planet Hollywood Resort and Casino in Las Vegas, Nevada.  The convention is organized by Otakorp, the group behind Otakon.', "Bally's Las Vegas | Bally's Las Vegas (formerly MGM Grand Hotel and Casino) is a hotel and casino on the Las Vegas Strip in Paradise, Nevada.  It is owned and operated by Caesars Entertainment Corporation.  The hotel features 2,814 extra-sized guestrooms that are 450 sqft or larger and over 175000 sqft of banquet and meeting space.  The casino occupies 66187 sqft .  About 75% of the rooms are in the Indigo Tower, and were renovated in 2004.  The remaining rooms are located in the Jubilee Tower, constructed in 1981."]
+
+## Generated Outputs
+### reasoning
+The claim consists of two main assertions: first, that the auditorium where the Backstreet Boys performed their residency show "Larger Than Life" is located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada; second, that this venue is a hotel and casino owned by Caesars Entertainment Corporation.
+
+From both the notes and context, the residency show "Backstreet Boys: Larger Than Life" was indeed performed at The AXIS auditorium, which is explicitly stated to be located within the Planet Hollywood Resort & Casino in Las Vegas. Multiple sources confirm that Planet Hollywood Las Vegas is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada—a part of the Las Vegas metropolitan area commonly referred to as Las Vegas. Furthermore, this property is owned and operated by Caesars Entertainment Corporation.
+
+Thus, the first part of the claim about the auditorium location is directly supported. The second part about ownership by Caesars Entertainment Corporation is also directly confirmed by multiple consistent statements in both notes and context.
+
+Overall, the entire claim is verified by the provided material without contradictions or missing information.
+
+### new_notes
+["The Backstreet Boys' residency show 'Larger Than Life' was performed at The AXIS auditorium located within the Planet Hollywood Resort & Casino in Las Vegas, Nevada.", 'Planet Hollywood Las Vegas is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada, which is commonly referred to as Las Vegas.', 'Planet Hollywood Las Vegas is owned and operated by Caesars Entertainment Corporation.']
+
+### titles
+['Backstreet Boys: Larger Than Life Residency Location', 'Planet Hollywood Resort & Casino Ownership and Location']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Backstreet Boys: Larger Than Life', 'Planet Hollywood Las Vegas']. Documents remaining to be retrieved: ['The AXIS'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Christopher B. Landon wrote a 2007 movie that stars Shia Saide LaBeouf, an American actor who starred in the Disney Channel series Even Stevens that premiered in 2004.
+
+### notes
+["Christopher B. Landon wrote the 2007 film 'Disturbia'.", "'Disturbia' stars Shia Saide LaBeouf, known as Shia LaBeouf.", 'Shia LaBeouf is an American actor.', "Shia LaBeouf starred as Louis Stevens in the Disney Channel series 'Even Stevens'.", "'Even Stevens' premiered before 2001, evidenced by LaBeouf's award nominations and wins in 2001 and 2003, contradicting the claim it premiered in 2004.", "Christopher B. Landon wrote the 2007 film 'Disturbia'.", "'Disturbia' stars Shia Saide LaBeouf, an American actor.", "Shia LaBeouf portrayed Louis Stevens in the Disney Channel series 'Even Stevens'.", "'Even Stevens' aired from June 17, 2000, to June 2, 2003, with a series finale movie in 2003, not premiering in 2004.", "Christopher B. Landon wrote the 2007 film 'Disturbia'.", "'Disturbia' stars Shia Saide LaBeouf, who is an American actor.", "Shia LaBeouf portrayed Louis Stevens in the Disney Channel series 'Even Stevens'.", "'Even Stevens' originally aired from June 17, 2000, to June 2, 2003, with a series finale movie in 2003.", "The claim that 'Even Stevens' premiered in 2004 is contradicted by multiple sources confirming the series aired from 2000 to 2003."]
+
+### context
+['Shia LaBeouf | Shia Saide LaBeouf ( ; born June 11, 1986) is an American actor, performance artist, and filmmaker.  He became known among younger audiences as Louis Stevens in the Disney Channel series "Even Stevens", a role for which LaBeouf received a Young Artist Award nomination in 2001 and won a Daytime Emmy Award in 2003.  He made his film debut in "The Christmas Path" (1998).  In 2004, he made his directorial debut with the short film "Let\'s Love Hate" and later directed a short film titled "Maniac" (2011), starring American rappers Cage and Kid Cudi.', 'The Even Stevens Movie | The Even Stevens Movie is a 2003 American Disney Channel Original Movie that is based on the Disney Channel Original Series "Even Stevens".  It premiered on June 13, 2003, serving as the series finale.  The movie drew an audience of 5.1 million viewers.', 'Hounded (film) | Hounded is a 2001 Disney Channel Original Movie starring Tahj Mowry, Craig Kirkwood, Shia LaBeouf and Ed Begley, Jr. It was filmed in Salt Lake City, Utah at the Madeleine Choir School campus.', 'Zeke and Luther | Zeke and Luther was an American Disney XD sitcom about two best friends setting their sights on becoming the world\'s greatest skaters.  The show starred Hutch Dano, Adam Hicks, Daniel Curtis Lee, and Ryan Newman.  "Zeke and Luther" was set in the northern part of Gilroy, California, specifically in the fictional area of Pacific Terrace, which is stated frequently throughout the series.  Gilroy was also mentioned occasionally in the Disney Channel series "Even Stevens", which was also created by "Zeke and Luther" co-creator Matt Dearborn.  The episode "Bros Go Pro" was made available to download for free on iTunes in the beginning of June, two weeks before the show\'s television premiere.  The series premiered on June 15, 2009 in the U.S.', 'Steven Anthony Lawrence | Steven Anthony Lawrence (born July 19, 1990) is an American actor.  He is best known for his recurring role as Bernard "Beans" Aranguren in the hit Disney Channel Original Series "Even Stevens" from 2001 to 2003.', 'Nick Spano | Nick Fortunato Spano (born March 16, 1976 in Los Angeles, California) is a former American actor and current acting coach.  Spano is best known for his role as Donnie Stevens in the Disney Channel Original Series "Even Stevens" and Disney Channel Original Movie "The Even Stevens Movie."', 'Fred Meyers | Fred Meyers (born August 8, 1983 in Fort Leavenworth, Kansas) is an American actor.  He is best known for his recurring role as Tom Gribalski in the Disney Channel Original Series "Even Stevens" and the follow-up Disney Channel Original Movie "The Even Stevens Movie".', 'Lauren Frost | Lauren Frost (born May 25, 1985) is an American actress and singer who is best known for her recurring role as Ruby Mendel in the hit Disney Channel Original Series "Even Stevens" and the follow-up Disney Channel Original Movie "The Even Stevens Movie".', 'Good Luck Charlie, It\'s Christmas! | Good Luck Charlie, It\'s Christmas!  (also known as Good Luck Charlie: The Road Trip Movie in the United Kingdom and Ireland) is a 2011 Christmas film based on the Disney Channel Original Series "Good Luck Charlie".  The film was directed by Arlene Sanford and written by Geoff Rodkey, and stars Bridgit Mendler, Leigh-Allyn Baker, Bradley Steven Perry, Mia Talerico, Eric Allan Kramer, and Jason Dolley as the Duncan family.  The Disney Channel Original Movie follows the Duncan family on their road trip to Amy Duncan\'s parents\' house for Christmas.  It premiered on December 2, 2011 on Disney Channel ten years after Disney Channel\'s last Christmas-themed original movie, "\'Twas the Night" in 2001.', 'List of Even Stevens episodes | The following is a list of episodes for the Disney Channel Original Series, "Even Stevens".  The series ran from June 17, 2000 to June 2, 2003 with 65 episodes produced spanning 3 seasons.']
+
+## Generated Outputs
+### reasoning
+The claim contains several distinct assertions: (1) Christopher B. Landon wrote a 2007 movie; (2) this movie stars Shia Saide LaBeouf, an American actor; (3) Shia LaBeouf starred in the Disney Channel series "Even Stevens"; and (4) "Even Stevens" premiered in 2004.
+
+From the notes and context:
+- It is verified that Christopher B. Landon wrote the 2007 movie "Disturbia" (notes [1], context not contradicted).
+- "Disturbia" stars Shia Saide LaBeouf (notes [2]), known as Shia LaBeouf, who is confirmed to be American (notes [3], context [1]).
+- Shia LaBeouf starred as Louis Stevens in "Even Stevens" (notes [4], context [1], [10]).
+- However, "Even Stevens" did not premiere in 2004. Instead, the series aired from June 17, 2000, to June 2, 2003, with the series finale movie airing in June 2003 (notes [5]; context [2], [10]). Therefore, the claim about the premiere date of "Even Stevens" is incorrect.
+
+Thus, the claim is mostly accurate except for the incorrect premiere year of "Even Stevens".
+
+### new_notes
+["Christopher B. Landon wrote the 2007 film 'Disturbia'.", "'Disturbia' stars Shia Saide LaBeouf, an American actor.", "Shia LaBeouf portrayed Louis Stevens in the Disney Channel series 'Even Stevens'.", "'Even Stevens' aired from June 17, 2000, to June 2, 2003, with a series finale movie in 2003, not premiering in 2004."]
+
+### titles
+["Christopher B. Landon and the 2007 Film 'Disturbia'", "Shia LaBeouf's Role in 'Disturbia' and 'Even Stevens'", "Premiere and Air Dates of 'Even Stevens'"]
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Christopher B. Landon', 'Disturbia (film)', 'Shia LaBeouf']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+Goodbye Mr. Mackenzie is a country band with more members than the band that recorded "Make Them Gold".
+
+### notes
+['Goodbye Mr. Mackenzie is a Scottish alternative rock group, not a country band.', '"Make Them Gold" is a song by Scottish synthpop band Chvrches.', 'There is no information available on the number of members in either Goodbye Mr. Mackenzie or Chvrches to verify a comparison.', 'Therefore, the claim that Goodbye Mr. Mackenzie is a country band is contradicted, and the claim that they have more members than the band that recorded "Make Them Gold" cannot be verified.', 'Goodbye Mr. Mackenzie is a Scottish alternative rock group, not a country band.', '"Make Them Gold" is a song by Scottish synthpop band Chvrches.', "Goodbye Mr. Mackenzie's peak line-up consisted of six members: Martin Metcalfe, John Duncan, Fin Wilson, Shirley Manson, Rona Scobie, and Derek Kelly.", 'The number of members in Chvrches is not provided; therefore, it is not possible to verify if Goodbye Mr. Mackenzie has more members than Chvrches.', 'Goodbye Mr. Mackenzie is a Scottish alternative rock group, not a country band, contradicting the claim that they are a country band.', '"Make Them Gold" is a song by Scottish synthpop band Chvrches.', "Goodbye Mr. Mackenzie's peak membership included six members.", 'The number of members in Chvrches is not provided, making it impossible to verify if Goodbye Mr. Mackenzie has more members than Chvrches.']
+
+### context
+['Make Them Gold | "Make Them Gold" is a song by Scottish synthpop band Chvrches from their second studio album, "Every Open Eye".  The song was made available in digital download on May 2016 via Virgin and Goodbye Records.', 'Gun (Chvrches song) | "Gun" is a song by Scottish synth-pop band Chvrches from their 2013 debut album "The Bones of What You Believe".  It was released as the band\'s third official single on 15 June 2013 via Virgin and Goodbye Records.', 'The Mother We Share | "The Mother We Share" is the debut single by Scottish synth-pop band Chvrches from their debut studio album, "The Bones of What You Believe", released in 2013.  The song was re-released exclusively in the United Kingdom on 15 September 2013 by Virgin Records.  The re-release peaked within the top 40 of the UK Singles Chart, reaching number 38 in September 2013.', 'The Bones of What You Believe | The Bones of What You Believe is the debut studio album by Scottish synth-pop band Chvrches, released on 20 September 2013 by Virgin Records and Goodbye Records.  Recorded between 2011 and 2013 in Glasgow, the album was written, composed, and produced by the band as a collaborative effort.  It was made available as both a 12-track standard edition and an 18-track special version, the latter including two extra songs, two remixes and two live videos.  The album was debuted with a launch party broadcast live on music streaming platform Boiler Room.', 'Martin Doherty | Martin Clifford Doherty (born 24 December 1982) is a Scottish multi-instrumentalist and record producer.  He is best known as a member of Glasgow-based electronic trio Chvrches, with whom he has recorded two studio albums.  Prior to forming Chvrches, Doherty was a touring member of the indie rock bands The Twilight Sad and Aereogramme.', 'Every Open Eye | Every Open Eye is the second studio album by Scottish synth-pop band Chvrches, released on 25 September 2015 by Virgin EMI Records and Goodbye Records.  Self-produced, it is the band\'s follow-up to their critically acclaimed debut album, "The Bones of What You Believe" (2013).  The album title comes from a lyric in the song "Clearest Blue".  The album received positive reviews from music critics and was listed on several year-end best-of lists.', 'What To Do About Them | What to Do About Them is a 1992 EP by Boston indie rock band Swirlies.  It was Swirlies\' first release for Taang!  Records and documents the band\'s early material recorded in 1991 and 1992.  The album is mostly made up of songs selected from the their three previous 7" records, as well as previously unreleased material.', 'Iain Cook | Iain Andrew Cook (born 2 November 1974) is a Scottish musician, composer, and record producer who is currently a member of Glasgow-based electronic trio Chvrches.  He played guitar for the Scottish post-rock band Aereogramme until their breakup in 2007.  Cook also composes music for film and television and is a member of the rock band The Unwinding Hours.', 'Nanobots (album) | The album, which contains 25 tracks and runs approximately 45 minutes, was recorded in Manhattan and produced by Patrick Dillett.  The relatively short run time is accounted for by the fact that the album includes many of what band member John Flansburgh describes as "extremely short songs".  Flansburgh adds that "...the songs kind of stand alone.  When you listen to the album alone, it has this manic pacing to it with the short songs.  It makes for a different kind of listening experience."  John Linnell commented that these songs were naturally written as short songs to avoid over-populating them with unnecessary verses and choruses.  This distinguishes them from the "Fingertips" suite of songs under one minute long on "Apollo 18", as those songs were written specifically with brevity in mind, and were described by Linnell as having been "hyper-arranged".', 'Hot Pants (James Brown song) | "Hot Pants (She Got to Use What She Got to Get What She Wants)" is a funk song by James Brown.  Brown recorded the song in 1971 and released it that year as a three-part single on his People Records label, which was then distributed by his primary label King.  It was a number-one R&B hit and reached number fifteen on the pop chart in the U.S. "Hot Pants" was Brown\'s final release under King\'s purview before he (and the People label) moved to Polydor Records.  The song\'s lyrics are an ode to the captivating power of the title garment, which members of the band first saw on their 1970 European tour.']
+
+## Generated Outputs
+### reasoning
+The claim consists of two distinct assertions: (1) that Goodbye Mr. Mackenzie is a country band, and (2) that Goodbye Mr. Mackenzie has more members than the band that recorded "Make Them Gold." According to the notes, Goodbye Mr. Mackenzie is identified as a Scottish alternative rock group, not a country band, which directly contradicts the first assertion. The band Chvrches recorded the song "Make Them Gold," and they are a Scottish synthpop band. Goodbye Mr. Mackenzie’s peak line-up included six members, but the exact number of Chvrches members is not provided in the inputs. Therefore, it is not possible to verify the second claim regarding the member count comparison. The context confirms that "Make Them Gold" is a song by Chvrches but does not provide information about the number of band members for either group. Overall, the first claim is contradicted, and the second cannot be verified due to lack of data.
+
+### new_notes
+['Goodbye Mr. Mackenzie is a Scottish alternative rock group, not a country band, contradicting the claim that they are a country band.', '"Make Them Gold" is a song by Scottish synthpop band Chvrches.', "Goodbye Mr. Mackenzie's peak membership included six members.", 'The number of members in Chvrches is not provided, making it impossible to verify if Goodbye Mr. Mackenzie has more members than Chvrches.']
+
+### titles
+['Goodbye Mr. Mackenzie Band Genre and Membership', '"Make Them Gold" and Chvrches', 'Comparison of Band Membership Numbers']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Goodbye Mr. Mackenzie', 'Make Them Gold']. Documents remaining to be retrieved: ['Chvrches'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

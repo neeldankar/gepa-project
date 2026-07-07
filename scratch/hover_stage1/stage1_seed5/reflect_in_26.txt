@@ -1,0 +1,159 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given a factual `claim` that may involve multiple interconnected facts or named entities (such as people, films, places, products, organizations, historical dates, or other domain-specific items). Together with the claim, you will receive a set of `notes` consisting of partial background information, known details, plus observations that highlight gaps, ambiguities, or contradictions around the claim’s elements.
+
+Your goal is to generate a focused set of one or more `queries` designed to verify or fact-check each component of the claim. These queries will be used to retrieve relevant evidence or documents (e.g., from Wikipedia or other authoritative sources) to confirm or refute the claim.
+
+Key Requirements and Domain-Specific Heuristics:
+
+1. **Entity Disambiguation:**  
+   - Explicitly identify all named entities mentioned in the claim.  
+   - Always disambiguate entities carefully using relevant descriptors, such as: clarifying a film’s release year, a person’s profession or nationality, distinguishing similarly named entities (e.g., “Solo (Norwegian soft drink)” instead of just “Solo”).  
+   - This avoids confusion and ensures queries retrieve targeted, relevant information.
+
+2. **Decompose Complex Claims into Components:**  
+   - If the claim includes multiple assertions (e.g., an actor acted in multiple movies, a director’s involvement, a formation date of a military unit), break it down into multiple specific queries, each verifying one discrete fact.  
+   - Queries should be connected logically, covering the full scope of the claim without leaving holes.
+
+3. **Target Missing, Ambiguous, or Contradictory Information from the Notes:**  
+   - Use the notes to identify what is already known, what is uncertain or missing, and contradictions that must be resolved.  
+   - Formulate queries that directly address these gaps or conflicting points to retrieve clarifying evidence.  
+   - For example, if it’s unclear whether a publication is a book or a magazine article, or exact formation years of military units, or the nationality of a named individual, queries should reflect these specifics.
+
+4. **Cover Every Fact Embedded in the Claim:**  
+   - Ensure your queries collectively verify all factual statements contained in the claim.  
+   - Avoid partial coverage that might retrieve documents relevant to only some parts of the claim.
+
+5. **Precise and Clear Query Formulation:**  
+   - Queries must be explicit, well-structured factual questions or entity-relationship prompts, suitable for document retrieval.  
+   - Avoid vague, overly broad, or open-ended questions.
+
+6. **Include Relevant Domain Context:**  
+   - When necessary, incorporate domain knowledge or contextual clues into the queries.  
+   - For example, when verifying a film claim, specify the film’s release year or director; for geographical entities, specify if a cemetery is within a park; for military units, specify their formation dates and relation to associated conflicts or films.
+
+Generalizable Strategy:
+
+- Carefully read and parse the claim to extract all named entities and discrete fact assertions.  
+- Examine the provided notes thoroughly to uncover what details are confirmed, missing, ambiguous, or contradictory in relation to the claim.  
+- For each factual element and especially for each gap or contradiction, generate a focused, specific question or search prompt to obtain clear supporting or refuting evidence.  
+- Ensure queries are comprehensive and well-targeted to verify the full claim.  
+- Format the final output strictly as one or more `query` lines, with no additional explanation or commentary.
+
+Example Query Patterns:
+
+- For a film claim:  
+  - “Who starred in [Film Name] ([Year])?”  
+  - “Who directed [Film Name] ([Year])?”  
+  - “Is [Person’s Name] an actor in [Film Name] ([Year])?”  
+
+- For a publication claim:  
+  - “What is the publication format and date of [Title] by [Author]?”  
+  - “Is [Publication Name] a periodical or a book publisher?”  
+
+- For geography or burial claims:  
+  - “Where is [Person] buried?”  
+  - “Is [Cemetery Name] located within [Park or Geographic Area]?”  
+
+- For military or historical claims:  
+  - “When was [Military Unit] formed?”  
+  - “What units are featured in [Film or Book Title]?”  
+
+By following these instructions carefully, you will produce precise queries capable of guiding the retrieval of comprehensive, relevant documents to validate or refute complex factual claims.
+
+Input Format:  
+- `claim`: A factual statement with one or more components involving named entities or facts.  
+- `notes`: A list of strings summarizing current knowledge, including unknowns or contradictions.
+
+Output Format:  
+- `query`: One or more explicit, decomposed, and disambiguated search queries targeting factual verifications for each part of the claim.
+
+Remember:  
+- Queries must be factual questions fit for document retrieval.  
+- Always cover all aspects requiring verification.  
+- Disambiguate entities using descriptive context.  
+- Use notes to identify which facts require particular attention.  
+- Structure queries to maximize retrieval precision and relevance.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The movie Midnight Madness was released before the sequel-in-part David Shire composed the score for in 1985.
+
+### notes
+['"Midnight Madness" is a 1980 American comedy film produced by Walt Disney Productions.', 'David Shire composed the score for the 1985 film "Return to Oz", described as a "sequel-in-part" to "The Wizard of Oz".', '"Midnight Madness" was released five years before "Return to Oz" (1980 vs. 1985).', '"Midnight Madness" is a 1980 American comedy film produced by Walt Disney Productions.', '"Return to Oz" is a 1985 fantasy adventure film described as a "sequel-in-part" to "The Wizard of Oz."', 'David Shire composed the score for the 1985 film "Return to Oz."', '"Midnight Madness" was released five years before "Return to Oz" (1980 vs. 1985).', '"Midnight Madness" is a 1980 American comedy film.', 'David Shire composed the score for the 1985 film "Return to Oz."', '"Return to Oz" is described as a "sequel-in-part" to "The Wizard of Oz."', '"Midnight Madness" was released five years before "Return to Oz" (1980 vs. 1985).']
+
+## Generated Outputs
+### reasoning
+The claim states that the movie "Midnight Madness" was released before the "sequel-in-part" film for which David Shire composed the score in 1985. From the notes, we know that "Midnight Madness" is a 1980 film, "Return to Oz" is the 1985 film for which David Shire composed the score, and that this film is described as a sequel-in-part to "The Wizard of Oz." The claim effectively ties "Midnight Madness" (1980) predating "Return to Oz" (1985) for which David Shire composed the score. To verify the full claim, the following key facts need confirmation: the release year of "Midnight Madness," the score composer for "Return to Oz," that "Return to Oz" is considered a sequel-in-part to "The Wizard of Oz," and that "Return to Oz" was released in 1985. Verifying all these ensures the claim's accuracy.
+
+### query
+What year was the movie "Midnight Madness" released?  
+Who composed the musical score for the 1985 film "Return to Oz"?  
+Is the 1985 film "Return to Oz" considered a sequel-in-part to "The Wizard of Oz" (1939 film)?  
+What is the release year of the film "Return to Oz"?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['David Shire', 'Midnight Madness (film)', 'Return to Oz']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+Jay Park left the South Korean music group that Jay Park is a part of, before the release of the group's DVD called "Take Off".
+
+### notes
+['Jay Park was originally a member of the South Korean boy band 2PM.', '2PM released a DVD titled \'1st Japan Tour 2011 "Take Off"\' in November 2011.', "Jay Park left 2PM before the release of the 'Take Off' DVD.", 'Jay Park was originally a member of South Korean boy band 2PM.', 'Jay Park officially left 2PM in early 2010.', '2PM\'s DVD titled \'1st Japan Tour 2011 "Take Off"\' was released in November 2011.', "Jay Park left 2PM before the release of the 'Take Off' DVD.", 'Jay Park was originally a member of South Korean boy band 2PM.', 'Jay Park officially left 2PM in early 2010.', '2PM\'s DVD titled \'1st Japan Tour 2011 "Take Off"\' was released in November 2011.', "Jay Park left 2PM before the release of the 'Take Off' DVD."]
+
+## Generated Outputs
+### reasoning
+The claim states that Jay Park left the South Korean music group he is part of before the release of the group's DVD called "Take Off." The notes provide information identifying the group as 2PM, confirm that 2PM released a DVD titled '1st Japan Tour 2011 "Take Off"' in November 2011, and state that Jay Park left 2PM before the release of this DVD. To verify the claim, the queries should confirm that Jay Park was a member of 2PM, verify when Jay Park left 2PM, and confirm the release date of the DVD called "Take Off" by 2PM.
+
+### query
+Was Jay Park a member of the South Korean boy band 2PM?  
+When did Jay Park leave the South Korean boy band 2PM?  
+When was the DVD titled "1st Japan Tour 2011 'Take Off'" by 2PM released?  
+Did Jay Park leave 2PM before the release of the "Take Off" DVD by 2PM?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['2PM', 'Ultra Lover']. Documents remaining to be retrieved: ['Go Crazy (album)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+A college football game was sponsored by a company based in Memphis. The 2015 Kansas State Wildcats football team was invited to this bowl.
+
+### notes
+['The 2016 Liberty Bowl was played in Memphis, Tennessee, and sponsored by AutoZone, a Memphis-based company.', 'The 2015 Kansas State Wildcats football team was invited to and played in the 2016 Liberty Bowl.', 'In the Liberty Bowl, Kansas State lost to Arkansas.', 'The Liberty Bowl concluded the 2015 FBS football season.', 'The Liberty Bowl is an annual college football bowl game played in Memphis, Tennessee.', 'Since 2004, the Liberty Bowl has been sponsored by AutoZone, a Memphis-based company.', 'The 2016 Liberty Bowl played on January 2, 2016 concluded the 2015 FBS football season.', 'The 2015 Kansas State Wildcats football team was invited to and played in the 2016 Liberty Bowl.', 'The Liberty Bowl is an annual college football bowl game played in Memphis, Tennessee.', 'Since 2004, the Liberty Bowl has been sponsored by AutoZone, a Memphis-based company.', 'The 2016 Liberty Bowl, part of the 2015 FBS football season, was played on January 2, 2016, in Memphis.', 'The 2015 Kansas State Wildcats football team participated in the 2016 Liberty Bowl.', 'AutoZone is an automobile parts and accessories store headquartered in Memphis, Tennessee.']
+
+## Generated Outputs
+### reasoning
+The claim consists of two main components: (1) a college football game was sponsored by a company based in Memphis, and (2) the 2015 Kansas State Wildcats football team was invited to this bowl game. The notes indicate that the Liberty Bowl, an annual college football bowl game played in Memphis, Tennessee, has been sponsored by AutoZone since 2004, and AutoZone is a Memphis-based company. Additionally, the 2015 Kansas State Wildcats football team was indeed invited to and played in the 2016 Liberty Bowl, which concluded the 2015 FBS football season. Thus, verifying the claim requires confirming that the Liberty Bowl is sponsored by a Memphis-based company and confirming the participation of the 2015 Kansas State Wildcats in this particular bowl game. It is important to accurately specify the bowl game (Liberty Bowl), its sponsorship by AutoZone (a Memphis-based company), and the correct season/year relation (2015 team played in the 2016 Liberty Bowl game concluding the 2015 season).
+
+### query
+Who sponsors the Liberty Bowl college football game played in Memphis?  
+Is AutoZone a company based in Memphis?  
+Did the 2015 Kansas State Wildcats football team participate in the 2016 Liberty Bowl?  
+What is the relationship between the 2016 Liberty Bowl and the 2015 college football season?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['2015 Kansas State Wildcats football team', '2016 Liberty Bowl (January)']. Documents remaining to be retrieved: ['AutoZone'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

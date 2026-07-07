@@ -1,0 +1,52 @@
+``` 
+You are provided with three input fields — `claim`, `notes`, and `context` — and your goal is to critically verify and clarify the claim by synthesizing the information within the notes and context.
+
+Inputs:
+- `claim`: A potentially complex, multipart factual statement involving interconnected entities such as people, places, institutions, films, songs, roles, professions, or productions. The claim may contain implicit or explicit assertions needing verification.
+- `notes`: A list of sentences extracted from diverse sources, offering evidence that may support, refute, clarify, or fail to address aspects of the claim. Notes can include corrected misinformation, direct facts, absence of data, or nuanced clarifications.
+- `context`: A list of longer document excerpts or detailed entity descriptions that provide authoritative background and biographical data related to the entities mentioned in the claim. These tend to be richer in information and often named with titles corresponding to the documents or entities.
+
+Task Objective:
+- Decompose the `claim` into its constituent assertions.
+- Systematically cross-reference each assertion against the combined evidence in `notes` and `context`.
+- Identify for each assertion whether it is:
+   - Explicitly supported by verifiable facts,
+   - Contradicted or disproved by evidence,
+   - Or if insufficient information is available (unverified).
+- Aggregate the relevant, non-redundant, and accurate factual information from both `notes` and `context` into a consolidated set of `new_notes`. These new notes should:
+   - Address the components of the claim directly,
+   - Correct inaccuracies or common misconceptions (e.g., confusions between actors and characters, roles versus professions),
+   - Remove duplicate or near-duplicate statements,
+   - Exclude irrelevant or unverifiable information,
+   - Explicitly highlight when no evidence is available for a claim aspect.
+- Compile a list of `titles` — these are the names of the documents or entities from the `context` that were crucial for verifying or clarifying the claim. Titles should correspond exactly to the document/entity names used in the input `context` or commonly recognized key entities related to the claim.
+
+Domain-Specific Knowledge and Considerations:
+- Entities in claims can include:
+   - Musicians: identified by their roles, collaborations, genres.
+   - Films and productions: identified by precise titles, directors, cast, and release info.
+   - Actors, directors, and crew roles: discern carefully and avoid conflating titles, roles, and character names.
+   - Institutions and locations: verify official designations (e.g., public/private university, geographic boundaries).
+- Claims often involve:
+   - Correcting misconceptions or ambiguous phrasing (e.g., distinguishing between a person and a role they played).
+   - Confirming or denying native habitat ranges or attributes for biological species.
+   - Identifying leadership roles in organizations or historical facts about institutions.
+- When encountering absence of evidence or ambiguity in `notes` and `context`, clearly state that no support or refutation is found.
+- Deduplicate near-identical statements from the notes before including them in `new_notes`.
+- Exclude generic or unrelated contextual information irrelevant to the claim's verification.
+
+Generalizable Reasoning Strategy:
+1. Break down the claim into all discrete assertions.
+2. For each assertion:
+   - Scan `notes` for explicit confirmation or contradiction.
+   - Consult `context` for authoritative background supporting or refuting the assertion.
+   - Note when assertions lack sufficient evidence.
+3. Summarize findings into concise, fact-based `new_notes`.
+4. Select the minimal set of `titles` from `context` that contributed key evidence or background relevant to the claim.
+
+Output Format:
+- `new_notes`: A clean, deduplicated list of factual sentences that directly address the claim’s components, each factually accurate and clearly stated.
+- `titles`: A list of strings naming the relevant documents or entities from `context` used during the verification.
+
+Follow these instructions strictly to produce responses that are consistent, factual, comprehensive, and well-grounded in the provided input materials, ensuring clarity over complex, interconnected claims.
+```

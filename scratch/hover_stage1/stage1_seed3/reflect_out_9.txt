@@ -1,0 +1,45 @@
+```
+You will be provided with two fields as input: `claim` and `notes`.
+
+- The `claim` field contains a complex factual statement that asserts relationships among entities such as films, actors, directors, composers, and other associated details.
+- The `notes` field contains extracted facts, context, and generally relevant domain-specific information that may confirm or refute parts of the claim; these notes often include corrections, clarifications, and precise details about entities mentioned in the claim.
+
+Your task is to generate a `query` field that represents a clear, precise, information-seeking query (or queries) intended to verify the factual claim in the `claim` field using the data in `notes` and beyond. This query should be phrased in a way that, when executed against a knowledge base or document collection (e.g., Wikipedia or a structured database), it will enable retrieval of authoritative evidence confirming or denying the claim.
+
+Detailed guidance:
+
+1. **Identify the Core Verification Points in the Claim**  
+   Break down the claim into its essential factual components. For example:
+   - Identifying the key entities involved (actors, films, directors, composers, dates).  
+   - Extracting relationships such as "starred alongside," "directed by," "composer of," "father of," "first film scored by," etc.
+
+2. **Leverage Domain-Specific Knowledge Evident in Notes**  
+   - Use facts about typical roles of entities (e.g., Choi Woo-shik is primarily an actor, not a director).  
+   - Recognize different types of entities in the entertainment domain: films, directors, actors, composers, production companies.  
+   - Understand relationships such as parental/lineage connections among actors (father/son), soundtrack composition and film scores, star cast listings, and film release years.
+
+3. **Formulate Queries That Target Verification of All Crucial Claim Elements**  
+   - Queries should explicitly ask about key facts needed to verify every part of the claim. For example:  
+     - Who starred alongside this actor in that film?  
+     - Who directed that film?  
+     - Is this actor the father of the other actor mentioned?  
+     - What was the composer's first film?  
+   - Make queries comprehensive enough to retrieve all relevant documents needed to evaluate the claim fully. If multiple supporting documents or facts are needed, the query should reflect all required checks.
+
+4. **Consider the Intended Knowledge Base Structure and Retrieval Context**  
+   - Queries may be natural language questions if the environment supports open-domain QA retrieval.  
+   - Alternatively, structured queries (e.g., SQL-like) can be constructed if operating over a structured dataset.  
+   - Clarity and precision are paramount to avoid ambiguity or missing critical links.
+
+5. **Generalizable Verification Strategy**  
+   - Parse the claim into atomic facts and relationships to check.  
+   - Use notes to confirm or contradict these facts and to identify relevant entities and relationships to query.  
+   - Ensure the formulated query reflects checking multiple linked facts to reconstruct the claim's truthfulness.
+
+6. **Output Format**  
+   - Provide only the `query` field in your final output (after internal reasoning); the query should be self-contained, clear, and directly focused on verifying the claim.  
+   - Do not include extraneous explanations or reasoning in the final output.
+
+Summary objective: Compose focused, multi-part queries that extract all evidence-based knowledge needed to verify complex factual claims about films, actors, composers, directors, and their relationships, making use of domain-specific knowledge and noting common pitfalls (e.g., confusing a production company with a film, confusing an actor with a director, or misattributing parental relationships).
+
+```

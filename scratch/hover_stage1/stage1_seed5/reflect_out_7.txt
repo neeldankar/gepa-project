@@ -1,0 +1,78 @@
+``` 
+Task Description:
+
+You will be given a factual `claim` that may involve multiple interconnected facts or named entities (such as people, films, places, products, organizations, historical dates, or other domain-specific items). Together with the claim, you will receive a set of `notes` consisting of partial background information, known details, plus observations that highlight gaps, ambiguities, or contradictions around the claim’s elements.
+
+Your goal is to generate a focused set of one or more `queries` designed to verify or fact-check each component of the claim. These queries will be used to retrieve relevant evidence or documents (e.g., from Wikipedia or other authoritative sources) to confirm or refute the claim.
+
+Key Requirements and Domain-Specific Heuristics:
+
+1. **Entity Disambiguation:**  
+   - Explicitly identify all named entities mentioned in the claim.  
+   - Always disambiguate entities carefully using relevant descriptors, such as: clarifying a film’s release year, a person’s profession or nationality, distinguishing similarly named entities (e.g., “Solo (Norwegian soft drink)” instead of just “Solo”).  
+   - This avoids confusion and ensures queries retrieve targeted, relevant information.
+
+2. **Decompose Complex Claims into Components:**  
+   - If the claim includes multiple assertions (e.g., an actor acted in multiple movies, a director’s involvement, a formation date of a military unit), break it down into multiple specific queries, each verifying one discrete fact.  
+   - Queries should be connected logically, covering the full scope of the claim without leaving holes.
+
+3. **Target Missing, Ambiguous, or Contradictory Information from the Notes:**  
+   - Use the notes to identify what is already known, what is uncertain or missing, and contradictions that must be resolved.  
+   - Formulate queries that directly address these gaps or conflicting points to retrieve clarifying evidence.  
+   - For example, if it’s unclear whether a publication is a book or a magazine article, or exact formation years of military units, or the nationality of a named individual, queries should reflect these specifics.
+
+4. **Cover Every Fact Embedded in the Claim:**  
+   - Ensure your queries collectively verify all factual statements contained in the claim.  
+   - Avoid partial coverage that might retrieve documents relevant to only some parts of the claim.
+
+5. **Precise and Clear Query Formulation:**  
+   - Queries must be explicit, well-structured factual questions or entity-relationship prompts, suitable for document retrieval.  
+   - Avoid vague, overly broad, or open-ended questions.
+
+6. **Include Relevant Domain Context:**  
+   - When necessary, incorporate domain knowledge or contextual clues into the queries.  
+   - For example, when verifying a film claim, specify the film’s release year or director; for geographical entities, specify if a cemetery is within a park; for military units, specify their formation dates and relation to associated conflicts or films.
+
+Generalizable Strategy:
+
+- Carefully read and parse the claim to extract all named entities and discrete fact assertions.  
+- Examine the provided notes thoroughly to uncover what details are confirmed, missing, ambiguous, or contradictory in relation to the claim.  
+- For each factual element and especially for each gap or contradiction, generate a focused, specific question or search prompt to obtain clear supporting or refuting evidence.  
+- Ensure queries are comprehensive and well-targeted to verify the full claim.  
+- Format the final output strictly as one or more `query` lines, with no additional explanation or commentary.
+
+Example Query Patterns:
+
+- For a film claim:  
+  - “Who starred in [Film Name] ([Year])?”  
+  - “Who directed [Film Name] ([Year])?”  
+  - “Is [Person’s Name] an actor in [Film Name] ([Year])?”  
+
+- For a publication claim:  
+  - “What is the publication format and date of [Title] by [Author]?”  
+  - “Is [Publication Name] a periodical or a book publisher?”  
+
+- For geography or burial claims:  
+  - “Where is [Person] buried?”  
+  - “Is [Cemetery Name] located within [Park or Geographic Area]?”  
+
+- For military or historical claims:  
+  - “When was [Military Unit] formed?”  
+  - “What units are featured in [Film or Book Title]?”  
+
+By following these instructions carefully, you will produce precise queries capable of guiding the retrieval of comprehensive, relevant documents to validate or refute complex factual claims.
+
+Input Format:  
+- `claim`: A factual statement with one or more components involving named entities or facts.  
+- `notes`: A list of strings summarizing current knowledge, including unknowns or contradictions.
+
+Output Format:  
+- `query`: One or more explicit, decomposed, and disambiguated search queries targeting factual verifications for each part of the claim.
+
+Remember:  
+- Queries must be factual questions fit for document retrieval.  
+- Always cover all aspects requiring verification.  
+- Disambiguate entities using descriptive context.  
+- Use notes to identify which facts require particular attention.  
+- Structure queries to maximize retrieval precision and relevance.
+```

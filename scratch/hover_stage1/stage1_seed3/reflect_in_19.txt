@@ -1,0 +1,102 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given two input fields:  
+- `claim`: a statement asserting certain facts or relationships about entities, including genre classifications, character roles, temporal orderings, or member counts of groups/bands.  
+- `notes`: a list of factual sentences or extracted information pieces relevant to the claim, often providing partial evidence or clarifications about entities, their attributes, and relationships.
+
+Your task is to produce a single output field:  
+- `query`: a clear, concise, and targeted question (or set of closely related questions) designed to retrieve the missing or confirming factual information needed to verify or refute the `claim`.  
+
+The `query` should focus on:  
+- Confirming exact classifications or categories (e.g., movie genres, band genres).  
+- Clarifying membership counts or comparisons between groups.  
+- Establishing temporal relations or event sequences (e.g., release dates).  
+- Disambiguating entities with similar names or verifying the presence or role of a character or individual in a given work.  
+
+Strategies and considerations for generating the `query`:  
+1. Analyze the `claim` carefully to identify key factual points or comparisons that require verification.  
+2. Leverage the `notes` to understand which aspects of the claim are supported or contradicted, and which remain uncertain or missing.  
+3. Formulate the `query` to explicitly seek the missing information or clarification necessary to decide the truth of the claim. Avoid overly broad or vague queries—focus on the minimal but sufficient question(s) to confirm or refute the claim.  
+4. When the claim involves multiple entities or facts, and the notes partially cover these, include all relevant verification points in the `query`.  
+5. Maintain the specificity of entities by including relevant context in the `query` (e.g., include years for movies, full names for bands or characters).  
+
+Domain-specific notes that might not be explicitly known by the assistant but are useful for query formulation:  
+- Movie genre classifications can be nuanced, with some movies emphasizing family, comedy, adventure, or action genres to varying degrees.  
+- Voice actor roles often need precise linking to specific film releases and characters.  
+- Band classifications can vary between musical genres, and member counts are important quantitative facts for comparison claims.  
+- Temporal comparisons often hinge on release dates of movies or events and require clear references to those dates in queries.  
+- Entity disambiguation can require specifying the version or year of a movie or release to avoid confusion.  
+
+The ultimate goal is to produce a `query` that, when used to retrieve or check factual documents, will provide the exact information needed to confirm or deny the `claim`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+A participant in the summer 2013 Big Ten Conference football season was led by Kevin Reece Wilson. He is the current offensive coordinator at Ohio State.
+
+### notes
+['Kevin Reece Wilson was the head coach of the Indiana Hoosiers football team during the 2013 Big Ten Conference football season.', 'Indiana Hoosiers participated in the 2013 Big Ten football season with Kevin Wilson as head coach.', 'Kevin Wilson is currently the offensive coordinator at Ohio State University.', "In 2013, Wilson was not Ohio State's offensive coordinator, but Indiana’s head coach.", 'Kevin Reece Wilson was the head coach of the Indiana Hoosiers football team during the 2013 Big Ten Conference football season.', 'Wilson led Indiana in 2013, which participated in the Big Ten Conference.', 'Wilson has been Indiana head coach from 2011 through 2016.', 'Kevin Reece Wilson is currently the offensive coordinator at Ohio State University.', "Wilson was not Ohio State's offensive coordinator in 2013; he held that role later.", 'Kevin Reece Wilson was the head coach of the Indiana Hoosiers football team during the 2013 Big Ten Conference football season.', 'Indiana Hoosiers participated in the 2013 Big Ten Conference football season under head coach Kevin Wilson.', "Kevin Wilson served as Indiana's head coach from 2011 through 2016.", 'Kevin Wilson is currently the offensive coordinator at Ohio State University but was not in this role in 2013.']
+
+## Generated Outputs
+### reasoning
+The claim states that during the summer 2013 Big Ten Conference football season, a team was led by Kevin Reece Wilson and that he is the current offensive coordinator at Ohio State. To verify this, we need to confirm two things: (1) Kevin Reece Wilson's role in the 2013 Big Ten football season—specifically which team he was coaching and in what capacity, and (2) whether he currently serves as the offensive coordinator for Ohio State football.
+
+### query
+Was Kevin Reece Wilson a coach for any team during the 2013 Big Ten Conference football season, and if so, what position did he hold? Additionally, is Kevin Reece Wilson currently the offensive coordinator for the Ohio State football team?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['2013 Indiana Hoosiers football team', 'Kevin Wilson (American football)']. Documents remaining to be retrieved: ['2013 Big Ten Conference football season'].
+
+
+
+# Example 2
+## Inputs
+### claim
+An actor that was in the Wonder Woman (2017 film) of the action adventure genre, performed in Anomalisa after the premier of Fargo.
+
+### notes
+["David Thewlis acted in the 2017 film 'Wonder Woman.'", "He provided voice work in the film 'Anomalisa' released in 2015.", "David Thewlis played antagonistic roles in the third season of the TV series 'Fargo,' which aired after 2015.", "Therefore, his performance in 'Anomalisa' occurred before his involvement in 'Fargo.'", "The claim that an actor from 'Wonder Woman' performed in 'Anomalisa' after the premiere of 'Fargo' is incorrect.", "David Thewlis acted in the 2017 action-adventure film 'Wonder Woman.'", "'Anomalisa', featuring David Thewlis' voice work, was released in 2015.", "The third season of 'Fargo,' with David Thewlis, aired after 2015.", "David Thewlis' performance in 'Anomalisa' occurred before his role in 'Fargo'.", "Thus, the claim stating the actor performed in 'Anomalisa' after 'Fargo' is incorrect.", "David Thewlis acted in the 2017 action-adventure film 'Wonder Woman.'", "'Anomalisa', featuring David Thewlis' voice work, was released in December 2015.", "The third season of the TV series 'Fargo,' which included David Thewlis, aired after 2015.", "David Thewlis' performance in 'Anomalisa' occurred before his role in 'Fargo'.", "Thus, the claim that an actor from 'Wonder Woman' performed in 'Anomalisa' after the premiere of 'Fargo' is incorrect."]
+
+## Generated Outputs
+### reasoning
+The claim states that an actor from the 2017 action adventure film 'Wonder Woman' performed in 'Anomalisa' after the premiere of 'Fargo.' From the notes, David Thewlis acted in 'Wonder Woman' (2017), did voice work for 'Anomalisa' in 2015, and performed in 'Fargo' season 3, which aired after 2015. Since 'Anomalisa' was released before 'Fargo,' the actor's performance in 'Anomalisa' happened prior to the 'Fargo' series premiere. Therefore, the claim conflicts with the chronological facts provided.
+
+### query
+Which actor in the 2017 film 'Wonder Woman' performed in 'Anomalisa,' and what are the release dates of 'Anomalisa' and the premiere dates of the 'Fargo' season(s) in which that actor performed? Specifically, did the actor's performance in 'Anomalisa' occur before or after the premiere of 'Fargo'?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['David Thewlis', 'Wonder Woman (2017 film)']. Documents remaining to be retrieved: ['Fargo (TV series)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+His screenplay of the film The Night Hunter was based on a novel. the writer and Nelly Sachs have not both won a Nobel Prize in Literature.
+
+### notes
+['The screenplay of the film The Night of the Hunter (1955), written by James Agee, was based on the 1953 novel by Davis Grubb.', 'James Agee, the screenplay writer for The Night of the Hunter, did not win the Nobel Prize in Literature.', 'Nelly Sachs is a Nobel Prize in Literature laureate, but she and the writer of The Night of the Hunter screenplay have not both won the prize.', 'The screenplay of the 1955 film The Night of the Hunter was written by James Agee and was based on the 1953 novel by Davis Grubb.', 'James Agee did not win the Nobel Prize in Literature.', 'Nelly Sachs is a Nobel Prize in Literature laureate.', 'James Agee and Nelly Sachs have not both won the Nobel Prize in Literature.', 'The screenplay of the 1955 film The Night of the Hunter was written by James Agee and was based on the 1953 novel by Davis Grubb.', 'James Agee did not win the Nobel Prize in Literature.', 'Nelly Sachs is a Nobel Prize in Literature laureate.', 'James Agee and Nelly Sachs have not both won the Nobel Prize in Literature.']
+
+## Generated Outputs
+### reasoning
+The claim makes two assertions: first, that the screenplay of the film "The Night Hunter" was based on a novel, and second, that neither the writer of that screenplay nor Nelly Sachs has won a Nobel Prize in Literature. To verify the first part, we need to confirm if the screenplay of "The Night Hunter" is indeed adapted from a novel. For the second part, we need to establish the identity of the screenplay writer of "The Night Hunter" and check if this person or Nelly Sachs has ever been awarded the Nobel Prize in Literature.
+
+### query
+Was the screenplay of the film "The Night Hunter" based on a novel? Who wrote the screenplay for "The Night Hunter"? Has the writer of the screenplay for "The Night Hunter" ever won the Nobel Prize in Literature? Has Nelly Sachs ever won the Nobel Prize in Literature?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['The Night of the Hunter (film)']. Documents remaining to be retrieved: ['James Agee', 'Nelly Sachs'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

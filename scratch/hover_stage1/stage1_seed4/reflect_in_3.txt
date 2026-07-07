@@ -1,0 +1,85 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given the fields `claim`, `notes`, produce the fields `query`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The player who was defeated by Johan Kriek in the 1982 Australian Open – Men's Singles and Albert Costa are both sportsmen, and one of them, Costa, began competing at the age of five.
+
+### notes
+["Steve Denton was the player defeated by Johan Kriek in the 1982 Australian Open Men's Singles final.", 'Albert Costa is a tennis player who began playing tennis at age five.', 'Both Steve Denton and Albert Costa are professional tennis players.', "Steve Denton was defeated by Johan Kriek in the 1982 Australian Open Men's Singles final.", 'Albert Costa is a professional tennis player who began playing tennis at age five.', 'Both Steve Denton and Albert Costa are professional tennis players.', "Steve Denton was defeated by Johan Kriek in the 1982 Australian Open Men's Singles final.", 'Albert Costa is a professional tennis player who began playing tennis at age five.', 'Both Steve Denton and Albert Costa are professional tennis players.']
+
+## Generated Outputs
+### reasoning
+The claim involves two parts: first, identifying the player defeated by Johan Kriek in the 1982 Australian Open Men's Singles, and confirming that both he and Albert Costa are sportsmen. The second part is the specific claim that Albert Costa began competing at the age of five. To fact-check this, we need to verify the identity of the player defeated by Johan Kriek in the 1982 Australian Open men's singles final, confirm that both that player and Albert Costa are sportsmen, and confirm Albert Costa's starting age in competitive sports.
+
+### query
+Who was the player defeated by Johan Kriek in the 1982 Australian Open Men's Singles? Are both that player and Albert Costa considered sportsmen? At what age did Albert Costa begin competing in his sport?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ["1982 Australian Open – Men's Singles", 'Albert Costa', 'Steve Denton']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+The TV series where the actor played the character Gaius Baltar joined in 2010. premiered on July 18, 2006. The serie was premiered on July 18, 2006.
+
+### notes
+["James Callis played Dr. Gaius Baltar in the re-imagined 'Battlestar Galactica' series.", "'Battlestar Galactica' re-imagined series premiered on July 18, 2006.", "James Callis joined the cast of 'Eureka' in 2010, which is a different TV series.", "The 2010 date does not refer to 'Battlestar Galactica' but to 'Eureka'.", "James Callis played the character Gaius Baltar in the re-imagined 'Battlestar Galactica' TV series.", "'Battlestar Galactica' (re-imagined series) premiered on July 18, 2006.", "James Callis joined the cast of 'Eureka' in 2010, which is a separate television series.", "The 2010 joining date refers to James Callis's involvement in 'Eureka', not to 'Battlestar Galactica'.", "The TV series 'Battlestar Galactica', featuring James Callis as Gaius Baltar, premiered on July 18, 2006.", "James Callis joined 'Eureka' in 2010, which is unrelated to his role in 'Battlestar Galactica'.", "The claim incorrectly links the 2010 joining date with 'Battlestar Galactica' when it actually applies to 'Eureka'.", "No information supports that the 'Battlestar Galactica' series with Gaius Baltar began in 2010."]
+
+## Generated Outputs
+### reasoning
+The claim contains conflicting information about the TV series where the actor played the character Gaius Baltar. It states that the series "joined in 2010" but also that it premiered on July 18, 2006. These two pieces of information contradict each other, so the query should aim to clarify the correct premiere date of the TV series featuring the character Gaius Baltar.
+
+### query
+What is the premiere date of the TV series featuring the character Gaius Baltar?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Gaius Baltar', 'James Callis']. Documents remaining to be retrieved: ['Eureka (U.S. TV series)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Chess is more popular around the world than a game designed by Leo Colovini.
+
+### notes
+['Leo Colovini is an Italian board game designer, best known for Cartagena.', 'Chess has broad global popularity and historical significance.', 'Chess is recognized as a major sport in countries like Azerbaijan.', "There is no evidence that Cartagena or any other Leo Colovini game matches chess's worldwide popularity.", 'Leo Colovini is an Italian board game designer known mainly for Cartagena and other strategy games.', 'Chess has a vast global presence and is recognized as a major competitive and cultural activity worldwide.', 'Games designed by Leo Colovini have niche popularity within board gaming communities but lack wide international recognition.', 'There is no indication that any Colovini game has the global reach or player base comparable to chess.', 'Chess variants and similar abstract strategy games exist but do not overshadow the popularity of chess itself.', 'Chess has a deep historical and cultural significance worldwide, with organized clubs, professional players, and international tournaments.', "Leo Colovini's games such as Cartagena and Clans are well regarded in strategy game circles but do not have comparable global visibility or reach.", "Chess's presence extends into various countries and cultures as a competitive sport and pastime, unlike Colovini's games which remain niche.", "No data or sources suggest any Colovini game matches chess's extensive global player base or cultural prominence."]
+
+## Generated Outputs
+### reasoning
+Chess is one of the most widely recognized and played games globally, with a long history and international presence. Leo Colovini is a known game designer, but it is unlikely that any game designed by him matches the worldwide popularity and recognition of chess. To verify this, one should check the global popularity metrics of chess compared to any specific game designed by Leo Colovini.
+
+### query
+SELECT GameName, GlobalPopularityRank 
+FROM GamesPopularity 
+WHERE Designer = 'Leo Colovini' 
+ORDER BY GlobalPopularityRank ASC 
+LIMIT 1;
+
+SELECT 'Chess' AS GameName, GlobalPopularityRank 
+FROM GamesPopularity 
+WHERE GameName = 'Chess';
+
+-- Compare the popularity ranks or numbers for chess and the top Colovini-designed game to confirm that chess is more popular.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Cartagena (board game)', 'Leo Colovini']. Documents remaining to be retrieved: ['Chess'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

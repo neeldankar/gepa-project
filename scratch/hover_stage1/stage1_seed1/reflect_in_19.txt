@@ -1,0 +1,179 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You are tasked with a focused fact verification and evidence consolidation task, where you analyze three types of inputs—`claim`, `notes`, and `context`—to produce two outputs: `new_notes` and `titles`. The `claim` is a textual statement possibly containing multiple factual assertions that need verification. The `notes` are often extracted snippets, paraphrases, or partial evidences relevant to the claim, while the `context` comprises longer document texts or summaries potentially containing detailed source information related to entities, events, timelines, or attributes mentioned in the claim.
+
+Your overarching goal is to verify or refute each distinct component of the claim by synthesizing and consolidating information from both `notes` and `context`, avoiding redundancy, speculation, or irrelevant content.
+
+---
+
+Detailed Guidelines and Domain-Specific Considerations:
+
+1. **Input Structure and Understanding**  
+   - **claim**: A statement consisting of one or more assertions (e.g., about persons, events, dates, geographic locations, product characteristics, filmographies, or comparative facts).  
+   - **notes**: Fragmented facts, paraphrases, or extracted evidences that may partially support or contradict the claim. This input can contain redundancy.  
+   - **context**: Summaries or full-text snippets from diverse documents that may provide authoritative or more detailed information on the claim’s subjects.
+
+2. **Verification Approach and Reasoning Strategy**  
+   - Parse the claim into discrete assertions where possible and address each individually.  
+   - Map claim elements (entities, dates, events, attributes) to facts in both `notes` and `context`.  
+   - Cross-verify facts by probing both inputs together to spot confirmations, contradictions, or missing information.  
+   - Explicitly note when parts of the claim cannot be verified because critical information about entities, events, or attributes is absent from both inputs.  
+   - For geographic, historical, biographical, or product-related facts, use explicit details only—avoid assumptions or inference beyond the data given.  
+   - When multiple entities or facts overlap (e.g., multiple actors in movies, overlapping dates, competing geographic references), carefully separate which parts are supported and which are not.
+
+3. **Consolidation of `new_notes`**  
+   - Remove redundancy by combining similar or repeated facts into succinct, clear statements—preferably one or two sentences each.  
+   - Focus exclusively on information directly relevant to verifying the claim’s assertions, omitting irrelevant tangents or unrelated domain facts.  
+   - Clarify precisely which elements of the claim are supported, contradicted, or unverifiable.  
+   - If verification is impossible due to missing data or ambiguity, clearly state this instead of speculating.  
+   - Maintain factual accuracy and align notes closely with evidence found in the inputs.
+
+4. **Creation of `titles`**  
+   - Generate concise, descriptive headings that summarize key topics, entities, or factual relationships uncovered during verification.  
+   - Titles should be domain-relevant and reflect the organizing principles of your notes (e.g., names of persons, film titles with dates, product or geographic features, timeline relations).  
+   - They serve as topical indexes for the summarized evidences and facilitate quick understanding of verification focuses.
+
+5. **Domain-Specific Knowledge Embedded in the Task**  
+   - Common facts relate to soft drink brands, flavor profiles, and geographic market presence.  
+   - Biographical facts include film directors, voice actors, release years, animation movie titles, and actor nationalities.  
+   - Geographic comparisons, including city versus county boundaries, size, and jurisdictional status, are frequent.  
+   - Product ownership or company-railway station relations may appear, requiring careful geographic and corporate structure reasoning.  
+   - Scientific or technical terms (e.g., chemical or biological entities) may appear but are often not central to verification.
+
+6. **Generalizable Reasoning and Workflow**  
+   - Identify key components (entities, events, dates) in the claim first.  
+   - Search both `notes` and `context` for explicit assertions tied to these components.  
+   - Distill duplicated claims and reconcile contradictions; produce a coherent evaluation per factual assertion.  
+   - Explicitly separate verifiable from unverifiable or contradicted claim parts in `new_notes`.  
+   - Group related notes under thematic headings synthesized as `titles`.
+
+7. **Handling Missing or Conflicting Data**  
+   - When the claim contains information about an entity or event absent in all inputs, clearly note that verification is not possible.  
+   - If parts are verifiable but others are unsupported, separately highlight these distinctions.  
+   - Avoid speculation or implied connections not grounded in provided evidence.
+
+---
+
+Summary:
+
+Your task is a meticulous, evidence-based fact-checking and summarization exercise that integrates fragmented inputs into a concise, focused verification dossier. Your outputs must be:
+
+- **`new_notes`**: A reduced, clear, and precise list of facts confirming, contradicting, or indicating unverifiability of the claim’s components based on the complete input set.  
+- **`titles`**: A concise list of relevant topical headings that summarize and organize the key subjects, entities, or relationships essential to understanding the verification outcome.
+
+This task requires strict adherence to evidence, careful parsing of multi-part claims, clear handling of data absence or contradiction, and domain-aware synthesis of facts to aid downstream understanding or retrieval tasks.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The French star of The Cutting Edge voiced a character in an animated 1994 film. She voiced the character named Nala.
+
+### notes
+["The character Nala in Disney's 1994 animated film The Lion King was voiced by American actress Moira Kelly (adult), Niketa Calame (young speaking voice), and singers Laura Williams and Sally Dworsky; no French voice actress is identified for Nala.", 'No information in the context or notes links any French star of The Cutting Edge to voicing Nala or any character in the 1994 animated film.', 'The 1994 animated film featuring Nala is The Lion King; voice actors for Nala are American, and none are indicated as French or related to The Cutting Edge.', 'The claim that a French star of The Cutting Edge voiced Nala in a 1994 animated film is not supported or verifiable based on the given data.', "Nala is a character voiced by American actresses Moira Kelly (adult voice) and Niketa Calame (young speaking voice) in Disney's 1994 animated film 'The Lion King'.", 'The singing voices for Nala were provided by Laura Williams and Sally Dworsky; none of these voice actors are French.', "No information links any French star of 'The Cutting Edge' to voicing Nala or any character in the 1994 animated film 'The Lion King'.", "The claim that a French star of 'The Cutting Edge' voiced Nala in the 1994 animated film is not supported or verifiable based on the available evidence.", "The character Nala in Disney's 1994 animated film The Lion King was voiced by American actress Moira Kelly (adult voice) and Niketa Calame (young speaking voice), with singing voices by Laura Williams and Sally Dworsky; no French voice actor is associated with Nala.", 'No evidence links any French star of the film The Cutting Edge to voicing Nala or any character in the 1994 animated film The Lion King or any other 1994 animated film.', 'The claim that a French star from The Cutting Edge voiced Nala in a 1994 animated film is unsubstantiated by the available evidence.']
+
+### context
+['Nala (Disney) | Nala is a fictional lioness, a character who appears in the Disney "Lion King" franchise.  Introduced in the animated film "The Lion King" in 1994, Nala subsequently appears as a less prominent character in the film\'s sequels "" (1998) and "The Lion King 1½" (2004).  In the original film, the adult Nala was voiced by American actress Moira Kelly.  Young Nala\'s speaking voice is provided by actress Niketa Calame, while singers Laura Williams and Sally Dworsky provide the singing voices of young and adult Nala respectively.', 'Aladdin (Disney character) | Aladdin is a fictional character and the protagonist of Disney\'s 1992 animated feature film "Aladdin", and its two direct-to-video sequels "The Return of Jafar" (1994) and "Aladdin and the King of Thieves" (1996).  He also stars in the animated television series based on the film.  In all animated productions, Aladdin is voiced by American actor Scott Weinger, while his singing voice is provided by Brad Kane.  Mena Massoud is set to play a live-action version of the character in a live action adaptation of the 1992 film.', 'The Madness of King Scar | "The Madness of King Scar" is a song written by composer Elton John and lyricist Tim Rice, which premiered in the musical "The Lion King", a stage adaptation of Disney\'s 1994 animated film of the same name.  Originally recorded and storyboarded for the movie, it was removed from the final version.  Media outlets believed the decision to exclude the song was based on its explicit references to sexuality.  "The Madness of King Scar" had been added to the musical along with two other songs.  It is one of two tracks that more prominently features vocals from the character Nala.  The title is a reference to the 1994 film "The Madness of King George".', 'Scar (Disney) | Scar is a fictional character who appears in Walt Disney Pictures\' 32nd animated feature film "The Lion King" (1994).  The character is voiced by English actor Jeremy Irons, while his singing voice is provided by both Irons and American actor Jim Cummings, the latter of whom was hired to replace Irons when the former damaged his singing voice.  Subsequently, Scar makes minor appearances in the film\'s sequel " "(1998) and "The Lion King 1½ "(2004), in both of which he is voiced entirely by Cummings, as well as appearing in the Broadway musical adaptation of the film, in which the role of Scar was originated by American actor John Vickery.', 'Gérard Hernandez | Gérard Hernandez (born January 20, 1933) is a Spanish-born French film, television and voice actor.  He was born in Valladolid, Spain and was naturalized French only in 1975.  He is mostly famous for his mustache and for having voiced several cartoon characters, including Gonzo in the French dubbed version of "The Muppet Show", Professor Moriarty in the French dubbed version of "Sherlock Hound", Papa Smurf and Grouchy Smurf in the French dubbed version of "The Smurfs" (1981) and the film of the same name.', 'I Just Can\'t Wait to Be King | "I Just Can\'t Wait to Be King" is a song from Disney\'s 1994 animated film, "The Lion King".  With music by Elton John and words written by Tim Rice, the song is performed by the characters of Simba (Jason Weaver), Nala (Laura Williams) and Zazu (Rowan Atkinson) in the film.', 'The King of Paris (1930 French-language film) | The King of Paris (French: Le roi de Paris) is a 1930 French-German film directed by Leo Mittler and starring Iván Petrovich, Marie Glory and Pierre Batcheff.  It is the French-language version of the German film "The King of Paris", part of a trend of making multi-language versions during the early years of sound.', "Mia and the Migoo | Mia and the Migoo (French: Mia et le Migou , Italian: Mià e il Migù ) is a 2008 French-Italian animated film produced by Folimage and directed by Jacques-Rémy Girerd.  The film is about a young girl's search for her father in a tropical paradise, threatened by the construction of a gigantic hotel resort.  The English version stars the voices of Whoopi Goldberg, Matthew Modine, Wallace Shawn, James Woods, John DiMaggio, and Amanda Misquez.  The film won the European Film Award for Best Animated Feature at the 22nd European Film Awards.  The English version a limited released in the United States on 27 March 2011 and opened to generally mixed critical reviews.", 'The End of Pinky | The End of Pinky is a 2013 stereoscopic National Film Board of Canada animated short directed by Claire Blanchet, based on a short story of the same name by Heather O\'Neill.  Described by the director as an "animated film noir set in a dream-like version of Montreal\'s Red Light District," the film is narrated in its English version by O\'Neill and in French by Quebec actor Marc-André Grondin.  Music for the film was composed by Genevieve Levasseur.  O\'Neill\'s story was originally published in the 2008 January–February edition of "The Walrus".  The film had its world premiere on September 11 in the Short Cuts Canada Programme of the 2013 Toronto International Film Festival.', 'Philippe Peythieu | Philippe Peythieu (born 25 September 1950) is a French comedian.  He specialises in dubbing, and is especially known for providing the voice of Homer Simpson in the French version of the animated series "The Simpsons".  He has also regularly voiced the actor Danny DeVito since the film "Batman Returns".']
+
+## Generated Outputs
+### reasoning
+The claim states two assertions: first, that a French star of The Cutting Edge voiced a character in an animated 1994 film; second, that the character voiced was named Nala. The context provides detailed information about the character Nala in Disney's 1994 animated film The Lion King, including voice actors, but it clearly identifies the adult Nala as voiced by American actress Moira Kelly, the young Nala speaking voice by Niketa Calame, and singing voices by Laura Williams and Sally Dworsky. None are noted as French or connected to The Cutting Edge (a separate film not detailed here). There is no information linking any French star or any actor from The Cutting Edge to voicing Nala or any character in The Lion King or any other 1994 animated film. The notes contain no relevant data. Therefore, the claim cannot be verified: the specific French star from The Cutting Edge is not mentioned, and Nala’s voice actors in the 1994 animation are not French nor linked to The Cutting Edge. The claim’s elements are unsupported by the provided information.
+
+### new_notes
+["The character Nala in Disney's 1994 animated film The Lion King was voiced by American actress Moira Kelly (adult), Niketa Calame (young speaking voice), and singers Laura Williams and Sally Dworsky; no French voice actress is identified for Nala.", 'No information in the context or notes links any French star of The Cutting Edge to voicing Nala or any character in the 1994 animated film.', 'The 1994 animated film featuring Nala is The Lion King; voice actors for Nala are American, and none are indicated as French or related to The Cutting Edge.', 'The claim that a French star of The Cutting Edge voiced Nala in a 1994 animated film is not supported or verifiable based on the given data.']
+
+### titles
+['Nala Voice Actors in The Lion King (1994)', 'Absence of French Voices Related to The Cutting Edge in 1994 Animation']
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Moira Kelly', 'The Cutting Edge', 'The Lion King'].
+
+
+
+# Example 2
+## Inputs
+### claim
+1969 saw the founding of the Canadian baseball team where the future manager played from 1973-87. He managed the Tampa Bay Devil Rays season.
+
+### notes
+['The Montreal Expos, a Canadian Major League Baseball team, were founded in 1969 as the first MLB franchise located outside the United States.', 'The Montreal Expos played from 1969 to 2004 before relocating and becoming the Washington Nationals.', 'No information in the provided sources confirms that a future manager played for the Expos from 1973 to 1987.', 'No evidence is found to verify that such a manager managed the Tampa Bay Devil Rays.', 'The Montreal Expos, the first Canadian Major League Baseball team, were founded in 1969.', 'No evidence confirms that any future Tampa Bay Devil Rays manager played for the Montreal Expos between 1973 and 1987.', 'Joe Maddon, Lou Piniella, and Hal McRae have managed the Tampa Bay Devil Rays but none played for the Expos during 1973-87.', 'Several players have played both for the Montreal Expos and Tampa Bay Devil Rays, but none fit the timeframe and managerial claim.', 'The claim that the future manager played from 1973 to 1987 for the Canadian team and then managed the Tampa Bay Devil Rays is unsupported by the provided information.', 'The Montreal Expos were founded in 1969 as the first Canadian Major League Baseball team.', 'No evidence shows that a future Tampa Bay Devil Rays manager played for the Montreal Expos from 1973 to 1987.', 'Joe Maddon, Lou Piniella, and Hal McRae managed the Tampa Bay Devil Rays, but none played for the Expos during 1973-87.', 'Several players appeared for both Montreal Expos and Tampa Bay Devil Rays, but none fit the timeline or became Devil Rays managers as claimed.', 'The claim that the future manager played from 1973 to 1987 for the Canadian team and then managed the Tampa Bay Devil Rays is unsupported by the provided information.']
+
+### context
+['Al Reyes | Rafael Alberto "Al" Reyes (born April 10, 1970) is a former Major League Baseball pitcher.  A right-handed pitcher and career reliever, he played for seven teams; debuting on April 27, 1995, with the Milwaukee Brewers and playing for the Baltimore Orioles, Los Angeles Dodgers, Pittsburgh Pirates, New York Yankees, St. Louis Cardinals, and Tampa Bay Devil Rays/Rays, over the years.  He was originally drafted by the Montreal Expos in .', 'Pete Laforest | Pierre-Luc "Pete" Laforest (born January 27, 1978) is a former professional baseball catcher and was the first manager of the Trois-Rivières Aigles (Can-Am).  He is a graduate of Fort Scott Community College.  He was a draft pick of the Montreal Expos, but has also played for the Tampa Bay Devil Rays, the San Diego Padres, and the Philadelphia Phillies.  He was part of Team Canada at the 2004 Summer Olympics and 2006 World Baseball Classic.', 'Brendan Harris | Brendan Michael Harris (born August 26, 1980) is an American retired professional baseball infielder.  He played in Major League Baseball for the Chicago Cubs, Montreal Expos/Washington Nationals, Cincinnati Reds, Tampa Bay Devil Rays, Minnesota Twins and Los Angeles Angels of Anaheim.', 'Geoff Blum | Geoffrey Edward Blum (born April 26, 1973) is an American former professional baseball infielder in Major League Baseball and current part-time announcer for the Houston Astros.  During his major-league career, he played for the Montreal Expos, Houston Astros, Tampa Bay Devil Rays, San Diego Padres, Chicago White Sox and Arizona Diamondbacks.  As a member of the World Series Champion White Sox in 2005, he hit the game-deciding home run in the longest contest in the history of the Fall Classic.', 'Jeff Liefer | Jeffrey Dale Liefer (born August 17, 1974 in Fontana, California) is a former Major League Baseball first baseman and outfielder.  He was drafted in the first round of the 1995 Major League Baseball Draft by the Chicago White Sox.  Liefer has played for the White Sox, Montreal Expos, Tampa Bay Devil Rays, Milwaukee Brewers, and the Cleveland Indians.', "List of Washington Nationals managers | The Washington Nationals are an American professional baseball franchise based in Washington, D.C.  They are members of the National League (NL) East Division in Major League Baseball (MLB).  The team began playing in as an expansion team in Montreal, Quebec, then known as the Montreal Expos.  There have been 16 different managers in their franchise's history.  The team has played their home games at the Nationals Park since 2008.  The Nationals are owned by Ted Lerner, with Mike Rizzo as their general manager.", 'List of Washington Nationals no-hitters | The Washington Nationals are a Major League Baseball franchise based in Washington, D.C..  They play in the National League East division.  Formed as an expansion team in 1969 as the Montreal Expos, they were based in Montreal, Quebec, through the 2004 season.  In 2005 they moved to Washington, D.C. and become known as the Washington Nationals.  Seven no-hitters have been pitched in franchise history, four while the team was based in Montreal as the Expos, and three as the present-day Washington Nationals.', 'Montreal Expos | The Montreal Expos (French: "Les Expos de Montréal" ) were a Canadian professional baseball team based in Montreal, Quebec.  The Expos were the first Major League Baseball (MLB) franchise located outside the United States.  They played in the National League (NL) East Division from 1969 until 2004.  Following the 2004 season, the franchise relocated to Washington, D.C., and became the Washington Nationals.', 'Tom Foley (infielder) | Thomas Michael Foley (born September 9, 1959) is a retired Major League baseball player.  During his playing career, he was an infielder for the Cincinnati Reds, Philadelphia Phillies, Pittsburgh Pirates and Montreal Expos.  He currently serves as the bench coach for the Tampa Bay Rays.', '1969 Montreal Expos season | The Montreal Expos participated in their first season in Major League Baseball in 1969.  The Expos, as typical for first-year expansion teams, finished in the cellar of the National League East Division with a 52–110 record, 48 games behind the eventual World Series Champion New York Mets.  They did not win any game in extra innings during the year, which also featured a surprise no-hitter in just the ninth regular-season game they ever played.  Their home attendance of 1,212,608, an average of 14,970 per game, was good for 7th in the N.L.']
+
+## Generated Outputs
+### reasoning
+The claim has two parts:  
+1. In 1969, a Canadian baseball team was founded where a future manager played from 1973 to 1987.  
+2. This future manager managed the Tampa Bay Devil Rays season.  
+
+Checking the inputs:  
+- The context states that the Montreal Expos were founded in 1969 as the first MLB team outside the US, based in Montreal, Quebec.  
+- The Expos existed from 1969 until 2004 before relocating to Washington, D.C., becoming the Washington Nationals.  
+- None of the notes or context explicitly mention a player who played for the Expos from 1973 to 1987 and who later managed the Tampa Bay Devil Rays.  
+- The Tampa Bay Devil Rays is referenced as a team played for by several players but not as managed by any names mentioned, nor is a manager explicitly named who both played for the Expos during that period and managed Tampa Bay.  
+- The claim’s phrasing is ambiguous about naming the individual. No direct evidence supports or contradicts the claim about the individual’s playing and managing timeline.  
+- The context references many players drafted or played for the Expos and Tampa Bay Devil Rays but do not mention a manager fitting the claim's timeline nor confirm founding dates beyond the Expos’ 1969 founding.  
+- The note about the Expos founding in 1969 supports the first part's team founding date, but the rest of the details about the player/manager timeline cannot be verified due to lack of explicit information.  
+
+Therefore:  
+- The founding of the Canadian team in 1969 as the Montreal Expos is verified.  
+- There is no evidence in the provided inputs to verify that the future manager played there from 1973-87 or that he managed the Tampa Bay Devil Rays.
+
+### new_notes
+['The Montreal Expos, a Canadian Major League Baseball team, were founded in 1969 as the first MLB franchise located outside the United States.', 'The Montreal Expos played from 1969 to 2004 before relocating and becoming the Washington Nationals.', 'No information in the provided sources confirms that a future manager played for the Expos from 1973 to 1987.', 'No evidence is found to verify that such a manager managed the Tampa Bay Devil Rays.']
+
+### titles
+['Montreal Expos Founding and History', 'Verification of Manager Playing and Managing Tenure']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['2002 Tampa Bay Devil Rays season']. Documents remaining to be retrieved: ['Hal McRae', 'Kansas City Royals'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Ellesmere Port Town Football Club are currently members of the league, whose current principal sponsor is the Football Conference, that Ford Motors F.C. is a part of.
+
+### notes
+['Ellesmere Port Town Football Club is currently a member of the West Cheshire League Division Two, not the Football Conference.', "There is no information that the Football Conference is the principal sponsor of Ellesmere Port Town Football Club's league.", 'Ford Motors F.C. is not mentioned in the provided data; Vauxhall Motors F.C., another Ellesmere Port club, is in the West Cheshire League Division One but no connection to the Football Conference is stated.', 'The Football Conference is not identified as a league sponsor or associated with these clubs in the provided context.', 'Ellesmere Port Town Football Club currently plays in the West Cheshire League Division Two, not in the Football Conference.', 'There is no evidence that the Football Conference is the principal sponsor of the West Cheshire League or any league involving Ellesmere Port Town Football Club.', 'Ford Motors F.C. is not mentioned in the provided data, and there is no information linking it to the Football Conference or the West Cheshire League.', 'Vauxhall Motors F.C., another club from Ellesmere Port, plays in the West Cheshire League Division One but is not associated with the Football Conference.', 'The Football Conference operates as a separate national league structure and is not identified as the sponsor or league of Ellesmere Port area clubs in the provided information.', 'Ellesmere Port Town Football Club currently plays in the West Cheshire League Division Two.', "The West Cheshire League's principal sponsor is Carlsberg, not the Football Conference.", 'The Football Conference is a separate national league structure and does not sponsor or include the West Cheshire League or Ellesmere Port area clubs.', 'Ford Motors F.C. is not mentioned in the provided data and there is no evidence linking it to the Football Conference or the West Cheshire League.', 'Vauxhall Motors F.C., another club from Ellesmere Port, plays in the West Cheshire League Division One but is not associated with the Football Conference.']
+
+### context
+['Ellesmere Port Town F.C. | Ellesmere Port Town Football Club is a football club based in Ellesmere Port, Cheshire, England.  They are currently members of the West Cheshire League Division Two and play at Dunkirk Lane.', 'Vauxhall Motors F.C. | Vauxhall Motors Football Club is a football club based in Ellesmere Port, Cheshire, England.  The club are currently members of the West Cheshire League Division One and play at Rivacre Park.', "Davidson Wildcats | The Davidson Wildcats are the NCAA Division I intercollegiate athletics teams representing Davidson College of Davidson, North Carolina, United States.  A member of the Atlantic 10 Conference (A-10), Davidson College sponsors teams in eleven men's and ten women's NCAA sanctioned sports.  The Wildcats previously competed in the Southern Conference, and the wrestling team retains associate membership in that league since the sport is not sponsored by the A-10.  The football team is a member of the Pioneer Football League, a Football Championship Subdivision (FCS) conference of schools that do not offer athletic scholarships for football.", 'Navy Midshipmen | The United States Naval Academy sponsors 30 varsity-sports teams and 12 club-sports teams (along with 19 intramural-sports teams).  Both men\'s and women\'s teams are called Navy Midshipmen or "Mids".  They participate in the NCAA\'s Division I, as a non-football member of the Patriot League, a football-only member of the American Athletic Conference in the Football Bowl Subdivision (FBS), and a member of the Collegiate Sprint Football League (men), Eastern Association of Rowing Colleges (men), Eastern Association of Women\'s Rowing Colleges, Eastern Intercollegiate Gymnastics League (men), and Eastern Intercollegiate Wrestling Association.  Navy is also one of approximately 300 members of the Eastern College Athletic Conference (ECAC).', 'Great West Conference | The Great West Conference was an NCAA college athletic conference in the continental United States.  Originally a football-only league, it became an all-sports entity during the 2008–09 season.  The GWC stopped sponsoring football following the 2011 season.  The conference became defunct when four of the remaining five full member schools became members of other conferences on July 1, 2013.', 'Metropolitan Conference (1923–1931) | The Metropolitan Conference was an intercollegiate athletic conference that existed from 1923 to 1931.  It has been one of ten athletics conferences with this name although the only one to sponsor a football championship.  The league had members in the state of New York.', "Sun Belt Conference football | The Sun Belt Conference is a conference of 12 (originally 7) universities which participate in the National Collegiate Athletic Association's Division I Football Bowl Subdivision.  Currently, 12 schools play football in the conference—ten full members and two football-only associate members; the two associate members will leave after the conclusion of the 2017 season.  Although the Sun Belt was formed in 1976, it did not start sponsoring football until 2001.", "Jacksonville Dolphins | The Jacksonville University Dolphins are the athletics team of Jacksonville University in Jacksonville, Florida, United States.  The Dolphins participate in NCAA Division I athletics, and are primarily members of the Atlantic Sun Conference (ASUN).  Some teams in sports that are not sponsored by the A-Sun play in other conferences.  The football team plays in the Pioneer Football League, the men's lacrosse team is a member of the Southern Conference, and the men's and women's rowing teams are in the Metro Atlantic Athletic Conference.", 'West Cheshire Association Football League | The West Cheshire Association Football League (commonly known as the West Cheshire League) is an English football league in the county of Cheshire.  Its current principal sponsor is "Carlsberg", also sponsor of the South West Peninsula League.  It has a Division One, Divisions Two and Division Three.  Division One sits at step 7 (or level 11) of the National League System.', 'Metro Conference | The Metropolitan Collegiate Athletic Conference, popularly known as the Metro Conference, was an NCAA Division I athletics conference, so named because its six charter members were all in urban metropolitan areas, though its later members did not follow that pattern.  The conference was centered in the Upper South with some strength in the Deep South.  The conference never sponsored football, although most of its members throughout its history had Division I-A football programs (from 1983–91, all Metro schools had independent football programs).  In 1995, it merged with the Great Midwest Conference to form Conference USA.  The merger was driven mainly by football, as several Metro Conference members had been successfully lured to larger conferences that sponsored the sport.']
+
+## Generated Outputs
+### reasoning
+The claim states that Ellesmere Port Town Football Club currently belongs to a league sponsored principally by the Football Conference and that Ford Motors F.C. is also part of this league. Based on the notes and context:
+
+- Ellesmere Port Town Football Club is currently a member of the West Cheshire League Division Two, not the Football Conference (supported by multiple notes and context [1], [5], [9]).
+- There is no information supporting that the Football Conference is the principal sponsor of the league in which Ellesmere Port Town Football Club plays; instead, the West Cheshire League’s principal sponsor is Carlsberg (context [9]).
+- Ford Motors F.C. is not mentioned in the context or notes, nor linked to the Football Conference or West Cheshire League.
+- Vauxhall Motors F.C., another Ellesmere Port club, plays in the West Cheshire League Division One but is unrelated to the Football Conference.
+- The Football Conference operates separately and is not identified as the sponsor or league for clubs in Ellesmere Port.
+
+Therefore, the claim is refuted by the evidence presented. Ellesmere Port Town FC does not play in a league sponsored by the Football Conference, and there is no evidence of Ford Motors F.C.'s involvement in the Football Conference or the same league as Ellesmere Port Town FC.
+
+### new_notes
+['Ellesmere Port Town Football Club currently plays in the West Cheshire League Division Two.', "The West Cheshire League's principal sponsor is Carlsberg, not the Football Conference.", 'The Football Conference is a separate national league structure and does not sponsor or include the West Cheshire League or Ellesmere Port area clubs.', 'Ford Motors F.C. is not mentioned in the provided data and there is no evidence linking it to the Football Conference or the West Cheshire League.', 'Vauxhall Motors F.C., another club from Ellesmere Port, plays in the West Cheshire League Division One but is not associated with the Football Conference.']
+
+### titles
+['Ellesmere Port Town Football Club League Membership', 'West Cheshire League Sponsorship', 'Football Conference Distinction', 'Ford Motors F.C. Club Information', 'Vauxhall Motors F.C. Club Information']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Ellesmere Port Town F.C.', 'West Cheshire Association Football League']. Documents remaining to be retrieved: ['Ford Motors F.C.'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,120 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields: `claim` and `notes`. Your task is to produce a new field `query`.
+
+- The `claim` is a complex factual statement or set of statements that asserts certain relationships, events, or facts involving multiple entities.
+- The `notes` are supporting or refuting fragments of factual information, background details, and evidence relevant to assessing or verifying the `claim`.
+
+Your goal is to formulate an information retrieval or database query (`query`) that, if executed, would retrieve all supporting documents or data needed to verify every part of the claim accurately. The query should be specifically designed to capture all key entities, relationships, and factual aspects mentioned or implied in the given claim.
+
+Key Points and Strategy:
+1. **Identify factual components in the claim**  
+   Parse the claim to identify:
+   - Key entities (people, organizations, films, events, teams, places, dates, roles, etc.)
+   - Relationships between entities (e.g., "starred with", "founded in", "managed", "directed by")
+   - Attributes or predicates that need verification (e.g., professional overlap, filmography, team foundation dates, managerial roles)
+
+2. **Leverage evidence in `notes`**  
+   The `notes` contain verified or likely verified facts that relate to the entities and claims. Use these to guide your understanding of which pieces of information are central and what queries could retrieve documents covering those pieces.
+
+3. **Formulate a comprehensive yet precise query**  
+   The query should:  
+   - Request information that covers all key entities involved  
+   - Cover all relationships or assertions made  
+   - Be sufficiently detailed to guide retrieval of all necessary documents, ensuring that none of the claim’s critical assertions are left unverifiable
+
+4. **Generalizable querying approach**  
+   - For claims involving relationships or overlap between two or more persons or entities, query their respective profiles, roles, and overlaps (e.g., shared professions, co-appearances)  
+   - For claims involving filmography or works, query casts, co-stars, directors and release details for each relevant film  
+   - For claims involving teams or organizations, query founding dates, player rosters during specified periods, and managerial histories  
+   - For claims involving timelines, query historical data for proper date and role alignment  
+
+5. **Prioritize retrieval of documents for all entities referenced**  
+   The goal is to retrieve a full set of relevant documents that together confirm or refute the claim. The query should explicitly try to capture all gold documents identified in notes or feedback.
+
+Example considerations from provided cases:
+- When claim involves whether two professionals share a profession, the query should seek explicit mentions of professions for both individuals.
+- When claim involves people starring together in films and their participation in other films and directors, the query should request casts of the films and director credits.
+- When claim involves sports teams and individuals across specific time periods, the query should request founding dates, rosters by years, managerial records, and affiliations with any teams.
+
+Output Format:
+- Output only the `query` text, formatted as a natural language request or series of requests designed to retrieve all relevant and complete supporting information for verifying the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The sport of tennis is played by both Texas native Angelique Kerber and the player who was the defending champion, who competed, for the 2005 China Open – Men's Doubles.
+
+### notes
+['Angelique Kerber is a German professional tennis player, not a Texas native.', 'Kerber debuted professionally in 2003 and is a former world No. 1 with multiple WTA singles titles.', "The 2005 China Open Men's Doubles defending champion is not specified in the provided context.", "Kerber has no known participation in men's doubles events at the China Open.", "Tennis involves separate men's and women's events, making it impossible for Kerber to compete in the men's doubles event.", 'Angelique Kerber is a German professional tennis player, not a Texas native.', "Kerber is known for women's singles and doubles WTA events, with no participation in men's doubles events.", "Tennis men's and women's competitions are separate, making it impossible for Kerber to compete in the men's doubles event.", "The 2005 China Open Men's Doubles defending champion is not specified in the provided context.", 'Angelique Kerber is a German professional tennis player, not a Texas native.', "Kerber has competed in women's singles and doubles WTA events, with no participation in men's doubles events.", "Tennis men's and women's competitions are separate, making it impossible for Kerber to compete in the men's doubles event.", "The 2005 China Open Men's Doubles defending champion is not specified in the provided context."]
+
+## Generated Outputs
+### reasoning
+The claim states that both Angelique Kerber (a Texas native) and another player, who was the defending champion in the 2005 China Open – Men's Doubles, play the sport of tennis. To verify this, we must establish three facts: 1) Angelique Kerber is a tennis player and a Texas native, 2) identify the defending champion player of the 2005 China Open – Men's Doubles, and 3) confirm that this defending champion is also a tennis player. This requires retrieving biographical details on Angelique Kerber to verify her Texas origin and sport, the identity and profile of the defending champion from the 2005 China Open – Men's Doubles, and their sport affiliation.
+
+### query
+Provide information on Angelique Kerber’s birthplace/facts establishing her as a Texas native, her professional sport, and confirm she is a tennis player. Additionally, identify the defending champion of the 2005 China Open – Men's Doubles event, including full name and nationality, and confirm that this person is a professional tennis player.
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Angelique Kerber']. Documents remaining to be retrieved: ["2005 China Open – Men's Doubles", 'Justin Gimelstob'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The kind of dog Banana Joe V Tani Kazari is and Villanuco de Las Encartaciones are not both breeds of dog.
+
+### notes
+['Banana Joe V Tani Kazari is an individual toy Affenpinscher dog, not a breed.', 'Affenpinscher is a recognized breed of dog.', 'Villanuco de Las Encartaciones is a Spanish breed of dog typical of the Las Encartaciones region.', 'Therefore, Banana Joe V Tani Kazari is a dog of a breed, while Villanuco de Las Encartaciones is a distinct dog breed.', 'Banana Joe V Tani Kazari is an individual toy Affenpinscher dog, not a breed.', 'Affenpinscher is a recognized breed of dog.', 'Villanuco de Las Encartaciones is a Spanish breed of dog typical of the Las Encartaciones region.', 'Banana Joe V Tani Kazari is an individual toy Affenpinscher dog, not a breed.', 'Affenpinscher is a recognized breed of dog.', 'Villanuco de Las Encartaciones is a Spanish breed of dog typical of the Las Encartaciones region.']
+
+## Generated Outputs
+### reasoning
+The claim states that the kind of dog Banana Joe V Tani Kazari is and Villanuco de Las Encartaciones are not both dog breeds. From the notes, Banana Joe V Tani Kazari is described as an individual dog of a specific breed (the Affenpinscher), not a breed itself, whereas Villanuco de Las Encartaciones is confirmed to be a distinct dog breed. The key factual components are to verify that Banana Joe V Tani Kazari is an individual dog (not a breed) and that Villanuco de Las Encartaciones is a recognized dog breed. Therefore, the query must retrieve information on the classification of Banana Joe V Tani Kazari and Villanuco de Las Encartaciones, along with whether Affenpinscher and Villanuco de Las Encartaciones are recognized breeds of dog.
+
+### query
+Retrieve information on "Banana Joe V Tani Kazari" to confirm whether it is an individual dog or a breed of dog; retrieve the classification and breed status of "Affenpinscher" as a breed; retrieve details on "Villanuco de Las Encartaciones" regarding whether it is a recognized breed of dog; compare the breed status of both to determine if both are dog breeds or not.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Affenpinscher', 'Villanuco de Las Encartaciones']. Documents remaining to be retrieved: ['German Pinscher'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Darren Stanley Hayes was born before this lead guitarist of the band that recorded Playin' Around.
+
+### notes
+[]
+
+## Generated Outputs
+### reasoning
+The claim asserts a temporal relationship: Darren Stanley Hayes was born before a certain lead guitarist associated with a band that recorded a work titled "Playin' Around." To verify this, the following components must be identified and checked:
+1. The birth date of Darren Stanley Hayes.
+2. Identification of the band that recorded "Playin' Around."
+3. Identification of the lead guitarist of this band.
+4. The birth date of the lead guitarist to compare with that of Darren Stanley Hayes.
+
+Since no notes provide background information, the query must retrieve data on these points to confirm or refute the claim.
+
+### query
+Retrieve the birth date of Darren Stanley Hayes. Identify the band that recorded "Playin' Around" and provide the name and birth date of the lead guitarist of that band.
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Anaïs Lameche', 'Darren Hayes', "Playin' Around"].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

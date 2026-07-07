@@ -1,0 +1,177 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given a factual `claim` that often contains multiple interconnected facts and named entities (people, films, places, products, organizations, historical dates, domain-specific items, etc.). Along with the claim, you will receive `notes` which include partial background facts, known details, and importantly, highlight missing information, ambiguities, or contradictions relating to the claim components.
+
+Your objective is to generate a focused, precise set of one or more `queries` specifically designed to verify, fact-check, or clarify *each discrete component* of the claim. These queries will be executed against authoritative information sources (e.g., Wikipedia or domain-relevant repositories) to retrieve documents or evidence that confirm or refute the claim's multiple assertions.
+
+Key Domain-Specific and Task-Specific Requirements:
+
+1. **Entity Disambiguation and Precise Identification:**  
+   - Explicitly identify and clarify all named entities in the claim, including proper qualifiers.  
+   - For example, specify film titles with release years ("All I Need" (Radiohead song, 2007)), specify persons with professions and nationality ("Isaiah Mustafa, American actor"), distinguish similarly named entities carefully ("Solo (Norwegian soft drink)" vs. "Solo").  
+   - This disambiguation ensures high precision in document retrieval.
+
+2. **Decompose Complex Claims into Component Facts:**  
+   - Claims often contain multiple interconnected facts (e.g., a musician’s band membership plus singing credits; a sports player’s name plus team affiliations plus event participation).  
+   - Break the claim into atomic fact assertions. For each, generate a precise query addressing only that fact.  
+   - Ensure that all elements of the claim are covered by at least one query, leaving no factual assertion unchecked.
+
+3. **Leverage Notes to Target Gaps, Contradictions, or Unverifiable Aspects:**  
+   - Analyze notes carefully to identify which facts are already established and which are ambiguous, contradictory, or missing.  
+   - Formulate queries that specifically address the ambiguous or contradicted data points, such as uncertain nationalities, unclear roles in a film or event, ambiguous affiliations, or disputed nicknames.  
+   - For example, if notes conflict on whether an individual is Greek or American, or whether a film is a TV episode or a feature film, target queries to settle these points.
+
+4. **Cover Every Fact Embedded in the Claim:**  
+   - Ensure all elements—including all entities, relationships, dates, roles, and attributions—have precise factual queries.  
+   - Avoid partial queries that verify only a subset of the claim's assertions.
+
+5. **Generate Well-Formed, Explicit Queries:**  
+   - Each query must be a clear, factual question or search prompt fit for retrieving precise documents (such as: “Who starred in [Film Name] ([Year])?” rather than vague or broad queries like “Tell me about the film?”).  
+   - Use interrogative phrasing (“Who,” “When,” “Is,” “What”) and specify exact contexts and qualifiers.
+
+6. **Include Relevant Domain or Contextual Information in Queries:**  
+   - When asking about films, include release years and production context.  
+   - For people, include birth years, professions, or nationality if relevant to disambiguate.  
+   - For places, specify the geographic hierarchy or administrative divisions (e.g., whether a cemetery is located within a park).  
+   - For military units or historical facts, specify formation dates and relationship to conflicts or media portrayals.
+
+Generalizable Strategy:
+
+- Parse and identify each named entity and fact assertion embedded in the claim line-by-line or clause-by-clause.  
+- Thoroughly compare the claim to the information and contradictions in the notes, flagging elements that are not fully confirmed or have conflicting data.  
+- For each identified atomic fact or ambiguity, create one precise, disambiguated query to look for authoritative confirmation.  
+- Ensure comprehensive claim coverage: the entire claim is fact-checked, not just partially.  
+- Do not produce any explanation or commentary in outputs; format the final output strictly as one or more `query` lines, each containing a single precise question or search prompt.  
+- Avoid vague queries or those too broad to target relevant documents efficiently.  
+- Use precise entity descriptors and domain context in each query to maximize retrieval relevance.
+
+Example Query Templates (illustrative, to be adapted):
+
+- Film or TV claims:  
+   “Who starred in [Film or TV Episode Name] ([Year])?”  
+   “What role did [Person’s Name] play in [Film/Series Name] ([Year])?”  
+   “Is [Person] featured as a [profession/character] in [Film/Series Title]?”  
+- People and biography claims:  
+   “When was [Person’s Full Name] born?”  
+   “What is the nationality of [Person’s Name]?”  
+- Sports claims:  
+   “Who scored the goals in [Sports Event Name] ([Year])?”  
+   “For which professional clubs did [Player Name] play during [Year or Event]?”  
+   “Is [Name] the colloquial or official name of any professional team?”  
+- Geography or burial claims:  
+   “Where is [Person’s Name] buried?”  
+   “Is [Cemetery Name] located within [Park or Geographic Region]?”  
+- Military or historical claims:  
+   “When was [Military Unit Name] formed?”  
+   “What military units are depicted in [Film or Book Title]?”
+
+Your outputs must be crafted to precisely guide retrieval of core factual information needed to fully fact-check the claim, using careful disambiguation and a fine-grained decomposition of claims into factual components.
+
+Output Format:
+
+- Provide one or more `query` lines — each line is a single precise factual or entity relationship question.  
+- No additional text or reasoning explanation is to be output.
+
+By following these detailed instructions, you will generate high-quality, focused queries enabling comprehensive, accurate fact-checking of complex claims involving multiple named entities and interconnected facts across diverse domains.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Reverend Lyttleton Morgan was the first chairman of the board of trustees at a university. That university and the University of Idaho are public types of universities.
+
+### notes
+['Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, originally known as the Centenary Biblical Institute.', 'Morgan State University was renamed in honor of Reverend Lyttleton Morgan.', "Morgan State University is Maryland's designated public urban university and a historically black college (HBCU).", 'Morgan State University is a public university.', 'The University of Idaho is known to be a public university.', 'Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, originally known as the Centenary Biblical Institute.', 'Morgan State University was renamed in honor of Reverend Lyttleton Morgan.', "Morgan State University is Maryland's designated public urban university and a historically black college (HBCU).", 'Morgan State University is a public university.', 'The University of Idaho is a public university.', 'Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, originally known as the Centenary Biblical Institute.', 'Morgan State University was renamed in honor of Reverend Lyttleton Morgan.', "Morgan State University is Maryland's designated public urban university and a historically black college (HBCU).", 'Morgan State University is a public university.', 'The University of Idaho is also a public university.']
+
+## Generated Outputs
+### reasoning
+The claim involves two discrete factual assertions:
+
+1. Reverend Lyttleton Morgan was the first chairman of the board of trustees at a specific university. The claim does not name the university, so it is important to clarify which university is referenced.
+
+2. The university associated with Reverend Lyttleton Morgan and the University of Idaho are both public universities. This requires verifying the public status of both institutions.
+
+To verify this claim thoroughly, we need to:
+
+- Identify the university at which Reverend Lyttleton Morgan served as first chairman of the board of trustees.
+
+- Confirm Reverend Lyttleton Morgan’s role and status as first chairman of that board.
+
+- Determine whether that university is classified as a public university.
+
+- Verify that the University of Idaho is a public university.
+
+Each of these points will be addressed with precise queries to ensure complete fact-checking coverage.
+
+### query
+At which university was Reverend Lyttleton Morgan the first chairman of the board of trustees?
+Was Reverend Lyttleton Morgan the first chairman of the board of trustees at that university?
+Is the university associated with Reverend Lyttleton Morgan classified as a public university?
+Is the University of Idaho classified as a public university?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Lyttleton Morgan', 'Morgan State University']. Documents remaining to be retrieved: ['University of Idaho'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The star of Institute Benjamenta portrayed a character in "Double Bass". The real name of that character is Vilyam "Willie" Genrikhovich Fisher.
+
+### notes
+['Mark Rylance starred in Institute Benjamenta.', 'There is no information linking any star of Institute Benjamenta to a role named Vilyam "Willie" Genrikhovich Fisher.', 'No mention of a film or production called "Double Bass" involving Institute Benjamenta actors.', 'Jason Barnard is a double bass player and voice actor but is not connected to Institute Benjamenta or the character.', 'The claim cannot be verified from the provided context.', 'Mark Rylance starred in Institute Benjamenta.', 'Vilyam "Willie" Genrikhovich Fisher is the real name of Rudolf Abel, a Soviet intelligence officer.', 'There is no evidence linking any actor from Institute Benjamenta to a character named Vilyam "Willie" Genrikhovich Fisher.', 'There is no information about a film or production called "Double Bass" involving actors from Institute Benjamenta.', "Mark Rylance starred in Institute Benjamenta but is not linked to a character named Vilyam 'Willie' Genrikhovich Fisher.", "Vilyam 'Willie' Genrikhovich Fisher is the real name of Rudolf Abel, a Soviet intelligence officer, not a fictional character in a film.", "No evidence or information exists about a film called 'Double Bass' involving any actor from Institute Benjamenta.", "The claim that an Institute Benjamenta star portrayed Vilyam 'Willie' Genrikhovich Fisher in 'Double Bass' is unsupported."]
+
+## Generated Outputs
+### reasoning
+The claim involves multiple linked facts: first, that the star of the film "Institute Benjamenta" portrayed a character in a work entitled "Double Bass"; second, that the character's real name is Vilyam "Willie" Genrikhovich Fisher. The notes confirm that Mark Rylance starred in "Institute Benjamenta" but show no evidence of any connection of any cast member to a character named Vilyam "Willie" Genrikhovich Fisher or to any project called "Double Bass". Moreover, Vilyam "Willie" Genrikhovich Fisher is the real name of Rudolf Abel, a Soviet intelligence officer, not commonly portrayed as a fictional character in these contexts. To fact-check fully, queries should verify the principal cast of "Institute Benjamenta", check the existence and cast of "Double Bass" relating to any "Institute Benjamenta" actor, and confirm if the name Vilyam "Willie" Genrikhovich Fisher is associated with any fictional character or role in "Double Bass" or related productions.
+
+### query
+Who starred in the film "Institute Benjamenta" (1995)?
+Is there a film or production titled "Double Bass" involving actors from "Institute Benjamenta"?
+Did Mark Rylance or any other lead actor from "Institute Benjamenta" portray a character named Vilyam "Willie" Genrikhovich Fisher?
+What is the identity and context of the character named Vilyam "Willie" Genrikhovich Fisher in film, television, or theater?
+Is there any connection between the character Vilyam "Willie" Genrikhovich Fisher and a work titled "Double Bass"?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Institute Benjamenta', 'Mark Rylance', 'Rudolf Abel']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+A song from the Kathy Mattea discography, that peaked at #1 on the Billboard Hot Country Singles & Tracks chart, was first recorded by a singer that sang country music.
+
+### notes
+["Kathy Mattea had four #1 hits on the Billboard Hot Country Singles & Tracks chart: 'Goin' Gone,' 'Eighteen Wheels and a Dozen Roses,' 'Come from the Heart,' and 'Burnin' Old Memories'.", "'Love at the Five and Dime' was originally recorded by Nanci Griffith, who is a folk and country singer, but the song peaked at #3, not #1, on the chart when recorded by Mattea.", "No information indicates that any of Kathy Mattea's #1 singles were first recorded by another country music artist.", "Several songs in Mattea's discography were co-recorded or written by other songwriters, but no first recordings by other country singers are noted for her #1 hits.", "Kathy Mattea had four #1 hits on the Billboard Hot Country Singles & Tracks chart: 'Goin' Gone,' 'Eighteen Wheels and a Dozen Roses,' 'Come from the Heart,' and 'Burnin' Old Memories'.", "'Love at the Five and Dime' was originally recorded by Nanci Griffith, a folk and country singer, but peaked at #3 on the chart when recorded by Mattea.", "No information indicates that any of Kathy Mattea's #1 singles were first recorded by another country music artist.", "Kathy Mattea had four #1 hits on the Billboard Hot Country Singles & Tracks chart: 'Goin' Gone', 'Eighteen Wheels and a Dozen Roses', 'Come from the Heart', and 'Burnin' Old Memories'.", "No evidence shows any of Kathy Mattea's #1 hits were first recorded by another country music artist.", "'Love at the Five and Dime' was first recorded by Nanci Griffith, a folk and country singer, but this song peaked at #3, not #1, for Mattea.", "Nanci Griffith’s original version of 'Goin' Gone' appeared on her 1986 album, but it is unclear if it was released as a single or charted before Mattea's version.", 'Therefore, no Kathy Mattea #1 single was first recorded by another country music artist.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that a song from Kathy Mattea's discography, which reached #1 on the Billboard Hot Country Singles & Tracks chart, was first recorded by a country music singer. The notes indicate that Mattea had four #1 hits but no evidence that any were first recorded by another country artist. One specific song, "Love at the Five and Dime," was first recorded by Nanci Griffith, a folk and country singer, but that song only peaked at #3 and not #1. The notes also state there is no information confirming that any #1 singles of Mattea were first recorded by other country singers. Therefore, to verify the claim, queries need to establish which songs in her #1 hits were first recorded by other country artists and confirm the genre and chart performance of the originals and covers.
+
+### query
+What are the titles of all Kathy Mattea songs that reached #1 on the Billboard Hot Country Singles & Tracks chart?  
+For each of Kathy Mattea’s #1 Billboard Hot Country Singles & Tracks songs, who was the original recording artist?  
+Did any of the original recording artists of Kathy Mattea’s #1 songs qualify as a country music singer?  
+Did any song first recorded by a country music singer later reach #1 on the Billboard Hot Country Singles & Tracks chart when recorded by Kathy Mattea?  
+Which song from Kathy Mattea’s discography was first recorded by Nanci Griffith, and what genre is Nanci Griffith primarily associated with?  
+What chart position did Kathy Mattea’s recording of "Love at the Five and Dime" achieve on the Billboard Hot Country Singles & Tracks chart?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Kathy Mattea discography']. Documents remaining to be retrieved: ['Come from the Heart', 'Don Williams discography'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

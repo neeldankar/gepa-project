@@ -1,0 +1,85 @@
+``` 
+Task Description:
+
+You will receive a factual `claim` consisting of one or more interconnected factual assertions involving named entities such as people, films, places, products, organizations, historical events, or domain-specific items. Along with the claim, you will receive a set of `notes` outlining existing partial knowledge, background details, contradictions, ambiguities, and gaps related to the claim’s components.
+
+Your core task is to generate a comprehensive, focused set of one or more factual `queries` that can be used to retrieve authoritative information (e.g., Wikipedia pages, verified databases) to verify or refute each discrete fact embedded within the claim.
+
+Key Elements and Domain-Specific Heuristics:
+
+1. **Entity Identification and Disambiguation:**  
+   Explicitly extract and disambiguate every named entity in the claim using relevant descriptors to reduce ambiguity. For example:  
+   - Include release year when referring to films (e.g., “Beetlejuice (1988)”).  
+   - Specify profession or nationality for persons if it helps distinguish them (“Eli Roth, American film director and actor”).  
+   - Clarify product or organization types and their traits (“Soul Temple Records, a music record label”).  
+   Correct disambiguation ensures queries retrieve targeted, relevant documents without confusion.
+
+2. **Decompose Complex Claims into Atomic Verifiable Facts:**  
+   - Break down multi-part claims involving multiple factual assertions into smaller, logically-connected queries, each addressing a single fact.  
+   - For example, a claim involving an actor's role, a film’s director, and an organization’s founder should generate separate queries for each component.  
+   - This ensures thorough coverage and avoids retrieval based on partially matching facts.
+
+3. **Use Notes To Target Known Gaps, Ambiguities, and Contradictions:**  
+   - Analyze the notes for which components are confirmed, which remain unclear, or which conflict with other information.  
+   - Formulate queries that specifically address these gaps or contradictions to resolve them for better validation.  
+   - For example, if it is uncertain whether a person was inducted into a specific Hall of Fame or when a military unit was formed relative to a film's setting, queries should directly request that data.
+
+4. **Ensure Complete Coverage of the Claim’s Facts:**  
+   - Your queries must collectively verify every factual statement contained within the claim.  
+   - Avoid omitting any factual component since partial confirmation leaves the claim incompletely verified.
+
+5. **Precise, Clear, and Targeted Query Construction:**  
+   - Queries must be phrased as explicit factual questions or entity-relationship prompts that are unambiguous and suitable for document retrieval.  
+   - Avoid vague or overly broad queries (e.g., “Tell me about Keith Moon”) — instead specify what fact to check (“Was Keith Moon inducted into the Rock and Roll Hall of Fame? When?”).  
+   - Incorporate relevant contextual details such as years, professions, or film titles.
+
+6. **Domain Context and Specificity:**  
+   - When verifying claims about films, include the film’s release year and notable people involved (actors, directors, producers).  
+   - For publications, specify the publication type (magazine, book, periodical), frequency, and relevant dates.  
+   - For geographic or burial-related claims, specify the cemetery and its location within a park or city.  
+   - For military or historical claims, specify formation dates, associated wars/conflicts, units, and their depiction in media.  
+   - This domain-aware specificity enhances precision.
+
+Generalizable Strategy:
+
+- Carefully parse the claim to identify all named entities and factual assertions.  
+- Cross-reference the notes to locate known facts as well as points of uncertainty, ambiguity, or contradiction.  
+- Generate a logically structured set of disambiguated, explicit queries to retrieve authoritative information that can confirm or disprove each fact.  
+- Queries should cast a wide net but remain tightly focused, avoiding general or open-ended questions.  
+- Use entity descriptors (years, professions, organizational roles) for clear disambiguation to guide retrieval precision.  
+- The final output must be strictly one or more `query` lines, no explanations or extraneous commentary.
+
+Output Format:
+
+- Your output must only contain one or more `query` lines, each a question or instruction constructed as per above.  
+- No additional text, reasoning, or formatting beyond `query:` lines.  
+- The set of queries should collectively cover all factual components of the claim as guided by the notes.
+
+Examples of Query Construction:
+
+- Film-related:  
+  - “Who starred in [Film Name] ([Year])?”  
+  - “Who directed [Film Name] ([Year])?”  
+  - “Did [Person] act in [Film Name] ([Year])?”  
+  - “Who produced [Film Name] ([Year])?”  
+  - “Which military units or persons are featured in [Film Name] ([Year])?”
+
+- Publication-related:  
+  - “What is the publication frequency of [Publication Name]?”  
+  - “Is [Publication Name] a book publisher or a magazine?”  
+  - “Was [Person] inducted into the Hall of Fame associated with [Publication Name]? When?”
+
+- Geography or burial-related:  
+  - “Where is [Person] buried?”  
+  - “Is [Cemetery Name] located within [Geographic Area or Park]?”
+
+- Organizational or historical claims:  
+  - “When was [Military Unit] formed?”  
+  - “Who is the founder of [Organization Name]?”  
+  - “Did [Founder] direct any films? If so, which?”
+
+Note: Always factor in domain-specific subtleties from the notes to tailor your queries accordingly.
+
+By meticulously following these guidelines, you will produce an optimized set of precise, disambiguated queries that assist fact-checking and evidence retrieval for complex factual claims.
+
+```

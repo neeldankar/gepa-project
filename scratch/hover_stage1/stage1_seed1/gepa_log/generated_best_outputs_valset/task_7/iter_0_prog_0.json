@@ -1,0 +1,87 @@
+{
+    "titles": [
+        "Benz 10/30 PS",
+        "Buick LeSabre",
+        "Cornell Brown",
+        "Denny Mooney",
+        "FAW-GM",
+        "GM Service and Parts Operations",
+        "Gene Cichowski",
+        "HT PS UAV",
+        "Jim Hendry",
+        "Jim Parker (American football)",
+        "John Hudson (American football)",
+        "Leif \u00d8gaard",
+        "List of Iowa State Cyclones in the NFL Draft",
+        "List of New York Mets owners and executives",
+        "List of Pro Football Hall of Fame inductees",
+        "Mike Singletary",
+        "Ozzie Newsome",
+        "Peter Hanenberger",
+        "Pgrep",
+        "Phil Savage",
+        "Republican and Socialist Front",
+        "Robert Stempel",
+        "Ron Wolf",
+        "Sender ID",
+        "T. J. McCreight",
+        "Union of Socialist Groups and Clubs",
+        "Yifeng Sun"
+    ],
+    "notes": [
+        "Philip Savage served as Director of Player Personnel for the Baltimore Ravens under general manager Ozzie Newsome from 2003-2004.",
+        "Ozzie Newsome was inducted into both the College Football Hall of Fame (1994) and the Pro Football Hall of Fame (1999).",
+        "Ozzie Newsome was drafted higher than Steve Little in the 1978 NFL Draft.",
+        "Steve Little was drafted lower than Ozzie Newsome in the 1978 NFL Draft."
+    ],
+    "per_hop": [
+        {
+            "hop": 1,
+            "query": "SELECT \n  ph.name AS philip_savage_name,\n  ph.role AS philip_savage_role,\n  gm.name AS general_manager_name,\n  gm.tenure_start,\n  gm.tenure_end,\n  d.position AS draft_position_steve_little,\n  gm_draft.position AS draft_position_general_manager,\n  gm_college_hof.inducted AS gm_college_hof_status,\n  gm_pro_hof.inducted AS gm_pro_hof_status\nFROM\n  personnel ph\nJOIN\n  general_managers gm ON ph.team = gm.team AND ph.tenure_start BETWEEN gm.tenure_start AND gm.tenure_end\nJOIN\n  draft d ON d.player = 'Steve Little'\nJOIN\n  draft gm_draft ON gm_draft.player = gm.name\nLEFT JOIN\n  college_football_hall_of_fame gm_college_hof ON gm_college_hof.player = gm.name\nLEFT JOIN\n  pro_football_hall_of_fame gm_pro_hof ON gm_pro_hof.player = gm.name\nWHERE\n  ph.name = 'Philip Savage' AND\n  ph.role LIKE '%Director of Player Personnel%' AND\n  ph.team = 'Baltimore Ravens' AND\n  d.position < gm_draft.position AND\n  gm_college_hof.inducted = TRUE AND\n  gm_pro_hof.inducted = TRUE;",
+            "retrieved_titles": [
+                "Denny Mooney",
+                "Jim Hendry",
+                "Peter Hanenberger",
+                "Buick LeSabre",
+                "List of New York Mets owners and executives",
+                "GM Service and Parts Operations",
+                "Robert Stempel",
+                "Ron Wolf",
+                "FAW-GM",
+                "Leif \u00d8gaard"
+            ]
+        },
+        {
+            "hop": 2,
+            "query": "SELECT \n  ps.name AS director_name,\n  gm.name AS general_manager,\n  st.name AS player_name,\n  st.draft_position AS player_draft_position,\n  gm_draft_position.draft_position AS gm_draft_position,\n  gm_college_hof.inducted AS gm_college_hof_inducted,\n  gm_pro_hof.inducted AS gm_pro_hof_inducted\nFROM \n  staff_positions AS ps\nJOIN \n  teams AS t ON ps.team_id = t.id\nJOIN \n  general_managers AS gm ON t.id = gm.team_id AND ps.tenure_start <= gm.tenure_end AND ps.tenure_end >= gm.tenure_start\nJOIN \n  players AS st ON st.name = 'Steve Little'\nJOIN \n  players AS gm_player ON gm_player.name = gm.name\nLEFT JOIN \n  draft_positions AS st_draft_position ON st.id = st_draft_position.player_id\nLEFT JOIN \n  draft_positions AS gm_draft_position ON gm_player.id = gm_draft_position.player_id\nLEFT JOIN \n  hall_of_fame AS gm_college_hof ON gm_player.id = gm_college_hof.player_id AND gm_college_hof.type = 'College'\nLEFT JOIN \n  hall_of_fame AS gm_pro_hof ON gm_player.id = gm_pro_hof.player_id AND gm_pro_hof.type = 'Pro'\nWHERE \n  ps.name = 'Philip Savage' AND\n  ps.position = 'Director of Player Personnel' AND\n  t.name = 'Baltimore Ravens'\nLIMIT 1;",
+            "retrieved_titles": [
+                "Pgrep",
+                "HT PS UAV",
+                "Yifeng Sun",
+                "Denny Mooney",
+                "Republican and Socialist Front",
+                "Jim Hendry",
+                "Benz 10/30 PS",
+                "Ron Wolf",
+                "Sender ID",
+                "Union of Socialist Groups and Clubs"
+            ]
+        },
+        {
+            "hop": 3,
+            "query": "Was Philip Savage the Director of Player Personnel for the Baltimore Ravens? Who was the general manager of the Baltimore Ravens during Philip Savage's tenure? Was this general manager drafted lower than Steve Little (American football)? Is this general manager inducted into both the College Football Hall of Fame and the Pro Football Hall of Fame?",
+            "retrieved_titles": [
+                "Phil Savage",
+                "Ozzie Newsome",
+                "T. J. McCreight",
+                "Cornell Brown",
+                "John Hudson (American football)",
+                "Gene Cichowski",
+                "List of Pro Football Hall of Fame inductees",
+                "Jim Parker (American football)",
+                "List of Iowa State Cyclones in the NFL Draft",
+                "Mike Singletary"
+            ]
+        }
+    ]
+}

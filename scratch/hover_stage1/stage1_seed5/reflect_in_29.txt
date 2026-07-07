@@ -1,0 +1,144 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be provided with a `claim` (a factual statement that may involve multiple interconnected facts or entities) and a set of `notes` that include partial background information, relevant contextual details, or observations regarding the claim. Your goal is to generate a concise, clear, and focused `query` (or set of queries) that can be used to verify or fact-check the claim by retrieving relevant documents or evidence from external sources (e.g., Wikipedia articles).
+
+Input Format:
+
+- `claim`: A factual statement that may cover multiple aspects or assertions, often involving named entities such as people, films, places, products, or other specific domain-related items.
+- `notes`: A list of context snippets or observations summarizing the currently known information, including what is missing, ambiguous, or contradictory about the claim’s components. These notes reflect gaps in the information or conflicting details discovered during initial investigation.
+
+Output:
+
+- `query`: One or more clear, well-structured questions or search prompts that directly target the critical pieces of factual information needed to verify each part of the claim. Each query should be specific enough to retrieve relevant documents corresponding to key entities, relationships, or facts mentioned in the claim.
+
+Key details and domain-specific heuristics to include:
+
+1. **Disambiguate Entities Carefully:** When the claim references specific named entities (persons, films, songs, products, places), the query should explicitly name these entities, including relevant descriptors or disambiguation to avoid confusion (e.g., “Solo (Norwegian soft drink)” rather than just “Solo”).
+
+2. **Decompose Complex Claims:** If the claim involves multiple interrelated facts (e.g., an actor starring in two films and a director credit), break down the verification into stepwise, connected questions addressing each part individually, so that sources can be retrieved for all relevant components.
+
+3. **Identify and Target Missing or Ambiguous Links:** Use the `notes` to spot what information is lacking or uncertain. Focus queries on resolving those uncertainties (e.g., if burial location or whether a cemetery is part of a park is unclear, query specifically for these facts).
+
+4. **Cover All Verification Points:** Make sure queries collectively cover every factual assertion embedded in the claim to avoid partial retrieval of relevant resources.
+
+5. **Use Precise and Specific Language:** Frame queries in a form suited for document retrieval, often as clear factual questions or entity-relationship questions. Avoid vague or overly broad queries.
+
+6. **Include Domain Context When Needed:** When domain knowledge influences interpretation (e.g., a director’s known roles, or geographic relationships between cemeteries and parks), reference such context in formulating queries to guide retrieval towards the correct entities and relevant data.
+
+Generalizable Strategy:
+
+- Read the claim carefully, identify all named entities and relationships.
+- Cross-reference those with the `notes` to find gaps or contradictions.
+- For each gap or verification point, generate a direct factual question or phrase that would retrieve documents clarifying or confirming that point.
+- Combine these into a coherent set of queries ensuring coverage of the entire claim.
+- Format the output strictly as `query` without additional explanations.
+
+Example guidance:
+
+For a claim about a film actor and director, queries might include:  
+- "Who starred alongside [Known Actor] in [Film Name]?"  
+- "Did that actor appear in [Second Film Name]?"  
+- "Who directed [Second Film Name]?"
+
+For a claim about a burial place and its geographic association:  
+- "Where is [Person Name] buried?"  
+- "Is [Cemetery Name] located within the [Park or Recreation Area Name]?"
+
+By following these detailed instructions, your generated queries will effectively target the key facts needed for thorough claim verification and ensure retrieval of all necessary supporting documents.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The star of the 2012 film  Fairhaven, appeared in Studio 60 on the Sunset Strip in 2007 and American Horror Story in 2014.
+
+### notes
+['Fairhaven (2012 film) stars Sarah Paulson, Chris Messina, Rich Sommer, Alexie Gilmore, Natalie Gold, and Maryann Plunkett.', 'Sarah Paulson starred in American Horror Story (2014).', 'No information currently available about Fairhaven cast appearing in Studio 60 on the Sunset Strip (2007).', 'Sarah Paulson starred in the 2012 film Fairhaven.', 'Sarah Paulson appeared in Studio 60 on the Sunset Strip from 2006 to 2007.', 'Sarah Paulson starred in American Horror Story in 2014.', 'Sarah Paulson starred in the 2012 film Fairhaven.', 'Sarah Paulson appeared in Studio 60 on the Sunset Strip from 2006 to 2007.', 'Sarah Paulson starred in American Horror Story in 2014.']
+
+## Generated Outputs
+### reasoning
+The claim involves three key facts: identifying the star of the 2012 film "Fairhaven," establishing if this star appeared in the TV show "Studio 60 on the Sunset Strip" in 2007, and confirming if the same star appeared in "American Horror Story" in 2014. To verify this, we need to first identify the lead actor(s) of "Fairhaven" (2012), then check if that actor was cast in "Studio 60 on the Sunset Strip" during 2007, and finally verify their involvement in "American Horror Story" in 2014. These steps ensure full coverage of the claim.
+
+### query
+"Who was the lead actor in the 2012 film Fairhaven?"  
+"Did the lead actor of Fairhaven appear in the TV series Studio 60 on the Sunset Strip in 2007?"  
+"Did the lead actor of Fairhaven appear in American Horror Story in 2014?"
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Blood Bath (American Horror Story)', 'Fairhaven (film)', 'Sarah Paulson']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+The director of Finding Dory co-directed the film A Bug's Life.
+
+### notes
+['Andrew Stanton directed Finding Dory with co-director Angus MacLane.', "Andrew Stanton co-directed A Bug's Life.", "John Lasseter directed A Bug's Life.", "Andrew Stanton is the director of Finding Dory and also co-directed A Bug's Life.", 'Angus MacLane co-directed Finding Dory with Andrew Stanton.', "John Lasseter directed A Bug's Life alongside Andrew Stanton as co-director.", 'Andrew Stanton is confirmed as the director of Finding Dory.', "Andrew Stanton co-directed A Bug's Life alongside John Lasseter.", "Angus MacLane co-directed Finding Dory but had no involvement in A Bug's Life."]
+
+## Generated Outputs
+### reasoning
+The claim states that the director of Finding Dory co-directed the film A Bug's Life. From the notes, we know Andrew Stanton directed Finding Dory with co-director Angus MacLane, and Andrew Stanton co-directed A Bug's Life alongside John Lasseter. Therefore, the director of Finding Dory mentioned, Andrew Stanton, did indeed co-direct A Bug's Life. The claim hinges on confirming that Andrew Stanton directed Finding Dory and also co-directed A Bug's Life. To verify this, queries should confirm the directors of Finding Dory and the co-directors of A Bug's Life to establish the link.
+
+### query
+Who directed the film Finding Dory?  
+Who co-directed the film A Bug's Life?  
+Did Andrew Stanton co-direct A Bug's Life?  
+Was Angus MacLane involved as a director in A Bug's Life?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ["A Bug's Life", 'Andrew Stanton', 'Finding Dory']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+Christopher B. Landon wrote a 2007 movie that stars Shia Saide LaBeouf, an American actor who starred in the Disney Channel series Even Stevens that premiered in 2004.
+
+### notes
+["Christopher B. Landon co-wrote 'Disturbia' (2007), which starred Shia LaBeouf.", "Shia LaBeouf is an American actor who played Louis Stevens in the Disney Channel series 'Even Stevens'.", "'Even Stevens' received award nominations in 2001 and 2003, indicating its premiere was before 2004.", 'Shia LaBeouf was born June 11, 1986, with the full name Shia Saide LaBeouf.', "Christopher B. Landon co-wrote the 2007 film 'Disturbia' starring Shia LaBeouf.", "Shia Saide LaBeouf is an American actor who played Louis Stevens in the Disney Channel series 'Even Stevens'.", "'Even Stevens' premiered before 2004, as indicated by award nominations in 2001 and 2003.", "Christopher B. Landon co-wrote the 2007 film 'Disturbia' starring Shia LaBeouf.", "Shia Saide LaBeouf is an American actor who played Louis Stevens in the Disney Channel series 'Even Stevens'.", "'Even Stevens' aired from 2000 to 2003, with the series finale movie premiering in 2003, not 2004.", "'Even Stevens' received award nominations in 2001 and 2003, confirming its airing before 2004."]
+
+## Generated Outputs
+### reasoning
+The claim contains several interconnected facts:  
+1. Christopher B. Landon wrote a movie released in 2007.  
+2. This 2007 movie stars Shia Saide LaBeouf.  
+3. Shia Saide LaBeouf (presumably Shia LaBeouf) is an American actor.  
+4. Shia LaBeouf starred in the Disney Channel series Even Stevens.  
+5. Even Stevens premiered in 2004.  
+
+To verify this claim, we need to confirm:  
+- Whether Christopher B. Landon wrote any movie released in 2007, and if so, what it is.  
+- Whether Shia LaBeouf starred in that 2007 movie.  
+- That Shia LaBeouf is an American actor.  
+- Whether Shia LaBeouf starred in Even Stevens.  
+- Whether Even Stevens premiered in 2004.  
+
+These queries will confirm each element of the claim and establish their interrelations.
+
+### query
+- "Which movies written by Christopher B. Landon were released in 2007?"  
+- "Did Shia LaBeouf star in a Christopher B. Landon movie released in 2007? If so, what is the title of that movie?"  
+- "Is Shia LaBeouf an American actor?"  
+- "Did Shia LaBeouf star in the Disney Channel series Even Stevens?"  
+- "When did the Disney Channel series Even Stevens premiere?"
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Disturbia (film)', 'Shia LaBeouf']. Documents remaining to be retrieved: ['Christopher B. Landon'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

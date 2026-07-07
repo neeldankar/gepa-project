@@ -1,0 +1,115 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two input fields: 
+
+- `claim` (a factual statement or assertion that requires verification or disambiguation)  
+- `notes` (a list of relevant facts, contextual information, or evidence snippets related to the claim, which may corroborate or contradict it)
+
+Your task is to produce an output field:   
+- `query` (a set of precise, focused natural language questions designed to retrieve relevant documents or information that will confirm, refute, or clarify the claim based on the provided notes)
+
+Detailed instructions:
+
+1. **Understand the claim:** Carefully analyze the claim to identify its key entities, dates, relationships, and assertions that require fact-checking or validation.
+
+2. **Leverage the notes:** Review the notes which contain domain-specific factual information, such as:
+   - Historical founding dates and team affiliations (e.g., sports teams and their managers/players, like MLB teams, Canadian baseball teams, managerial timelines)
+   - Geographic/political jurisdiction relationships (e.g., counties under city governance, province/country inclusion)
+   - Filmography and biographical details (e.g., actors, release years of films, familial relations such as father or child actors)
+   
+   These notes may include specific contradictory or supporting facts that help refine what exactly needs to be queried.
+
+3. **Identify information gaps and verification points:** From the claim and the notes, detect:
+   - Any temporal inconsistencies (e.g., founding dates that don’t match known historical timelines)
+   - Ambiguities about person identities, roles, or relationships
+   - Possible confusion in naming or titles (e.g., films with similar names but different release years)
+   - Geographic hierarchies or country affiliations relevant to the claim
+
+4. **Formulating the query:** Convert these analysis points into clear, concise questions designed to retrieve authoritative and relevant documents that:
+   - Verify foundational facts (e.g., exact founding year of teams, political jurisdiction dependencies)
+   - Validate career timelines or biographical details of individuals involved (e.g., players, managers, actors)
+   - Clarify ambiguous or uncertain points in the claim (e.g., confirmation of whether a specific film exists in a particular year, or whether a certain person was involved)
+   
+   The queries should be specific enough to target relevant documents, ideally covering all facets required to fully assess the claim’s truthfulness.
+
+5. **Use precise language:** Refer to proper names, dates, places, and relationships exactly as given or logically inferred from the notes, avoiding vague or overly broad queries.
+
+6. **Contextual domain knowledge:**  
+   - Canadian baseball teams: The only official MLB Canadian team is the Toronto Blue Jays, founded in 1977. There are no Canadian MLB teams founded in 1969.
+   - Tampa Bay Devil Rays: Established in 1998. Managers commonly referenced include Lou Piniella and Joe Maddon; their playing histories can be checked.
+   - Chinese administrative divisions: Counties such as Fan County fall under prefecture-level cities (such as Puyang) within provinces (like Henan). Different prefecture-level cities (like Puyang and Pu'er) are located in the same country (China).
+   - Indian cinema: Films and their release years are critical; "Bombay Talkie" and "Bombay Talkies" are distinct. Confirm the existence, release dates, and cast of films clearly. Relationships such as father of an actor must be verified in terms of their acting credits.
+
+The overall strategy is to carefully map the claim’s assertions to known facts or contradictions from the notes and formulate targeted queries that will direct fact-checking to authoritative sources covering these niche domains and timelines.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Rhapsody, Op. 1 was written by a male composer. This composer was Hungarian, not Johann Christoph Pepusch.
+
+### notes
+['Béla Bartók, a Hungarian male composer, wrote Rhapsody, Op. 1 as confirmed by source [2].', 'Johann Christoph Pepusch is not related to Rhapsody, Op. 1.', 'Béla Bartók, a Hungarian male composer, wrote Rhapsody, Op. 1.', 'Johann Christoph Pepusch is not related to Rhapsody, Op. 1.', 'Rhapsody, Op. 1 (Sz. 26, BB 36) was composed by Béla Bartók, a Hungarian male composer, completed in 1904.', 'Johann Christoph Pepusch has no connection to Rhapsody, Op. 1, according to multiple sources.', "Béla Bartók is recognized for multiple works titled 'Rhapsody' and other compositions, emphasizing his role as a Hungarian male composer."]
+
+## Generated Outputs
+### reasoning
+The claim states that "Rhapsody, Op. 1" was written by a male composer who was Hungarian, and explicitly excludes Johann Christoph Pepusch as that composer. To verify this claim, we need to identify who composed "Rhapsody, Op. 1," determine the composer's nationality, and confirm the composer's gender. Since "Rhapsody, Op. 1" is specified without more detail, it is important to confirm if the composition is associated with any known Hungarian composer and make sure that Johann Christoph Pepusch, who was German-British and not Hungarian, is not the author. Therefore, queries should focus on identifying the composer of "Rhapsody, Op. 1" and their nationality and gender to confirm the accuracy of the claim.
+
+### query
+Who composed "Rhapsody, Op. 1"? What is the nationality and gender of the composer of "Rhapsody, Op. 1"? Was Johann Christoph Pepusch involved in composing any work titled "Rhapsody, Op. 1"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Rhapsody, Op. 1 (Bartók)']. Documents remaining to be retrieved: ['Béla Bartók', 'Johann Christoph Pepusch'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Singers Kim Tae-yeon and the Irish artist who released the EP "The First Collage", have both appeared in group bands.
+
+### notes
+["Kim Tae-yeon is a member of the girl group Girls' Generation, confirming her participation in a group band.", "There is no information in the provided context about an Irish artist releasing the EP 'The First Collage' or their participation in any band.", "Kim Tae-yeon is confirmed to be a member of the girl group Girls' Generation, thereby appearing in a group band.", "There is no information provided about an Irish artist releasing an EP called 'The First Collage' or their involvement in any group band.", "The EP 'The First Collage' is not mentioned in the provided context.", "Without additional information, it cannot be confirmed whether the Irish artist who released 'The First Collage' has appeared in a group band.", "Kim Tae-yeon is confirmed as a member of the girl group Girls' Generation, hence has appeared in a group band.", "There is no mention in the context of an Irish artist releasing an EP titled 'The First Collage'.", "No information confirms whether the Irish artist who might have released 'The First Collage' has appeared in any group band.", "The claim about the Irish artist's participation in a group band cannot be verified with the provided context."]
+
+## Generated Outputs
+### reasoning
+The claim states that both Kim Tae-yeon and an Irish artist who released the EP "The First Collage" have appeared in group bands. From the notes, it is verified that Kim Tae-yeon is a member of the girl group Girls' Generation, which confirms her participation in a group band. However, there is no information provided about any Irish artist releasing the EP "The First Collage," nor about their participation in any group band. To thoroughly verify the claim, it is necessary to identify the Irish artist who released "The First Collage" and investigate whether they have appeared in any group bands.
+
+### query
+Who is the Irish artist that released the EP titled "The First Collage"? Has this artist ever been a member of a group band or musical group?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Kim Tae-yeon']. Documents remaining to be retrieved: ['The First Collage', 'Yang Yo-seob'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The company owning Quaker Ridge (NYW&B station) has a terminus at the New York city in the county of Westchester.
+
+### notes
+['Quaker Ridge station was part of the New York, Westchester and Boston Railway, located in New Rochelle, Westchester County.', 'The NYW&B Railway ran from the South Bronx (a borough of NYC) to Mount Vernon and further into Westchester County.', 'The southern terminus of NYW&B was in the Bronx, NYC, not in Westchester County.', 'Westchester County is north of New York City and is a separate county.', 'Therefore, the terminus in New York City was not located in Westchester County.', 'Quaker Ridge station was part of the New York, Westchester and Boston Railway located in New Rochelle, Westchester County.', 'The NYW&B Railway ran from the South Bronx in New York City to Mount Vernon and further into Westchester County, with the southern terminus in the Bronx.', 'Westchester County is a separate county north of New York City; the Bronx is part of NYC but not in Westchester County.', 'The southern terminus of NYW&B was in the Bronx, New York City, not in Westchester County.', 'Therefore, the terminus in New York City (Bronx) was not located within Westchester County.', 'Quaker Ridge station was part of the New York, Westchester and Boston Railway and is located in New Rochelle, Westchester County.', 'The NYW&B Railway ran from the South Bronx (part of New York City) northward into Westchester County.', 'The southern terminus of the NYW&B Railway was in the South Bronx, New York City, not in Westchester County.', 'Westchester County is a separate county north of New York City and does not include any part of New York City.', "Therefore, while the company's operations extended into Westchester County, its terminus in New York City was not located within Westchester County."]
+
+## Generated Outputs
+### reasoning
+The claim states that the company owning Quaker Ridge (a NYW&B station) has a terminus at New York City in the county of Westchester. The notes clarify the following: Quaker Ridge station was indeed part of the New York, Westchester and Boston Railway (NYW&B), located in New Rochelle, which is in Westchester County. The NYW&B Railway ran from the South Bronx (a borough of New York City) through Mount Vernon and into Westchester County. Critically, the southern terminus of the NYW&B was in the Bronx, which is part of New York City but not in Westchester County. Westchester is a separate county, north of New York City. Therefore, the terminus in New York City (Bronx) was not located in Westchester County. The claim incorrectly associates the New York City terminus with Westchester County, which is geographically and administratively separate. To verify these facts definitively, queries need to confirm the exact location of the NYW&B railway termini and the administrative boundaries of Westchester County relative to New York City and the Bronx.
+
+### query
+What was the location of the termini of the New York, Westchester and Boston Railway? Is the Bronx part of New York City and separate from Westchester County? Does Westchester County include any part of New York City? Specifically, was the southern terminus of the NYW&B railway located in Westchester County or the Bronx? Where is Quaker Ridge station located?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['New York, Westchester and Boston Railway', 'Quaker Ridge (NYW&amp;B station)']. Documents remaining to be retrieved: ['Mount Vernon, New York'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

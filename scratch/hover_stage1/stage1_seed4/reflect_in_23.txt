@@ -1,0 +1,138 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields: `claim` and `notes`. Your task is to produce a new field `query`.
+
+- The `claim` is a complex factual statement or set of statements that asserts certain relationships, events, or facts involving multiple entities.
+- The `notes` are supporting or refuting fragments of factual information, background details, and evidence relevant to assessing or verifying the `claim`.
+
+Your goal is to formulate an information retrieval or database query (`query`) that, if executed, would retrieve all supporting documents or data needed to verify every part of the claim accurately. The query should be specifically designed to capture all key entities, relationships, and factual aspects mentioned or implied in the given claim.
+
+Key Points and Strategy:
+1. **Identify factual components in the claim**  
+   Parse the claim to identify:
+   - Key entities (people, organizations, films, events, teams, places, dates, roles, etc.)
+   - Relationships between entities (e.g., "starred with", "founded in", "managed", "directed by")
+   - Attributes or predicates that need verification (e.g., professional overlap, filmography, team foundation dates, managerial roles)
+
+2. **Leverage evidence in `notes`**  
+   The `notes` contain verified or likely verified facts that relate to the entities and claims. Use these to guide your understanding of which pieces of information are central and what queries could retrieve documents covering those pieces.
+
+3. **Formulate a comprehensive yet precise query**  
+   The query should:  
+   - Request information that covers all key entities involved  
+   - Cover all relationships or assertions made  
+   - Be sufficiently detailed to guide retrieval of all necessary documents, ensuring that none of the claim’s critical assertions are left unverifiable
+
+4. **Generalizable querying approach**  
+   - For claims involving relationships or overlap between two or more persons or entities, query their respective profiles, roles, and overlaps (e.g., shared professions, co-appearances)  
+   - For claims involving filmography or works, query casts, co-stars, directors and release details for each relevant film  
+   - For claims involving teams or organizations, query founding dates, player rosters during specified periods, and managerial histories  
+   - For claims involving timelines, query historical data for proper date and role alignment  
+
+5. **Prioritize retrieval of documents for all entities referenced**  
+   The goal is to retrieve a full set of relevant documents that together confirm or refute the claim. The query should explicitly try to capture all gold documents identified in notes or feedback.
+
+Example considerations from provided cases:
+- When claim involves whether two professionals share a profession, the query should seek explicit mentions of professions for both individuals.
+- When claim involves people starring together in films and their participation in other films and directors, the query should request casts of the films and director credits.
+- When claim involves sports teams and individuals across specific time periods, the query should request founding dates, rosters by years, managerial records, and affiliations with any teams.
+
+Output Format:
+- Output only the `query` text, formatted as a natural language request or series of requests designed to retrieve all relevant and complete supporting information for verifying the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The writer of the metal song "Veteran of the Psychic Wars" is a lyricist, not Otep Shamaya.
+
+### notes
+['"Veteran of the Psychic Wars" is a song by the American hard rock band Blue Öyster Cult, written by Eric Bloom and British author Michael Moorcock.', 'Michael Moorcock is known as a lyricist and writer, not a performer or singer.', 'Otep Shamaya is the lead vocalist of the nu metal band Otep and is not connected to the writing of "Veteran of the Psychic Wars."', '"Veteran of the Psychic Wars" is a song by the American hard rock band Blue Öyster Cult, written by Eric Bloom and British author Michael Moorcock.', 'Michael Moorcock is known as a lyricist and writer, not a performer or singer.', 'Otep Shamaya is the lead vocalist of the nu metal band Otep and is not connected to the writing of "Veteran of the Psychic Wars."', 'Michael Moorcock collaborated with Eric Bloom on lyrics for songs including "Veteran of the Psychic Wars."', '"Veteran of the Psychic Wars" is a song by the American hard rock band Blue Öyster Cult, written by Eric Bloom and British author Michael Moorcock.', 'Michael Moorcock is known as a lyricist and writer, not a performer or singer.', 'Otep Shamaya is the lead vocalist of the nu metal band Otep and is not connected to the writing of "Veteran of the Psychic Wars."', 'Michael Moorcock collaborated with Eric Bloom on lyrics for songs including "Veteran of the Psychic Wars."']
+
+## Generated Outputs
+### reasoning
+The claim asserts that the writer of the metal song "Veteran of the Psychic Wars" is a lyricist distinct from Otep Shamaya. To verify this, information is needed on who wrote the song "Veteran of the Psychic Wars," specifically focusing on the songwriter(s) credited for the lyrics. Additionally, data about Otep Shamaya’s songwriting credits should be reviewed to confirm whether she is connected to this particular song or not. This requires retrieval of songwriter and lyricist credits for "Veteran of the Psychic Wars," and the identification of Otep Shamaya’s songwriting repertoire to clarify authorship attribution.
+
+### query
+Retrieve detailed songwriter and lyricist credits for the metal song "Veteran of the Psychic Wars," including the names of all contributors. Additionally, retrieve information on the songwriting credits and musical works attributed to Otep Shamaya, focusing on whether she is credited as a writer for "Veteran of the Psychic Wars" or not.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Otep Shamaya', 'Veteran of the Psychic Wars']. Documents remaining to be retrieved: ['Eric Bloom'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The grandfather of Rainer Hoss conducted the negotiations with the owners and was the longest serving resident-commandant of Auschwitz concentration and extermination camp.
+
+### notes
+['Rudolf Höß was the longest serving commandant of Auschwitz concentration camp.', 'The command of Auschwitz concentration camp was held by SS officers appointed by the Nazi regime.', "There is no evidence or historical record connecting Rainer Hoss's grandfather to the command or negotiations regarding Auschwitz.", 'Auschwitz concentration camp was a Nazi state-controlled facility, without private owners involved in negotiations.', 'Rudolf Höß was the longest serving commandant of Auschwitz concentration camp.', 'Auschwitz concentration camp was operated by the Nazi SS with no involvement of private owners or negotiations with owners.', "There is no evidence connecting Rainer Hoss's grandfather to any command or negotiations regarding Auschwitz concentration camp.", 'The Auschwitz concentration camp was a Nazi state-controlled facility with commandants appointed by the SS.', 'Rudolf Höß was the longest serving commandant of Auschwitz concentration camp.', 'The Auschwitz concentration camp was a Nazi state-controlled facility with commandants appointed by the SS.', "There is no evidence or historical record connecting Rainer Hoss's grandfather to the command or negotiations regarding Auschwitz.", 'Auschwitz concentration camp was operated by Nazi SS with no involvement of private owners or negotiations with owners.']
+
+## Generated Outputs
+### reasoning
+The claim involves two primary factual components:  
+1. The identity of Rainer Hoss's grandfather as a negotiator with the owners (owners of what is not specified but presumably related to the Auschwitz camp or its administration). This requires verifying genealogical information to confirm the grandfather's identity and his role in negotiations.  
+2. The grandfather being the longest serving resident-commandant of the Auschwitz concentration and extermination camp. This requires accessing historical records of Auschwitz commandants and their tenures to identify the longest serving set of commandants and check if Rainer Hoss's grandfather matches that individual.
+
+To verify the claim thoroughly, documents or databases are needed that contain:  
+- Genealogical information linking Rainer Hoss to his grandfather, including the grandfather's name and role.  
+- Historical records or authoritative sources about the Auschwitz concentration camp commandants, their lengths of service, and any negotiation records involving camp ownership or administration.  
+- Clarification on what negotiations the claim refers to (if available in sources).
+
+Therefore, the query should request detailed historical and genealogical information regarding Rainer Hoss and his grandfather, and the list of Auschwitz camp commandants with their tenure details.
+
+### query
+Retrieve genealogical and biographical information on Rainer Hoss and his grandfather to establish the grandfather's identity and roles. Provide historical records and authoritative sources on Auschwitz concentration camp commandants, including the names, service periods, and lengths of tenure for each commandant. Highlight any individuals noted as the longest serving resident-commandants of Auschwitz. Additionally, search for any documentation or records concerning negotiations conducted by any Auschwitz commandant or related persons with the camp owners or administration, particularly focusing on the grandfather of Rainer Hoss if named.
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Rudolf Höss']. Documents remaining to be retrieved: ['Gerstein Report', 'Rainer Höss'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The auditorium where Backstreet Boys: Larger Than Life residency show perfomed at is located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada. This auditorium is located at a hotel and casino owned by Caesars Entertainment Corporation.
+
+### notes
+['Backstreet Boys: Larger Than Life residency show was performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada.', 'Planet Hollywood Las Vegas is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada.', 'Planet Hollywood Las Vegas is owned and operated by Caesars Entertainment Corporation.', 'Backstreet Boys: Larger Than Life residency show was performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada.', 'Planet Hollywood Las Vegas is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada.', 'Planet Hollywood Las Vegas is owned and operated by Caesars Entertainment Corporation.', 'Backstreet Boys: Larger Than Life residency show was performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada.', 'Planet Hollywood Las Vegas is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada.', 'Planet Hollywood Las Vegas is owned and operated by Caesars Entertainment Corporation.']
+
+## Generated Outputs
+### reasoning
+The claim contains several factual components that need verification: 
+1. The "Backstreet Boys: Larger Than Life" residency show was performed at an auditorium.
+2. This auditorium is located in the Planet Hollywood Resort & Casino.
+3. Planet Hollywood Resort & Casino is in Las Vegas, Nevada.
+4. Planet Hollywood Resort & Casino is a hotel and casino.
+5. The hotel and casino is owned by Caesars Entertainment Corporation.
+
+The notes confirm that the auditorium is "The AXIS," located in Planet Hollywood Resort & Casino, situated on the Las Vegas Strip in Paradise, Nevada (part of Las Vegas metropolitan area). They also confirm Planet Hollywood Las Vegas is owned and operated by Caesars Entertainment Corporation.
+
+To verify the entire claim comprehensively, the query needs to retrieve information that: 
+- Identifies the auditorium where the Backstreet Boys residency was performed and its location.
+- Confirms Planet Hollywood is a hotel and casino in Las Vegas, Nevada.
+- Confirms ownership of Planet Hollywood Las Vegas by Caesars Entertainment Corporation.
+
+### query
+Retrieve information about:  
+1. The venue hosting the "Backstreet Boys: Larger Than Life" residency show, including auditorium name and location details.  
+2. Details about Planet Hollywood Resort & Casino in Las Vegas, specifically its status as a hotel and casino and its location.  
+3. Ownership information for Planet Hollywood Resort & Casino in Las Vegas, verifying whether it is owned and operated by Caesars Entertainment Corporation.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Backstreet Boys: Larger Than Life', 'Planet Hollywood Las Vegas']. Documents remaining to be retrieved: ['The AXIS'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

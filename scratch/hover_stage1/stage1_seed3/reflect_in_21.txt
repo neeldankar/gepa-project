@@ -1,0 +1,104 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given two input fields:  
+- `claim`: a statement asserting certain facts or relationships about entities, including genre classifications, character roles, temporal orderings, or member counts of groups/bands.  
+- `notes`: a list of factual sentences or extracted information pieces relevant to the claim, often providing partial evidence or clarifications about entities, their attributes, and relationships.
+
+Your task is to produce a single output field:  
+- `query`: a clear, concise, and targeted question (or set of closely related questions) designed to retrieve the missing or confirming factual information needed to verify or refute the `claim`.  
+
+The `query` should focus on:  
+- Confirming exact classifications or categories (e.g., movie genres, band genres).  
+- Clarifying membership counts or comparisons between groups.  
+- Establishing temporal relations or event sequences (e.g., release dates).  
+- Disambiguating entities with similar names or verifying the presence or role of a character or individual in a given work.  
+
+Strategies and considerations for generating the `query`:  
+1. Analyze the `claim` carefully to identify key factual points or comparisons that require verification.  
+2. Leverage the `notes` to understand which aspects of the claim are supported or contradicted, and which remain uncertain or missing.  
+3. Formulate the `query` to explicitly seek the missing information or clarification necessary to decide the truth of the claim. Avoid overly broad or vague queries—focus on the minimal but sufficient question(s) to confirm or refute the claim.  
+4. When the claim involves multiple entities or facts, and the notes partially cover these, include all relevant verification points in the `query`.  
+5. Maintain the specificity of entities by including relevant context in the `query` (e.g., include years for movies, full names for bands or characters).  
+
+Domain-specific notes that might not be explicitly known by the assistant but are useful for query formulation:  
+- Movie genre classifications can be nuanced, with some movies emphasizing family, comedy, adventure, or action genres to varying degrees.  
+- Voice actor roles often need precise linking to specific film releases and characters.  
+- Band classifications can vary between musical genres, and member counts are important quantitative facts for comparison claims.  
+- Temporal comparisons often hinge on release dates of movies or events and require clear references to those dates in queries.  
+- Entity disambiguation can require specifying the version or year of a movie or release to avoid confusion.  
+
+The ultimate goal is to produce a `query` that, when used to retrieve or check factual documents, will provide the exact information needed to confirm or deny the `claim`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The Costa Rican star of Crimes of Fashion debuted in the 2004 American teen musical comedy film Confessions of a Teenage Drama Queen. She went on to co-star in the 2007 blockbuster action film Transformers.
+
+### notes
+['Megan Fox is an American actress, not Costa Rican.', "Megan Fox debuted in 'Confessions of a Teenage Drama Queen' (2004).", "Megan Fox co-starred in 'Transformers' (2007) which was her breakout role.", 'Megan Fox is an American actress, not Costa Rican.', "Megan Fox made her film debut in 'Confessions of a Teenage Drama Queen' (2004), a teen musical comedy.", "Megan Fox co-starred in 'Transformers' (2007), which was her breakout role.", "'Crimes of Fashion' is not mentioned in relation to Megan Fox or any Costa Rican actress in the provided context.", "The claim mistakenly identifies Megan Fox as Costa Rican and incorrectly associates her with 'Crimes of Fashion.'", 'Megan Fox is an American actress, not Costa Rican.', "Megan Fox made her film debut in the 2004 American teen musical comedy film 'Confessions of a Teenage Drama Queen'.", "Megan Fox co-starred in the 2007 blockbuster action film 'Transformers', which was her breakout role.", "'Crimes of Fashion' is not associated with Megan Fox or any Costa Rican actress in the context provided.", "The claim mistakenly identifies Megan Fox as Costa Rican and erroneously connects her to 'Crimes of Fashion'."]
+
+## Generated Outputs
+### reasoning
+The claim includes several factual points needing verification: the nationality of the "star" of "Crimes of Fashion," the debut role of that actress in the 2004 film "Confessions of a Teenage Drama Queen," and the co-starring role in the 2007 film "Transformers." The notes clarify that Megan Fox debuted in "Confessions of a Teenage Drama Queen" and co-starred in "Transformers," but she is American, not Costa Rican, and is not connected to "Crimes of Fashion." It is necessary to confirm who the Costa Rican star of "Crimes of Fashion" is, what their debut role was, and whether they appeared in "Confessions of a Teenage Drama Queen" and "Transformers." Verifying the cast and nationality details for the star of "Crimes of Fashion," the cast lists for the two films, and their release dates will confirm or refute the claim.
+
+### query
+Who is the lead actor or star of "Crimes of Fashion," and what is their nationality? Did this actor make their film debut in the 2004 American teen musical comedy film "Confessions of a Teenage Drama Queen"? Did this actor co-star in the 2007 blockbuster action film "Transformers"?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Confessions of a Teenage Drama Queen', 'Megan Fox']. Documents remaining to be retrieved: ['Crimes of Fashion'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The location that houses the M7 Aerospace LP company,  and Yakutat Airport are in the same country.
+
+### notes
+['M7 Aerospace LP is headquartered at San Antonio International Airport, Texas, United States.', 'Yakutat Airport is located in Yakutat, Alaska, United States.', 'M7 Aerospace LP is headquartered at San Antonio International Airport, Texas, United States.', 'Yakutat Airport is located in Yakutat, Alaska, United States.', 'San Antonio International Airport is located in San Antonio, Texas, serving the Greater San Antonio metropolitan area in the United States.', 'Yakutat Airport is a public-use airport located in Yakutat, Alaska, United States.', 'Texas and Alaska are states within the United States of America.', 'M7 Aerospace LP is headquartered in San Antonio International Airport, Texas, United States.', 'Yakutat Airport is located in Yakutat, Alaska, United States.', 'Texas and Alaska are states in the United States of America.', 'Both locations, San Antonio International Airport (Texas) and Yakutat Airport (Alaska), are within the United States.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that M7 Aerospace LP and Yakutat Airport are located in the same country. The notes specify that M7 Aerospace LP is headquartered in San Antonio International Airport, Texas, United States, and Yakutat Airport is located in Yakutat, Alaska, United States. Both locations are in the United States, confirming that they are indeed in the same country.
+
+### query
+Are both San Antonio International Airport in Texas and Yakutat Airport in Alaska located within the United States?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['M7 Aerospace', 'San Antonio International Airport', 'Yakutat Airport']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+The company owning Quaker Ridge (NYW&B station) has a terminus at the New York city in the county of Westchester.
+
+### notes
+['Quaker Ridge station was on the White Plains branch of the New York, Westchester and Boston Railway located in New Rochelle, Westchester County, New York.', 'The New York, Westchester and Boston Railway linked Manhattan (New York City) with northern Bronx and Westchester County areas.', 'New York City and Westchester County are distinct entities; New York City is in multiple counties, but Westchester County is separate and located north of New York City.', "The company's terminus was likely in Manhattan, New York City (New York County), not in Westchester County where Quaker Ridge station is located.", 'Quaker Ridge station was on the White Plains branch of the New York, Westchester and Boston Railway, located in New Rochelle, Westchester County, New York.', 'The New York, Westchester and Boston Railway linked Manhattan (New York City) with northern Bronx and Westchester County areas.', 'New York City and Westchester County are distinct entities; New York City encompasses multiple counties including New York County (Manhattan), while Westchester County is a separate county north of New York City.', "The company's terminus was likely in Manhattan (New York County), not in Westchester County where Quaker Ridge station is located.", "The claim that the company's terminus is in New York City within Westchester County is factually incorrect because Westchester County is not part of New York City.", 'New York City comprises five boroughs which correspond to: New York County (Manhattan), Bronx, Kings County (Brooklyn), Queens, and Richmond County (Staten Island).', 'Westchester County lies north of New York City and is a separate county, not part of New York City.', 'Quaker Ridge station was located in New Rochelle, Westchester County, which is outside New York City limits.', "The New York, Westchester and Boston Railway's southern terminus was in Manhattan (New York County), not in Westchester County.", "The claim incorrectly states that the company's terminus is at New York City in Westchester County, which is geographically impossible."]
+
+## Generated Outputs
+### reasoning
+The claim states that the company owning Quaker Ridge (a NYW&B station) has a terminus at New York City in Westchester County. The notes clarify that Quaker Ridge station was located in New Rochelle, Westchester County, but New York City is distinct from Westchester County. The NYW&B Railway linked Manhattan, which is part of New York City (New York County), with northern Bronx and Westchester County areas. The company's terminus was likely in Manhattan (New York City), not in Westchester County. Therefore, the claim seems to confuse the location of the terminus, incorrectly placing it within Westchester County.
+
+To verify the claim, it is necessary to confirm the exact location of the NYW&B Railway's terminus and clarify in which county it resides with respect to New York City and Westchester County.
+
+### query
+What was the exact location and county of the New York, Westchester and Boston Railway's terminus? Is the terminus located within New York City or within Westchester County?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['New York, Westchester and Boston Railway', 'Quaker Ridge (NYW&amp;B station)']. Documents remaining to be retrieved: ['Mount Vernon, New York'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

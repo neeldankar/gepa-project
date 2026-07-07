@@ -1,0 +1,143 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields: `claim` and `notes`. Your task is to produce a single output field `query`.
+
+- The `claim` is a complex factual statement or a set of related assertions that involve multiple entities, attributes, relationships, and timelines.
+- The `notes` are contextually relevant fragments of factual information, background details, or evidence that support or refute parts of the claim.
+
+Your core objective is to formulate a **precise, comprehensive, and executable information retrieval or database query (`query`)** that would, if run, return **all supporting documents or structured data necessary to verify every aspect of the claim**. This query should effectively capture all entities, relationships, attributes, and temporal conditions expressed or implied in the claim.
+
+Detailed Instructions and Considerations:
+
+1. **Identify Key Factual Components in the Claim:**  
+   - Extract all key **entities**: people (with roles), organizations, teams, films, songs, breeds, events, places, dates, and titles.  
+   - Determine all **relationships or assertions**: e.g., "Person A played tennis," "Person B was the defending champion," "Entity X is a recognized dog breed," "Band Y recorded album Z," "Person C was born before Person D," "Individual E starred with Individual F in Film G," or "Team H was founded in Year J."  
+   - Note all **attributes or predicates** to verify: e.g., birthplace, profession, breed status, birth date, co-appearances, founding dates, event participation, timelines.
+
+2. **Leverage Notes as Contextual Guidance:**  
+   - Use notes to understand which entities and facts are central and which documents or data types likely exist to verify them.  
+   - Notes may mention entities not explicitly named in the claim but which are necessary to include in the query (e.g., co-stars, defending champions, bands associated with songs).  
+   - The notes may indicate multiple concepts around a single entity (e.g., confirming that "Angelique Kerber" is a tennis player and her nationality).
+
+3. **Formulate a Natural Language Query That is Both Comprehensive and Specific:**  
+   - Include requests for all key entities mentioned or implicated.  
+   - Ask for verification of all roles, professions, chronological relationships, and event participations inferred from the claim and notes.  
+   - If the claim involves comparisons or chronological ordering (e.g., one person born before another), query the birthdates or timeline data for both entities.  
+   - For claims involving domain-specific structures (e.g., sports teams, filmographies, music credits, dog breeds), query detailed attributes such as rosters for specified years, cast lists and director credits, breed origin and classification, etc.  
+   - Ensure the query explicitly requests all relevant documents or data points that would verify the **complete** claim, including all central components identified from claim plus any additional entities from notes.
+
+4. **Generalizable Querying Strategy:**  
+   - For co-participation or co-occurrence claims, query all related personal profiles, event participation, or work involvement to check overlaps.  
+   - For claims about professions or roles, query explicit profession or role information for each individual.  
+   - For claims about musical bands, query the band’s recording history, personnel (especially lead roles like lead guitarist), and associated recordings.  
+   - For claims about competitions or sports, query event results, defending champions, player rosters, and founding or management dates.  
+   - For claims about pedigree, classification, or identity status (e.g., dog breed vs individual dog), query breed registration, classification, and relationship between individual names and breed names.  
+   - Prioritize an exhaustive retrieval of all gold-standard documents or data points referenced or implied in notes/feedback.
+
+5. **Output Format and Style:**  
+   - Output **only** the final `query` as natural language, structured as a single or multi-part well-formed request.  
+   - Avoid including reasoning or explanation in the output, but the query must be detailed enough to ensure the retrieval covers every factual aspect in the claim and notes.  
+   - Use explicit phrasing such as "Retrieve information on...", "Identify...", "Provide birth dates for...", "Confirm the profession of...", or "List all cast members and director of...".
+
+Examples of Niche Domain Knowledge (from previous cases):  
+- Distinction between an individual dog’s name and a dog breed.  
+- Separation of men’s and women’s events in tennis competitions (e.g., Angelique Kerber cannot compete in men’s doubles).  
+- Role-specific entities within bands, such as "lead guitarist," related to recordings or albums.  
+- Temporal ordering involves retrieving birth dates to confirm who was born earlier.  
+- The concept of defending champions implies querying prior winners of specific tournaments or championships.  
+- Films have casts and directors that must be queried to verify co-appearances.  
+- Sports teams and related persons require historical rosters, managerial records, and founding dates queries.  
+
+The goal is a **single query capable of retrieving every piece of essential evidence** to support or refute the entire claim, constructed by expertly connecting claim components with relevant fact verification needs derived from notes.
+
+Summary:
+To produce the query:
+
+- Fully parse the claim for all relevant entities, relations, attributes, and timelines.  
+- Use notes as context to ensure no verifying entity or fact is missed.  
+- Craft a detailed, natural language retrieval request covering all these components thoroughly.  
+- Ensure the query explicitly requests all relevant information necessary to corroborate or invalidate each point in the claim comprehensively.
+
+This ensures a complete, accurate, and verifiable approach to fact-checking complex claims involving multiple entities and relationships.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The actor, who starred in the thriller 400 Boys, plays Marilyn Monroe in a film based on the novel "Northern Lights".
+
+### notes
+['Blonde (film) is a 2001 made-for-television film about Marilyn Monroe, starring Australian actress Poppy Montgomery, adapted from Joyce Carol Oates’s novel Blonde.', 'No direct connection between the thriller 400 Boys and any Marilyn Monroe biopic or film based on a novel named Northern Lights is found in the available context.', 'Marilyn Monroe has been portrayed in several films: e.g., Norma Jean & Marilyn (1996) with Mira Sorvino as Monroe, and the documentary Love, Marilyn (2012).', "The novel 'Northern Lights' and any film adaptation featuring Marilyn Monroe do not appear in the provided context.", 'Blonde (film) is a 2001 made-for-television film about Marilyn Monroe starring Australian actress Poppy Montgomery, adapted from Joyce Carol Oates’s novel Blonde.', 'Norma Jean & Marilyn (1996) features Mira Sorvino as Marilyn Monroe.', 'No connection found between the thriller 400 Boys and any Marilyn Monroe biopic or film based on a novel named Northern Lights.', "No film adaptation of the novel 'Northern Lights' involving Marilyn Monroe is noted in the available materials.", "No connection exists between the thriller '400 Boys' and any Marilyn Monroe biopic or film adaptation of a novel named 'Northern Lights'.", "'Blonde' (2001) is a made-for-television film about Marilyn Monroe starring Australian actress Poppy Montgomery, adapted from Joyce Carol Oates's novel 'Blonde'.", "Other portrayals of Marilyn Monroe include Mira Sorvino in 'Norma Jean & Marilyn' (1996) and various documentaries.", "No film adaptation of the novel 'Northern Lights' involving Marilyn Monroe is noted in any relevant records."]
+
+## Generated Outputs
+### reasoning
+The claim involves verifying the identity of an actor with two key roles: starring in the thriller film "400 Boys" and playing Marilyn Monroe in a film adaptation of the novel "Northern Lights". To verify this, it is necessary to identify the actor who starred in "400 Boys", confirm the genre and cast of "400 Boys", and verify that this same actor plays Marilyn Monroe in a film that is based on or adapted from the novel "Northern Lights." Furthermore, the claim implies a connection between the thriller genre for "400 Boys" and the adaptation status of the second film related to the novel. The query must retrieve information on both "400 Boys" (cast and genre) and the film adaptation of "Northern Lights" (cast and source material) to find the actor linking both roles.
+
+### query
+Retrieve comprehensive data on the thriller film "400 Boys," including its full cast list and genre classification, to identify the actors starring in it. Additionally, retrieve details about any film adaptations of the novel "Northern Lights," including cast lists and specifically whether any actor from "400 Boys" plays Marilyn Monroe in such a film. Confirm that the film featuring Marilyn Monroe is based directly on the novel "Northern Lights."
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['400 Boys', 'Charlie Rowe', 'The Golden Compass (film)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The movie Sacred Planet came out after another film. Award winning actor Damion Poitier had a role in this other film.
+
+### notes
+['Sacred Planet is a documentary film released in 2004.', 'Damion Poitier is an American actor who appeared in the 2010 film Hunter Prey.', 'Hunter Prey stars Damion Poitier and was released after Sacred Planet.', 'Damion Poitier is known for roles in films released after 2004, but not in Sacred Planet.', 'Sacred Planet is a documentary film released in 2004.', 'Damion Poitier is an American actor who appeared in the 2010 film Hunter Prey.', 'Hunter Prey stars Damion Poitier and was released after Sacred Planet.', 'Damion Poitier has known film roles after 2004 but not in Sacred Planet.', 'Sacred Planet is a documentary film released in 2004.', 'Damion Poitier appeared in the 2010 film Hunter Prey.', 'Hunter Prey stars Damion Poitier and was released after Sacred Planet.', 'Damion Poitier is known for film roles released after 2004 but did not appear in Sacred Planet.']
+
+## Generated Outputs
+### reasoning
+The claim states that the movie Sacred Planet was released after another film, in which award-winning actor Damion Poitier had a role. According to the notes, Sacred Planet was released in 2004 as a documentary film. Damion Poitier appeared in Hunter Prey, a 2010 film released after Sacred Planet. He is known for roles in films released after 2004 but not in Sacred Planet. This implies the "other film" must have been released before Sacred Planet, and Damion Poitier had a role in it.
+
+To verify the claim, it is necessary to confirm all films Damion Poitier acted in that were released before 2004 (prior to Sacred Planet’s release). Additionally, Sacred Planet's release date must be confirmed to verify if it indeed came after that other film. It is also relevant to confirm Damion Poitier’s award-winning status.
+
+Thus, the query must retrieve:
+- The release date of Sacred Planet.
+- All films released before Sacred Planet in which Damion Poitier had a role.
+- Verification of Damion Poitier's award-winning actor status.
+- Confirmation that Sacred Planet was released after the identified other film.
+- Confirmation that Damion Poitier did not have a role in Sacred Planet.
+
+### query
+Retrieve the release date of the film Sacred Planet. Identify all films in which actor Damion Poitier had a role that were released before Sacred Planet. Confirm whether Damion Poitier has received any acting awards. Verify that Sacred Planet was released after the identified earlier film featuring Damion Poitier, and confirm that Damion Poitier did not have a role in Sacred Planet.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Damion Poitier', 'Sacred Planet']. Documents remaining to be retrieved: ['Snow Dogs'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Paul Shaw wrote a book on the history of the design of the New York subway system in 2014 for a magazine. That magazine and National Journal are not both periodicals.
+
+### notes
+['National Journal is a periodical magazine published regularly.', 'Periodicals include magazines, literary journals, academic journals, and newsletters published on a regular schedule.', 'No direct evidence is available about Paul Shaw writing a book or article on the New York subway design history for any magazine in 2014 in the provided context.', 'No information is given on the specific magazine associated with Paul Shaw’s work or its periodical status.', 'National Journal is a periodical magazine published regularly.', 'Periodicals include magazines, literary journals, academic journals, and newsletters published on a regular schedule.', 'No direct evidence is available about Paul Shaw writing a book or article on the New York subway design history for any magazine in 2014 in the provided context.', 'No information is given on the specific magazine associated with Paul Shaw’s work or its periodical status.', 'Paul Shaw is an American design historian who has written a book on the history of the design of the New York subway system and has contributed to Print magazine.', 'National Journal is a periodical magazine published regularly.', 'Periodicals include magazines, literary journals, academic journals, and newsletters published on a regular schedule.', 'No direct evidence is available confirming Paul Shaw wrote a book or article on New York subway design for any magazine specifically in 2014.', 'Magazines are considered periodicals; therefore, both National Journal and magazines are periodicals.']
+
+## Generated Outputs
+### reasoning
+The claim makes two assertions: first, that Paul Shaw authored a book in 2014 on the design history of the New York subway system for a magazine; second, that the magazine associated with this work and National Journal are not both periodicals. The notes clarify that National Journal is a periodical magazine published regularly and that periodicals encompass magazines, literary journals, academic journals, and newsletters that are published on a regular schedule. However, there is no direct evidence about Paul Shaw's book or article, the specific magazine involved, or the magazine’s periodical status. To verify the claim entirely, we need to confirm: (1) whether Paul Shaw wrote a book or article in 2014 on the New York subway design history for a magazine; (2) identify the magazine and determine if it is a periodical; and (3) verify that National Journal is a periodical. Only by establishing the type of the magazine (periodical or not) and National Journal’s status can we assess the assertion that they are not both periodicals.
+
+### query
+Retrieve detailed information on any book, article, or publication authored by Paul Shaw in 2014 related to the history of the design of the New York subway system, specifying the magazine or publication it appeared in. Identify the magazine’s name, publication type, and whether it qualifies as a periodical (published regularly, such as a magazine, literary journal, academic journal, or newsletter). Confirm the publication status of National Journal as a periodical magazine published regularly. Provide evidence to verify if both the magazine associated with Paul Shaw’s work and National Journal are periodicals or not.
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Paul Shaw (design historian)']. Documents remaining to be retrieved: ['National Journal', 'Print (magazine)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.
