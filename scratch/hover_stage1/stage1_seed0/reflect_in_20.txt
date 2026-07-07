@@ -1,0 +1,107 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields as input: a `claim` and associated `notes`. Your task is to generate a single, concise, precise natural language `query` that is intended to verify or fact-check the `claim` based on information given in the `notes`. The final query should be designed for efficient retrieval of authoritative evidence that confirms or refutes all key factual elements presented in the claim.
+
+Detailed task instructions:
+
+1. **Analyze the claim:**  
+   - Identify all key factual components or assertions that need verification.  
+   - Recognize any implied relationships between entities or multiple claim components that must be verified together to confirm the claim’s overall truthfulness.
+
+2. **Utilize the notes:**  
+   - Review the notes carefully as they provide relevant factual data, context, and background information.  
+   - Notes may include domain-specific facts, indirect evidence, overlapping or repetitive information, dates, names, titles, awards, species counts, corporate details, etc.  
+   - Incorporate any domain-specific terminology (e.g., proper names of individuals, awards, companies, taxa) relevant to the claim verification.
+
+3. **Formulate the query:**  
+   - Compose a single, clear, direct question that targets all essential factual elements and their connections (when multiple parts exist).  
+   - The query should explicitly reference relevant domain-specific entities (e.g., a person’s full name and role, award titles, film titles and director names, species genus/species count, airline nationality and base).  
+   - Where the claim contains multiple related parts, integrate them logically into one query to avoid fragmented checks needing multiple queries.  
+   - Avoid vagueness or open-ended questions; the query should lead to precise validation or refutation.
+
+4. **Examples of domain-specific entities and components to consider (to be used as needed based on claim content):**  
+   - **Literary awards and persons:** full names of individuals (e.g., Alan Sillitoe, Miguel Ángel Asturias, Elfriede Jelinek), Nobel Prize in Literature, their nationality, and specific roles (poet, diplomat, writer).  
+   - **Film and screenwriting credits:** film titles (Finding Dory, A Bug's Life), directs/co-directors, authorship relations.  
+   - **Botanical classification:** genus names, number of species, vernacular names in various languages, and taxonomic status.  
+   - **Corporate identity and location:** company names, nationality, headquarters city, operational details.  
+   - **Sports teams and leadership:** individual roles (head coach, offensive coordinator), team names, relevant league or conference (e.g., Big Ten Conference 2013 season).  
+
+5. **General strategy:**  
+   - The query should be framed as a verification question (e.g., “Was X the Y in [context or time period]?” or “Did A direct B and also co-direct C?”).  
+   - Combine multiple linked facts into one integrated query for efficiency and clarity.  
+   - Reflect any temporal information if relevant (e.g., “in 2013”, “currently”).  
+   - Where entities might have similar names or multiple aspects, use full names and specific details to avoid confusion.  
+
+The objective is to produce a targeted query that, when answered using the notes or queried in authoritative sources, decisively clarifies the accuracy of the claim based on its main factual components and their relationships.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The kind of dog Banana Joe V Tani Kazari is and Villanuco de Las Encartaciones are not both breeds of dog.
+
+### notes
+['Banana Joe V Tani Kazari is a toy Affenpinscher, a recognized breed of dog.', 'Villanuco de Las Encartaciones is a Spanish breed of dog typical of the Las Encartaciones region.', 'Banana Joe V Tani Kazari is a toy Affenpinscher, a recognized breed of dog.', 'Villanuco de Las Encartaciones is a Spanish breed of dog typical of the Las Encartaciones region, confirming it is also a breed of dog.', 'Banana Joe V Tani Kazari is a toy Affenpinscher, a recognized breed of dog.', 'Villanuco de Las Encartaciones is a Spanish breed of dog typical of the Las Encartaciones region.', 'The Affenpinscher is a terrier-like toy breed of dog.', 'The Villanuco de Las Encartaciones is recognized as a breed of dog in Spain.', 'Both Banana Joe V Tani Kazari and Villanuco de Las Encartaciones are established dog breeds.']
+
+## Generated Outputs
+### reasoning
+The claim states that the dog type Banana Joe V Tani Kazari represents and Villanuco de Las Encartaciones are not both breeds of dog. According to the notes, Banana Joe V Tani Kazari is a toy Affenpinscher, which is explicitly identified as a recognized breed of dog (noted twice). Additionally, Villanuco de Las Encartaciones is described as a Spanish breed of dog from the Las Encartaciones region, confirming it is also a recognized dog breed. Since both are confirmed breeds of dog, the claim that they are not both breeds is false. To verify this fully, the query should specifically ask whether Banana Joe V Tani Kazari is a recognized breed of dog (toy Affenpinscher) and whether Villanuco de Las Encartaciones is also recognized as a breed of dog.
+
+### query
+Is Banana Joe V Tani Kazari a toy Affenpinscher recognized as a breed of dog, and is Villanuco de Las Encartaciones a recognized Spanish breed of dog from the Las Encartaciones region?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Affenpinscher', 'Villanuco de Las Encartaciones']. Documents remaining to be retrieved: ['German Pinscher'].
+
+
+
+# Example 2
+## Inputs
+### claim
+"Leni" Riefenstahl was born before the Ukrainian director of "Young Doctors in Love".
+
+### notes
+['Leni Riefenstahl was born on August 22, 1902.', "The director of 'Young Doctors in Love' is not mentioned in the current context.", "'Young Doctors in Love' (1982) was directed by Garry Marshall, who was American, not Ukrainian.", 'Leni Riefenstahl was born on August 22, 1902.', 'Young Doctors in Love (1982) was directed by Garry Marshall, an American director born in 1934.', 'There is no known Ukrainian director of Young Doctors in Love.', 'Since Garry Marshall was born after Leni Riefenstahl, she was born before the actual director of the film.', 'The claim involves a non-existent Ukrainian director, so it is implicitly true that she was born before any such person.', 'Leni Riefenstahl was born on August 22, 1902.', "'Young Doctors in Love' (1982) was directed by Garry Marshall, an American director born in 1934.", "There is no known Ukrainian director of 'Young Doctors in Love'.", 'Since Garry Marshall was born after Leni Riefenstahl, she was born before the actual director of the film.', "The claim mentions a Ukrainian director of 'Young Doctors in Love' who does not exist, making the claim implicitly true."]
+
+## Generated Outputs
+### reasoning
+The claim states that "Leni" Riefenstahl was born before the Ukrainian director of "Young Doctors in Love." According to the notes, Leni Riefenstahl was born on August 22, 1902. However, the director of "Young Doctors in Love" is identified as Garry Marshall, who is American, not Ukrainian. Therefore, the claim’s implication that the director is Ukrainian is incorrect, and verifying if Leni Riefenstahl was born before the actual director (Garry Marshall) would confirm if the first part of the claim is true and the second part (the director’s nationality) is false.
+
+### query
+Was "Leni" Riefenstahl, born on August 22, 1902, born before Garry Marshall, who is the American (not Ukrainian) director of the 1982 film "Young Doctors in Love"?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Garry Marshall', 'Leni Riefenstahl', 'Young Doctors in Love']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+This publication is published more often than Bookmarks. Keith Moon was inducted into its Hall of Fame in the early 'eighties.
+
+### notes
+['Keith Moon was inducted into the Modern Drummer Hall of Fame in 1982, which is in the early 1980s, as per context [4].', 'SiteBar is a bookmark manager, not a publication, as per context [9].', 'No information in the provided context compares the publishing frequency of any publication to Bookmarks.', 'Keith Moon was inducted into the Modern Drummer Hall of Fame in 1982, which is in the early 1980s.', 'SiteBar is a bookmark manager, not a publication.', "No information is provided on the publishing frequency of any publication compared to 'Bookmarks' or to SiteBar.", 'The claim that the publication is published more often than Bookmarks is not supported by the provided context.', 'Keith Moon was inducted into the Modern Drummer Hall of Fame in 1982, which is in the early 1980s.', 'There is no information in the provided context about publishing frequency of any publication compared to Bookmarks.', 'Bookmarks is not identified as a publication in the provided context.', 'SiteBar is a bookmark manager, not a publication, so it cannot be compared on publishing frequency.']
+
+## Generated Outputs
+### reasoning
+The claim involves two main factual assertions: (1) that a certain publication is published more often than "Bookmarks," and (2) that Keith Moon was inducted into the publication's Hall of Fame in the early 1980s. The notes clarify that Keith Moon was inducted into the Modern Drummer Hall of Fame in 1982. However, there is no information to identify the specific publication being referenced regarding its publishing frequency relative to "Bookmarks," nor any direct link between Keith Moon's induction and a publication with a Hall of Fame. Also, "Bookmarks" appears to be a publication, whereas "SiteBar" is a bookmark manager, which is not a publication. Since the claim's first part about publication frequency is unsupported and the only confirmed Hall of Fame is for Modern Drummer (not "Bookmarks"), the query must verify if the publication where Keith Moon was inducted into the Hall of Fame is indeed the same publication that is claimed to publish more often than "Bookmarks," and if this occurred in the early 1980s.
+
+### query
+Is Keith Moon’s 1982 induction into the Modern Drummer Hall of Fame associated with a publication that is published more frequently than the publication "Bookmarks"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Keith Moon']. Documents remaining to be retrieved: ['Bookmarks (magazine)', 'Modern Drummer'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

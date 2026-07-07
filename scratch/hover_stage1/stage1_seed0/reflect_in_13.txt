@@ -1,0 +1,107 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields as input: a `claim` and associated `notes`. Your task is to generate a single, concise, precise natural language `query` that is intended to verify or fact-check the `claim` based on information given in the `notes`. The final query should be designed for efficient retrieval of authoritative evidence that confirms or refutes all key factual elements presented in the claim.
+
+Detailed task instructions:
+
+1. **Analyze the claim:**  
+   - Identify all key factual components or assertions that need verification.  
+   - Recognize any implied relationships between entities or multiple claim components that must be verified together to confirm the claim’s overall truthfulness.
+
+2. **Utilize the notes:**  
+   - Review the notes carefully as they provide relevant factual data, context, and background information.  
+   - Notes may include domain-specific facts, indirect evidence, overlapping or repetitive information, dates, names, titles, awards, species counts, corporate details, etc.  
+   - Incorporate any domain-specific terminology (e.g., proper names of individuals, awards, companies, taxa) relevant to the claim verification.
+
+3. **Formulate the query:**  
+   - Compose a single, clear, direct question that targets all essential factual elements and their connections (when multiple parts exist).  
+   - The query should explicitly reference relevant domain-specific entities (e.g., a person’s full name and role, award titles, film titles and director names, species genus/species count, airline nationality and base).  
+   - Where the claim contains multiple related parts, integrate them logically into one query to avoid fragmented checks needing multiple queries.  
+   - Avoid vagueness or open-ended questions; the query should lead to precise validation or refutation.
+
+4. **Examples of domain-specific entities and components to consider (to be used as needed based on claim content):**  
+   - **Literary awards and persons:** full names of individuals (e.g., Alan Sillitoe, Miguel Ángel Asturias, Elfriede Jelinek), Nobel Prize in Literature, their nationality, and specific roles (poet, diplomat, writer).  
+   - **Film and screenwriting credits:** film titles (Finding Dory, A Bug's Life), directs/co-directors, authorship relations.  
+   - **Botanical classification:** genus names, number of species, vernacular names in various languages, and taxonomic status.  
+   - **Corporate identity and location:** company names, nationality, headquarters city, operational details.  
+   - **Sports teams and leadership:** individual roles (head coach, offensive coordinator), team names, relevant league or conference (e.g., Big Ten Conference 2013 season).  
+
+5. **General strategy:**  
+   - The query should be framed as a verification question (e.g., “Was X the Y in [context or time period]?” or “Did A direct B and also co-direct C?”).  
+   - Combine multiple linked facts into one integrated query for efficiency and clarity.  
+   - Reflect any temporal information if relevant (e.g., “in 2013”, “currently”).  
+   - Where entities might have similar names or multiple aspects, use full names and specific details to avoid confusion.  
+
+The objective is to produce a targeted query that, when answered using the notes or queried in authoritative sources, decisively clarifies the accuracy of the claim based on its main factual components and their relationships.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Teide National Park, established in 1943, is located in Spain's Canary Islands. So is the park where you would find the plant Echium wildpretii subsp. trichosiphon.
+
+### notes
+['Teide National Park is located in Tenerife in the Canary Islands, Spain.', 'The nominal subspecies Echium wildpretii is endemic to Tenerife and found mainly in Las Cañadas del Teide within Teide National Park.', 'Echium wildpretii subsp. trichosiphon occurs at high altitudes on La Palma, a different island in the Canary Islands, not in Teide National Park.', 'The plant Echium wildpretii subsp. trichosiphon forms a large rosette of silvery leaves and produces bright pink flowers on La Palma.', 'Teide National Park is located in Tenerife in the Canary Islands, Spain.', 'Echium wildpretii, the nominal subspecies, is endemic to Tenerife and found mainly in Las Cañadas del Teide within Teide National Park.', 'Echium wildpretii subsp. trichosiphon occurs at high altitudes on La Palma, a different island in the Canary Islands, not in Teide National Park.', 'Echium wildpretii subsp. trichosiphon forms a large rosette of silvery leaves and produces bright pink flowers on La Palma.', 'Teide National Park is located in Tenerife in the Canary Islands, Spain.', 'The nominal subspecies Echium wildpretii is endemic to Tenerife and found mainly in Las Cañadas del Teide within Teide National Park.', 'Echium wildpretii subsp. trichosiphon occurs at high altitudes on La Palma, a different island in the Canary Islands, not in Teide National Park.']
+
+## Generated Outputs
+### reasoning
+The claim makes two key factual assertions. First, that Teide National Park, established in 1943, is located in the Canary Islands, Spain. Second, it asserts that Echium wildpretii subsp. trichosiphon is found in the park (Teide National Park). According to the notes, Teide National Park is indeed located in Tenerife, Canary Islands, Spain, which supports the first part of the claim. However, the notes specify that Echium wildpretii subsp. trichosiphon is found at high altitudes on La Palma, a different island in the Canary Islands, and not in Teide National Park. The nominal subspecies Echium wildpretii is found mainly in Teide National Park. Therefore, the key factual discrepancy concerns the location of the subspecies Echium wildpretii subsp. trichosiphon. The query should focus on confirming the establishment location and date of Teide National Park and the correct distribution of Echium wildpretii subsp. trichosiphon relative to the park.
+
+### query
+Was Teide National Park established in 1943 and located in Tenerife, Canary Islands, Spain, and is the plant Echium wildpretii subsp. trichosiphon found within Teide National Park or only on the different Canary Island of La Palma?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Echium wildpretii subsp. trichosiphon', 'Teide National Park']. Documents remaining to be retrieved: ['Caldera de Taburiente National Park'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Both the director of the 2006 film Little Children, and Zoltan Korda work in the media industry.
+
+### notes
+['Zoltan Korda was a Hungarian-born motion picture screenwriter, director, and producer who made numerous films from the 1910s through the 1950s, confirming his role in the media industry.', 'Zoltan Korda was a Hungarian-born motion picture screenwriter, director, and producer who made numerous films from the 1910s through the 1950s, confirming his role in the media industry.', 'Zoltan Korda was a Hungarian-born motion picture screenwriter, director, and producer who made numerous films from the 1910s through the 1950s, confirming his role in the media industry.']
+
+## Generated Outputs
+### reasoning
+The claim states that the director of the 2006 film Little Children and Zoltan Korda both work in the media industry. To verify this, it is necessary to identify who directed Little Children in 2006 and determine if both that individual and Zoltan Korda are associated with the media industry (e.g., film, television, or related fields). The claim involves two linked factual checks: the identity and role of the director of Little Children (2006), and the professional association of both that director and Zoltan Korda with the media industry.
+
+### query
+Who directed the 2006 film Little Children, and do both that director and Zoltan Korda work in the media industry?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Zoltan Korda']. Documents remaining to be retrieved: ['Little Children (film)', 'Todd Field'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The band who had King ov Hell as a member are based in the Norwegian county Hordaland.
+
+### notes
+['King ov Hell was a member of the band Sahg, which was formed in Bergen, Norway.', 'Bergen is located in Hordaland county, Norway.', 'King ov Hell was a member of the band Sahg, which was formed in Bergen, Norway.', 'Bergen is located in Hordaland county, Norway.', 'Sahg is a Norwegian hard rock/doom metal band formed in Bergen in 2004.', 'King ov Hell was a member of the band Sahg, which was formed in Bergen, Norway.', 'Sahg is a Norwegian hard rock/doom metal band formed in Bergen in 2004.', 'Bergen is located in Hordaland county, Norway.']
+
+## Generated Outputs
+### reasoning
+The claim states that the band with King ov Hell as a member is based in the Norwegian county of Hordaland. The notes confirm that King ov Hell was a member of the band Sahg. Sahg was formed in Bergen, Norway, and Bergen is located in the Norwegian county of Hordaland. Therefore, the claim essentially hinges on verifying that King ov Hell was in Sahg and that Sahg's location is Bergen, which is within Hordaland county.
+
+### query
+Was King ov Hell a member of the band Sahg, which was formed in Bergen, Norway, and is Bergen located in the Norwegian county of Hordaland?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['King ov Hell']. Documents remaining to be retrieved: ['Bergen', 'Gorgoroth'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

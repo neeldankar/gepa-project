@@ -1,0 +1,107 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields as input: a `claim` and associated `notes`. Your task is to generate a single, concise, precise natural language `query` that is intended to verify or fact-check the `claim` based on information given in the `notes`. The final query should be designed for efficient retrieval of authoritative evidence that confirms or refutes all key factual elements presented in the claim.
+
+Detailed task instructions:
+
+1. **Analyze the claim:**  
+   - Identify all key factual components or assertions that need verification.  
+   - Recognize any implied relationships between entities or multiple claim components that must be verified together to confirm the claim’s overall truthfulness.
+
+2. **Utilize the notes:**  
+   - Review the notes carefully as they provide relevant factual data, context, and background information.  
+   - Notes may include domain-specific facts, indirect evidence, overlapping or repetitive information, dates, names, titles, awards, species counts, corporate details, etc.  
+   - Incorporate any domain-specific terminology (e.g., proper names of individuals, awards, companies, taxa) relevant to the claim verification.
+
+3. **Formulate the query:**  
+   - Compose a single, clear, direct question that targets all essential factual elements and their connections (when multiple parts exist).  
+   - The query should explicitly reference relevant domain-specific entities (e.g., a person’s full name and role, award titles, film titles and director names, species genus/species count, airline nationality and base).  
+   - Where the claim contains multiple related parts, integrate them logically into one query to avoid fragmented checks needing multiple queries.  
+   - Avoid vagueness or open-ended questions; the query should lead to precise validation or refutation.
+
+4. **Examples of domain-specific entities and components to consider (to be used as needed based on claim content):**  
+   - **Literary awards and persons:** full names of individuals (e.g., Alan Sillitoe, Miguel Ángel Asturias, Elfriede Jelinek), Nobel Prize in Literature, their nationality, and specific roles (poet, diplomat, writer).  
+   - **Film and screenwriting credits:** film titles (Finding Dory, A Bug's Life), directs/co-directors, authorship relations.  
+   - **Botanical classification:** genus names, number of species, vernacular names in various languages, and taxonomic status.  
+   - **Corporate identity and location:** company names, nationality, headquarters city, operational details.  
+   - **Sports teams and leadership:** individual roles (head coach, offensive coordinator), team names, relevant league or conference (e.g., Big Ten Conference 2013 season).  
+
+5. **General strategy:**  
+   - The query should be framed as a verification question (e.g., “Was X the Y in [context or time period]?” or “Did A direct B and also co-direct C?”).  
+   - Combine multiple linked facts into one integrated query for efficiency and clarity.  
+   - Reflect any temporal information if relevant (e.g., “in 2013”, “currently”).  
+   - Where entities might have similar names or multiple aspects, use full names and specific details to avoid confusion.  
+
+The objective is to produce a targeted query that, when answered using the notes or queried in authoritative sources, decisively clarifies the accuracy of the claim based on its main factual components and their relationships.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Ellesmere Port Town Football Club are currently members of the league, whose current principal sponsor is the Football Conference, that Ford Motors F.C. is a part of.
+
+### notes
+['Ellesmere Port Town F.C. currently competes in the West Cheshire League Division Two.', "The Football Conference is a separate league and is not noted as Ellesmere Port Town's league.", 'Ford Motors F.C. is not mentioned in the provided context and is likely a different club than Vauxhall Motors F.C.', 'No evidence supports Ellesmere Port Town being in the Football Conference league or its sponsorship.', 'Ellesmere Port Town F.C. currently competes in the West Cheshire League Division Two.', "The West Cheshire Association Football League's current principal sponsor is Carlsberg, not the Football Conference.", "The Football Conference is a separate league and unrelated to Ellesmere Port Town F.C.'s competition.", 'Ford Motors F.C. competes in the West Cheshire Association Football League but the specific division is not stated; no connection to the Football Conference.', "No evidence supports Ellesmere Port Town's membership in the Football Conference or its sponsorship.", 'The claim incorrectly conflates the Football Conference with the West Cheshire League.', 'Ellesmere Port Town F.C. competes in the West Cheshire League Division Two, not the Football Conference.', "The West Cheshire Association Football League's principal sponsor is Carlsberg, not the Football Conference.", 'The Football Conference is a separate league unrelated to Ellesmere Port Town F.C.', 'Ford Motors F.C. competes in the West Cheshire Association Football League but is not part of the Football Conference.', "No evidence supports Ellesmere Port Town's membership in or association with the Football Conference.", 'The claim wrongly conflates the Football Conference with the West Cheshire League.']
+
+## Generated Outputs
+### reasoning
+The claim makes several interconnected assertions: (1) Ellesmere Port Town Football Club are currently members of a certain league, (2) the principal sponsor of this league is the Football Conference, and (3) Ford Motors F.C. is also a part of this league. To verify the full accuracy of this claim, we need to check the current league membership status of Ellesmere Port Town Football Club, identify the current principal sponsor of that league (whether it is indeed the Football Conference), and confirm whether Ford Motors F.C. participates in the same league. Since the claim mentions the Football Conference as the principal sponsor, it is essential to confirm if this entity acts as a sponsor or is the name of the league itself and how the clubs fit into this structure. The lack of notes means relying on authoritative external sources for contemporary league memberships and sponsorship information.
+
+### query
+Are Ellesmere Port Town Football Club and Ford Motors F.C. currently members of the same football league, and is the Football Conference the current principal sponsor or official title of that league?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Ellesmere Port Town F.C.', 'Ford Motors F.C.', 'West Cheshire Association Football League']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+Chess is more popular around the world than a game designed by Leo Colovini.
+
+### notes
+['Chess is a globally popular historical board game with widespread recognition and player base.', 'Leo Colovini is an Italian game designer known for German-style board games, with limited global reach.', 'Chess has historically influenced many cultures and has formal competitive and social play structures worldwide.', "Colovini's games like Cartagena are popular within niche board gaming circles but do not match chess's global popularity.", 'Chess has a vast global player base, with widespread recognition and cultural impact.', 'Leo Colovini is an Italian game designer known for niche German-style board games such as Cartagena.', "Colovini's games are popular within specific board gaming circles but do not have widespread global popularity.", 'Chess maintains formal competitive and social play structures on an international scale.', "Chess's popularity and historical influence far exceed that of games designed by Leo Colovini.", 'Chess is recognized worldwide as a historically significant and widely played board game with strong cultural and competitive presence.', 'Leo Colovini is a noted Italian board game designer whose games, such as Cartagena, have more niche appeal within specific board gaming communities.', "Colovini's games do not have the same level of global popularity or widespread recognition as chess.", "Chess's global player base and cultural impact far exceed those of individual designer board games like those by Leo Colovini."]
+
+## Generated Outputs
+### reasoning
+The claim states that chess is more popular worldwide than any game designed by Leo Colovini. The notes indicate that chess is a globally popular board game with a vast international player base, formal competitive structures, and widespread cultural impact. In contrast, Leo Colovini, an Italian game designer, is known for German-style games like Cartagena that have niche popularity limited to specific board gaming circles, without broad global reach. Therefore, verifying the claim involves confirming chess's global popularity and international competitive presence compared to the limited global reach and niche popularity of Colovini's games.
+
+### query
+Is chess more globally popular with a widespread international player base and formal competitive play compared to games designed by Italian game designer Leo Colovini, whose German-style games like Cartagena have only niche popularity and limited worldwide recognition?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Cartagena (board game)', 'Leo Colovini']. Documents remaining to be retrieved: ['Chess'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Veyyil was the first film scored by the man who composed the soundtrack for the film in which Ashrita Shetty had a part.
+
+### notes
+["G. V. Prakash Kumar is an Indian film composer whose first film score was for 'Veyyil' (2006).", "'Udhayam NH4' is a film featuring Ashrita Shetty, with music composed by G. V. Prakash Kumar.", "G. V. Prakash Kumar composed the soundtrack for 'Udhayam NH4' (2013), a film featuring Ashrita Shetty.", "'Veyyil' (2006) was the first film for which G. V. Prakash Kumar scored the music.", "Ashrita Shetty made her film debut in 2012 and starred in 'Udhayam NH4' (2013).", "G. V. Prakash Kumar's first film score was for 'Veyyil' (2006).", "'Udhayam NH4' featured Ashrita Shetty and its soundtrack was composed by G. V. Prakash Kumar.", "The claim that 'Veyyil' was the first film scored by the soundtrack composer of a film starring Ashrita Shetty is supported."]
+
+## Generated Outputs
+### reasoning
+The claim states that "Veyyil" was the first film scored by the same composer who did the soundtrack for the film featuring Ashrita Shetty. The notes provide that G. V. Prakash Kumar composed the soundtrack for "Veyyil" and that it was his first film score. Furthermore, Ashrita Shetty is featured in the film "Udhayam NH4," for which G. V. Prakash Kumar also composed the music. Thus, verifying the claim involves confirming that G. V. Prakash Kumar composed the score for both "Veyyil" and "Udhayam NH4," that "Veyyil" was his debut as a film composer, and that Ashrita Shetty had a role in "Udhayam NH4."
+
+### query
+Did G. V. Prakash Kumar compose the soundtrack for both "Veyyil" and "Udhayam NH4," with "Veyyil" being his first film score, and did Ashrita Shetty have a role in "Udhayam NH4"?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Ashrita Shetty', 'G. V. Prakash Kumar', 'Udhayam NH4']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

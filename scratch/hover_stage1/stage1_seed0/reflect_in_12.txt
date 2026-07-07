@@ -1,0 +1,107 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields as input: a `claim` and associated `notes`. Your task is to generate a single, concise, precise natural language `query` that is intended to verify or fact-check the `claim` based on information given in the `notes`. The final query should be designed for efficient retrieval of authoritative evidence that confirms or refutes all key factual elements presented in the claim.
+
+Detailed task instructions:
+
+1. **Analyze the claim:**  
+   - Identify all key factual components or assertions that need verification.  
+   - Recognize any implied relationships between entities or multiple claim components that must be verified together to confirm the claim’s overall truthfulness.
+
+2. **Utilize the notes:**  
+   - Review the notes carefully as they provide relevant factual data, context, and background information.  
+   - Notes may include domain-specific facts, indirect evidence, overlapping or repetitive information, dates, names, titles, awards, species counts, corporate details, etc.  
+   - Incorporate any domain-specific terminology (e.g., proper names of individuals, awards, companies, taxa) relevant to the claim verification.
+
+3. **Formulate the query:**  
+   - Compose a single, clear, direct question that targets all essential factual elements and their connections (when multiple parts exist).  
+   - The query should explicitly reference relevant domain-specific entities (e.g., a person’s full name and role, award titles, film titles and director names, species genus/species count, airline nationality and base).  
+   - Where the claim contains multiple related parts, integrate them logically into one query to avoid fragmented checks needing multiple queries.  
+   - Avoid vagueness or open-ended questions; the query should lead to precise validation or refutation.
+
+4. **Examples of domain-specific entities and components to consider (to be used as needed based on claim content):**  
+   - **Literary awards and persons:** full names of individuals (e.g., Alan Sillitoe, Miguel Ángel Asturias, Elfriede Jelinek), Nobel Prize in Literature, their nationality, and specific roles (poet, diplomat, writer).  
+   - **Film and screenwriting credits:** film titles (Finding Dory, A Bug's Life), directs/co-directors, authorship relations.  
+   - **Botanical classification:** genus names, number of species, vernacular names in various languages, and taxonomic status.  
+   - **Corporate identity and location:** company names, nationality, headquarters city, operational details.  
+   - **Sports teams and leadership:** individual roles (head coach, offensive coordinator), team names, relevant league or conference (e.g., Big Ten Conference 2013 season).  
+
+5. **General strategy:**  
+   - The query should be framed as a verification question (e.g., “Was X the Y in [context or time period]?” or “Did A direct B and also co-direct C?”).  
+   - Combine multiple linked facts into one integrated query for efficiency and clarity.  
+   - Reflect any temporal information if relevant (e.g., “in 2013”, “currently”).  
+   - Where entities might have similar names or multiple aspects, use full names and specific details to avoid confusion.  
+
+The objective is to produce a targeted query that, when answered using the notes or queried in authoritative sources, decisively clarifies the accuracy of the claim based on its main factual components and their relationships.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The grandfather of Rainer Hoss conducted the negotiations with the owners and was the longest serving resident-commandant of Auschwitz concentration and extermination camp.
+
+### notes
+['Rudolf Höss was the longest-serving commandant of Auschwitz concentration camp during World War II.', 'No evidence in available sources linking Rudolf Höss or any commandant to a person named Rainer Hoss or to negotiations with the camp owners.', 'Auschwitz was operated by the Nazi SS, and the camp commandants were SS officers, not involved in property ownership negotiations.', 'The claim about the grandfather of Rainer Hoss being involved in negotiations and being the longest serving commandant is unsupported.', 'Rudolf Höss was the longest-serving commandant of Auschwitz concentration camp, but there is no known relation to a person named Rainer Hoss.', 'No evidence supports that any commandant, including Rudolf Höss, conducted negotiations with camp owners; the camps were administered by SS officers.', 'Negotiations related to Zyklon B pesticide were conducted by SS officer Kurt Gerstein, not the camp commandant.', 'The claim that the grandfather of Rainer Hoss was involved in negotiations and was the longest-serving camp commandant is unsupported by historical evidence.', 'Rudolf Höss was the longest-serving commandant of Auschwitz but no evidence links him to a person named Rainer Hoss.', 'Auschwitz concentration camp was operated by the SS; no private owners existed with whom negotiations would be conducted by the commandant.', 'There is no historical evidence that any Auschwitz commandant conducted negotiations with camp owners.', 'SS officer Kurt Gerstein, not any camp commandant, was involved in negotiations related to Zyklon B pesticide.', 'The claim that the grandfather of Rainer Hoss conducted negotiations and was the longest-serving commandant is not supported by any credible sources.']
+
+## Generated Outputs
+### reasoning
+The claim asserts two key facts: first, that the grandfather of Rainer Hoss conducted negotiations with the owners of Auschwitz camp, and second, that he was the longest-serving resident-commandant of the Auschwitz concentration and extermination camp. From the notes, Rudolf Höss is identified as the longest-serving commandant of Auschwitz, but there is no documented relationship between Rudolf Höss and any person named Rainer Hoss as his descendant. Furthermore, the camp commandants were SS officers who did not engage in ownership negotiations, since Auschwitz was operated by the Nazi SS and not privately owned in a manner that involved such negotiations. Thus, the claim combines elements unsupported by evidence: no link between Rainer Hoss and commandants like Rudolf Höss, and no role of any commandant in negotiations with owners. To verify the claim, the query must focus on whether Rudolf Höss or any Auschwitz commandant was related to Rainer Hoss and if any commandant was involved in owner negotiations.
+
+### query
+Is there any evidence that Rudolf Höss or any Auschwitz concentration camp commandant was the grandfather of a person named Rainer Hoss, and did any such commandant participate in negotiations with the owners of Auschwitz camp while serving as the longest-standing resident commandant?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Gerstein Report', 'Rudolf Höss']. Documents remaining to be retrieved: ['Rainer Höss'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The player who was defeated by Johan Kriek in the 1982 Australian Open – Men's Singles and Albert Costa are both sportsmen, and one of them, Costa, began competing at the age of five.
+
+### notes
+["Johan Kriek defeated Steve Denton in the final of the 1982 Australian Open Men's Singles.", 'Steve Denton is a sportsman, a professional tennis player.', 'Albert Costa is a professional tennis player and sportsman.', 'The context does not provide information on the age Albert Costa started competing.', "Johan Kriek defeated Steve Denton in the 1982 Australian Open Men's Singles final.", 'Steve Denton is a professional tennis player and thus a sportsman.', 'Albert Costa is a professional tennis player and sportsman.', 'Albert Costa began playing tennis at the age of five as confirmed by his biography details.', "Johan Kriek defeated Steve Denton in the 1982 Australian Open Men's Singles final.", 'Steve Denton is a professional tennis player and sportsman.', 'Albert Costa is a professional tennis player and sportsman.', 'Albert Costa began playing tennis at the age of five.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that the player defeated by Johan Kriek in the 1982 Australian Open Men's Singles and Albert Costa are both sportsmen, which aligns with the notes stating Steve Denton was defeated by Kriek and both Denton and Costa are professional tennis players (sportsmen). The claim also states that Albert Costa began competing at the age of five, but the notes explicitly indicate no information is provided regarding the age Costa started competing. Therefore, the first part of the claim about both being sportsmen can be verified from the notes, but the second part about Costa’s starting age lacks confirmation.
+
+### query
+Did Johan Kriek defeat Steve Denton in the final of the 1982 Australian Open Men's Singles, and are both Steve Denton and Albert Costa professional sportsmen, with Albert Costa starting to compete in tennis at age five?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ["1982 Australian Open – Men's Singles", 'Albert Costa', 'Steve Denton']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+John S. Hall is younger than the former Midtown bassist and lead vocalist who created Cobra Starship.
+
+### notes
+['Gabe Saporta was born on October 11, 1979.', 'Gabe Saporta was the former Midtown bassist and lead vocalist who created Cobra Starship.', "John S. Hall's birthdate is not available in the provided data.", "John S. Hall's birthdate remains unknown; no age or birthdate data available in the current context.", "John S. Hall's exact birthdate or age is not found in the current or extended data.", "Without John S. Hall's birthdate, comparison regarding age with Gabe Saporta is not possible."]
+
+## Generated Outputs
+### reasoning
+The claim states that John S. Hall is younger than Gabe Saporta, who is identified as the former Midtown bassist and lead vocalist and the creator of Cobra Starship. The notes confirm Gabe Saporta's identity and provide his birthdate (October 11, 1979). However, there is no information about John S. Hall's birthdate or age in the notes. To verify the claim, it is essential to determine the birthdate or age of John S. Hall and compare it to Gabe Saporta's birthdate.
+
+### query
+Is John S. Hall younger than Gabe Saporta, the former Midtown bassist and lead vocalist who created Cobra Starship, given that Gabe Saporta was born on October 11, 1979?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Cobra Starship', 'Gabe Saporta']. Documents remaining to be retrieved: ['John S. Hall'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,107 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields as input: a `claim` and associated `notes`. Your task is to generate a single, concise, precise natural language `query` that is intended to verify or fact-check the `claim` based on information given in the `notes`. The final query should be designed for efficient retrieval of authoritative evidence that confirms or refutes all key factual elements presented in the claim.
+
+Detailed task instructions:
+
+1. **Analyze the claim:**  
+   - Identify all key factual components or assertions that need verification.  
+   - Recognize any implied relationships between entities or multiple claim components that must be verified together to confirm the claim’s overall truthfulness.
+
+2. **Utilize the notes:**  
+   - Review the notes carefully as they provide relevant factual data, context, and background information.  
+   - Notes may include domain-specific facts, indirect evidence, overlapping or repetitive information, dates, names, titles, awards, species counts, corporate details, etc.  
+   - Incorporate any domain-specific terminology (e.g., proper names of individuals, awards, companies, taxa) relevant to the claim verification.
+
+3. **Formulate the query:**  
+   - Compose a single, clear, direct question that targets all essential factual elements and their connections (when multiple parts exist).  
+   - The query should explicitly reference relevant domain-specific entities (e.g., a person’s full name and role, award titles, film titles and director names, species genus/species count, airline nationality and base).  
+   - Where the claim contains multiple related parts, integrate them logically into one query to avoid fragmented checks needing multiple queries.  
+   - Avoid vagueness or open-ended questions; the query should lead to precise validation or refutation.
+
+4. **Examples of domain-specific entities and components to consider (to be used as needed based on claim content):**  
+   - **Literary awards and persons:** full names of individuals (e.g., Alan Sillitoe, Miguel Ángel Asturias, Elfriede Jelinek), Nobel Prize in Literature, their nationality, and specific roles (poet, diplomat, writer).  
+   - **Film and screenwriting credits:** film titles (Finding Dory, A Bug's Life), directs/co-directors, authorship relations.  
+   - **Botanical classification:** genus names, number of species, vernacular names in various languages, and taxonomic status.  
+   - **Corporate identity and location:** company names, nationality, headquarters city, operational details.  
+   - **Sports teams and leadership:** individual roles (head coach, offensive coordinator), team names, relevant league or conference (e.g., Big Ten Conference 2013 season).  
+
+5. **General strategy:**  
+   - The query should be framed as a verification question (e.g., “Was X the Y in [context or time period]?” or “Did A direct B and also co-direct C?”).  
+   - Combine multiple linked facts into one integrated query for efficiency and clarity.  
+   - Reflect any temporal information if relevant (e.g., “in 2013”, “currently”).  
+   - Where entities might have similar names or multiple aspects, use full names and specific details to avoid confusion.  
+
+The objective is to produce a targeted query that, when answered using the notes or queried in authoritative sources, decisively clarifies the accuracy of the claim based on its main factual components and their relationships.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The building that Dennis Huntley provided sculptures for, and St Paul's Cathedral, are both located in England.
+
+### notes
+['Dennis Huntley provided sculptures for Guildford Cathedral, located in England.', "St Paul's Cathedral usually refers to the famous cathedral in London, England.", "There is a St Paul's Cathedral in Rockhampton, Australia, but it is not the one referenced here.", 'The claim that both buildings are in England is supported by evidence.', 'Dennis Huntley provided sculptures for Guildford Cathedral, located in Guildford, Surrey, England.', 'Guildford Cathedral is the Anglican cathedral and the seat of the Diocese of Guildford in Surrey, England.', "St Paul's Cathedral usually refers to the cathedral in London, England.", 'The claim that both buildings are in England is supported by evidence from multiple sources confirming their locations.', 'Dennis Huntley provided sculptures for Guildford Cathedral in Guildford, Surrey, England.', 'Guildford Cathedral is the seat of the Diocese of Guildford in Surrey, England.', "St Paul's Cathedral usually refers to the cathedral in London, England.", "There is a St Paul's Cathedral in Rockhampton, Australia, but it is not the cathedral referenced here.", "Both Guildford Cathedral and St Paul's Cathedral (London) are located in England."]
+
+## Generated Outputs
+### reasoning
+The claim states that the building for which Dennis Huntley provided sculptures and St Paul's Cathedral are both located in England. The notes specify that Dennis Huntley provided sculptures for Guildford Cathedral, which is in England, and that the well-known St Paul's Cathedral is in London, England. Although there is a St Paul's Cathedral in Australia, the claim refers to the London one. Given these points, the two buildings mentioned are in England as claimed.
+
+### query
+Are Guildford Cathedral, for which Dennis Huntley provided sculptures, and St Paul's Cathedral in London both located in England?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Dennis Huntley', 'Guildford Cathedral']. Documents remaining to be retrieved: ["St Paul's Cathedral"].
+
+
+
+# Example 2
+## Inputs
+### claim
+The town is administered by the Eurobodalla Shire council. It is located near Higgin's Creek and Deua National Park.
+
+### notes
+['Eurobodalla Shire administers multiple towns in the South Coast of New South Wales including Bodalla, Mogo, Moruya, and Batemans Bay.', 'Deua National Park is near towns like Batemans Bay, Moruya, and Narooma within the Eurobodalla Shire.', "No information about Higgin's Creek is found in the provided context.", 'Eurobodalla Shire council administers several towns including Moruya, Mogo, Batemans Bay, and Bodalla.', 'Deua National Park is near towns such as Batemans Bay, Moruya, and Narooma in Eurobodalla Shire.', "No information found about Higgin's Creek in the given context.", 'Many towns such as Moruya, Mogo, Batemans Bay, Bodalla, and Rosedale are administered by Eurobodalla Shire council.', 'Deua National Park is near towns including Batemans Bay, Moruya, and Narooma within Eurobodalla Shire.', "No information about Higgin's Creek or any town near it is available in the provided context.", 'Moruya is administered by Eurobodalla Shire and is near Deua National Park.', 'Batemans Bay is administered by Eurobodalla Shire and is near Deua National Park.']
+
+## Generated Outputs
+### reasoning
+The claim states that a particular town is administered by the Eurobodalla Shire council and is located near Higgin's Creek and Deua National Park. The notes confirm that Eurobodalla Shire administers towns in the South Coast of New South Wales including Bodalla, Mogo, Moruya, and Batemans Bay, and that Deua National Park is near towns like Batemans Bay, Moruya, and Narooma within Eurobodalla Shire. However, there is no information about Higgin's Creek in the notes. To verify the claim fully, it is necessary to confirm whether the town in question is indeed under Eurobodalla Shire's administration and is located near both Higgin's Creek and Deua National Park.
+
+### query
+Is the town administered by the Eurobodalla Shire council and located near Higgin's Creek as well as Deua National Park?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Batemans Bay', 'Deua National Park']. Documents remaining to be retrieved: ['Cortinarius kioloensis'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Relient K vocalist, who wrote Rebuild with Jon Foreman of Switchfoot, and George Thorogood have the profession of musician in common.
+
+### notes
+['Matt Thiessen is the Relient K vocalist who co-wrote the song "Rebuild" with Jon Foreman of Switchfoot.', 'George Thorogood is an American musician, singer, and songwriter.', 'Both Matt Thiessen and George Thorogood share the profession of musician.', "Matt Thiessen is the Relient K vocalist who co-wrote 'Rebuild' with Jon Foreman of Switchfoot.", 'George Thorogood is an American musician, singer, and songwriter.', 'Both Matt Thiessen and George Thorogood share the profession of musician.', "Matt Thiessen is the lead vocalist and primary songwriter of Relient K and co-wrote the song 'Rebuild' with Jon Foreman of Switchfoot.", 'George Thorogood is an American musician, singer, and songwriter known for his work in blues rock.', 'Both Matt Thiessen and George Thorogood share the profession of musician.']
+
+## Generated Outputs
+### reasoning
+The claim states that the Relient K vocalist who co-wrote the song "Rebuild" with Jon Foreman of Switchfoot, and George Thorogood share the profession of musician. From the notes, Matt Thiessen is identified as the Relient K vocalist who co-wrote "Rebuild" with Jon Foreman. George Thorogood is described as an American musician, singer, and songwriter. It is explicitly noted that both Matt Thiessen and George Thorogood share the profession of musician. This confirms the key factual components of the claim: identity of the Relient K vocalist co-authoring "Rebuild," Jon Foreman's band affiliation, George Thorogood’s profession, and the shared profession between the two individuals.
+
+### query
+Is Matt Thiessen the Relient K vocalist who co-wrote the song "Rebuild" with Jon Foreman of Switchfoot, and do both Matt Thiessen and George Thorogood share the profession of musician?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['George Thorogood', 'Matt Thiessen', 'Rebuild (song)']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.
