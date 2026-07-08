@@ -1,0 +1,125 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You are given a claim and a set of notes (contextual information relevant to the claim). Your task is to produce a well-formulated search query (or a set of queries) that, when issued to a knowledge source or database, can retrieve authoritative documents or evidence that verify or refute the claim.
+
+Input Format:
+
+- claim: A textual statement that requires verification or fact-checking.
+- notes: A list of textual notes or snippets extracted from various sources that may contain partial or conflicting information about the claim.
+
+Output Requirements:
+
+- Generate one or more natural language search queries aimed at efficiently retrieving documents or data that will allow a fact-checker or automated system to confirm or deny the claim.
+- Queries should be precise but comprehensive enough to cover all key elements of the claim.
+- If the claim has multiple parts (e.g., compound facts), the query should address all parts explicitly or generate multiple queries, clearly framed.
+- The query should directly reference key entities, dates, events, or relationships mentioned in the claim.
+- Queries should be focused on retrieving authoritative and relevant sources, including data about people (e.g., actors, musicians), works (e.g., films, albums, songs), dates (e.g., death dates), or relationships (e.g., teachers of specific individuals).
+
+Generalizable Strategy:
+
+- Analyze the claim for named entities, events, dates, and relationships.
+- Compare the claim against the notes to identify which elements are already supported, contradicted, or missing.
+- Identify what information is crucial to verify the claim fully.
+- Formulate queries that explicitly target this information, including all relevant qualifiers (e.g., location, nationality, work titles, dates).
+- When the claim involves overlap or intersection conditions (e.g., an actor who starred in two works), query should seek to identify such intersections or memberships.
+- When contextual or ambiguous information arises (e.g., conflicting death dates, or unknown teacher connections), queries should be split or combined to cover all parts of the claim for thorough verification.
+
+Domain-Specific Considerations:
+
+- Persons with multiple roles (e.g., an actor’s nationality, roles in specific films).
+- Titles of artistic works (films, albums, songs) and their metadata (release date, performers).
+- Relationship and biographical information (e.g., teachers of individuals, dates of death).
+- Contextual location and event details (venue names, performance places).
+- The queries should be formulated in a way that they can be used in knowledge bases or search engines to retrieve fact-based documents or data tables relevant to verifying the claim.
+
+Example:
+
+For a claim involving an English actor who starred in two productions, a good query would specify the actor’s nationality, the exact works, and the venue to retrieve precise cast lists confirming or denying the claim.
+
+Summary:
+
+Produce detailed, specific, and factual natural language queries derived from the claim and notes that enable thorough fact verification by retrieving relevant authoritative documents, covering all claim components and resolving ambiguities or multi-part claims by crafting queries accordingly.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The French star of The Cutting Edge voiced a character in an animated 1994 film. She voiced the character named Nala.
+
+### notes
+["Moira Kelly, an American actress, starred in the 1992 film The Cutting Edge and also voiced the adult character Nala in Disney's 1994 animated film The Lion King.", 'Nala is a fictional lioness character introduced in the 1994 film The Lion King; adult Nala was voiced by Moira Kelly, while the younger versions and singing voices were provided by other actresses.', 'Céline Monsarrat is a French actress and well-known voice dubbing artist but is not credited with voicing Nala in the 1994 animated film.', "Moira Kelly, an American actress, starred in the 1992 film The Cutting Edge and voiced the adult character Nala in Disney's 1994 animated film The Lion King.", 'Nala is a fictional lioness character introduced in the 1994 film The Lion King; adult Nala was voiced by Moira Kelly.', 'Céline Monsarrat is a French actress and voice dubbing artist but is not credited with voicing Nala in the 1994 animated film.', 'Moira Kelly is known for playing Kate Moseley in The Cutting Edge and for voicing Nala in The Lion King.', "Moira Kelly, an American actress, starred in the 1992 film The Cutting Edge and voiced the adult character Nala in Disney's 1994 animated film The Lion King.", 'Nala is a fictional lioness character introduced in the 1994 film The Lion King; adult Nala was voiced by Moira Kelly.', 'Céline Monsarrat is a French actress and well-known voice dubbing artist but is not credited with voicing Nala in the 1994 animated film.']
+
+## Generated Outputs
+### reasoning
+The claim states that the French star of The Cutting Edge voiced the character Nala in a 1994 animated film. The notes indicate that Moira Kelly, an American actress, starred in The Cutting Edge (1992) and voiced Nala in the 1994 animated film The Lion King. However, there is no evidence that a French actress starred in The Cutting Edge or voiced Nala. Céline Monsarrat, a French actress and dubbing artist, is not credited with voicing Nala in the 1994 film. Therefore, verification requires confirming the nationality of the star of The Cutting Edge and the voice actress for Nala in the 1994 film The Lion King, to see if a French star from the live-action film really voiced Nala.
+
+### query
+Who starred in the 1992 film The Cutting Edge, and what is their nationality? Who voiced the character Nala in the 1994 animated film The Lion King? Specifically, which actress voiced adult Nala, and what is her nationality? Did any French actress star in The Cutting Edge and voice Nala in The Lion King?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Moira Kelly']. Documents remaining to be retrieved: ['The Cutting Edge', 'The Lion King'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Ettore Scola was a film director. Che strano chiamarsi Federico" co-writer on Yes Minister is also a director.
+
+### notes
+["Ettore Scola was a film director who directed the 2013 documentary film 'How Strange to Be Named Federico' ('Che strano chiamarsi Federico').", "Jonathan Lynn co-created and co-wrote the TV series 'Yes Minister' and is also an English stage and film director.", "Ettore Scola was a film director who directed the 2013 documentary film 'How Strange to Be Named Federico' ('Che strano chiamarsi Federico').", "'Che strano chiamarsi Federico' is a film title, not a person.", "Jonathan Lynn co-created and co-wrote the TV series 'Yes Minister' and is also an English stage and film director.", "Ettore Scola was a film director who directed the 2013 documentary film 'How Strange to Be Named Federico' ('Che strano chiamarsi Federico').", "Jonathan Lynn co-created and co-wrote the TV series 'Yes Minister' and is also an English stage and film director.", "'Che strano chiamarsi Federico' is the title of a film, not a person."]
+
+## Generated Outputs
+### reasoning
+The claim involves two parts: first, that Ettore Scola was a film director, and second, that a co-writer of "Che strano chiamarsi Federico" from "Yes Minister" is also a director. The notes confirm that Ettore Scola was indeed a film director who directed the documentary film "Che strano chiamarsi Federico" (2013). However, the second part of the claim is ambiguous and seems to mix details. The note mentions Jonathan Lynn as the co-creator and co-writer of "Yes Minister," who is also a director, but does not indicate he was involved with the film "Che strano chiamarsi Federico." To verify the claim fully, we need to check:
+
+1. Confirmation that Ettore Scola was a film director and specifically directed "Che strano chiamarsi Federico."
+2. Whether any co-writer of "Che strano chiamarsi Federico" is related to "Yes Minister," or if the co-writer from "Yes Minister" (Jonathan Lynn) was involved in "Che strano chiamarsi Federico."
+3. Whether the co-writer of "Che strano chiamarsi Federico" has any directing credentials.
+
+Hence, queries should focus on verifying Ettore Scola's involvement, the writers of "Che strano chiamarsi Federico," and the writers/directors of "Yes Minister," clarifying the overlap or lack thereof.
+
+### query
+1. "Ettore Scola film director biography and filmography including 'Che strano chiamarsi Federico'"
+2. "Writers and directors of the 2013 documentary film 'Che strano chiamarsi Federico'"
+3. "Jonathan Lynn co-writer and director credits, involvement with 'Yes Minister' and 'Che strano chiamarsi Federico'"
+4. "Is there any connection between co-writers of 'Che strano chiamarsi Federico' and the TV series 'Yes Minister'?"
+5. "Directorial works of co-writers of 'Che strano chiamarsi Federico'"
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Jonathan Lynn']. Documents remaining to be retrieved: ['Ettore Scola', 'Yes Minister'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The 1935 propaganda documentary, on which Karl Attenberger worked with Leni Riefenstahl, and The End of America were not both made in the same year.
+
+### notes
+["Karl Attenberger worked with Leni Riefenstahl on the 1935 propaganda documentary 'Triumph of the Will'.", "Karl Attenberger worked with Leni Riefenstahl on the 1935 propaganda documentary 'Triumph of the Will'.", "There is no information available in the provided context or notes about the film 'The End of America' or its release year.", "Karl Attenberger worked with Leni Riefenstahl on the 1935 propaganda documentary 'Triumph of the Will'.", "There is no information available in the provided context or notes about the film 'The End of America' or its release year."]
+
+## Generated Outputs
+### reasoning
+The claim involves verifying the production years of two films: the 1935 propaganda documentary "Triumph of the Will," on which Karl Attenberger worked with Leni Riefenstahl, and another film titled "The End of America." The notes confirm that Karl Attenberger collaborated with Leni Riefenstahl on "Triumph of the Will," which was released in 1935. However, the notes provide no information about the production year or existence of "The End of America." To verify the claim that these two films were not made in the same year, it is necessary to confirm the release year of "The End of America" and then compare it to 1935.
+
+### query
+"What is the release year of the film 'The End of America'?" AND "release year of 'Triumph of the Will' documentary 1935" AND "Karl Attenberger worked with Leni Riefenstahl on 'Triumph of the Will'"
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Karl Attenberger', 'Triumph of the Will']. Documents remaining to be retrieved: ['The End of America (film)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,123 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You are given a claim and a set of notes (contextual information relevant to the claim). Your task is to produce a well-formulated search query (or a set of queries) that, when issued to a knowledge source or database, can retrieve authoritative documents or evidence that verify or refute the claim.
+
+Input Format:
+
+- claim: A textual statement that requires verification or fact-checking.
+- notes: A list of textual notes or snippets extracted from various sources that may contain partial or conflicting information about the claim.
+
+Output Requirements:
+
+- Generate one or more natural language search queries aimed at efficiently retrieving documents or data that will allow a fact-checker or automated system to confirm or deny the claim.
+- Queries should be precise but comprehensive enough to cover all key elements of the claim.
+- If the claim has multiple parts (e.g., compound facts), the query should address all parts explicitly or generate multiple queries, clearly framed.
+- The query should directly reference key entities, dates, events, or relationships mentioned in the claim.
+- Queries should be focused on retrieving authoritative and relevant sources, including data about people (e.g., actors, musicians), works (e.g., films, albums, songs), dates (e.g., death dates), or relationships (e.g., teachers of specific individuals).
+
+Generalizable Strategy:
+
+- Analyze the claim for named entities, events, dates, and relationships.
+- Compare the claim against the notes to identify which elements are already supported, contradicted, or missing.
+- Identify what information is crucial to verify the claim fully.
+- Formulate queries that explicitly target this information, including all relevant qualifiers (e.g., location, nationality, work titles, dates).
+- When the claim involves overlap or intersection conditions (e.g., an actor who starred in two works), query should seek to identify such intersections or memberships.
+- When contextual or ambiguous information arises (e.g., conflicting death dates, or unknown teacher connections), queries should be split or combined to cover all parts of the claim for thorough verification.
+
+Domain-Specific Considerations:
+
+- Persons with multiple roles (e.g., an actor’s nationality, roles in specific films).
+- Titles of artistic works (films, albums, songs) and their metadata (release date, performers).
+- Relationship and biographical information (e.g., teachers of individuals, dates of death).
+- Contextual location and event details (venue names, performance places).
+- The queries should be formulated in a way that they can be used in knowledge bases or search engines to retrieve fact-based documents or data tables relevant to verifying the claim.
+
+Example:
+
+For a claim involving an English actor who starred in two productions, a good query would specify the actor’s nationality, the exact works, and the venue to retrieve precise cast lists confirming or denying the claim.
+
+Summary:
+
+Produce detailed, specific, and factual natural language queries derived from the claim and notes that enable thorough fact verification by retrieving relevant authoritative documents, covering all claim components and resolving ambiguities or multi-part claims by crafting queries accordingly.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+An English actor starred in "Hollywood Goes Classical", which was performed at the Dorothy Chandler Pavilion. He also starred in "Lethal Obsession".
+
+### notes
+['Terry Ray, an American actor, wrote and starred in the stage performance "Hollywood Goes Classical" at the Dorothy Chandler Pavilion, which also starred classic film stars such as Mickey Rooney and Michael York.', 'There is no evidence in the context or notes linking an English actor to the performance "Hollywood Goes Classical" at the Dorothy Chandler Pavilion.', 'There is no information to verify whether an actor from "Hollywood Goes Classical" starred in "Lethal Obsession".', "Terry Ray, an American actor, wrote and starred in the stage performance 'Hollywood Goes Classical' at the Dorothy Chandler Pavilion alongside classic film stars such as Mickey Rooney and Michael York.", "There is no evidence linking an English actor to the performance 'Hollywood Goes Classical' at the Dorothy Chandler Pavilion.", "No information is available to verify whether any actor from 'Hollywood Goes Classical' starred in 'Lethal Obsession'.", "Terry Ray, an American actor, wrote and starred in the stage performance 'Hollywood Goes Classical' at the Dorothy Chandler Pavilion alongside classic film stars such as Mickey Rooney and Michael York.", "Michael York, an English actor, was one of the classic film stars in 'Hollywood Goes Classical' but there is no clear evidence he starred in it.", "There is no verified information linking any actor from 'Hollywood Goes Classical' to the film 'Lethal Obsession'."]
+
+## Generated Outputs
+### reasoning
+The claim states that an English actor starred in "Hollywood Goes Classical" at the Dorothy Chandler Pavilion and also starred in "Lethal Obsession". The notes indicate that "Hollywood Goes Classical" starred Terry Ray, who is an American actor, along with Mickey Rooney and Michael York. Michael York is an English actor, which suggests a possible link. However, the notes do not explicitly confirm Michael York's participation in "Lethal Obsession", nor do they confirm any other English actor starring in both productions. Additionally, there is no evidence connecting any actor from "Hollywood Goes Classical" to "Lethal Obsession". Therefore, to fully verify the claim, it is necessary to determine: 1) Which English actors starred in "Hollywood Goes Classical" at the Dorothy Chandler Pavilion; 2) Which actors starred in "Lethal Obsession"; and 3) Whether any English actors starred in both productions.
+
+### query
+Which English actors starred in the stage performance "Hollywood Goes Classical" at the Dorothy Chandler Pavilion? Who were the cast members of the film "Lethal Obsession", particularly any English actors? Is there any English actor who appeared in both "Hollywood Goes Classical" performed at the Dorothy Chandler Pavilion and in "Lethal Obsession"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Terry Ray (actor)']. Documents remaining to be retrieved: ['Lethal Obsession', 'Michael York'].
+
+
+
+# Example 2
+## Inputs
+### claim
+English actor Gary Oldman starred in the 1995 american romantic drama film, made by Cinergi Pictures, 
+alongside Demi Moore and Meryl Streep.
+
+### notes
+["Gary Oldman starred in the 1995 American romantic drama film 'The Scarlet Letter' alongside Demi Moore.", "'The Scarlet Letter' was directed by Roland Joffé and is an adaptation of Nathaniel Hawthorne's novel.", "Meryl Streep did not star in 'The Scarlet Letter' but appeared in other romantic dramas such as 'The Bridges of Madison County' (1995).", "Gary Oldman starred alongside Demi Moore in the 1995 American romantic drama film 'The Scarlet Letter'.", "'The Scarlet Letter' (1995) was directed by Roland Joffé and is an adaptation of Nathaniel Hawthorne's novel.", "'The Scarlet Letter' was produced by Cinergi Pictures.", "Meryl Streep did not appear in 'The Scarlet Letter' but starred in other 1995 romantic dramas such as 'The Bridges of Madison County'.", "Gary Oldman starred alongside Demi Moore in the 1995 American romantic drama film 'The Scarlet Letter'.", "'The Scarlet Letter' was produced by Cinergi Pictures and directed by Roland Joffé.", "Meryl Streep did not appear in 'The Scarlet Letter' but starred in other 1995 romantic dramas such as 'The Bridges of Madison County'."]
+
+## Generated Outputs
+### reasoning
+The claim states that Gary Oldman starred in a 1995 American romantic drama film made by Cinergi Pictures, alongside Demi Moore and Meryl Streep. From the notes, Gary Oldman and Demi Moore both starred in the 1995 American romantic drama "The Scarlet Letter," directed by Roland Joffé and based on Nathaniel Hawthorne's novel. However, Meryl Streep did not appear in "The Scarlet Letter" but did star in other romantic dramas in 1995, such as "The Bridges of Madison County." Therefore, the claim that Meryl Streep starred alongside Gary Oldman and Demi Moore in "The Scarlet Letter" seems incorrect. Additionally, it is important to verify whether "The Scarlet Letter" was produced by Cinergi Pictures to fully confirm or refute the claim. The search queries should focus on verifying the cast of "The Scarlet Letter," Meryl Streep's involvement in that film, the production company behind "The Scarlet Letter," and the 1995 romantic dramas starring Meryl Streep to clarify any potential confusion.
+
+### query
+1. "Cast of the 1995 film The Scarlet Letter including Gary Oldman, Demi Moore, Meryl Streep"
+2. "Production company of the 1995 film The Scarlet Letter"
+3. "Did Meryl Streep star in the 1995 film The Scarlet Letter?"
+4. "Meryl Streep 1995 romantic drama films and co-stars"
+5. "Cinergi Pictures films released in 1995, including The Scarlet Letter"
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Cinergi Pictures', 'The Scarlet Letter (1995 film)']. Documents remaining to be retrieved: ['Gary Oldman'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Costa Rican star of Crimes of Fashion debuted in the 2004 American teen musical comedy film Confessions of a Teenage Drama Queen. She went on to co-star in the 2007 blockbuster action film Transformers.
+
+### notes
+['Daniel Zovatto is a Costa Rican actor active since 2012 primarily in horror and comedy films, with no credits in Crimes of Fashion, Confessions of a Teenage Drama Queen, or Transformers.', 'No Costa Rican actor is documented to have debuted in the 2004 film Confessions of a Teenage Drama Queen or co-starred in the 2007 film Transformers.', 'Ramón Rodríguez is a Puerto Rican actor, not Costa Rican, with no ties to the mentioned films.', 'There is no evidence in the context or notes to support the existence of a Costa Rican star involved in Crimes of Fashion, Confessions of a Teenage Drama Queen, and Transformers as described in the claim.', "There is no evidence of a Costa Rican actor debuting in 'Confessions of a Teenage Drama Queen' (2004) or co-starring in 'Transformers' (2007).", "Daniel Zovatto is a Costa Rican actor active since 2012 but has no credits in 'Crimes of Fashion', 'Confessions of a Teenage Drama Queen', or 'Transformers'.", "'Confessions of a Teenage Drama Queen' (2004) starred Lindsay Lohan, an American actress.", "Megan Fox, an American actress, made her film debut in 'Confessions of a Teenage Drama Queen' (2004) and co-starred in 'Transformers' (2007).", "No Costa Rican star is documented to be connected with the film 'Crimes of Fashion' or the other films mentioned.", "Daniel Zovatto is a Costa Rican actor but has no credits in 'Crimes of Fashion', 'Confessions of a Teenage Drama Queen', or 'Transformers'.", "'Confessions of a Teenage Drama Queen' (2004) starred Lindsay Lohan, an American actress.", "Megan Fox, an American actress, made her film debut in 'Confessions of a Teenage Drama Queen' (2004) and co-starred in 'Transformers' (2007).", "There is no evidence of a Costa Rican actor debuting in 'Confessions of a Teenage Drama Queen' or co-starring in 'Transformers'.", "No Costa Rican star is documented to be connected with the film 'Crimes of Fashion' or the other films mentioned."]
+
+## Generated Outputs
+### reasoning
+To verify the claim, the following points must be confirmed: (1) identification of the Costa Rican star of the film "Crimes of Fashion," (2) confirmation that this actor debuted in the 2004 American teen musical comedy film "Confessions of a Teenage Drama Queen," and (3) verification that the same actor co-starred in the 2007 blockbuster action film "Transformers." The queries should focus on cross-referencing the actor’s nationality (Costa Rican), filmography with emphasis on the three films named, and the release years to ensure the timeline aligns with a debut in 2004. This will help establish the accuracy of the claim in its entirety.
+
+### query
+1. "Who is the Costa Rican actor starring in the film Crimes of Fashion?"
+2. "Cast and debut information for the 2004 film Confessions of a Teenage Drama Queen, focusing on actors of Costa Rican nationality."
+3. "Actors co-starring in the 2007 film Transformers, including any Costa Rican actors."
+4. "Complete filmography of the Costa Rican actor starring in Crimes of Fashion to confirm debut and subsequent roles."
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Confessions of a Teenage Drama Queen', 'Megan Fox']. Documents remaining to be retrieved: ['Crimes of Fashion'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.
