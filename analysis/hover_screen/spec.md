@@ -198,3 +198,50 @@ Text variants and archives per items 1–5 above. Ordinal 0 events → NaN (no a
 - `bm25_ranks.csv` — per (example, gold title) rank table, censoring per item 7.
 - Extraction code: `screen_part3_features.py` (screen venv; BM25 columns joined from
   `bm25_ranks.csv`, no index load).
+
+## AMENDMENTS (Phase B gate, 2026-07-09 — declared and committed BEFORE any scorer
+## column is joined to any outcome column; pre-registered consequences of Phase A
+## coverage facts)
+
+**A1 (difficulty_baseline): APPROVED** by Neel at the Phase B gate — included in the
+survivor race and in MCB multiplicity, carrying its ADDITION flag.
+
+**AMENDMENT 1 — coverage rule applied.** Scorers 1, 2, 3 (within-run difficulty family),
+4 (staleness), 5 (visit_count), and 17 (forgetting) have 2/243-event coverage (0.6 revisit
+collapse). Per the coverage guard (<50% = no information), they are **EXCLUDED from the
+survivor race and from MCB multiplicity**. Their columns are reported in results.md tagged
+**COVERAGE-VOID** with n only — no coefficients. Columns: `diffbest_*`, `diffmean_*`,
+`peaked_*`, `stale_*` (incl. `stale_never_share`), `visits_*`, `forget_*`.
+
+**AMENDMENT 2 — orthogonality set redefined.** The 4.2 residualization set is the
+measurable difficulty axis: `diffbase_mean` (A1) + BM25 retrieval-hardness aggregates
+`hardworst_mean`, `hardmean_mean`, `hard_censored_n`. The within-run history family cannot
+serve as the difficulty control on this corpus. Applied to every scorer's 4.2 read; for
+Class B scorers this implements "residualized on their own batch's difficulty aggregates"
+(the controls are batch-level).
+
+**AMENDMENT 3 — degenerate constants dropped.** Any features.csv column with zero variance
+(≤1 unique non-NaN value) — including scorer 8 (`vt_count_*`, `vt_any_*`), `ngold_*`,
+`visits_min` — is **DROPPED from the race and from MCB counting** and listed in results.md
+under **DEGENERATE** with its constant value. Determined programmatically at Part 4 start.
+
+**Race-cell definition.** Race cells are the scorer feature columns excluded by neither
+amendment. Bookkeeping columns are never race cells: keys (`pair_id, seed, trace_i,
+event_ordinal`), controls (`iteration, parent_pool_score, parent_candidate_idx, comp`),
+`accept` (collider), and the `*_n` / `hard_censored_n`-style coverage counts — EXCEPT
+`hard_censored_n`, which is a defined scorer-6 hardness aggregate and races (it also
+serves in the Amendment-2 control set, where it is skipped as a race cell in the 4.2 read
+of itself). `fm_f{1,2,3}_share` race as scorer 13's encoding.
+
+**Part 4 fixed parameters (documented pre-run).** Shared cluster-bootstrap resamples:
+B = 9999, rng = default_rng(20260711), one draw set reused for every cell/outcome/read
+(required for MCB joint ranking). Within-run permutations: P = 9999, per-cell child rngs
+spawned deterministically from the same seed. BCa: bias-correction from the bootstrap
+distribution, acceleration from the 8-fold leave-one-run-out jackknife. Per-run
+z-standardization of scorers (within-run std 0 → z 0). OLS on complete cases; per-cell n
+reported. MDE = 2.802 × SD(bootstrap coefficients). Survivor criteria per 4.5: (a) BCa CI
+excludes 0 AND LORO sign-stable ≥7/8 AND within-run permutation p < 0.05, primary outcome
+spec_i; (b) additionally 4.2 CI excludes 0 AND 4.2 permutation p < 0.05. MCB (Hsu): cell i
+in the best set iff the 5th percentile of D_i = max_{j≠i}|β_j| − |β_i| over the shared
+bootstrap ≤ 0 (4.1 spec_i read). Negative control: per-run permuted `diffbase_mean`
+(seeded), identical pipeline; surviving (a) = pipeline broken, STOP.
