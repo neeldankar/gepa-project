@@ -1,0 +1,141 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You are given three input fields: `claim`, `notes`, and `context`. Your task is to analyze these inputs and produce two output fields: `new_notes` and `titles`.
+
+1. **Inputs:**
+   - `claim`: A complex factual statement, often multipart, involving people, films, songs, roles, professions, or productions.
+   - `notes`: A list of sentences extracted from various sources, providing supporting or refuting details relevant to the claim. These notes may include corrected misinformation, clarifications, or absence of information.
+   - `context`: A list of longer document excerpts or descriptions offering detailed background or biographical data about entities (people, films, songs, bands, professions, etc.) referenced in the claim.
+
+2. **Task Objective:**
+   - Evaluate the claim critically by cross-referencing the `notes` and `context` to find support, contradiction, or lack of evidence.
+   - Summarize the relevant and reliable factual information from these inputs into `new_notes`. These should be concise statements that directly address the claim or its components, removing duplicates, correcting inaccuracies, and eliminating irrelevant data.
+   - Produce a list of document titles, `titles`, that are most relevant and factual sources supporting or clarifying the claim. These titles correspond to entries in the `context` or related key knowledge about entities involved in the claim.
+
+3. **Key Domain-Specific Knowledge:**
+   - Recognize that certain entities such as musicians, actors, directors, films, songs, and productions have specific attributes:
+     - Musicians may be identified by their roles (e.g., lead singer, songwriter), collaborations, and genres.
+     - Films have directors, cast members, and release details.
+     - Actors and directors can be confused; verify their roles carefully.
+     - Some claims may involve correcting common misconceptions, e.g., an actor vs. a character, or incorrect attributions of roles.
+     - Productions and films have precise titles; new or unreleased films may have uncertain or incomplete information.
+   - Duplicate or near-duplicate notes, as well as negative evidence ("no evidence found") should be consolidated to avoid redundancy.
+   - Pay close attention to the absence of supporting evidence, as it is often crucial to note when a claim part cannot be verified.
+
+4. **Generalizable Reasoning Strategy:**
+   - Break the claim into its constituent assertions.
+   - Check each assertion against the `notes` and `context`.
+   - Identify explicit factual confirmations or counterpoints.
+   - If no confirmation or refutation exists for an assertion, mark it as unverified.
+   - Construct `new_notes` by including only those pieces of information that are directly relevant, factual, and non-repetitive.
+   - Compile `titles` of documents that were effectively used to reason about the claim or that contain key entities related to the claim.
+
+5. **Output Formatting:**
+   - `new_notes`: A clean, deduplicated, and factually accurate list of sentences addressing the claim.
+   - `titles`: A list of strings naming the relevant documents/entities from the context used to validate the claim.
+
+By following this instruction, you help ensure consistent, factual, and comprehensive reasoning grounded in the provided inputs, suitable for verifying and clarifying complex, interconnected claims.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Echeveria is native to arid or semi-desert areas, while Alopecurus creticus is.
+
+### notes
+['Echeveria is a genus of flowering plants in the Crassulaceae family, native to semi-desert areas of Central America, Mexico, and northwestern South America.', 'Echeveria elegans and Echeveria setosa are species native to semi-desert and semi-arid habitats in Mexico.', 'Alopecurus creticus is known as the Cretan meadow foxtail, but its native habitat is not specified in the provided context.', 'Echeveria is a genus of flowering plants in the Crassulaceae family, native to semi-desert areas of Central America, Mexico, and northwestern South America.', 'Species such as Echeveria elegans and Echeveria setosa are native to semi-desert and semi-arid habitats in Mexico.', 'Alopecurus creticus, known as the Cretan meadow foxtail, is a species of foxtail grass, but its native habitat is not specified in the available information.', 'Echeveria is a genus of flowering plants native to semi-desert areas of Central America, Mexico, and northwestern South America.', 'Species such as Echeveria elegans and Echeveria setosa are native to semi-desert and semi-arid habitats in Mexico.', 'Alopecurus creticus, known as the Cretan meadow foxtail, is a species of foxtail grass, but its native habitat is not specified in the available information.']
+
+### context
+['Alopecurus creticus | Alopecurus creticus, the Cretan meadow foxtail, is a species of foxtail grass.', 'Alopecurus aequalis | Alopecurus aequalis is a common species of grass known as shortawn foxtail or orange foxtail.  It is native to much of the temperate Northern Hemisphere from Eurasia to North America, where it can be found in many types of habitat.', 'Alopecurus pratensis | Alopecurus pratensis, known as the meadow foxtail or the field meadow foxtail, is a perennial grass belonging to the grass family (Poaceae).  It is native to Europe and Asia.', 'Echeveria | Echeveria is a large genus of flowering plants in the Crassulaceae family, native to semi-desert areas of Central America, Mexico and northwestern South America.', 'Echeveria elegans | Echeveria elegans (Mexican snow ball, Mexican gem, white Mexican rose) is a species of flowering plant in the Crassulaceae family, native to semi-desert habitats in Mexico.', 'Alopecurus arundinaceus | Alopecurus arundinaceus (creeping meadow foxtail or creeping foxtail) is a rhizomatous perennial species in the Grass family (Poaceae).  Native to Eurasia and northern Africa, and widely introduced elsewhere, this sod forming grass is useful as a forage and for erosion control.  It grows in damp or saline grasslands and banks of waterways, and on mountains up to 1,200\xa0m.  It flowers between April and July, depending on its location.', 'Alopecurus saccatus | Alopecurus saccatus is a species of grass known by the common name Pacific foxtail, or Pacific meadow foxtail.', 'Alopecurus | Alopecurus, or foxtail grass, is a common and widespread genus of plants in the grass family.  It is common across temperate and subtropical parts of Eurasia, northern Africa, and the Americas, as well as naturalized in Australia and on various islands.', 'Kazakh semi-desert | The Kazakh semi-desert is an ecoregion in the deserts and xeric shrublands biome, located in Kazakhstan.  The climate is semi-arid and continental, with a total annual precipitation of 160 mm , and mean temperatures in January averaging -15 °C and in July 23 °C .  It is a transitional area between the steppes and the deserts of Central Asia and supports flora found in both biomes, predominantly grasses, particularly "Stipa" species, and shrubs such as "Artemisia" species.  A number of mammals and birds are found in this ecoregion but the habitat is threatened by overgrazing and fragmentation from human encroachment.  However, a recent reduction in livestock numbers in Kazakhstan is allowing the native plants a greater opportunity to regenerate.', 'Xenosauridae | Xenosauridae is a family of anguimorph lizards whose only living representative is the genus "Xenosaurus", which is native to Central America.  Xenosauridae also includes the extinct genera "Exostinus" and "Restes".  Also known as knob-scaled lizards, they have rounded, bumpy scales and osteoderms. Most living species prefer moist or semi-aquatic habitats, although they are widespread within their native regions, with some even inhabiting semi-arid scrub environments.  They are carnivorous or insectivorous, and give birth to live young.']
+
+## Generated Outputs
+### reasoning
+The claim states that Echeveria is native to arid or semi-desert areas, which is confirmed by multiple notes and context entries specifying that Echeveria is a genus of flowering plants native to semi-desert areas of Central America, Mexico, and northwestern South America. Specific species such as Echeveria elegans and Echeveria setosa are noted to inhabit semi-desert and semi-arid habitats in Mexico. This confirms the first part of the claim.
+
+The second part of the claim about Alopecurus creticus is incomplete, as it ends with "while Alopecurus creticus is." The claim does not specify what habitat or characteristic Alopecurus creticus is associated with.
+
+From the notes and context, Alopecurus creticus is identified as the Cretan meadow foxtail, a species of foxtail grass, but no specific native habitat or environment (such as arid or semi-arid) is provided for it. Hence, there is no evidence to confirm or complement this portion of the claim.
+
+Therefore, the claim is only partially supported: the habitat information for Echeveria is confirmed, while the habitat or characteristic of Alopecurus creticus is unspecified and unverified.
+
+### new_notes
+['Echeveria is a genus of flowering plants native to semi-desert areas of Central America, Mexico, and northwestern South America.', 'Species such as Echeveria elegans and Echeveria setosa are native to semi-desert and semi-arid habitats in Mexico.', 'Alopecurus creticus, known as the Cretan meadow foxtail, is a species of foxtail grass, but its native habitat is not specified in the available information.']
+
+### titles
+['Echeveria', 'Echeveria elegans', 'Alopecurus creticus']
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Alopecurus', 'Alopecurus creticus', 'Echeveria']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+Reverend Lyttleton Morgan was the first chairman of the board of trustees at a university. That university and the University of Idaho are public types of universities.
+
+### notes
+['Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University.', "Morgan State University is Maryland's designated public urban university and a historically black college.", 'Morgan State University was renamed in honor of Reverend Lyttleton Morgan.', 'The University of Idaho is a public university.', 'Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University.', "Morgan State University is Maryland's designated public urban university and a historically black college.", 'Morgan State University was renamed in honor of Reverend Lyttleton Morgan.', 'The University of Idaho is a public university.', 'Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University.', 'Morgan State University was renamed in honor of Reverend Lyttleton Morgan.', "Morgan State University is Maryland's designated public urban university and a historically black college.", 'The University of Idaho is a public university.']
+
+### context
+['Morgan State University | Morgan State University (commonly referred to as MSU, Morgan State, or Morgan) is a historically black college (HBCU) in Baltimore, Maryland, United States.  Morgan is Maryland\'s designated public urban university and the largest HBCU in Maryland.  In 1890 the university, formerly known as the "Centenary Biblical Institute", changed its name to Morgan College to honor Reverend Lyttleton Morgan, the first chairman of its Board of Trustees who had donated land to the college.  It became a university in 1975.  MSU is a member of Thurgood Marshall College Fund.', 'Lyttleton Morgan | Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, which was renamed in his honor (it was founded as the Centenary Biblical Institute).', "List of Morgan State University alumni | This is a list of notable alumni which includes graduates, non-graduate former students, and current students of Centenary Biblical Institute (1867–1890), Morgan College (1890–1938), Morgan State College (1938–1975), and Morgan State University (1975–present).  Located in residential Baltimore, Maryland, Morgan State is a historically black university and Maryland's designated public urban university.  The Morgan State University National Alumni Association is the official alumni organization of the university.", 'Gilbert Morgan | Reverend Dr. Gilbert Morgan is generally numbered as the second chancellor of the University of Pittsburgh, then called the Western University of Pennsylvania, serving only one year from 1835 to 1836, although Morgan\'s official title at the time was "Principal", a holdover from the institution\'s academy days.  Morgan was appointed by the University Board of Trustees in 1835 following recommendations from his associates at Union College.  His short tenure as President was considered mostly unsuccessful and he resigned only a year later to accept a position in North Carolina at a school for young ladies. ', "Dianna Fuller Morgan | Dianna Fuller Morgan currently serves on the Board of Directors of CNL Bancshares, Inc., Marriott Vacations Worldwide Corporation, and the Board of Trustees for Hersha Hospitality Trust.  In addition, she is a member of the Board of Directors of Orlando Health.  Morgan served as past Chair of the national board for the Children's Miracle Network, as well as the University of Florida Board of Trustees.  Morgan retired in 2001 from a long career with the Walt Disney World where she served as Senior Vice President of Public Affairs and Human Resources.", "Wayne Morgan | Wayne Morgan (born October 7, 1950) was the Iowa State University men's basketball coach from 2003 to 2006.  He was Iowa State University’s first African American head basketball coach.", 'List of Morgan State University Athletic Hall of Fame members | List of Morgan State University Athletic Hall of Fame members', 'Flying Four Morgan State University Track Team 1951-1955 | Flying Four Morgan State University Track Team 1951-1955', 'University of Central Florida Board of Trustees | The University of Central Florida Board of Trustees is the governing body of the University of Central Florida, a space-grant university located on a 1415 acre main campus in Orlando, Florida, United States.  UCF is a member institution of the State University System of Florida and is the largest public university in the United States.', 'David Wilson (university administrator) | David Wilson, Ed.D has been president of Morgan State University in Baltimore, Maryland since July 1, 2010.  Dr. David Wilson is the 12th president of Morgan State University and has a long record of accomplishments and more than 30 years of experience in higher education administration.  Dr. Wilson holds four academic degrees: a B.S. in political science and an M.S. in education from Tuskegee University; an Ed.M.  in educational planning and administration from Harvard University and an Ed.D. in administration, planning and social policy, also from Harvard.  He came to Morgan from the University of Wisconsin, where he was chancellor of both the University of Wisconsin Colleges and the University of Wisconsin–Extension.  Before that, he held numerous other administrative posts in academia, including: vice president and associate provost at Auburn University, and associate provost of Rutgers, the State University of New Jersey.']
+
+## Generated Outputs
+### reasoning
+The claim involves two assertions: first, that Reverend Lyttleton Morgan was the first chairman of the board of trustees at a university, and second, that this university and the University of Idaho are public types of universities.
+
+From the notes and context:
+- Reverend Lyttleton Morgan was indeed the first chairman of the board of trustees of Morgan State University (not just a generic university), confirmed by multiple notes and detailed in the context. 
+- Morgan State University was renamed in his honor, supporting his significant role.
+- Morgan State University is Maryland's designated public urban university and is a historically black college (HBCU), thus a public institution.
+- The University of Idaho is confirmed to be a public university.
+
+Hence, the claim is largely accurate. Reverend Morgan was the first chairman of the board of trustees of Morgan State University. Both Morgan State University and the University of Idaho are public universities.
+
+### new_notes
+['Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University.', 'Morgan State University was renamed in honor of Reverend Lyttleton Morgan.', "Morgan State University is Maryland's designated public urban university and a historically black college.", 'The University of Idaho is a public university.']
+
+### titles
+['Morgan State University', 'Lyttleton Morgan']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Lyttleton Morgan', 'Morgan State University']. Documents remaining to be retrieved: ['University of Idaho'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Clark County in Nevada contains both Las Vegas and another college. Craig Heyer played baseball at that college.
+
+### notes
+['Clark County, Nevada includes Las Vegas as its county seat.', 'Clark County contains the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).', 'Craig Heyer played college baseball at both the College of Southern Nevada and UNLV.', 'Clark County, Nevada includes Las Vegas as its county seat.', 'Clark County contains both the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).', 'Craig Heyer played college baseball at both the College of Southern Nevada and UNLV.', 'Clark County, Nevada includes Las Vegas as its county seat.', 'Clark County contains the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).', 'Craig Heyer played college baseball at both the College of Southern Nevada and UNLV.']
+
+### context
+['Craig Heyer | Craig D. Heyer (born November 15, 1985) is an American professional baseball pitcher.  Prior to becoming a professional, Heyer played college baseball at the College of Southern Nevada and University of Nevada, Las Vegas (UNLV).', 'Stan Stolte | Stan Stolte is an American baseball coach, currently serving as the head baseball coach at the University of Nevada, Las Vegas.  Stolte attended college at Muscatine Community College and St. Ambrose University, where he played college baseball.  Stolte served as an assistant baseball coach at the University of Nevada, Las Vegas, the University of Nevada, Reno, the University of the Pacific, Muscatine Community College, and Northwest Missouri State University.  Stolte served as interim head coach at the University of Nevada, Las Vegas for the 2016 season, before being named permanent head baseball coach at UNLV on June 1, 2016.', 'UNLV Graduate College | University of Nevada, Las Vegas (UNLV) Graduate College supports more than 4,000 graduate students in more than 145 graduate certificate, master’s, specialist and doctoral programs offered at the University of Nevada, Las Vegas (UNLV).', "University of Nevada, Las Vegas | The University of Nevada, Las Vegas (UNLV) is an American public research university in the Las Vegas suburb of Paradise, Nevada.  The 332 acre campus is about 1.6 mi east of the Las Vegas Strip.  The university includes the Shadow Lane Campus, just east of the University Medical Center of Southern Nevada, which houses the School of Dental Medicine— the only dental school in Nevada.  In addition, UNLV's law school, the William S. Boyd School of Law, is also the only law school in the state.", 'UNLV School of Medicine | University of Nevada, Las Vegas (UNLV) School of Medicine, is an academic division of the University of Nevada, Las Vegas (UNLV) with 60 students matriculated on July 17, 2017.  The students began their education with a 6 week EMT course.  The school is the first to grant the Doctor of Medicine (MD) degree in Southern Nevada.  The school uses facilities in the University Medical Center of Southern Nevada (UMCSN) clinical building at the Las Vegas Medical District.', 'Fremont Cannon | The Fremont Cannon (also known as the Nevada–UNLV football rivalry) is the trophy awarded to the winner of the Battle for Nevada, an American college football rivalry game played annually by the Nevada Wolf Pack football team of the University of Nevada, Reno (Nevada) and the UNLV Rebels football team of the University of Nevada, Las Vegas (UNLV).  The trophy was built in 1970 and is a replica of a 19th-century Howitzer cannon that accompanied American explorer and politician John C. Frémont on an expedition to Nevada in the mid 19th century.  Originally fired following a touchdown by the team in possession of the cannon, it has been inoperable since 1999.  The wooden carriage is painted the school color of the team in possession, navy blue for Nevada or scarlet for UNLV.  The trophy is the heaviest and most expensive in college football .', 'UNLV School of Dental Medicine | University of Nevada, Las Vegas (UNLV) School of Dental Medicine is the dental school of the University of Nevada Las Vegas (UNLV).  The school is located on the Shadow Lane Campus, located just east of University Medical Center of Southern Nevada on Charleston and Shadow Lane, in Las Vegas, Nevada.  The school enrolls, on average, 80 freshmen per year.', 'UNLV College of Education | The College of Education is an academic unit of the University of Nevada, Las Vegas (UNLV).', 'Southern Nevada | Southern Nevada (often abbreviated as SNV) is the region of Nevada which includes the Las Vegas Valley.  Southern Nevada also includes the areas in and around Tonopah, Hawthorne, Pahrump, and Pioche, though some organizations based in the Las Vegas area (e.g., the Southern Nevada Health District) effectively use the term to refer to Clark County only.', 'Nevada Career Institute | Nevada Career Institute is a for-profit college.  Nevada Career Institute offers Diploma, Associate Degree and Certification Programs at its main campus located in Las Vegas, Nevada.  Nevada Career Institute is now owned and operated by the Fuerst family of Success Education Colleges.']
+
+## Generated Outputs
+### reasoning
+The claim involves two main parts: first, that Clark County, Nevada, contains both Las Vegas and another college, and second, that Craig Heyer played baseball at that college. Reviewing the notes and context, Clark County does include Las Vegas and contains at least two colleges: the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV). Craig Heyer played college baseball at both the College of Southern Nevada and UNLV. Therefore, both parts of the claim are supported by the notes and context, confirming that Clark County contains both Las Vegas and multiple colleges, and that Craig Heyer played baseball at those colleges in Clark County.
+
+### new_notes
+['Clark County, Nevada includes Las Vegas as its county seat.', 'Clark County contains the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).', 'Craig Heyer played college baseball at both the College of Southern Nevada and UNLV.']
+
+### titles
+['Craig Heyer', 'University of Nevada, Las Vegas', 'Southern Nevada']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Clark County, Nevada', 'Craig Heyer']. Documents remaining to be retrieved: ['College of Southern Nevada'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

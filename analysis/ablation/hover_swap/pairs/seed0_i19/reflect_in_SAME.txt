@@ -1,0 +1,107 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields as input: a `claim` and associated `notes`. Your task is to generate a single, concise, precise natural language `query` that is intended to verify or fact-check the `claim` based on information given in the `notes`. The final query should be designed for efficient retrieval of authoritative evidence that confirms or refutes all key factual elements presented in the claim.
+
+Detailed task instructions:
+
+1. **Analyze the claim:**  
+   - Identify all key factual components or assertions that need verification.  
+   - Recognize any implied relationships between entities or multiple claim components that must be verified together to confirm the claim’s overall truthfulness.
+
+2. **Utilize the notes:**  
+   - Review the notes carefully as they provide relevant factual data, context, and background information.  
+   - Notes may include domain-specific facts, indirect evidence, overlapping or repetitive information, dates, names, titles, awards, species counts, corporate details, etc.  
+   - Incorporate any domain-specific terminology (e.g., proper names of individuals, awards, companies, taxa) relevant to the claim verification.
+
+3. **Formulate the query:**  
+   - Compose a single, clear, direct question that targets all essential factual elements and their connections (when multiple parts exist).  
+   - The query should explicitly reference relevant domain-specific entities (e.g., a person’s full name and role, award titles, film titles and director names, species genus/species count, airline nationality and base).  
+   - Where the claim contains multiple related parts, integrate them logically into one query to avoid fragmented checks needing multiple queries.  
+   - Avoid vagueness or open-ended questions; the query should lead to precise validation or refutation.
+
+4. **Examples of domain-specific entities and components to consider (to be used as needed based on claim content):**  
+   - **Literary awards and persons:** full names of individuals (e.g., Alan Sillitoe, Miguel Ángel Asturias, Elfriede Jelinek), Nobel Prize in Literature, their nationality, and specific roles (poet, diplomat, writer).  
+   - **Film and screenwriting credits:** film titles (Finding Dory, A Bug's Life), directs/co-directors, authorship relations.  
+   - **Botanical classification:** genus names, number of species, vernacular names in various languages, and taxonomic status.  
+   - **Corporate identity and location:** company names, nationality, headquarters city, operational details.  
+   - **Sports teams and leadership:** individual roles (head coach, offensive coordinator), team names, relevant league or conference (e.g., Big Ten Conference 2013 season).  
+
+5. **General strategy:**  
+   - The query should be framed as a verification question (e.g., “Was X the Y in [context or time period]?” or “Did A direct B and also co-direct C?”).  
+   - Combine multiple linked facts into one integrated query for efficiency and clarity.  
+   - Reflect any temporal information if relevant (e.g., “in 2013”, “currently”).  
+   - Where entities might have similar names or multiple aspects, use full names and specific details to avoid confusion.  
+
+The objective is to produce a targeted query that, when answered using the notes or queried in authoritative sources, decisively clarifies the accuracy of the claim based on its main factual components and their relationships.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The kind of dog Banana Joe V Tani Kazari is and Villanuco de Las Encartaciones are not both breeds of dog.
+
+### notes
+['Banana Joe V Tani Kazari is a toy Affenpinscher, a recognized dog breed.', 'Villanuco de Las Encartaciones is a recognized Spanish dog breed from the Las Encartaciones region.', 'Banana Joe V Tani Kazari is an individual dog of the Affenpinscher breed, which is a recognized toy breed of dog.', 'Villanuco de Las Encartaciones is a recognized dog breed from the Las Encartaciones region in Spain.', 'Both Affenpinscher and Villanuco de Las Encartaciones are distinct and recognized breeds of dogs.', 'Banana Joe V Tani Kazari is an individual dog of the Affenpinscher breed, which is a recognized toy breed of dog.', 'Villanuco de Las Encartaciones is a recognized Spanish dog breed from the Las Encartaciones region in Spain.', 'Both Affenpinscher and Villanuco de Las Encartaciones are distinct and recognized breeds of dogs.']
+
+## Generated Outputs
+### reasoning
+The claim states that the dog breed of Banana Joe V Tani Kazari and the Villanuco de Las Encartaciones breed are not both breeds of dog, implying that at least one of them might not be a recognized dog breed. However, the notes indicate that Banana Joe V Tani Kazari is an Affenpinscher, which is a recognized dog breed, and Villanuco de Las Encartaciones is also a recognized Spanish dog breed from the Las Encartaciones region. Therefore, both are recognized dog breeds.
+
+### query
+Are Banana Joe V Tani Kazari and Villanuco de Las Encartaciones both recognized breeds of dog, with Banana Joe V Tani Kazari being a toy Affenpinscher and Villanuco de Las Encartaciones being a recognized Spanish dog breed from the Las Encartaciones region?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Affenpinscher', 'Villanuco de Las Encartaciones']. Documents remaining to be retrieved: ['German Pinscher'].
+
+
+
+# Example 2
+## Inputs
+### claim
+"Leni" Riefenstahl was born before the Ukrainian director of "Young Doctors in Love".
+
+### notes
+['Leni Riefenstahl was born on 22 August 1902.', '"Young Doctors in Love" is a 1982 American film directed by Garry Marshall.', 'Garry Marshall was American, not Ukrainian.', 'No information about a Ukrainian director of "Young Doctors in Love" was found.', 'It is highly probable that Leni Riefenstahl was born before the director of "Young Doctors in Love".', 'Leni Riefenstahl was born on 22 August 1902.', '"Young Doctors in Love" is a 1982 American film directed by Garry Marshall, who was American, not Ukrainian.', 'No Ukrainian director of "Young Doctors in Love" exists; the only known director is Garry Marshall.', 'It is true that Leni Riefenstahl was born before the director of "Young Doctors in Love."', 'Leni Riefenstahl was born on 22 August 1902.', '"Young Doctors in Love" is a 1982 American comedy film directed by Garry Marshall.', 'Garry Marshall, the only known director of "Young Doctors in Love," was American, not Ukrainian.', 'No Ukrainian director of "Young Doctors in Love" exists or is known.', 'Leni Riefenstahl was born well before Garry Marshall.']
+
+## Generated Outputs
+### reasoning
+The claim involves two primary factual components: the birthdate of "Leni" Riefenstahl and the birthdate of the Ukrainian director of the film "Young Doctors in Love." To verify the claim, we need to confirm the identity and birthdate of "Leni" Riefenstahl, and establish the name and birthdate of the Ukrainian director of "Young Doctors in Love." Additionally, it is necessary to confirm that the director of "Young Doctors in Love" is indeed Ukrainian, as that is a crucial part of the claim. Only by comparing these birthdates can the claim about the chronological order of their births be validated.
+
+### query
+Was Leni Riefenstahl born before the Ukrainian director of the film "Young Doctors in Love," and what are the birthdates of both individuals?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Leni Riefenstahl', 'Young Doctors in Love']. Documents remaining to be retrieved: ['Garry Marshall'].
+
+
+
+# Example 3
+## Inputs
+### claim
+This publication is published more often than Bookmarks. Keith Moon was inducted into its Hall of Fame in the early 'eighties.
+
+### notes
+['Keith Moon was inducted into the Modern Drummer Hall of Fame in 1982.', 'Modern Drummer magazine is published more frequently than Bookmarks magazine.', 'Keith Moon was inducted into the Modern Drummer Hall of Fame in 1982, which is in the early 1980s.', 'Modern Drummer magazine is published more frequently than Bookmarks magazine.', "Keith Moon is recognized posthumously by Modern Drummer, cementing the magazine's status as a notable publication in drumming.", "Other notable drummers mentioned have also been inducted into the Modern Drummer Hall of Fame, reinforcing the magazine's prestige.", 'Keith Moon was inducted into the Modern Drummer Hall of Fame in 1982, which is in the early 1980s.', 'Modern Drummer magazine is published more frequently than Bookmarks magazine.']
+
+## Generated Outputs
+### reasoning
+The claim contains two key factual components: firstly, that the publication in question is published more often than Bookmarks magazine, and secondly, that Keith Moon was inducted into its Hall of Fame in the early 1980s. The notes identify the publication as Modern Drummer magazine, which is cited as being published more frequently than Bookmarks, and confirm that Keith Moon was inducted into the Modern Drummer Hall of Fame in 1982, which is in the early 1980s. The query should verify the name of the publication with the Hall of Fame, the frequency of its publication relative to Bookmarks, and the timing of Keith Moon's induction.
+
+### query
+Is Modern Drummer magazine published more frequently than Bookmarks magazine, and was Keith Moon inducted into the Modern Drummer Hall of Fame in 1982?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Keith Moon']. Documents remaining to be retrieved: ['Bookmarks (magazine)', 'Modern Drummer'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

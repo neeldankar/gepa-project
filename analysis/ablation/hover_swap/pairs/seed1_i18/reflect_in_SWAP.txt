@@ -1,0 +1,184 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You are tasked with a focused fact verification and evidence consolidation task, where you analyze three types of inputs—`claim`, `notes`, and `context`—to produce two outputs: `new_notes` and `titles`. The `claim` is a textual statement possibly containing multiple factual assertions that need verification. The `notes` are often extracted snippets, paraphrases, or partial evidences relevant to the claim, while the `context` comprises longer document texts or summaries potentially containing detailed source information related to entities, events, timelines, or attributes mentioned in the claim.
+
+Your overarching goal is to verify or refute each distinct component of the claim by synthesizing and consolidating information from both `notes` and `context`, avoiding redundancy, speculation, or irrelevant content.
+
+---
+
+Detailed Guidelines and Domain-Specific Considerations:
+
+1. **Input Structure and Understanding**  
+   - **claim**: A statement consisting of one or more assertions (e.g., about persons, events, dates, geographic locations, product characteristics, filmographies, or comparative facts).  
+   - **notes**: Fragmented facts, paraphrases, or extracted evidences that may partially support or contradict the claim. This input can contain redundancy.  
+   - **context**: Summaries or full-text snippets from diverse documents that may provide authoritative or more detailed information on the claim’s subjects.
+
+2. **Verification Approach and Reasoning Strategy**  
+   - Parse the claim into discrete assertions where possible and address each individually.  
+   - Map claim elements (entities, dates, events, attributes) to facts in both `notes` and `context`.  
+   - Cross-verify facts by probing both inputs together to spot confirmations, contradictions, or missing information.  
+   - Explicitly note when parts of the claim cannot be verified because critical information about entities, events, or attributes is absent from both inputs.  
+   - For geographic, historical, biographical, or product-related facts, use explicit details only—avoid assumptions or inference beyond the data given.  
+   - When multiple entities or facts overlap (e.g., multiple actors in movies, overlapping dates, competing geographic references), carefully separate which parts are supported and which are not.
+
+3. **Consolidation of `new_notes`**  
+   - Remove redundancy by combining similar or repeated facts into succinct, clear statements—preferably one or two sentences each.  
+   - Focus exclusively on information directly relevant to verifying the claim’s assertions, omitting irrelevant tangents or unrelated domain facts.  
+   - Clarify precisely which elements of the claim are supported, contradicted, or unverifiable.  
+   - If verification is impossible due to missing data or ambiguity, clearly state this instead of speculating.  
+   - Maintain factual accuracy and align notes closely with evidence found in the inputs.
+
+4. **Creation of `titles`**  
+   - Generate concise, descriptive headings that summarize key topics, entities, or factual relationships uncovered during verification.  
+   - Titles should be domain-relevant and reflect the organizing principles of your notes (e.g., names of persons, film titles with dates, product or geographic features, timeline relations).  
+   - They serve as topical indexes for the summarized evidences and facilitate quick understanding of verification focuses.
+
+5. **Domain-Specific Knowledge Embedded in the Task**  
+   - Common facts relate to soft drink brands, flavor profiles, and geographic market presence.  
+   - Biographical facts include film directors, voice actors, release years, animation movie titles, and actor nationalities.  
+   - Geographic comparisons, including city versus county boundaries, size, and jurisdictional status, are frequent.  
+   - Product ownership or company-railway station relations may appear, requiring careful geographic and corporate structure reasoning.  
+   - Scientific or technical terms (e.g., chemical or biological entities) may appear but are often not central to verification.
+
+6. **Generalizable Reasoning and Workflow**  
+   - Identify key components (entities, events, dates) in the claim first.  
+   - Search both `notes` and `context` for explicit assertions tied to these components.  
+   - Distill duplicated claims and reconcile contradictions; produce a coherent evaluation per factual assertion.  
+   - Explicitly separate verifiable from unverifiable or contradicted claim parts in `new_notes`.  
+   - Group related notes under thematic headings synthesized as `titles`.
+
+7. **Handling Missing or Conflicting Data**  
+   - When the claim contains information about an entity or event absent in all inputs, clearly note that verification is not possible.  
+   - If parts are verifiable but others are unsupported, separately highlight these distinctions.  
+   - Avoid speculation or implied connections not grounded in provided evidence.
+
+---
+
+Summary:
+
+Your task is a meticulous, evidence-based fact-checking and summarization exercise that integrates fragmented inputs into a concise, focused verification dossier. Your outputs must be:
+
+- **`new_notes`**: A reduced, clear, and precise list of facts confirming, contradicting, or indicating unverifiability of the claim’s components based on the complete input set.  
+- **`titles`**: A concise list of relevant topical headings that summarize and organize the key subjects, entities, or relationships essential to understanding the verification outcome.
+
+This task requires strict adherence to evidence, careful parsing of multi-part claims, clear handling of data absence or contradiction, and domain-aware synthesis of facts to aid downstream understanding or retrieval tasks.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Sunrise Avenue and the band, who released the album "You Could Have It So Much Better ", were both formed in 2002.
+
+### notes
+['Sunrise Avenue is a Finnish rock band originally formed in 2002 in Helsinki, Finland.', '"You Could Have It So Much Better" is the second studio album by Scottish indie rock band Franz Ferdinand, released in 2005.', 'The formation year of Franz Ferdinand is not provided in the given context, so it cannot be confirmed if they were formed in 2002.', 'Therefore, the claim that both Sunrise Avenue and the band who released "You Could Have It So Much Better" were formed in 2002 is only partially supported (Sunrise Avenue) and not verified for Franz Ferdinand.', 'Sunrise Avenue is a Finnish rock band formed in 2002 in Helsinki, Finland.', '"You Could Have It So Much Better" is the second studio album by Franz Ferdinand, released in 2005.', 'The formation year of Franz Ferdinand is not provided in the available notes or context, so it cannot be confirmed if they were formed in 2002.', 'Therefore, only the part of the claim regarding Sunrise Avenue\'s formation in 2002 is supported, while the formation year of the band who released "You Could Have It So Much Better" remains unverifiable.', 'Sunrise Avenue is a Finnish rock band formed in 2002 in Helsinki, Finland.', '"You Could Have It So Much Better" is the second studio album by the Scottish indie rock band Franz Ferdinand, released in 2005.', 'The formation year of Franz Ferdinand, the band that released "You Could Have It So Much Better", is not provided in the notes or context and therefore cannot be confirmed.', 'The claim that both Sunrise Avenue and the band who released "You Could Have It So Much Better" were formed in 2002 is only partially supported: only Sunrise Avenue\'s formation year of 2002 is verified.']
+
+### context
+['You Could Have It So Much Better | You Could Have It So Much Better is the second studio album by Scottish indie rock band Franz Ferdinand.  It was first released on 28 September 2005 in Japan, and later on 3 October in the UK, through the Domino Recording Company.  Recorded in both the United States and their own studio in Glasgow with producer Rich Costey, the album spawned four UK top 30 singles: "Do You Want To" on 23 August 2005, "The Fallen", "Walk Away" and "Eleanor Put Your Boots On."', 'Tonight: Franz Ferdinand | Tonight: Franz Ferdinand (also known simply as Tonight) is the third studio album by Scottish indie rock band Franz Ferdinand.  It was released on 26 January 2009 through Domino Records in the UK and Epic Records in the US.  It is the band\'s first studio album since "You Could Have It So Much Better", which was released on 3 October 2005, roughly three and a half years earlier.  The album was recorded in a span of two years at Mr. Dan\'s Studio in Buckeye, Arizona and the old town hall of Govan, Scotland.  It has been described as a concept album loosely based around a night of partying and the morning effects after.  The album has more of a dance-oriented sound, featuring styles of dance-punk, new wave, and electropop, marking a departure from the band\'s post-punk sound, which was featured on their past two albums.', 'Sunrise Avenue | Sunrise Avenue is a Finnish rock band originally formed in 2002 in Helsinki, Finland.  In the early days the band was called Sunrise and the name was changed to Sunrise Avenue in 2001.  Sunrise Avenue was known for their catchy melodic and modern songs and energetic live performances.  Their style varied from rock and pop-rock to rock ballads.  The band sold more than 2,000,000 albums and 2,000,000 singles and played several tours and more than a thousand shows in twenty European countries and Japan.  Sunrise Avenue\'s best known songs are "Hollywood Hills" (2011), "Fairytale Gone Bad" (2006), "Forever Yours" (2007), "The Whole Story" (2009), "Heal Me" (2007) and "Welcome To My Life" (2009).  The band released four studio albums, two live albums, three live DVDs, a best-of album and 18 singles.', 'The Fallen (song) | "The Fallen" is a song by Scottish indie rock band Franz Ferdinand.  It was released as the third single from their second studio album, "You Could Have It So Much Better", on 3 April 2006.  The song peaked at number 4 on the Scottish Singles Chart and number 14 on the UK Singles Chart.', 'The Greatest Hits, So Far | The Greatest Hits, So Far is a greatest hits album by English post-punk band Public Image Ltd, released in 1990 by record label Virgin.  It compiles all of the band\'s singles from 1978 to 1990 and features a new track, "Don\'t Ask Me", which was released as a single, reaching number 22 the UK and number 2 on the US Modern Rock chart.  "This Is Not a Love Song" is not represented in its original single form, but as the remake from "This Is What You Want... This Is What You Get".  The album\'s artwork is by notable New Zealand-born artist and musician Reg Mombassa.', 'Sunrise Avenue discography | The following is the discography of Sunrise Avenue, a Finnish rock band originally formed in 1992 as "Sunrise".  The band changed its name to "Sunrise Avenue" in 2001.', 'Thelastplaceyoulook | thelastplaceyoulook is an American rock band that formed in Houston, Texas.  Their debut extended play, "The Lies We Tell Ourselves", was released on 30 May 2006.  This was followed up with the debut of their first full-length album "See The Light Inside You", on 29 January 2009, which featured singles "Don\'t Make It So Easy" and "Band to Save Me".  The band has also released a music video and single of "Do You Hear?"  a cover of the Christmas song "Do You Hear What I Hear? ".  In December 2013, they released their second extended play "Rip It Out. "', 'The Better Half-Dozen | The Better Half-Dozen was an American garage rock band formed in New Orleans, Louisiana, in 1966.  The band played at local colleges, high schools and clubs in New Orleans and surrounding cities and states.  They released one 45 single with 2 originals called "I\'m Gonna Leave You" and "I Could Have Loved Her", which, despite insufficient promotion, has remained a classic garage rock recording.', 'Walk Away (Franz Ferdinand song) | "Walk Away" is a song by Scottish rock band Franz Ferdinand and is featured on their second album, "You Could Have It So Much Better".  It was released 5 December 2005 as the second single from that album in the UK, entering the UK Singles Chart at #13 a week later (see 2005 in British music).  The riff of the song is similar to the Kraftwerk song "Das Model".', 'Fuze (band) | Fuze are an English pop rock band who formed in 2010.  The band consists of Ed Alston (lead vocals and guitar), George Kirchner (lead guitar and vocals), Jack Goldsmith (bass guitar and backing vocals) and Keir Adamson (drums and backing vocals).  They were signed by LUMI Records in 2011 prior to the release of their debut album, "That\'s What She Said".  The band\'s name originates from the American drink, Fuze.  Their debut single, Hey You, was used in the soundtrack for the UK film, The Shouting Men, which featured Craig Fairbrass, Warren Llambias, John Barnes and Matt Daniel-Baker.  Their second single, When You Come Home, was released in July 2011.  Fuze were crowned Chelmsford\'s YFest winners in August 2011 after return from their tour of England.  The band are believed to have finished writing for their second album, which is due for release in 2012.']
+
+## Generated Outputs
+### reasoning
+The claim makes two assertions: first, that Sunrise Avenue and the band who released the album "You Could Have It So Much Better" were both formed in 2002; second, that the album "You Could Have It So Much Better" was released by the band formed in 2002.
+
+From the context:
+- "You Could Have It So Much Better" is an album by Scottish indie rock band Franz Ferdinand, released in 2005.
+- Sunrise Avenue is a Finnish rock band originally formed in 2002 in Helsinki, Finland.
+- There is no explicit formation date for Franz Ferdinand in the context.
+- The given notes say no information on formation dates or band details other than what is in the context.
+
+We therefore can confirm that Sunrise Avenue was formed in 2002. We know "You Could Have It So Much Better" is a Franz Ferdinand album released in 2005, but no verification exists here that Franz Ferdinand was formed in 2002. The claim that the band that released "You Could Have It So Much Better" was formed in 2002 is not supported by the provided data. The claim that the album was released by a band formed in 2002 cannot be verified from the given context.
+
+Hence:
+- Partially true: Sunrise Avenue was formed in 2002.
+- Not verified: Formation year of Franz Ferdinand is not given.
+- The album "You Could Have It So Much Better" was released in 2005 by Franz Ferdinand.
+- The claim that both bands were formed in 2002 is not supported.
+
+### new_notes
+['Sunrise Avenue is a Finnish rock band originally formed in 2002 in Helsinki, Finland.', '"You Could Have It So Much Better" is the second studio album by Scottish indie rock band Franz Ferdinand, released in 2005.', 'The formation year of Franz Ferdinand is not provided in the given context, so it cannot be confirmed if they were formed in 2002.', 'Therefore, the claim that both Sunrise Avenue and the band who released "You Could Have It So Much Better" were formed in 2002 is only partially supported (Sunrise Avenue) and not verified for Franz Ferdinand.']
+
+### titles
+['Sunrise Avenue Formation', '"You Could Have It So Much Better" Album and Band', 'Band Formation Verification']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Sunrise Avenue', 'You Could Have It So Much Better']. Documents remaining to be retrieved: ['Franz Ferdinand (band)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The Scottish punk band that worked 3 years with Young American Recordings and Sleeper, are both from Britain.
+
+### notes
+['Young American Recordings was an American record label based in New York City that worked with the Scottish punk band APB.', 'No information is available to confirm that the Scottish punk band APB worked for 3 years with Young American Recordings.', 'Sleeper is a British band fronted by Louise Wener, an English songwriter and singer.', 'Young American Recordings is American, not British, so the claim that both the Scottish punk band and Sleeper are from Britain is incorrect.', 'Young American Recordings was an American record label based in New York City that worked with the Scottish punk band APB.', 'There is no available information to confirm that APB worked for three years with Young American Recordings.', 'Sleeper is a British band fronted by English singer Louise Wener.', 'APB is a Scottish punk band, and Scotland is part of Britain, so APB is British.', "Young American Recordings is American, not British, so the claim that both the Scottish punk band and Sleeper are from Britain is partly incorrect if 'both' includes the record label.", 'Young American Recordings was an American record label based in New York City that worked with the Scottish punk band APB.', 'There is no evidence confirming that APB worked with Young American Recordings for three years.', 'APB is a Scottish punk band, and Scotland is part of Britain, making APB a British band.', 'Sleeper is a British band fronted by English singer Louise Wener.', 'Young American Recordings is American, so it is incorrect to classify it as a British entity.']
+
+### context
+['Young American Recordings | Young American Recordings was an American record label based in New York City.  Founded by Rocco Giordano of Kinetic Records and Josh Swade of Maverick Records, it was an independent label that included groups such as British rock band South and worked with other popular groups such as Scottish punk band APB.', 'Still Snotty: Young, Loud and Snotty at 40 | Still Snotty: Young, Loud and Snotty at 40 is an album by the American punk band Dead Boys.  It marks the band\'s third studio album and is a re-recording of the band\'s 1977 debut album "Young, Loud and Snotty".  It is the first album of newly recorded music by the band in 39 years.', 'Seven Sleepers (EP) | Seven Sleepers is a Japan-only EP by the British rock band Feeder.  It was the first ever release by the band after their label, Echo, was downstreamed into a copyrights exploitation company and as a result announced that they would not be releasing any new records or signing any new artists.  This meant that Feeder were without a UK record label, and that, for the duration of being unsigned in the UK, they could not release any material in their home country.', 'The Armored March | The Armored March is the first EP by Christian metal band Oh, Sleeper.  It was released in 2006 through 1x1 Music.  The year following its release, Oh, Sleeper signed to Solid State Records and all of the tracks included on the EP were re-recorded for their debut album "When I Am God", which was released in 2007.', 'Oh, Sleeper | Oh, Sleeper is an American Christian metalcore band from Fort Worth, Texas that forged themselves in 2006 with ex-members of Between The Buried and Me, As Cities Burn, and Terminal.  In over a decade\'s span, Oh, Sleeper released three full-length albums and two EPs through Solid State Records, and toured worldwide as an opening act.  After independently releasing "The Titan EP" and travelling in the full Van\'s Warped Tour 2013, the band went on hiatus to allow clean vocalist and lead guitarist Shane Blay to join former-As I Lay Dying members in starting California-based metal band Wovenwar.  The band plans to release their fourth full-length album release, "Bloodied//Unbowed" in 2017.', 'Sleep for Sleepers | Sleep for Sleepers are an American Christian alternative rock band, and they primarily play alternative rock and indie rock.  They come from Los Angeles, California.  The band started making music in 2004, and currently their members are vocalist and guitarist, Jamey Price, and, Chad Jordan, with former embers being, guitarist, Christopher Scott Kellogg, bassist, James Michael Price, and drummer, Jeffrey Thomas Darcy.  The band released one extended play, as The Red Coterie, "Vast", in 2007 independently by themselves.  When they signed to Dreamt Records, they changed their name to Sleep for Sleepers.  Their next release, an studio album, "The Clearing", was released with Dreamt, in 2009.  They released, another extended play, "Conditions", in 2011, with Dreamt Records.  The subsequent album, also released by Dreamt Records, "Discovery", came out in 2014.', 'Phaser (band) | Phaser was a Washington, D.C. band that wrote, performed and recorded from 1998 to 2005.  They released four records including "Silverscreen Daydream" (1998), "Skydive" (2000), "Sway" (2001) and "Sleeper" (2005).  Their record "Sway" was re-released in 2003 on Emperor Norton Records.  Their last EP, "Sleeper" was released in 2005.  Former Phaser singer, bassist, and keyboardist Boris Skalsky founded his own band Dead Heart Bloom in 2005.  Dead Heart Bloom has since released three records and a series of EPs.  Boris Skalsky has also released a solo record, "First Songs".  Phaser guitarist Paul Wood joined Dead Heart Bloom in 2007.  Phaser keyboardist and singer Mike Reina has started a band with Jimmy Chamberlin of The Smashing Pumpkins named Skysaw.  Paul Wood and Boris Skalsky are also members of Skysaw.  Siayko Skalsky guitar, keyboard and vocalist went on to create a new band Gun, which consisted of members of Canyon and Tone.  He also worked on TV music projects with Greg Clark of Harmonia Studios and the band Pull, which was the original title track for Duck Commander.', 'Louise Wener | Louise Jane Wener (born 30 July 1966, Gants Hill, London) is an English writer, songwriter, singer and guitarist of the band Sleeper.  Sleeper recorded three full-length albums: "Smart", "The It Girl", and "Pleased to Meet You".', 'Young Loud and Snotty | Young Loud and Snotty is the first studio album by the American punk band Dead Boys.  It was recorded and released in 1977 on Sire Records, produced by Genya Ravan.', 'G.a.s. Drummers | G.a.s. Drummers was a melodic hardcore band formed in Jerez de la Frontera, Spain at the end of 1997 by three teenagers who stood out from their other students due to their colourful hair dies and their taste in the california punk rock bands such as Bad Religion, Operation Ivy, NOFX, Lagwagon, The Descendents etc.  Original members from other small local bands Dani Llamas (guitar and vocals), Pakomoto (Bass and vocals) and Rafa Camison (Drums) started playing together and composing their own music and after one year of sending demos around the country they got put as the opening act for Swedish Punk Rock band Randy on their Spanish tour.  A tour that took the band through the whole country helping a lot of Spanish kids discover that there were actually Spanish bands capable of sounding as good as some of their favorite American bands.  This lead immediately the band to sign to a young record label called Slide Chorus Records a young emerging record label from Madrid which would start releasing albums for other Spanish Punk Rock bands.  This first release titled Proud To Be Nothing hit the streets at the end of 1999 and was presented on their first European tour which covered Spain, Great Britain, France and the Netherlands amongst Spanish punk rock legend[P.P.M.']
+
+## Generated Outputs
+### reasoning
+The claim has two main assertions: (1) The Scottish punk band worked 3 years with Young American Recordings and (2) Sleeper is British.
+
+From the context:
+- Young American Recordings is an American record label based in New York City, which worked with a Scottish punk band named APB.
+- The duration of the collaboration between APB (the Scottish punk band) and Young American Recordings is not specified, so the "3 years" part cannot be confirmed.
+- Sleeper is a band associated with Louise Wener, who is English (British). Sleeper recorded three full-length albums, indicating it is indeed a British band.
+
+There is no information in notes or context about the duration of the Scottish punk band’s work with Young American Recordings specifically being 3 years. But we can confirm Sleeper is British.
+
+Therefore:
+- The claim that Sleeper is British is supported.
+- The Scottish punk band worked with Young American Recordings is supported, but the exact duration of 3 years lacks evidence.
+- Both bands being British is partially incorrect because Young American Recordings is an American label, and the Scottish punk band APB is Scottish (which is part of Britain) but the country of origin for Young American Recordings is American. The label is not British. Sleeper is British.
+
+Hence the phrase "both from Britain" referring to Young American Recordings and Sleeper is false because Young American Recordings is an American label.
+
+### new_notes
+['Young American Recordings was an American record label based in New York City that worked with the Scottish punk band APB.', 'No information is available to confirm that the Scottish punk band APB worked for 3 years with Young American Recordings.', 'Sleeper is a British band fronted by Louise Wener, an English songwriter and singer.', 'Young American Recordings is American, not British, so the claim that both the Scottish punk band and Sleeper are from Britain is incorrect.']
+
+### titles
+['Young American Recordings and Scottish Punk Band APB', 'Sleeper Band and British Origin', 'Duration of Collaboration Unknown', 'Nationality of Young American Recordings']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['APB (band)', 'Young American Recordings']. Documents remaining to be retrieved: ['Sleeper (band)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The sport of tennis is played by both Texas native Angelique Kerber and the player who was the defending champion, who competed, for the 2005 China Open – Men's Doubles.
+
+### notes
+['Angelique Kerber is a professional tennis player who competed in tournaments as of 2016 but there is no information provided to confirm she is a Texas native.', "There is no available information about the defending champion's participation in the 2005 China Open Men's Doubles in the provided context or notes.", "The context mainly covers the US Open tennis championships and general tennis tournament structures without addressing the China Open or players' origins.", 'Angelique Kerber is a German professional tennis player, not a Texas native.', 'There is no information confirming that Angelique Kerber is from Texas.', 'Angelique Kerber has competed in numerous tennis tournaments, including defending titles in 2016.', "There is no available information about the defending champion's participation or identity in the 2005 China Open Men's Doubles event.", "The claim that the defending champion competed in the 2005 China Open Men's Doubles cannot be verified from the provided information.", 'Angelique Kerber is a German professional tennis player with major titles and former world No. 1 status.', 'There is no evidence that Angelique Kerber is a Texas native; all sources identify her nationality as German.', "No information is available to identify or confirm the defending champion or their participation in the 2005 China Open Men's Doubles."]
+
+### context
+["2005 US Open – Boys' Singles | The United States Open Tennis Championships is a hardcourt tennis tournament held annually at Flushing Meadows, starting on the last Monday in August and lasting for two weeks.  The tournament consists of five main championship events: men's and women's singles, men's and women's doubles, and mixed doubles, with additional tournaments for seniors, juniors, and wheelchair players.", '2016 Angelique Kerber tennis season | The 2016 Angelique Kerber tennis season officially began on 5 January with the start of the 2016 Brisbane International.  Kerber entered the season as the number 10 ranked player and the defending champion at four tournaments.', "Champions Series (senior men's tennis tour) | Since 2006, the Champions Series is a series of tennis tournaments designed for former champion members of the ATP Tour.  The Champions Series consists of tournaments played in select markets where top players of the sport compete in one-night, four-player events with two one-set semifinal matches and a one-set championship match played in one evening.", "2006 US Open – Wheelchair Men's Doubles | The United States Open Tennis Championships is a hardcourt tennis tournament held annually at Flushing Meadows, starting on the last Monday in August and lasting for two weeks.  The tournament consists of five main championship events: men's and women's singles, men's and women's doubles, and mixed doubles, with additional tournaments for seniors, juniors, and wheelchair players.", "2007 US Open – Wheelchair Men's Doubles | The United States Open Tennis Championships is a hardcourt tennis tournament held annually at Flushing Meadows, starting on the last Monday in August and lasting for two weeks.  The tournament consists of five main championship events: men's and women's singles, men's and women's doubles, and mixed doubles, with additional tournaments for seniors, juniors, and wheelchair players.", "2006 US Open – Mixed Doubles | The United States Open Tennis Championships is a hardcourt tennis tournament held annually at Flushing Meadows, starting on the last Monday in August and lasting for two weeks.  The tournament consists of five main championship events: men's and women's singles, men's and women's doubles, and mixed doubles, with additional tournaments for seniors, juniors, and wheelchair players.", "2009 US Open – Mixed Doubles | The United States Open Tennis Championships is a hardcourt tennis tournament held annually at Flushing Meadows, starting on the last Monday in August and lasting for two weeks.  The tournament consists of five main championship events: men's and women's singles, men's and women's doubles, and mixed doubles, with additional tournaments for seniors, juniors, and wheelchair players.", "2006 US Open – Wheelchair Women's Doubles | The United States Open Tennis Championships is a hardcourt tennis tournament held annually at Flushing Meadows, starting on the last Monday in August and lasting for two weeks.  The tournament consists of five main championship events: men's and women's singles, men's and women's doubles, and mixed doubles, with additional tournaments for seniors, juniors, and wheelchair players.", "2007 US Open – Wheelchair Women's Doubles | The United States Open Tennis Championships is a hardcourt tennis tournament held annually at Flushing Meadows, starting on the last Monday in August and lasting for two weeks.  The tournament consists of five main championship events: men's and women's singles, men's and women's doubles, and mixed doubles, with additional tournaments for seniors, juniors, and wheelchair players.", "2009 US Open – Wheelchair Women's Doubles | The United States Open Tennis Championships is a hardcourt tennis tournament held annually at Flushing Meadows, starting on the last Monday in August and lasting for two weeks.  The tournament consists of five main championship events: men's and women's singles, men's and women's doubles, and mixed doubles, with additional tournaments for seniors, juniors, and wheelchair players."]
+
+## Generated Outputs
+### reasoning
+The claim involves two assertions: First, that Angelique Kerber is a Texas native playing tennis. Second, that the defending champion competed in the 2005 China Open Men's Doubles. The context mentions Angelique Kerber's tennis season and that she is a tennis player, but it does not specify that she is Texas native. In fact, the context provides no information about her place of birth or origin. Also, there is no information in the context or notes about the 2005 China Open Men's Doubles or its defending champion. The references provided focus mostly on the US Open events, mostly across different years, but none include information about the China Open or its champions. Therefore, there is insufficient information to verify either part of the claim fully.
+
+### new_notes
+['Angelique Kerber is a professional tennis player who competed in tournaments as of 2016 but there is no information provided to confirm she is a Texas native.', "There is no available information about the defending champion's participation in the 2005 China Open Men's Doubles in the provided context or notes.", "The context mainly covers the US Open tennis championships and general tennis tournament structures without addressing the China Open or players' origins."]
+
+### titles
+["Angelique Kerber's Tennis Career", "2005 China Open Men's Doubles", 'Tennis Tournament Information']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Angelique Kerber']. Documents remaining to be retrieved: ["2005 China Open – Men's Doubles", 'Justin Gimelstob'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

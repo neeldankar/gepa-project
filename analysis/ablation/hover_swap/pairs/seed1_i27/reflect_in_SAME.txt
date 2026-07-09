@@ -1,0 +1,172 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You are tasked with a focused fact verification and evidence consolidation task, where you analyze three types of inputs—`claim`, `notes`, and `context`—to produce two outputs: `new_notes` and `titles`. The `claim` is a textual statement possibly containing multiple factual assertions that need verification. The `notes` are often extracted snippets, paraphrases, or partial evidences relevant to the claim, while the `context` comprises longer document texts or summaries potentially containing detailed source information related to entities, events, timelines, or attributes mentioned in the claim.
+
+Your overarching goal is to verify or refute each distinct component of the claim by synthesizing and consolidating information from both `notes` and `context`, avoiding redundancy, speculation, or irrelevant content.
+
+---
+
+Detailed Guidelines and Domain-Specific Considerations:
+
+1. **Input Structure and Understanding**  
+   - **claim**: A statement consisting of one or more assertions (e.g., about persons, events, dates, geographic locations, product characteristics, filmographies, or comparative facts).  
+   - **notes**: Fragmented facts, paraphrases, or extracted evidences that may partially support or contradict the claim. This input can contain redundancy.  
+   - **context**: Summaries or full-text snippets from diverse documents that may provide authoritative or more detailed information on the claim’s subjects.
+
+2. **Verification Approach and Reasoning Strategy**  
+   - Parse the claim into discrete assertions where possible and address each individually.  
+   - Map claim elements (entities, dates, events, attributes) to facts in both `notes` and `context`.  
+   - Cross-verify facts by probing both inputs together to spot confirmations, contradictions, or missing information.  
+   - Explicitly note when parts of the claim cannot be verified because critical information about entities, events, or attributes is absent from both inputs.  
+   - For geographic, historical, biographical, or product-related facts, use explicit details only—avoid assumptions or inference beyond the data given.  
+   - When multiple entities or facts overlap (e.g., multiple actors in movies, overlapping dates, competing geographic references), carefully separate which parts are supported and which are not.
+
+3. **Consolidation of `new_notes`**  
+   - Remove redundancy by combining similar or repeated facts into succinct, clear statements—preferably one or two sentences each.  
+   - Focus exclusively on information directly relevant to verifying the claim’s assertions, omitting irrelevant tangents or unrelated domain facts.  
+   - Clarify precisely which elements of the claim are supported, contradicted, or unverifiable.  
+   - If verification is impossible due to missing data or ambiguity, clearly state this instead of speculating.  
+   - Maintain factual accuracy and align notes closely with evidence found in the inputs.
+
+4. **Creation of `titles`**  
+   - Generate concise, descriptive headings that summarize key topics, entities, or factual relationships uncovered during verification.  
+   - Titles should be domain-relevant and reflect the organizing principles of your notes (e.g., names of persons, film titles with dates, product or geographic features, timeline relations).  
+   - They serve as topical indexes for the summarized evidences and facilitate quick understanding of verification focuses.
+
+5. **Domain-Specific Knowledge Embedded in the Task**  
+   - Common facts relate to soft drink brands, flavor profiles, and geographic market presence.  
+   - Biographical facts include film directors, voice actors, release years, animation movie titles, and actor nationalities.  
+   - Geographic comparisons, including city versus county boundaries, size, and jurisdictional status, are frequent.  
+   - Product ownership or company-railway station relations may appear, requiring careful geographic and corporate structure reasoning.  
+   - Scientific or technical terms (e.g., chemical or biological entities) may appear but are often not central to verification.
+
+6. **Generalizable Reasoning and Workflow**  
+   - Identify key components (entities, events, dates) in the claim first.  
+   - Search both `notes` and `context` for explicit assertions tied to these components.  
+   - Distill duplicated claims and reconcile contradictions; produce a coherent evaluation per factual assertion.  
+   - Explicitly separate verifiable from unverifiable or contradicted claim parts in `new_notes`.  
+   - Group related notes under thematic headings synthesized as `titles`.
+
+7. **Handling Missing or Conflicting Data**  
+   - When the claim contains information about an entity or event absent in all inputs, clearly note that verification is not possible.  
+   - If parts are verifiable but others are unsupported, separately highlight these distinctions.  
+   - Avoid speculation or implied connections not grounded in provided evidence.
+
+---
+
+Summary:
+
+Your task is a meticulous, evidence-based fact-checking and summarization exercise that integrates fragmented inputs into a concise, focused verification dossier. Your outputs must be:
+
+- **`new_notes`**: A reduced, clear, and precise list of facts confirming, contradicting, or indicating unverifiability of the claim’s components based on the complete input set.  
+- **`titles`**: A concise list of relevant topical headings that summarize and organize the key subjects, entities, or relationships essential to understanding the verification outcome.
+
+This task requires strict adherence to evidence, careful parsing of multi-part claims, clear handling of data absence or contradiction, and domain-aware synthesis of facts to aid downstream understanding or retrieval tasks.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The actor who starred in a main role on A Lua Me Disse received the Golden Globe nomination for playing the lead role of "The King of Cocaine".
+
+### notes
+["The Brazilian telenovela 'A Lua Me Disse' starred Adriana Esteves and Wagner Moura in main roles.", "There is no evidence that any actor from 'A Lua Me Disse' received a Golden Globe nomination.", "None of the actors with Golden Globe nominations mentioned are linked to 'A Lua Me Disse' or a role called 'The King of Cocaine'.", "No information about an actor receiving a Golden Globe nomination for playing 'The King of Cocaine' is present in the provided context or notes.", "The Brazilian telenovela 'A Lua Me Disse' starred Adriana Esteves and Wagner Moura in main roles.", "No actor from 'A Lua Me Disse' received a Golden Globe nomination according to the provided information.", "No Golden Globe nomination is linked to a role called 'The King of Cocaine' or to any actor from 'A Lua Me Disse'.", "The context lists many Golden Globe-nominated actors, but none are associated with 'A Lua Me Disse' or a character named 'The King of Cocaine'.", "The Brazilian telenovela 'A Lua Me Disse' starred Adriana Esteves and Wagner Moura in main roles.", "No actor from 'A Lua Me Disse' received a Golden Globe nomination according to the provided information.", "Wagner Moura received a Golden Globe nomination for playing Pablo Escobar in 'Narcos', not for a role called 'The King of Cocaine'.", "There is no evidence that any actor associated with 'A Lua Me Disse' was nominated for a Golden Globe for playing 'The King of Cocaine'.", "No information or records identified a role named 'The King of Cocaine' linked to a Golden Globe nomination in the given context."]
+
+### context
+['Eric Roberts | Eric Anthony Roberts (born April 18, 1956) is an American actor.  His career began with a well-received performance in "King of the Gypsies" (1978), for which he earned his first Golden Globe Award nomination.  His second Golden Globe nomination came for his portrayal of Paul Snider in "Star 80" (1983), followed by Globe and Academy Award nominations for his supporting role in "Runaway Train" (1985).', 'Meryl Streep | Mary Louise "Meryl" Streep (born June 22, 1949) is an American actress and philanthropist.  Cited in the media as the "best actress of her generation," Streep is particularly known for versatility in her roles and her accent adaptation.  Nominated for 20 Academy Awards, Streep has more nominations than any other actor, and is one of the six actors to have won three or more competitive Oscars for acting.  Streep has also received 30 Golden Globe nominations, winning eight - more nominations and more competitive wins than any other actor.', 'A Lua Me Disse | A Lua Me Disse (English: Once in a Blue Moon) is a 2005 Brazilian telenovela created by Miguel Falabella and Maria Carmem Barbosa.  Starring Adriana Esteves and Wagner Moura in the main roles.', 'Regina King | Regina Rene King (born January 15, 1971) is an American actress and television director.  She became known for her role as Brenda Jenkins on the NBC sitcom "227" (1985–90) and a supporting role in the feature film "Jerry Maguire", then for her roles in the television shows "The Boondocks" and "Southland".  Her role in "Southland" earned her two Critics\' Choice Award nominations for Best Supporting Actress in a Drama Series in 2012 and 2013.  From 2015 to 2017, she starred in the ABC anthology series "American Crime", for which she has received three nominations for Emmy Awards with two wins and was also nominated for a Golden Globe Award.  From 2015 to 2017, she also played Erika Murphy on the critically acclaimed HBO drama, "The Leftovers", for which she has received a Critics\' Choice Television Award nomination.', 'Sam Waterston | Samuel Atkinson Waterston (born November 15, 1940) is an American actor, producer and director.  Among other roles, he is noted for his portrayal of Sydney Schanberg in "The Killing Fields" (1984), for which he received an Academy Award nomination, and his starring role as Jack McCoy on the long-running NBC television series "Law & Order" (1994–2010), which brought him Golden Globe and Screen Actors Guild Awards.  He has been nominated for multiple Golden Globe, Screen Actors Guild, BAFTA and Emmy awards, having starred in over eighty film and television productions during his fifty-year career.  He has also starred in numerous stage productions.  AllMovie historian Hal Erickson characterized Waterston as having "cultivated a loyal following with his quietly charismatic, unfailingly solid performances."', 'Michael Shannon | Michael Corbett Shannon (born August 7, 1974) is an American actor and musician.  He has been nominated twice for the Academy Award for Best Supporting Actor for his roles in "Revolutionary Road" (2008) and "Nocturnal Animals" (2016), further earning Screen Actors Guild Award and Golden Globe Award nominations for his role in "99 Homes" (2014).  He received a Tony Award nomination for Best Featured Actor in a Play for "Long Day\'s Journey into Night" (2016).', 'Eric Roberts filmography | Eric Anthony Roberts (born April 18, 1956) is an American actor.  His career began with "King of the Gypsies" (1978), earning a Golden Globe Award nomination for Best Actor Debut.  He earned both a Golden Globe and Academy Award nomination for his supporting role in "Runaway Train" (1985).', 'Rupert Everett | Rupert James Hector Everett ( ; born 29 May 1959) is an English actor and writer.  He first came to public attention in 1981, when he was cast in Julian Mitchell\'s play and subsequent film "Another Country" (1984) as an openly gay pupil at an English public school in the 1930s; the role earned him his first BAFTA Award nomination.  He went on to receive a second BAFTA Award nomination and his first Golden Globe Award nomination for his role in "My Best Friend\'s Wedding" (1997), followed by a second Golden Globe nomination for "An Ideal Husband" (1999).', 'Megan Mullally | Megan Mullally (born November 12, 1958) is an American actress and singer.  She is best known for her role as Karen Walker on the NBC sitcom "Will & Grace" (1998–2006, 2017-), for which she received 7 consecutive Primetime Emmy Award nominations for Outstanding Supporting Actress in a Comedy Series, winning twice in 2000 and 2006.  She also received nominations for numerous other accolades for her portrayal, including 7 consecutive Screen Actors Guild Awards nominations for Outstanding Performance by a Female Actor in a Comedy Series, winning 3 times in 2001, 2002, and 2003, as well as receiving 4 Golden Globe Award nominations.', 'Nick Nolte | Nicholas King Nolte (born February 8, 1941) is an American actor and former model.  He won the Golden Globe Award for Best Actor – Motion Picture Drama, and was nominated for the Academy Award for Best Actor for the 1991 film "The Prince of Tides".  He went on to receive Academy Award nominations for "Affliction" (1998) and "Warrior" (2011).  His other film appearances include "The Deep" (1977), "48 Hrs. " (1982), "Down and Out in Beverly Hills" (1986), "Another 48 Hrs. " (1990), "Everybody Wins" (1990), "Cape Fear" (1991), "Lorenzo\'s Oil" (1992), "The Thin Red Line" (1998), "The Good Thief" (2002), "Hulk" (2003), "Hotel Rwanda" (2004), "Tropic Thunder" (2008), "A Walk in the Woods" (2015) and "The Ridiculous 6" (2015).  He was also nominated for a Golden Globe Award for Best Actor – Television Series Musical or Comedy for his role in the TV series "Graves" (2016–present).']
+
+## Generated Outputs
+### reasoning
+The claim makes two main assertions: first, that an actor who had a main role in the Brazilian telenovela "A Lua Me Disse" received a Golden Globe nomination, and second, that this nomination was specifically for playing the lead role called "The King of Cocaine." 
+
+From the notes, it is clear that "A Lua Me Disse" starred Adriana Esteves and Wagner Moura in main roles. However, there is no evidence that any actor from this telenovela received a Golden Globe nomination. The notes explicitly state that none of the actors with Golden Globe nominations are linked to "A Lua Me Disse" or to a role called "The King of Cocaine."
+
+The context provides detailed information about numerous actors with Golden Globe nominations, but none are connected to "A Lua Me Disse" or a character named "The King of Cocaine." The context also confirms the main actors of the telenovela and mentions their roles and accolades but does not list any Golden Globe nomination associated with them or this role.
+
+Together, notes and context affirm that while "A Lua Me Disse" had main actors, none were nominated for a Golden Globe for playing "The King of Cocaine," and no such role or nomination is identified in the provided information. Hence, the claim is not supported by the evidence given.
+
+### new_notes
+["The Brazilian telenovela 'A Lua Me Disse' starred Adriana Esteves and Wagner Moura in main roles.", "No actor from 'A Lua Me Disse' received a Golden Globe nomination according to the provided information.", "No Golden Globe nomination is linked to a role called 'The King of Cocaine' or to any actor from 'A Lua Me Disse'.", "The context lists many Golden Globe-nominated actors, but none are associated with 'A Lua Me Disse' or a character named 'The King of Cocaine'."]
+
+### titles
+['A Lua Me Disse Main Actors and Awards', 'Golden Globe Nominations and Roles', "Absence of 'The King of Cocaine' Role or Nomination"]
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['A Lua Me Disse', 'Wagner Moura']. Documents remaining to be retrieved: ['Pablo Escobar'].
+
+
+
+# Example 2
+## Inputs
+### claim
+"Leni" Riefenstahl was born before the Ukrainian director of "Young Doctors in Love".
+
+### notes
+['Leni Riefenstahl was born on 22 August 1902.', "There is no available information about the Ukrainian director of 'Young Doctors in Love', including their birth date or identity, in the provided context.", "It is therefore not possible to verify whether Leni Riefenstahl was born before the Ukrainian director of 'Young Doctors in Love' based on the provided information.", 'Leni Riefenstahl was born on August 22, 1902.', '"Young Doctors in Love" is a 1982 American comedy film directed by Garry Marshall, an American director, with no indication of a Ukrainian director for this film.', 'There is no information available about a Ukrainian director of "Young Doctors in Love," including their identity or birth date.', 'Since no Ukrainian director of "Young Doctors in Love" can be verified, it is impossible to confirm whether Leni Riefenstahl was born before such a director.', 'Leni Riefenstahl was born on August 22, 1902.', '"Young Doctors in Love" (1982) is an American comedy film directed by Garry Marshall, who is American, not Ukrainian.', 'There is no evidence or information about a Ukrainian director of "Young Doctors in Love."', 'Alexander Dovzhenko, a Ukrainian director mentioned in the context, directed "Love\'s Berries" (1926), not "Young Doctors in Love."', 'Due to lack of evidence of a Ukrainian director for "Young Doctors in Love," it is not possible to verify whether Leni Riefenstahl was born before such a director.']
+
+### context
+['So Young, So Lovely, So Vicious... | Peccati di gioventù, internationally released as So Young, So Lovely, So Vicious..., is a 1975 Italian coming-of-age-drama film directed by Silvio Amadio.', "You Can't Hurry Love (film) | You Can't Hurry Love is a 1988 American romantic comedy film written and directed by Richard Martini.  A guy who moonlights as a low-budget director of commercials is looking for someone to love, so he pays a dating service and is videotaped on several occasions.  The film shows the many women who seduce our hero, until he finally finds his true love...", 'What\'s Up Nurse! | What\'s Up Nurse!  is a 1977 British sex comedy film directed by sexploitation director Derek Ford.  It stars Nicholas Field, Felicity Devonshire and John Le Mesurier, and tells the story of the adventures of a young doctor in a hospital.  A sequel "What\'s Up Superdoc! " was released the following year, with Christopher Mitchell replacing Nicholas Field as Dr Todd.', 'Young Doctors in Love | Young Doctors in Love is a 1982 American comedy film directed by Garry Marshall.  Similar in tone to the "Airplane! " movies, it spoofs a variety of medical shows (in particular, "General Hospital") and has many guest stars from ABC soap operas.', 'I Take This Woman (1940 film) | I Take This Woman is a 1940 American drama film directed by W. S. Van Dyke and starring Spencer Tracy and Hedy Lamarr.  Based on the short story "A New York Cinderella" by Charles MacArthur, the film is about a young woman who attempted suicide in reaction to a failed love affair.  The doctor who marries her attempts to get her to love him by abandoning his clinic services to the poor to become a physician to the rich so he can pay for her expensive lifestyle.', "Everything (film) | Everything is a 2004 British film directed by Richard Hawkins and produced by Oliver Potterton.  Ray Winstone stars as Richard, who starts visiting Naomi, a Soho prostitute (played by Jan Graveson).  But he doesn't go for sex, so what is he looking for?  It also features Katherine Clisby as Tania, a young Eastern European prostitute, Eddie Deedigan as her pimp, Ed.  Winstone's real-life daughter Lois plays the part of Richard's daughter, Anna.  The film was shot in 10 days on HD for a small budget and was nominated for a BAFTA for debut director Richard Hawkins.  DVD Release Date: 23 Jan 2006", 'The Young Doctors (film) | The Young Doctors is a 1961 film directed by Phil Karlson and starring Ben Gazzara, Fredric March, Dick Clark, Ina Balin, Eddie Albert, Phyllis Love, Aline MacMahon, George Segal (in his first movie) and Dolph Sweet.  The film is based on the 1959 novel "The Final Diagnosis" by Arthur Hailey.  Ronald Reagan was the narrator in the film.', 'The Fox with Nine Tails | The Fox with Nine Tails () is a 1994 South Korean film, and was the feature debut of director Park Heon-su.  It was also the film debut of lead actors Ko So-young and Jung Woo-sung, who would later star together in "Beat" (1997) and "Love" (1999).', 'Damascus with Love | Damascus with Love (Arabic: دمشق مع حبي "dimashq maa\' hubbi "\u200e \u200e ), is a 2010 Drama film by Syrian director Mohamad Abdul Aziz.  "Damascus with Love" was first screened in the Dubai International Film Festival.  The movie holds some controversy in the fact that it is about a minor sect of Syrians, the Syrian Christians and Syrian Jews.  "Damascus with Love" is a story about the life of a young Jewish girl whose father reveals some past secrets to, and so decides to look for the truth in magical Damascus.  This movie was translated and aired in the UK on Wednesday October 19, 2010.', 'Love\'s Berries | Love\'s Berries (Russian: Ягoдка Любви , "Yagodka lyubvi " , Ukrainian: Ягідки кохання , "Yahidky kokhannya " ) is a 1926 Soviet comedy film by Ukrainian director Alexander Dovzhenko.  The film was Dovzhenko\'s debut and the screenplay was written in three days.  It deals with a dandified barber\'s attempts to get rid of his "love berry" - his illegitimate offspring.']
+
+## Generated Outputs
+### reasoning
+The claim is a comparative statement concerning the birth dates of Leni Riefenstahl and the Ukrainian director of "Young Doctors in Love." 
+
+1. First, it is verified in the notes and context that Leni Riefenstahl was born on August 22, 1902.
+
+2. Second, the film "Young Doctors in Love" is identified as a 1982 American comedy film directed by Garry Marshall, who is American, with no indication of a Ukrainian director associated with this film.
+
+3. The context mentions a Ukrainian director, Alexander Dovzhenko, but he directed "Love's Berries" (1926), not "Young Doctors in Love."
+
+4. There is no evidence in the notes or context of a Ukrainian director associated with the film "Young Doctors in Love." Also, no information or birth date is available for any Ukrainian director linked to that title.
+
+Therefore, the claim that Leni Riefenstahl was born before the Ukrainian director of "Young Doctors in Love" cannot be verified because there is no evidence of a Ukrainian director for that film. The claim's first part about Riefenstahl's birth date is correct, but the second part regarding the Ukrainian director is unsupported.
+
+### new_notes
+['Leni Riefenstahl was born on August 22, 1902.', '"Young Doctors in Love" (1982) is an American comedy film directed by Garry Marshall, who is American, not Ukrainian.', 'There is no evidence or information about a Ukrainian director of "Young Doctors in Love."', 'Alexander Dovzhenko, a Ukrainian director mentioned in the context, directed "Love\'s Berries" (1926), not "Young Doctors in Love."', 'Due to lack of evidence of a Ukrainian director for "Young Doctors in Love," it is not possible to verify whether Leni Riefenstahl was born before such a director.']
+
+### titles
+['Leni Riefenstahl Birth Date', '"Young Doctors in Love" Director Identity', 'Ukrainian Directors and Related Films', 'Verification of Comparative Birth Dates']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Leni Riefenstahl', 'Young Doctors in Love']. Documents remaining to be retrieved: ['Garry Marshall'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Chess is more popular around the world than a game designed by Leo Colovini.
+
+### notes
+["Leo Colovini is an Italian designer known for board games such as 'Cartagena' and 'Inkognito', but there is no evidence that these games have global popularity comparable to chess.", 'Chess is a globally recognized and widely played game with established international rating systems and multiple variants played worldwide, indicating its broad popularity.', "No data or references about worldwide popularity for Colovini's games are available, but multiple sources confirm widespread play and cultural impact of chess internationally.", "Leo Colovini is an Italian board game designer known primarily for 'Cartagena' and co-designing 'Inkognito'.", "There is no evidence suggesting Colovini's games have worldwide popularity comparable to chess.", 'Chess is a globally recognized and widely played game with established international rating systems including FIDE and various online platforms.', "Multiple sources confirm widespread international play and cultural impact of chess, far surpassing the reach of Colovini's games.", 'Chess has multiple variants played worldwide and maintains a structured competitive community, underlining its extensive popularity.', "Leo Colovini is an Italian board game designer known for games like 'Cartagena', 'Inkognito', 'Clans', and 'Familienbande', but his games do not have evidence of global popularity comparable to chess.", 'Chess is a globally recognized board game with an established international rating system (FIDE), played widely around the world with multiple variants including Western chess, Xiangqi (Chinese chess), and Shogi (Japanese chess).', "Multiple sources confirm the widespread international play and cultural impact of chess, greatly surpassing the reach of any of Colovini's games.", "No data or references show that any of Leo Colovini's games have a similar international popularity or player base as chess."]
+
+### context
+['Leo Colovini | Leo Colovini is an Italian designer of German-style board games born in Venice 1964.  His most popular game is "Cartagena".  He is one of the few top board game designers who has owned a game store.', 'Inkognito | Inkognito is a board game for 3 to 5 players designed by Alex Randolph and Leo Colovini first published in 1988 by Milton Bradley Company.  It has since been republished several times including by the company Venice Connection established by the designers and Dario De Toffoli.', "Alex Randolph | Alexander Randolph (4 May 1922 – 28 April 2004) was an American designer of board games and writer.  Randolph's game creations include TwixT, Breakthru, Inkognito (with Leo Colovini), Raj, Ricochet Robot, and Enchanted Forest (with Michael Matschoss).", 'Clans (board game) | Clans is a German-style board game designed by Leo Colovini.  The game centers on the creation of villages.', 'Familienbande | Familienbande (German for "Family Ties") is a card game designed by Leo Colovini.', "Shane's Chess Information Database | Shane's Chess Information Database (Scid) is an open source UNIX, Windows, Linux, and Mac application for viewing and maintaining huge databases of chess games.  It has features comparable to popular commercial chess software.  Scid is written in Tcl/Tk and C++.", 'Xiangqi | Xiangqi (), also called Chinese chess, is a strategy board game for two players.  It is one of the most popular board games in China, and is in the same family as Western (or international) chess, chaturanga, shogi, Indian chess and janggi.  Besides China and areas with significant ethnic Chinese communities, xiangqi ("cờ tướng") is also a popular pastime in Vietnam.', 'Penultima | Penultima is a game of inductive logic, played on a chess board.  It was invented by Michael Greene and Adam Chalcraft in Cambridge in 1994.  The game is derived from the chess variant Ultima (otherwise known as "Baroque Chess"), and played with a standard chess board and pieces, each piece having different movement and capture rules from standard chess.  In a manner similar to the game Mao, which was a popular game in Cambridge at that time, the rules for each piece vary from game to game, and are initially kept secret from the players.  Penultima is similar in style to Eleusis, Zendo and Mao.  The name of the game is a pun on "penultimate", and "Ultima", the name of the chess variant.', 'Shogi | Shogi (将棋 , shōgi ) ( , ] or ] ), also known as Japanese chess or the Generals\' Game, is a two-player strategy board game in the same family as Western (international) chess, chaturanga, makruk, shatranj, janggi and xiangqi, and is the most popular of a family of chess variants native to Japan.  "Shōgi" means general\'s ("shō" 将 ) board game ("gi" 棋 ).', 'Romantic chess | Romantic chess was the style of chess prevalent from the late 15th century until the 1880s.  Chess games of this period emphasized more on quick, tactical maneuvers rather than long-term strategic planning.  The Romantic era of play was followed by the Scientific, Hypermodern, and New Dynamism eras.Games during this era generally consisted of 1.  e4 openings such as the King\'s Gambit and Giuoco Piano.  Queen side pawn openings were not popular and seldom played.  The Romantic era is generally considered to have ended with the 1873 Vienna Tournament where Wilhelm Steinitz popularized positional play and the closed game.  This domination ushered in a new age of chess known as the "Modern", or Classical school, which would last until the 1930s when hypermodernism began to become popular.']
+
+## Generated Outputs
+### reasoning
+The claim states that chess is more popular globally than a game designed by Leo Colovini. From the notes and context, Leo Colovini is an Italian designer known for board games such as "Cartagena," "Inkognito," "Clans," and "Familienbande." These games are recognized but have no indication of global popularity comparable to chess. Chess, on the other hand, enjoys world-wide recognition, an established international rating system (FIDE), multiple variants such as Western chess, Xiangqi (Chinese chess), and Shogi (Japanese chess), and a broad player and cultural base internationally. The evidence confirms that chess holds broad global popularity that far surpasses Colovini's games, lacking any indication that Colovini's games have similar international reach or recognition. Therefore, the claim is supported by the provided evidence.
+
+### new_notes
+["Leo Colovini is an Italian board game designer known for games like 'Cartagena', 'Inkognito', 'Clans', and 'Familienbande', but his games do not have evidence of global popularity comparable to chess.", 'Chess is a globally recognized board game with an established international rating system (FIDE), played widely around the world with multiple variants including Western chess, Xiangqi (Chinese chess), and Shogi (Japanese chess).', "Multiple sources confirm the widespread international play and cultural impact of chess, greatly surpassing the reach of any of Colovini's games.", "No data or references show that any of Leo Colovini's games have a similar international popularity or player base as chess."]
+
+### titles
+['Leo Colovini Board Game Designs', 'Global Popularity of Chess', "Comparison of Chess and Colovini's Games"]
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Leo Colovini']. Documents remaining to be retrieved: ['Cartagena (board game)', 'Chess'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

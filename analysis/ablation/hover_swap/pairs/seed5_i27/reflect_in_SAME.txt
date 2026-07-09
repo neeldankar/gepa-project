@@ -1,0 +1,161 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given a factual `claim` that may involve multiple interconnected facts or named entities (such as people, films, places, products, organizations, historical dates, or other domain-specific items). Together with the claim, you will receive a set of `notes` consisting of partial background information, known details, plus observations that highlight gaps, ambiguities, or contradictions around the claim’s elements.
+
+Your goal is to generate a focused set of one or more `queries` designed to verify or fact-check each component of the claim. These queries will be used to retrieve relevant evidence or documents (e.g., from Wikipedia or other authoritative sources) to confirm or refute the claim.
+
+Key Requirements and Domain-Specific Heuristics:
+
+1. **Entity Disambiguation:**  
+   - Explicitly identify all named entities mentioned in the claim.  
+   - Always disambiguate entities carefully using relevant descriptors, such as: clarifying a film’s release year, a person’s profession or nationality, distinguishing similarly named entities (e.g., “Solo (Norwegian soft drink)” instead of just “Solo”).  
+   - This avoids confusion and ensures queries retrieve targeted, relevant information.
+
+2. **Decompose Complex Claims into Components:**  
+   - If the claim includes multiple assertions (e.g., an actor acted in multiple movies, a director’s involvement, a formation date of a military unit), break it down into multiple specific queries, each verifying one discrete fact.  
+   - Queries should be connected logically, covering the full scope of the claim without leaving holes.
+
+3. **Target Missing, Ambiguous, or Contradictory Information from the Notes:**  
+   - Use the notes to identify what is already known, what is uncertain or missing, and contradictions that must be resolved.  
+   - Formulate queries that directly address these gaps or conflicting points to retrieve clarifying evidence.  
+   - For example, if it’s unclear whether a publication is a book or a magazine article, or exact formation years of military units, or the nationality of a named individual, queries should reflect these specifics.
+
+4. **Cover Every Fact Embedded in the Claim:**  
+   - Ensure your queries collectively verify all factual statements contained in the claim.  
+   - Avoid partial coverage that might retrieve documents relevant to only some parts of the claim.
+
+5. **Precise and Clear Query Formulation:**  
+   - Queries must be explicit, well-structured factual questions or entity-relationship prompts, suitable for document retrieval.  
+   - Avoid vague, overly broad, or open-ended questions.
+
+6. **Include Relevant Domain Context:**  
+   - When necessary, incorporate domain knowledge or contextual clues into the queries.  
+   - For example, when verifying a film claim, specify the film’s release year or director; for geographical entities, specify if a cemetery is within a park; for military units, specify their formation dates and relation to associated conflicts or films.
+
+Generalizable Strategy:
+
+- Carefully read and parse the claim to extract all named entities and discrete fact assertions.  
+- Examine the provided notes thoroughly to uncover what details are confirmed, missing, ambiguous, or contradictory in relation to the claim.  
+- For each factual element and especially for each gap or contradiction, generate a focused, specific question or search prompt to obtain clear supporting or refuting evidence.  
+- Ensure queries are comprehensive and well-targeted to verify the full claim.  
+- Format the final output strictly as one or more `query` lines, with no additional explanation or commentary.
+
+Example Query Patterns:
+
+- For a film claim:  
+  - “Who starred in [Film Name] ([Year])?”  
+  - “Who directed [Film Name] ([Year])?”  
+  - “Is [Person’s Name] an actor in [Film Name] ([Year])?”  
+
+- For a publication claim:  
+  - “What is the publication format and date of [Title] by [Author]?”  
+  - “Is [Publication Name] a periodical or a book publisher?”  
+
+- For geography or burial claims:  
+  - “Where is [Person] buried?”  
+  - “Is [Cemetery Name] located within [Park or Geographic Area]?”  
+
+- For military or historical claims:  
+  - “When was [Military Unit] formed?”  
+  - “What units are featured in [Film or Book Title]?”  
+
+By following these instructions carefully, you will produce precise queries capable of guiding the retrieval of comprehensive, relevant documents to validate or refute complex factual claims.
+
+Input Format:  
+- `claim`: A factual statement with one or more components involving named entities or facts.  
+- `notes`: A list of strings summarizing current knowledge, including unknowns or contradictions.
+
+Output Format:  
+- `query`: One or more explicit, decomposed, and disambiguated search queries targeting factual verifications for each part of the claim.
+
+Remember:  
+- Queries must be factual questions fit for document retrieval.  
+- Always cover all aspects requiring verification.  
+- Disambiguate entities using descriptive context.  
+- Use notes to identify which facts require particular attention.  
+- Structure queries to maximize retrieval precision and relevance.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Werner Gunter Jaffé Fellner was born in birthplace of Daniel Gunkel. Daniels birthplace in the German state of Hesse is the fifth-largest city in Germany.
+
+### notes
+['Daniel Gunkel was born in Frankfurt, Germany.', 'Frankfurt is located in the German state of Hesse.', 'Frankfurt is the fifth-largest city in Germany by population.', "No information found about Werner Gunter Jaffé Fellner's birthplace.", 'Werner Gunter Jaffé Fellner was born in Frankfurt, Germany, as confirmed by detailed biographical information.', 'Daniel Gunkel was born in Frankfurt, Germany.', 'Frankfurt is located in the German state of Hesse.', 'Frankfurt is the fifth-largest city in Germany by population.', 'Werner Gunter Jaffé Fellner was born in Frankfurt, Germany.', 'Daniel Gunkel was born in Frankfurt, Germany.', 'Frankfurt is located in the German state of Hesse.', 'Frankfurt is the fifth-largest city in Germany by population.']
+
+## Generated Outputs
+### reasoning
+The claim combines multiple pieces of information that need verification: the birthplace of Werner Gunter Jaffé Fellner, the birthplace of Daniel Gunkel, and whether Daniel Gunkel's birthplace is the fifth-largest city in Germany located in the German state of Hesse. It is first necessary to identify who Daniel Gunkel is (e.g., his birth city) and where Werner Gunter Jaffé Fellner was born. Then, confirm the city corresponding to Daniel Gunkel’s birthplace, verify that it is located in Hesse, Germany, and finally check if that city is indeed the fifth-largest city in Germany.
+
+### query
+1. What is the birthplace of Werner Gunter Jaffé Fellner?  
+2. What is the birthplace of Daniel Gunkel?  
+3. In which German state is Daniel Gunkel’s birthplace located?  
+4. What is the ranking by population size of Daniel Gunkel’s birthplace among cities in Germany?  
+5. Is Daniel Gunkel’s birthplace the fifth-largest city in Germany?  
+6. What are the largest cities in Germany by population and their order?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Daniel Gunkel', 'Frankfurt', 'Werner Jaffé']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+The film that the father of the star of Sultanat starred in in 1970 was Bombay Talkie.
+
+### notes
+['Karan Kapoor is the son of Shashi Kapoor and starred in Sultanat (1986).', 'Bombay Talkie is a 1970 film by Merchant Ivory Productions; cast not detailed here.', 'No information indicates Shashi Kapoor acted in the 1970 Bombay Talkie film.', 'Jennifer Kendal, wife of Shashi Kapoor, acted in the 1970 film Bombay Talkie, but there is no evidence that Shashi Kapoor did.', 'Shashi Kapoor is the father of Karan Kapoor, who starred in Sultanat (1986).', 'No sources cite Shashi Kapoor as part of the Bombay Talkie (1970) cast.', 'The 1970 film Bombay Talkie was produced by Merchant Ivory Productions with screenplay by Ruth Prawer Jhabvala and James Ivory.', 'The father of Karan Kapoor, who starred in Sultanat (1986), is Shashi Kapoor.', "The 1970 film 'Bombay Talkie' was produced by Merchant Ivory Productions, with Jennifer Kendal (Shashi Kapoor's wife) acting in it.", "There is no evidence or credible source indicating Shashi Kapoor acted in the 1970 film 'Bombay Talkie'."]
+
+## Generated Outputs
+### reasoning
+The claim involves multiple interconnected facts: identifying the star of the film "Sultanat," determining the father of that star, and verifying the 1970 film that the father starred in, which is claimed to be "Bombay Talkie." To verify this claim, we must confirm (1) who starred in "Sultanat," (2) the parental relationship of that star (specifically identifying the father), and (3) whether the father acted in "Bombay Talkie" released in 1970. Each part needs clear disambiguation, such as clarifying the year and title of films, and the familial relationship of the actor related to "Sultanat." The notes provided have no information, so there is no prior knowledge or clarification about these relationships or film involvements. Thus, the queries must cover the star actors of "Sultanat," their parents (fathers), and the filmographies of those fathers, especially focusing on the film "Bombay Talkie" from 1970.
+
+### query
+Who were the main actors starring in the film "Sultanat" (including the release year of the film)?  
+Who is the father of the star(s) of "Sultanat" (specify the particular actor if multiple stars exist)?  
+Did the father of the star(s) of "Sultanat" act in the film "Bombay Talkie" (1970)?  
+What are the main cast members of "Bombay Talkie" (1970)?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Jennifer Kendal', 'Karan Kapoor', 'Sultanat']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Manchester United Football Club is known as "the Red Devils". The goalie who led the strike force for the 1928–29 Leicester City F.C. season played for them.
+
+### notes
+["Manchester United is known as 'the Red Devils.'", 'The 1928–29 Leicester City strike force included Ernie Hine, Arthur Chandler, and Arthur Lochhead, none of whom were goalkeepers.', 'There is no evidence or context indicating the Leicester City goalkeeper from 1928–29 later played for Manchester United.', "Goalkeepers do not lead strike forces; the term 'strike force' refers to attacking players.", "The nickname 'the Red Devils' is a well-known moniker for Manchester United.", 'The 1928–29 Leicester City strike force was made up of Ernie Hine, Arthur Chandler, and Arthur Lochhead, none of whom were goalkeepers.', 'Goalkeepers do not lead strike forces, which consist of attacking players.', 'There is no evidence that the Leicester City goalkeeper for the 1928–29 season played for Manchester United afterwards.', 'Known goalkeepers from that era like John McHugh did not move to Manchester United.', "Manchester United is widely known as 'the Red Devils'.", 'The 1928-29 Leicester City strike force consisted of Ernie Hine, Arthur Chandler, and Arthur Lochhead, all attackers, not goalkeepers.', 'Goalkeepers do not lead strike forces as they serve defensive roles.', 'No evidence confirms that the Leicester City goalkeeper from 1928-29 played for Manchester United afterward.', 'Notable goalkeepers like John McHugh and James Mitchell did not play for Manchester United during that period.', 'Therefore, the claim that the 1928–29 Leicester City goalie who led the strike force played for Manchester United is unsupported and likely false.']
+
+## Generated Outputs
+### reasoning
+The claim has two parts to verify: First, that Manchester United Football Club is known as "the Red Devils," which is already supported by note [1]. Second, the claim asserts that the goalie who led the strike force for the 1928–29 Leicester City F.C. season played for Manchester United. According to note [2], the strike force members for Leicester City in 1928–29 were Ernie Hine, Arthur Chandler, and Arthur Lochhead, none of whom were goalkeepers. Note [4] clarifies that goalkeepers do not lead strike forces, as the term refers to attacking players. Note [3] states there is no evidence that the Leicester City 1928-29 goalkeeper later played for Manchester United. Therefore, queries are needed to confirm: (a) the nickname of Manchester United, (b) the identity and playing position of Leicester City players in the 1928–29 season strike force, (c) the identity and career history of Leicester City's goalkeeper in 1928-29, and (d) whether that goalkeeper ever played for Manchester United.
+
+### query
+What is the commonly known nickname of Manchester United Football Club?  
+Who were the members of the Leicester City F.C. strike force during the 1928–29 season, and what were their playing positions?  
+Who was the goalkeeper for Leicester City F.C. in the 1928–29 season?  
+Did the Leicester City goalkeeper from the 1928–29 season ever play for Manchester United Football Club?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['1928–29 Leicester City F.C. season']. Documents remaining to be retrieved: ['Ernie Hine', 'Manchester United F.C.'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

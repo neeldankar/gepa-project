@@ -1,0 +1,112 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You are given two input fields: 
+- `claim`: a factual statement or assertion combining multiple pieces of information about people, events, entities, or works (e.g., films, historical figures).
+- `notes`: a list of textual facts or evidences related to the claim, often providing detailed biographical data, historical context, filmography details, or interrelations among named entities that may confirm or refute parts of the claim.
+
+Your goal is to produce a precise and specific `query` that can be used to retrieve relevant supporting documents or evidence to verify the claim's truthfulness. The `query` should be carefully constructed to cover all key components of the claim and target the retrieval of all relevant documents indicated by the `notes`.
+
+Detailed guidance:
+1. Analyze the `claim` to identify all key entities, time-frames, relationships, or events involved. Claims often combine:
+   - Names of people (e.g., Fulgencio Batista, Herbert Matthews, Mark Rylance)
+   - Titles of works (e.g., Midnight Madness, Institute Benjamenta, Double Bass)
+   - Roles or character names (e.g., Vilyam "Willie" Genrikhovich Fisher)
+   - Temporal elements (e.g., dates like 1940, 1985)
+   - Relationships and contradictions among persons or statements (e.g., one person’s claim disproved by another’s report)
+2. Use information from the `notes` to confirm factual connections and interpret contexts like:
+   - Political or historical roles and their timelines.
+   - Film production, release dates, and related works, including sequels and compositional credits.
+   - Real-life identities vs. fictional roles and the actors associated with them.
+3. Formulate the `query` as one or more specific questions that aim to retrieve all documents relevant to verifying the entire claim, including:
+   - Named entities involved and their roles or titles.
+   - Events or assertions that are contradicted or supported by another entity.
+   - Clarification about temporal order if relevant (release dates, tenure years).
+   - Associations among people related by opposition or collaboration.
+4. The `query` should be detailed enough to retrieve all gold-relevant documents mentioned in the feedback, avoiding ambiguity or unnecessary brevity.
+5. The final `query` should be clear and explicit, ideally framed as one integrated question or a short set of sub-questions tightly linked, so that document retrieval systems can maximize recall of all relevant records that can confirm or refute the claim.
+
+Examples of domain-specific knowledge to incorporate:
+- Historical Cuban presidents, their terms, and political statements.
+- Roles of specific journalists and correspondents and their opposing stances.
+- Film titles, composers, release years, and sequel relationships.
+- Identification of actors, real names they portray, and distinguishing between fictional characters and real persons.
+- Espionage historical facts related to Rudolf Abel and his real name.
+
+In summary, your output `query` should translate a complex multi-part claim and supporting facts into an effective search question capturing all necessary elements to retrieve comprehensive verification evidence.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The Scottish punk band that worked 3 years with Young American Recordings and Sleeper, are both from Britain.
+
+### notes
+['Young American Recordings was an American record label based in New York City.', 'Young American Recordings worked with the Scottish punk band APB.', 'APB is a Scottish punk band, and Scotland is part of Britain.', 'Sleeper is a British band.', 'No explicit information confirms a three-year collaboration between the Scottish punk band and Young American Recordings.', 'Young American Recordings was an American record label based in New York City.', 'Young American Recordings worked with the Scottish punk band APB.', 'APB is a Scottish punk band, and Scotland is part of Britain.', 'Sleeper is a British band.', 'No explicit information confirms a three-year collaboration between the Scottish punk band and Young American Recordings.', 'Young American Recordings was an American record label based in New York City.', 'Young American Recordings worked with the Scottish punk band APB.', 'APB is a Scottish punk band, and Scotland is part of Britain.', 'Sleeper is a British band.', 'No explicit information confirms a three-year collaboration between APB and Young American Recordings.']
+
+## Generated Outputs
+### reasoning
+The claim involves verifying several components: first, that a Scottish punk band worked for 3 years with Young American Recordings; second, that this band and Sleeper are both from Britain. From the notes, Young American Recordings is an American label that did collaborate with APB, a Scottish punk band. Scotland is part of Britain, so APB is British. Sleeper is also a British band. However, there is no explicit confirmation in the notes that the collaboration between APB and Young American Recordings lasted 3 years. To fully verify the claim, it is crucial to confirm the existence and duration of the collaboration between the Scottish punk band APB and Young American Recordings, and establish the national origin of both APB and Sleeper as British.
+
+### query
+Did the Scottish punk band APB collaborate with the American record label Young American Recordings for a period of three years? Additionally, are both APB and the band Sleeper from Britain?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['APB (band)', 'Young American Recordings']. Documents remaining to be retrieved: ['Sleeper (band)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+German Frank Sinatra has won more awards than this Skinny Puppy band member, for whom the Rx (band) was a one-off side project.
+
+### notes
+['Rx (band) was a one-off side project by Skinny Puppy band member Nivek Ogre in collaboration with Martin Atkins.', 'Nivek Ogre is a founding member and vocalist of Skinny Puppy, a Canadian industrial music group formed in 1982.', "No information is available about a 'German Frank Sinatra' in the provided context or notes.", 'No data is provided on awards won by Nivek Ogre or any German figure akin to Frank Sinatra.', 'Rx (band) was a one-off side project by Skinny Puppy band member Nivek Ogre, in collaboration with Martin Atkins.', 'Nivek Ogre is a Canadian musician, founding member and vocalist of the industrial group Skinny Puppy, active since 1982.', "No identifiable information or award data is available on any figure known as 'German Frank Sinatra'.", "No information is provided on awards won by Nivek Ogre or 'German Frank Sinatra'.", 'Rx (band) was a one-off side project by Skinny Puppy member Nivek Ogre in collaboration with Martin Atkins.', 'Nivek Ogre is a Canadian musician and founding member and vocalist of the industrial music group Skinny Puppy, active since 1982.', "No information or identifiable data are available about an individual known as 'German Frank Sinatra' or awards associated with such a figure.", 'No data is available on awards won by Nivek Ogre.']
+
+## Generated Outputs
+### reasoning
+The claim compares the number of awards won by a figure called "German Frank Sinatra" with those won by a Skinny Puppy band member who was involved in the Rx band project. From the notes, we know that Rx was a one-off side project by Nivek Ogre, a founding member and vocalist of Skinny Puppy. However, there is no information about who "German Frank Sinatra" refers to, nor any data about awards for either Nivek Ogre or any German figure compared to Frank Sinatra. To verify the claim, it is necessary to identify who the "German Frank Sinatra" is (an alias or nickname potentially for a German singer comparable to Frank Sinatra), and to determine and compare the awards won by him and by Nivek Ogre, who has a known side project in Rx. The query needs to retrieve information about:
+- The identity and award history of the "German Frank Sinatra"
+- The award history of Nivek Ogre (Skinny Puppy vocalist)
+- The involvement of Nivek Ogre in Rx as a one-off side project
+This would enable a fact-based comparison of awards to confirm or refute the claim.
+
+### query
+Who is referred to as the "German Frank Sinatra," and what awards has he won? How many awards has Nivek Ogre, the Skinny Puppy founding member and vocalist involved in the Rx side project, won? What is the relationship between Nivek Ogre and the Rx band, and what awards has Rx or its members received?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Nivek Ogre', 'Rx (band)']. Documents remaining to be retrieved: ['Frank Sinatra'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Il trovatore has more acts than the 1994 Hungarian-Swiss-Italian fantasy film which was loosely inspired by. This Hungarian-Swiss-Italian fantasy film was directed by Ildikó Enyedi and called Magic Hunter.
+
+### notes
+['Il trovatore is an opera in four acts composed by Giuseppe Verdi.', 'Magic Hunter is a 1994 Hungarian-Swiss-French fantasy film directed by Ildikó Enyedi and loosely inspired by the opera Der Freischütz.', 'Magic Hunter is a film, which typically does not have acts like an opera.', 'Il trovatore is an opera in four acts composed by Giuseppe Verdi.', 'Magic Hunter is a 1994 Hungarian-Swiss-French fantasy film directed by Ildikó Enyedi and loosely inspired by the opera Der Freischütz.', 'Films generally do not have acts like operas do.', 'Il trovatore is an opera in four acts composed by Giuseppe Verdi.', 'Magic Hunter is a 1994 Hungarian-Swiss-French fantasy film directed by Ildikó Enyedi and loosely inspired by the opera Der Freischütz.', 'Films typically do not have acts in the way operas do.', 'Magic Hunter is a film, which generally does not have acts like an opera.']
+
+## Generated Outputs
+### reasoning
+The claim compares the number of acts in the opera Il trovatore with the number of acts in the 1994 fantasy film Magic Hunter. The notes clarify that Il trovatore is an opera composed of four acts. Magic Hunter is a fantasy film directed by Ildikó Enyedi, released in 1994, described as a Hungarian-Swiss-French production. The claim states it is Hungarian-Swiss-Italian, but notes specify Swiss-French, which might be a discrepancy. Magic Hunter is also noted to be loosely inspired by Der Freischütz, not Il trovatore, which is different from the claim's implication. Additionally, as a film, Magic Hunter does not have acts like an opera typically does. Therefore, the query should seek confirmation of the number of acts in Il trovatore, details about the production countries and director of Magic Hunter, whether Magic Hunter was inspired by Il trovatore or Der Freischütz, and whether Magic Hunter has acts comparable to an opera's.
+
+### query
+How many acts does Giuseppe Verdi's opera Il trovatore have? What are the production countries of the 1994 film Magic Hunter directed by Ildikó Enyedi? Is Magic Hunter inspired by the opera Il trovatore or by another opera, such as Der Freischütz? Does the film Magic Hunter have acts like an opera?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Il trovatore', 'Magic Hunter']. Documents remaining to be retrieved: ['Der Freischütz'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,100 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields: `claim` and `notes`. Your task is to produce a `query` designed to verify or fact-check the claim based on the information and context contained in the notes. Specifically:
+
+1. Analyze the `claim` to identify the key factual assertions or components that need verification.
+
+2. Carefully review the `notes`, which provide relevant factual data, background information, and indirect evidence related to the `claim`. These notes may include partially overlapping, repetitive, or nuanced domain-specific facts.
+
+3. Your objective is to formulate a concise and clear `query` that, when answered, would determine the truthfulness or accuracy of the claim. The query should:
+   - Incorporate all essential elements from the claim that require validation.
+   - Reference domain-specific entities, terms, or context as needed (e.g., proper names, dates, place names, literary awards, species counts, company nationality and headquarters).
+   - Aim to retrieve or confirm authoritative information from relevant documents or sources that would settle any ambiguity.
+
+4. The `query` should be precise and structured in a way that lends itself to searching or requesting specific evidence, minimizing vagueness or open-endedness.
+
+5. Include multiple facets of the claim in a single query when their verification is interconnected, to avoid unnecessary complexity or multiple queries.
+
+6. In cases where the `claim` contains multiple parts, ensure the query integrates these logically (e.g., verifying a connection between entities, or whether two conditions coexist).
+
+Domain-specific details exemplified in the task:
+
+- Verification of literary awards such as the Nobel Prize in Literature in relation to named individuals and their works.
+- Relationships between films, screenplays, novels, and their authorship.
+- Scientific botanical classification involving genus names, species counts, and vernacular names in different languages.
+- Corporate identity and headquarters location including nationality of an airline and its operation details.
+- Detailed biographical or event-specific claims linking individuals to specific companies or geographic data.
+
+Your output should be a single `query` statement in natural language, focused on efficient fact verification grounded in the provided `notes`. This approach enables precise retrieval of relevant documentary evidence necessary to confirm or refute the `claim`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Both Elisabeth Vrba's colleague, who she coined the word exaptation with, and Ann Beattie have a profession in common.
+
+### notes
+['Elisabeth Vrba is a paleontologist who coined the word exaptation with her colleague Stephen Jay Gould.', "Stephen Jay Gould, Vrba's colleague, was also a paleontologist.", "Ann Beattie's profession is not mentioned in the provided context.", 'No evidence links Ann Beattie professionally to either Elisabeth Vrba or Stephen Jay Gould.', "Elisabeth Vrba and Stephen Jay Gould were paleontologists and co-coined the term 'exaptation'.", "Ann Beattie's profession is not mentioned in the available context.", 'No evidence connects Ann Beattie professionally with either Elisabeth Vrba or Stephen Jay Gould.', "Ann Beattie's profession is not provided in the given context.", 'Elisabeth Vrba and Stephen Jay Gould are confirmed paleontologists.', 'No evidence links Ann Beattie professionally to Elisabeth Vrba or Stephen Jay Gould.']
+
+## Generated Outputs
+### reasoning
+The claim makes two key points: first, that Elisabeth Vrba has a colleague with whom she coined the term "exaptation," and second, that this colleague and Ann Beattie share a profession. To verify this claim, we need to identify who Elisabeth Vrba's colleague is, confirm that they co-coined the term "exaptation" together, determine the profession of this colleague, and check whether Ann Beattie has the same profession.
+
+### query
+Who is Elisabeth Vrba's colleague with whom she coined the term "exaptation," and what is that person's profession? Additionally, what is Ann Beattie's profession, and do they share the same profession?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Elisabeth Vrba', 'Stephen Jay Gould']. Documents remaining to be retrieved: ['Ann Beattie'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The building that Dennis Huntley provided sculptures for, and St Paul's Cathedral, are both located in England.
+
+### notes
+['Dennis Huntley provided sculptures for Guildford Cathedral, which is in England.', "St Paul's Cathedral typically refers to the famous cathedral in London, England, a well-known landmark.", "The context supports that Dennis Huntley's work is in England but does not explicitly mention London St Paul's Cathedral; however, no contradicting information exists.", "Therefore, the claim that the building Dennis Huntley provided sculptures for (Guildford Cathedral) and St Paul's Cathedral are both located in England is accurate.", 'Dennis Huntley provided sculptures for Guildford Cathedral, located in Guildford, Surrey, England.', "St Paul's Cathedral commonly refers to the famous cathedral in London, England.", "Guildford Cathedral is in England, and the prominent St Paul's Cathedral is also in England, supporting the claim that both buildings are located in England.", 'Dennis Huntley provided sculptures for Guildford Cathedral located in Guildford, Surrey, England.', "St Paul's Cathedral commonly refers to the famous cathedral in London, England, a well-known landmark.", "There is no conflicting information regarding the locations of Guildford Cathedral and St Paul's Cathedral.", 'The claim that both buildings are located in England is supported by the contextual evidence.']
+
+## Generated Outputs
+### reasoning
+The claim involves verifying the locations of two buildings: the one that Dennis Huntley provided sculptures for, and St Paul's Cathedral. According to the notes, Dennis Huntley provided sculptures for Guildford Cathedral, which is located in England. St Paul's Cathedral most commonly refers to the one in London, England. There is no contradictory information suggesting otherwise. Thus, confirming the locations of Guildford Cathedral and St Paul's Cathedral will verify the claim.
+
+### query
+Are Guildford Cathedral, for which Dennis Huntley provided sculptures, and St Paul's Cathedral both located in England?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Dennis Huntley', 'Guildford Cathedral']. Documents remaining to be retrieved: ["St Paul's Cathedral"].
+
+
+
+# Example 3
+## Inputs
+### claim
+Nathaniel "Nate" Jacks is the colloquial name of the professional football team in which this striker, who scored in Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final, played.
+
+### notes
+['In the 2013 FIFA Confederations Cup Final, Brazil defeated Spain 3-0 with goals from Fred and Neymar.', "Nathaniel 'Nate' Jacks is not mentioned in the context as a football striker or a team name.", "There is no known colloquial football team name 'Nathaniel Nate Jacks' associated with the 2013 FIFA Confederations Cup Final or any striker who scored in that match.", "Nathaniel 'Nate' Jacks is not a recognized footballer or team name associated with the 2013 FIFA Confederations Cup Final.", 'The scorers in the 2013 FIFA Confederations Cup Final were Fred and Neymar, both Brazilian players.', "There is no record of a football team colloquially called 'Nathaniel Nate Jacks' in official sources or football history databases.", 'Brazil defeated Spain 3-0 in the 2013 FIFA Confederations Cup Final, with Fred and Neymar scoring the goals.', "No credible sources link 'Nathaniel Nate Jacks' to professional football or the event described in the claim.", "Nathaniel 'Nate' Jacks is an American former professional football player in indoor American football leagues, not related to association football (soccer).", "The scorers in the 2013 FIFA Confederations Cup Final were Fred and Neymar playing for Brazil's national soccer team.", "There is no record of a professional football team colloquially named 'Nathaniel Nate Jacks' associated with the 2013 FIFA Confederations Cup.", "Nathaniel 'Nate' Jacks has no connection to the soccer event or teams involved in the 2013 FIFA Confederations Cup Final.", 'The claim conflates different sports and unverified names; Nate Jacks is not linked to soccer or the 2013 Confederations Cup.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that "Nathaniel 'Nate' Jacks" is the colloquial name of the professional football team for which the striker who scored in Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final played. The notes clarify that the scorers in that match were Fred and Neymar, neither of whom are associated with any football team called "Nathaniel 'Nate' Jacks." Also, no such team name appears in relation to that match or any other. Therefore, the key points to verify are: whether "Nathaniel 'Nate' Jacks" is a colloquial name for any professional football team, and if the known strikers Fred or Neymar played for a team with that nickname.
+
+### query
+Is "Nathaniel 'Nate' Jacks" a colloquial or official name of any professional football team, and did the striker(s) who scored in Brazil's 3-0 win over Spain in the 2013 FIFA Confederations Cup Final, specifically Fred or Neymar, play for such a team?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['2013 FIFA Confederations Cup Final']. Documents remaining to be retrieved: ['Clube Atlético Mineiro', 'Fred (footballer)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

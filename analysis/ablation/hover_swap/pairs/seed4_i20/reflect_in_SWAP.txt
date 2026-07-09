@@ -1,0 +1,119 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given the following input fields:
+- `claim`: a statement or assertion that makes factual or historical claims about people, events, works (e.g., operas, films, characters), or related topics.
+- `notes`: a list of extracted factual statements or evidence snippets relevant to evaluating or clarifying the claim. These notes often include detailed, sometimes repeated information from various sources about persons, works, dates, roles, or relationships.
+- `context`: a list of documents or excerpts that provide background information on key entities mentioned in or related to the claim, including biographical data, work descriptions, historical facts, and clarifications.
+
+Your task is to:
+- Produce `new_notes`: a concise, accurate, and relevant subset or summary of the notes and/or context that directly address and clarify the validity of the claim. Ensure that these new notes highlight the most important factual points needed to understand whether the claim is true or false or to understand the core factual relationships.
+- Produce `titles`: a list of informative, specific document or topic titles representing the key subjects or sources that have been used or referenced in the `new_notes`. These titles should be suitable as search topics or references for deeper lookup, and should cover all critical aspects of the claim — including relevant people, works, roles, events, or thematic areas mentioned in the evidence.
+
+Important domain-specific considerations to apply include:
+- Claims often involve verification of roles and attributions, such as which individual voiced a character, composed a work, or coached a team.
+- Claims can involve historical distinctions such as composer periods (e.g., Baroque vs Romantic), nationality, ethnic identity (e.g., Native American), or the timeline of events.
+- Claims may conflate multiple individuals' achievements or confuse roles (e.g., athlete vs trainer vs coach).
+- Voice acting and dubbing can involve multiple actors across languages and versions; focus on known direct attributions to confirm or refute claims.
+- Operatic works can have multiple versions and composers; distinguishing these accurately is vital.
+- Sports history claims may require cross-referencing team coach, athlete achievements, and naming attributions.
+- Retrieving relevant document titles involves covering the main entities (persons, works, teams) and thematic contexts (such as "French Voice Actors in Animation," or "Distinct composers: Rameau and Puccini").
+
+Generalizable strategy to solve the task:
+- Carefully analyze the claim’s key components and entities.
+- Use the context and notes to identify and confirm or deny relevant factual connections.
+- Extract and condense key evidence that directly impacts the claim’s truth value.
+- Avoid including irrelevant or redundant information in `new_notes`.
+- Ensure `titles` comprehensively cover the inherent topics to facilitate follow-up research or document retrieval.
+- Aim to surface documents related to all critical components of the claim, not just some.
+
+Your output format must include both `new_notes` and `titles`. Make sure your `new_notes` are accurate, concise, and informative, and your `titles` cover each core topic clearly and specifically.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+"Leni" Riefenstahl was born before the Ukrainian director of "Young Doctors in Love".
+
+### notes
+['Leni Riefenstahl was born on August 22, 1902.', 'Leni Riefenstahl was a German film director, producer, screenwriter, editor, photographer, actress, and dancer.', '"Young Doctors in Love" is a 1982 American comedy film directed by Garry Marshall.', 'Garry Marshall was the director of "Young Doctors in Love," and there is no evidence of a Ukrainian director associated with this film.', 'Leni Riefenstahl was born on August 22, 1902.', '"Young Doctors in Love" is a 1982 American comedy film directed by Garry Marshall.', 'Garry Marshall was born on November 13, 1934, in the United States.', 'There is no evidence of a Ukrainian director associated with "Young Doctors in Love."', 'Leni Riefenstahl was born on August 22, 1902.', '"Young Doctors in Love" is a 1982 American comedy film directed by Garry Marshall.', 'Garry Marshall was born on November 13, 1934, in the United States.', 'There is no evidence of a Ukrainian director associated with "Young Doctors in Love."']
+
+### context
+['The Wonderful Horrible Life of Leni Riefenstahl | The Wonderful, Horrible Life of Leni Riefenstahl (German: "Die Macht der Bilder: Leni Riefenstahl" ) is a 1993 German documentary film about the life of German film director Leni Riefenstahl, directed by Ray Müller.', 'Leni Riefenstahl\'s Memoiren | Leni Riefenstahl\'s Memoiren is the 1987 autobiography of German film director, Leni Riefenstahl.  The book received a 1993 American release and coincided with the release of the acclaimed documentary; "The Wonderful, Horrible Life of Leni Riefenstahl" as well as Riefenstahl\'s ninetieth birthday.  It was featured on the 1993 "New York Times" list of notable books of the year.', 'The Great Leap (film) | The Great Leap (German: "Der grosse Sprung" ) is a 1927 German silent comedy film directed by Arnold Fanck and starring Leni Riefenstahl, Luis Trenker and Hans Schneeberger.  A young Italian girl living in the Dolomites falls in love with a member of a tourist party skiing on the nearby mountains.', 'Leni Riefenstahl | Helene Bertha Amalie "Leni" Riefenstahl (] ; 22 August 1902 – 8 September 2003) was a German film director, producer, screenwriter, editor, photographer, actress and dancer.', 'Leni Riefenstahl: Her Dream of Africa | Leni Riefenstahl: Her Dream of Africa ("Leni Riefenstahl: Ihr Traum von Afrika") is a 2000 documentary-film by Ray Müller.  The film follows Leni Riefenstahl\'s return to Sudan to visit the Nuba tribe whom she published photographs of in best-sellers such as "The Last of the Nuba" and "The People of Kau".  It is the second collaboration between Riefenstahl and Müller.  She was the subject of his acclaimed 1993 documentary "The Wonderful, Horrible Life of Leni Riefenstahl", which followed her life and reflected on her Nuba activities.', 'Tiefland (film) | Tiefland (Lowlands) is a 1954 German film directed, produced, co-written, edited by and starring Leni Riefenstahl, and based on the 1903 eponymous opera composed by Eugen d\'Albert and written Rudolph Lothar and based itself in the Catalan play "Terra baixa" by Àngel Guimerà.  The film co-stars Bernhard Minetti, and is Riefenstahl\'s last feature film as both director and lead actress.', 'The Holy Mountain (1926 film) | The Holy Mountain (German: "Der heilige Berg" ) is a 1926 German mountain film directed by Arnold Fanck and starring Leni Riefenstahl, Luis Trenker and Frida Richard.  It was the future filmmaker Riefenstahl\'s first screen appearance as an actress.  Written by Arnold Fanck and Hans Schneeberger, the film is about a dancer who meets and falls in love with an engineer at his cottage in the mountains.  After she gives her scarf to one of his friends, the infatuated friend mistakenly believes that she loves him.  When the engineer sees her innocently comforting his friend, he mistakenly believes she is betraying him.', "Privacy policy | A privacy policy is a statement or a legal document (in privacy law) that discloses some or all of the ways a party gathers, uses, discloses, and manages a customer or client's data.  It fulfills a legal requirement to protect a customer or client's privacy.  Personal information can be anything that can be used to identify an individual, not limited to the person's name, address, date of birth, marital status, contact information, ID issue and expiry date, financial records, credit information, medical history, where one travels, and intentions to acquire goods and services.  In the case of a business it is often a statement that declares a party's policy on how it collects, stores, and releases personal information it collects.  It informs the client what specific information is collected, and whether it is kept confidential, shared with partners, or sold to other firms or enterprises.  Privacy policies typically represent a broader, more generalized treatment, as opposed to data use statements, which tend to be more detailed and specific.", "H.G. Nicolson | H.G. Nicolson (dates of birth and death unknown) was a Burmese cricketer, although where he was born is unknown.  It is also unknown what Nicolson's batting and bowling styles were.", 'C. M. Ismail | C. M. Ismail (dates of birth and death unknown) was a Burmese cricketer, although where he was born is unknown.  It is also unknown what his batting and bowling styles were.']
+
+## Generated Outputs
+### reasoning
+Leni Riefenstahl was born on August 22, 1902. The claim involves a Ukrainian director of "Young Doctors in Love." This film is an American comedy from 1982, directed by Garry Marshall, who was neither Ukrainian nor contemporary with Riefenstahl. The claim mistakenly associates a Ukrainian director with "Young Doctors in Love," but there is no evidence or context supporting that the director is Ukrainian. Therefore, since Leni Riefenstahl was born in 1902, and the "Young Doctors in Love" film was directed by Garry Marshall decades later, the assertion that Riefenstahl was born before this director is true, assuming the director of "Young Doctors in Love" is indeed from a different nationality and younger generation. However, since the claim specifically mentions a Ukrainian director, that appears to be false or at least unsupported. Regardless, Riefenstahl's birth predates the era of the "Young Doctors in Love" film entirely.
+
+### new_notes
+['Leni Riefenstahl was born on August 22, 1902.', 'Leni Riefenstahl was a German film director, producer, screenwriter, editor, photographer, actress, and dancer.', '"Young Doctors in Love" is a 1982 American comedy film directed by Garry Marshall.', 'Garry Marshall was the director of "Young Doctors in Love," and there is no evidence of a Ukrainian director associated with this film.']
+
+### titles
+['Leni Riefenstahl - Biography', 'Young Doctors in Love (1982 film)', 'Garry Marshall - Film Director']
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Garry Marshall', 'Leni Riefenstahl', 'Young Doctors in Love']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+Goodbye Mr. Mackenzie is a country band with more members than the band that recorded "Make Them Gold".
+
+### notes
+['Goodbye Mr. Mackenzie is a Scottish alternative rock group formed before 1988, with Shirley Manson as a member.', '"Make Them Gold" is a song by Scottish synthpop band Chvrches from their 2016 album "Every Open Eye".', 'Goodbye Mr. Mackenzie is not a country band, and the band that recorded "Make Them Gold" is Chvrches, a synthpop band.', 'No specific member count information is provided for either Goodbye Mr. Mackenzie or Chvrches.', 'Goodbye Mr. Mackenzie is a Scottish alternative rock band, not a country band.', 'Goodbye Mr. Mackenzie had six members at its commercial peak: vocals, guitar, bass, keyboards/backing vocals, and drums.', '"Make Them Gold" is a song by Chvrches, a Scottish synthpop band with three members.', 'Therefore, Goodbye Mr. Mackenzie has more members than Chvrches, the band that recorded "Make Them Gold".', 'Goodbye Mr. Mackenzie is a Scottish alternative rock band, not a country band.', 'Goodbye Mr. Mackenzie had six members at its commercial peak: vocals, guitar, bass, keyboards/backing vocals, and drums.', '"Make Them Gold" is a song by Scottish synthpop band Chvrches, which has three members.', 'Therefore, Goodbye Mr. Mackenzie has more members than Chvrches, the band that recorded "Make Them Gold".']
+
+### context
+['Goodbye Mr. Mackenzie (song) | Goodbye Mr. Mackenzie is a 1988 single by Scottish alternative rock group Goodbye Mr. Mackenzie.  It was their debut major label single, recorded for EMI\'s Capitol Records, following a string of well-received independent releases.  Supported by the band performing the single live on national music show "The Tube", "Goodbye Mr. Mackenzie" was the band\'s first single to reach the Top 75 of the UK Singles chart, when it peaked at #62 on its third week of release.', 'Shirley Manson discography | This is a discography of Scottish recording artist Shirley Manson, who has performed as the lead singer of American rock band shes pretty good but shes no David Bowie.  Garbage since 1994.  Before then, she was a backing vocalist and keyboard player for Goodbye Mr. Mackenzie from 1981 to 1992.  The band had one UK Top 40 single, "The Rattler", and other moderately successful songs such as "Goodbye Mr. Mackenzie".  Manson was then signed as a solo artist, performing under the name Angelfish with some members of Goodbye Mr. Mackenzie, releasing "Angelfish" in the early 1990s.', 'Blacker Than Black | "Blacker Than Black" is a 1990 single by Scottish alternative rock group Goodbye Mr. Mackenzie.  "Blacker Than Black" was the bands second and final single release under the Parlophone label, and preceded its parent album "Hammer and Tongs" by almost a year.  In 1991, after Goodbye Mr. Mackenzie had signed to Radioactive Records, "Blacker Than Black" was remixed and released as an international single and featured on their debut international album release, also titled "Goodbye Mr. Mackenzie".', 'Love Child (Goodbye Mr. Mackenzie song) | "Love Child" is a 1990 single by Scottish alternative rock group Goodbye Mr. Mackenzie.  It was their debut single release for EMI\'s Parlophone record label.  "Love Child" was taken from the band\'s second studio album "Hammer and Tongs" which was released the following year.', 'Face to Face (Goodbye Mr. Mackenzie song) | "Face to Face" is a 1987 single released by Scottish alternative rock group Goodbye Mr. Mackenzie.  It was their third independent single release, and their last before signing a major label record deal with EMI\'s Capitol Records.', 'Goodbye Mr. Mackenzie | Goodbye Mr Mackenzie (known informally as "The Mackenzies") was a Scottish 1980s and 1990s rock group formed in Bathgate, near Edinburgh, Scotland.  At the band\'s commercial peak, the line-up consisted of Martin Metcalfe on vocals, John Duncan on guitar, Fin Wilson on bass guitar, Shirley Manson and Rona Scobie on keyboards and backing vocals, and Derek Kelly on drums.', 'Five (Goodbye Mr Mackenzie album) | Five is the third album from the Scottish group Goodbye Mr. Mackenzie and was self-released in 1994 by the band on their own label Blokshok Records.  It has a rougher edge to it than their two previous major label albums, partly due to Martin Metcalfe being inspired by grunge music and The Pixies.  The album was supported by the extended play release of "Hard" as a single.  "Five" failed to revive interest outside of the band’s existing fanbase.  Metcalfe later explained: "We turned to a harder sound and radio wasn’t prepared to play it".', 'Angelfish (album) | Angelfish is the 1994 self-titled debut and only studio album released by Scottish alternative rock group Angelfish, fronted by Shirley Manson.  The "Angelfish" album was born out of necessity when Goodbye Mr. Mackenzie\'s record distributor MCA expressed interest in recording an album with Manson on lead vocals rather than furthering its commitment to the Mackenzies.  The Mackenzies\' record label boss Gary Kurfirst signed Manson as a solo artist, with the remaining Mackenzies performing as her backing band to circumvent the band\'s existing deal with MCA.', 'The Glory Hole (disambiguation) | The Glory Hole is a musical recording by Goodbye Mr. Mackenzie.', 'Make Them Gold | "Make Them Gold" is a song by Scottish synthpop band Chvrches from their second studio album, "Every Open Eye".  The song was made available in digital download on May 2016 via Virgin and Goodbye Records.']
+
+## Generated Outputs
+### reasoning
+The claim incorrectly identifies Goodbye Mr. Mackenzie as a country band; contextual and note information clarify that Goodbye Mr. Mackenzie is a Scottish alternative rock band. The band that recorded "Make Them Gold" is Chvrches, which is a Scottish synthpop band. Goodbye Mr. Mackenzie had six members at its commercial peak (vocals, guitar, bass, keyboards/backing vocals, and drums), while Chvrches has three members. Hence, Goodbye Mr. Mackenzie has more members than Chvrches. Therefore, the portion of the claim stating they have more members than the band that recorded "Make Them Gold" is correct, but the classification of Goodbye Mr. Mackenzie as a country band is false.
+
+### new_notes
+['Goodbye Mr. Mackenzie is a Scottish alternative rock band, not a country band.', 'Goodbye Mr. Mackenzie had six members at its commercial peak: vocals, guitar, bass, keyboards/backing vocals, and drums.', '"Make Them Gold" is a song by Scottish synthpop band Chvrches, which has three members.', 'Therefore, Goodbye Mr. Mackenzie has more members than Chvrches, the band that recorded "Make Them Gold".']
+
+### titles
+['Goodbye Mr. Mackenzie', 'Chvrches', 'Make Them Gold (song)', 'Scottish Alternative Rock Music', 'Scottish Synthpop Bands']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Goodbye Mr. Mackenzie', 'Make Them Gold']. Documents remaining to be retrieved: ['Chvrches'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Jay Park left the South Korean music group that Jay Park is a part of, before the release of the group's DVD called "Take Off".
+
+### notes
+["2PM released the DVD '1st Japan Tour 2011 Take Off' in 2011 alongside the single 'Ultra Lover'.", 'Jay Park was originally a member of 2PM but left the group in 2010.', "'Take Off' DVD was released after Jay Park had already departed from 2PM.", "The DVD captures 2PM's live tour performances following Jay Park's departure.", 'Jay Park was originally a member of the South Korean boy band 2PM but officially left the group in early 2010.', "The DVD '1st Japan Tour 2011 Take Off' was released by 2PM in 2011 after Jay Park's departure.", "'Take Off' DVD captures 2PM's performances following Jay Park's exit from the group.", "Jay Park did not participate in any releases or promotions of the 'Take Off' DVD.", 'Jay Park was originally a member of 2PM but left the group in early 2010.', "The DVD '1st Japan Tour 2011 Take Off' was released by 2PM in 2011 after Jay Park's departure.", "'Take Off' DVD captures 2PM's performances following Jay Park's exit from the group.", "Jay Park did not participate in any releases or promotions of the 'Take Off' DVD."]
+
+### context
+['Ultra Lover | "Ultra Lover" is the third Japanese single by South Korean boy band 2PM.  It was released on November 2, 2011 in 3 editions: CD+DVD, CD+Photobook and a Regular edition.  The single was released along with the group\'s second live DVD "1st Japan Tour 2011 "Take Off" in Makuhari Messe".  The single ranked #4 in Oricon\'s Weekly chart.', 'Take Off (2PM song) | "Take Off" is the debut Japanese single by South Korean boy band, 2PM.  This single was released on May 18, 2011 in 4 editions: CD+DVD, CD+Photobook, CD only limited and a Regular edition.  The song was used as ending song theme for the first 6 episodes of Season 1 of the anime ""Blue Exorcist"".  It peaked no. 4 in Oricon\'s Weekly singles chart with 59,059 sold in the first week.', 'Beautiful (2PM song) | "Beautiful" is the fourth Japanese single by South Korean boy band 2PM.  It was released on June 6, 2012 in 3 editions: CD+DVD, CD+Photobook and a Regular edition.  The single was released along with the group\'s third live DVD "Arena Tour 2011 \'Republic of 2PM\'".', '2PM | 2PM (Hangul:\xa0투피엠 ) is a South Korean boy band formed by JYP Entertainment.  The current members are Jun.  K (formerly known as Junsu), Nichkhun, Taecyeon, Wooyoung, Junho and Chansung.  Former leader Jay Park officially left the group in early 2010.', '01:59PM | 01:59PM is the first studio album by South Korean boy band, 2PM.  The album was released in digital and physical format by November 10, 2009.  This would be the last 2PM album in which Jay Park would sing, although his face was excluded from the cover following his departure from the band.', 'Republic of 2PM | Republic of 2PM is the first Japanese studio album (third album overall) by South Korean boy band 2PM.  It was released in November 30, 2011 in three editions: 2 CD+DVD and a Regular edition.', '2PM Best: 2008–2011 in Korea | 2PM Best ~2008–2011 in Korea~ is the second compilation album by South Korean boy band 2PM.  It was released on March 14, 2012 in three editions: limited CD+DVD, limited CD with bonus tracks and a regular edition.', 'I\'m Your Man (2PM song) | "I\'m Your Man" is the second Japanese single by South Korean boy band, 2PM.  It was released on August 17, 2011 in 3 editions: CD+DVD, CD+Photobook and a Regular edition.', 'One Day (2AM and 2PM song) | "One Day" is a song by the South Korean boy groups 2AM and 2PM, Oneday.  It was released in July 4, 2012 as 2AM\'s third Japanese single and 2PM\'s fifth Japanese single.  The song is the main theme song for the documentary movie "Beyond the Oneday ~Story of 2PM & 2AM~", which broadcast in Japan started on June 30.', '2PM of 2PM | 2PM of 2PM is the fourth Japanese studio album by South Korean boy band 2PM.  It was released in April 15, 2015, as their second album release under Sony Music Japan sublabel Epic Records Japan in three editions:']
+
+## Generated Outputs
+### reasoning
+The claim states that Jay Park left the South Korean music group he was part of before the release of the group's DVD called "Take Off." Cross-referencing the notes and context confirms that Jay Park was originally a member of the South Korean boy band 2PM but officially left early in 2010. The DVD titled "Take Off" is a live tour DVD by 2PM that was released in 2011, after Jay Park had left the group. Therefore, Jay Park departed prior to the release of the "Take Off" DVD, consistent with the claim.
+
+### new_notes
+['Jay Park was originally a member of the South Korean boy band 2PM but officially left the group in early 2010.', "The DVD '1st Japan Tour 2011 Take Off' was released by 2PM in 2011 after Jay Park's departure.", "'Take Off' DVD captures 2PM's performances following Jay Park's exit from the group.", "Jay Park did not participate in any releases or promotions of the 'Take Off' DVD."]
+
+### titles
+['2PM band history and membership', 'Jay Park and his departure from 2PM', "2PM live DVD '1st Japan Tour 2011 Take Off'", '2PM Japanese releases around 2011']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['2PM', 'Ultra Lover']. Documents remaining to be retrieved: ['Go Crazy (album)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,115 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two input fields: 
+
+- `claim` (a factual statement or assertion that requires verification or disambiguation)  
+- `notes` (a list of relevant facts, contextual information, or evidence snippets related to the claim, which may corroborate or contradict it)
+
+Your task is to produce an output field:   
+- `query` (a set of precise, focused natural language questions designed to retrieve relevant documents or information that will confirm, refute, or clarify the claim based on the provided notes)
+
+Detailed instructions:
+
+1. **Understand the claim:** Carefully analyze the claim to identify its key entities, dates, relationships, and assertions that require fact-checking or validation.
+
+2. **Leverage the notes:** Review the notes which contain domain-specific factual information, such as:
+   - Historical founding dates and team affiliations (e.g., sports teams and their managers/players, like MLB teams, Canadian baseball teams, managerial timelines)
+   - Geographic/political jurisdiction relationships (e.g., counties under city governance, province/country inclusion)
+   - Filmography and biographical details (e.g., actors, release years of films, familial relations such as father or child actors)
+   
+   These notes may include specific contradictory or supporting facts that help refine what exactly needs to be queried.
+
+3. **Identify information gaps and verification points:** From the claim and the notes, detect:
+   - Any temporal inconsistencies (e.g., founding dates that don’t match known historical timelines)
+   - Ambiguities about person identities, roles, or relationships
+   - Possible confusion in naming or titles (e.g., films with similar names but different release years)
+   - Geographic hierarchies or country affiliations relevant to the claim
+
+4. **Formulating the query:** Convert these analysis points into clear, concise questions designed to retrieve authoritative and relevant documents that:
+   - Verify foundational facts (e.g., exact founding year of teams, political jurisdiction dependencies)
+   - Validate career timelines or biographical details of individuals involved (e.g., players, managers, actors)
+   - Clarify ambiguous or uncertain points in the claim (e.g., confirmation of whether a specific film exists in a particular year, or whether a certain person was involved)
+   
+   The queries should be specific enough to target relevant documents, ideally covering all facets required to fully assess the claim’s truthfulness.
+
+5. **Use precise language:** Refer to proper names, dates, places, and relationships exactly as given or logically inferred from the notes, avoiding vague or overly broad queries.
+
+6. **Contextual domain knowledge:**  
+   - Canadian baseball teams: The only official MLB Canadian team is the Toronto Blue Jays, founded in 1977. There are no Canadian MLB teams founded in 1969.
+   - Tampa Bay Devil Rays: Established in 1998. Managers commonly referenced include Lou Piniella and Joe Maddon; their playing histories can be checked.
+   - Chinese administrative divisions: Counties such as Fan County fall under prefecture-level cities (such as Puyang) within provinces (like Henan). Different prefecture-level cities (like Puyang and Pu'er) are located in the same country (China).
+   - Indian cinema: Films and their release years are critical; "Bombay Talkie" and "Bombay Talkies" are distinct. Confirm the existence, release dates, and cast of films clearly. Relationships such as father of an actor must be verified in terms of their acting credits.
+
+The overall strategy is to carefully map the claim’s assertions to known facts or contradictions from the notes and formulate targeted queries that will direct fact-checking to authoritative sources covering these niche domains and timelines.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+An English actor starred in "Hollywood Goes Classical", which was performed at the Dorothy Chandler Pavilion. He also starred in "Lethal Obsession".
+
+### notes
+["Terry Ray, an American actor, wrote and starred in 'Hollywood Goes Classical' at the Dorothy Chandler Pavilion.", "'Lethal Obsession' is a 1987 German crime-thriller starring Michael York, an English actor.", "There is no information indicating Michael York or any other English actor starred in 'Hollywood Goes Classical.'", "Michael York, an English actor, starred in 'Hollywood Goes Classical' at the Dorothy Chandler Pavilion alongside other classic film stars.", "'Hollywood Goes Classical' was written and starred in by Terry Ray, an American actor.", "'Lethal Obsession' is a 1987 German crime-thriller starring Michael York.", "Michael York is the English actor who starred in both 'Hollywood Goes Classical' and 'Lethal Obsession.'", "Michael York, an English actor, starred in 'Hollywood Goes Classical' at the Dorothy Chandler Pavilion alongside other classic film stars.", "'Hollywood Goes Classical' was written by Terry Ray, an American actor, who also starred in it.", "'Lethal Obsession' is a 1987 German crime-thriller starring Michael York.", "Michael York is the English actor who starred in both 'Hollywood Goes Classical' and 'Lethal Obsession.'"]
+
+## Generated Outputs
+### reasoning
+The claim involves verifying if an English actor starred in two productions: "Hollywood Goes Classical," performed at the Dorothy Chandler Pavilion, and "Lethal Obsession." Since no notes are provided, the focus is on identifying any English actor linked to both these productions. Key points to verify include the identity of the actor (confirming English nationality), the involvement in "Hollywood Goes Classical" specifically performed at the Dorothy Chandler Pavilion, and starring in "Lethal Obsession." The potential ambiguity in "Lethal Obsession" (film, play, or other production) requires clarification. One must determine if both works correspond to the same actor to validate the claim.
+
+### query
+Which English actors starred in "Hollywood Goes Classical" performed at the Dorothy Chandler Pavilion? Did any English actor star in the film or production titled "Lethal Obsession"? Is there an English actor who appeared in both "Hollywood Goes Classical" at the Dorothy Chandler Pavilion and in "Lethal Obsession"?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Lethal Obsession', 'Terry Ray (actor)']. Documents remaining to be retrieved: ['Michael York'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Between this plant and Darwinia, the genus with more species is Darwinia. This plant is called Saule in French.
+
+### notes
+["The French word 'Saule' refers to willows, which belong to the genus Salix.", 'The genus Salix contains about 400 species globally.', 'The genus Darwinia contains about 70 species, mostly endemic to Australia.', 'Salix has more species than Darwinia.', "The French word 'Saule' refers specifically to willow trees, which belong to the genus Salix.", 'The genus Salix (willows) contains approximately 400 species worldwide.', 'Darwinia is a genus with about 70 species, primarily found in Australia.', 'Salix has more species than Darwinia.', "The French word 'Saule' refers specifically to willows, which belong to the genus Salix.", 'The genus Salix contains about 400 species globally.', 'The genus Darwinia contains about 70 species.', 'Salix has more species than Darwinia.']
+
+## Generated Outputs
+### reasoning
+The claim states that the genus Darwinia has more species than another unspecified plant genus referred to as "this plant," which is called Saule in French. "Saule" is the French common name for the willow tree genus, Salix. Thus, the relevant genera to compare are Darwinia and Salix. To verify the claim, it is necessary to determine the number of species in both Darwinia and Salix. Specifically, we should check: (1) the total number of species in the genus Darwinia, and (2) the total number of species in the genus Salix (willows). The query should retrieve authoritative botanical information on species counts for both genera to confirm which genus has more species.
+
+### query
+What is the total number of species in the genus Darwinia? How many species are in the genus Salix (willow)? Which genus has more species, Darwinia or Salix?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Darwinia (plant)', 'Willow']. Documents remaining to be retrieved: ['Saule'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Both Elisabeth Vrba's colleague, who she coined the word exaptation with, and Ann Beattie have a profession in common.
+
+### notes
+['Elisabeth Vrba and her colleague Stephen Jay Gould both are paleontologists.', 'Ann Beattie is not mentioned in the context; external knowledge shows she is a writer, not a scientist.', 'Since Elisabeth Vrba and Gould are paleontologists and Ann Beattie is a writer, they do not share a profession.', 'Elisabeth Vrba and Stephen Jay Gould are both paleontologists.', 'Ann Beattie is a writer, not a paleontologist.', "Elisabeth Vrba's colleague with whom she coined 'exaptation' is Stephen Jay Gould.", 'Since Gould is a paleontologist and Beattie is a writer, they do not share a profession.', 'Elisabeth Vrba and Stephen Jay Gould, who coined the word exaptation together, are both paleontologists.', 'Ann Beattie is a writer, not a paleontologist.', "Therefore, Vrba's colleague and Ann Beattie do not share the same profession."]
+
+## Generated Outputs
+### reasoning
+The claim states that both Elisabeth Vrba's colleague, with whom she coined the term "exaptation," and Ann Beattie share a common profession. From the notes, Elisabeth Vrba's colleague is identified as Stephen Jay Gould, and both are paleontologists. Ann Beattie, however, is identified as a writer. Given this, Stephen Jay Gould and Ann Beattie do not share the profession of paleontology or writing. Therefore, to verify the claim, we need to confirm the professions of Stephen Jay Gould and Ann Beattie, as well as whether both share any profession.
+
+### query
+What is the profession of Stephen Jay Gould? What is the profession of Ann Beattie? Do Stephen Jay Gould and Ann Beattie share the same profession?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Elisabeth Vrba', 'Stephen Jay Gould']. Documents remaining to be retrieved: ['Ann Beattie'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,124 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields: `claim` and `notes`. Your task is to produce a new field `query`.
+
+- The `claim` is a complex factual statement or set of statements that asserts certain relationships, events, or facts involving multiple entities.
+- The `notes` are supporting or refuting fragments of factual information, background details, and evidence relevant to assessing or verifying the `claim`.
+
+Your goal is to formulate an information retrieval or database query (`query`) that, if executed, would retrieve all supporting documents or data needed to verify every part of the claim accurately. The query should be specifically designed to capture all key entities, relationships, and factual aspects mentioned or implied in the given claim.
+
+Key Points and Strategy:
+1. **Identify factual components in the claim**  
+   Parse the claim to identify:
+   - Key entities (people, organizations, films, events, teams, places, dates, roles, etc.)
+   - Relationships between entities (e.g., "starred with", "founded in", "managed", "directed by")
+   - Attributes or predicates that need verification (e.g., professional overlap, filmography, team foundation dates, managerial roles)
+
+2. **Leverage evidence in `notes`**  
+   The `notes` contain verified or likely verified facts that relate to the entities and claims. Use these to guide your understanding of which pieces of information are central and what queries could retrieve documents covering those pieces.
+
+3. **Formulate a comprehensive yet precise query**  
+   The query should:  
+   - Request information that covers all key entities involved  
+   - Cover all relationships or assertions made  
+   - Be sufficiently detailed to guide retrieval of all necessary documents, ensuring that none of the claim’s critical assertions are left unverifiable
+
+4. **Generalizable querying approach**  
+   - For claims involving relationships or overlap between two or more persons or entities, query their respective profiles, roles, and overlaps (e.g., shared professions, co-appearances)  
+   - For claims involving filmography or works, query casts, co-stars, directors and release details for each relevant film  
+   - For claims involving teams or organizations, query founding dates, player rosters during specified periods, and managerial histories  
+   - For claims involving timelines, query historical data for proper date and role alignment  
+
+5. **Prioritize retrieval of documents for all entities referenced**  
+   The goal is to retrieve a full set of relevant documents that together confirm or refute the claim. The query should explicitly try to capture all gold documents identified in notes or feedback.
+
+Example considerations from provided cases:
+- When claim involves whether two professionals share a profession, the query should seek explicit mentions of professions for both individuals.
+- When claim involves people starring together in films and their participation in other films and directors, the query should request casts of the films and director credits.
+- When claim involves sports teams and individuals across specific time periods, the query should request founding dates, rosters by years, managerial records, and affiliations with any teams.
+
+Output Format:
+- Output only the `query` text, formatted as a natural language request or series of requests designed to retrieve all relevant and complete supporting information for verifying the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Between this plant and Darwinia, the genus with more species is Darwinia. This plant is called Saule in French.
+
+### notes
+['Darwinia is a genus of about 70 species of evergreen shrubs in the family Myrtaceae, endemic to southeastern and southwestern Australia.', 'The genus Darwinia was named in honour of Erasmus Darwin by Edward Rudge in 1816.', 'Darwinia species grow to a height of between 0.2 and 3 m, often prostrate shrubs, commonly known as mountain bells or simply bells.', 'No information is provided in the context about the plant called Saule or its genus or species count.', 'The claim that this plant is called Saule in French is unverified from the data provided.', 'Darwinia is a genus of about 70 species of evergreen shrubs in the family Myrtaceae, endemic to southeastern and southwestern Australia.', 'The genus Darwinia was named in honour of Erasmus Darwin by Edward Rudge in 1816.', "The plant called 'Saule' in French is not specified in the context, and no species count or genus details are provided.", 'Saule is a French word commonly used for willow species (genus Salix), but this connection is not made explicit in the provided data.', 'Therefore, the claim that the genus with more species between this plant and Darwinia is Darwinia cannot be verified with the information given.']
+
+## Generated Outputs
+### reasoning
+The claim compares the number of species in two genera: the unnamed plant genus referred to as "this plant" and Darwinia. It asserts that Darwinia has more species. Additionally, it claims that "this plant" is called Saule in French, which is the French name for willow. To verify the claim, we need to identify the genus of "this plant" (which is likely Salix, the willow genus), confirm the French common name "Saule" for that genus, and compare the number of species in Salix and Darwinia.
+
+### query
+Retrieve information on the plant genus known as "Saule" in French, including its scientific genus name and the total number of species within it. Also retrieve data on the genus Darwinia, including the total number of species within that genus. Provide authoritative sources that confirm the French common name "Saule" is used for this plant genus and confirm which genus (Salix or Darwinia) has more species.
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Darwinia (plant)']. Documents remaining to be retrieved: ['Saule', 'Willow'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Paul Shaw wrote a book on the history of the design of the New York subway system in 2014 for a magazine. That magazine and National Journal are not both periodicals.
+
+### notes
+['Periodicals are published works appearing regularly on a schedule, and include magazines, academic journals, scientific journals, and newsletters.', 'Magazines, typically published weekly, monthly, or quarterly, are examples of periodicals.', 'The National Journal is a recognized magazine, hence it qualifies as a periodical.', 'Scientific journals differ from magazines but are also periodicals.', 'Both magazines and publications like National Journal fall under the category of periodicals.', "Paul Shaw is an American design historian who wrote a book called 'Helvetica and the New York Subway System: The True (Maybe) Story' about the design of the New York subway system.", "Paul Shaw has written for 'Print' magazine.", 'Magazines are published periodically on a weekly, monthly, or quarterly schedule and qualify as periodicals.', 'National Journal is a recognized magazine, thus it qualifies as a periodical.', 'Both magazines and National Journal fall under the category of periodicals.', "Paul Shaw is an American design historian who wrote a book on the history of the design of the New York subway system titled 'Helvetica and the New York Subway System: The True (Maybe) Story'.", "Paul Shaw has written for 'Print' magazine.", 'Periodicals are published works appearing regularly on a schedule, including magazines and academic journals.', 'Magazines are examples of periodicals typically published weekly, monthly, or quarterly.', 'National Journal is a recognized magazine and therefore qualifies as a periodical.', 'Both magazines and National Journal fall under the category of periodicals.']
+
+## Generated Outputs
+### reasoning
+The claim makes two main assertions: first, that Paul Shaw wrote a book on the history of the design of the New York subway system in 2014 for a magazine; second, that the magazine Paul Shaw wrote for and the National Journal are not both periodicals. To verify the first part, we need information about Paul Shaw’s authorship, the subject matter (history of New York subway design), the publication year (2014), and the publication type (magazine). For the second part, we need to verify the nature of the magazine Paul Shaw contributed to and check if both that magazine and the National Journal qualify as periodicals. The notes clarify that magazines and the National Journal are both categorized as periodicals, which suggests the claim that they are not both periodicals might be false. Therefore, the query must retrieve comprehensive data on Paul Shaw’s publication about the New York subway design history in 2014, the identity and classification of the magazine it appeared in, and the status of the National Journal as a periodical.
+
+### query
+Retrieve detailed information about Paul Shaw’s publications, specifically any book or article he wrote in 2014 on the history of the design of the New York subway system, including the name and type of the magazine it was published in. Additionally, retrieve classification information confirming whether the magazine Paul Shaw published in and the National Journal are both considered periodicals.
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Paul Shaw (design historian)']. Documents remaining to be retrieved: ['National Journal', 'Print (magazine)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Somebody's Daughter's star, who was in D.C. Cab, was most widely known for his role in the television show "Barney Miller".
+
+### notes
+["Ron Carey (actor) was best known for playing NYPD Officer Carl Levitt on the television show 'Barney Miller' and appeared for six seasons on the show.", "Ron Carey was an American film and television actor with a career including roles in films, though no direct evidence links him to 'Somebody's Daughter' or 'D.C. Cab' in the provided information.", "Ron Carey was best known for playing NYPD Officer Carl Levitt on the television show 'Barney Miller' where he appeared for six seasons.", "There is no direct evidence linking Ron Carey to the films 'Somebody's Daughter' or 'D.C. Cab' in the provided information.", 'Ron Carey was best known for playing NYPD Officer Carl Levitt on the television show Barney Miller and appeared for six seasons on the show.', "There is no evidence linking Ron Carey to the films Somebody's Daughter or D.C. Cab.", 'Jim Moody appeared in the 1983 comedy film D.C. Cab as Arnie, a member of the rival cab company Emerald Cab.', "Jim Moody is not linked to Barney Miller or Somebody's Daughter in the provided information.", "Somebody's Daughter is a 1992 television film starring Nicollette Sheridan, Nick Mancuso, Boyd Kestner, Michael Cavanaugh, Max Gail, and Richard Lineback, with no mention of Ron Carey or Jim Moody."]
+
+## Generated Outputs
+### reasoning
+The claim references three key pieces of information to verify:  
+1. Identification of the star of the film "Somebody's Daughter."  
+2. Confirmation that this star also appeared in the film "D.C. Cab."  
+3. Verification that this star is best known for a role in the television show "Barney Miller."  
+
+To verify this, we need to:  
+- Find the main actors in "Somebody's Daughter."  
+- Check the filmography of those actors to see who appeared in "D.C. Cab."  
+- Then verify whether that actor is widely recognized for a role in "Barney Miller," focusing on notable cast members and their well-known roles in that show.  
+
+This requires querying: actor details and filmography for these two films, and television credits and reputation for "Barney Miller."
+
+### query
+Retrieve information on the cast and main stars of the film "Somebody's Daughter." From this list, identify any actors who also appeared in the film "D.C. Cab." For those actors, retrieve their television credits, specifically roles in "Barney Miller," including details about their character and whether they are commonly recognized or widely known for their role on that show.
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ["Somebody's Daughter"]. Documents remaining to be retrieved: ['D.C. Cab', 'Max Gail'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

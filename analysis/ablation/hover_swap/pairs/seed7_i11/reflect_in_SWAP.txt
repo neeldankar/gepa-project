@@ -1,0 +1,98 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given the fields `claim` and `notes`, produce the field `query`.
+
+Task Description:
+You are verifying or investigating the factual accuracy of the given `claim` using the provided `notes`, which contain relevant supporting or refuting evidence. Your goal is to formulate one or more precise, focused **natural language question(s)** (the `query`) that directly target the core factual components or relationships in the `claim`. These queries will be used to retrieve authoritative documents to confirm or refute the claim.
+
+Key Guidelines and Domain-Specific Details:
+- The `claim` may contain multiple entities, roles, dates, locations, or assertions combined together. Your `query` should disentangle these components and seek clarity on ambiguous or potentially conflated facts highlighted by the `notes`.
+- The `notes` provide context, corrections, or clarifications related to the claim—often pointing out inaccuracies or mixing of facts (e.g., a person’s role changing over time, place names nested within larger administrative regions, or multiple entities sharing a profession).
+- Your `query` should:
+  - Target precise fact verification or disambiguation based on the contradictions or confirmations evident in the `notes`.
+  - Focus on identifying temporal, positional, or relational details critical to verifying the claim (e.g., exact job titles at a given year, locations down to country/state/city level, professional roles shared by named individuals).
+  - Use clear and specific phrasing, typically in the form of yes/no or direct factual questions (e.g., “Was X the Y at time Z?”, “Are A and B located in the same country?”, “Do C and D share profession E?”).
+- Avoid overly broad or vague queries; instead, refine the question to pinpoint the fact that needs verification or clarification.
+- Where the claim conflates multiple facts (e.g., combining a present role with a role held in the past), address that directly in the query.
+- When multiple entities or components appear in the claim (e.g., three different people, or two places), the query can explicitly reference all relevant entities and their factual relationships.
+- The query should be expressed in natural, fluent English suitable for directing a subsequent retrieval or verification step.
+
+Example approach:
+1. Identify the main factual assertion(s) in the claim.
+2. Note any conflicting or clarifying points in the notes.
+3. Frame a succinct question that tests the claim's key factual claim(s), especially where the note highlights ambiguity or correction.
+4. Ensure the question leads to retrieving authoritative evidence to support or refute the claim.
+
+Overall, your role is to bridge the claim and the evidence by formulating precise queries that target the critical fact(s) necessary for fact-checking.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The band who had King ov Hell as a member are based in the Norwegian county Hordaland.
+
+### notes
+['King ov Hell (Tom Cato Visnes) is a Norwegian musician known for his work with several black metal bands.', 'God Seed, a band including King ov Hell, is based in Bergen, Norway.', 'Bergen is a city located in the Norwegian county of Hordaland.', 'Ov Hell is a Norwegian black metal supergroup co-founded by King ov Hell, active since 2009.', 'Sahg, another band featuring King ov Hell, was formed in Bergen in 2004.', 'Therefore, bands with King ov Hell as a member have strong ties to Bergen, Hordaland.', 'King ov Hell (Tom Cato Visnes) is a Norwegian musician known for his involvement in multiple black metal bands including God Seed, Ov Hell, and Sahg.', 'God Seed and Sahg, two bands with King ov Hell as a member, are both based in Bergen, Norway.', 'Bergen is a city located in the Norwegian county of Hordaland.', 'Therefore, bands featuring King ov Hell have strong connections to Bergen in Hordaland, supporting the claim that they are based in Hordaland.', 'King ov Hell (Tom Cato Visnes) is a Norwegian musician known for his involvement in black metal bands God Seed, Ov Hell, and Sahg.', 'God Seed is a Norwegian black metal band based in Bergen, Norway.', 'Sahg is a Norwegian hard rock/doom metal band formed in Bergen, Norway in 2004.', 'Bergen is a city located in the Norwegian county of Hordaland.', 'Therefore, the bands featuring King ov Hell are based in the Norwegian county of Hordaland.', 'Ov Hell is a Norwegian black metal supergroup co-founded by King ov Hell, with close ties to the Bergen/ Hordaland scene.']
+
+## Generated Outputs
+### reasoning
+The claim states that the band with King ov Hell as a member is based in the Norwegian county of Hordaland. The notes provide extensive information linking King ov Hell to multiple bands (God Seed, Ov Hell, Sahg), all tied to Bergen. Bergen is confirmed in two notes to be a city in Hordaland county. Multiple notes assert that the bands God Seed and Sahg are based in Bergen, hence in Hordaland. Therefore, the core factual points to verify are whether the bands with King ov Hell as a member are indeed based in Bergen and thus in Hordaland.
+
+### query
+Are the bands God Seed, Ov Hell, and Sahg, all including King ov Hell as a member, based in Bergen, Norway, which is located in the Norwegian county of Hordaland?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['King ov Hell']. Documents remaining to be retrieved: ['Bergen', 'Gorgoroth'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The trainer, who named Eddie Mahan "the greatest football player of all time", coached the Indians and was the first Native American to win a metal in his home country.
+
+### notes
+["Jim Thorpe, a Native American athlete and coach of the Carlisle Indians football team, named Eddie Mahan 'the greatest football player of all time.'", 'Eddie Mahan was a Harvard football halfback, considered one of the greatest players in early football history.', 'Jim Thorpe was the first Native American to win Olympic gold medals in the United States, achieving this at the 1912 Stockholm Olympics.', 'Jim Thorpe coached the Carlisle Indians football team, a Native American team.', 'Jim Thorpe was primarily known as a player and coach, not specifically as a trainer.', "The claim conflates the roles of trainer and coach/player; the person who named Mahan greatest and was the first Native American medalist was Jim Thorpe, not a 'trainer' per se.", 'Jim Thorpe was a Native American athlete and coach of the Carlisle Indians football team.', "Jim Thorpe named Eddie Mahan 'the greatest football player of all time.'", 'Eddie Mahan was a Harvard football halfback, regarded as one of the greatest early football players.', 'Jim Thorpe was the first Native American to win Olympic gold medals, achieving this at the 1912 Stockholm Olympics, not in his home country.', 'Jim Thorpe was a player and coach, not primarily a trainer.', "Jim Thorpe coached both the Carlisle Indians and later the NFL's Oorang Indians, a team composed solely of Native Americans.", "The claim incorrectly describes Jim Thorpe as a 'trainer' and the location of his Olympic medal wins.", 'Jim Thorpe, a Native American athlete and coach, led the Carlisle Indians football team.', "Jim Thorpe named Eddie Mahan 'the greatest football player of all time.'", 'Eddie Mahan was a Harvard halfback widely regarded as one of the greatest players in early football history.', 'Jim Thorpe was the first Native American to win Olympic gold medals, achieving this at the 1912 Stockholm Olympics, not in the United States.', 'Thorpe was primarily known as a player and coach, not a trainer.', 'The claim incorrectly describes Thorpe as a trainer and misstates the location where he won Olympic medals.']
+
+## Generated Outputs
+### reasoning
+The claim states that a trainer, who named Eddie Mahan "the greatest football player of all time," coached the Indians and was the first Native American to win a medal in his home country. The notes clarify several points: Jim Thorpe, a Native American athlete and coach of the Carlisle Indians, made the statement about Eddie Mahan. Jim Thorpe was indeed the first Native American to win Olympic gold medals, but he was primarily known as a player and coach, not as a trainer. The claim incorrectly uses "trainer" instead of "coach/player," conflating roles. Therefore, to verify or refute the claim, the critical facts to check are (1) Did Jim Thorpe coach the Indians, (2) Did he name Eddie Mahan "the greatest football player of all time," (3) Was Jim Thorpe the first Native American to win Olympic medals in the United States, and (4) Is the role "trainer" incorrectly assigned here?
+
+### query
+Did Jim Thorpe coach the Carlisle Indians football team and refer to Eddie Mahan as "the greatest football player of all time"? Was Jim Thorpe the first Native American to win Olympic gold medals in the United States? Was Jim Thorpe primarily a coach and player rather than a trainer?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Eagle Feather', 'Eddie Mahan', 'Jim Thorpe']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+An actor in a musical film was also a United States Navy Combat veteran in World War II. This film was awarded The Golden Bear at the 50th Berlin International Film Festival.
+
+### notes
+['The 50th Berlin International Film Festival was held in 2000.', '"Magnolia," an American film directed by Paul Thomas Anderson, won the Golden Bear at the 50th festival.', '"Magnolia" is not a musical film.', 'The musical film "Chicago" opened the 54th Berlin International Film Festival but did not win the Golden Bear.', 'No evidence from the context supports an actor who was a US Navy combat veteran in WWII starring in a musical film that won the Golden Bear at the 50th Berlin International Film Festival.', 'The 50th Berlin International Film Festival occurred in 2000.', "The Golden Bear at the 50th festival was awarded to 'Magnolia,' an American film that is not a musical.", "'Chicago,' a musical film, opened the 54th Berlin International Film Festival but did not win the Golden Bear.", 'No evidence supports that an actor in a musical film who was also a United States Navy combat veteran in World War II starred in a film that won the Golden Bear at the 50th Berlin International Film Festival.', 'The 50th Berlin International Film Festival took place in 2000.', "The Golden Bear at the 50th festival was awarded to the American film 'Magnolia,' directed by Paul Thomas Anderson, which is not a musical film.", "'Chicago,' a musical film, opened the 54th Berlin International Film Festival but did not win the Golden Bear.", 'There is no evidence that an actor in a musical film who was also a United States Navy combat veteran in World War II starred in a Golden Bear-winning film at the 50th Berlin International Film Festival.']
+
+## Generated Outputs
+### reasoning
+The claim asserts two main points: first, that an actor in a musical film was a United States Navy combat veteran from World War II; second, that this musical film won the Golden Bear at the 50th Berlin International Film Festival. The notes clarify that the 50th festival took place in 2000 and that the Golden Bear winner was "Magnolia," which is not a musical film. Another musical film, "Chicago," did open the 54th festival but did not win the Golden Bear. Additionally, there is no evidence linking an actor who was a US Navy combat veteran in WWII to any musical film that won the Golden Bear at this festival. The claim seems to conflate unrelated facts about actors, films, and festival awards, and the specific connection between a WWII Navy combat veteran actor in a musical film winning the 50th Berlin International Film Festival Golden Bear is not supported by the information given.
+
+### query
+Did any musical film win the Golden Bear at the 50th Berlin International Film Festival in 2000? If not, which film won it? Was there any actor who was a United States Navy combat veteran in World War II starring in that winning film or any musical film shown at that festival? Did any actor who served as a US Navy combat veteran in WWII star in a musical film that won or was featured at the 50th Berlin International Film Festival?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['50th Berlin International Film Festival']. Documents remaining to be retrieved: ['Jason Robards', 'Magnolia (film)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

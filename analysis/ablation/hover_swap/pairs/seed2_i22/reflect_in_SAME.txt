@@ -1,0 +1,110 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given the input fields:
+
+- `claim`: a factual statement involving entities, dates, events, or named items that require verification or information support.
+- `notes`: a list of short factual evidence snippets relevant to the claim, containing domain-specific, historical, or encyclopedic information that may support or refute the claim.
+
+Produce the output field:
+
+- `query`: a concise and precise natural language search query or set of related questions designed to retrieve supporting documents or evidence to verify the claim. This query should capture all essential elements and relationships mentioned in the claim, broken down if needed into sub-questions, to maximize effective retrieval of relevant information.
+
+Task details and best practices:
+
+1. **Entity identification:** Identify named entities, dates, events, titles, and their relationships in the claim. Examples of entities include named people, teams, operas, publications, dates, roles (e.g., manager, composer), and titles of works.
+
+2. **Verification objectives:** The query must target the facts or relationships to verify or find evidence for, such as:
+   - Confirming existence and founding dates of organizations (e.g., sports teams).
+   - Identifying people connected to events or roles (e.g., players, managers).
+   - Clarifying authorship or composition of works (e.g., operas, books).
+   - Establishing classifications of items (e.g., whether a magazine is a periodical).
+   - Cross-referencing overlapping facts or claims (e.g., whether the same person held two roles).
+
+3. **Complex claims:** For compound claims linking multiple facts or entities, the query should reflect the complexity by explicitly including sub-questions that consider:
+   - Multiple entities’ identities and relationships.
+   - Time frames specified.
+   - Cross-comparisons (e.g., are composers the same or different?).
+
+4. **Use claim and notes collectively:** Use the domain knowledge embedded in the `notes` to disambiguate or focus the query by emphasizing key details or constraints (e.g., dates, specific seasons, role titles, publication type) that are potential retrieval targets.
+
+5. **Query clarity and completeness:** Formulate the query to be direct, unambiguous, and sufficiently detailed to locate authoritative documents or data that provide clear answers. Avoid vagueness or omission of critical conditions.
+
+6. **Generalizable approach:** 
+   - Extract entities and their relationships.
+   - Translate claim’s logic into question(s) that can be answered by factual sources.
+   - Incorporate qualifiers (dates, roles, composition, publication types) from notes.
+   - Cover all elements of the claim to verify the entirety of the statement.
+
+By following these instructions, the assistant will craft focused queries that improve retrieval accuracy of supporting evidence for verifying complex factual claims across diverse domains such as sports history, musicology, publishing, and more.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+On October 1st a Canadian politician born January 2, 1979, succeeded as leader of this political party in Canada. This is the same party that the Ontario New Democratic Youth is affiliated.
+
+### notes
+['Jagmeet Singh was born on January 2, 1979.', 'Jagmeet Singh succeeded as leader of the federal New Democratic Party on October 1, 2017.', 'The Ontario New Democratic Youth (ONDY) is affiliated with the Ontario New Democratic Party, which is linked to the federal New Democratic Party.', 'Jagmeet Singh is the leader of the New Democratic Party federally.', 'The October 1 leadership succession refers to the 2017 New Democratic Party leadership election.', 'Jagmeet Singh, born January 2, 1979, became leader of the federal New Democratic Party on October 1, 2017.', 'The Ontario New Democratic Youth is affiliated with the Ontario New Democratic Party, which is linked to the federal New Democratic Party.', 'Jagmeet Singh is the leader of the federal New Democratic Party as of October 1, 2017.', 'Jagmeet Singh was born on January 2, 1979.', 'Jagmeet Singh became leader of the federal New Democratic Party on October 1, 2017.', 'The Ontario New Democratic Youth (ONDY) is affiliated with the Ontario New Democratic Party, which is a provincial section of the federal New Democratic Party.', 'The New Democratic Party is a social democratic political party in Canada.', 'The Ontario New Democratic Party is connected to the federal New Democratic Party.', "Jagmeet Singh's leadership election on October 1, 2017, was for the federal New Democratic Party."]
+
+## Generated Outputs
+### reasoning
+The claim states that on October 1st, a Canadian politician born January 2, 1979, succeeded as leader of a political party in Canada, and that this party is the same one with which the Ontario New Democratic Youth (ONDY) is affiliated. The notes provide key facts that support verifying this claim: Jagmeet Singh was born on January 2, 1979, and he succeeded as leader of the federal New Democratic Party (NDP) on October 1, 2017. Additionally, the ONDY is affiliated with the Ontario New Democratic Party, which in turn is connected to the federal New Democratic Party. The leadership succession refers to the NDP leadership election held in 2017. The claim involves confirming the identity of the politician, the date of leadership succession, the party involved, and the affiliation between ONDY and the party. The query should therefore focus on verifying that Jagmeet Singh was born January 2, 1979; that he succeeded as leader of the federal NDP on October 1, 2017; that ONDY is affiliated with the Ontario NDP; and that the Ontario NDP is linked to the federal NDP.
+
+### query
+Who is Jagmeet Singh? What is his date of birth? When did Jagmeet Singh become leader of the federal New Democratic Party? What political party is the Ontario New Democratic Youth affiliated with? Is the Ontario New Democratic Party linked to the federal New Democratic Party? Does Jagmeet Singh’s leadership succession as NDP leader correspond to the October 1, 2017, leadership election?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Jagmeet Singh', 'New Democratic Party', 'Ontario New Democratic Youth']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+Goodbye Mr. Mackenzie is a country band with more members than the band that recorded "Make Them Gold".
+
+### notes
+['Goodbye Mr. Mackenzie is a Scottish alternative rock group, not a country band.', 'At their commercial peak, Goodbye Mr. Mackenzie had six members: Martin Metcalfe, John Duncan, Fin Wilson, Shirley Manson, Rona Scobie, and Derek Kelly.', "There is no information about the band that recorded 'Make Them Gold' in the given context, including its genre or number of members.", 'Goodbye Mr. Mackenzie is a Scottish alternative rock group, not a country band.', 'Goodbye Mr. Mackenzie had six members at their commercial peak: Martin Metcalfe, John Duncan, Fin Wilson, Shirley Manson, Rona Scobie, and Derek Kelly.', "There is no available information on the band that recorded 'Make Them Gold,' including its genre or number of members, making comparison impossible.", 'Goodbye Mr. Mackenzie is a Scottish alternative rock group, not a country band.', 'Goodbye Mr. Mackenzie had six members at their commercial peak: Martin Metcalfe, John Duncan, Fin Wilson, Shirley Manson, Rona Scobie, and Derek Kelly.', "There is no information about the band that recorded 'Make Them Gold', including its genre or number of members.", "It is therefore impossible to determine if Goodbye Mr. Mackenzie has more members than the band that recorded 'Make Them Gold'."]
+
+## Generated Outputs
+### reasoning
+The claim incorrectly classifies Goodbye Mr. Mackenzie as a country band, while they are actually a Scottish alternative rock group. To verify the comparative part of the claim, one must identify the band that recorded the song "Make Them Gold," determine their genre and number of members, and then compare it to Goodbye Mr. Mackenzie's six members. Since the notes lack information about the band associated with "Make Them Gold," a precise query needs to uncover: (1) the identity of the band that recorded "Make Them Gold," (2) that band's genre and number of members, and (3) confirm Goodbye Mr. Mackenzie's genre and membership count to accurately assess the claim’s validity.
+
+### query
+What band recorded the song "Make Them Gold"? How many members does that band have? What is the genre of that band? How many members does Goodbye Mr. Mackenzie have, and what is their music genre? Is Goodbye Mr. Mackenzie a country band or an alternative rock group?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Goodbye Mr. Mackenzie']. Documents remaining to be retrieved: ['Chvrches', 'Make Them Gold'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The cemetery that professional golf player George W. Wallace is buried at, is located at a park that is part of Golden Gate National Recreation Area.
+
+### notes
+['George W. Wallace was a U.S. Army officer and Medal of Honor recipient, not a professional golf player.', 'He is buried at San Francisco National Cemetery.', 'San Francisco National Cemetery is distinct from Golden Gate National Cemetery.', 'There is no information stating that San Francisco National Cemetery is part of Golden Gate National Recreation Area.', 'Golden Gate National Cemetery is located in San Bruno, California, south of San Francisco.', 'George W. Wallace was a U.S. Army officer and Medal of Honor recipient, not a professional golf player.', 'George W. Wallace is buried at San Francisco National Cemetery, located in the Presidio of San Francisco.', 'San Francisco National Cemetery is distinct from Golden Gate National Cemetery located in San Bruno, California.', 'There is no information that San Francisco National Cemetery is part of the Golden Gate National Recreation Area.', 'Golden Gate National Recreation Area includes various parks and military sites around the San Francisco Bay Area but does not include San Francisco National Cemetery.', 'Golden Gate National Cemetery is not within Golden Gate National Recreation Area and is located south of San Francisco.', 'George W. Wallace was a U.S. Army officer and Medal of Honor recipient, not a professional golf player.', 'George W. Wallace is buried at San Francisco National Cemetery.', 'San Francisco National Cemetery is located in the Presidio of San Francisco.', 'The Presidio of San Francisco is part of the Golden Gate National Recreation Area.', 'San Francisco National Cemetery is distinct from Golden Gate National Cemetery.', 'Golden Gate National Cemetery is located in San Bruno, California, and is not part of the Golden Gate National Recreation Area.']
+
+## Generated Outputs
+### reasoning
+The claim states that the cemetery where professional golf player George W. Wallace is buried is located within a park that is part of the Golden Gate National Recreation Area. The notes reveal several key facts: George W. Wallace was actually a U.S. Army officer and Medal of Honor recipient, not a professional golfer, which calls into question the identity component of the claim. Notes state he is buried at San Francisco National Cemetery. This cemetery is distinct from Golden Gate National Cemetery, and there is no information that San Francisco National Cemetery is part of the Golden Gate National Recreation Area. Additionally, Golden Gate National Cemetery is located in San Bruno, California, and not within the Golden Gate National Recreation Area. Therefore, the claim involves verifying (1) the identity and profession of George W. Wallace, (2) the cemetery where he is buried, (3) whether that cemetery lies within the Golden Gate National Recreation Area, and (4) the boundaries and components of the Golden Gate National Recreation Area regarding those cemeteries.
+
+### query
+Who was George W. Wallace and was he a professional golf player or a U.S. Army officer? Where is George W. Wallace buried? Is San Francisco National Cemetery located within the Golden Gate National Recreation Area? Is Golden Gate National Cemetery part of the Golden Gate National Recreation Area? What are the cemeteries included in the Golden Gate National Recreation Area? Where is Golden Gate National Cemetery located in relation to San Francisco and Golden Gate National Recreation Area?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['George W. Wallace', 'Presidio of San Francisco', 'San Francisco National Cemetery']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

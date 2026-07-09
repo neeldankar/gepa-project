@@ -1,0 +1,168 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given a factual `claim` that may involve multiple interconnected facts or named entities (such as people, films, places, products, organizations, historical dates, or other domain-specific items). Together with the claim, you will receive a set of `notes` consisting of partial background information, known details, plus observations that highlight gaps, ambiguities, or contradictions around the claim’s elements.
+
+Your goal is to generate a focused set of one or more `queries` designed to verify or fact-check each component of the claim. These queries will be used to retrieve relevant evidence or documents (e.g., from Wikipedia or other authoritative sources) to confirm or refute the claim.
+
+Key Requirements and Domain-Specific Heuristics:
+
+1. **Entity Disambiguation:**  
+   - Explicitly identify all named entities mentioned in the claim.  
+   - Always disambiguate entities carefully using relevant descriptors, such as: clarifying a film’s release year, a person’s profession or nationality, distinguishing similarly named entities (e.g., “Solo (Norwegian soft drink)” instead of just “Solo”).  
+   - This avoids confusion and ensures queries retrieve targeted, relevant information.
+
+2. **Decompose Complex Claims into Components:**  
+   - If the claim includes multiple assertions (e.g., an actor acted in multiple movies, a director’s involvement, a formation date of a military unit), break it down into multiple specific queries, each verifying one discrete fact.  
+   - Queries should be connected logically, covering the full scope of the claim without leaving holes.
+
+3. **Target Missing, Ambiguous, or Contradictory Information from the Notes:**  
+   - Use the notes to identify what is already known, what is uncertain or missing, and contradictions that must be resolved.  
+   - Formulate queries that directly address these gaps or conflicting points to retrieve clarifying evidence.  
+   - For example, if it’s unclear whether a publication is a book or a magazine article, or exact formation years of military units, or the nationality of a named individual, queries should reflect these specifics.
+
+4. **Cover Every Fact Embedded in the Claim:**  
+   - Ensure your queries collectively verify all factual statements contained in the claim.  
+   - Avoid partial coverage that might retrieve documents relevant to only some parts of the claim.
+
+5. **Precise and Clear Query Formulation:**  
+   - Queries must be explicit, well-structured factual questions or entity-relationship prompts, suitable for document retrieval.  
+   - Avoid vague, overly broad, or open-ended questions.
+
+6. **Include Relevant Domain Context:**  
+   - When necessary, incorporate domain knowledge or contextual clues into the queries.  
+   - For example, when verifying a film claim, specify the film’s release year or director; for geographical entities, specify if a cemetery is within a park; for military units, specify their formation dates and relation to associated conflicts or films.
+
+Generalizable Strategy:
+
+- Carefully read and parse the claim to extract all named entities and discrete fact assertions.  
+- Examine the provided notes thoroughly to uncover what details are confirmed, missing, ambiguous, or contradictory in relation to the claim.  
+- For each factual element and especially for each gap or contradiction, generate a focused, specific question or search prompt to obtain clear supporting or refuting evidence.  
+- Ensure queries are comprehensive and well-targeted to verify the full claim.  
+- Format the final output strictly as one or more `query` lines, with no additional explanation or commentary.
+
+Example Query Patterns:
+
+- For a film claim:  
+  - “Who starred in [Film Name] ([Year])?”  
+  - “Who directed [Film Name] ([Year])?”  
+  - “Is [Person’s Name] an actor in [Film Name] ([Year])?”  
+
+- For a publication claim:  
+  - “What is the publication format and date of [Title] by [Author]?”  
+  - “Is [Publication Name] a periodical or a book publisher?”  
+
+- For geography or burial claims:  
+  - “Where is [Person] buried?”  
+  - “Is [Cemetery Name] located within [Park or Geographic Area]?”  
+
+- For military or historical claims:  
+  - “When was [Military Unit] formed?”  
+  - “What units are featured in [Film or Book Title]?”  
+
+By following these instructions carefully, you will produce precise queries capable of guiding the retrieval of comprehensive, relevant documents to validate or refute complex factual claims.
+
+Input Format:  
+- `claim`: A factual statement with one or more components involving named entities or facts.  
+- `notes`: A list of strings summarizing current knowledge, including unknowns or contradictions.
+
+Output Format:  
+- `query`: One or more explicit, decomposed, and disambiguated search queries targeting factual verifications for each part of the claim.
+
+Remember:  
+- Queries must be factual questions fit for document retrieval.  
+- Always cover all aspects requiring verification.  
+- Disambiguate entities using descriptive context.  
+- Use notes to identify which facts require particular attention.  
+- Structure queries to maximize retrieval precision and relevance.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+"Leni" Riefenstahl was born before the Ukrainian director of "Young Doctors in Love".
+
+### notes
+['Leni Riefenstahl was born in 1902.', "The director of the 1982 film 'Young Doctors in Love' is Garry Marshall.", "'Young Doctors in Love' is an American comedy film, not linked to a Ukrainian director.", 'Leni Riefenstahl was born in 1902.', "Garry Marshall, an American, directed the 1982 film 'Young Doctors in Love'.", "'Young Doctors in Love' was not directed by a Ukrainian director.", 'Garry Marshall was born in 1934, after Leni Riefenstahl.', 'Leni Riefenstahl was born in 1902.', "'Young Doctors in Love' was directed by Garry Marshall, who was born in 1934.", "There is no Ukrainian director associated with the film 'Young Doctors in Love'.", 'Garry Marshall is American, not Ukrainian.']
+
+## Generated Outputs
+### reasoning
+The claim compares the birth year of "Leni" Riefenstahl to that of the Ukrainian director of "Young Doctors in Love." From the notes, it is established that Leni Riefenstahl was born in 1902 and that the director of "Young Doctors in Love" (a 1982 American comedy film) is Garry Marshall. Moreover, the notes clarify that the director of this film is not Ukrainian but American, which contradicts the claim's implication that the director is Ukrainian. Therefore, the critical factual points to verify are: the birth year of Leni Riefenstahl, the identity and nationality of the director of the 1982 film "Young Doctors in Love," and specifically whether any Ukrainian director is associated with this film. The claim about Riefenstahl’s birth before this Ukrainian director hinges on the director's identity and nationality being correct, which the notes suggest is false.
+
+### query
+Who directed the 1982 film "Young Doctors in Love"?  
+What is the nationality of Garry Marshall, the director of "Young Doctors in Love"?  
+Was there any Ukrainian director involved in the film "Young Doctors in Love"?  
+When was Leni Riefenstahl born?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Young Doctors in Love']. Documents remaining to be retrieved: ['Garry Marshall', 'Leni Riefenstahl'].
+
+
+
+# Example 2
+## Inputs
+### claim
+His screenplay of the film The Night Hunter was based on a novel. the writer and Nelly Sachs have not both won a Nobel Prize in Literature.
+
+### notes
+["The 1955 film 'The Night of the Hunter' had a screenplay by James Agee based on the 1953 novel by Davis Grubb.", 'Nelly Sachs was a Nobel Prize in Literature laureate.', 'James Agee and Davis Grubb have not won a Nobel Prize in Literature.', 'The 1955 film The Night of the Hunter had a screenplay by James Agee based on the 1953 novel by Davis Grubb.', 'Nelly Sachs was awarded the Nobel Prize in Literature.', 'Neither James Agee nor Davis Grubb has won the Nobel Prize in Literature.', "The screenplay of the 1955 film 'The Night of the Hunter' was written by James Agee based on the 1953 novel by Davis Grubb.", 'Nelly Sachs was awarded the Nobel Prize in Literature.', 'Neither James Agee nor Davis Grubb has won the Nobel Prize in Literature.']
+
+## Generated Outputs
+### reasoning
+The claim consists of two parts: (1) a screenplay of the film "The Night Hunter" (likely referring to "The Night of the Hunter") was based on a novel, and (2) the writer of that screenplay and Nelly Sachs have not both won a Nobel Prize in Literature. 
+
+From the notes, it is clarified that the 1955 film "The Night of the Hunter" (note the correct title) had a screenplay by James Agee based on the 1953 novel by Davis Grubb. Also, Nelly Sachs is confirmed as a Nobel laureate in Literature, while James Agee and Davis Grubb have not won the Nobel Prize.
+
+To verify the whole claim, it is necessary to:
+- Confirm that the film "The Night of the Hunter" (1955) screenplay was by James Agee and that it was based on the novel by Davis Grubb.
+- Confirm that Nelly Sachs is a Nobel Prize in Literature laureate.
+- Confirm that neither the writer (James Agee) nor the original novelist (Davis Grubb) of that film have won the Nobel Prize in Literature.
+
+These facts will verify both parts of the claim comprehensively.
+
+### query
+What is the screenplay authorship and novel source for the 1955 film "The Night of the Hunter"?  
+Has James Agee ever won the Nobel Prize in Literature?  
+Has Davis Grubb ever won the Nobel Prize in Literature?  
+Has Nelly Sachs ever won the Nobel Prize in Literature?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['James Agee', 'The Night of the Hunter (film)']. Documents remaining to be retrieved: ['Nelly Sachs'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Darren Stanley Hayes was born before this lead guitarist of the band that recorded Playin' Around.
+
+### notes
+['Darren Stanley Hayes is an Australian singer-songwriter born in 1972.', "Playin' Around is a CD/DVD by the Swedish pop band Play (female members: Anaïs Lameche, Anna Sundstrand, Faye Hamlin, Rosie Munter).", 'No information about the lead guitarist of Play or their birth date found in the context.', 'No direct connection between Darren Stanley Hayes and the band Play or its lead guitarist in the provided data.', 'Darren Stanley Hayes was born in 1972.', "The band Play, which recorded Playin' Around, consists of female members and does not have a lead guitarist.", 'No information is available about a lead guitarist for the band Play.', 'No direct evidence links any lead guitarist mentioned in the context to the band Play.', 'Therefore, the birth date comparison between Darren Hayes and the lead guitarist of Play cannot be established.', 'Darren Stanley Hayes was born in 1972.', "The band Play, which recorded Playin' Around, consists of female members and does not have a lead guitarist.", 'There is no information about a lead guitarist for the band Play available.', 'As Play has no lead guitarist, no birth date comparison can be made between Darren Hayes and a lead guitarist of Play.', "The claim that Darren Hayes was born before the lead guitarist of the band that recorded Playin' Around cannot be verified because no such lead guitarist exists."]
+
+## Generated Outputs
+### reasoning
+The claim references Darren Stanley Hayes, whose birthdate is to be compared with that of a lead guitarist of a band that recorded "Playin' Around." To verify this, first, we need to identify who Darren Stanley Hayes is, specifically his birthdate. Second, we must determine which band recorded "Playin' Around" and identify its lead guitarist. Lastly, we need that lead guitarist’s birthdate for a chronological comparison. Since the claim hinges on dates and specific individuals and bands, queries must focus on verifying the birthdate of Darren Stanley Hayes, identifying the band that recorded "Playin' Around," identifying the lead guitarist of that band, and then finding the guitarist's birthdate.
+
+### query
+Who is Darren Stanley Hayes and what is his birthdate?  
+Which band recorded the song or album titled "Playin' Around"?  
+Who is the lead guitarist of the band that recorded "Playin' Around"?  
+What is the birthdate of the lead guitarist of the band that recorded "Playin' Around"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ["Playin' Around"]. Documents remaining to be retrieved: ['Anaïs Lameche', 'Darren Hayes'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

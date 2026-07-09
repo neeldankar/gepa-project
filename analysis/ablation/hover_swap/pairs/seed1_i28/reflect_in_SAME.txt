@@ -1,0 +1,126 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Instruction for the assistant:
+
+You are provided with two input fields: 
+- `claim`: A factual statement or set of statements whose truth or accuracy needs to be evaluated or verified.
+- `notes`: A list of text snippets, pieces of information, or context relevant to the claim.
+
+Your task is to produce an output field:
+- `query`: One or more precise, targeted, and factually grounded natural language questions or search queries derived from the claim and the notes, designed to retrieve all necessary documents or evidence to verify the claim fully.
+
+Guidelines for producing the `query`: 
+
+1. **Purpose**: The goal of the query is to facilitate retrieval of supporting or refuting evidence about the claim. This means the query must explicitly focus on key entities, facts, and relationships mentioned in the claim and implied or highlighted in the notes.
+
+2. **Use of notes**: 
+   - Extract relevant factual or contextual information from the notes to clarify ambiguous or incomplete parts of the claim.
+   - Incorporate key entities, dates, names, titles, and other factual data from notes to refine the query so that all required facts to verify the claim can be retrieved.
+   - Identify specific elements that remain unverified or partially verified in the notes and make sure the query targets those gaps explicitly.
+
+3. **Precision and Completeness**: 
+   - Include all principal components of the claim in the query: persons, places, works (like songs, films, books, or other creative works), dates, roles, and relationships.
+   - When multiple facts or assertions in the claim require verification, combine them into a single comprehensive query or multiple related queries, ensuring that all aspects are covered.
+   - Use the exact names, titles, and terminology as presented in the claim and the notes for precision.
+
+4. **Address ambiguity or missing information in claim**:
+   - If the claim uses vague designations (e.g., "the town", "the actress") without explicit identification, include questions that seek to identify or clarify those.
+   - When a claim involves verifying association or overlap (such as shared producers of two films), explicitly request information linking those entities.
+
+5. **Examples of question structures to include**:
+   - "Who is/are...?"
+   - "Is [entity/individual] credited with ...?"
+   - "Did [person] play/portray [character] in [work]?"
+   - "Are the producers of [film A] and [film B] the same?"
+   - "Which towns are administered by [council]? Are any located near [landmark]?"
+   - "Who wrote the lyrics/music for [song]? Are X or Y credited?"
+   
+6. **Domain-specific considerations**:
+   - For music-related claims, include songwriter/lyricist/performer credits as relevant.
+   - For film or acting claims, clarify roles, actors’ identities, and producer associations.
+   - For geographical claims, focus on administrative entities (e.g., councils), geographic proximity to named landmarks, and confirm town identities.
+   - For ambiguous or unclear entities mentioned in the claim, explicitly request identification or clarification.
+
+7. **Focus on verification of claim components rather than general exploratory queries**:
+   - Your query should be targeted to retrieve documents that directly confirm or refute each factual assertion in the claim.
+   - Avoid overly broad or vague queries.
+
+In summary, your query should be a carefully composed, fact-focused, and comprehensive question or set of questions that use the claim and notes to ensure retrieval of all necessary documents and evidence to verify each part of the claim completely.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The person who claimed that Castro was killed in the 26th July Movement but was proven wrong by the man who Ruby Hart Phillips was at odds with, first served as President of Cuba in 1940.
+
+### notes
+["Fulgencio Batista publicly claimed that Fidel Castro was killed during the 26th July Movement's landing.", "Herbert Matthews, a New York Times correspondent, disproved Batista's claim by revealing Castro was alive in the Sierra Maestra mountains.", 'Ruby Hart Phillips was a New York Times correspondent who covered Cuba with a pro-Batista and anti-Castro perspective and was at odds with Herbert Matthews.', 'Fulgencio Batista first served as President of Cuba in 1940.', "Fulgencio Batista publicly claimed that Fidel Castro was killed during the 26th of July Movement's landing.", "Herbert Matthews, a New York Times correspondent, disproved Batista's claim by revealing that Castro was alive in the Sierra Maestra mountains.", 'Ruby Hart Phillips was a New York Times correspondent with a pro-Batista and anti-Castro perspective who was at odds with Herbert Matthews.', 'Fulgencio Batista first served as President of Cuba in 1940.', "Fulgencio Batista publicly claimed that Fidel Castro was killed during the 26th of July Movement's landing.", "Herbert Matthews, a New York Times correspondent, disproved Batista's claim by revealing that Castro was alive in the Sierra Maestra mountains.", 'Ruby Hart Phillips was a New York Times correspondent who held a pro-Batista and anti-Castro perspective and was at odds with Herbert Matthews.', 'Fulgencio Batista first served as President of Cuba in 1940.']
+
+## Generated Outputs
+### reasoning
+The claim involves multiple linked assertions: 
+1. Fulgencio Batista claimed Fidel Castro was killed during the 26th July Movement's landing.
+2. Herbert Matthews disproved this claim by verifying Castro was alive.
+3. Ruby Hart Phillips was at odds with Herbert Matthews.
+4. The person who made the initial false claim (Batista) first served as President of Cuba in 1940.
+
+The notes confirm all these points individually — Batista made the claim, Matthews disproved it, Phillips was at odds with Matthews, and Batista first served as Cuban President in 1940. To fully verify the entire claim, the query should seek information that confirms Batista was the one who made the claim, Matthews was the one who disproved it and was opposed by Phillips, and Batista's first presidency was in 1940. The query needs to connect these facts explicitly for verification.
+
+### query
+Who publicly claimed that Fidel Castro was killed during the 26th July Movement landing? Did Herbert Matthews, a New York Times correspondent, prove that Fidel Castro was alive and thus disprove that claim? Was Ruby Hart Phillips a New York Times correspondent covering Cuba who was at odds with Herbert Matthews? Did Fulgencio Batista first serve as President of Cuba in 1940?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Herbert Matthews', 'Ruby Hart Phillips']. Documents remaining to be retrieved: ['Fulgencio Batista'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The grandfather of Rainer Hoss conducted the negotiations with the owners and was the longest serving resident-commandant of Auschwitz concentration and extermination camp.
+
+### notes
+['There is no information or evidence in the provided context or notes to verify that the grandfather of Rainer Hoss conducted any negotiations with owners of Auschwitz concentration camp.', 'There is no information or evidence in the provided context or notes confirming that the grandfather of Rainer Hoss was the longest-serving resident-commandant of Auschwitz concentration and extermination camp.', 'The context lists several known SS personnel involved in Auschwitz, but none named Rainer Hoss or any relative with the roles claimed.', 'The Auschwitz concentration camp was operated and administered by Nazi SS units with no mention of owner negotiations.', 'There is no information in the notes or context verifying that the grandfather of Rainer Hoss conducted negotiations with the owners of Auschwitz concentration camp.', 'There is no evidence provided confirming that the grandfather of Rainer Hoss was the longest-serving resident-commandant of Auschwitz concentration and extermination camp.', 'The Auschwitz concentration camp was operated and administered by Nazi SS personnel, with no mention of owner negotiations or a commandant named Hoss.', 'Known commandants and SS officers involved with Auschwitz listed in the context do not include anyone named Rainer Hoss or his relatives.', 'There is no evidence that the grandfather of Rainer Hoss conducted negotiations with any owners of the Auschwitz concentration camp.', 'The Auschwitz concentration camp was operated by SS personnel, not private owners, and there are no records of owner negotiations.', 'There is no evidence that the grandfather of Rainer Hoss was the longest-serving resident-commandant of Auschwitz concentration camp.', 'No individuals named Rainer Hoss or relatives with similar roles are mentioned among the known Auschwitz SS personnel or commandants.', 'The claim about the grandfather of Rainer Hoss is unverified and unsupported based on the available context and notes.']
+
+## Generated Outputs
+### reasoning
+The claim involves two specific assertions: first, that the grandfather of Rainer Hoss was responsible for conducting negotiations with the owners (presumably of the Auschwitz camp), and second, that he was the longest-serving resident-commandant of the Auschwitz concentration and extermination camp. To verify this claim, we need detailed information about the family of Rainer Hoss, specifically his grandfather's identity and role. Additionally, we must verify who the commandants of Auschwitz were, their tenures, and their roles regarding negotiations with the camp's owners or authorities. Since the claim involves a historical figure (the Auschwitz commandant), cross-referencing historical records on Auschwitz commandants with any available genealogical information about Rainer Hoss is essential to validate the claim entirely.
+
+### query
+Who was the grandfather of Rainer Hoss? Did he serve as the commandant of Auschwitz concentration and extermination camp? Was he the longest-serving resident-commandant of Auschwitz? Did he conduct negotiations with the owners or authorities of Auschwitz camp? What are the names and tenures of the Auschwitz concentration camp commandants? Is there any historical record linking Rainer Hoss’s grandfather to negotiations related to Auschwitz?
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Gerstein Report', 'Rainer Höss', 'Rudolf Höss'].
+
+
+
+# Example 3
+## Inputs
+### claim
+A song from the Kathy Mattea discography, that peaked at #1 on the Billboard Hot Country Singles & Tracks chart, was first recorded by a singer that sang country music.
+
+### notes
+['No song by Kathy Mattea listed in the provided context reached #1 on the Billboard Hot Country Singles & Tracks chart; the highest positions mentioned are #3.', '"Love at the Five and Dime" was first recorded by Nanci Griffith, who is a country music artist, before Kathy Mattea recorded it.', 'Other songs first recorded by different artists before Kathy Mattea include no information about them peaking at #1 when recorded by Mattea.', 'Therefore, there is no evidence from the provided information that a Kathy Mattea song that peaked at #1 was first recorded by a country music singer.', 'No song by Kathy Mattea reached #1 on the Billboard Hot Country Singles & Tracks chart; the highest positions are #3 or lower.', '"Love at the Five and Dime" was first recorded by Nanci Griffith, a country music artist, before Kathy Mattea recorded it.', '"Love at the Five and Dime" peaked at #3 on the Billboard Hot Country Singles & Tracks chart when recorded by Kathy Mattea.', 'There is no evidence that any Kathy Mattea song that peaked at #1 on the chart was first recorded by a country music singer.', "No song from Kathy Mattea's discography reached #1 on the Billboard Hot Country Singles & Tracks chart; the highest position achieved was #3.", '"Love at the Five and Dime" was first recorded by Nanci Griffith, a country music artist, before Kathy Mattea recorded it.', '"Love at the Five and Dime" peaked at #3 on the Billboard Hot Country Singles & Tracks chart when recorded by Kathy Mattea.', 'There is no evidence that a Kathy Mattea song that peaked at #1 was first recorded by a country music singer.']
+
+## Generated Outputs
+### reasoning
+The claim states that a song from Kathy Mattea's discography peaked at #1 on the Billboard Hot Country Singles & Tracks chart and that this song was first recorded by a country music singer. The notes reveal that no Kathy Mattea song reached #1 on the Billboard Hot Country Singles & Tracks chart; her highest chart position mentioned is #3. Although some songs Kathy Mattea recorded were first recorded by other artists who sing country music, such as "Love at the Five and Dime" first recorded by Nanci Griffith, none of these songs are shown to have hit #1 in Kathy Mattea's version. Therefore, to fully verify the claim, we need to check Kathy Mattea's discography for any #1 hits on that chart and investigate whether those songs were previously recorded by country music artists.
+
+### query
+Did any song from Kathy Mattea's discography reach #1 on the Billboard Hot Country Singles & Tracks chart? If so, which songs? For each such song, was it first recorded by a singer associated with country music? Specifically, who originally recorded songs that Kathy Mattea later performed, and what was their genre affiliation? Additionally, confirm if Kathy Mattea's #1 Billboard Hot Country Singles & Tracks songs, if any, had prior recordings by country artists.
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Come from the Heart', 'Don Williams discography', 'Kathy Mattea discography'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

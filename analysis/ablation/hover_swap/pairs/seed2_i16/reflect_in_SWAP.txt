@@ -1,0 +1,118 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given the input fields:
+
+- `claim`: a factual statement involving entities, dates, events, or named items that require verification or information support.
+- `notes`: a list of short factual evidence snippets relevant to the claim, containing domain-specific, historical, or encyclopedic information that may support or refute the claim.
+
+Produce the output field:
+
+- `query`: a concise and precise natural language search query or set of related questions designed to retrieve supporting documents or evidence to verify the claim. This query should capture all essential elements and relationships mentioned in the claim, broken down if needed into sub-questions, to maximize effective retrieval of relevant information.
+
+Task details and best practices:
+
+1. **Entity identification:** Identify named entities, dates, events, titles, and their relationships in the claim. Examples of entities include named people, teams, operas, publications, dates, roles (e.g., manager, composer), and titles of works.
+
+2. **Verification objectives:** The query must target the facts or relationships to verify or find evidence for, such as:
+   - Confirming existence and founding dates of organizations (e.g., sports teams).
+   - Identifying people connected to events or roles (e.g., players, managers).
+   - Clarifying authorship or composition of works (e.g., operas, books).
+   - Establishing classifications of items (e.g., whether a magazine is a periodical).
+   - Cross-referencing overlapping facts or claims (e.g., whether the same person held two roles).
+
+3. **Complex claims:** For compound claims linking multiple facts or entities, the query should reflect the complexity by explicitly including sub-questions that consider:
+   - Multiple entities’ identities and relationships.
+   - Time frames specified.
+   - Cross-comparisons (e.g., are composers the same or different?).
+
+4. **Use claim and notes collectively:** Use the domain knowledge embedded in the `notes` to disambiguate or focus the query by emphasizing key details or constraints (e.g., dates, specific seasons, role titles, publication type) that are potential retrieval targets.
+
+5. **Query clarity and completeness:** Formulate the query to be direct, unambiguous, and sufficiently detailed to locate authoritative documents or data that provide clear answers. Avoid vagueness or omission of critical conditions.
+
+6. **Generalizable approach:** 
+   - Extract entities and their relationships.
+   - Translate claim’s logic into question(s) that can be answered by factual sources.
+   - Incorporate qualifiers (dates, roles, composition, publication types) from notes.
+   - Cover all elements of the claim to verify the entirety of the statement.
+
+By following these instructions, the assistant will craft focused queries that improve retrieval accuracy of supporting evidence for verifying complex factual claims across diverse domains such as sports history, musicology, publishing, and more.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Meesha Shafi, Strings, Ali Azmat and Junaid Khan are judges on the show Music Icons. The producer and singer of Aaina joined them.
+
+### notes
+["Meesha Shafi, Strings, Ali Azmat, and Shahzad Hasan were judges on the singing talent show 'Music Icons' airing on ARY Digital TV as of April 2013.", "There is no confirmed evidence that Junaid Khan was a judge on 'Music Icons'.", "No information confirms that the producer and singer of 'Aaina' joined the judges on 'Music Icons'.", 'Meesha Shafi, Strings, Ali Azmat, and Shahzad Hasan were judges on Music Icons as of April 2013.', 'There is no confirmed evidence that Junaid Khan was a judge on Music Icons.', 'No information confirms that the producer and singer of Aaina joined the judges on Music Icons.', 'Meesha Shafi, Strings, Ali Azmat, and Shahzad Hasan were judges on Music Icons as of April 2013, with Alamgir (producer and singer of Aaina) joining them.', 'There is no confirmed information that Junaid Khan was a judge on Music Icons.', 'Alamgir, known for producing and singing the Aaina album, joined the Music Icons judging panel in April 2013.', 'The judging panel for Music Icons in April 2013 included Meesha Shafi, Strings, Ali Azmat, Shahzad Hasan, and Alamgir.']
+
+## Generated Outputs
+### reasoning
+The claim lists four individuals or groups as judges on the show Music Icons: Meesha Shafi, Strings, Ali Azmat, and Junaid Khan. It also states that the producer and singer of a production named Aaina joined them. To verify this claim, the essential information to confirm is whether these four judges were indeed judges on the show Music Icons, in what season or time period, and if the producer and singer of Aaina also became a judge or joined the panel. Since no additional notes or context are provided, the query must focus on identifying the judges of the show Music Icons, verifying the presence of Meesha Shafi, Strings, Ali Azmat, Junaid Khan as judges, and clarifying the involvement of the producer and singer associated with Aaina on the same show.
+
+### query
+Who were the judges on the show Music Icons? Specifically, were Meesha Shafi, Strings, Ali Azmat, and Junaid Khan judges on Music Icons? Did the producer and singer of the production called Aaina join the judging panel of Music Icons? Provide details or timelines for their participation.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Aaina (album)', 'Alamgir (pop singer)']. Documents remaining to be retrieved: ['Ali Azmat'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The movie Midnight Madness was released before the sequel-in-part David Shire composed the score for in 1985.
+
+### notes
+['Midnight Madness (film) was released in 1980.', "No information was found about a sequel to Midnight Madness or David Shire's involvement in 1985.", 'Claim about a sequel-in-part scored by David Shire in 1985 is unsupported by the current context.', 'Midnight Madness (1980 film) has no known sequels or spin-offs involving David Shire.', "David Shire composed the score for 'Return to Oz' (1985), a sequel-in-part to 'The Wizard of Oz', unrelated to 'Midnight Madness'.", "No evidence supports a sequel of 'Midnight Madness' in 1985 or David Shire’s involvement with such.", "The claim confuses 'Midnight Madness' with distinct films and their respective scores.", 'Midnight Madness (film) was released in 1980.', "David Shire composed the score for 'Return to Oz' in 1985, which is a sequel-in-part to 'The Wizard of Oz', unrelated to 'Midnight Madness'.", "No evidence supports a sequel-in-part related to 'Midnight Madness' scored by David Shire in 1985.", "The claim confuses 'Midnight Madness' with other films and their scores by David Shire."]
+
+## Generated Outputs
+### reasoning
+The claim involves two key points: the release date of the movie "Midnight Madness" and the existence of a sequel-in-part for which David Shire composed the score in 1985. The notes confirm that "Midnight Madness" was released in 1980 but provide no evidence of a sequel-in-part or David Shire’s involvement in 1985. To verify the claim, it is necessary to check if there was any sequel or related work to "Midnight Madness" released around 1985 and whether David Shire composed its score. The query must focus on confirming the release dates and the connection between David Shire and the soundtrack of any such sequel or related movie.
+
+### query
+Was there a sequel or sequel-in-part to the movie "Midnight Madness" released around 1985? Did David Shire compose the score for any sequel or related movie to "Midnight Madness" in 1985? Confirm the release date of the original "Midnight Madness" film as well as any film continuation and the involvement of David Shire in its score composition.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['David Shire', 'Midnight Madness (film)']. Documents remaining to be retrieved: ['Return to Oz'].
+
+
+
+# Example 3
+## Inputs
+### claim
+"Experimenter" stars the actress who won critical acclaim with her appearance as Johnny Depp in Tim Burton's "Beetlejuice". The producer of "Experimenter" also produced Man Camp.
+
+### notes
+["Winona Ryder won critical acclaim for her role in Tim Burton's Beetlejuice.", 'No information about the cast or producer of Experimenter is provided.', 'No information about the producer of Man Camp is available in the provided context.', "Winona Ryder, who won critical acclaim for 'Beetlejuice,' stars in 'Experimenter.'", "Uri Singer produced 'Experimenter.'", "No evidence found linking Uri Singer as the producer of 'Man Camp.'", "Winona Ryder won critical acclaim for her role as Lydia Deetz in Tim Burton's Beetlejuice and stars in Experimenter.", 'Uri Singer produced Experimenter.', 'No information found linking Uri Singer or any producer of Experimenter to producing Man Camp.']
+
+## Generated Outputs
+### reasoning
+The claim has two parts to verify: 
+1. Whether the actress starring in "Experimenter" is the same actress who received critical acclaim for playing a character alongside Johnny Depp in Tim Burton's "Beetlejuice". The note states Winona Ryder won critical acclaim in "Beetlejuice", and Johnny Depp co-starred there, so the claim references Winona Ryder. To verify this first part, we need to check the cast of "Experimenter" to confirm if Winona Ryder starred in it.
+2. Whether the producer of "Experimenter" also produced "Man Camp". The notes do not provide producer information for either film. Therefore, we must check if the producer(s) of "Experimenter" also worked on "Man Camp".
+
+Thus, the query should focus on:
+- Who starred in "Experimenter"? Did Winona Ryder star in it?
+- Who produced "Experimenter"?
+- Who produced "Man Camp"?
+- Is there overlap between the producers of these two films?
+
+### query
+Who starred in the film "Experimenter"? Was Winona Ryder the lead actress in "Experimenter"? Who produced "Experimenter"? Who produced the film "Man Camp"? Did the producer(s) of "Experimenter" also produce "Man Camp"?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Uri Singer', 'Winona Ryder']. Documents remaining to be retrieved: ['Man Camp'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

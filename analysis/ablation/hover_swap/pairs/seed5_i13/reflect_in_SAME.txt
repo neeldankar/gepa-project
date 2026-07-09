@@ -1,0 +1,180 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given a factual `claim` that may involve multiple interconnected facts or named entities (such as people, films, places, products, organizations, historical dates, or other domain-specific items). Together with the claim, you will receive a set of `notes` consisting of partial background information, known details, plus observations that highlight gaps, ambiguities, or contradictions around the claim’s elements.
+
+Your goal is to generate a focused set of one or more `queries` designed to verify or fact-check each component of the claim. These queries will be used to retrieve relevant evidence or documents (e.g., from Wikipedia or other authoritative sources) to confirm or refute the claim.
+
+Key Requirements and Domain-Specific Heuristics:
+
+1. **Entity Disambiguation:**  
+   - Explicitly identify all named entities mentioned in the claim.  
+   - Always disambiguate entities carefully using relevant descriptors, such as: clarifying a film’s release year, a person’s profession or nationality, distinguishing similarly named entities (e.g., “Solo (Norwegian soft drink)” instead of just “Solo”).  
+   - This avoids confusion and ensures queries retrieve targeted, relevant information.
+
+2. **Decompose Complex Claims into Components:**  
+   - If the claim includes multiple assertions (e.g., an actor acted in multiple movies, a director’s involvement, a formation date of a military unit), break it down into multiple specific queries, each verifying one discrete fact.  
+   - Queries should be connected logically, covering the full scope of the claim without leaving holes.
+
+3. **Target Missing, Ambiguous, or Contradictory Information from the Notes:**  
+   - Use the notes to identify what is already known, what is uncertain or missing, and contradictions that must be resolved.  
+   - Formulate queries that directly address these gaps or conflicting points to retrieve clarifying evidence.  
+   - For example, if it’s unclear whether a publication is a book or a magazine article, or exact formation years of military units, or the nationality of a named individual, queries should reflect these specifics.
+
+4. **Cover Every Fact Embedded in the Claim:**  
+   - Ensure your queries collectively verify all factual statements contained in the claim.  
+   - Avoid partial coverage that might retrieve documents relevant to only some parts of the claim.
+
+5. **Precise and Clear Query Formulation:**  
+   - Queries must be explicit, well-structured factual questions or entity-relationship prompts, suitable for document retrieval.  
+   - Avoid vague, overly broad, or open-ended questions.
+
+6. **Include Relevant Domain Context:**  
+   - When necessary, incorporate domain knowledge or contextual clues into the queries.  
+   - For example, when verifying a film claim, specify the film’s release year or director; for geographical entities, specify if a cemetery is within a park; for military units, specify their formation dates and relation to associated conflicts or films.
+
+Generalizable Strategy:
+
+- Carefully read and parse the claim to extract all named entities and discrete fact assertions.  
+- Examine the provided notes thoroughly to uncover what details are confirmed, missing, ambiguous, or contradictory in relation to the claim.  
+- For each factual element and especially for each gap or contradiction, generate a focused, specific question or search prompt to obtain clear supporting or refuting evidence.  
+- Ensure queries are comprehensive and well-targeted to verify the full claim.  
+- Format the final output strictly as one or more `query` lines, with no additional explanation or commentary.
+
+Example Query Patterns:
+
+- For a film claim:  
+  - “Who starred in [Film Name] ([Year])?”  
+  - “Who directed [Film Name] ([Year])?”  
+  - “Is [Person’s Name] an actor in [Film Name] ([Year])?”  
+
+- For a publication claim:  
+  - “What is the publication format and date of [Title] by [Author]?”  
+  - “Is [Publication Name] a periodical or a book publisher?”  
+
+- For geography or burial claims:  
+  - “Where is [Person] buried?”  
+  - “Is [Cemetery Name] located within [Park or Geographic Area]?”  
+
+- For military or historical claims:  
+  - “When was [Military Unit] formed?”  
+  - “What units are featured in [Film or Book Title]?”  
+
+By following these instructions carefully, you will produce precise queries capable of guiding the retrieval of comprehensive, relevant documents to validate or refute complex factual claims.
+
+Input Format:  
+- `claim`: A factual statement with one or more components involving named entities or facts.  
+- `notes`: A list of strings summarizing current knowledge, including unknowns or contradictions.
+
+Output Format:  
+- `query`: One or more explicit, decomposed, and disambiguated search queries targeting factual verifications for each part of the claim.
+
+Remember:  
+- Queries must be factual questions fit for document retrieval.  
+- Always cover all aspects requiring verification.  
+- Disambiguate entities using descriptive context.  
+- Use notes to identify which facts require particular attention.  
+- Structure queries to maximize retrieval precision and relevance.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+American film director and actor Eli Roth, famous for his role as Donny "The Bear Jew" Donowitz, wrote the 2012 film that was directed by the founder of Soul Temple Records.
+
+### notes
+['Eli Roth co-wrote the 2012 film Aftershock, which was directed by Nicolás López.', 'There is no evidence from the context that Nicolás López is the founder of Soul Temple Records.', "Eli Roth co-wrote the 2012 film 'Aftershock', directed by Nicolás López.", 'No evidence links Nicolás López to being the founder of Soul Temple Records.', "Eli Roth co-wrote the 2012 film 'Aftershock', which was directed by Nicolás López.", 'There is no evidence that Nicolás López is the founder of Soul Temple Records.', "Soul Temple Entertainment is associated with RZA, who produced the soundtrack and co-wrote, acted in, and directed 'The Man with the Iron Fists'.", 'The claim that the 2012 film written by Eli Roth was directed by the founder of Soul Temple Records is unsupported by the given information.']
+
+## Generated Outputs
+### reasoning
+The claim includes several interconnected facts: 
+1) Eli Roth is an American film director and actor. 
+2) He is famous for his role as Donny "The Bear Jew" Donowitz. 
+3) Eli Roth wrote a film released in 2012. 
+4) The film was directed by the founder of Soul Temple Records.
+
+To verify this claim, we must: 
+- Confirm Eli Roth’s nationality and professions.
+- Confirm Eli Roth’s acting role as Donny "The Bear Jew" Donowitz.
+- Identify the 2012 film that Eli Roth wrote.
+- Determine the founder of Soul Temple Records.
+- Verify if this founder directed any film in 2012, particularly the one written by Eli Roth.
+
+The key ambiguity or missing detail is the connection between the 2012 film written by Eli Roth and the director who is the founder of Soul Temple Records. Soul Temple Records founder must be identified and cross-checked for a 2012 directorial debut or work connected to Eli Roth’s writing.
+
+### query
+Who is Eli Roth, and what is his nationality and professions?  
+What acting roles is Eli Roth known for, specifically is he known for playing Donny "The Bear Jew" Donowitz?  
+Which film(s) did Eli Roth write that were released in 2012?  
+Who is the founder of Soul Temple Records?  
+Has the founder of Soul Temple Records directed any film(s), and if so, which film(s)?  
+Did the founder of Soul Temple Records direct the 2012 film(s) written by Eli Roth?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Eli Roth']. Documents remaining to be retrieved: ['Soul Temple Records', 'The Man with the Iron Fists'].
+
+
+
+# Example 2
+## Inputs
+### claim
+This publication is published more often than Bookmarks. Keith Moon was inducted into its Hall of Fame in the early 'eighties.
+
+### notes
+["Keith Moon was inducted into the Modern Drummer Hall of Fame in 1982, which corresponds to the early 'eighties.", 'Modern Drummer is a publication that has a Hall of Fame for drummers.', 'No information about the publication frequency of Modern Drummer or the magazine/book named Bookmarks is provided.', "The claim about the publication's frequency compared to Bookmarks is not supported by the context.", "Keith Moon was inducted into the Modern Drummer Hall of Fame in 1982, confirming the induction in the early 'eighties.", 'Modern Drummer is a monthly publication.', 'No information is provided about the publication frequency of Bookmarks, so a comparison of publishing frequency cannot be made.', 'The claim that Modern Drummer is published more often than Bookmarks is unsubstantiated based on the current information.', "Keith Moon was inducted into the Modern Drummer Hall of Fame in 1982, confirming the early 'eighties induction.", 'Modern Drummer is a monthly publication.', "There is no available information on the publication frequency of Bookmarks, so a comparison with Modern Drummer's publication frequency cannot be made.", 'The claim that this publication is published more often than Bookmarks is unconfirmed.']
+
+## Generated Outputs
+### reasoning
+The claim involves two related factual assertions: first, that a certain publication is published more often than another publication named "Bookmarks"; and second, that Keith Moon, the drummer of The Who, was inducted into this publication's Hall of Fame in the early 1980s. The claim does not specify the name of the publication that was published more often than Bookmarks and into whose Hall of Fame Keith Moon was inducted. To verify this claim, we need to clarify these points:
+
+1. Identify the publication that the claim refers to, which is compared to "Bookmarks" regarding publication frequency.
+2. Determine the publication frequency of both this publication and Bookmarks to verify which one is published more often.
+3. Verify whether Keith Moon was inducted into this publication's Hall of Fame, and if so, whether this happened in the early 1980s.
+
+Since the publication's name is missing, queries must be broadly scoped to trace which publications have a Hall of Fame including Keith Moon and how their publication schedules compare to Bookmarks. Alternatively, if the claim implies a known publication associated with a Hall of Fame regarding rock or music figures, that publication should be identified and verified accordingly.
+
+### query
+1. What is the publication frequency of Bookmarks magazine?  
+2. Which publications have inducted Keith Moon into a Hall of Fame, and what are the publication frequencies of those publications?  
+3. Did Keith Moon join any Hall of Fame associated with a publication in the early 1980s? If so, which publication and when?  
+4. Is there any publication known to be published more frequently than Bookmarks and that has a Hall of Fame including Keith Moon?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Keith Moon', 'Modern Drummer']. Documents remaining to be retrieved: ['Bookmarks (magazine)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+"Experimenter" stars the actress who won critical acclaim with her appearance as Johnny Depp in Tim Burton's "Beetlejuice". The producer of "Experimenter" also produced Man Camp.
+
+### notes
+["Winona Ryder won critical acclaim and widespread recognition for her role as Lydia Deetz in Tim Burton's 'Beetlejuice' (1988).", "Johnny Depp and Winona Ryder co-starred in 'Beetlejuice' and other Tim Burton films but Ryder did not portray Depp's character.", "'Experimenter' and 'Man Camp' producers are not listed or mentioned in the provided context.", "Michael Keaton also starred in 'Beetlejuice' (1988), but is a male actor, not an actress.", "Johnny Depp did not appear in Tim Burton's 'Beetlejuice'; he starred in other Tim Burton films, including 'Edward Scissorhands'.", "Winona Ryder received critical acclaim for her role as Lydia Deetz in 'Beetlejuice' but did not portray Johnny Depp's character.", "The actress starring in 'Experimenter' is not specified in the provided context.", "No information is available to confirm if the producer of 'Experimenter' also produced 'Man Camp'.", "Johnny Depp did not appear in Tim Burton's 'Beetlejuice'; Winona Ryder was critically acclaimed for her different role.", "'Experimenter' cast and producer information are not provided in the current context.", "No evidence supports that the producer of 'Experimenter' also produced 'Man Camp'."]
+
+## Generated Outputs
+### reasoning
+The claim asserts two main facts: first, that the actress starring in "Experimenter" gained critical acclaim for portraying Johnny Depp in Tim Burton's "Beetlejuice"; second, that the producer of "Experimenter" also produced "Man Camp." The notes clarify that Winona Ryder is the acclaimed actress from "Beetlejuice" but played Lydia Deetz, not Johnny Depp's character, and Johnny Depp himself appeared as a male character, so no actress played Johnny Depp. The producer information for both films is missing entirely. Therefore, verification requires queries that (1) identify the lead actress in "Experimenter," (2) confirm whether anyone portrayed Johnny Depp as a character in "Beetlejuice" (1988), (3) clarify if the actress in "Experimenter" is the same acclaimed actress from "Beetlejuice," and (4) identify the producers of both "Experimenter" and "Man Camp" to see if they overlap.
+
+### query
+Who is the lead actress in the film "Experimenter" (2015)?  
+Did any actress portray Johnny Depp in the film "Beetlejuice" (1988)?  
+What role did Winona Ryder play in "Beetlejuice" (1988), and did she receive critical acclaim for this role?  
+Who produced the films "Experimenter" (2015) and "Man Camp" (2019), and are any producers common to both films?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Winona Ryder']. Documents remaining to be retrieved: ['Man Camp', 'Uri Singer'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

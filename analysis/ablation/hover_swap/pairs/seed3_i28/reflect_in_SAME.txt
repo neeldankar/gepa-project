@@ -1,0 +1,109 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given two input fields:  
+- `claim`: a statement asserting certain facts or relationships about entities, including genre classifications, character roles, temporal orderings, or member counts of groups/bands.  
+- `notes`: a list of factual sentences or extracted information pieces relevant to the claim, often providing partial evidence or clarifications about entities, their attributes, and relationships.
+
+Your task is to produce a single output field:  
+- `query`: a clear, concise, and targeted question (or set of closely related questions) designed to retrieve the missing or confirming factual information needed to verify or refute the `claim`.  
+
+The `query` should focus on:  
+- Confirming exact classifications or categories (e.g., movie genres, band genres).  
+- Clarifying membership counts or comparisons between groups.  
+- Establishing temporal relations or event sequences (e.g., release dates).  
+- Disambiguating entities with similar names or verifying the presence or role of a character or individual in a given work.  
+
+Strategies and considerations for generating the `query`:  
+1. Analyze the `claim` carefully to identify key factual points or comparisons that require verification.  
+2. Leverage the `notes` to understand which aspects of the claim are supported or contradicted, and which remain uncertain or missing.  
+3. Formulate the `query` to explicitly seek the missing information or clarification necessary to decide the truth of the claim. Avoid overly broad or vague queries—focus on the minimal but sufficient question(s) to confirm or refute the claim.  
+4. When the claim involves multiple entities or facts, and the notes partially cover these, include all relevant verification points in the `query`.  
+5. Maintain the specificity of entities by including relevant context in the `query` (e.g., include years for movies, full names for bands or characters).  
+
+Domain-specific notes that might not be explicitly known by the assistant but are useful for query formulation:  
+- Movie genre classifications can be nuanced, with some movies emphasizing family, comedy, adventure, or action genres to varying degrees.  
+- Voice actor roles often need precise linking to specific film releases and characters.  
+- Band classifications can vary between musical genres, and member counts are important quantitative facts for comparison claims.  
+- Temporal comparisons often hinge on release dates of movies or events and require clear references to those dates in queries.  
+- Entity disambiguation can require specifying the version or year of a movie or release to avoid confusion.  
+
+The ultimate goal is to produce a `query` that, when used to retrieve or check factual documents, will provide the exact information needed to confirm or deny the `claim`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Il trovatore has more acts than the 1994 Hungarian-Swiss-Italian fantasy film which was loosely inspired by. This Hungarian-Swiss-Italian fantasy film was directed by Ildikó Enyedi and called Magic Hunter.
+
+### notes
+['Magic Hunter is a 1994 Hungarian-Swiss-French fantasy film written and directed by Ildikó Enyedi and loosely inspired by the opera Der Freischütz.', 'Il trovatore is an opera traditionally composed of four acts.', 'Films do not have acts in the same way operas do, so Magic Hunter, being a film, does not have acts.', "Magic Hunter's inspiration is from Der Freischütz, not Il trovatore.", 'Therefore, Il trovatore has more acts than the film Magic Hunter, but the film is not inspired by Il trovatore.', 'Magic Hunter is a 1994 Hungarian-Swiss-French fantasy film directed by Ildikó Enyedi and loosely inspired by the opera Der Freischütz.', 'Il trovatore is an opera composed of four acts by Giuseppe Verdi.', 'Films like Magic Hunter do not have acts the way operas do.', 'Magic Hunter was not inspired by Il trovatore, but by Der Freischütz.', 'Il trovatore is an opera in four acts composed by Giuseppe Verdi.', 'Magic Hunter is a 1994 Hungarian-Swiss-French fantasy film directed by Ildikó Enyedi.', 'Magic Hunter was loosely inspired by the opera Der Freischütz, not Il trovatore.', 'Films like Magic Hunter do not have acts in the same way operas do.', 'Therefore, Il trovatore has more acts than Magic Hunter, but the film was not inspired by Il trovatore.']
+
+## Generated Outputs
+### reasoning
+The claim involves a comparison of the number of acts in the opera "Il trovatore" versus the 1994 film "Magic Hunter," directed by Ildikó Enyedi, and asserts that "Il trovatore" has more acts than "Magic Hunter." The key factual elements to verify are: (1) the number of acts in "Il trovatore," (2) whether "Magic Hunter" has acts as a film, given films typically do not have acts in the operatic or theatrical sense, and (3) confirmation that the film is the 1994 Hungarian-Swiss-Italian fantasy film directed by Ildikó Enyedi titled "Magic Hunter." Additionally, although the claim states "Magic Hunter" was loosely inspired by "Il trovatore," the notes indicate it was inspired by "Der Freischütz," which is relevant to the background but not the main metric of act count. Given that operas have acts and films do not, confirming these points will clarify the truth of the claim.
+
+### query
+How many acts does the opera "Il trovatore" have? Does the 1994 Hungarian-Swiss-Italian fantasy film "Magic Hunter," directed by Ildikó Enyedi, have any acts? Is "Magic Hunter" a Hungarian-Swiss-Italian or Hungarian-Swiss-French film, and was it inspired by "Il trovatore" or another opera?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Il trovatore', 'Magic Hunter']. Documents remaining to be retrieved: ['Der Freischütz'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Meesha Shafi, Strings, Ali Azmat and Junaid Khan are judges on the show Music Icons. The producer and singer of Aaina joined them.
+
+### notes
+["Meesha Shafi, Strings, Ali Azmat, Alamgir, and Shahzad Hasan were judges on the show 'Music Icons' airing on ARY Digital TV channel starting in April 2013.", "Alamgir is the producer and singer of the album 'Aaina.'", "Junaid Khan was the host of the 4th Lux Style Awards, not a judge on 'Music Icons.'", 'Meesha Shafi, Strings, Ali Azmat, Alamgir, and Shahzad Hasan were judges on the ARY Digital TV show Music Icons starting in April 2013.', 'Alamgir is the producer and singer of the album Aaina and was a judge on Music Icons.', 'Junaid Khan was not a judge on Music Icons; he hosted the 4th Lux Style Awards.', 'Meesha Shafi, Strings, Ali Azmat, Alamgir, and Shahzad Hasan were judges on the ARY Digital TV show Music Icons starting in April 2013.', 'Alamgir is the producer and singer of the album Aaina and was a judge on Music Icons.', 'Junaid Khan was not a judge on Music Icons; he hosted the 4th Lux Style Awards.']
+
+## Generated Outputs
+### reasoning
+The claim states that Meesha Shafi, Strings, Ali Azmat, and Junaid Khan were judges on the show Music Icons and that the producer and singer of Aaina joined them as well. The notes clarify that Meesha Shafi, Strings, Ali Azmat, Alamgir, and Shahzad Hasan were judges on Music Icons, but Junaid Khan was not a judge—he was a host of a different event. Alamgir is the producer and singer of Aaina, so the second part about the producer and singer joining the judges is supported. The main discrepancy is Junaid Khan's role—whether he was indeed a judge on Music Icons or not. To verify the claim fully, it must be confirmed if Junaid Khan served as a judge on Music Icons alongside the others.
+
+### query
+Was Junaid Khan a judge on the TV show Music Icons? Additionally, who were officially the judges on Music Icons during its airing, specifically was Alamgir (the producer and singer of Aaina) among the judges?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Aaina (album)', 'Alamgir (pop singer)']. Documents remaining to be retrieved: ['Ali Azmat'].
+
+
+
+# Example 3
+## Inputs
+### claim
+"Experimenter" stars the actress who won critical acclaim with her appearance as Johnny Depp in Tim Burton's "Beetlejuice". The producer of "Experimenter" also produced Man Camp.
+
+### notes
+["Winona Ryder gained critical acclaim for playing Lydia Deetz in Tim Burton's 1988 film 'Beetlejuice'.", "There is no information provided about the cast of 'Experimenter' linking Winona Ryder to the film.", "No production credits or producer information are given for 'Experimenter' or 'Man Camp' in the provided context.", "The claim about the producer of 'Experimenter' also producing 'Man Camp' is not supported by the available information.", "Winona Ryder gained critical acclaim for playing Lydia Deetz in Tim Burton's 1988 film 'Beetlejuice'.", "Johnny Depp starred in 'Beetlejuice' but was not portrayed by an actress; no actress played Johnny Depp in the film.", "There is no available information linking any actress from 'Beetlejuice' to the film 'Experimenter'.", "No production information confirms that the producer of 'Experimenter' also produced 'Man Camp'.", "Johnny Depp starred as himself in Tim Burton's 'Beetlejuice' and was not portrayed by an actress.", "Winona Ryder gained critical acclaim for playing Lydia Deetz in 'Beetlejuice', not for portraying Johnny Depp.", "There is no information linking any actress from 'Beetlejuice' to the film 'Experimenter'.", "No available information confirms that the producer of 'Experimenter' also produced 'Man Camp'."]
+
+## Generated Outputs
+### reasoning
+To evaluate the first part of the claim, we need to know which actress starred in "Experimenter," and if that actress won critical acclaim for portraying Johnny Depp in Tim Burton's "Beetlejuice." However, Johnny Depp is an actor, not a character typically portrayed by an actress in "Beetlejuice." So this part of the claim appears confusing or incorrect regarding who portrayed whom. We need to clarify the main actress starring in "Experimenter" and their known roles, especially in "Beetlejuice."
+
+The second part claims the producer of "Experimenter" also produced "Man Camp." We need to identify the producer(s) of both movies and confirm if the same person(s) produced both.
+
+Therefore, the query should check:
+- Who starred in "Experimenter"?
+- Did that actress play Johnny Depp or an actress who portrayed Johnny Depp in "Beetlejuice"?
+- Who produced "Experimenter" and who produced "Man Camp"? Are they the same producers?
+
+### query
+Who is the lead actress in the movie "Experimenter"? Did this actress portray Johnny Depp or win critical acclaim for playing Johnny Depp or a character related to Johnny Depp in Tim Burton's "Beetlejuice"? Who produced "Experimenter," and did any of these producers also produce the movie "Man Camp"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Winona Ryder']. Documents remaining to be retrieved: ['Man Camp', 'Uri Singer'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

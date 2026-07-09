@@ -1,0 +1,98 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given the fields `claim` and `notes`, produce the field `query`.
+
+Task Description:
+You are verifying or investigating the factual accuracy of the given `claim` using the provided `notes`, which contain relevant supporting or refuting evidence. Your goal is to formulate one or more precise, focused **natural language question(s)** (the `query`) that directly target the core factual components or relationships in the `claim`. These queries will be used to retrieve authoritative documents to confirm or refute the claim.
+
+Key Guidelines and Domain-Specific Details:
+- The `claim` may contain multiple entities, roles, dates, locations, or assertions combined together. Your `query` should disentangle these components and seek clarity on ambiguous or potentially conflated facts highlighted by the `notes`.
+- The `notes` provide context, corrections, or clarifications related to the claim—often pointing out inaccuracies or mixing of facts (e.g., a person’s role changing over time, place names nested within larger administrative regions, or multiple entities sharing a profession).
+- Your `query` should:
+  - Target precise fact verification or disambiguation based on the contradictions or confirmations evident in the `notes`.
+  - Focus on identifying temporal, positional, or relational details critical to verifying the claim (e.g., exact job titles at a given year, locations down to country/state/city level, professional roles shared by named individuals).
+  - Use clear and specific phrasing, typically in the form of yes/no or direct factual questions (e.g., “Was X the Y at time Z?”, “Are A and B located in the same country?”, “Do C and D share profession E?”).
+- Avoid overly broad or vague queries; instead, refine the question to pinpoint the fact that needs verification or clarification.
+- Where the claim conflates multiple facts (e.g., combining a present role with a role held in the past), address that directly in the query.
+- When multiple entities or components appear in the claim (e.g., three different people, or two places), the query can explicitly reference all relevant entities and their factual relationships.
+- The query should be expressed in natural, fluent English suitable for directing a subsequent retrieval or verification step.
+
+Example approach:
+1. Identify the main factual assertion(s) in the claim.
+2. Note any conflicting or clarifying points in the notes.
+3. Frame a succinct question that tests the claim's key factual claim(s), especially where the note highlights ambiguity or correction.
+4. Ensure the question leads to retrieving authoritative evidence to support or refute the claim.
+
+Overall, your role is to bridge the claim and the evidence by formulating precise queries that target the critical fact(s) necessary for fact-checking.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+John S. Hall is younger than the former Midtown bassist and lead vocalist who created Cobra Starship.
+
+### notes
+['Gabe Saporta, former Midtown bassist and lead vocalist, created Cobra Starship in 2006.', 'Gabe Saporta was born on October 11, 1979.', 'No birth date or age information for John S. Hall is available in the context.', 'The claim that John S. Hall is younger than Gabe Saporta cannot be verified with the given information.', 'Gabe Saporta, former Midtown bassist and lead vocalist, created Cobra Starship in 2006.', 'Gabe Saporta was born on October 11, 1979.', 'No birth date or age information for John S. Hall is available in the provided data.', 'Due to lack of information on John S. Hall’s birth date, it cannot be determined if he is younger than Gabe Saporta.', 'Gabe Saporta, former Midtown bassist and lead vocalist, created Cobra Starship in 2006.', 'Gabe Saporta was born on October 11, 1979.', 'No birth date or age information is available for John S. Hall in the provided data.', "Due to the lack of information about John S. Hall's birth date, it cannot be determined if he is younger than Gabe Saporta.", 'The claim that John S. Hall is younger than Gabe Saporta cannot be verified with the given information.']
+
+## Generated Outputs
+### reasoning
+The claim compares the ages of John S. Hall and a person described as the former Midtown bassist and lead vocalist who created Cobra Starship. To verify this claim, it is necessary to accurately identify this person (the former Midtown bassist and lead vocalist who created Cobra Starship) and then compare their birthdates or ages to John S. Hall's. Since there are no notes providing corrections or additional context, the query should seek to determine the birth years or ages of both John S. Hall and the Midtown bassist/lead vocalist who created Cobra Starship and compare them.
+
+### query
+Who is the former Midtown bassist and lead vocalist who created Cobra Starship, and what are the birthdates or ages of that person and John S. Hall? Is John S. Hall younger than this person?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Cobra Starship', 'Gabe Saporta']. Documents remaining to be retrieved: ['John S. Hall'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Clark County in Nevada contains both Las Vegas and another college. Craig Heyer played baseball at that college.
+
+### notes
+['Clark County, Nevada, includes the city of Las Vegas.', 'Craig Heyer played college baseball at the College of Southern Nevada and at the University of Nevada, Las Vegas (UNLV).', 'Both the College of Southern Nevada and UNLV are located within Clark County.', 'The claim that Clark County contains both Las Vegas and another college where Craig Heyer played baseball is accurate.', 'Clark County, Nevada, includes the city of Las Vegas.', 'Craig Heyer played college baseball at the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).', 'Both the College of Southern Nevada and UNLV are located within Clark County, Nevada.', 'Clark County contains Las Vegas and multiple colleges, including those attended by Craig Heyer.', 'Clark County, Nevada includes the city of Las Vegas.', 'Craig Heyer played college baseball at the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).', 'Both the College of Southern Nevada and UNLV are located in Clark County, Nevada.', 'The claim that Clark County contains Las Vegas and another college where Craig Heyer played baseball is accurate.']
+
+## Generated Outputs
+### reasoning
+The claim states that Clark County in Nevada contains both Las Vegas and another college where Craig Heyer played baseball. The notes confirm that Clark County does include Las Vegas, and both the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV) are located within Clark County. Moreover, Craig Heyer played baseball at both these colleges in Clark County. Given that Clark County contains Las Vegas and at least two colleges where Craig Heyer played baseball, the claim is accurate. To verify the claim, the query should confirm the locations of Las Vegas and the colleges within Clark County and that Craig Heyer played baseball at those colleges.
+
+### query
+Does Clark County, Nevada, include the city of Las Vegas and both the College of Southern Nevada and the University of Nevada, Las Vegas? Did Craig Heyer play college baseball at these colleges located in Clark County?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Craig Heyer']. Documents remaining to be retrieved: ['Clark County, Nevada', 'College of Southern Nevada'].
+
+
+
+# Example 3
+## Inputs
+### claim
+An Greek actor who was a CIA operative in Chuck Versus the A-Team was born in 1974. The actor plays a character in commercials for Old Spice.
+
+### notes
+["Isaiah Mustafa (born February 11, 1974) is an American actor known for his role in Old Spice commercials, including 'The Man Your Man Could Smell Like' and 'Make a Smellmitment'.", "Isaiah Mustafa appeared in the TV series 'Chuck' as a CIA operative in the episode 'Chuck Versus the A-Team'.", 'Isaiah Mustafa is not Greek; he is American.', "Other notable CIA operatives in 'Chuck' include Adam Baldwin (John Casey) and Brandon Routh (Daniel Shaw), neither are described as Greek or born in 1974.", "The claim that a Greek actor born in 1974 was a CIA operative in 'Chuck Versus the A-Team' and appears in Old Spice commercials is incorrect; the actor fitting most details is Isaiah Mustafa, who is American.", "Isaiah Mustafa, born February 11, 1974, is an American actor known for Old Spice commercials including 'The Man Your Man Could Smell Like.',", "Isaiah Mustafa appeared as a CIA operative in the 'Chuck Versus the A-Team' episode of the TV series 'Chuck'.", 'The claim that the actor is Greek is incorrect; Isaiah Mustafa is not Greek but American.', "No evidence supports any Greek actor born in 1974 playing a CIA operative in the 'Chuck Versus the A-Team' episode or starring in Old Spice commercials.", "Other CIA operative characters in 'Chuck' are portrayed by Adam Baldwin and Brandon Routh, who are not associated with Old Spice commercials or being Greek.", "Isaiah Mustafa (born February 11, 1974) is an American actor known for his role as a CIA operative in the 'Chuck Versus the A-Team' episode of the TV series 'Chuck'.", "Isaiah Mustafa is famous for starring in Old Spice commercials, including 'The Man Your Man Could Smell Like' and the 'Make a Smellmitment' campaign.", 'The claim that the actor is Greek is incorrect; Isaiah Mustafa is American.', "No evidence supports the existence of a Greek actor born in 1974 playing a CIA operative in 'Chuck Versus the A-Team' or appearing in Old Spice commercials.", "Other CIA operatives in 'Chuck' are portrayed by actors Adam Baldwin and Brandon Routh who are neither Greek nor associated with Old Spice commercials."]
+
+## Generated Outputs
+### reasoning
+The claim consists of multiple components: there is a Greek actor born in 1974, who was a CIA operative in the show "Chuck Versus the A-Team," and who also plays a character in commercials for Old Spice. To verify this, we need to determine if there is indeed a Greek actor born in 1974 who appeared in "Chuck Versus the A-Team" as a CIA operative, and if this actor is known for Old Spice commercials. Since the claim includes specific details about ethnicity, birth year, role in a TV series, and advertising involvement, the query needs to confirm these elements collectively.
+
+### query
+Was there a Greek actor born in 1974 who played a CIA operative in "Chuck Versus the A-Team" and who also appeared as a character in Old Spice commercials?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Chuck Versus the A-Team', 'Isaiah Mustafa', 'Make a Smellmitment']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

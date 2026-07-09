@@ -1,0 +1,98 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given the fields `claim` and `notes`, produce the field `query`.
+
+Task Description:
+You are verifying or investigating the factual accuracy of the given `claim` using the provided `notes`, which contain relevant supporting or refuting evidence. Your goal is to formulate one or more precise, focused **natural language question(s)** (the `query`) that directly target the core factual components or relationships in the `claim`. These queries will be used to retrieve authoritative documents to confirm or refute the claim.
+
+Key Guidelines and Domain-Specific Details:
+- The `claim` may contain multiple entities, roles, dates, locations, or assertions combined together. Your `query` should disentangle these components and seek clarity on ambiguous or potentially conflated facts highlighted by the `notes`.
+- The `notes` provide context, corrections, or clarifications related to the claim—often pointing out inaccuracies or mixing of facts (e.g., a person’s role changing over time, place names nested within larger administrative regions, or multiple entities sharing a profession).
+- Your `query` should:
+  - Target precise fact verification or disambiguation based on the contradictions or confirmations evident in the `notes`.
+  - Focus on identifying temporal, positional, or relational details critical to verifying the claim (e.g., exact job titles at a given year, locations down to country/state/city level, professional roles shared by named individuals).
+  - Use clear and specific phrasing, typically in the form of yes/no or direct factual questions (e.g., “Was X the Y at time Z?”, “Are A and B located in the same country?”, “Do C and D share profession E?”).
+- Avoid overly broad or vague queries; instead, refine the question to pinpoint the fact that needs verification or clarification.
+- Where the claim conflates multiple facts (e.g., combining a present role with a role held in the past), address that directly in the query.
+- When multiple entities or components appear in the claim (e.g., three different people, or two places), the query can explicitly reference all relevant entities and their factual relationships.
+- The query should be expressed in natural, fluent English suitable for directing a subsequent retrieval or verification step.
+
+Example approach:
+1. Identify the main factual assertion(s) in the claim.
+2. Note any conflicting or clarifying points in the notes.
+3. Frame a succinct question that tests the claim's key factual claim(s), especially where the note highlights ambiguity or correction.
+4. Ensure the question leads to retrieving authoritative evidence to support or refute the claim.
+
+Overall, your role is to bridge the claim and the evidence by formulating precise queries that target the critical fact(s) necessary for fact-checking.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The star of Institute Benjamenta portrayed a character in "Double Bass". The real name of that character is Vilyam "Willie" Genrikhovich Fisher.
+
+### notes
+['Institute Benjamenta (1996) starred Mark Rylance, Alice Krige, and Gottfried John.', "Mark Rylance portrayed Rudolf Abel, whose real name was Vilyam 'Willie' Genrikhovich Fisher, in the film 'Bridge of Spies' (2015).", "Vilyam 'Willie' Genrikhovich Fisher was a Soviet intelligence officer who used the alias Rudolf Abel.", "'Double Bass' is not identified as a film or character related to the star of Institute Benjamenta or Mark Rylance.", "References to 'double bass' in the context relate to a musical instrument and musicians, not a film or acting role.", "The claim conflates Mark Rylance's role in 'Bridge of Spies' with an unverified role or character named 'Double Bass.'", 'Mark Rylance starred in the 1996 film Institute Benjamenta.', 'Mark Rylance portrayed Rudolf Abel in the 2015 film Bridge of Spies.', "Rudolf Abel's real name was Vilyam 'Willie' Genrikhovich Fisher, a Soviet intelligence officer.", "No evidence links the character 'Double Bass' to Mark Rylance, Institute Benjamenta, or Vilyam Fisher.", "'Double Bass' is associated with a musical instrument, not a film or acting role related to the claim.", "The claim conflates Mark Rylance's role as Rudolf Abel with an unverified role or character named 'Double Bass'.", 'Mark Rylance starred in the 1996 film Institute Benjamenta.', "Mark Rylance portrayed Rudolf Abel (real name Vilyam 'Willie' Genrikhovich Fisher) in the 2015 film Bridge of Spies.", "Vilyam 'Willie' Genrikhovich Fisher was a Soviet intelligence officer using the alias Rudolf Abel.", "There is no evidence that Mark Rylance portrayed a character named 'Double Bass' or that 'Double Bass' is a film or character associated with him.", "'Double Bass' primarily refers to a musical instrument and related musicians, not an acting role or film.", "The claim conflates Mark Rylance's role in Bridge of Spies with an unverified character or title 'Double Bass.'"]
+
+## Generated Outputs
+### reasoning
+The claim states that the star of "Institute Benjamenta" portrayed a character in "Double Bass," with the character's real name being Vilyam "Willie" Genrikhovich Fisher. However, the notes clarify that "Institute Benjamenta" starred actors such as Mark Rylance but do not connect him or any star from this film to "Double Bass." Additionally, Vilyam "Willie" Genrikhovich Fisher is the real identity of Rudolf Abel, a Soviet intelligence officer portrayed by Mark Rylance in "Bridge of Spies" (2015), not "Double Bass." Furthermore, "Double Bass" is not identified as a film or character related to these actors or roles at all; it refers instead to a musical instrument and musicians. The claim appears to be conflating Mark Rylance's role as Rudolf Abel in "Bridge of Spies" with an unrelated or nonexistent role or character named "Double Bass." Therefore, the key facts to verify are whether the star of "Institute Benjamenta" acted in "Double Bass" and whether Vilyam "Willie" Genrikhovich Fisher is the character name portrayed there.
+
+### query
+Did any actor starring in "Institute Benjamenta" portray a character named Vilyam "Willie" Genrikhovich Fisher in a film or production called "Double Bass"? Is there any record of a film or acting role titled "Double Bass" related to the star(s) of "Institute Benjamenta" or to Vilyam "Willie" Genrikhovich Fisher?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Institute Benjamenta', 'Mark Rylance', 'Rudolf Abel']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+The French star of The Cutting Edge voiced a character in an animated 1994 film. She voiced the character named Nala.
+
+### notes
+["Nala is a fictional lioness character in Disney's 1994 animated film 'The Lion King'.", "Adult Nala's speaking voice was provided by American actress Moira Kelly.", "Young Nala's speaking voice was provided by Niketa Calame.", 'The singing voices of Nala were by Laura Williams (young) and Sally Dworsky (adult).', "None of the Nala voice actors were French stars from 'The Cutting Edge'.", "'The Cutting Edge' stars are not listed as voice actors in any 1994 animated films in the provided context.", "The claim that a French star of 'The Cutting Edge' voiced Nala is unfounded and inaccurate.", "Nala is a fictional lioness character introduced in Disney's 1994 animated film 'The Lion King.'", 'The adult speaking voice of Nala was provided by American actress Moira Kelly.', 'The young speaking voice of Nala was provided by actress Niketa Calame.', "The singing voices of Nala were by Laura Williams (young) and Sally Dworsky (adult), none of whom are French or related to 'The Cutting Edge.'", "No French stars from the movie 'The Cutting Edge' voiced the character Nala or appeared as voice actors in any 1994 animated films.", "The claim that a French star from 'The Cutting Edge' voiced Nala is inaccurate and not supported by any evidence.", "Nala is a fictional lioness character introduced in Disney's 1994 animated film The Lion King.", 'The adult speaking voice of Nala was provided by American actress Moira Kelly.', 'The young speaking voice of Nala was provided by actress Niketa Calame.', 'The singing voices of Nala were provided by Laura Williams (young) and Sally Dworsky (adult), none of whom are French or related to The Cutting Edge.', 'No French stars from the movie The Cutting Edge voiced the character Nala or appeared as voice actors in any 1994 animated films.', 'The claim that a French star from The Cutting Edge voiced Nala in a 1994 animated film is unfounded and inaccurate.']
+
+## Generated Outputs
+### reasoning
+The claim states that a French star of The Cutting Edge voiced Nala in a 1994 animated film. From the notes, we know that Nala is a character from Disney's 1994 film The Lion King. The speaking voice actors for Nala were Moira Kelly (adult) and Niketa Calame (young), neither of whom is a French star from The Cutting Edge. The singing voices also were not by any French star of The Cutting Edge. Additionally, no actors from The Cutting Edge are listed as voice actors in any 1994 animated films. Therefore, the claim is contradicted by the provided notes. To verify thoroughly, we need to confirm if any French stars from The Cutting Edge provided voice work in a 1994 animated film, specifically for Nala.
+
+### query
+Did any French actor starring in the movie The Cutting Edge provide the speaking or singing voice for the character Nala in Disney's 1994 animated film The Lion King?
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Moira Kelly', 'The Cutting Edge', 'The Lion King'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The kind of dog Banana Joe V Tani Kazari is and Villanuco de Las Encartaciones are not both breeds of dog.
+
+### notes
+['Banana Joe V Tani Kazari was an individual dog of the Affenpinscher breed, a recognized toy dog breed.', 'The Villanuco de Las Encartaciones is a distinct Spanish dog breed from the Las Encartaciones region.', 'Both the Affenpinscher breed (which Banana Joe belongs to) and the Villanuco de Las Encartaciones are recognized dog breeds.', 'Banana Joe is not a breed name but a dog of the Affenpinscher breed.', 'The claim that Banana Joe V Tani Kazari and Villanuco de Las Encartaciones are not both breeds of dog is incorrect since both refer to dog breeds (Affenpinscher and Villanuco de Las Encartaciones respectively).', 'Banana Joe V Tani Kazari is an individual dog of the Affenpinscher breed, not a breed itself.', 'Affenpinscher is a recognized toy dog breed.', 'Villanuco de Las Encartaciones is a recognized, distinct Spanish dog breed from the Las Encartaciones region.', 'Therefore, Banana Joe V Tani Kazari and Villanuco de Las Encartaciones are not both breeds; Banana Joe refers to an individual dog, while Villanuco de Las Encartaciones refers to a dog breed.', 'Banana Joe V Tani Kazari is an individual dog of the Affenpinscher breed, not a breed itself.', 'Affenpinscher is a recognized toy dog breed.', 'Villanuco de Las Encartaciones is a distinct, recognized Spanish dog breed from the Las Encartaciones region.', "The name 'Banana Joe V Tani Kazari' refers to a specific dog, while 'Villanuco de Las Encartaciones' refers to a breed.", 'Therefore, Banana Joe V Tani Kazari and Villanuco de Las Encartaciones are not both breeds; only the latter is a breed.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that Banana Joe V Tani Kazari and Villanuco de Las Encartaciones are not both breeds of dog. To verify this, we need to determine whether each of these names refers to a distinct breed of dog or to different entities (such as individual dogs, titles, or other categories). Since there is no supporting or conflicting information in the notes, the key is to clarify the classification of each name: are they recognized dog breeds, or are only one or neither considered breeds?
+
+### query
+Are Banana Joe V Tani Kazari and Villanuco de Las Encartaciones both recognized as dog breeds, or is only one or neither classified as a dog breed?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Villanuco de Las Encartaciones']. Documents remaining to be retrieved: ['Affenpinscher', 'German Pinscher'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

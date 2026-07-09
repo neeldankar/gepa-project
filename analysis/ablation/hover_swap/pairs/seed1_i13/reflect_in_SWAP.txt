@@ -1,0 +1,116 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two inputs: a `claim` and a list of evidence `notes`. Your goal is to generate a precise, targeted `query` (research question) that when searched or retrieved against, will help verify the truthfulness of the claim using the information in the notes.
+
+Input Format:
+- `claim`: a factual statement that needs to be verified.
+- `notes`: a list of textual pieces of evidence related to the entities, dates, or facts mentioned in the claim.
+
+Output Required:
+- `query`: a concise, clear, and fact-focused question designed to retrieve all relevant documents or information needed to confirm or refute the claim.
+
+Detailed Guidance and Domain-Specific Considerations:
+
+1. Identify Key Entities and Temporal References:
+   - Extract and focus on key entities (persons, places, works such as films, operas, companies, airports) from the claim.
+   - Identify any temporal information (dates, periods) relevant to the entities or events.  
+   Example: For people, their birth and death dates; for artworks, release or premiere dates.
+
+2. Link Entities to Contextual Attributes:
+   - Use notes to link entities to attributes such as lifespans, locations, composers, directors, release dates, or headquarters.
+   - Include relevant roles or titles (e.g., "director Francis Ford Coppola", "composer Jean-Philippe Rameau", "M7 Aerospace LP headquartered at San Antonio International Airport") when formulating the query to improve specificity and retrieval precision.
+
+3. Formulate the Query to Capture the Core Verification Aspect:
+   - Queries should explicitly capture the factual relationship or temporal overlap relevant to the claim.
+   - For example, if verifying co-existence in time, ask if both entities were alive or active during overlapping periods.
+   - If verifying authorship or composition, ask about the composers or directors of the compared works.
+   - If verifying geographical co-location, ask if both entities are located within the same geopolitical boundary (e.g., country).
+   
+4. Maximize Retrieval Coverage and Precision:
+   - The query should mention all key entities and their significant attributes to retrieve all gold documents known to support or challenge the claim.
+   - For example, mention multiple known creators or states if relevant.
+   - Avoid vague or overly general queries that may miss critical documents.
+
+5. Be Concise but Complete:
+   - Queries should be succinct yet contain all necessary details (entity names, dates, roles, places) required for precise document retrieval.
+   - Avoid unnecessary verbosity, but do not omit core elements crucial for retrieval.
+
+6. Generalizable Strategy:
+   - Parse claim to establish what fact is being verified (alive at the same time? composed by same/different people? located in same country? etc.).
+   - Map claim entities to relevant facts in notes.
+   - Construct an interrogative query that explicitly asks the factual question which, if answered, supports or refutes the claim.
+
+By following the above, your generated queries will enable accurate and complete retrieval of necessary evidence documents, facilitating factual verification of claims.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+German Frank Sinatra has won more awards than this Skinny Puppy band member, for whom the Rx (band) was a one-off side project.
+
+### notes
+['Rx (band) was a one-off side project by Skinny Puppy band member Nivek Ogre.', 'There is no available information about awards won by Nivek Ogre or the Rx project.', 'No relevant data about German Frank Sinatra or awards he has won is provided in the context.', 'Rx (band) was a one-off side project by Skinny Puppy band member Nivek Ogre.', 'There is no available information about awards won by Nivek Ogre or the Rx project.', 'No relevant data about German Frank Sinatra or awards he has won is provided in the context.', 'Rx (band) was a one-off side project by Skinny Puppy band member Nivek Ogre.', 'There is no available information about awards won by Nivek Ogre or the Rx project.', 'No relevant data about German Frank Sinatra or awards he has won is provided in the context.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that German Frank Sinatra has won more awards than Nivek Ogre, a member of Skinny Puppy whose side project was Rx. From the notes, we know that Rx was a one-off side project by Nivek Ogre, but there is no information about awards won by either Nivek Ogre or German Frank Sinatra. To verify the claim, we need to establish the number and nature of awards won by both German Frank Sinatra and Nivek Ogre. Therefore, the query should explicitly seek information about the awards won by both individuals to confirm or refute the claim.
+
+### query
+What awards has German Frank Sinatra won, and what awards has Nivek Ogre, the Skinny Puppy band member associated with the Rx side project, won?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Nivek Ogre', 'Rx (band)']. Documents remaining to be retrieved: ['Frank Sinatra'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Nathaniel "Nate" Jacks is the colloquial name of the professional football team in which this striker, who scored in Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final, played.
+
+### notes
+['The 2013 FIFA Confederations Cup Final was contested between Brazil and Spain, with Brazil winning 3–0.', 'The goals in the final were scored by Fred and Neymar for Brazil.', 'There is no mention of Nathaniel "Nate" Jacks as a player or a team in the 2013 FIFA Confederations Cup Final.', 'Nathaniel "Nate" Jacks is not indicated as the colloquial name for any professional football team involved in the 2013 FIFA Confederations Cup Final or otherwise.', 'Nathaniel "Nate" Jacks is a former American professional football player (gridiron), not a soccer player.', 'The 2013 FIFA Confederations Cup Final was contested by Brazil and Spain, with Brazil winning 3-0 through goals by Fred and Neymar.', 'There is no record of Nathaniel "Nate" Jacks being the colloquial name of any professional football team or involved in the 2013 FIFA Confederations Cup Final.', "Nathaniel 'Nate' Jacks participated in American football leagues like the National Indoor Football League (NIFL) and was not associated with international soccer events.", 'The 2013 FIFA Confederations Cup Final was contested between Brazil and Spain, with Brazil winning 3-0 through goals by Fred and Neymar.', "Nathaniel 'Nate' Jacks is a former American professional football player (gridiron) who played in the National Indoor Football League (NIFL) and other American football leagues, not soccer.", "There is no record of Nathaniel 'Nate' Jacks being a player in the 2013 FIFA Confederations Cup Final or a colloquial name for any professional soccer team.", "Nathaniel 'Nate' Jacks's involvement is limited to American football and he was not associated with international soccer events such as the FIFA Confederations Cup."]
+
+## Generated Outputs
+### reasoning
+The claim concerns a striker who scored in Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final and the professional football team he played for, colloquially known as "Nathaniel 'Nate' Jacks." Since the notes provide no information, to verify this claim, we need to identify the striker who scored in that specific match and ascertain the name, especially any nickname "Nathaniel 'Nate' Jacks," of the professional football team he played for at that time. The key elements to verify are: the identity of the scorer in that 2013 final, the team for which he played professionally during that period, and whether that team is commonly known as "Nathaniel 'Nate' Jacks."
+
+### query
+Who scored goals for Brazil in the 2013 FIFA Confederations Cup Final against Spain, and what was the colloquial name of that player's professional football team at the time, specifically addressing whether the team is known as "Nathaniel 'Nate' Jacks"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['2013 FIFA Confederations Cup Final']. Documents remaining to be retrieved: ['Clube Atlético Mineiro', 'Fred (footballer)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Orange is the main flavor of both soft drinks, Solo from Norway, and the drink advertised with Krupa (song).
+
+### notes
+['Solo is an orange-flavoured soft drink from Norway (Context [6]).', 'Solo is an orange-flavoured soft drink from Norway.', 'Solo is an orange-flavoured soft drink from Norway.', "There is no evidence in the given context or notes about any soft drink advertised with the 'Krupa' song or its flavor."]
+
+## Generated Outputs
+### reasoning
+The claim states that the main flavor of both the Norwegian soft drink Solo and the drink advertised with the song "Krupa" is orange. The notes confirm that Solo is an orange-flavored soft drink from Norway. However, there is no information provided about the drink advertised with the song "Krupa," including whether its main flavor is orange or not. To verify the claim fully, it is necessary to confirm the main flavor of the drink advertised with the song "Krupa" and check if it matches Solo's orange flavor.
+
+### query
+What is the main flavor of Solo, the orange-flavored Norwegian soft drink, and what is the main flavor of the drink advertised with the song "Krupa"?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Solo (Norwegian soft drink)', 'Sunkist (soft drink)']. Documents remaining to be retrieved: ['Krupa (song)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

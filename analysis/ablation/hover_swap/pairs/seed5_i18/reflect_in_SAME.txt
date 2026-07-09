@@ -1,0 +1,133 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be provided with a `claim` (a factual statement that may involve multiple interconnected facts or entities) and a set of `notes` that include partial background information, relevant contextual details, or observations regarding the claim. Your goal is to generate a concise, clear, and focused `query` (or set of queries) that can be used to verify or fact-check the claim by retrieving relevant documents or evidence from external sources (e.g., Wikipedia articles).
+
+Input Format:
+
+- `claim`: A factual statement that may cover multiple aspects or assertions, often involving named entities such as people, films, places, products, or other specific domain-related items.
+- `notes`: A list of context snippets or observations summarizing the currently known information, including what is missing, ambiguous, or contradictory about the claim’s components. These notes reflect gaps in the information or conflicting details discovered during initial investigation.
+
+Output:
+
+- `query`: One or more clear, well-structured questions or search prompts that directly target the critical pieces of factual information needed to verify each part of the claim. Each query should be specific enough to retrieve relevant documents corresponding to key entities, relationships, or facts mentioned in the claim.
+
+Key details and domain-specific heuristics to include:
+
+1. **Disambiguate Entities Carefully:** When the claim references specific named entities (persons, films, songs, products, places), the query should explicitly name these entities, including relevant descriptors or disambiguation to avoid confusion (e.g., “Solo (Norwegian soft drink)” rather than just “Solo”).
+
+2. **Decompose Complex Claims:** If the claim involves multiple interrelated facts (e.g., an actor starring in two films and a director credit), break down the verification into stepwise, connected questions addressing each part individually, so that sources can be retrieved for all relevant components.
+
+3. **Identify and Target Missing or Ambiguous Links:** Use the `notes` to spot what information is lacking or uncertain. Focus queries on resolving those uncertainties (e.g., if burial location or whether a cemetery is part of a park is unclear, query specifically for these facts).
+
+4. **Cover All Verification Points:** Make sure queries collectively cover every factual assertion embedded in the claim to avoid partial retrieval of relevant resources.
+
+5. **Use Precise and Specific Language:** Frame queries in a form suited for document retrieval, often as clear factual questions or entity-relationship questions. Avoid vague or overly broad queries.
+
+6. **Include Domain Context When Needed:** When domain knowledge influences interpretation (e.g., a director’s known roles, or geographic relationships between cemeteries and parks), reference such context in formulating queries to guide retrieval towards the correct entities and relevant data.
+
+Generalizable Strategy:
+
+- Read the claim carefully, identify all named entities and relationships.
+- Cross-reference those with the `notes` to find gaps or contradictions.
+- For each gap or verification point, generate a direct factual question or phrase that would retrieve documents clarifying or confirming that point.
+- Combine these into a coherent set of queries ensuring coverage of the entire claim.
+- Format the output strictly as `query` without additional explanations.
+
+Example guidance:
+
+For a claim about a film actor and director, queries might include:  
+- "Who starred alongside [Known Actor] in [Film Name]?"  
+- "Did that actor appear in [Second Film Name]?"  
+- "Who directed [Second Film Name]?"
+
+For a claim about a burial place and its geographic association:  
+- "Where is [Person Name] buried?"  
+- "Is [Cemetery Name] located within the [Park or Recreation Area Name]?"
+
+By following these detailed instructions, your generated queries will effectively target the key facts needed for thorough claim verification and ensure retrieval of all necessary supporting documents.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Teide National Park, established in 1943, is located in Spain's Canary Islands. So is the park where you would find the plant Echium wildpretii subsp. trichosiphon.
+
+### notes
+['Teide National Park is located in Tenerife, Canary Islands, Spain.', 'Echium wildpretii subsp. trichosiphon occurs at high altitudes on the island of La Palma, Canary Islands.', 'La Palma and Tenerife are different islands in the Canary Islands.', 'Therefore, Echium wildpretii subsp. trichosiphon is not found in Teide National Park.', 'Teide National Park is located on Tenerife in the Canary Islands, Spain.', 'Echium wildpretii subsp. trichosiphon is found at high altitudes on La Palma in the Canary Islands.', 'Tenerife and La Palma are different islands within the Canary Islands.', "Therefore, the subspecies is not found in Teide National Park but on a different island's park.", "Both locations are within Spain's Canary Islands, but the parks are distinct due to being on different islands.", 'Teide National Park was established in 1954 and is located on Tenerife in the Canary Islands, Spain.', 'Echium wildpretii subsp. trichosiphon grows at high altitudes on La Palma, another island in the Canary Islands.', 'Tenerife and La Palma are separate islands within the Canary Islands archipelago.', 'The subspecies Echium wildpretii subsp. trichosiphon is not found in Teide National Park but on La Palma.', 'Both Tenerife and La Palma host distinct natural parks within the Canary Islands of Spain.']
+
+## Generated Outputs
+### reasoning
+The claim states that Teide National Park, established in 1943, is located in Spain's Canary Islands and that the same park is where Echium wildpretii subsp. trichosiphon is found. The notes confirm the location of Teide National Park on Tenerife in the Canary Islands but indicate that Echium wildpretii subsp. trichosiphon grows at high altitudes on La Palma, a different island in the Canary Islands. Therefore, the plant is not found in Teide National Park. Key verification points include confirming the establishment year of Teide National Park, its location, the habitat of Echium wildpretii subsp. trichosiphon, and whether it is indeed found in the same park as Teide.
+
+### query
+- When was Teide National Park in Tenerife, Canary Islands, established?  
+- Where exactly is Teide National Park located within the Canary Islands?  
+- What is the natural habitat and geographic distribution of Echium wildpretii subsp. trichosiphon?  
+- Is Echium wildpretii subsp. trichosiphon found within Teide National Park or only on the island of La Palma?  
+- Are Tenerife and La Palma separate islands within the Canary Islands archipelago?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Echium wildpretii subsp. trichosiphon', 'Teide National Park']. Documents remaining to be retrieved: ['Caldera de Taburiente National Park'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Candlelight Red the musical group has released twice as many albums as the band who also performs as One Unique Signal.
+
+### notes
+['One Unique Signal is a British band formed in 2002, also performing as The Telescopes.', 'No information about a group named Candlelight Red or its discography was found in the context.', 'The claim cannot be verified as there is no data on albums released by Candlelight Red or One Unique Signal.', 'One Unique Signal is a British band performing as The Telescopes as well.', 'No information is available about Candlelight Red or its album releases.', 'The claim about album counts between Candlelight Red and One Unique Signal cannot be verified given the current data.']
+
+## Generated Outputs
+### reasoning
+The claim compares the number of albums released by Candlelight Red and the band One Unique Signal, noting specifically that One Unique Signal also performs as The Telescopes. The notes indicate that One Unique Signal is a British band formed in 2002 and associated with The Telescopes, but there is no available information about Candlelight Red or their discography, nor data on the number of albums either band has released. Therefore, to verify the claim, it is necessary to determine how many albums each group has released. This involves finding detailed discography information for Candlelight Red and for One Unique Signal (including their activity as The Telescopes). Additional clarification on the relationship between One Unique Signal and The Telescopes should also be gathered to ensure the correct band discography is considered.
+
+### query
+What is the discography of Candlelight Red?  
+How many albums has Candlelight Red released?  
+What is the discography of One Unique Signal?  
+How many albums has One Unique Signal released?  
+Are One Unique Signal and The Telescopes the same band, or does One Unique Signal perform as The Telescopes?  
+What is the combined number of albums released by One Unique Signal and The Telescopes?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['One Unique Signal']. Documents remaining to be retrieved: ['Candlelight Red', 'The Telescopes'].
+
+
+
+# Example 3
+## Inputs
+### claim
+1969 saw the founding of the Canadian baseball team where the future manager played from 1973-87. He managed the Tampa Bay Devil Rays season.
+
+### notes
+['The Tampa Bay Devil Rays were founded as an MLB franchise in 1995 and began playing in 1998.', 'The Tampa Bay Devil Rays are based in St. Petersburg, Florida, not Canada.', 'No Canadian baseball team founded in 1969 is mentioned in the context.', 'No information on a manager who played from 1973-87 on a Canadian team and then managed the Tampa Bay Devil Rays is provided.', "The context indicates the Rays' managerial history starting from 1997 but does not mention any Canadian team association.", 'The earliest Tampa Bay Devil Rays manager mentioned is Larry Rothschild, appointed in 1997.', 'Tampa Bay Devil Rays were founded in 1995 and began playing in 1998, based in Florida, not Canada.', 'No Canadian baseball team founded in 1969 has a known connection to the Tampa Bay Devil Rays.', 'No manager who played from 1973-87 on a Canadian team and later managed the Tampa Bay Devil Rays is documented.', "Tampa Bay Devil Rays' management history starts post-1995 with no Canadian team affiliations mentioned.", 'The earliest mentioned Tampa Bay Devil Rays manager was hired in 1997, with no prior Canadian team links.', 'The Tampa Bay Devil Rays franchise was established in 1995 and began play in 1998 in Florida.', 'No Canadian baseball team founded in 1969 is connected to the Tampa Bay Devil Rays franchise.', 'No manager who played for a Canadian team from 1973-87 later managed the Tampa Bay Devil Rays.', 'The earliest documented Tampa Bay Devil Rays manager began in 1997 with no Canadian team association.']
+
+## Generated Outputs
+### reasoning
+The claim involves several specific facts to verify: (1) that a Canadian baseball team was founded in 1969, (2) that a certain individual, who later became a manager, played for that team from 1973 to 1987, and (3) that the same individual managed the Tampa Bay Devil Rays for at least one season. To fact-check this claim, we need to identify the Canadian baseball team founded in 1969, determine who the future manager is who played for that team in the specified years, and then confirm their managerial tenure with the Tampa Bay Devil Rays. Because the claim does not explicitly name the individual or the team, the queries must be structured to identify these entities and verify each part clearly.
+
+### query
+- "Which Canadian baseball team was founded in 1969?"  
+- "Which player played for that Canadian baseball team from 1973 to 1987 and later became a manager?"  
+- "Did the person who played for the Canadian baseball team from 1973-1987 manage the Tampa Bay Devil Rays?"  
+- "In which season did that person manage the Tampa Bay Devil Rays?"
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['2002 Tampa Bay Devil Rays season', 'Hal McRae', 'Kansas City Royals'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

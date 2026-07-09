@@ -1,0 +1,129 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be provided with a `claim` (a factual statement that may involve multiple interconnected facts or entities) and a set of `notes` that include partial background information, relevant contextual details, or observations regarding the claim. Your goal is to generate a concise, clear, and focused `query` (or set of queries) that can be used to verify or fact-check the claim by retrieving relevant documents or evidence from external sources (e.g., Wikipedia articles).
+
+Input Format:
+
+- `claim`: A factual statement that may cover multiple aspects or assertions, often involving named entities such as people, films, places, products, or other specific domain-related items.
+- `notes`: A list of context snippets or observations summarizing the currently known information, including what is missing, ambiguous, or contradictory about the claim’s components. These notes reflect gaps in the information or conflicting details discovered during initial investigation.
+
+Output:
+
+- `query`: One or more clear, well-structured questions or search prompts that directly target the critical pieces of factual information needed to verify each part of the claim. Each query should be specific enough to retrieve relevant documents corresponding to key entities, relationships, or facts mentioned in the claim.
+
+Key details and domain-specific heuristics to include:
+
+1. **Disambiguate Entities Carefully:** When the claim references specific named entities (persons, films, songs, products, places), the query should explicitly name these entities, including relevant descriptors or disambiguation to avoid confusion (e.g., “Solo (Norwegian soft drink)” rather than just “Solo”).
+
+2. **Decompose Complex Claims:** If the claim involves multiple interrelated facts (e.g., an actor starring in two films and a director credit), break down the verification into stepwise, connected questions addressing each part individually, so that sources can be retrieved for all relevant components.
+
+3. **Identify and Target Missing or Ambiguous Links:** Use the `notes` to spot what information is lacking or uncertain. Focus queries on resolving those uncertainties (e.g., if burial location or whether a cemetery is part of a park is unclear, query specifically for these facts).
+
+4. **Cover All Verification Points:** Make sure queries collectively cover every factual assertion embedded in the claim to avoid partial retrieval of relevant resources.
+
+5. **Use Precise and Specific Language:** Frame queries in a form suited for document retrieval, often as clear factual questions or entity-relationship questions. Avoid vague or overly broad queries.
+
+6. **Include Domain Context When Needed:** When domain knowledge influences interpretation (e.g., a director’s known roles, or geographic relationships between cemeteries and parks), reference such context in formulating queries to guide retrieval towards the correct entities and relevant data.
+
+Generalizable Strategy:
+
+- Read the claim carefully, identify all named entities and relationships.
+- Cross-reference those with the `notes` to find gaps or contradictions.
+- For each gap or verification point, generate a direct factual question or phrase that would retrieve documents clarifying or confirming that point.
+- Combine these into a coherent set of queries ensuring coverage of the entire claim.
+- Format the output strictly as `query` without additional explanations.
+
+Example guidance:
+
+For a claim about a film actor and director, queries might include:  
+- "Who starred alongside [Known Actor] in [Film Name]?"  
+- "Did that actor appear in [Second Film Name]?"  
+- "Who directed [Second Film Name]?"
+
+For a claim about a burial place and its geographic association:  
+- "Where is [Person Name] buried?"  
+- "Is [Cemetery Name] located within the [Park or Recreation Area Name]?"
+
+By following these detailed instructions, your generated queries will effectively target the key facts needed for thorough claim verification and ensure retrieval of all necessary supporting documents.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Rhapsody, Op. 1 was written by a male composer. This composer was Hungarian, not Johann Christoph Pepusch.
+
+### notes
+['Rhapsody, Op. 1 is composed by Béla Bartók, a Hungarian male composer.', 'Johann Christoph Pepusch is unrelated to Rhapsody, Op. 1 and was not Hungarian.', 'Rhapsody, Op. 1 is composed by Béla Bartók, a male Hungarian composer.', "Johann Christoph Pepusch was a German-born composer working mainly in England and not related to the composition 'Rhapsody, Op. 1'.", 'Rhapsody, Op. 1 was composed by Béla Bartók, a Hungarian male composer, in 1904.', 'Johann Christoph Pepusch was a German-born composer who is unrelated to the composition Rhapsody, Op. 1.', 'Béla Bartók is the confirmed composer of Rhapsody, Op. 1, differentiating him from Johann Christoph Pepusch.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that Rhapsody, Op. 1 was composed by a male Hungarian composer and explicitly refutes Johann Christoph Pepusch as the composer. The notes confirm that Béla Bartók, a male Hungarian composer, wrote Rhapsody, Op. 1 and that Pepusch was a German-born composer working in England who is unrelated to this piece. To verify the claim, the key points are to confirm the composer of Rhapsody, Op. 1, verify the composer's nationality and gender, and ensure that Johann Christoph Pepusch did not compose this work.
+
+### query
+Who composed Rhapsody, Op. 1?  
+What is the nationality and gender of Béla Bartók, the composer of Rhapsody, Op. 1?  
+Did Johann Christoph Pepusch compose any piece titled Rhapsody, Op. 1?  
+What is the nationality and primary activity location of Johann Christoph Pepusch?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Johann Christoph Pepusch', 'Rhapsody, Op. 1 (Bartók)']. Documents remaining to be retrieved: ['Béla Bartók'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Rhapsody, Op. 1 was written by a male composer. This composer was Hungarian, not Johann Christoph Pepusch.
+
+### notes
+['Rhapsody, Op. 1 was composed by Béla Bartók, a male Hungarian composer, in 1904.', 'Johann Christoph Pepusch was not Hungarian and is not associated with Rhapsody, Op. 1.', 'Béla Bartók, a Hungarian male composer, wrote Rhapsody, Op. 1 in 1904.', 'Johann Christoph Pepusch was a German-born composer with no association to Rhapsody, Op. 1.', 'Rhapsody, Op. 1 is specifically catalogued as Op. 1, Sz. 26, BB 36 by Béla Bartók.', 'Rhapsody, Op. 1 was composed by Hungarian male composer Béla Bartók in 1904.', 'Johann Christoph Pepusch, a German-born composer, has no association with Rhapsody, Op. 1.', 'Rhapsody, Op. 1 by Bartók is cataloged as Op. 1, Sz. 26, BB 36.', 'Contextual information confirms Bartók as the composer of Rhapsody, Op. 1.', "Pepusch's known biography and compositions do not include Rhapsody, Op. 1."]
+
+## Generated Outputs
+### reasoning
+The claim involves identifying the composer of "Rhapsody, Op. 1" and confirming the composer's gender and nationality. It states that the piece was written by a male composer who was Hungarian and explicitly denies Johann Christoph Pepusch as the composer. Verification requires confirming the author of "Rhapsody, Op. 1," ensuring the composer’s gender is male, confirming Hungarian nationality, and clarifying that Johann Christoph Pepusch did not compose this piece.
+
+### query
+Who composed "Rhapsody, Op. 1"? What is the gender and nationality of the composer of "Rhapsody, Op. 1"? Did Johann Christoph Pepusch compose "Rhapsody, Op. 1"?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Johann Christoph Pepusch', 'Rhapsody, Op. 1 (Bartók)']. Documents remaining to be retrieved: ['Béla Bartók'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The actor, who starred in the thriller 400 Boys, plays Marilyn Monroe in a film based on the novel "Northern Lights".
+
+### notes
+["No evidence linking the actor from '400 Boys' to a portrayal of Marilyn Monroe.", "'Blonde' (2001) is a film based on the novel 'Blonde' by Joyce Carol Oates, starring Poppy Montgomery as Marilyn Monroe.", "No mention of a film based on 'Northern Lights' depicting Marilyn Monroe.", "Multiple films depict Marilyn Monroe but none are reported to be based on 'Northern Lights' or linked to the '400 Boys' actor.", "No evidence linking the actor from '400 Boys' to a portrayal of Marilyn Monroe.", "'Northern Lights' (2009) TV film based on Nora Roberts' novel features no Marilyn Monroe character.", "Multiple films depict Marilyn Monroe, none linked to 'Northern Lights' or the actor from '400 Boys'.", "'Blonde' (2001) TV film stars Poppy Montgomery as Marilyn Monroe, not connected to 'Northern Lights'.", "No evidence supporting that the actor from '400 Boys' portrays Marilyn Monroe.", "The film 'Blonde' (2001) starring Poppy Montgomery is based on the novel 'Blonde,' not 'Northern Lights.'", "'Northern Lights' (2009) TV film based on Nora Roberts' novel has no Marilyn Monroe character.", "No known film or adaptation connects Marilyn Monroe's portrayal to 'Northern Lights' or the '400 Boys' actor."]
+
+## Generated Outputs
+### reasoning
+The claim combines two distinct assertions: first, that an actor from the thriller "400 Boys" plays Marilyn Monroe; second, that this portrayal occurs in a film based on the novel "Northern Lights." The notes indicate no known link between the "400 Boys" actor and any portrayal of Marilyn Monroe. Furthermore, no film based on "Northern Lights" appears to feature Marilyn Monroe as a character, and films known to depict Marilyn Monroe (like "Blonde") are unrelated to "Northern Lights" and the "400 Boys" actor. To verify the claim, queries must confirm who starred in "400 Boys," whether any of those actors portrayed Marilyn Monroe in any film, whether any films based on "Northern Lights" include Marilyn Monroe, and whether there is any connection between these entities.
+
+### query
+"Who are the main actors in the thriller film '400 Boys'?"
+"Has any actor from '400 Boys' portrayed Marilyn Monroe in any film or television production?"
+"Are there any films or TV adaptations based on the novel 'Northern Lights' that feature a character of Marilyn Monroe?"
+"Is there any connection between the film '400 Boys' or its actors and films depicting Marilyn Monroe?"
+"What films are based on the novel 'Northern Lights' and what are their main characters?"
+"Which films depict Marilyn Monroe, and who portrayed her in these films?"
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['400 Boys', 'Charlie Rowe', 'The Golden Compass (film)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,123 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Instruction for the assistant:
+
+You are provided with two input fields: 
+- `claim`: A factual statement or set of statements whose truth or accuracy needs to be evaluated or verified.
+- `notes`: A list of text snippets, pieces of information, or context relevant to the claim.
+
+Your task is to produce an output field:
+- `query`: One or more precise, targeted, and factually grounded natural language questions or search queries derived from the claim and the notes, designed to retrieve all necessary documents or evidence to verify the claim fully.
+
+Guidelines for producing the `query`: 
+
+1. **Purpose**: The goal of the query is to facilitate retrieval of supporting or refuting evidence about the claim. This means the query must explicitly focus on key entities, facts, and relationships mentioned in the claim and implied or highlighted in the notes.
+
+2. **Use of notes**: 
+   - Extract relevant factual or contextual information from the notes to clarify ambiguous or incomplete parts of the claim.
+   - Incorporate key entities, dates, names, titles, and other factual data from notes to refine the query so that all required facts to verify the claim can be retrieved.
+   - Identify specific elements that remain unverified or partially verified in the notes and make sure the query targets those gaps explicitly.
+
+3. **Precision and Completeness**: 
+   - Include all principal components of the claim in the query: persons, places, works (like songs, films, books, or other creative works), dates, roles, and relationships.
+   - When multiple facts or assertions in the claim require verification, combine them into a single comprehensive query or multiple related queries, ensuring that all aspects are covered.
+   - Use the exact names, titles, and terminology as presented in the claim and the notes for precision.
+
+4. **Address ambiguity or missing information in claim**:
+   - If the claim uses vague designations (e.g., "the town", "the actress") without explicit identification, include questions that seek to identify or clarify those.
+   - When a claim involves verifying association or overlap (such as shared producers of two films), explicitly request information linking those entities.
+
+5. **Examples of question structures to include**:
+   - "Who is/are...?"
+   - "Is [entity/individual] credited with ...?"
+   - "Did [person] play/portray [character] in [work]?"
+   - "Are the producers of [film A] and [film B] the same?"
+   - "Which towns are administered by [council]? Are any located near [landmark]?"
+   - "Who wrote the lyrics/music for [song]? Are X or Y credited?"
+   
+6. **Domain-specific considerations**:
+   - For music-related claims, include songwriter/lyricist/performer credits as relevant.
+   - For film or acting claims, clarify roles, actors’ identities, and producer associations.
+   - For geographical claims, focus on administrative entities (e.g., councils), geographic proximity to named landmarks, and confirm town identities.
+   - For ambiguous or unclear entities mentioned in the claim, explicitly request identification or clarification.
+
+7. **Focus on verification of claim components rather than general exploratory queries**:
+   - Your query should be targeted to retrieve documents that directly confirm or refute each factual assertion in the claim.
+   - Avoid overly broad or vague queries.
+
+In summary, your query should be a carefully composed, fact-focused, and comprehensive question or set of questions that use the claim and notes to ensure retrieval of all necessary documents and evidence to verify each part of the claim completely.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+An actor that was in the Wonder Woman (2017 film) of the action adventure genre, performed in Anomalisa after the premier of Fargo.
+
+### notes
+['David Thewlis appeared in the 2017 action-adventure film Wonder Woman.', 'David Thewlis performed in the animated film Anomalisa, released in December 2015.', 'David Thewlis acted as antagonist V.M. Varga in the third season of Fargo, which aired in 2017.', 'The performance in Anomalisa occurred before the premiere of Fargo season 3.', 'David Thewlis acted in the 2017 action-adventure film Wonder Woman.', 'David Thewlis provided a voice role in the animated film Anomalisa, released in December 2015.', 'David Thewlis appeared as antagonist V.M. Varga in Fargo season 3, which premiered in April 2017.', 'The performance in Anomalisa occurred before the premiere of Fargo season 3, contradicting the claim that it happened afterward.', 'David Thewlis acted in the 2017 action-adventure film Wonder Woman.', 'David Thewlis performed in the animated film Anomalisa, released in December 2015.', 'David Thewlis acted as antagonist V.M. Varga in Fargo season 3, which premiered in April 2017.', 'The performance in Anomalisa occurred before the premiere of Fargo season 3, contradicting the claim that it happened afterward.']
+
+## Generated Outputs
+### reasoning
+The claim states that an actor who appeared in the 2017 action-adventure film Wonder Woman performed in Anomalisa after the premiere of Fargo. The notes specify that David Thewlis appeared in Wonder Woman (2017), performed in Anomalisa (released in December 2015), and acted in Fargo season 3, which aired in 2017. Additionally, the notes clarify that his performance in Anomalisa occurred before the premiere of Fargo season 3, not after. Therefore, the timeline mentioned in the claim contradicts the timeline provided in the notes. To verify the claim, it is necessary to confirm the dates of the release and performance timings for Anomalisa, Fargo season 3, and Wonder Woman, specifically focusing on whether any actor from Wonder Woman performed in Anomalisa after Fargo’s premiere.
+
+### query
+Did David Thewlis, who appeared in the 2017 action-adventure film Wonder Woman, perform in the animated film Anomalisa after the premiere of Fargo season 3? What are the release dates and premiere dates of Anomalisa, Fargo season 3, and Wonder Woman? Are there any other actors who appeared in the 2017 Wonder Woman film and also performed in Anomalisa after the premiere of Fargo season 3?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['David Thewlis', 'Fargo (TV series)', 'Wonder Woman (2017 film)']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+Californian Theodore Garland, Jr. completed postdoctoral training at the institution which was established before Texas Christian University.
+
+### notes
+['Theodore Garland, Jr. is a California-based biologist, currently a professor at University of California, Riverside.', 'He completed his postdoctoral training at the University of Washington.', 'The establishment dates of the University of Washington and Texas Christian University are not provided, so the relative founding dates cannot be verified.', 'Theodore Garland, Jr. is a California-based biologist who completed his postdoctoral training at the University of Washington.', 'Texas Christian University was established in 1873.', 'The establishment date of the University of Washington is not provided, so it is unverifiable whether it was established before Texas Christian University.', 'Theodore Garland, Jr. is a California-based biologist who completed his postdoctoral training at the University of Washington.', 'Texas Christian University was established in 1873.', 'The University of Washington was established in 1861, which is before the establishment of Texas Christian University.']
+
+## Generated Outputs
+### reasoning
+The claim states that Theodore Garland, Jr., a Californian, completed his postdoctoral training at an institution that was established before Texas Christian University. The notes confirm that Theodore Garland, Jr. completed his postdoctoral training at the University of Washington. The establishment dates of Texas Christian University (1873) and the University of Washington are critical to verify if the University of Washington was founded before Texas Christian University. However, the notes indicate that the establishment date of the University of Washington is not provided, making it impossible to verify whether it predates Texas Christian University. Thus, the key fact to confirm is the establishment date of the University of Washington and whether it is earlier than 1873.
+
+### query
+When was the University of Washington established? Was the University of Washington founded before 1873, the establishment year of Texas Christian University? Did Theodore Garland, Jr. complete his postdoctoral training at the University of Washington?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Texas Christian University', 'Theodore Garland, Jr.', 'University of Washington']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Manchester United Football Club is known as "the Red Devils". The goalie who led the strike force for the 1928–29 Leicester City F.C. season played for them.
+
+### notes
+["The context does not mention that Manchester United is known as 'the Red Devils'.", 'The 1928–29 Leicester City F.C. strike force consisted of Ernie Hine, Arthur Chandler, and Arthur Lochhead; no goalie is mentioned as leading the strike force.', 'There is no information in the context about the 1928–29 Leicester City goalie playing for Manchester United.', "There is no confirmation in the context that Manchester United Football Club is known as 'the Red Devils'.", 'The 1928–29 Leicester City F.C. strike force consisted of Ernie Hine, Arthur Chandler, and Arthur Lochhead; no goalie led this strike force.', 'There is no evidence that the goalie from the 1928–29 Leicester City F.C. season played for Manchester United.', "There is no explicit information in the provided context confirming that Manchester United Football Club is known as 'the Red Devils'.", 'The 1928–29 Leicester City strike force consisted of Ernie Hine, Arthur Chandler, and Arthur Lochhead, with no goalkeeper leading the strike force.', 'There is no evidence that the goalkeeper from the 1928–29 Leicester City season played for Manchester United.']
+
+## Generated Outputs
+### reasoning
+The claim states two facts: first, that Manchester United Football Club is known as "the Red Devils", and second, that the goalie who led the strike force for Leicester City F.C. in the 1928–29 season also played for Manchester United. To verify this claim, we need to confirm Manchester United's nickname as "the Red Devils." Then, we must identify the goalie of Leicester City during the 1928–29 season, establish if that player was considered a leader of the strike force (which is unusual since a goalie typically isn't part of the strike force), and determine whether this individual also played for Manchester United at some point. The mention of a goalie leading the strike force suggests possible conflation or misunderstanding, so verifying the role and name is crucial.
+
+### query
+1. Is Manchester United Football Club commonly known by the nickname "the Red Devils"?
+2. Who was the goalie for Leicester City F.C. during the 1928–29 season?
+3. Did this goalie lead the strike force for Leicester City in the 1928–29 season?
+4. Did this goalie from Leicester City play for Manchester United Football Club at any time in their career?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['1928–29 Leicester City F.C. season']. Documents remaining to be retrieved: ['Ernie Hine', 'Manchester United F.C.'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

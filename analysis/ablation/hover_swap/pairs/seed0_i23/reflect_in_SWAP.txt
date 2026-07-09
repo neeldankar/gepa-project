@@ -1,0 +1,107 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields as input: a `claim` and associated `notes`. Your task is to generate a single, concise, precise natural language `query` that is intended to verify or fact-check the `claim` based on information given in the `notes`. The final query should be designed for efficient retrieval of authoritative evidence that confirms or refutes all key factual elements presented in the claim.
+
+Detailed task instructions:
+
+1. **Analyze the claim:**  
+   - Identify all key factual components or assertions that need verification.  
+   - Recognize any implied relationships between entities or multiple claim components that must be verified together to confirm the claim’s overall truthfulness.
+
+2. **Utilize the notes:**  
+   - Review the notes carefully as they provide relevant factual data, context, and background information.  
+   - Notes may include domain-specific facts, indirect evidence, overlapping or repetitive information, dates, names, titles, awards, species counts, corporate details, etc.  
+   - Incorporate any domain-specific terminology (e.g., proper names of individuals, awards, companies, taxa) relevant to the claim verification.
+
+3. **Formulate the query:**  
+   - Compose a single, clear, direct question that targets all essential factual elements and their connections (when multiple parts exist).  
+   - The query should explicitly reference relevant domain-specific entities (e.g., a person’s full name and role, award titles, film titles and director names, species genus/species count, airline nationality and base).  
+   - Where the claim contains multiple related parts, integrate them logically into one query to avoid fragmented checks needing multiple queries.  
+   - Avoid vagueness or open-ended questions; the query should lead to precise validation or refutation.
+
+4. **Examples of domain-specific entities and components to consider (to be used as needed based on claim content):**  
+   - **Literary awards and persons:** full names of individuals (e.g., Alan Sillitoe, Miguel Ángel Asturias, Elfriede Jelinek), Nobel Prize in Literature, their nationality, and specific roles (poet, diplomat, writer).  
+   - **Film and screenwriting credits:** film titles (Finding Dory, A Bug's Life), directs/co-directors, authorship relations.  
+   - **Botanical classification:** genus names, number of species, vernacular names in various languages, and taxonomic status.  
+   - **Corporate identity and location:** company names, nationality, headquarters city, operational details.  
+   - **Sports teams and leadership:** individual roles (head coach, offensive coordinator), team names, relevant league or conference (e.g., Big Ten Conference 2013 season).  
+
+5. **General strategy:**  
+   - The query should be framed as a verification question (e.g., “Was X the Y in [context or time period]?” or “Did A direct B and also co-direct C?”).  
+   - Combine multiple linked facts into one integrated query for efficiency and clarity.  
+   - Reflect any temporal information if relevant (e.g., “in 2013”, “currently”).  
+   - Where entities might have similar names or multiple aspects, use full names and specific details to avoid confusion.  
+
+The objective is to produce a targeted query that, when answered using the notes or queried in authoritative sources, decisively clarifies the accuracy of the claim based on its main factual components and their relationships.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+A participant in the summer 2013 Big Ten Conference football season was led by Kevin Reece Wilson. He is the current offensive coordinator at Ohio State.
+
+### notes
+["Kevin Reece Wilson was the head coach of the 2013 Indiana Hoosiers football team, a participant in the Big Ten Conference's Leaders Division, during the 2013 NCAA Division I FBS football season.", 'Kevin Wilson is currently the offensive coordinator at Ohio State University.', 'The 2013 Ohio State Buckeyes football team was led by head coach Urban Meyer, not Kevin Wilson.', "Kevin Reece Wilson was the head coach of the 2013 Indiana Hoosiers football team, a participant in the Big Ten Conference's Leaders Division.", 'The 2013 Indiana Hoosiers football team was led by head coach Kevin Wilson in his third season.', 'Kevin Wilson is currently the offensive coordinator at Ohio State University.', 'The 2013 Ohio State Buckeyes football team was led by head coach Urban Meyer, not Kevin Wilson.', "Kevin Reece Wilson was the head coach of the 2013 Indiana Hoosiers football team, a participant in the Big Ten Conference's Leaders Division.", 'The 2013 Indiana Hoosiers football team was led by head coach Kevin Wilson in his third season.', 'Kevin Wilson is currently the offensive coordinator at Ohio State University.', 'The 2013 Ohio State Buckeyes football team was led by head coach Urban Meyer, not Kevin Wilson.']
+
+## Generated Outputs
+### reasoning
+The claim involves verifying two key factual components: (1) that a participant in the summer 2013 Big Ten Conference football season was led by Kevin Reece Wilson, and (2) that Kevin Reece Wilson is currently the offensive coordinator at Ohio State. Since the notes provide no information, it is necessary to formulate a query that checks Kevin Reece Wilson's coaching position specifically in the 2013 Big Ten Conference football season and his current role at Ohio State.
+
+### query
+Was Kevin Reece Wilson the head coach or a leader of any team participating in the summer 2013 Big Ten Conference football season, and is he currently serving as the offensive coordinator at Ohio State University?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['2013 Indiana Hoosiers football team', 'Kevin Wilson (American football)']. Documents remaining to be retrieved: ['2013 Big Ten Conference football season'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Bruce Guthro  and another rock musician are not both members of the alternative rock band Radiohead. The other rock musician sins on the Radiohead song "All I need".
+
+### notes
+['Radiohead is an English alternative rock band with members including Thom Yorke and Colin Greenwood but does not include Bruce Guthro.', 'Bruce Guthro is a Canadian singer-songwriter known for folk and country music, not associated with Radiohead.', "The Radiohead song 'All I Need' features Thom Yorke as the lead vocalist, with no mention of Bruce Guthro or any other outside musician singing on the track.", 'Radiohead is an English alternative rock band that includes members such as Thom Yorke and Colin Greenwood but does not include Bruce Guthro.', 'Bruce Guthro is a Canadian singer-songwriter known for folk and country music and is not associated with Radiohead.', "The Radiohead song 'All I Need', from their album 'In Rainbows' (2007), features Thom Yorke as the lead vocalist.", "No outside musicians, including Bruce Guthro, are mentioned as performing on the Radiohead song 'All I Need'.", 'Bruce Guthro is a Canadian singer-songwriter known for folk and country music and is not associated with Radiohead.', 'Radiohead is an English alternative rock band with members including Thom Yorke and Colin Greenwood but does not include Bruce Guthro.', "The Radiohead song 'All I Need', from their album 'In Rainbows' (2007), features Thom Yorke as the lead vocalist.", "No outside musicians, including Bruce Guthro, are mentioned as performing on the Radiohead song 'All I Need'."]
+
+## Generated Outputs
+### reasoning
+The claim states two main points: first, that Bruce Guthro and another rock musician are not both members of Radiohead; second, that the other musician sings on Radiohead's song "All I Need." The notes clarify that Bruce Guthro is not a member of Radiohead and is not associated with the band. Additionally, Thom Yorke is identified as the lead vocalist on "All I Need," with no involvement from Bruce Guthro or any other outside musicians on that track. Therefore, verifying the membership status of Bruce Guthro and the vocalist(s) on "All I Need," particularly identifying if the other musician is a band member, is central to confirming or refuting the claim.
+
+### query
+Is Bruce Guthro a member of the English alternative rock band Radiohead, and does the Radiohead song "All I Need" feature Thom Yorke or any other Radiohead member as the vocalist without any involvement from Bruce Guthro or other outside musicians?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['All I Need (Radiohead song)', 'Thom Yorke']. Documents remaining to be retrieved: ['Bruce Guthro'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Scottish punk band that worked 3 years with Young American Recordings and Sleeper, are both from Britain.
+
+### notes
+['Young American Recordings was an American record label based in New York City and worked with the Scottish punk band APB.', 'Sleeper is a British band fronted by Louise Wener, with three full-length albums recorded.', 'There is no evidence that Sleeper worked with Young American Recordings.', 'Young American Recordings is not British, but American.', 'The claim that both Young American Recordings and Sleeper are British is incorrect.', 'Young American Recordings was an American record label based in New York City and worked with the Scottish punk band APB.', 'Sleeper is a British band fronted by Louise Wener with three full-length albums recorded.', 'There is no evidence that Sleeper worked with Young American Recordings.', 'Young American Recordings is American, not British.', 'The claim that both Young American Recordings and Sleeper are British is incorrect.', 'Young American Recordings was an American record label based in New York City and worked with the Scottish punk band APB.', 'Sleeper is a British band fronted by Louise Wener with three full-length albums recorded.', 'There is no evidence that Sleeper worked with Young American Recordings.', 'Young American Recordings is American, not British.', 'The claim that both Young American Recordings and Sleeper are British is incorrect.']
+
+## Generated Outputs
+### reasoning
+The claim states that both the Scottish punk band that worked 3 years with Young American Recordings, and Sleeper, are from Britain. From the notes, Young American Recordings was an American label based in New York City and worked with the Scottish punk band APB. Sleeper is a British band. There is no evidence Sleeper worked with Young American Recordings, and Young American Recordings is American, not British. Therefore, the claim that both Young American Recordings and Sleeper are British is false. The key facts to verify are the nationality of Young American Recordings and Sleeper and their working relationship with the Scottish punk band and each other.
+
+### query
+Are Young American Recordings and Sleeper both British, and did the Scottish punk band APB work for 3 years with Young American Recordings?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Sleeper (band)', 'Young American Recordings']. Documents remaining to be retrieved: ['APB (band)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

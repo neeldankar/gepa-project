@@ -1,0 +1,111 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given an input with fields `claim` and `notes`, your task is to generate a precise and focused `query` that will help verify the truthfulness or specifics of the `claim`. The `notes` contain factual context, references, and clarifications relevant to the claim, including correct or incorrect information, possible ambiguities, and the identity or attributes of entities mentioned.
+
+The `query` you produce should:
+
+1. Clearly identify the key factual aspects or entities in the `claim` that need verification or resolution.
+2. Target missing or uncertain information found within the `notes` critical to confirming or refuting the claim.
+3. Address potential ambiguities or errors in the claim’s details (e.g., incorrect nationalities, confused identities, overlapping names).
+4. Include multiple connected questions if necessary to disambiguate entities, clarify relationships, or fill knowledge gaps influencing the claim’s validity.
+5. Be succinct yet comprehensive enough to guide retrieval of all remaining relevant documents needed for claim verification.
+
+Use the reasoning to break down the factual relationships or contradictions in the claim using the notes. Then, formulate the query as a set of verification or exploration questions that directly correspond to outstanding information needs or fact-checking points revealed in your reasoning.
+
+Domain-specific considerations you must keep in mind:  
+- Names with variants or multiple forms require explicit disambiguation (e.g., middle names or alternative spellings).  
+- Nationalities or biographical details may be misattributed in claims and must be explicitly queried if notes indicate conflict.  
+- For claims about works (films, books) and their creators or participants, verify roles, dates, nationalities, and inter-relationships among them.  
+- For claims comparing people’s characteristics or actions (e.g., hobbies, professions), focus queries on confirming or negating these attributes for each individual separately if ambiguity exists.  
+- When the claim involves temporal sequences (e.g., birthdates, event chronology), ensure the query asks about exact dates or relative timings.  
+- When no direct evidence exists for parts of a claim, queries should specifically seek missing information or confirmation of absence.
+
+Your ultimate goal is to enable sourcing all essential information to verify the claim fully through your query, covering any partial, conflicting, or incomplete evidence noted.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+German Frank Sinatra has won more awards than this Skinny Puppy band member, for whom the Rx (band) was a one-off side project.
+
+### notes
+['Rx (band) was a one-off side project by Skinny Puppy band member Nivek Ogre.', 'Frank Sinatra won numerous prestigious awards including multiple Grammy Awards and an Oscar.', 'Nivek Ogre, member of Skinny Puppy and Rx side project, has no noted awards in the provided context.', 'Rx was a one-off side project band formed by Nivek Ogre and Martin Atkins.', 'Frank Sinatra is known as an iconic American singer and actor with a prolific award history.', "The reference to 'German Frank Sinatra' likely alludes to Frank Sinatra, recognized widely for his awards.", 'Nivek Ogre, a member of Skinny Puppy and Rx side project, has no documented awards in the given context.', 'Frank Sinatra has received numerous prestigious awards, such as multiple Grammy Awards and an Oscar.', 'The Rx band was a one-off project involving Nivek Ogre.', "Frank Sinatra's numerous awards imply he has won more than Nivek Ogre."]
+
+## Generated Outputs
+### reasoning
+The claim mentions an individual referred to as "German Frank Sinatra," suggesting a figure connected to or comparable with Frank Sinatra but German. It also mentions a member of the band Skinny Puppy, who was involved in a one-off side project called Rx (band). The claim asserts that "German Frank Sinatra" has won more awards than this Skinny Puppy band member.
+
+Key aspects requiring verification are:
+1. Identification of "German Frank Sinatra": This is likely a nickname, stage name, or common reference to a specific individual of German origin connected to Frank Sinatra’s style or reputation.
+2. Identifying the Skinny Puppy band member involved in Rx (band), and this individual's award history.
+3. Award comparison between the "German Frank Sinatra" and the Skinny Puppy band member.
+4. Confirmation of the Rx band being a one-off side project of the Skinny Puppy member.
+
+Since there are no notes giving any factual information, the query must request information on these identities and their respective awards to validate the claim.
+
+### query
+Who is referred to as "German Frank Sinatra"? What is this person's background, nationality, and award history? Which Skinny Puppy band member participated in the one-off side project called Rx (band)? What awards has this Skinny Puppy band member won? How do the awards of "German Frank Sinatra" compare to those of this Skinny Puppy band member? Is Rx (band) confirmed as a one-off side project of that Skinny Puppy member?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Nivek Ogre', 'Rx (band)']. Documents remaining to be retrieved: ['Frank Sinatra'].
+
+
+
+# Example 2
+## Inputs
+### claim
+In the 1755 revived opera that Henri Larrivée appeared in and mezzo soprano Manon Lescaut are not composed by the same people.
+
+### notes
+["Henri Larrivée appeared in the 1755 revival of Rameau's Castor et Pollux.", 'Manon Lescaut operas were composed by Giacomo Puccini and Daniel Auber, among others, much later than 1755.', 'The 1755 opera and Manon Lescaut operas do not share the same composers.', "Henri Larrivée appeared in the 1755 revival of Rameau's 'Castor et Pollux.'", "'Manon Lescaut' operas were composed by Giacomo Puccini and Daniel Auber, among others, all composed well after 1755.", "The opera revived in 1755 with Henri Larrivée and the 'Manon Lescaut' operas do not share the same composers.", "Henri Larrivée appeared in the 1755 revival of Jean-Philippe Rameau's 'Castor et Pollux.'", "The opera 'Manon Lescaut' was composed later by Giacomo Puccini (1890-1893) and Daniel Auber, among others.", "The 1755 opera featuring Henri Larrivée and the 'Manon Lescaut' operas do not share the same composers."]
+
+## Generated Outputs
+### reasoning
+The claim states that Henri Larrivée appeared in a 1755 revived opera and that the mezzo soprano Manon Lescaut is not composed by the same people. The notes clarify that Henri Larrivée appeared in the 1755 revival of Rameau's "Castor et Pollux" and that "Manon Lescaut" operas were composed much later by Giacomo Puccini, Daniel Auber, and others. Therefore, the operas in which Larrivée appeared (Rameau's works) and the "Manon Lescaut" operas have different composers, with no overlap and different time periods of composition. This supports the idea that these works are by different composers. The claim is about the difference in composers of the 1755 revival opera featuring Larrivée and the "Manon Lescaut" operas. 
+
+The key verification points are:
+- Confirm the opera featuring Henri Larrivée in the 1755 revival (Rameau's "Castor et Pollux").
+- Confirm the composers of the "Manon Lescaut" operas.
+- Confirm that the composers of the 1755 revival opera and "Manon Lescaut" operas are distinct.
+- Verify that "Manon Lescaut" is an opera with mezzo soprano roles, and that it is unrelated to the 1755 opera revivals.
+
+No contradictory information is present in the notes; however, the claim incorrectly includes "mezzo soprano Manon Lescaut" as if Manon Lescaut is a singer, while it is an opera title. So clarification on roles and identities is needed. Also, confirming the composers and the dates of the operas is essential.
+
+### query
+Who composed the opera "Castor et Pollux" revived in 1755 in which Henri Larrivée appeared? Who composed the opera(s) titled "Manon Lescaut" and when were these composed? Are the composers of "Castor et Pollux" (1755 revival) and the "Manon Lescaut" operas the same or different individuals? Additionally, is "Manon Lescaut" the name of a mezzo soprano or strictly the title of an opera? What is the nature of the connection, if any, between Henri Larrivée and any "Manon Lescaut" opera performances?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Henri Larrivée', 'Manon Lescaut (Puccini)']. Documents remaining to be retrieved: ['Castor et Pollux'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Rhapsody, Op. 1 was written by a male composer. This composer was Hungarian, not Johann Christoph Pepusch.
+
+### notes
+['Rhapsody, Op. 1, was composed by Béla Bartók, a Hungarian male composer.', 'Johann Christoph Pepusch was a German-born composer, unrelated to Rhapsody, Op. 1.', "Béla Bartók's Rhapsody, Op. 1 was finished in 1904 and is distinct from works by Brahms or Liszt.", 'Rhapsody, Op. 1 was composed by Hungarian composer Béla Bartók, a male musician.', 'Béla Bartók completed Rhapsody, Op. 1 in 1904, later arranging it for piano and orchestra.', 'Johann Christoph Pepusch was a German-born composer who lived from 1667 to 1752 and had no involvement with Rhapsody, Op. 1.', 'Rhapsody, Op. 1 was composed by Béla Bartók, a Hungarian male composer, in 1904.', 'Johann Christoph Pepusch was a German-born composer with no connection to Rhapsody, Op. 1.', "Béla Bartók's Rhapsody, Op. 1 is catalogued as Sz. 26, BB 36, and has a version for piano and orchestra.", "Béla Bartók is one of Hungary's most important composers and had no relation to Pepusch.", 'Johann Christoph Pepusch lived from 1667 to 1752 and did not compose Rhapsody, Op. 1.']
+
+## Generated Outputs
+### reasoning
+The claim states that "Rhapsody, Op. 1" was composed by a male Hungarian composer and specifically excludes Johann Christoph Pepusch as the composer. Since there is no information in the notes, it is necessary to identify who composed a piece titled "Rhapsody, Op. 1," verify the composer's gender and nationality, and confirm that Johann Christoph Pepusch is not the composer of this work. There might be confusion because Pepusch was a German-born composer, so the claim clarifies the nationality. The key points to verify are the composer of "Rhapsody, Op. 1," the composer's gender (male), and nationality (Hungarian), and to confirm that Johann Christoph Pepusch did not write this piece.
+
+### query
+Who is the composer of "Rhapsody, Op. 1"? What is the nationality and gender of this composer? Did Johann Christoph Pepusch compose a work titled "Rhapsody, Op. 1," or is this work attributed to a different Hungarian male composer?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Béla Bartók', 'Johann Christoph Pepusch', 'Rhapsody, Op. 1 (Bartók)']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

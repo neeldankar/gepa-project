@@ -1,0 +1,102 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given two input fields:  
+- `claim`: a statement asserting certain facts or relationships about entities, including genre classifications, character roles, temporal orderings, or member counts of groups/bands.  
+- `notes`: a list of factual sentences or extracted information pieces relevant to the claim, often providing partial evidence or clarifications about entities, their attributes, and relationships.
+
+Your task is to produce a single output field:  
+- `query`: a clear, concise, and targeted question (or set of closely related questions) designed to retrieve the missing or confirming factual information needed to verify or refute the `claim`.  
+
+The `query` should focus on:  
+- Confirming exact classifications or categories (e.g., movie genres, band genres).  
+- Clarifying membership counts or comparisons between groups.  
+- Establishing temporal relations or event sequences (e.g., release dates).  
+- Disambiguating entities with similar names or verifying the presence or role of a character or individual in a given work.  
+
+Strategies and considerations for generating the `query`:  
+1. Analyze the `claim` carefully to identify key factual points or comparisons that require verification.  
+2. Leverage the `notes` to understand which aspects of the claim are supported or contradicted, and which remain uncertain or missing.  
+3. Formulate the `query` to explicitly seek the missing information or clarification necessary to decide the truth of the claim. Avoid overly broad or vague queries—focus on the minimal but sufficient question(s) to confirm or refute the claim.  
+4. When the claim involves multiple entities or facts, and the notes partially cover these, include all relevant verification points in the `query`.  
+5. Maintain the specificity of entities by including relevant context in the `query` (e.g., include years for movies, full names for bands or characters).  
+
+Domain-specific notes that might not be explicitly known by the assistant but are useful for query formulation:  
+- Movie genre classifications can be nuanced, with some movies emphasizing family, comedy, adventure, or action genres to varying degrees.  
+- Voice actor roles often need precise linking to specific film releases and characters.  
+- Band classifications can vary between musical genres, and member counts are important quantitative facts for comparison claims.  
+- Temporal comparisons often hinge on release dates of movies or events and require clear references to those dates in queries.  
+- Entity disambiguation can require specifying the version or year of a movie or release to avoid confusion.  
+
+The ultimate goal is to produce a `query` that, when used to retrieve or check factual documents, will provide the exact information needed to confirm or deny the `claim`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+In the 1755 revived opera that Henri Larrivée appeared in and mezzo soprano Manon Lescaut are not composed by the same people.
+
+### notes
+["Henri Larrivée appeared in the 1755 revival of Jean-Philippe Rameau's 'Castor et Pollux'.", 'Manon Lescaut is an opera composed primarily by Giacomo Puccini between 1890 and 1893.', 'Other versions of Manon Lescaut include operas by Daniel Auber and Jules Massenet.', 'Rameau and Puccini (as well as Auber and Massenet) are distinct composers separated by more than a century.', "Henri Larrivée was involved in the 1755 revival of Rameau's 'Castor et Pollux', composed by Jean-Philippe Rameau.", 'Manon Lescaut is an opera composed primarily by Giacomo Puccini between 1890 and 1893.', 'The composers Rameau and Puccini lived in different centuries and are distinct individuals.', 'Therefore, the 1755 revived opera featuring Henri Larrivée and the opera Manon Lescaut were composed by different composers.', "Henri Larrivée appeared in the 1755 revival of Jean-Philippe Rameau's 'Castor et Pollux'.", "'Manon Lescaut' is an opera composed primarily by Giacomo Puccini between 1890 and 1893.", "Other versions of 'Manon Lescaut' include operas by Daniel Auber and Jules Massenet, none connected with Rameau.", 'Jean-Philippe Rameau and Giacomo Puccini lived in different centuries and are distinct composers.', "The 1755 revived opera involving Henri Larrivée and the opera 'Manon Lescaut' were composed by different composers."]
+
+## Generated Outputs
+### reasoning
+The claim involves verifying the composers of two operas: the 1755 revived opera that features Henri Larrivée and the opera "Manon Lescaut," which is a mezzo soprano role. To evaluate the claim, we need to know who composed the 1755 revived opera and who composed "Manon Lescaut." If these two operas were composed by different individuals or teams, the claim is true; otherwise, it's false. Since the notes provide no information, the key information missing is the composer(s) of the 1755 revived opera in which Henri Larrivée appeared and the composer(s) of "Manon Lescaut."
+
+### query
+Who composed the 1755 revived opera that Henri Larrivée appeared in, and who composed the opera "Manon Lescaut"? Are these composers the same or different?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Henri Larrivée', 'Manon Lescaut (Puccini)']. Documents remaining to be retrieved: ['Castor et Pollux'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The  genus of flowering plants whose  generic name is Caesalpinioideae has more species than Achimenes.
+
+### notes
+['Caesalpinioideae is a subfamily, not a genus.', 'Senna, a genus within Caesalpinioideae, has about 260 to 350 species.', 'Achimenes is a genus in the family Gesneriaceae, species count not specified but fewer than Senna.', 'Several genera in Caesalpinioideae have species counts exceeding that of Achimenes.', 'The claim incorrectly identifies Caesalpinioideae as a genus.', 'Caesalpinioideae is a subfamily, not a genus.', 'Senna, a genus within Caesalpinioideae, has about 260 to 350 species.', 'Achimenes is a genus of about 25 species in the family Gesneriaceae.', 'Several genera in Caesalpinioideae have more species than the genus Achimenes.', 'The claim mistakenly identifies Caesalpinioideae as a genus instead of a subfamily.', 'Caesalpinioideae is a subfamily, not a genus.', 'Senna, a genus within Caesalpinioideae, contains about 260 to 350 species.', 'Achimenes is a genus with about 25 species in the Gesneriaceae family.', 'Several genera within Caesalpinioideae have more species than Achimenes.', 'The original claim misunderstands Caesalpinioideae as a genus rather than a subfamily.']
+
+## Generated Outputs
+### reasoning
+The claim compares the species count of two genera of flowering plants: the one with the generic name "Caesalpinioideae" and "Achimenes". To verify this claim, we need to determine the exact number of species in each genus (or subfamily, if the name Caesalpinioideae corresponds to a higher taxonomic rank than genus) and compare them. Since there are no notes or relevant information provided, the query should ask specifically about the species count for both Caesalpinioideae and Achimenes as recognized in botanical classification.
+
+### query
+What is the number of species classified under the genus or subfamily Caesalpinioideae? How many species are classified in the genus Achimenes? Is Caesalpinioideae considered a genus or a subfamily, and does it contain more species than Achimenes?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Achimenes']. Documents remaining to be retrieved: ['Caesalpinia', 'Caesalpinioideae'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Paul Shaw wrote a book on the history of the design of the New York subway system in 2014 for a magazine. That magazine and National Journal are not both periodicals.
+
+### notes
+["Paul Shaw wrote a book titled 'Helvetica and the New York Subway System: The True (Maybe) Story' about the design history of the NYC subway.", 'Paul Shaw has written for Print magazine, which is a periodical publication.', 'National Journal is a political magazine published regularly and qualifies as a periodical.', 'Both Print magazine and National Journal are periodicals, thus the claim that they are not both periodicals is incorrect.', "Paul Shaw wrote 'Helvetica and the New York Subway System: The True (Maybe) Story' about NYC subway design history.", 'Paul Shaw has written for Print magazine, which is a periodical publication.', 'National Journal is a regularly published political magazine and qualifies as a periodical.', 'Both Print magazine and National Journal are periodicals, contradicting the claim that they are not both periodicals.', "Paul Shaw wrote a book titled 'Helvetica and the New York Subway System: The True (Maybe) Story' about the design history of the New York subway system.", 'Paul Shaw has written for Print magazine, which is a periodical publication.', 'National Journal is a political magazine published regularly and qualifies as a periodical.', 'Both Print magazine and National Journal are periodicals, making the claim that they are not both periodicals incorrect.']
+
+## Generated Outputs
+### reasoning
+The claim states that Paul Shaw wrote a book on the history of the design of the New York subway system in 2014 for a magazine and that the magazine he wrote for and National Journal are not both periodicals. The notes reveal that Paul Shaw wrote a book titled "Helvetica and the New York Subway System: The True (Maybe) Story," which is clearly about the subway system's design history, but it is a book and not an article for a magazine. Furthermore, Paul Shaw has written for Print magazine, which is a periodical publication, and National Journal is also a periodical. Hence, both Print magazine and National Journal qualify as periodicals, contradicting the claim that they are not both periodicals. It remains uncertain whether Paul Shaw's book was originally published in a magazine or if it was a standalone book, and the mention of 2014 is not supported in the notes. To verify the claim fully, it is necessary to clarify: (1) Did Paul Shaw author a book or an article for a magazine on the NYC subway system history, and in what year? (2) Is Print magazine (the magazine Shaw wrote for) a periodical? (3) Is National Journal a periodical?
+
+### query
+Did Paul Shaw write a book or an article on the history of the New York subway system for a magazine, and if so, in what year was it published? Is Print magazine, which Paul Shaw has written for, classified as a periodical publication? Is National Journal a periodical publication?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Paul Shaw (design historian)']. Documents remaining to be retrieved: ['National Journal', 'Print (magazine)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,106 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given an input with fields `claim` and `notes`, your task is to generate a precise and focused `query` that will help verify the truthfulness or specifics of the `claim`. The `notes` contain factual context, references, and clarifications relevant to the claim, including correct or incorrect information, possible ambiguities, and the identity or attributes of entities mentioned.
+
+The `query` you produce should:
+
+1. Clearly identify the key factual aspects or entities in the `claim` that need verification or resolution.
+2. Target missing or uncertain information found within the `notes` critical to confirming or refuting the claim.
+3. Address potential ambiguities or errors in the claim’s details (e.g., incorrect nationalities, confused identities, overlapping names).
+4. Include multiple connected questions if necessary to disambiguate entities, clarify relationships, or fill knowledge gaps influencing the claim’s validity.
+5. Be succinct yet comprehensive enough to guide retrieval of all remaining relevant documents needed for claim verification.
+
+Use the reasoning to break down the factual relationships or contradictions in the claim using the notes. Then, formulate the query as a set of verification or exploration questions that directly correspond to outstanding information needs or fact-checking points revealed in your reasoning.
+
+Domain-specific considerations you must keep in mind:  
+- Names with variants or multiple forms require explicit disambiguation (e.g., middle names or alternative spellings).  
+- Nationalities or biographical details may be misattributed in claims and must be explicitly queried if notes indicate conflict.  
+- For claims about works (films, books) and their creators or participants, verify roles, dates, nationalities, and inter-relationships among them.  
+- For claims comparing people’s characteristics or actions (e.g., hobbies, professions), focus queries on confirming or negating these attributes for each individual separately if ambiguity exists.  
+- When the claim involves temporal sequences (e.g., birthdates, event chronology), ensure the query asks about exact dates or relative timings.  
+- When no direct evidence exists for parts of a claim, queries should specifically seek missing information or confirmation of absence.
+
+Your ultimate goal is to enable sourcing all essential information to verify the claim fully through your query, covering any partial, conflicting, or incomplete evidence noted.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Clark County in Nevada contains both Las Vegas and another college. Craig Heyer played baseball at that college.
+
+### notes
+['Clark County, Nevada contains Las Vegas, the most populous city and county seat.', 'Craig Heyer played college baseball at the College of Southern Nevada and University of Nevada, Las Vegas (UNLV).', 'Both the College of Southern Nevada and UNLV are located in Las Vegas, Clark County, Nevada.', 'Clark County, Nevada contains Las Vegas and houses multiple colleges, including the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).', 'Craig Heyer played college baseball at both the College of Southern Nevada and the University of Nevada, Las Vegas, both located in Las Vegas, Clark County, Nevada.', 'Clark County, Nevada encompasses Las Vegas and has several colleges, including the College of Southern Nevada and UNLV.', 'Craig Heyer played college baseball at both the College of Southern Nevada and University of Nevada, Las Vegas (UNLV), both located in Las Vegas, Clark County, Nevada.']
+
+## Generated Outputs
+### reasoning
+The claim states that Clark County in Nevada contains both Las Vegas and another college, and that Craig Heyer played baseball at that college. Notes confirm that Clark County contains Las Vegas, and that there are at least two colleges in Las Vegas within Clark County: the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV). Craig Heyer played baseball at both colleges, per notes. The claim mentions "another college" suggesting a college besides a primary one presumably named, but the claim does not name the first college explicitly. Since both colleges are in Las Vegas, Clark County, the notion of "another college" is accurate in a broad sense, but the claim does not specify the primary college or if Craig Heyer only played at the second college. The notes clarify that he played at both. Thus, the claim is largely correct but somewhat ambiguous about which colleges exactly. To confirm the claim, we need to verify if both colleges are indeed in Las Vegas, Clark County, and if Craig Heyer played baseball at the other (second) college as referenced.
+
+### query
+Does Clark County, Nevada include Las Vegas and multiple colleges such as the College of Southern Nevada and University of Nevada, Las Vegas (UNLV)? At which of these colleges did Craig Heyer play baseball? Did Craig Heyer play baseball at both the College of Southern Nevada and UNLV, both located in Las Vegas, Clark County, Nevada?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Clark County, Nevada', 'Craig Heyer']. Documents remaining to be retrieved: ['College of Southern Nevada'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The writer of the metal song "Veteran of the Psychic Wars" is a lyricist, not Otep Shamaya.
+
+### notes
+['"Veteran of the Psychic Wars" is a song by Blue Öyster Cult, written by Eric Bloom and Michael Moorcock.', 'Eric Bloom is a musician and member of Blue Öyster Cult; Michael Moorcock is a British author who collaborated on the song lyrics.', 'Otep Shamaya is the lead vocalist of the nu metal band Otep, with no songwriting credit on "Veteran of the Psychic Wars."', 'Lyricist means a person who writes the lyrics (words) of songs, as opposed to a composer who writes the music.', 'Michael Moorcock is credited for writing lyrics for Blue Öyster Cult songs including "Veteran of the Psychic Wars."', '"Veteran of the Psychic Wars" is a song by Blue Öyster Cult, written by Eric Bloom and Michael Moorcock.', 'Michael Moorcock, a British author, is credited as the lyricist of "Veteran of the Psychic Wars."', 'Otep Shamaya is the lead vocalist of the nu metal band Otep and has no songwriting credit for "Veteran of the Psychic Wars."', 'A lyricist is a person who writes the words (lyrics) for songs.', 'Eric Bloom collaborated with Michael Moorcock on lyrics for Blue Öyster Cult songs.', '"Veteran of the Psychic Wars" first appeared on the Blue Öyster Cult album "Fire of Unknown Origin" (1981).', '"Veteran of the Psychic Wars" is co-written by Eric Bloom and Michael Moorcock, with Moorcock credited as the lyricist.', 'Michael Moorcock is a British author known for his contributions as a lyricist to Blue Öyster Cult songs.', 'Otep Shamaya, lead vocalist of the band Otep, is not credited with writing or lyricism for "Veteran of the Psychic Wars."', 'The song first appeared on Blue Öyster Cult\'s 1981 album "Fire of Unknown Origin."', "A lyricist writes the words to a song, which applies to Michael Moorcock's role on this song."]
+
+## Generated Outputs
+### reasoning
+The claim states that the writer of "Veteran of the Psychic Wars" is a lyricist and not Otep Shamaya. From the notes, it's clear that "Veteran of the Psychic Wars" is a song by Blue Öyster Cult, written by Eric Bloom and Michael Moorcock. Michael Moorcock is specifically credited as the lyricist, meaning he wrote the lyrics. Otep Shamaya is the lead vocalist of a different band, Otep, and has no songwriting credits related to this song. Therefore, the claim distinguishes the actual lyricist Michael Moorcock from Otep Shamaya, who is unrelated to the song’s writing credits.
+
+To verify the claim fully, it is necessary to confirm the songwriter and lyricist credits for "Veteran of the Psychic Wars," confirm Michael Moorcock's role as lyricist, Eric Bloom's involvement, and that Otep Shamaya has no connection to the song’s authorship.
+
+### query
+Who are the credited writers and lyricists of "Veteran of the Psychic Wars" by Blue Öyster Cult? What was Michael Moorcock's role in writing this song? Does Otep Shamaya have any songwriting or lyricist credits for "Veteran of the Psychic Wars"? What roles did Eric Bloom have in writing this song?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Otep Shamaya', 'Veteran of the Psychic Wars']. Documents remaining to be retrieved: ['Eric Bloom'].
+
+
+
+# Example 3
+## Inputs
+### claim
+In the 1755 revived opera that Henri Larrivée appeared in and mezzo soprano Manon Lescaut are not composed by the same people.
+
+### notes
+["Henri Larrivée appeared in the 1755 revival of Rameau's 'Castor et Pollux'.", "Manon Lescaut opera versions include Puccini's (1890-1893) and Auber's 19th century version, all unrelated to Rameau.", "Jules Massenet's 'Manon' (1884) is based on the same novel but separate from Rameau's works.", "The opera Larrivée appeared in and 'Manon Lescaut' operas are by different composers.", "Henri Larrivée appeared in the 1755 revival of Jean-Philippe Rameau's opera 'Castor et Pollux'.", "'Manon Lescaut' operas were composed by Giacomo Puccini, Daniel Auber, and Jules Massenet, all different from Rameau.", "The 'Manon Lescaut' operas are based on the novel by Abbé Prévost, but are separate works unrelated to Rameau's compositions.", "The composers of 'Castor et Pollux' and 'Manon Lescaut' operas belong to different eras and are distinct individuals.", "Henri Larrivée appeared in the 1755 revival of Jean-Philippe Rameau's opera 'Castor et Pollux'.", "The opera 'Manon Lescaut' has multiple versions composed by different composers: Giacomo Puccini (1890-1893), Daniel Auber (19th century), and Jules Massenet ('Manon', 1884).", "These 'Manon Lescaut' operas are unrelated to Rameau's 'Castor et Pollux' and belong to different musical eras and styles.", "Hence, the operas involving Henri Larrivée and 'Manon Lescaut' were composed by different people."]
+
+## Generated Outputs
+### reasoning
+The claim references a "1755 revived opera" that Henri Larrivée appeared in and a "mezzo soprano Manon Lescaut," asserting that these are not composed by the same people. To verify this claim, several pieces of information are needed that the notes do not provide:
+
+1. What is the exact title of the 1755 revived opera in which Henri Larrivée appeared?
+2. Who composed this specific opera?
+3. Is "mezzo soprano Manon Lescaut" referring to the character Manon Lescaut from an opera or to a mezzo-soprano singer named Manon Lescaut? 
+4. If it refers to the character, who composed the opera Manon Lescaut?
+5. Are the composers of this 1755 revived opera and Manon Lescaut the same or different?
+6. Additionally, confirming Henri Larrivée’s role or participation in the 1755 revived opera.
+
+Since the claim involves composer(s) and a 1755 opera revival, it is crucial to clarify the opera titles involved, composers, and the identities (character vs. singer) regarding Manon Lescaut.
+
+### query
+What opera did Henri Larrivée appear in that was revived in 1755? Who composed this opera? Who composed the opera Manon Lescaut? Is Manon Lescaut referred to here a mezzo-soprano singer or the character in the opera? Are the composers of the 1755 revived opera featuring Henri Larrivée and the opera Manon Lescaut the same or different?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Castor et Pollux', 'Henri Larrivée', 'Manon Lescaut (Puccini)']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

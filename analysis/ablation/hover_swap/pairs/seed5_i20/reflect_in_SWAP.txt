@@ -1,0 +1,169 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given a factual `claim` that may involve multiple interconnected facts or named entities (such as people, films, places, products, organizations, historical dates, or other domain-specific items). Together with the claim, you will receive a set of `notes` consisting of partial background information, known details, plus observations that highlight gaps, ambiguities, or contradictions around the claim’s elements.
+
+Your goal is to generate a focused set of one or more `queries` designed to verify or fact-check each component of the claim. These queries will be used to retrieve relevant evidence or documents (e.g., from Wikipedia or other authoritative sources) to confirm or refute the claim.
+
+Key Requirements and Domain-Specific Heuristics:
+
+1. **Entity Disambiguation:**  
+   - Explicitly identify all named entities mentioned in the claim.  
+   - Always disambiguate entities carefully using relevant descriptors, such as: clarifying a film’s release year, a person’s profession or nationality, distinguishing similarly named entities (e.g., “Solo (Norwegian soft drink)” instead of just “Solo”).  
+   - This avoids confusion and ensures queries retrieve targeted, relevant information.
+
+2. **Decompose Complex Claims into Components:**  
+   - If the claim includes multiple assertions (e.g., an actor acted in multiple movies, a director’s involvement, a formation date of a military unit), break it down into multiple specific queries, each verifying one discrete fact.  
+   - Queries should be connected logically, covering the full scope of the claim without leaving holes.
+
+3. **Target Missing, Ambiguous, or Contradictory Information from the Notes:**  
+   - Use the notes to identify what is already known, what is uncertain or missing, and contradictions that must be resolved.  
+   - Formulate queries that directly address these gaps or conflicting points to retrieve clarifying evidence.  
+   - For example, if it’s unclear whether a publication is a book or a magazine article, or exact formation years of military units, or the nationality of a named individual, queries should reflect these specifics.
+
+4. **Cover Every Fact Embedded in the Claim:**  
+   - Ensure your queries collectively verify all factual statements contained in the claim.  
+   - Avoid partial coverage that might retrieve documents relevant to only some parts of the claim.
+
+5. **Precise and Clear Query Formulation:**  
+   - Queries must be explicit, well-structured factual questions or entity-relationship prompts, suitable for document retrieval.  
+   - Avoid vague, overly broad, or open-ended questions.
+
+6. **Include Relevant Domain Context:**  
+   - When necessary, incorporate domain knowledge or contextual clues into the queries.  
+   - For example, when verifying a film claim, specify the film’s release year or director; for geographical entities, specify if a cemetery is within a park; for military units, specify their formation dates and relation to associated conflicts or films.
+
+Generalizable Strategy:
+
+- Carefully read and parse the claim to extract all named entities and discrete fact assertions.  
+- Examine the provided notes thoroughly to uncover what details are confirmed, missing, ambiguous, or contradictory in relation to the claim.  
+- For each factual element and especially for each gap or contradiction, generate a focused, specific question or search prompt to obtain clear supporting or refuting evidence.  
+- Ensure queries are comprehensive and well-targeted to verify the full claim.  
+- Format the final output strictly as one or more `query` lines, with no additional explanation or commentary.
+
+Example Query Patterns:
+
+- For a film claim:  
+  - “Who starred in [Film Name] ([Year])?”  
+  - “Who directed [Film Name] ([Year])?”  
+  - “Is [Person’s Name] an actor in [Film Name] ([Year])?”  
+
+- For a publication claim:  
+  - “What is the publication format and date of [Title] by [Author]?”  
+  - “Is [Publication Name] a periodical or a book publisher?”  
+
+- For geography or burial claims:  
+  - “Where is [Person] buried?”  
+  - “Is [Cemetery Name] located within [Park or Geographic Area]?”  
+
+- For military or historical claims:  
+  - “When was [Military Unit] formed?”  
+  - “What units are featured in [Film or Book Title]?”  
+
+By following these instructions carefully, you will produce precise queries capable of guiding the retrieval of comprehensive, relevant documents to validate or refute complex factual claims.
+
+Input Format:  
+- `claim`: A factual statement with one or more components involving named entities or facts.  
+- `notes`: A list of strings summarizing current knowledge, including unknowns or contradictions.
+
+Output Format:  
+- `query`: One or more explicit, decomposed, and disambiguated search queries targeting factual verifications for each part of the claim.
+
+Remember:  
+- Queries must be factual questions fit for document retrieval.  
+- Always cover all aspects requiring verification.  
+- Disambiguate entities using descriptive context.  
+- Use notes to identify which facts require particular attention.  
+- Structure queries to maximize retrieval precision and relevance.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Both Elisabeth Vrba's colleague, who she coined the word exaptation with, and Ann Beattie have a profession in common.
+
+### notes
+['Elisabeth Vrba is a paleontologist at Yale University who coined the term exaptation with colleague Stephen Jay Gould.', "Stephen Jay Gould, Vrba's colleague, was a paleontologist and evolutionary biologist.", 'Ann Beattie is not related to paleontology or biology and is known as a writer.', 'No evidence suggests that Ann Beattie shares a profession with Stephen Jay Gould.', 'Elisabeth Vrba coined the term exaptation with her colleague Stephen Jay Gould.', 'Stephen Jay Gould was a paleontologist and evolutionary biologist.', 'Ann Beattie is a writer with no connection to paleontology or biology.', 'No evidence indicates that Ann Beattie shares the profession of paleontology or evolutionary biology with Stephen Jay Gould.', 'Elisabeth Vrba coined the term exaptation with her colleague Stephen Jay Gould.', 'Stephen Jay Gould was a paleontologist and evolutionary biologist.', 'Ann Beattie is a writer with no connection to paleontology or evolutionary biology.', 'There is no evidence that Stephen Jay Gould and Ann Beattie share a profession.']
+
+## Generated Outputs
+### reasoning
+The claim states that Elisabeth Vrba's colleague—the person with whom she coined the word "exaptation"—shares a profession with Ann Beattie. To verify this claim, it is necessary to:
+
+1. Identify Elisabeth Vrba's colleague who co-coined the term "exaptation."
+2. Determine the profession of this colleague.
+3. Determine the profession of Ann Beattie.
+4. Confirm whether both share the same profession.
+
+This checks all components of the claim and resolves any uncertainty about the identity and professions involved.
+
+### query
+Who is Elisabeth Vrba's colleague with whom she coined the term "exaptation"?  
+What is the profession of Elisabeth Vrba's colleague who coined the term "exaptation"?  
+What is the profession of Ann Beattie?  
+Do Elisabeth Vrba's colleague who coined "exaptation" and Ann Beattie share the same profession?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Elisabeth Vrba', 'Stephen Jay Gould']. Documents remaining to be retrieved: ['Ann Beattie'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Paul Shaw wrote a book on the history of the design of the New York subway system in 2014 for a magazine. That magazine and National Journal are not both periodicals.
+
+### notes
+["Paul Shaw wrote 'Helvetica and the New York Subway System: The True (Maybe) Story' on the history of the design of the New York subway system.", "This work is connected with Print magazine, confirming Shaw's contribution to a magazine publication.", 'Print magazine is a periodical publication.', "There is no information in the provided context about National Journal's classification as a periodical.", 'Periodical literature includes magazines published on a regular schedule (weekly, monthly, quarterly).', "Paul Shaw wrote 'Helvetica and the New York Subway System: The True (Maybe) Story' on the history of the design of the New York subway system.", "Shaw's work is connected with Print magazine.", 'Print magazine is explicitly classified as a periodical publication.', 'There is no information confirming National Journal as a periodical in the provided context.', 'Periodical literature includes magazines published regularly, such as weekly, monthly, or quarterly.', "Paul Shaw wrote 'Helvetica and the New York Subway System: The True (Maybe) Story', related to Print magazine.", 'Print magazine is a periodical publication.', 'There is no information confirming National Journal as a periodical in the provided context.', 'Periodicals are magazines published regularly, such as weekly, monthly, or quarterly.']
+
+## Generated Outputs
+### reasoning
+The claim involves several discrete facts. First, it asserts that Paul Shaw wrote a book on the history of the design of the New York subway system in 2014 for a magazine. It is necessary to verify whether this work by Paul Shaw exists, whether it is accurately described as a book or a magazine article, the topic, and the date (2014). Second, the claim states that this work was published in a magazine, which we know is Print magazine, classified as a periodical. Third, the claim concludes that Print magazine and National Journal are not both periodicals. While Print magazine is confirmed as a periodical, there is no information confirming National Journal's classification; it must be verified if National Journal is a periodical or not to evaluate the claim. Thus, queries need to establish: (1) the authorship and nature (book or magazine article) of Paul Shaw's work on the NY subway system in 2014, (2) Print magazine's classification as a periodical, and (3) National Journal's status as a periodical (or not).
+
+### query
+Who is Paul Shaw and what is the nature and publication date of his work titled "Helvetica and the New York Subway System: The True (Maybe) Story"?  
+Is "Helvetica and the New York Subway System: The True (Maybe) Story" by Paul Shaw published in Print magazine?  
+Is Print magazine classified as a periodical publication?  
+Is National Journal classified as a periodical publication?  
+What is the publication frequency and format of National Journal?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Paul Shaw (design historian)']. Documents remaining to be retrieved: ['National Journal', 'Print (magazine)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Manchester United Football Club is known as "the Red Devils". The goalie who led the strike force for the 1928–29 Leicester City F.C. season played for them.
+
+### notes
+["Manchester United Football Club is known as 'the Red Devils' (widely recognized nickname).", 'The 1928–29 Leicester City F.C. strike force included Ernie Hine, Arthur Chandler, and Arthur Lochhead.', 'There is no mention of the Leicester City goalkeeper who led the strike force in the 1928–29 season playing for Manchester United.', 'John McHugh was a goalkeeper in the relevant era but played for Dundee United and later clubs, not Leicester City or Manchester United.', 'Walter Smith was a goalkeeper for Leicester Fosse and Manchester City, but not for Manchester United.', 'No provided context supports that the Leicester City goalkeeper from the 1928–29 season played for Manchester United.', "Manchester United Football Club is widely known as 'the Red Devils'.", 'The 1928–29 Leicester City strike force consisted of Ernie Hine, Arthur Chandler, and Arthur Lochhead, who were forwards, not goalkeepers.', 'No evidence indicates that the Leicester City goalkeeper from the 1928–29 season played for Manchester United.', 'Goalkeepers from that era such as John McHugh and Walter Smith did not play for both Leicester City and Manchester United.', 'The claim that the goalie leading the 1928–29 Leicester City strike force played for Manchester United is unsubstantiated by the provided context.', "Manchester United Football Club is widely known as 'the Red Devils'.", 'The 1928–29 Leicester City strike force consisted of forwards Ernie Hine, Arthur Chandler, and Arthur Lochhead.', 'No goalkeeper led the strike force for Leicester City in the 1928–29 season.', 'There is no evidence that the Leicester City goalkeeper from the 1928–29 season played for Manchester United.', 'Goalkeepers from that era, such as John McHugh and Walter Smith, did not play for both Leicester City and Manchester United.']
+
+## Generated Outputs
+### reasoning
+The claim makes two assertions: first, that Manchester United Football Club is known as "the Red Devils," a well-known and established fact; second, that the goalie who led the strike force for Leicester City F.C. in the 1928–29 season played for Manchester United. From the notes, the first assertion is confirmed and uncontroversial. The second assertion is doubtful because the notes list specific players in the 1928–29 Leicester City strike force and point out no reference to their goalkeeper playing for Manchester United. Moreover, known goalkeepers of that era such as John McHugh and Walter Smith are shown not to have played for Manchester United or Leicester City in that season. The claim's second part is ambiguous and lacks direct evidence. To verify this, it is necessary to clarify who the Leicester City goalkeeper was in the 1928–29 season, whether he led the strike force (an unusual phrase for a goalkeeper), and if he ever played for Manchester United. Therefore, queries need to target the identity and club career of the 1928–29 Leicester City goalkeeper, the members of the strike force, and the roster history of goalkeepers for Manchester United and Leicester City during that period.
+
+### query
+Who was the goalkeeper for Leicester City F.C. during the 1928–29 season?  
+Did the Leicester City F.C. goalkeeper for the 1928–29 season also play for Manchester United Football Club at any time?  
+Who were the members of the Leicester City F.C. strike force in the 1928–29 season?  
+Did any goalkeepers for Leicester City F.C. in the 1928–29 season lead or participate in the strike force?  
+What are the historical rosters of Manchester United Football Club goalkeepers around 1928–29?  
+Is Manchester United Football Club known as "the Red Devils"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['1928–29 Leicester City F.C. season']. Documents remaining to be retrieved: ['Ernie Hine', 'Manchester United F.C.'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

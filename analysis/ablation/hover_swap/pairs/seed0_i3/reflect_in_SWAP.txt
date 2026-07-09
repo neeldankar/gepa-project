@@ -1,0 +1,102 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields: `claim` and `notes`. Your task is to produce a `query` designed to verify or fact-check the claim based on the information and context contained in the notes. Specifically:
+
+1. Analyze the `claim` to identify the key factual assertions or components that need verification.
+
+2. Carefully review the `notes`, which provide relevant factual data, background information, and indirect evidence related to the `claim`. These notes may include partially overlapping, repetitive, or nuanced domain-specific facts.
+
+3. Your objective is to formulate a concise and clear `query` that, when answered, would determine the truthfulness or accuracy of the claim. The query should:
+   - Incorporate all essential elements from the claim that require validation.
+   - Reference domain-specific entities, terms, or context as needed (e.g., proper names, dates, place names, literary awards, species counts, company nationality and headquarters).
+   - Aim to retrieve or confirm authoritative information from relevant documents or sources that would settle any ambiguity.
+
+4. The `query` should be precise and structured in a way that lends itself to searching or requesting specific evidence, minimizing vagueness or open-endedness.
+
+5. Include multiple facets of the claim in a single query when their verification is interconnected, to avoid unnecessary complexity or multiple queries.
+
+6. In cases where the `claim` contains multiple parts, ensure the query integrates these logically (e.g., verifying a connection between entities, or whether two conditions coexist).
+
+Domain-specific details exemplified in the task:
+
+- Verification of literary awards such as the Nobel Prize in Literature in relation to named individuals and their works.
+- Relationships between films, screenplays, novels, and their authorship.
+- Scientific botanical classification involving genus names, species counts, and vernacular names in different languages.
+- Corporate identity and headquarters location including nationality of an airline and its operation details.
+- Detailed biographical or event-specific claims linking individuals to specific companies or geographic data.
+
+Your output should be a single `query` statement in natural language, focused on efficient fact verification grounded in the provided `notes`. This approach enables precise retrieval of relevant documentary evidence necessary to confirm or refute the `claim`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Echeveria is native to arid or semi-desert areas, while Alopecurus creticus is.
+
+### notes
+['Echeveria is native to semi-desert areas in Central America, Mexico, and northwestern South America.', 'Alopecurus creticus is a species of foxtail grass, but its native habitat is not specified in the provided context.', 'Echeveria is native to semi-desert areas in Central America, Mexico, and northwestern South America.', 'Alopecurus creticus is a species of foxtail grass; its native habitat is not specified in the provided context, so its association with arid or semi-desert areas is unconfirmed.', 'Echeveria is native to semi-desert areas in Central America, Mexico, and northwestern South America, as confirmed by multiple sources.', 'The native habitat of Alopecurus creticus is not specified in the provided context or notes.', "Therefore, Alopecurus creticus's association with arid or semi-desert areas is unconfirmed."]
+
+## Generated Outputs
+### reasoning
+The claim states that Echeveria is native to arid or semi-desert areas, which aligns with the note asserting Echeveria is native to semi-desert areas in Central America, Mexico, and northwestern South America. The claim also references Alopecurus creticus but does not complete the statement about it. The notes provide no specific information about the native habitat of Alopecurus creticus. To verify the claim fully, it is necessary to confirm the native habitats of both Echeveria and Alopecurus creticus.
+
+### query
+What are the native habitats of Echeveria and Alopecurus creticus, specifically whether Echeveria is native to arid or semi-desert areas and where Alopecurus creticus is naturally found?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Alopecurus creticus', 'Echeveria']. Documents remaining to be retrieved: ['Alopecurus'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The film that the father of the star of Sultanat starred in in 1970 was Bombay Talkie.
+
+### notes
+['Karan Kapoor, star of Sultanat (1986), is the son of Shashi Kapoor.', 'Bombay Talkie (1970) is a film by Merchant Ivory Productions.', "No explicit mention of Shashi Kapoor's father starring in Bombay Talkie (1970).", "Shashi Kapoor starred in multiple 1970 films including 'My Love,' 'Suhana Safar,' and 'Jahan Pyar Mile'.", "'Bombay Talkie' (1970) starred Jennifer Kendal, wife of Shashi Kapoor, but not Shashi Kapoor himself.", "Karan Kapoor's father, Shashi Kapoor, did not star in 'Bombay Talkie' despite it being a 1970 film.", "Jennifer Kendal appeared in 'Bombay Talkie' and other films, but this should not be confused with roles of Shashi Kapoor.", 'Karan Kapoor is the son of Shashi Kapoor.', "Shashi Kapoor starred in the 1970 films 'My Love,' 'Suhana Safar,' and 'Jahan Pyar Mile,' but not in 'Bombay Talkie.'", "'Bombay Talkie' (1970) starred Jennifer Kendal, Shashi Kapoor's wife, but not Shashi Kapoor.", "Shashi Kapoor's father is Prithviraj Kapoor, who did not star in 'Bombay Talkie'."]
+
+## Generated Outputs
+### reasoning
+The claim asserts that the father of the star of the film Sultanat, which is Karan Kapoor, appeared in the 1970 film Bombay Talkie. We know from the notes that Karan Kapoor's father is Shashi Kapoor. The notes also confirm the film Bombay Talkie was released in 1970. However, there is no explicit mention that Shashi Kapoor's father acted in Bombay Talkie, and the claim implies the father (of the star, Karan Kapoor) is the actor who starred in Bombay Talkie in 1970. To verify the claim, it's essential to confirm whether the actor starring in the 1970 film Bombay Talkie was indeed Shashi Kapoor's father. 
+
+Therefore, the claim requires confirmation whether Shashi Kapoor's father acted in Bombay Talkie (1970). This involves identifying who Shashi Kapoor's father was and whether he starred in Bombay Talkie. The connection chain is: Karan Kapoor's father = Shashi Kapoor; Shashi Kapoor's father = ?; Did Shashi Kapoor’s father star in Bombay Talkie (1970)?
+
+### query
+Did Shashi Kapoor's father star in the 1970 film Bombay Talkie, and if so, who was he?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Jennifer Kendal', 'Karan Kapoor', 'Sultanat']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+1969 saw the founding of the Canadian baseball team where the future manager played from 1973-87. He managed the Tampa Bay Devil Rays season.
+
+### notes
+['Tampa Bay Devil Rays joined MLB in 1998 as an expansion team.', 'Joe Maddon managed Tampa Bay Devil Rays in 2006 onward.', 'Lou Piniella managed Tampa Bay Devil Rays from 2003-2005.', 'No mention of a Canadian baseball team founded in 1969 in provided context.', 'Toronto Blue Jays are a Canadian MLB team founded in 1977, not 1969.', 'No evidence of a Tampa Bay Devil Rays manager playing for a Canadian team from 1973-87 in the provided context.', 'No Canadian baseball team founded in 1969 is identified in the context or notes.', 'Toronto Blue Jays, a Canadian MLB team, were founded in 1977, not 1969.', 'Tampa Bay Devil Rays expansion team started in 1998; no manager could have managed before then.', 'No evidence that Tampa Bay Devil Rays managers Joe Maddon or Lou Piniella played for a Canadian team from 1973-1987.', 'No Canadian baseball team was founded in 1969; Toronto Blue Jays founded in 1977.', 'The Tampa Bay Devil Rays joined MLB in 1998 and had no managers before that year.', 'Joe Maddon and Lou Piniella managed the Devil Rays but did not play for a Canadian team from 1973-1987.', 'No evidence supports that any Tampa Bay Devil Rays manager played Canadian baseball from 1973-1987.', 'Claim about a Canadian baseball team founded in 1969 with future Tampa Bay manager playing in 1973-87 is unsupported.']
+
+## Generated Outputs
+### reasoning
+The claim states that a Canadian baseball team was founded in 1969 and that a person who played for that team from 1973-87 later managed the Tampa Bay Devil Rays. However, the notes provide information that conflicts with the claim's timeline and details: the known Canadian MLB team, the Toronto Blue Jays, was founded in 1977, not 1969; no Canadian baseball team founded in 1969 is identified; Tampa Bay Devil Rays began as an expansion team in 1998; the managers listed (Joe Maddon and Lou Piniella) managed the Devil Rays starting in the 2000s; and there is no record of these managers playing for any Canadian team in the 1973-87 period. Therefore, the claim contains multiple factual points that need verification: the existence of a Canadian baseball team founded in 1969, whether the future Tampa Bay Devil Rays manager played for that team between 1973-87, and if that manager managed the Tampa Bay Devil Rays.
+
+### query
+Was there a Canadian baseball team founded in 1969 for which a future Tampa Bay Devil Rays manager played from 1973 to 1987, and did that person subsequently manage the Tampa Bay Devil Rays during any season?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['2002 Tampa Bay Devil Rays season']. Documents remaining to be retrieved: ['Hal McRae', 'Kansas City Royals'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

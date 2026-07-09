@@ -1,0 +1,95 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given an input with fields `claim` and `notes`, your task is to generate a precise and focused `query` that will help verify the truthfulness or specifics of the `claim`. The `notes` contain factual context, references, and clarifications relevant to the claim, including correct or incorrect information, possible ambiguities, and the identity or attributes of entities mentioned.
+
+The `query` you produce should:
+
+1. Clearly identify the key factual aspects or entities in the `claim` that need verification or resolution.
+2. Target missing or uncertain information found within the `notes` critical to confirming or refuting the claim.
+3. Address potential ambiguities or errors in the claim’s details (e.g., incorrect nationalities, confused identities, overlapping names).
+4. Include multiple connected questions if necessary to disambiguate entities, clarify relationships, or fill knowledge gaps influencing the claim’s validity.
+5. Be succinct yet comprehensive enough to guide retrieval of all remaining relevant documents needed for claim verification.
+
+Use the reasoning to break down the factual relationships or contradictions in the claim using the notes. Then, formulate the query as a set of verification or exploration questions that directly correspond to outstanding information needs or fact-checking points revealed in your reasoning.
+
+Domain-specific considerations you must keep in mind:  
+- Names with variants or multiple forms require explicit disambiguation (e.g., middle names or alternative spellings).  
+- Nationalities or biographical details may be misattributed in claims and must be explicitly queried if notes indicate conflict.  
+- For claims about works (films, books) and their creators or participants, verify roles, dates, nationalities, and inter-relationships among them.  
+- For claims comparing people’s characteristics or actions (e.g., hobbies, professions), focus queries on confirming or negating these attributes for each individual separately if ambiguity exists.  
+- When the claim involves temporal sequences (e.g., birthdates, event chronology), ensure the query asks about exact dates or relative timings.  
+- When no direct evidence exists for parts of a claim, queries should specifically seek missing information or confirmation of absence.
+
+Your ultimate goal is to enable sourcing all essential information to verify the claim fully through your query, covering any partial, conflicting, or incomplete evidence noted.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The player who was defeated by Johan Kriek in the 1982 Australian Open – Men's Singles and Albert Costa are both sportsmen, and one of them, Costa, began competing at the age of five.
+
+### notes
+["Johan Kriek defeated Steve Denton in the 1982 Australian Open Men's Singles final.", 'Both Steve Denton and Albert Costa are professional tennis players.', "Albert Costa's early start age in tennis (whether at age five) is not mentioned in the provided context.", "Steve Denton was defeated by Johan Kriek in the 1982 Australian Open Men's Singles final.", 'Both Steve Denton and Albert Costa are professional tennis players, hence both sportsmen.', "Albert Costa's age at the start of his tennis career is not documented in the given context.", "Johan Kriek defeated Steve Denton in the 1982 Australian Open Men's Singles final.", 'Both Steve Denton and Albert Costa are professional tennis players and thus sportsmen.', 'Albert Costa began playing tennis at the age of five.']
+
+## Generated Outputs
+### reasoning
+The claim states that the player defeated by Johan Kriek in the 1982 Australian Open Men's Singles and Albert Costa are both sportsmen, and specifically that Albert Costa began competing at the age of five. From the notes, it is confirmed that Johan Kriek defeated Steve Denton in the 1982 Australian Open final, and both Steve Denton and Albert Costa are professional tennis players, which supports the part that they are both sportsmen. However, there is no information provided about Albert Costa beginning to compete at the age of five. Therefore, the key factual elements to verify are: that Albert Costa started competing in tennis at age five, and to reaffirm that the player defeated by Johan Kriek was indeed Steve Denton.
+
+### query
+Did Albert Costa begin competing in tennis at the age of five? Also, please confirm that Johan Kriek defeated Steve Denton in the 1982 Australian Open Men's Singles final.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ["1982 Australian Open – Men's Singles", 'Albert Costa']. Documents remaining to be retrieved: ['Steve Denton'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The person who claimed that Castro was killed in the 26th July Movement but was proven wrong by the man who Ruby Hart Phillips was at odds with, first served as President of Cuba in 1940.
+
+### notes
+['Fulgencio Batista first served as President of Cuba in 1940.', 'Batista claimed Fidel Castro was killed in the 26th July Movement but was proven wrong.', "Herbert Matthews, a New York Times correspondent favorable to Castro, disproved claims of Castro's death.", 'Ruby Hart Phillips was at odds with Herbert Matthews over coverage of Batista and Castro.', 'Fulgencio Batista first served as President of Cuba in 1940.', 'Batista claimed Fidel Castro was killed in the 26th July Movement but was proven wrong by Herbert Matthews.', 'Herbert Matthews, New York Times correspondent, revealed that Fidel Castro was still alive.', 'Ruby Hart Phillips was often at odds with Herbert Matthews over coverage of Batista and Castro.', 'Fulgencio Batista was the Cuban president first serving from 1940 and later became a dictator during which he claimed Fidel Castro was killed.', "Herbert Matthews disproved Batista's claim by revealing Castro was alive, reported with opposition from Ruby Hart Phillips.", 'Ruby Hart Phillips and Herbert Matthews were rival New York Times correspondents with opposing views on Batista and Castro.']
+
+## Generated Outputs
+### reasoning
+The claim states that the person who first served as President of Cuba in 1940 also claimed that Castro was killed in the 26th July Movement, but this was disproven by the man Ruby Hart Phillips was at odds with. From the notes, Fulgencio Batista first served as President of Cuba in 1940. Batista claimed Castro was killed in the 26th July Movement, but Herbert Matthews, a New York Times correspondent favorable to Castro, disproved this claim by revealing Castro was alive. Ruby Hart Phillips had opposing views and was often at odds with Herbert Matthews over the coverage of Batista and Castro. The notes support the claim's details closely. However, to fully verify the claim, it is essential to confirm: (1) Batista's presidency start date as 1940, (2) Batista's claim that Castro was killed in the 26th July Movement, (3) that Herbert Matthews disproved this claim, (4) that Ruby Hart Phillips was at odds specifically with Herbert Matthews, (5) and that Matthews was the man who disproved the claim about Castro's death.
+
+### query
+Did Fulgencio Batista first serve as President of Cuba in 1940? Did Batista claim that Fidel Castro was killed in the 26th July Movement? Was this claim disproven by Herbert Matthews, the New York Times correspondent? Was Ruby Hart Phillips often at odds specifically with Herbert Matthews regarding the coverage of Batista and Castro? Is Herbert Matthews the man who proved Batista's claim about Castro's death wrong?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Herbert Matthews', 'Ruby Hart Phillips']. Documents remaining to be retrieved: ['Fulgencio Batista'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The movie Midnight Madness was released before the sequel-in-part David Shire composed the score for in 1985.
+
+### notes
+['Midnight Madness (1980 film) is an American comedy film by Walt Disney Productions.', 'No direct information in the context about David Shire composing a score in 1985 related to Midnight Madness.', 'No explicit sequel or related film to Midnight Madness scored by David Shire found in the provided context.', 'Midnight Madness (1928) is a silent film and unrelated to the 1980 film or 1985 composer question.', 'Midnight Madness was released in 1980 and is unrelated to David Shire or any of his 1985 scored films.', 'David Shire scored the 1985 film Return to Oz, which is a sequel-in-part to The Wizard of Oz, not related to Midnight Madness.', 'There is no evidence from the context that David Shire composed a score for any sequel of Midnight Madness.', 'The claim confuses the relationship between Midnight Madness and the 1985 film scored by David Shire.', "Midnight Madness is a 1980 Disney comedy film, unrelated to David Shire's 1985 work.", 'David Shire composed the score for the 1985 film Return to Oz, a sequel-in-part to The Wizard of Oz, not related to Midnight Madness.', 'There is no sequel or related film to Midnight Madness scored by David Shire in 1985.', 'The claim incorrectly associates the 1985 David Shire composition with Midnight Madness as a sequel.']
+
+## Generated Outputs
+### reasoning
+The claim suggests that the 1980 movie Midnight Madness was released before a sequel-in-part for which David Shire composed the score in 1985. According to the notes, Midnight Madness is a 1980 American comedy film not connected to any sequels or films scored by David Shire. David Shire composed the score for the 1985 film Return to Oz, identified as a sequel-in-part to The Wizard of Oz, not related to Midnight Madness at all. There is no evidence or indication that any sequel to Midnight Madness was made or that David Shire scored anything connected to Midnight Madness. The claim seems to confuse two unrelated films: Midnight Madness (1980) and Return to Oz (1985). Thus, the key points to verify are whether David Shire composed a score for any sequel or related film to Midnight Madness in 1985, and when Midnight Madness was released relative to that film.
+
+### query
+When was the film Midnight Madness released? Did David Shire compose the score for any sequel or related film to Midnight Madness? Which films did David Shire score in 1985? Is there any connection between Midnight Madness and the film scored by David Shire in 1985, such as a sequel, remake, or related production? What is the nature of the 1985 film Return to Oz in relation to Midnight Madness?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['David Shire', 'Midnight Madness (film)']. Documents remaining to be retrieved: ['Return to Oz'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

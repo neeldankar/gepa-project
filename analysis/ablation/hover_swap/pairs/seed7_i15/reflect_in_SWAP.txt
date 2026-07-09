@@ -1,0 +1,98 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given the fields `claim` and `notes`, produce the field `query`.
+
+Task Description:
+You are verifying or investigating the factual accuracy of the given `claim` using the provided `notes`, which contain relevant supporting or refuting evidence. Your goal is to formulate one or more precise, focused **natural language question(s)** (the `query`) that directly target the core factual components or relationships in the `claim`. These queries will be used to retrieve authoritative documents to confirm or refute the claim.
+
+Key Guidelines and Domain-Specific Details:
+- The `claim` may contain multiple entities, roles, dates, locations, or assertions combined together. Your `query` should disentangle these components and seek clarity on ambiguous or potentially conflated facts highlighted by the `notes`.
+- The `notes` provide context, corrections, or clarifications related to the claim—often pointing out inaccuracies or mixing of facts (e.g., a person’s role changing over time, place names nested within larger administrative regions, or multiple entities sharing a profession).
+- Your `query` should:
+  - Target precise fact verification or disambiguation based on the contradictions or confirmations evident in the `notes`.
+  - Focus on identifying temporal, positional, or relational details critical to verifying the claim (e.g., exact job titles at a given year, locations down to country/state/city level, professional roles shared by named individuals).
+  - Use clear and specific phrasing, typically in the form of yes/no or direct factual questions (e.g., “Was X the Y at time Z?”, “Are A and B located in the same country?”, “Do C and D share profession E?”).
+- Avoid overly broad or vague queries; instead, refine the question to pinpoint the fact that needs verification or clarification.
+- Where the claim conflates multiple facts (e.g., combining a present role with a role held in the past), address that directly in the query.
+- When multiple entities or components appear in the claim (e.g., three different people, or two places), the query can explicitly reference all relevant entities and their factual relationships.
+- The query should be expressed in natural, fluent English suitable for directing a subsequent retrieval or verification step.
+
+Example approach:
+1. Identify the main factual assertion(s) in the claim.
+2. Note any conflicting or clarifying points in the notes.
+3. Frame a succinct question that tests the claim's key factual claim(s), especially where the note highlights ambiguity or correction.
+4. Ensure the question leads to retrieving authoritative evidence to support or refute the claim.
+
+Overall, your role is to bridge the claim and the evidence by formulating precise queries that target the critical fact(s) necessary for fact-checking.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Between this plant and Darwinia, the genus with more species is Darwinia. This plant is called Saule in French.
+
+### notes
+['The plant genus in question is Salix, commonly known as willows.', 'Salix comprises several hundred species worldwide, significantly more than Darwinia.', 'Darwinia is a genus with approximately 70 species, endemic to Australia.', 'The claim that Darwinia has more species than Salix is incorrect.', "The French common name 'Saule' correctly refers to the willow genus Salix.", 'The genus Salix (willows) includes several hundred species globally, far exceeding the species count of Darwinia.', 'Darwinia is a genus with around 70 species, endemic primarily to southern and southwestern Australia.', "The French common name 'Saule' correctly refers to the genus Salix.", 'The claim that Darwinia has more species than Salix is incorrect.', 'Salix species are mostly deciduous trees and shrubs found primarily in the Northern Hemisphere on moist soils.', 'The plant genus Salix, commonly known as willows, includes several hundred species worldwide.', 'Darwinia is a genus with approximately 70 species, endemic to Australia.', 'The species count of Salix far exceeds that of Darwinia; thus, Salix has more species than Darwinia.', "The French common name 'Saule' correctly refers to the genus Salix.", 'Salix species are mostly deciduous trees and shrubs found primarily in the Northern Hemisphere, often near moist soils.', 'The claim that Darwinia has more species than Salix is incorrect.', 'Examples of Salix species include Salix boothii, Salix sitchensis, Salix warburgii, Salix hookeriana, Salix eastwoodiae, among others.']
+
+## Generated Outputs
+### reasoning
+The claim states that Darwinia has more species than the other plant genus, which is called Saule in French. According to the notes, the plant genus referred to as Saule in French is Salix, i.e., willows, which has several hundred species worldwide, significantly more than the roughly 70 species of Darwinia. Therefore, the claim that Darwinia has more species is factually incorrect. The critical fact to verify is which genus, Salix or Darwinia, has more species. Additionally, clarifying that Saule is the French common name for Salix is important.
+
+### query
+Does the genus Salix have more species than the genus Darwinia, and is "Saule" the correct French common name for the genus Salix?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Darwinia (plant)', 'Willow']. Documents remaining to be retrieved: ['Saule'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Echeveria is native to arid or semi-desert areas, while Alopecurus creticus is.
+
+### notes
+['Echeveria is a large genus of flowering plants in the Crassulaceae family native to semi-desert areas of Central America, Mexico, and northwestern South America.', 'There is insufficient information to verify the native habitat of Alopecurus creticus in the provided context.', 'Echeveria is a large genus of flowering plants in the Crassulaceae family native to semi-desert areas of Central America, Mexico, and northwestern South America.', 'Alopecurus creticus, known as the Cretan meadow foxtail, is a species of foxtail grass, but its native habitat is not specified in the provided information.', 'Other Alopecurus species inhabit various environments including temperate Northern Hemisphere, Europe, Asia, and damp or saline grasslands, but no definitive habitat information for Alopecurus creticus is available.', 'Echeveria is a genus of flowering plants in the Crassulaceae family native to semi-desert areas of Central America, Mexico, and northwestern South America.', 'Alopecurus creticus, known as the Cretan meadow foxtail, is a species of foxtail grass associated geographically with Crete.', 'There is no specific information confirming that Alopecurus creticus is native to arid or semi-desert habitats.', 'Other Alopecurus species generally inhabit temperate regions including Europe, Asia, and Northern Hemisphere areas, often preferring damp, saline, or wet grasslands.', 'Given the limited evidence, Alopecurus creticus likely inhabits Mediterranean or temperate environments rather than arid or semi-desert areas.', 'In summary, Echeveria is native to semi-desert areas, but the habitat of Alopecurus creticus is not confirmed to be arid or semi-desert.']
+
+## Generated Outputs
+### reasoning
+The claim states two assertions: that Echeveria is native to arid or semi-desert areas, and that Alopecurus creticus is native to such areas as well. Since there are no notes providing clarifications or corrections, the key fact to verify is the native habitat of both plant genera/species, particularly whether both are native to arid or semi-desert environments.
+
+### query
+Is Echeveria native to arid or semi-desert regions? Is Alopecurus creticus native to arid or semi-desert regions?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Alopecurus creticus', 'Echeveria']. Documents remaining to be retrieved: ['Alopecurus'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Darren Stanley Hayes was born before this lead guitarist of the band that recorded Playin' Around.
+
+### notes
+["Darren Hayes is the former lead singer of Savage Garden and a solo artist, known for the 2002 single 'Insatiable'.", "'Playin' Around' is not mentioned in the context; however, 'Playin' to Win' is an album by the Outlaws, released in 1978.", "The Outlaws' 'Playin' to Win' was their first album without guitarist Henry Paul; the lead guitarist or birthdates of the band members are not provided.", 'Several lead guitarists named Darren are noted, such as Darren Middleton (born 1971) of Powderfinger, but no direct birthdate for Darren Hayes is mentioned.', "No information confirms that Darren Stanley Hayes was born before any lead guitarist of the band associated with 'Playin' Around' or 'Playin' to Win'.", 'The claim appears to confuse album and band names and lacks supporting evidence.', 'Darren Stanley Hayes was born on May 8, 1972, and was the lead singer of Savage Garden.', "'Playin' Around' is a CD/DVD by the pop group Play, featuring female members Anaïs Lameche, Anna Sundstrand, Faye Hamlin, and Rosie Munter, with no mention of a lead guitarist.", "There is no information about any lead guitarist associated with the band Play or 'Playin' Around', or their birthdates.", "'Playin' to Win' is a 1978 album by the Outlaws, an American southern rock band; lead guitarist birthdates are not provided.", "No evidence supports that Darren Hayes was born before any lead guitarist of the band that recorded 'Playin' Around'.", 'The claim conflates different albums and bands and lacks supporting evidence.', 'Darren Stanley Hayes was born on May 8, 1972, and was the lead singer of Savage Garden.', "'Playin' Around' is a CD/DVD by the pop girl group Play, which includes female vocalists but no lead guitarist.", "No lead guitarist is associated with the band Play or the recording 'Playin' Around', and no birthdates for such a person are available.", "'Playin' to Win' is a 1978 album by southern rock band Outlaws; lead guitarist birthdates are not provided.", 'Darren Stanley (born February 2, 1972) is an Australian rules footballer and is unrelated to Darren Hayes or Play.', 'The claim confuses different bands, albums, and individuals and lacks any supporting evidence.', "There is no evidence that Darren Stanley Hayes was born before any lead guitarist of the band that recorded 'Playin' Around'."]
+
+## Generated Outputs
+### reasoning
+The claim states that Darren Stanley Hayes was born before the lead guitarist of the band that recorded "Playin' Around." However, the notes indicate confusion surrounding the album title ("Playin' Around" versus "Playin' to Win") and the associated band. Darren Hayes is known as the former lead singer of Savage Garden, but his birthdate is not provided. The album "Playin' to Win" belongs to the Outlaws, whose lead guitarist and the birthdates of their members are not specified. Another guitarist named Darren Middleton (Powderfinger) has a known birth year (1971). There is no confirmation about whether Darren Stanley Hayes was born before any lead guitarist linked to albums mentioned. The claim conflates album and band names and lacks clear supporting data. To verify the claim, clear queries about the birth dates of Darren Stanley Hayes and lead guitarists of the band that made "Playin' to Win" (or clarify the actual album "Playin' Around" if it exists) are needed.
+
+### query
+What is the birthdate of Darren Stanley Hayes? Who was the lead guitarist of the band that recorded the album "Playin' to Win," and what is that person's birthdate? Is there any album titled "Playin' Around" associated with Darren Stanley Hayes or any band linked to him? Was Darren Stanley Hayes born before the lead guitarist of the band that recorded "Playin' to Win" or any album similar to "Playin' Around"?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Darren Hayes', "Playin' Around"]. Documents remaining to be retrieved: ['Anaïs Lameche'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

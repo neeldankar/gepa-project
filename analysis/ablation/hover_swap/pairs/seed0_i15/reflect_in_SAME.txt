@@ -1,0 +1,138 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given three input fields: `claim`, `notes`, and `context`.
+
+- `claim` is a factual statement or assertion that requires verification or clarification.
+- `notes` is a list of textual evidences, observations, or previously extracted facts relevant to the claim and the context.
+- `context` is a list of background documents or excerpts that provide detailed factual information from which relevant evidence can be sourced.
+
+Your task is to produce two output fields: `new_notes` and `titles`.
+
+1. **new_notes**:  
+   - Select and consolidate from the `notes` field a concise subset of relevant, accurate, and non-contradictory facts that directly address the components of the claim.  
+   - The selected notes should highlight key evidence supporting or refuting the claim or clarify ambiguities in the claim, with minimal redundancy.  
+   - Exclude any notes that are irrelevant, speculative, overly repetitive, or fail to contribute important factual clarification.
+
+2. **titles**:  
+   - Identify and list the titles or names of key documents or entities from the `context` most pertinent to evaluating the claim and the notes.  
+   - These titles should represent the primary sources that underpin the `new_notes` or are critical for validating or understanding the claim.  
+   - Aim to comprehensively cover the main relevant documents but avoid including irrelevant or marginally related titles.
+
+**Additional Guidance (based on domain-specific examples):**  
+- Claims often involve verifying detailed factual or temporal information, such as event dates, award recipients, affiliations, or membership data; carefully cross-reference dates, names, and attributes in the context.  
+- Notes may contain repeated or slightly varied statements; carefully synthesize and filter these for clarity and conciseness.  
+- Where claims involve multiple entities (e.g., political parties, bands, films, awards), ensure you identify the correct entities and their relationships as supported by the evidence.  
+- Consider the hierarchical or affiliative relationships between entities (e.g., provincial vs. federal political parties, youth wings of parties).  
+- Recognize that some claims involve negation or refutation (e.g., correcting a misclassification of a band’s genre). Highlight this clearly in the `new_notes`.
+
+**Reasoning Approach to Apply:**  
+- Analyze the claim carefully to identify all factual components needing verification.  
+- Cross-reference `notes` with `context` to verify accuracy and consistency.  
+- Remove any notes unsupported or contradicted by the context.  
+- Choose key documents that form the factual basis for the chosen notes.  
+- Be mindful to not miss relevant titles that are central to the claim’s verification.
+
+By following these steps, your output will enable clear, concise, and well-supported evaluation of the claim with traceable evidence.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+German Frank Sinatra has won more awards than this Skinny Puppy band member, for whom the Rx (band) was a one-off side project.
+
+### notes
+['Rx (band) was a one-off side project by Skinny Puppy band member Nivek Ogre, in collaboration with Invisible Records founder Martin Atkins.', 'Nivek Ogre is a founding member and vocalist of Skinny Puppy.', 'No information is provided about awards won by German Frank Sinatra or Nivek Ogre.', 'Rx (band) was a one-off side project by Skinny Puppy band member Nivek Ogre, in collaboration with Invisible Records founder Martin Atkins.', 'Nivek Ogre is a founding member and vocalist of Skinny Puppy.', 'No information is provided about awards won by German Frank Sinatra or Nivek Ogre.', 'Rx (band) was a one-off side project by Skinny Puppy band member Nivek Ogre, in collaboration with Invisible Records founder Martin Atkins.', 'Nivek Ogre is a founding member and vocalist of Skinny Puppy.', 'No information is provided about awards won by German Frank Sinatra or Nivek Ogre.']
+
+### context
+['Rx (band) | ℞ or Rx was a one-off side project by Skinny Puppy band member Nivek Ogre, in collaboration with Invisible Records founder Martin Atkins.  The project was originally called Ritalin, but the name was changed for legal reasons.', "Nivek Ogre | Nivek Ogre (born Kevin Graham Ogilvie December 5, 1962) is a Canadian musician, performance artist and actor best known as a founding member of the industrial music group Skinny Puppy.  Since that band featured another Kevin (Crompton, a.k.a. cEvin Key) and was produced by another Ogilvie (Dave, a.k.a. Rave), Ogre's alias was practical as well as theatrical.  Since 1982, he has served as Skinny Puppy's primary lyricist and vocalist, occasionally providing instrumentation and samples.  Ogre's guttural singing style and use of costumes, props, and fake blood on stage helped to bring Skinny Puppy extensive publicity and has inspired numerous other musicians.", 'List of Skinny Puppy side projects | This is a list of side projects of the prominent industrial band Skinny Puppy, who have released twelve albums and toured extensively since 1982.  This list includes other projects begun by cEvin Key and Nivek Ogre—the only constant members of Skinny Puppy—since its inception.  Other members have included Dwayne Goettel, Mark Walk, Dave "Rave" Ogilvie, and many other guests/session musicians; this list does not include other projects of those musicians.', 'W.E.L.T. | W.E.L.T. was a briefly extant side-project between members of industrial bands Skinny Puppy (Nivek Ogre) and Ministry (Al Jourgensen and Michael Balch).  The project was active for a short while in 1989.', 'Skinny Puppy | Skinny Puppy is a Canadian industrial music group formed in Vancouver, British Columbia in 1982.  The group is widely considered to be one of the founders of the electro-industrial genre.  Initially envisioned as an experimental side project by cEvin Key (Kevin Crompton) while he was in the new wave band Images in Vogue, Skinny Puppy evolved into a full-time project with the addition of vocalist Nivek Ogre (Kevin Ogilvie).  Over the course of a dozen studio albums and many live tours, Key and Ogre have been the only constant members.  Other members have included Dwayne Goettel (1986–1995), Dave "Rave" Ogilvie (long-time associate, producer, and "unofficial" fourth member until 1995), Mark Walk (2003–present), and a number of guests, including Bill Leeb (1985–1986, under the pseudonym Wilhelm Schroeder), Al Jourgensen (1989), and many others.', 'OhGr | ohGr is a industrial band formed by Nivek Ogre and Mark Walk of Skinny Puppy.  Early ohGr releases incorporated hip hop and synthpop influences, and in contrast to Skinny Puppy, utilized conventional structures and a lighter tone.  Ogre noted that this direction was inspired by the pop bands he enjoyed as a child, such as The Archies.  However, from "Devils in my Details" onwards, ohGr has taken to a more abrasive, non-linear flavour of electro-industrial.', 'The Process (Skinny Puppy album) | The Process is the eighth studio album by industrial band Skinny Puppy.  Many factors complicated the recording of "The Process".  The album\'s producer changed multiple times, from Roli Mosimann to Martin Atkins to Dave Ogilvie.  According to cEvin Key, their label, American Recordings, had pressured the band into adopting a more commercial sound or more Industrial metal sound similar to Nine Inch Nails.  Following tensions between band members, Nivek Ogre left the band on June 12, 1995.  American Recordings decided to drop Skinny Puppy after the release of "The Process".  The band\'s keyboardist, Dwayne Goettel, died of a heroin overdose shortly thereafter on August 23, 1995.  Following Dwayne\'s death, cEvin and Dave completed mixing of "The Process".', 'Welt (album) | Welt is the first album by the band ohGr, formed by Nivek Ogre of Skinny Puppy, and musician/engineer Mark Walk.  The song "Water" has been featured in the motion pictures "Life as a House" and for the end titles in "Kill Theory".', "CEvin Key | cEvin Key (born Kevin William Crompton, February 13, 1961) is a Canadian musician and founding member of the industrial music band Skinny Puppy.  In addition to his work with Skinny Puppy, Key has had several side projects, including Doubting Thomas, Cyberaktif, and Hilt.  After Skinny Puppy disbanded in 1995, Key's main project was electronic noise group Download, as well as some solo releases.", 'Doubting Thomas (band) | Doubting Thomas is an industrial band formed by two members of Skinny Puppy: cEvin Key and the late Dwayne Goettel.  It is considered a Skinny Puppy side project; nearly all their music is instrumental.  The band shares its name with an American roots band, to whom they have no relation.']
+
+## Generated Outputs
+### reasoning
+The claim compares the number of awards won by German Frank Sinatra and Nivek Ogre, a Skinny Puppy band member who had the one-off side project Rx. The notes confirm that Rx was a one-off side project by Skinny Puppy member Nivek Ogre. The only relevant information available relates to Nivek Ogre's involvement with Skinny Puppy and the Rx project. However, there is no information in the notes or context about German Frank Sinatra or about awards won by either Nivek Ogre or German Frank Sinatra. Therefore, the claim cannot be verified or clarified with respect to the awards comparison due to lack of data. The verified fact is only that Rx was a one-off side project by Skinny Puppy member Nivek Ogre. For completeness and clarity, we include this fact and the confirmation that no award information is available.
+
+### new_notes
+['Rx (band) was a one-off side project by Skinny Puppy band member Nivek Ogre, in collaboration with Invisible Records founder Martin Atkins.', 'Nivek Ogre is a founding member and vocalist of Skinny Puppy.', 'No information is provided about awards won by German Frank Sinatra or Nivek Ogre.']
+
+### titles
+['Rx (band)', 'Nivek Ogre', 'Skinny Puppy']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Nivek Ogre', 'Rx (band)']. Documents remaining to be retrieved: ['Frank Sinatra'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Reverend Lyttleton Morgan was the first chairman of the board of trustees at a university. That university and the University of Idaho are public types of universities.
+
+### notes
+['Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, formerly the Centenary Biblical Institute, which was renamed in his honor.', "Morgan State University is Maryland's designated public urban university and the largest historically black college in the state, confirming its public status.", 'Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, which was founded as the Centenary Biblical Institute and renamed in his honor.', "Morgan State University is Maryland's designated public urban university and the largest historically black college in the state, confirming its public status.", 'The University of Idaho is a public university, consistent with typical state university designations.', 'Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, formerly known as the Centenary Biblical Institute, and the university was renamed in his honor.', "Morgan State University is Maryland's designated public urban university and the largest historically black college in the state, confirming its public status.", 'The University of Idaho is a public university, consistent with typical state university designations.']
+
+### context
+['Lyttleton Morgan | Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, which was renamed in his honor (it was founded as the Centenary Biblical Institute).', 'Morgan State University | Morgan State University (commonly referred to as MSU, Morgan State, or Morgan) is a historically black college (HBCU) in Baltimore, Maryland, United States.  Morgan is Maryland\'s designated public urban university and the largest HBCU in Maryland.  In 1890 the university, formerly known as the "Centenary Biblical Institute", changed its name to Morgan College to honor Reverend Lyttleton Morgan, the first chairman of its Board of Trustees who had donated land to the college.  It became a university in 1975.  MSU is a member of Thurgood Marshall College Fund.', 'Gilbert Morgan | Reverend Dr. Gilbert Morgan is generally numbered as the second chancellor of the University of Pittsburgh, then called the Western University of Pennsylvania, serving only one year from 1835 to 1836, although Morgan\'s official title at the time was "Principal", a holdover from the institution\'s academy days.  Morgan was appointed by the University Board of Trustees in 1835 following recommendations from his associates at Union College.  His short tenure as President was considered mostly unsuccessful and he resigned only a year later to accept a position in North Carolina at a school for young ladies. ', "List of Morgan State University alumni | This is a list of notable alumni which includes graduates, non-graduate former students, and current students of Centenary Biblical Institute (1867–1890), Morgan College (1890–1938), Morgan State College (1938–1975), and Morgan State University (1975–present).  Located in residential Baltimore, Maryland, Morgan State is a historically black university and Maryland's designated public urban university.  The Morgan State University National Alumni Association is the official alumni organization of the university.", "Dianna Fuller Morgan | Dianna Fuller Morgan currently serves on the Board of Directors of CNL Bancshares, Inc., Marriott Vacations Worldwide Corporation, and the Board of Trustees for Hersha Hospitality Trust.  In addition, she is a member of the Board of Directors of Orlando Health.  Morgan served as past Chair of the national board for the Children's Miracle Network, as well as the University of Florida Board of Trustees.  Morgan retired in 2001 from a long career with the Walt Disney World where she served as Senior Vice President of Public Affairs and Human Resources.", 'David Wilson (university administrator) | David Wilson, Ed.D has been president of Morgan State University in Baltimore, Maryland since July 1, 2010.  Dr. David Wilson is the 12th president of Morgan State University and has a long record of accomplishments and more than 30 years of experience in higher education administration.  Dr. Wilson holds four academic degrees: a B.S. in political science and an M.S. in education from Tuskegee University; an Ed.M.  in educational planning and administration from Harvard University and an Ed.D. in administration, planning and social policy, also from Harvard.  He came to Morgan from the University of Wisconsin, where he was chancellor of both the University of Wisconsin Colleges and the University of Wisconsin–Extension.  Before that, he held numerous other administrative posts in academia, including: vice president and associate provost at Auburn University, and associate provost of Rutgers, the State University of New Jersey.', "Wayne Morgan | Wayne Morgan (born October 7, 1950) was the Iowa State University men's basketball coach from 2003 to 2006.  He was Iowa State University’s first African American head basketball coach.", 'List of Morgan State University Athletic Hall of Fame members | List of Morgan State University Athletic Hall of Fame members', 'Flying Four Morgan State University Track Team 1951-1955 | Flying Four Morgan State University Track Team 1951-1955', "University of Vermont Morgan Horse Farm | The Morgan Horse Farm is a historic horse breeding facility at 74 Battell Drive (off Morgan Horse Farm Road) in Weybridge, Vermont.  Since 1907, it has been an official breeding site for the Morgan horse, one of the first American-bred horse breeds, and Vermont's official state animal.  The breeding program was established in Burlington in 1905, and moved to this site in 1907 by the United States Department of Agriculture, and is now run by the University of Vermont.  The farm is listed on the National Register of Historic Places."]
+
+## Generated Outputs
+### reasoning
+The claim involves two parts: first, that Reverend Lyttleton Morgan was the first chairman of the board of trustees at a university, and second, that both that university and the University of Idaho are public universities. From the notes and context, it is confirmed that Reverend Lyttleton Morgan was indeed the first chairman of the board of trustees of Morgan State University, which was renamed in his honor. Additionally, Morgan State University is designated as Maryland's public urban university, confirming its public status. The claim about the University of Idaho being a public university is implicit given its status as a state university, which is typical for institutions named after states and known to be public. The context and notes clearly support Reverend Morgan’s role and the public nature of Morgan State University, which aligns with the claim, and by extension, the University of Idaho is also a public university.
+
+### new_notes
+['Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, which was founded as the Centenary Biblical Institute and renamed in his honor.', "Morgan State University is Maryland's designated public urban university and the largest historically black college in the state, confirming its public status.", 'The University of Idaho is a public university, consistent with typical state university designations.']
+
+### titles
+['Lyttleton Morgan', 'Morgan State University']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Lyttleton Morgan', 'Morgan State University']. Documents remaining to be retrieved: ['University of Idaho'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Paul Shaw wrote a book on the history of the design of the New York subway system in 2014 for a magazine. That magazine and National Journal are not both periodicals.
+
+### notes
+["Paul Shaw is an American designer and historian who wrote a book on the history of the design of the New York subway system titled 'Helvetica and the New York Subway System: The True (Maybe) Story'.", "Paul Shaw has written for 'Print' magazine, which is a periodical.", "'Print' magazine and National Journal are both periodicals.", "Paul Shaw wrote a book titled 'Helvetica and the New York Subway System: The True (Maybe) Story' about the design of the New York subway system.", "Paul Shaw has written for 'Print' magazine, which is a bimonthly American magazine about visual culture and design and is considered a periodical.", "'Print' magazine and National Journal are both periodicals.", "Paul Shaw is an American designer and historian who wrote a book on the history of the design of the New York subway system titled 'Helvetica and the New York Subway System: The True (Maybe) Story'.", "'Print' magazine, for which Paul Shaw has written, is a bimonthly American magazine about visual culture and design and is considered a periodical.", "'Print' magazine and National Journal are both recognized as periodicals.", 'There is no evidence that Paul Shaw wrote his book in 2014 or specifically for a magazine.']
+
+### context
+['Paul Shaw (design historian) | Paul Shaw is an American designer, calligrapher and historian of design who lives in New York.  He has written a book on the history of the design of the New York subway system, "Helvetica and the New York Subway System: The True (Maybe) Story", on the work of William Addison Dwiggins, and for "Print" magazine.', 'National Magazine Awards | The National Magazine Awards, also known as the Ellie Awards, honor print and digital publications that consistently demonstrate superior execution of editorial objectives, innovative techniques, noteworthy enterprise and imaginative design.  Originally limited to print magazines, the awards now recognize magazine-quality journalism published in any medium.  They are sponsored by the American Society of Magazine Editors in association with Columbia University Graduate School of Journalism and are administered by ASME in New York City, New York.  The awards have been presented annually since 1966.', 'Adam Moss | Adam Moss is an American magazine and newspaper editor.  Since 2004, he has been the editor-in-chief of "New York" magazine.  Under his editorship, "New York" has repeatedly been recognized for excellence, notably winning Magazine of the Year in 2013, and General Excellence both in print and online in 2010.  Overall, "New York" has won more National Magazine Awards under his tenure than any other magazine.  During this period, he oversaw the development and growth of "New York\'s" website into one repeatedly recognized as among the industry\'s most innovative and successful.', 'Print (magazine) | Print, A Quarterly Journal of the Graphic Arts was a limited edition quarterly periodical begun in 1940 and continued under different names up to the present day as Print, a bimonthly American magazine about visual culture and design.', 'Document Journal | Document Journal is an independent culture, arts, and fashion magazine founded in New York in 2012.  Published biannually in the spring and fall, the magazine is printed in book format and distributed globally.', 'Simon Perchik | Simon Perchik (born December 24, 1923, Paterson, New Jersey) is an American poet who has been described by Library Journal as, "the most widely published unknown poet in America."  Perchik worked as an attorney before his retirement in 1980.  Educated at New York University, he now resides in East Hampton, New York.  Best known for his highly personal, non-narrative style of poetry, Perchik\'s work has appeared in over 20 books, websites including Verse Daily, Jacket and numerous print magazines, including "The New Yorker", "Poetry", "Partisan Review", "The Nation", "North American Review", "Weave Magazine", "JuxtaProse Literary Magazine", and "CLUTCH".  His poetry collection, "Hands Collected" was longlisted for the 2000 National Book Award for Poetry.', 'TLB (publisher) | TLB is an Australian not-for-profit literary organisation that publishes the quarterly print literary magazine/journal "The Lifted Brow" as well as books for both an Australian and global readership.  It also posts original work on its website, stages events, runs writing prizes, and more.  It publishes its books through its Brow Books imprint.  The headquarters of the magazine is in Melbourne.', "The Photographic Journal | The Journal of the Photographic Society, later the Royal Photographic Society, was first published on 3 March 1853 and it has been published continuously ever since.  The magazine's title was changed with volume 5 (1859) when it was renamed The Photographic Journal and this was recently updated to the RPS Journal.  The publication is the oldest photographic periodical in the world.  For much of the magazine's history it had an influence that went far beyond the society and a print run considerably in excess of the society's membership.  The magazine has had its circulation ABC audited since 2010.  From June 2014 Think Publishing took on responsibility for publishing the journal on the society's behalf.", 'Daniel Terdiman | Daniel Terdiman is a journalist, who has been published in both print and non-print media, including "Time Magazine", "The New York Times", "Wired Magazine", "CNET News.com", "Wired News", "Martha Stewart Weddings", "Salon.com", "Business 2.0", Venture Beat and the "San Francisco Chronicle".  He writes about a wide range of subjects from hi-tech to the web to sports.', 'Print Connoisseur | The Print Connoisseur: A Quarterly Magazine for the Print Collector was a quarterly periodical published from 1920 to 1932 by Winfred Porter Truesdell of New York City.']
+
+## Generated Outputs
+### reasoning
+The claim states that Paul Shaw wrote a book on the history of the design of the New York subway system in 2014 for a magazine and asserts that the magazine Paul Shaw wrote for and National Journal are not both periodicals.
+
+From the context:
+- Paul Shaw is an American designer and historian who wrote a book titled "Helvetica and the New York Subway System: The True (Maybe) Story" about the New York subway system design, and he has written for "Print" magazine. The context does not specify the year he wrote the book or the exact form of publication (book versus magazine article), but it confirms the book exists and that Shaw writes for "Print" magazine.
+- "Print" magazine is described as a quarterly (then bimonthly) American magazine about visual culture and design and is identified as a periodical.
+- National Journal is described in the notes as a periodical, consistent with note [3], though context excerpts do not explicitly describe National Journal but refer to general magazine award contexts which imply it is beyond just a book or single publication.
+- Thus, the assertion that "Print" magazine and National Journal are not both periodicals contradicts note [3] and information that both are periodicals.
+
+Therefore:
+- Paul Shaw wrote a book on New York subway design and also wrote for "Print" magazine.
+- "Print" magazine is a periodical.
+- National Journal is also a periodical.
+
+Hence the claim that the magazine Paul Shaw wrote for and National Journal are not both periodicals is false.
+
+### new_notes
+["Paul Shaw wrote a book titled 'Helvetica and the New York Subway System: The True (Maybe) Story' about the design of the New York subway system.", "Paul Shaw has written for 'Print' magazine, which is a bimonthly American magazine about visual culture and design and is considered a periodical.", "'Print' magazine and National Journal are both periodicals."]
+
+### titles
+['Paul Shaw (design historian)', 'Print (magazine)']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Paul Shaw (design historian)', 'Print (magazine)']. Documents remaining to be retrieved: ['National Journal'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

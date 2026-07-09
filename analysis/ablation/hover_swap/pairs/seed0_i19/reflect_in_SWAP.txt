@@ -1,0 +1,109 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields as input: a `claim` and associated `notes`. Your task is to generate a single, concise, precise natural language `query` that is intended to verify or fact-check the `claim` based on information given in the `notes`. The final query should be designed for efficient retrieval of authoritative evidence that confirms or refutes all key factual elements presented in the claim.
+
+Detailed task instructions:
+
+1. **Analyze the claim:**  
+   - Identify all key factual components or assertions that need verification.  
+   - Recognize any implied relationships between entities or multiple claim components that must be verified together to confirm the claim’s overall truthfulness.
+
+2. **Utilize the notes:**  
+   - Review the notes carefully as they provide relevant factual data, context, and background information.  
+   - Notes may include domain-specific facts, indirect evidence, overlapping or repetitive information, dates, names, titles, awards, species counts, corporate details, etc.  
+   - Incorporate any domain-specific terminology (e.g., proper names of individuals, awards, companies, taxa) relevant to the claim verification.
+
+3. **Formulate the query:**  
+   - Compose a single, clear, direct question that targets all essential factual elements and their connections (when multiple parts exist).  
+   - The query should explicitly reference relevant domain-specific entities (e.g., a person’s full name and role, award titles, film titles and director names, species genus/species count, airline nationality and base).  
+   - Where the claim contains multiple related parts, integrate them logically into one query to avoid fragmented checks needing multiple queries.  
+   - Avoid vagueness or open-ended questions; the query should lead to precise validation or refutation.
+
+4. **Examples of domain-specific entities and components to consider (to be used as needed based on claim content):**  
+   - **Literary awards and persons:** full names of individuals (e.g., Alan Sillitoe, Miguel Ángel Asturias, Elfriede Jelinek), Nobel Prize in Literature, their nationality, and specific roles (poet, diplomat, writer).  
+   - **Film and screenwriting credits:** film titles (Finding Dory, A Bug's Life), directs/co-directors, authorship relations.  
+   - **Botanical classification:** genus names, number of species, vernacular names in various languages, and taxonomic status.  
+   - **Corporate identity and location:** company names, nationality, headquarters city, operational details.  
+   - **Sports teams and leadership:** individual roles (head coach, offensive coordinator), team names, relevant league or conference (e.g., Big Ten Conference 2013 season).  
+
+5. **General strategy:**  
+   - The query should be framed as a verification question (e.g., “Was X the Y in [context or time period]?” or “Did A direct B and also co-direct C?”).  
+   - Combine multiple linked facts into one integrated query for efficiency and clarity.  
+   - Reflect any temporal information if relevant (e.g., “in 2013”, “currently”).  
+   - Where entities might have similar names or multiple aspects, use full names and specific details to avoid confusion.  
+
+The objective is to produce a targeted query that, when answered using the notes or queried in authoritative sources, decisively clarifies the accuracy of the claim based on its main factual components and their relationships.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+An actor that was in the Wonder Woman (2017 film) of the action adventure genre, performed in Anomalisa after the premier of Fargo.
+
+### notes
+['David Thewlis was in Wonder Woman (2017) and provided a voice in Anomalisa (2015).', 'David Thewlis appeared in Fargo season 3 which premiered in 2017 after the release of Anomalisa.', 'Anomalisa was released in 2015, before Fargo season 3 premiered.', 'The claim that an actor appeared in Anomalisa after the premier of Fargo is disproven since Anomalisa came out first.', 'David Thewlis is the actor who connects Wonder Woman (2017), Anomalisa, and Fargo.', 'David Thewlis acted in Wonder Woman (2017) and voiced a character in Anomalisa (2015).', 'David Thewlis appeared in Fargo season 3, which premiered in 2017.', "Anomalisa was released in 2015, before Fargo season 3's premiere in 2017.", "The claim that an actor performed in Anomalisa after Fargo's premiere is false due to the release dates.", 'David Thewlis is the connecting actor in all three productions: Wonder Woman (2017), Anomalisa, and Fargo.', 'David Thewlis acted in Wonder Woman (2017), an action-adventure film.', 'David Thewlis provided voice work in Anomalisa, released in 2015.', 'Fargo season 3, featuring David Thewlis, premiered in 2017 after Anomalisa.', "Anomalisa's release predates Fargo season 3's premiere.", 'The claim that an actor performed in Anomalisa after Fargo contradicts the actual release sequence.', 'David Thewlis is the only actor linking Wonder Woman (2017), Anomalisa, and Fargo in this context.']
+
+## Generated Outputs
+### reasoning
+The claim states that an actor from the 2017 action-adventure film Wonder Woman performed in Anomalisa after the premiere of Fargo. According to the notes, David Thewlis acted in Wonder Woman (2017) and provided a voice in Anomalisa (2015). Additionally, Fargo season 3 premiered in 2017, which was after the release of Anomalisa. Therefore, David Thewlis appeared in Anomalisa before the premiere of Fargo, disproving the claim that the actor performed in Anomalisa after Fargo’s premiere. The claim involves verifying the timeline of Anomalisa’s release relative to Fargo’s premiere and the actor’s involvement in both Wonder Woman and Anomalisa.
+
+### query
+Did David Thewlis, who appeared in the 2017 action-adventure film Wonder Woman, perform in the 2015 film Anomalisa before the premiere of Fargo season 3 in 2017?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['David Thewlis', 'Wonder Woman (2017 film)']. Documents remaining to be retrieved: ['Fargo (TV series)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Director Robert Stevenson was from a geographically smaller country than another director. That director directed his final film Romance of Astree and Celadon.
+
+### notes
+['Robert Stevenson was English, which means he was from England, part of the United Kingdom.', "Éric Rohmer, who directed 'Romance of Astree and Celadon' (2007), was French.", 'Geographically, the United Kingdom is smaller in area than France.', 'Robert Stevenson was English, meaning he was from England, which is part of the United Kingdom.', "Éric Rohmer directed the film 'Romance of Astree and Celadon' (2007).", 'The United Kingdom is geographically smaller than France.', 'Robert Stevenson, being English, was from the United Kingdom.', "Éric Rohmer was a French director who directed 'Romance of Astree and Celadon' (2007).", 'The United Kingdom is geographically smaller than France.']
+
+## Generated Outputs
+### reasoning
+The claim states that director Robert Stevenson was from a geographically smaller country than another director, who directed his final film "Romance of Astree and Celadon." From the notes, Robert Stevenson was English, from England, part of the UK. Another director mentioned is Éric Rohmer, who is French and directed "Romance of Astree and Celadon" (2007). Furthermore, geographically the UK is smaller than France. Therefore, the key factual components to verify are: Robert Stevenson's nationality or country of origin, Éric Rohmer's nationality, the director of "Romance of Astree and Celadon," and the comparative geographic sizes of the UK and France.
+
+### query
+Was Robert Stevenson English from the United Kingdom, and is the United Kingdom geographically smaller than France, and did French director Éric Rohmer direct his final film titled "Romance of Astree and Celadon"?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Robert Stevenson (director)', 'Romance of Astree and Celadon', 'Éric Rohmer']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+In the 28th season a Spanish rally driver won the racing series which was not competed in by Harri Rovanperä from 1993 to 2006.
+
+### notes
+['Harri Rovanperä is a Finnish rally driver who competed in the World Rally Championship from 1993 to 2006.', 'The 28th season of the Champ Car World Series was in 2006.', 'Sébastien Bourdais, a French driver, won the 2006 Champ Car season (the 28th season).', 'No Spanish rally driver is mentioned as a winner of the 28th season of any racing series in the provided context.', 'Harri Rovanperä did not compete in the Champ Car series.', 'Harri Rovanperä competed in World Rally Championship from 1993 to 2006, not in Champ Car or similar series.', 'The 28th season of the Champ Car World Series was in 2006, won by Sébastien Bourdais, a French driver.', 'No Spanish rally driver is noted as winning the 28th season of any racing series in the given information.', 'Harri Rovanperä did not participate in the Champ Car World Series or in any series won by a Spanish rally driver in this period.', 'The claim about a Spanish rally driver winning the 28th season of a series not competed in by Rovanperä is not supported by the provided data.', 'Harri Rovanperä competed exclusively in the World Rally Championship from 1993 to 2006, not in Champ Car or closely related series.', 'The 28th season of the Champ Car World Series took place in 2006 and was won by Sébastien Bourdais, a French driver.', 'No records or mentions exist about a Spanish rally driver winning the 28th season of any racing series in the provided context.', 'The claim about a Spanish rally driver winning the 28th season of a racing series not competed in by Rovanperä is unsupported by the available information.']
+
+## Generated Outputs
+### reasoning
+The claim involves several key components: there was a 28th season of a particular racing series; a Spanish rally driver won that racing series in its 28th season; and the driver Harri Rovanperä did not compete in this racing series from 1993 to 2006. To verify the claim, it is necessary to identify the specific racing series in question, confirm its 28th season timeline, verify that a Spanish rally driver was the champion that season, and confirm that Harri Rovanperä did not compete in that series during the period from 1993 to 2006.
+
+Since the notes do not provide any information on the racing series, the identity of the Spanish rally driver, or details about Harri Rovanperä’s participation in any racing series between 1993 and 2006, a precise, specific query is needed to gather this information from authoritative sources.
+
+### query
+In the 28th season of which rally racing series did a Spanish driver win the championship, and did Harri Rovanperä not compete in that series from 1993 to 2006?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Harri Rovanperä']. Documents remaining to be retrieved: ['2000 World Rally Championship', 'Carlos Sainz'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,172 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You are tasked with a focused fact verification and evidence consolidation task, where you analyze three types of inputs—`claim`, `notes`, and `context`—to produce two outputs: `new_notes` and `titles`. The `claim` is a textual statement possibly containing multiple factual assertions that need verification. The `notes` are often extracted snippets, paraphrases, or partial evidences relevant to the claim, while the `context` comprises longer document texts or summaries potentially containing detailed source information related to entities, events, timelines, or attributes mentioned in the claim.
+
+Your overarching goal is to verify or refute each distinct component of the claim by synthesizing and consolidating information from both `notes` and `context`, avoiding redundancy, speculation, or irrelevant content.
+
+---
+
+Detailed Guidelines and Domain-Specific Considerations:
+
+1. **Input Structure and Understanding**  
+   - **claim**: A statement consisting of one or more assertions (e.g., about persons, events, dates, geographic locations, product characteristics, filmographies, or comparative facts).  
+   - **notes**: Fragmented facts, paraphrases, or extracted evidences that may partially support or contradict the claim. This input can contain redundancy.  
+   - **context**: Summaries or full-text snippets from diverse documents that may provide authoritative or more detailed information on the claim’s subjects.
+
+2. **Verification Approach and Reasoning Strategy**  
+   - Parse the claim into discrete assertions where possible and address each individually.  
+   - Map claim elements (entities, dates, events, attributes) to facts in both `notes` and `context`.  
+   - Cross-verify facts by probing both inputs together to spot confirmations, contradictions, or missing information.  
+   - Explicitly note when parts of the claim cannot be verified because critical information about entities, events, or attributes is absent from both inputs.  
+   - For geographic, historical, biographical, or product-related facts, use explicit details only—avoid assumptions or inference beyond the data given.  
+   - When multiple entities or facts overlap (e.g., multiple actors in movies, overlapping dates, competing geographic references), carefully separate which parts are supported and which are not.
+
+3. **Consolidation of `new_notes`**  
+   - Remove redundancy by combining similar or repeated facts into succinct, clear statements—preferably one or two sentences each.  
+   - Focus exclusively on information directly relevant to verifying the claim’s assertions, omitting irrelevant tangents or unrelated domain facts.  
+   - Clarify precisely which elements of the claim are supported, contradicted, or unverifiable.  
+   - If verification is impossible due to missing data or ambiguity, clearly state this instead of speculating.  
+   - Maintain factual accuracy and align notes closely with evidence found in the inputs.
+
+4. **Creation of `titles`**  
+   - Generate concise, descriptive headings that summarize key topics, entities, or factual relationships uncovered during verification.  
+   - Titles should be domain-relevant and reflect the organizing principles of your notes (e.g., names of persons, film titles with dates, product or geographic features, timeline relations).  
+   - They serve as topical indexes for the summarized evidences and facilitate quick understanding of verification focuses.
+
+5. **Domain-Specific Knowledge Embedded in the Task**  
+   - Common facts relate to soft drink brands, flavor profiles, and geographic market presence.  
+   - Biographical facts include film directors, voice actors, release years, animation movie titles, and actor nationalities.  
+   - Geographic comparisons, including city versus county boundaries, size, and jurisdictional status, are frequent.  
+   - Product ownership or company-railway station relations may appear, requiring careful geographic and corporate structure reasoning.  
+   - Scientific or technical terms (e.g., chemical or biological entities) may appear but are often not central to verification.
+
+6. **Generalizable Reasoning and Workflow**  
+   - Identify key components (entities, events, dates) in the claim first.  
+   - Search both `notes` and `context` for explicit assertions tied to these components.  
+   - Distill duplicated claims and reconcile contradictions; produce a coherent evaluation per factual assertion.  
+   - Explicitly separate verifiable from unverifiable or contradicted claim parts in `new_notes`.  
+   - Group related notes under thematic headings synthesized as `titles`.
+
+7. **Handling Missing or Conflicting Data**  
+   - When the claim contains information about an entity or event absent in all inputs, clearly note that verification is not possible.  
+   - If parts are verifiable but others are unsupported, separately highlight these distinctions.  
+   - Avoid speculation or implied connections not grounded in provided evidence.
+
+---
+
+Summary:
+
+Your task is a meticulous, evidence-based fact-checking and summarization exercise that integrates fragmented inputs into a concise, focused verification dossier. Your outputs must be:
+
+- **`new_notes`**: A reduced, clear, and precise list of facts confirming, contradicting, or indicating unverifiability of the claim’s components based on the complete input set.  
+- **`titles`**: A concise list of relevant topical headings that summarize and organize the key subjects, entities, or relationships essential to understanding the verification outcome.
+
+This task requires strict adherence to evidence, careful parsing of multi-part claims, clear handling of data absence or contradiction, and domain-aware synthesis of facts to aid downstream understanding or retrieval tasks.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The  Vines' frontman wrote the song "Get Free". He and Boy George are not both from the same country.
+
+### notes
+["The song 'Get Free' was written by Craig Nicholls, the frontman of the Australian band The Vines.", 'Craig Nicholls, frontman of The Vines, is associated with Australia.', 'Boy George is the British frontman of the band Culture Club.', 'Therefore, Craig Nicholls and Boy George are not both from the same country.', "Craig Nicholls, the Australian frontman of The Vines, wrote the song 'Get Free'.", "'Get Free' is a track from The Vines' debut album 'Highly Evolved' released in 2002.", 'Boy George is a British singer best known as the frontman of Culture Club.', 'Craig Nicholls and Boy George are not both from the same country; Nicholls is Australian and Boy George is British.', "Craig Nicholls, the Australian frontman of The Vines, wrote the song 'Get Free'.", 'Boy George is a British singer, best known as the frontman of the band Culture Club.', 'Craig Nicholls and Boy George are not both from the same country; Nicholls is Australian and Boy George is British.']
+
+### context
+['Get Free | "Get Free" is a song by the garage rock band The Vines from their debut album "Highly Evolved".  The song was released in mid 2002, and remains the Vines\' highest charting single (#7 Billboard Modern Rock, #24 UK Singles Chart).  The song was written by Vines\' frontman Craig Nicholls.  It was covered by "Weird Al" Yankovic in his polka medley "Angry White Boy Polka" from his 2003 album "Poodle Hat".  It was featured in the pilot episodes of "Fastlane" and "Shameless", as well as the 2006 movie "School for Scoundrels".  The song can be heard in several video games including the introduction video for "Topspin", the Nintendo DS version of "Band Hero" and as a playable track on "Rock Band 3" and "".  "Get Free" along with "Ride" appeared in the documentary "Warren Miller\'s Impact".', 'Nobody Gonna Tell Me What to Do | "Nobody Gonna Tell Me What to Do" is a song recorded by American country music duo Van Zant.  It was released in September 2005 as the second single from their album "Get Right with the Man".  The song was written by Tony Mullins, Tim Nichols and Craig Wiseman.', 'It\'s All Good (Joe Nichols album) | It\'s All Good is the seventh studio album by American country music artist Joe Nichols, released on November 8, 2011 via Show Dog-Universal Music.  It produced the top 30 single "Take It Off."  Craig Morgan also recorded the track "This Ole Boy" for his album of the same name.', 'This Ole Boy (song) | "This Ole Boy" is a song written by Rhett Akins, Dallas Davidson and Ben Hayslip.  Originally recorded by Joe Nichols for his 2011 album "It\'s All Good", it was also recorded by Craig Morgan.  His version of the song was released in July 2011 as the first single and title track from his album "This Ole Boy", released by Black River Entertainment in early 2012.', 'Winning Days (song) | "Winning Days" was the third and final single from the album of the same name by the Vines.  It came out in May 2004, the same week as the Annandale Hotel incident took place in Sydney, in which Craig Nicholls, the song\'s writer and the group\'s lead singer-guitarist, assaulted a photographer, and charges were pressed.', 'Craig Nicholls | Craig Robert Nicholls (born 31 August 1977) is an Australian musician, best known as the lead singer, songwriter, and guitarist of the Australian alternative rock band The Vines, of which he is the only mainstay member.', 'Craig Morgan (album) | Craig Morgan is the self-titled debut album of country music singer Craig Morgan.  Released in 2000 as his only album for the Atlantic Records label, it produced the singles "Paradise", "I Want Us Back", and "Something to Write Home About", which peaked at number 39 on the U.S. country charts.  "Everything\'s a Thing" was later recorded by Joe Nichols (who co-wrote the song as well) on his 2003 album "Man with a Memory".', 'Highly Evolved (song) | "Highly Evolved" is the opening track and first Australian single from The Vines\' debut album of the same name (see "Highly Evolved").  The song was written by the group\'s lead guitarist and vocalist, Craig Nicholls.  It was issued as a single via Capitol Records, in April 2002, ahead of the album, which appeared in August.', 'Ride (The Vines song) | "Ride" was the second official single from The Vines\' second album, "Winning Days".  Although it wasn\'t a big chart success, "Ride" is one of the band\'s best known songs because it was featured in a number of advertisements, including commercials for Apple\'s iPod, Nissan, "American Chopper", "NASCAR Hot Pass", "WKCF", The WB, and .  Written by Craig Nicholls.', 'What\'s a Guy Gotta Do | "What\'s a Guy Gotta Do" is a song co-written and recorded by American country music artist Joe Nichols.  It was released in November 2004 as the second and final single from his album "Revelation".  It peaked at number 4 on the United States "Billboard" Hot Country Songs chart and number 64 on the U.S. "Billboard" Hot 100 chart.  The song was written by Nichols, Kelley Lovelace and Don Sampson.']
+
+## Generated Outputs
+### reasoning
+The claim contains two assertions: first, that the frontman of The Vines wrote the song "Get Free"; second, that the frontman of The Vines and Boy George are not both from the same country. 
+
+From the notes, it is confirmed that "Get Free" was written by Craig Nicholls, who is identified as the frontman of The Vines and associated with Australia. Boy George is noted as British. The context further supports these points clearly: "Get Free" was written by Craig Nicholls, the band's frontman and lead vocalist, who is Australian. Boy George is explicitly described as British in the notes, and there is no contrasting information. 
+
+Thus, both assertions in the claim are directly supported: Craig Nicholls is indeed the frontman who wrote "Get Free" and he and Boy George are from different countries (Australia and the United Kingdom, respectively). There is no conflicting or missing information regarding nationality or authorship.
+
+### new_notes
+["Craig Nicholls, the Australian frontman of The Vines, wrote the song 'Get Free'.", "'Get Free' is a track from The Vines' debut album 'Highly Evolved' released in 2002.", 'Boy George is a British singer best known as the frontman of Culture Club.', 'Craig Nicholls and Boy George are not both from the same country; Nicholls is Australian and Boy George is British.']
+
+### titles
+["Craig Nicholls and 'Get Free'", "Boy George's Nationality", 'Nationality Comparison between Craig Nicholls and Boy George']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Craig Nicholls', 'Get Free']. Documents remaining to be retrieved: ['Boy George'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The TV series where the actor played the character Gaius Baltar joined in 2010. premiered on July 18, 2006. The serie was premiered on July 18, 2006.
+
+### notes
+['James Callis played Dr. Gaius Baltar in the reimagined "Battlestar Galactica" TV series.', '"Battlestar Galactica" originally aired earlier than July 18, 2006; no premiere date of July 18, 2006, is found for this series in the given context.', 'James Callis joined the cast of a different TV series, "Eureka," in 2010, not the "Battlestar Galactica" series where he played Gaius Baltar.', 'There is no evidence that the TV series featuring Gaius Baltar premiered on July 18, 2006.', "The claim's assertion that the actor joined the Gaius Baltar TV series in 2010 and that it premiered on July 18, 2006, contradicts the provided context.", "James Callis played Dr. Gaius Baltar in the reimagined 'Battlestar Galactica' TV series.", "'Battlestar Galactica' premiered before July 18, 2006, but no evidence supports a premiere on that date.", "The third season of 'Battlestar Galactica' premiered on October 6, 2006.", "James Callis joined the cast of the TV series 'Eureka' in 2010, not 'Battlestar Galactica'.", 'The claim that the actor joined the Gaius Baltar series in 2010 and that it premiered on July 18, 2006, is contradicted by the evidence.', "James Callis played Dr. Gaius Baltar in the reimagined 'Battlestar Galactica' TV series.", "'Battlestar Galactica' premiered before July 18, 2006, with its third season premiering on October 6, 2006, but no evidence supports a premiere exactly on July 18, 2006.", "James Callis joined the cast of the TV series 'Eureka' in 2010, not 'Battlestar Galactica'.", 'The claim that the actor joined the Gaius Baltar TV series in 2010 and that it premiered on July 18, 2006, is contradicted by the available evidence.']
+
+### context
+['Gaius Baltar | Dr. Gaius Baltar is a fictional character in the TV series "Battlestar Galactica" played by James Callis, a reimagining of Count Baltar from the 1978 "Battlestar Galactica" series.  He is one of the show\'s primary characters.', 'James Callis | James Nicholas Callis (born 4 June 1971) is an English actor.  He is best known for playing Dr. Gaius Baltar in the re-imagined "Battlestar Galactica" miniseries and television series, and Bridget Jones\' best friend in "Bridget Jones\'s Diary" and "".  He later reprised the role in 2016, in "Bridget Jones\'s Baby."  He joined the cast of the TV Series "Eureka", on Syfy, in 2010.  In 2017 he voiced the character Alucard on the Netflix series "Castlevania", based on the video game of the same name.', 'Baltar (Battlestar Galactica) | Baltar is a fictional character in the "Battlestar Galactica" universe who betrays the human race, through willing treachery in the original 1978 series, and as the inadvertent result of arrogance and self-interest in the 2003 miniseries and following TV series.', 'Count Iblis | Count Iblis is an alien on the TV series "Battlestar Galactica".  He was part of the original 1978 series, and was central to the plot of the two-part episode "War of the Gods".  In that episode, he was played by Patrick Macnee.  He did not appear in the re-imagined series.', 'Cally Henderson Tyrol | Callandra "Cally" Tyrol ("née" Callandra Henderson) (also known as Cally or Crewman Cally, Deckhand Cally, or Specialist Cally) is a fictional character from the re-imagined "Battlestar Galactica" series.  She is played by actress Nicki Clyne.', 'William Adama | William "Bill" Adama (callsign "Husker") is a fictional character portrayed by Edward James Olmos in the re-imagined "Battlestar Galactica" television series produced and aired by the SyFy cable network.  He is one of the main characters, a reimagining of Commander Adama from the 1978 "Battlestar Galactica" series played by Lorne Greene.', 'Battlestar Galactica (season 3) | The third season of the reimagined science fiction television series Battlestar Galactica premiered on the Sci-Fi Channel in the United States on October 6, 2006, and concluded on March 25, 2007.  Unlike the previous season, it was not split into two parts and did not have an extended hiatus during the middle of the season.  The third season contained 20 episodes.', 'Hera (Battlestar Galactica) | Hera is the name of a character in the reimagined TV series of Battlestar Galactica.', 'Battlestar Galactica: The Plan | Battlestar Galactica: The Plan is a television film set in the reimagined version of the fictional "Battlestar Galactica" universe.  It consists of newly filmed material as well as a compilation of footage from the 2004 TV series and miniseries.', 'Count Baltar | Count Baltar was a leading antagonist in the original "Battlestar Galactica" (1978) television series.  The character betrayed the human race to its enemy, the robot race of Cylons.  He was portrayed by Canadian actor John Colicos.']
+
+## Generated Outputs
+### reasoning
+The claim contains two distinct assertions: first, that the actor who played Gaius Baltar joined the TV series in 2010, and second, that the series premiered on July 18, 2006. From the notes and context, it is clear that James Callis is the actor who played Dr. Gaius Baltar in the reimagined "Battlestar Galactica" series. The context specifies that James Callis joined the cast of the TV series "Eureka" in 2010, not "Battlestar Galactica." It also informs that the third season of "Battlestar Galactica" premiered on October 6, 2006, but no mention of a July 18, 2006, premiere date for the series or season is found anywhere. Therefore, the claim that the actor joined the Gaius Baltar series in 2010 is false, and the premiere date of the series on July 18, 2006, is unsupported and contradicted. The series premiered prior to July 18, 2006, but the exact date is not specified here; the closest provided date is October 6, 2006, for season three. Thus, both parts of the claim are contradicted by the available evidence.
+
+### new_notes
+["James Callis played Dr. Gaius Baltar in the reimagined 'Battlestar Galactica' TV series.", "'Battlestar Galactica' premiered before July 18, 2006, but no evidence supports a premiere on that date.", "The third season of 'Battlestar Galactica' premiered on October 6, 2006.", "James Callis joined the cast of the TV series 'Eureka' in 2010, not 'Battlestar Galactica'.", 'The claim that the actor joined the Gaius Baltar series in 2010 and that it premiered on July 18, 2006, is contradicted by the evidence.']
+
+### titles
+['James Callis and Gaius Baltar Role', 'Premiere Dates of Battlestar Galactica', "James Callis Joining 'Eureka' in 2010", 'Contradictions in Claim Regarding Series Join Date and Premiere']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Gaius Baltar', 'James Callis']. Documents remaining to be retrieved: ['Eureka (U.S. TV series)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Cast is considered a rock band. The band Jacob Gentry collaborated with is also considered a rock band.
+
+### notes
+["There is no information provided about a band named 'Cast' to confirm if it is a rock band.", 'Jacob Gentry is a film director who collaborated with Broken Bells on short films based on their music; no evidence in the context confirms that Broken Bells is a rock band.', "None of the bands named in the context involving the term 'Gentry' are directly connected to Jacob Gentry or identified as the band he collaborated with.", 'The Gentry is classified as an electronic, alternative rock band, but there is no indication that Jacob Gentry is related to this band.', 'The Jacob Jeffries Band is a pop rock band distinct from Jacob Gentry, showing no link to him or the claim.', "There is no information provided that a band named 'Cast' exists or is considered a rock band.", 'Jacob Gentry is a film director who collaborated with Broken Bells on short films; there is no evidence that Broken Bells is a rock band.', 'The band named The Gentry is classified as electronic and alternative rock but has no known connection to Jacob Gentry.', "Other bands mentioned with 'Gentry' in their name are unrelated to Jacob Gentry and do not verify the claim.", "There is no information confirming the existence of a band named 'Cast' or its classification as a rock band.", 'Jacob Gentry is a film director who collaborated with Broken Bells on short films, but there is no evidence that Broken Bells is a rock band.', "The band 'The Gentry' is classified as electronic and alternative rock but has no known connection to Jacob Gentry.", 'No bands named in the notes or context are both connected to Jacob Gentry and classified as rock bands.']
+
+### context
+['The Gentry (band) | The Gentry is an American band from Portland, Oregon, formed in 2003 by DJ/producer Gino Mari.  The band is most commonly classified in the electronic, alternative rock and rock music genres.', "Montgomery Gentry | Montgomery Gentry was an American country music duo consisting of vocalists Eddie Montgomery and Troy Gentry, both natives of Kentucky.  Eddie Montgomery and Troy Gentry began performing in the 1990s as part of two different bands with Montgomery's brother, John Michael Montgomery.  Although Gentry won a talent contest in 1994, he reunited with Eddie Montgomery after Gentry was unable to find a solo record deal, and Montgomery Gentry was formed in 1999.  The duo was known for its Southern rock influences, and collaborated with Charlie Daniels, Toby Keith, Five for Fighting, and members of The Allman Brothers Band.", "Eagle Twin | Eagle Twin is an American metal band formed in Salt Lake City, Utah by singer/guitarist Gentry Densley and drummer Tyler Smith.  Eagle Twin's music could be broadly classified as doom metal or sludge metal, but also touches on progressive rock, blues rock, jazz fusion and psychedelic rock, featuring lengthy instrumental passages and Densley's gruff, half-chanted vocals, which occasionally veer into overtone singing.", 'Jacob Gentry | Jacob Gentry is an American film director, editor, and writer.  He is best known for "The Signal", which he co-wrote and co-directed with David Bruckner and Dan Bush.  He also directed the "My Super Psycho Sweet 16" trilogy and collaborated with Broken Bells on short films based on their music.', 'Jacob Jeffries Band | Jacob Jeffries Band is an American pop rock band from Ft. Lauderdale, Florida.  Formed in 2006, the band consists of Jacob Jeffries (vocals, piano), Jimmy Powers V (electric guitar, backing vocals) and several alternating members.', 'Introduction (rock band) | Introduction is a Swedish rock band based in Stockholm.  Often classified as psychedelic rock, Introduction is also influenced by classic rock, progressive rock and indie rock.', 'Crowfoot (band) | Crowfoot was an American rock band, initially known as The Beau Gentry.  The original line-up featured Russell DaShiell, Doug Killmer and Rick Jaeger.', 'Marcel Jacob | Marcel Karl Jacob (30 January 1964 – 21 July 2009) was a Swedish musician, best known as the bassist in the hard rock bands Talisman and Yngwie Malmsteen.  For a brief period, Marcel also played with the band Europe.', 'Dancin\' on the Boulevard | "Dancin\' on the Boulevard" was produced by the band, along with Don Cook.  "Sad Lookin\' Moon" was the first single release from the album, peaking at #2 on the U.S. country singles charts in 1997.  Following it was the title track which, like "Sad Lookin\' Moon", was co-written by lead singer Randy Owen along with bass guitarist Teddy Gentry and frequent collaborator Greg Fowler.  This song reached #3 on the same chart late that year.  "Of Course I\'m Alright" followed late in the year and reached #22.  Finishing off the single releases was "She\'s Got That Look in Her Eyes", an Owen-Gentry collaboration which peaked at #21.', "Lagoon (band) | Lagoon is an indie rock band which was founded in Tucson, Arizona in 2003.  The band is composed of David Ziegler-Voll as the band's lead singer, guitarist, and principal songwriter, guitarist Patrick McMahon, bassist Jacob Chattman, and drummer Marisa Chattman."]
+
+## Generated Outputs
+### reasoning
+The claim consists of two parts: 1) "Cast is considered a rock band" and 2) "The band Jacob Gentry collaborated with is also considered a rock band." 
+
+From the context:
+- There is no mention of a band named "Cast" or any similar name in the provided notes or context. Thus, there is no information to verify whether "Cast" is a rock band.
+- Regarding Jacob Gentry, the context provides that Jacob Gentry is an American film director and collaborated with "Broken Bells" on short films based on their music. No mention of a band directly called "Jacob Gentry" or that he himself is a member of a band.
+- Broken Bells is not explicitly described in the context, and there is no classification indicating that Broken Bells is a rock band within the given context.
+- The other bands mentioned (The Gentry, Montgomery Gentry, Eagle Twin, Jacob Jeffries Band, etc.) are distinct from Jacob Gentry. Specifically:
+  - The Gentry is an electronic/alternative rock band.
+  - Montgomery Gentry is a country music duo with Southern rock influences.
+  - Eagle Twin is a metal band with elements of rock genres.
+  - Jacob Jeffries Band is a pop rock band, but this band is unrelated to Jacob Gentry.
+  
+Thus, no evidence supports that Jacob Gentry collaborated with a rock band, or that the band is considered rock. Additionally, there is no evidence that "Cast" is a rock band. Therefore, the claim is not supported by the provided context.
+
+### new_notes
+["There is no information provided about a band named 'Cast' to confirm if it is a rock band.", 'Jacob Gentry is a film director who collaborated with Broken Bells on short films based on their music; no evidence in the context confirms that Broken Bells is a rock band.', "None of the bands named in the context involving the term 'Gentry' are directly connected to Jacob Gentry or identified as the band he collaborated with.", 'The Gentry is classified as an electronic, alternative rock band, but there is no indication that Jacob Gentry is related to this band.', 'The Jacob Jeffries Band is a pop rock band distinct from Jacob Gentry, showing no link to him or the claim.']
+
+### titles
+['Cast Band Verification', 'Jacob Gentry and Musical Collaborations', 'Rock Band Classifications in Context']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Jacob Gentry']. Documents remaining to be retrieved: ['Broken Bells', 'Cast (band)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,123 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given input fields:
+
+- `claim`: A statement or assertion that needs to be verified, involving factual information about people, events, works (e.g., films), timelines, geographic or biographical data, or relationships between entities.
+- `notes`: A list of sentences extracted from relevant documents or knowledge sources that contain factual information related to the claim. These notes may contain partial, overlapping, or nuanced facts, such as dates, roles, geographic sizes, timelines, or biographical details.
+
+Your task is to generate the output field:
+
+- `query`: A precise, well-formed, factual verification question (or set of related questions) that, if answered, would confirm or refute the claim. The query should be formulated to directly address the key factual components of the claim, making explicit any temporal, geographic, or biographical details involved.
+
+Detailed instructions and domain-specific considerations:
+
+1. Understand that the claim may involve multiple related facts, such as:
+   - Confirmation of a person's role or position during a specific time period or event (e.g., coaching a team in a given season).
+   - Chronological ordering of events or performances (e.g., whether one film premiered before or after another work involving the same actor).
+   - Geographic or demographic comparisons (e.g., whether one country is geographically smaller than another, related to persons from each country).
+   - Attribution of works (e.g., identifying the director of a particular film and confirming it as their final work).
+   
+2. The `notes` provide evidence snippets that may:
+   - Include partial or conflicting information regarding dates, roles, or associations.
+   - Contain biographical or geographic metadata relevant to the claim.
+   - Sometimes refer to external, well-known facts beyond the supplied notes (e.g., a director's known final film).
+   
+3. Use the `notes` to identify the key elements required to verify the claim:
+   - Entities involved (people, works, teams).
+   - Their relationships and timelines.
+   - Geographic or demographic comparisons.
+   
+4. Formulate your `query` to:
+   - Combine all essential factual components into a single question or a logically connected set of questions.
+   - Explicitly reference the entities, events, or facts from the claim.
+   - Phrase the question in a way that directly targets validation or refutation of the claim.
+   - Incorporate temporal relations when relevant (e.g., "Did actor X perform in film A after the premiere of film B?").
+   - Incorporate comparative facts when claiming ordering or size differences (e.g., "Is country A geographically smaller than country B?").
+   - Avoid vague or overly general questions; be specific to the key claim points.
+   
+5. The overall goal is to produce a clean, unambiguous query that can guide retrieval or verification systems in finding evidence either confirming or contradicting the claim, ensuring all critical aspects from the claim are covered.
+
+Example strategy (generalizable across claims):
+
+- Parse the claim into distinct factual assertions or conditions.
+- Cross-reference these assertions with the provided `notes` to identify which facts need verification.
+- Construct one or more precise, fact-focusing query questions that map to these assertions.
+- Ensure the queries logically fit the reasoning needed to prove or disprove the claim.
+
+This approach helps maximize precision in search/retrieval while capturing the full complexity of the claim being evaluated.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+His screenplay of the film The Night Hunter was based on a novel. the writer and Nelly Sachs have not both won a Nobel Prize in Literature.
+
+### notes
+["The screenplay for 'The Night of the Hunter' (1955) by James Agee was based on a 1953 novel by Davis Grubb.", 'Nelly Sachs won the Nobel Prize in Literature in 1966.', 'James Agee and Davis Grubb did not win the Nobel Prize.', 'Therefore, the writer and Nelly Sachs have not both won a Nobel Prize in Literature.', "James Agee wrote the screenplay for 'The Night of the Hunter' based on Davis Grubb's novel.", 'Nelly Sachs won the Nobel Prize in Literature in 1966.', 'Neither James Agee nor Davis Grubb won the Nobel Prize in Literature.', "The film is actually titled 'The Night of the Hunter' (1955), not 'The Night Hunter'.", "The screenplay for 'The Night of the Hunter' was written by James Agee and based on a 1953 novel by Davis Grubb.", 'Nelly Sachs won the Nobel Prize in Literature in 1966.', 'Neither James Agee nor Davis Grubb won the Nobel Prize in Literature.', 'Therefore, the writer of the screenplay and Nelly Sachs have not both won the Nobel Prize in Literature.']
+
+## Generated Outputs
+### reasoning
+The claim contains two main components: first, that the screenplay of the film "The Night Hunter" was based on a novel; second, that the writer of this screenplay and Nelly Sachs have not both won a Nobel Prize in Literature.
+
+The notes clarify that the screenplay for "The Night of the Hunter" (likely the film referenced as "The Night Hunter") was written by James Agee and is based on a 1953 novel by Davis Grubb. Additionally, notes indicate that Nelly Sachs won the Nobel Prize in Literature in 1966, but neither James Agee nor Davis Grubb won the Nobel Prize. Thus, the writer of the screenplay (James Agee) and Nelly Sachs have not both won the Nobel Prize in Literature.
+
+To verify the claim, one needs to confirm that James Agee wrote the screenplay for the film based on Davis Grubb's novel, that Nelly Sachs won the Nobel Prize in Literature, and that neither Agee nor Grubb won the Nobel Prize. This confirms both the basis for the screenplay and the Nobel Prize status claimed.
+
+### query
+Did James Agee write the screenplay for the film "The Night of the Hunter," and was this screenplay based on a novel by Davis Grubb? Did Nelly Sachs win the Nobel Prize in Literature in 1966? Did James Agee and Davis Grubb win the Nobel Prize in Literature?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['The Night of the Hunter (film)']. Documents remaining to be retrieved: ['James Agee', 'Nelly Sachs'].
+
+
+
+# Example 2
+## Inputs
+### claim
+An actor in a musical film was also a United States Navy Combat veteran in World War II. This film was awarded The Golden Bear at the 50th Berlin International Film Festival.
+
+### notes
+["The 50th Berlin International Film Festival Golden Bear winner was 'Magnolia' (American film) directed by Paul Thomas Anderson.", "'Magnolia' is not identified as a musical film in the context provided.", 'Notable WWII US Navy veterans involved in films include Clark Gable, William Holden, Clayton Moore, and Ronald Reagan, but no direct connection is made to a musical film winning the Golden Bear at the 50th festival.', 'No information links an actor in a musical film who is also a US Navy combat veteran with a Golden Bear win at the 50th Berlin International Film Festival.', "No musical film won the Golden Bear at the 50th Berlin International Film Festival; the winner was 'Magnolia', which is not a musical.", 'Jason Robards was a WWII US Navy Combat veteran but no evidence links him to a musical film winning the Golden Bear at the 50th festival.', 'There is no evidence an actor in a musical film who was a US Navy Combat veteran appeared in a film awarded the Golden Bear at the 50th Berlin International Film Festival.', "No musical film won the Golden Bear at the 50th Berlin International Film Festival; the winner was 'Magnolia', which is not a musical.", 'No actor who was a US Navy Combat veteran in World War II is linked to a Golden Bear-winning film at the 50th Berlin International Film Festival.', "At the 53rd Berlin International Film Festival, the musical 'Chicago' screened out of competition, and the Golden Bear went to 'In This World'.", 'Known US Navy WWII veteran actors like Clark Gable and William Holden have no documented connection to a Golden Bear-winning musical film at the 50th Berlin International Film Festival.']
+
+## Generated Outputs
+### reasoning
+The claim asserts two main facts: first, that an actor in a certain musical film was a United States Navy Combat veteran in World War II; second, that this musical film won The Golden Bear award at the 50th Berlin International Film Festival. To verify this, we need to know (1) which musical film won The Golden Bear at the 50th Berlin International Film Festival, (2) who starred in that musical film, and (3) whether any of those actors served as United States Navy Combat veterans during World War II.
+
+### query
+Which musical film won The Golden Bear at the 50th Berlin International Film Festival, who were its actors, and did any of these actors serve as United States Navy Combat veterans during World War II?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['50th Berlin International Film Festival', 'Jason Robards']. Documents remaining to be retrieved: ['Magnolia (film)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The TV show aired on KidsClick's programming block on a Sunday. A song from La La Land, a Wax Fung album, contained a song featured on an American Dad episode of the same name as the show.
+
+### notes
+["'La La Land' is a Wax Fang album released in 2007, with songs 'Majestic' and 'At Sea' featured in the American Dad! episode titled 'Lost In Space' (episode 151).", "The American Dad! episode featuring Wax Fang songs is not titled 'La La Land', but 'Lost In Space'.", "No information in the provided context confirms a TV show airing on KidsClick's programming block on a Sunday.", "No evidence found linking a song from Wax Fang's 'La La Land' album to a TV show named the same as the album on KidsClick.", "No evidence found that any TV show airing on KidsClick's programming block was specifically on a Sunday.", "Wax Fang's 'La La Land' album songs 'Majestic' and 'At Sea' were featured in an American Dad! episode titled 'Lost In Space', not in an episode named 'La La Land'.", "No linkage found between a TV show named 'La La Land' and KidsClick's programming block.", "American Dad! episode featuring Wax Fang songs does not share its title with the album 'La La Land'.", "No information confirms a TV show airing on KidsClick's programming block on a Sunday.", "Wax Fang's album 'La La Land' (2007) features songs 'Majestic' and 'At Sea' used in American Dad! episode 'Lost In Space' (episode 151), not an episode named 'La La Land'.", "There is no American Dad! episode titled 'La La Land' nor any evidence linking a TV show named 'La La Land' to KidsClick.", "The claim that a song from Wax Fang's 'La La Land' album was featured on an American Dad! episode sharing the album or show name is incorrect.", "No evidence supports the claim about KidsClick's programming airing on Sundays in the context provided."]
+
+## Generated Outputs
+### reasoning
+The claim consists of two main factual assertions: first, that the TV show aired on KidsClick's programming block on a Sunday; and second, that a Wax Fung album contains a song featured on an American Dad episode titled the same as the show, which is linked to the song from La La Land. To verify this claim, we need to confirm the exact airing schedule of the TV show on KidsClick, specifically whether it aired on a Sunday. Additionally, we must verify if a Wax Fung album includes a song that was also featured on an American Dad episode sharing the same title as the TV show in question, and check the connection to a song from La La Land. Since no other context or the show's name is provided, the queries must be broad enough to pinpoint these facts clearly.
+
+### query
+Did the TV show air on KidsClick's programming block on a Sunday? Does a Wax Fung album contain a song that was also featured on an American Dad episode whose title is the same as the TV show? Is that song connected to a song from the film La La Land?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['La La Land (Wax Fang album)']. Documents remaining to be retrieved: ['Animation Domination', 'Lost in Space (American Dad!)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

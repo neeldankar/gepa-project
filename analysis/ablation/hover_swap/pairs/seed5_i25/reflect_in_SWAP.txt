@@ -1,0 +1,174 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given a factual `claim` that may involve multiple interconnected facts or named entities (such as people, films, places, products, organizations, historical dates, or other domain-specific items). Together with the claim, you will receive a set of `notes` consisting of partial background information, known details, plus observations that highlight gaps, ambiguities, or contradictions around the claim’s elements.
+
+Your goal is to generate a focused set of one or more `queries` designed to verify or fact-check each component of the claim. These queries will be used to retrieve relevant evidence or documents (e.g., from Wikipedia or other authoritative sources) to confirm or refute the claim.
+
+Key Requirements and Domain-Specific Heuristics:
+
+1. **Entity Disambiguation:**  
+   - Explicitly identify all named entities mentioned in the claim.  
+   - Always disambiguate entities carefully using relevant descriptors, such as: clarifying a film’s release year, a person’s profession or nationality, distinguishing similarly named entities (e.g., “Solo (Norwegian soft drink)” instead of just “Solo”).  
+   - This avoids confusion and ensures queries retrieve targeted, relevant information.
+
+2. **Decompose Complex Claims into Components:**  
+   - If the claim includes multiple assertions (e.g., an actor acted in multiple movies, a director’s involvement, a formation date of a military unit), break it down into multiple specific queries, each verifying one discrete fact.  
+   - Queries should be connected logically, covering the full scope of the claim without leaving holes.
+
+3. **Target Missing, Ambiguous, or Contradictory Information from the Notes:**  
+   - Use the notes to identify what is already known, what is uncertain or missing, and contradictions that must be resolved.  
+   - Formulate queries that directly address these gaps or conflicting points to retrieve clarifying evidence.  
+   - For example, if it’s unclear whether a publication is a book or a magazine article, or exact formation years of military units, or the nationality of a named individual, queries should reflect these specifics.
+
+4. **Cover Every Fact Embedded in the Claim:**  
+   - Ensure your queries collectively verify all factual statements contained in the claim.  
+   - Avoid partial coverage that might retrieve documents relevant to only some parts of the claim.
+
+5. **Precise and Clear Query Formulation:**  
+   - Queries must be explicit, well-structured factual questions or entity-relationship prompts, suitable for document retrieval.  
+   - Avoid vague, overly broad, or open-ended questions.
+
+6. **Include Relevant Domain Context:**  
+   - When necessary, incorporate domain knowledge or contextual clues into the queries.  
+   - For example, when verifying a film claim, specify the film’s release year or director; for geographical entities, specify if a cemetery is within a park; for military units, specify their formation dates and relation to associated conflicts or films.
+
+Generalizable Strategy:
+
+- Carefully read and parse the claim to extract all named entities and discrete fact assertions.  
+- Examine the provided notes thoroughly to uncover what details are confirmed, missing, ambiguous, or contradictory in relation to the claim.  
+- For each factual element and especially for each gap or contradiction, generate a focused, specific question or search prompt to obtain clear supporting or refuting evidence.  
+- Ensure queries are comprehensive and well-targeted to verify the full claim.  
+- Format the final output strictly as one or more `query` lines, with no additional explanation or commentary.
+
+Example Query Patterns:
+
+- For a film claim:  
+  - “Who starred in [Film Name] ([Year])?”  
+  - “Who directed [Film Name] ([Year])?”  
+  - “Is [Person’s Name] an actor in [Film Name] ([Year])?”  
+
+- For a publication claim:  
+  - “What is the publication format and date of [Title] by [Author]?”  
+  - “Is [Publication Name] a periodical or a book publisher?”  
+
+- For geography or burial claims:  
+  - “Where is [Person] buried?”  
+  - “Is [Cemetery Name] located within [Park or Geographic Area]?”  
+
+- For military or historical claims:  
+  - “When was [Military Unit] formed?”  
+  - “What units are featured in [Film or Book Title]?”  
+
+By following these instructions carefully, you will produce precise queries capable of guiding the retrieval of comprehensive, relevant documents to validate or refute complex factual claims.
+
+Input Format:  
+- `claim`: A factual statement with one or more components involving named entities or facts.  
+- `notes`: A list of strings summarizing current knowledge, including unknowns or contradictions.
+
+Output Format:  
+- `query`: One or more explicit, decomposed, and disambiguated search queries targeting factual verifications for each part of the claim.
+
+Remember:  
+- Queries must be factual questions fit for document retrieval.  
+- Always cover all aspects requiring verification.  
+- Disambiguate entities using descriptive context.  
+- Use notes to identify which facts require particular attention.  
+- Structure queries to maximize retrieval precision and relevance.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+An actor that was in the Wonder Woman (2017 film) of the action adventure genre, performed in Anomalisa after the premier of Fargo.
+
+### notes
+['David Thewlis acted in Wonder Woman (2017).', 'David Thewlis provided voice work for Anomalisa (2015).', "David Thewlis appeared in Fargo's third season in 2017.", 'Anomalisa premiered before the Fargo season featuring David Thewlis.', 'The claim about performing in Anomalisa after Fargo is inaccurate; it was before.', 'David Thewlis is the link between Wonder Woman (2017), Anomalisa, and Fargo.', 'David Thewlis acted in Wonder Woman (2017).', 'David Thewlis provided voice work in Anomalisa (2015).', 'David Thewlis appeared in Fargo season 3, which premiered in April 2017.', 'Anomalisa premiered before the Fargo season featuring David Thewlis.', 'The claim that the actor performed in Anomalisa after the Fargo premiere is incorrect.', 'David Thewlis acted in Wonder Woman (2017), an action adventure film.', 'David Thewlis provided voice work for Anomalisa (2015).', 'David Thewlis appeared in Fargo season 3, which premiered in April 2017.', "Anomalisa premiered before Fargo season 3's premiere.", 'The claim that the actor performed in Anomalisa after the Fargo premiere is incorrect.']
+
+## Generated Outputs
+### reasoning
+The claim involves a specific actor who acted in the 2017 film Wonder Woman, the genre of which is action adventure, and also performed in the film Anomalisa after the premiere of Fargo. The notes identify David Thewlis as an actor who acted in Wonder Woman (2017), provided voice work in Anomalisa (2015), and appeared in Fargo season 3, which premiered in April 2017. The notes confirm the genre of Wonder Woman (2017) as action adventure. Importantly, the notes emphasize that Anomalisa premiered before the Fargo season featuring David Thewlis, meaning he performed in Anomalisa before Fargo’s premiere, not after as the claim states. Thus, the claim’s timeline about performing in Anomalisa after Fargo is inaccurate.
+
+To fact-check this fully, queries need to confirm:
+- The genre of Wonder Woman (2017).
+- That David Thewlis acted in Wonder Woman (2017).
+- That David Thewlis performed in Anomalisa.
+- The release dates or premiere dates of Anomalisa and Fargo season 3, specifically the dates relevant to David Thewlis.
+- The sequence of these events to verify if the claim about the order of performances is correct or not.
+
+### query
+What is the genre of Wonder Woman (2017 film)?  
+Did David Thewlis act in Wonder Woman (2017)?  
+Did David Thewlis provide voice work in Anomalisa (2015)?  
+When did Anomalisa (2015 film) premiere or release?  
+When did Fargo season 3 premiere?  
+Did David Thewlis appear in Fargo season 3?  
+Did Anomalisa premiere before or after Fargo season 3 premiered?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['David Thewlis', 'Wonder Woman (2017 film)']. Documents remaining to be retrieved: ['Fargo (TV series)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Ettore Scola was a film director. Che strano chiamarsi Federico" co-writer on Yes Minister is also a director.
+
+### notes
+["Ettore Scola directed the 2013 documentary film 'How Strange to Be Named Federico' ('Che strano chiamarsi Federico').", "Ettore Scola is an Italian film director, also directing 'What Time Is It?' (1989).", "Jonathan Lynn co-created and co-wrote the TV series 'Yes Minister' and 'Yes, Prime Minister' and is a film and stage director.", "Antony Jay co-authored 'Yes Minister' and 'Yes, Prime Minister' and was also a director.", "Ettore Scola was an Italian film director who directed the 2013 documentary 'Che strano chiamarsi Federico'.", "'Che strano chiamarsi Federico' is a documentary directed by Ettore Scola, not related to 'Yes Minister'.", "'Yes Minister' was co-written by Antony Jay and Jonathan Lynn.", 'Jonathan Lynn is a film and stage director.', 'Antony Jay was also a director in addition to being a writer and broadcaster.', "Ettore Scola was an Italian film director who directed the 2013 documentary film 'Che strano chiamarsi Federico'.", "'Che strano chiamarsi Federico' documents Ettore Scola's relationship with Federico Fellini and is unrelated to 'Yes Minister'.", "'Yes Minister' was co-written by Antony Jay and Jonathan Lynn.", 'Jonathan Lynn is a film and stage director.', 'Antony Jay was also a director besides being a writer and broadcaster.', "Neither Antony Jay nor Jonathan Lynn directed 'Che strano chiamarsi Federico'."]
+
+## Generated Outputs
+### reasoning
+The claim involves two discrete facts: first, that Ettore Scola was a film director; second, that the co-writer of "Yes Minister" who was involved in "Che strano chiamarsi Federico" is also a director. To verify this, we need to confirm the professional roles of Ettore Scola and identify the co-writer of the film "Che strano chiamarsi Federico" who also co-wrote "Yes Minister," then determine if that person is also a director. This requires distinguishing the named entities clearly—Ettore Scola as a film director, the film "Che strano chiamarsi Federico," and the co-writer of "Yes Minister." The second part of the claim is ambiguous because it is not immediately clear from the claim who exactly the co-writer on "Yes Minister" is or if that person was involved in directing. Hence, queries will be needed to clarify the identity and professional background of the "Yes Minister" co-writer associated with "Che strano chiamarsi Federico."
+
+### query
+Who was Ettore Scola and was he a film director?  
+Who were the writers of the film "Che strano chiamarsi Federico"?  
+Who co-wrote the television series "Yes Minister"?  
+Is any of the co-writers of "Yes Minister" also credited as the director of the film "Che strano chiamarsi Federico"?  
+Is the co-writer of "Yes Minister" who was involved in "Che strano chiamarsi Federico" also a director?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Jonathan Lynn', 'Yes Minister']. Documents remaining to be retrieved: ['Ettore Scola'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The cemetery that professional golf player George W. Wallace is buried at, is located at a park that is part of Golden Gate National Recreation Area.
+
+### notes
+['George W. Wallace is buried at San Francisco National Cemetery.', 'San Francisco National Cemetery is located in the Presidio of San Francisco.', 'The Presidio is part of the Golden Gate National Recreation Area.', 'Golden Gate National Cemetery is a different cemetery located in San Bruno, south of San Francisco.', 'George W. Wallace was a Second Lieutenant and Medal of Honor recipient, not a professional golf player.', 'George W. Wallace was a Second Lieutenant and Medal of Honor recipient, not a professional golf player.', 'George W. Wallace is buried at San Francisco National Cemetery.', 'San Francisco National Cemetery is located in the Presidio of San Francisco.', 'The Presidio of San Francisco is part of the Golden Gate National Recreation Area.', 'George W. Wallace was a Second Lieutenant and Medal of Honor recipient, not a professional golf player.', 'George W. Wallace is buried at San Francisco National Cemetery.', 'San Francisco National Cemetery is located in the Presidio of San Francisco.', 'The Presidio is part of the Golden Gate National Recreation Area.', 'Golden Gate National Cemetery is a different cemetery located in San Bruno, not part of the Presidio.']
+
+## Generated Outputs
+### reasoning
+The claim involves verifying the burial place of a professional golf player named George W. Wallace and the location of that cemetery within the Golden Gate National Recreation Area park system. The notes contradict the claim in two major ways:  
+1. George W. Wallace is not identified as a professional golf player but as a Second Lieutenant and Medal of Honor recipient.  
+2. George W. Wallace is buried at San Francisco National Cemetery, which is located in the Presidio of San Francisco. The Presidio is part of the Golden Gate National Recreation Area, confirming that the cemetery is within such a park.  
+There is a need to confirm the identity of George W. Wallace as a professional golfer or otherwise, and to verify that the San Francisco National Cemetery is indeed located within the Golden Gate National Recreation Area via the Presidio. The claim’s main error lies in describing George W. Wallace as a professional golf player instead of military officer. The cemetery part appears accurate regarding location within Golden Gate National Recreation Area.
+
+### query
+Who was George W. Wallace, the person buried at San Francisco National Cemetery?  
+Is George W. Wallace known to be a professional golf player?  
+Where is San Francisco National Cemetery located?  
+Is the Presidio of San Francisco part of the Golden Gate National Recreation Area?  
+Is San Francisco National Cemetery located within the Presidio of San Francisco?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['George W. Wallace', 'Presidio of San Francisco', 'San Francisco National Cemetery']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

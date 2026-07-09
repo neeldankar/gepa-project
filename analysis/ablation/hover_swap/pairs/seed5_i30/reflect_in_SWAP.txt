@@ -1,0 +1,158 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given a factual `claim` that often contains multiple interconnected facts and named entities (people, films, places, products, organizations, historical dates, domain-specific items, etc.). Along with the claim, you will receive `notes` which include partial background facts, known details, and importantly, highlight missing information, ambiguities, or contradictions relating to the claim components.
+
+Your objective is to generate a focused, precise set of one or more `queries` specifically designed to verify, fact-check, or clarify *each discrete component* of the claim. These queries will be executed against authoritative information sources (e.g., Wikipedia or domain-relevant repositories) to retrieve documents or evidence that confirm or refute the claim's multiple assertions.
+
+Key Domain-Specific and Task-Specific Requirements:
+
+1. **Entity Disambiguation and Precise Identification:**  
+   - Explicitly identify and clarify all named entities in the claim, including proper qualifiers.  
+   - For example, specify film titles with release years ("All I Need" (Radiohead song, 2007)), specify persons with professions and nationality ("Isaiah Mustafa, American actor"), distinguish similarly named entities carefully ("Solo (Norwegian soft drink)" vs. "Solo").  
+   - This disambiguation ensures high precision in document retrieval.
+
+2. **Decompose Complex Claims into Component Facts:**  
+   - Claims often contain multiple interconnected facts (e.g., a musician’s band membership plus singing credits; a sports player’s name plus team affiliations plus event participation).  
+   - Break the claim into atomic fact assertions. For each, generate a precise query addressing only that fact.  
+   - Ensure that all elements of the claim are covered by at least one query, leaving no factual assertion unchecked.
+
+3. **Leverage Notes to Target Gaps, Contradictions, or Unverifiable Aspects:**  
+   - Analyze notes carefully to identify which facts are already established and which are ambiguous, contradictory, or missing.  
+   - Formulate queries that specifically address the ambiguous or contradicted data points, such as uncertain nationalities, unclear roles in a film or event, ambiguous affiliations, or disputed nicknames.  
+   - For example, if notes conflict on whether an individual is Greek or American, or whether a film is a TV episode or a feature film, target queries to settle these points.
+
+4. **Cover Every Fact Embedded in the Claim:**  
+   - Ensure all elements—including all entities, relationships, dates, roles, and attributions—have precise factual queries.  
+   - Avoid partial queries that verify only a subset of the claim's assertions.
+
+5. **Generate Well-Formed, Explicit Queries:**  
+   - Each query must be a clear, factual question or search prompt fit for retrieving precise documents (such as: “Who starred in [Film Name] ([Year])?” rather than vague or broad queries like “Tell me about the film?”).  
+   - Use interrogative phrasing (“Who,” “When,” “Is,” “What”) and specify exact contexts and qualifiers.
+
+6. **Include Relevant Domain or Contextual Information in Queries:**  
+   - When asking about films, include release years and production context.  
+   - For people, include birth years, professions, or nationality if relevant to disambiguate.  
+   - For places, specify the geographic hierarchy or administrative divisions (e.g., whether a cemetery is located within a park).  
+   - For military units or historical facts, specify formation dates and relationship to conflicts or media portrayals.
+
+Generalizable Strategy:
+
+- Parse and identify each named entity and fact assertion embedded in the claim line-by-line or clause-by-clause.  
+- Thoroughly compare the claim to the information and contradictions in the notes, flagging elements that are not fully confirmed or have conflicting data.  
+- For each identified atomic fact or ambiguity, create one precise, disambiguated query to look for authoritative confirmation.  
+- Ensure comprehensive claim coverage: the entire claim is fact-checked, not just partially.  
+- Do not produce any explanation or commentary in outputs; format the final output strictly as one or more `query` lines, each containing a single precise question or search prompt.  
+- Avoid vague queries or those too broad to target relevant documents efficiently.  
+- Use precise entity descriptors and domain context in each query to maximize retrieval relevance.
+
+Example Query Templates (illustrative, to be adapted):
+
+- Film or TV claims:  
+   “Who starred in [Film or TV Episode Name] ([Year])?”  
+   “What role did [Person’s Name] play in [Film/Series Name] ([Year])?”  
+   “Is [Person] featured as a [profession/character] in [Film/Series Title]?”  
+- People and biography claims:  
+   “When was [Person’s Full Name] born?”  
+   “What is the nationality of [Person’s Name]?”  
+- Sports claims:  
+   “Who scored the goals in [Sports Event Name] ([Year])?”  
+   “For which professional clubs did [Player Name] play during [Year or Event]?”  
+   “Is [Name] the colloquial or official name of any professional team?”  
+- Geography or burial claims:  
+   “Where is [Person’s Name] buried?”  
+   “Is [Cemetery Name] located within [Park or Geographic Region]?”  
+- Military or historical claims:  
+   “When was [Military Unit Name] formed?”  
+   “What military units are depicted in [Film or Book Title]?”
+
+Your outputs must be crafted to precisely guide retrieval of core factual information needed to fully fact-check the claim, using careful disambiguation and a fine-grained decomposition of claims into factual components.
+
+Output Format:
+
+- Provide one or more `query` lines — each line is a single precise factual or entity relationship question.  
+- No additional text or reasoning explanation is to be output.
+
+By following these detailed instructions, you will generate high-quality, focused queries enabling comprehensive, accurate fact-checking of complex claims involving multiple named entities and interconnected facts across diverse domains.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Clark County in Nevada contains both Las Vegas and another college. Craig Heyer played baseball at that college.
+
+### notes
+['Clark County, Nevada contains the city of Las Vegas.', 'Craig Heyer played college baseball at the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).', 'The College of Southern Nevada and UNLV are located in Clark County.', 'Clark County, Nevada contains the city of Las Vegas.', 'Clark County contains both the University of Nevada, Las Vegas (UNLV) and the College of Southern Nevada.', 'Craig Heyer played college baseball at the College of Southern Nevada and UNLV.', 'Both the College of Southern Nevada and UNLV are located in Clark County, Nevada.', 'Clark County, Nevada includes the city of Las Vegas.', 'Clark County contains both the University of Nevada, Las Vegas (UNLV) and the College of Southern Nevada.', 'Craig Heyer played college baseball at the College of Southern Nevada and UNLV, both located in Clark County.']
+
+## Generated Outputs
+### reasoning
+The claim includes four discrete factual components: (1) the location of Clark County in the state of Nevada, (2) the city of Las Vegas being located in Clark County, (3) the existence of another college in Clark County besides any colleges in Las Vegas, and (4) Craig Heyer having played baseball at that specific college. To verify these, queries need to clarify the geographical and jurisdictional boundaries of Clark County in Nevada, confirm Las Vegas’s location within it, identify colleges in Clark County excluding or including those in Las Vegas, and ascertain Craig Heyer’s collegiate baseball affiliation precisely.
+
+### query
+Is Las Vegas located within Clark County, Nevada?  
+Which colleges or universities are located in Clark County, Nevada besides any in Las Vegas?  
+Did Craig Heyer play baseball at any college located in Clark County, Nevada? If so, which college?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Craig Heyer']. Documents remaining to be retrieved: ['Clark County, Nevada', 'College of Southern Nevada'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The  genus of flowering plants whose  generic name is Caesalpinioideae has more species than Achimenes.
+
+### notes
+['Caesalpinioideae is a subfamily of flowering plants in Fabaceae, not a genus.', 'The subfamily Caesalpinioideae includes multiple genera, such as Calliandra with about 140 species.', 'Achimenes is a genus in the family Gesneriaceae, not in Fabaceae.', 'Achimenes has a limited range of species (exact number not specified in context but implied to be fewer than large genera in Caesalpinioideae).', 'Overall, the Caesalpinioideae subfamily contains more species than the single genus Achimenes.', 'Caesalpinioideae is a subfamily of flowering plants within Fabaceae, not a genus.', 'Caesalpinioideae includes multiple genera such as Calliandra (~140 species), Senna (260–350 species), and Cassia.', 'Achimenes is a genus in the family Gesneriaceae with about 25 species.', 'The total number of species across the Caesalpinioideae subfamily is significantly greater than the species count of the genus Achimenes.', 'Caesalpinioideae is a subfamily, not a genus.', 'Achimenes is a genus in the family Gesneriaceae with about 25 species.', 'Caesalpinioideae includes multiple genera such as Senna (260-350 species), Calliandra (~140 species), Cassia, and others.', 'The total number of species in the Caesalpinioideae subfamily is much greater than the species count of the genus Achimenes.']
+
+## Generated Outputs
+### reasoning
+The claim incorrectly identifies Caesalpinioideae as a genus, when it is actually a subfamily within the Fabaceae family. This is a key factual error. Achimenes is correctly identified as a genus in the Gesneriaceae family. The notes state that Caesalpinioideae contains multiple genera, some with large numbers of species (e.g., Calliandra with about 140 species), and it generally has more species overall than the single genus Achimenes. The number of species in Caesalpinioideae collectively is greater than those in Achimenes as a single genus. To verify and clarify this, queries need to confirm: 1) the taxonomic rank of Caesalpinioideae; 2) the number of species in Caesalpinioideae overall; 3) the number of species in Achimenes; and 4) whether Caesalpinioideae, as a subfamily with multiple genera, has more species than Achimenes genus.
+
+### query
+What is the taxonomic rank of Caesalpinioideae in plant classification?
+How many species are contained within the subfamily Caesalpinioideae?
+How many species are in the genus Achimenes (family Gesneriaceae)?
+Does the subfamily Caesalpinioideae contain more species overall than the single genus Achimenes?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Achimenes', 'Caesalpinioideae']. Documents remaining to be retrieved: ['Caesalpinia'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The company owning Quaker Ridge (NYW&B station) has a terminus at the New York city in the county of Westchester.
+
+### notes
+['Quaker Ridge station was on the New York, Westchester and Boston Railway in New Rochelle in Westchester County.', 'The New York, Westchester and Boston Railway ran from the southernmost South Bronx (part of New York City) to Mount Vernon with additional branches in Westchester County.', 'New York City (including the Bronx) is separate from Westchester County, which is located north of NYC.', 'The NYW&B terminus was located in the Bronx area of New York City, not in Westchester County.', 'Quaker Ridge station was located in New Rochelle, Westchester County, NY on the NYW&B Railway.', 'The NYW&B Railway ran from the southernmost South Bronx (part of NYC) to Mount Vernon with additional branches in Westchester County.', 'The NYW&B Railway terminus was located in the Bronx area of New York City, not in Westchester County.', 'Westchester County is north of New York City and is a separate jurisdiction.', 'Quaker Ridge station was on the New York, Westchester and Boston Railway located in New Rochelle, Westchester County.', 'The NYW&B Railway ran from the southernmost South Bronx (New York City) to Mount Vernon and had branches in Westchester County.', 'The NYW&B Railway terminus was in the Bronx area of New York City, not in Westchester County.', 'Westchester County is a separate jurisdiction north of New York City, including the Bronx borough.']
+
+## Generated Outputs
+### reasoning
+The claim involves several discrete facts that need verification: the entity that owns Quaker Ridge station, the location of Quaker Ridge station within the NYW&B Railway system, the nature of NYW&B Railway's termini, and the geographical distinction between New York City and Westchester County. The notes clarify that Quaker Ridge station was on the New York, Westchester and Boston Railway located in New Rochelle, Westchester County; that NYW&B spanned from the South Bronx, part of New York City, to Mount Vernon with branches in Westchester; and that the terminus of NYW&B was in the Bronx, not within Westchester County. The claim inaccurately states the company's terminus as being "at the New York city in the county of Westchester," which contradicts the notes stating Westchester is separate from NYC and the terminus is in the Bronx. Thus, queries need to confirm: the precise location of Quaker Ridge station, the ownership entity of that station, the exact location of NYW&B termini relevant to NYC and Westchester County, and the jurisdictional boundaries between NYC and Westchester County.
+
+### query
+What entity owned Quaker Ridge station on the New York, Westchester and Boston Railway?  
+Where is Quaker Ridge station located geographically (city and county), and is it on the NYW&B Railway?  
+Where were the northern and southern termini of the New York, Westchester and Boston Railway located?  
+Is any terminus of the New York, Westchester and Boston Railway located within New York City or Westchester County?  
+Is Westchester County part of New York City or a separate jurisdiction north of it?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['New York, Westchester and Boston Railway', 'Quaker Ridge (NYW&amp;B station)']. Documents remaining to be retrieved: ['Mount Vernon, New York'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

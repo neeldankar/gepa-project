@@ -1,0 +1,167 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You are tasked with a focused fact verification and evidence consolidation task, where you analyze three types of inputs—`claim`, `notes`, and `context`—to produce two outputs: `new_notes` and `titles`. The `claim` is a textual statement possibly containing multiple factual assertions that need verification. The `notes` are often extracted snippets, paraphrases, or partial evidences relevant to the claim, while the `context` comprises longer document texts or summaries potentially containing detailed source information related to entities, events, timelines, or attributes mentioned in the claim.
+
+Your overarching goal is to verify or refute each distinct component of the claim by synthesizing and consolidating information from both `notes` and `context`, avoiding redundancy, speculation, or irrelevant content.
+
+---
+
+Detailed Guidelines and Domain-Specific Considerations:
+
+1. **Input Structure and Understanding**  
+   - **claim**: A statement consisting of one or more assertions (e.g., about persons, events, dates, geographic locations, product characteristics, filmographies, or comparative facts).  
+   - **notes**: Fragmented facts, paraphrases, or extracted evidences that may partially support or contradict the claim. This input can contain redundancy.  
+   - **context**: Summaries or full-text snippets from diverse documents that may provide authoritative or more detailed information on the claim’s subjects.
+
+2. **Verification Approach and Reasoning Strategy**  
+   - Parse the claim into discrete assertions where possible and address each individually.  
+   - Map claim elements (entities, dates, events, attributes) to facts in both `notes` and `context`.  
+   - Cross-verify facts by probing both inputs together to spot confirmations, contradictions, or missing information.  
+   - Explicitly note when parts of the claim cannot be verified because critical information about entities, events, or attributes is absent from both inputs.  
+   - For geographic, historical, biographical, or product-related facts, use explicit details only—avoid assumptions or inference beyond the data given.  
+   - When multiple entities or facts overlap (e.g., multiple actors in movies, overlapping dates, competing geographic references), carefully separate which parts are supported and which are not.
+
+3. **Consolidation of `new_notes`**  
+   - Remove redundancy by combining similar or repeated facts into succinct, clear statements—preferably one or two sentences each.  
+   - Focus exclusively on information directly relevant to verifying the claim’s assertions, omitting irrelevant tangents or unrelated domain facts.  
+   - Clarify precisely which elements of the claim are supported, contradicted, or unverifiable.  
+   - If verification is impossible due to missing data or ambiguity, clearly state this instead of speculating.  
+   - Maintain factual accuracy and align notes closely with evidence found in the inputs.
+
+4. **Creation of `titles`**  
+   - Generate concise, descriptive headings that summarize key topics, entities, or factual relationships uncovered during verification.  
+   - Titles should be domain-relevant and reflect the organizing principles of your notes (e.g., names of persons, film titles with dates, product or geographic features, timeline relations).  
+   - They serve as topical indexes for the summarized evidences and facilitate quick understanding of verification focuses.
+
+5. **Domain-Specific Knowledge Embedded in the Task**  
+   - Common facts relate to soft drink brands, flavor profiles, and geographic market presence.  
+   - Biographical facts include film directors, voice actors, release years, animation movie titles, and actor nationalities.  
+   - Geographic comparisons, including city versus county boundaries, size, and jurisdictional status, are frequent.  
+   - Product ownership or company-railway station relations may appear, requiring careful geographic and corporate structure reasoning.  
+   - Scientific or technical terms (e.g., chemical or biological entities) may appear but are often not central to verification.
+
+6. **Generalizable Reasoning and Workflow**  
+   - Identify key components (entities, events, dates) in the claim first.  
+   - Search both `notes` and `context` for explicit assertions tied to these components.  
+   - Distill duplicated claims and reconcile contradictions; produce a coherent evaluation per factual assertion.  
+   - Explicitly separate verifiable from unverifiable or contradicted claim parts in `new_notes`.  
+   - Group related notes under thematic headings synthesized as `titles`.
+
+7. **Handling Missing or Conflicting Data**  
+   - When the claim contains information about an entity or event absent in all inputs, clearly note that verification is not possible.  
+   - If parts are verifiable but others are unsupported, separately highlight these distinctions.  
+   - Avoid speculation or implied connections not grounded in provided evidence.
+
+---
+
+Summary:
+
+Your task is a meticulous, evidence-based fact-checking and summarization exercise that integrates fragmented inputs into a concise, focused verification dossier. Your outputs must be:
+
+- **`new_notes`**: A reduced, clear, and precise list of facts confirming, contradicting, or indicating unverifiability of the claim’s components based on the complete input set.  
+- **`titles`**: A concise list of relevant topical headings that summarize and organize the key subjects, entities, or relationships essential to understanding the verification outcome.
+
+This task requires strict adherence to evidence, careful parsing of multi-part claims, clear handling of data absence or contradiction, and domain-aware synthesis of facts to aid downstream understanding or retrieval tasks.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The band who had King ov Hell as a member are based in the Norwegian county Hordaland.
+
+### notes
+['King ov Hell is a Norwegian musician involved in several bands including God Seed and Sahg.', 'God Seed was a Norwegian black metal band based in Bergen, Norway.', 'Sahg was formed in Bergen, Norway, and includes King ov Hell as a founding member.', 'Bergen is a city located in the Norwegian county of Hordaland.', 'At least two bands involving King ov Hell, God Seed and Sahg, are based in Hordaland.', 'King ov Hell is a Norwegian musician involved in several bands including God Seed and Sahg.', 'God Seed was a Norwegian black metal band based in Bergen, Norway, which is located in Hordaland county.', 'Sahg, a Norwegian hard rock/doom metal band formed in Bergen, includes King ov Hell as a founding member.', 'Bergen is a city in the Norwegian county of Hordaland.', 'At least two bands involving King ov Hell, God Seed and Sahg, are based in Hordaland.', 'King ov Hell is a Norwegian musician who was a member of several bands including God Seed and Sahg.', 'God Seed was a Norwegian black metal band based in Bergen, Norway.', 'Sahg is a Norwegian hard rock/doom metal band formed in Bergen, Norway, including King ov Hell as a founding member.', 'Bergen is a city located in the Norwegian county of Hordaland.', 'Thus, at least two bands involving King ov Hell (God Seed and Sahg) are based in Hordaland county.']
+
+### context
+['Ov Hell | Ov Hell is a Norwegian black metal supergroup started by Shagrath and King ov Hell in 2009.  The band\'s debut album, "The Underworld Regime", was released in February 2010 by Indie Recordings.', 'King ov Hell | Tom Cato Visnes (born November 27, 1974), better known as King ov Hell or simply King, is a Norwegian musician.  He is best known as the former bassist of black metal band Gorgoroth, but he is also the co-founder of Ov Hell, God Seed, Jotunspor, Audrey Horne, Sahg, I and Temple of the Black Moon.', 'God Seed | God Seed was a Norwegian black metal band based in Bergen, Norway.  Former Gorgoroth members Gaahl and King ov Hell adopted the name in March 2009 following the ending of the Gorgoroth name dispute.  After performing a few gigs as God Seed, vocalist Gaahl left the band in July 2009 and it was put on hold.  King finished the music for God Seed\'s first album, with vocalist Shagrath, and released it under the name Ov Hell.  Gaahl re-joined God Seed in 2012.  In January that year they released the live album "Live at Wacken", and in October they released their first studio album, "I Begin".', 'Sahg | Sahg is a four-piece Norwegian hard rock/ doom metal band formed in Bergen in the summer of 2004, by key figures in the metal scene of their country: Tom Cato Visnes (King ov Hell), Einar Selvik (Kvitrafn), Olav Iversen and Thomas Tofthagen.  Iversen has been the main songwriter and the only constant member of the band since its inception.', 'True Norwegian Black Metal – Live in Grieghallen | True Norwegian Black Metal – Live in Grieghallen is Gorgoroth\'s first full-length live album, released by Regain Records.  It was recorded live in the studio at Grieghallen Lydstudio in Bergen and Threeman Recordings in Stockholm.  The songs on the album represented the most commonly played songs in Gorgoroth\'s live set.  The cover design by Magnus Wohlfart was radically different from the previous three full-length albums, being more reminiscent of the cover of the album "Under the Sign of Hell" (1997).  Most of the album was recorded before the departure of vocalist Gaahl and bass guitarist King ov Hell, who had intended on using the band\'s name and assets.  The bass guitar for this album (originally performed by King ov Hell) was later re-recorded by guitarist and band founder Infernus.  Infernus dedicated the album to the late Jon Nödtveidt of Dissection.', 'Incipit Satan | Incipit Satan is the fifth full-length album by Norwegian black metal band Gorgoroth.  It was released on 7 February 2000 by Nuclear Blast, and reissued in 2006 by Back on Black Records.  "Incipit Satan" was the first album with King ov Hell as bassist, the last album to feature Tormentor on guitar and the only one with Sjt.  Erichsen on drums.  The band members dedicated the album to their deceased friend and former bandmate Erik Brødreskift (a.k.a. "Grim").', 'Gorgoroth name dispute | The Gorgoroth name dispute refers to a legal dispute between musicians from Norwegian black metal band Gorgoroth over who had ownership of the band\'s name, which was derived from J. R. R. Tolkien\'s legendarium.  The parties to the dispute were band founder Infernus (Roger Tiegs) and members Gaahl (Kristian Espedal) and King ov Hell (Tom Cato Visnes).  It began in October 2007, when it was announced that Gaahl and King had decided to part ways with Infernus, although the former two claimed to have "fired" the latter.  The dispute was concluded in March 2009 when a court verdict recognising Infernus as the legitimate user of the name was announced, and the outcome of the dispute also established a precedent in Norway for subsequent similar disputes.', 'Ad Majorem Sathanas Gloriam | Ad Majorem Sathanas Gloriam is the seventh studio album by Norwegian black metal band Gorgoroth.  It was released on 19 June 2006 by Regain Records.  This was the only Gorgoroth album on which all of the lyrics and music were written by Gaahl and King ov Hell, and was the last to feature both members It also marked the return of drummer Frost and was the last Gorgoroth album that he appeared on.  It was nominated for Norway\'s 2006 Spellemann award in the "Metal" category.  It is the first Gorgoroth album with no Norwegian lyrics.', 'To Kill a King (band) | To Kill A King are a British rock band currently based in London.  The band has been compared to The National, Grizzly Bear and Frightened Rabbit.', 'Sacrament ov Impurity | The black metal band Sacrament Ov Impurity formed in 2008 and is located in the outskirts of Washington State.  The band began with a traditional black metal sound focusing on ancient mythology, nature and Satanism and has since evolved into a raw and yet melodic direction combining a variety of subgenres, focusing on depression, mythology, the occult and Satanism.']
+
+## Generated Outputs
+### reasoning
+The claim states that the band with King ov Hell as a member is based in the Norwegian county Hordaland. From the context, King ov Hell is a Norwegian musician known for involvement in several black metal bands, including Ov Hell, God Seed, Sahg, and Gorgoroth. The band God Seed is explicitly said to be based in Bergen, Norway. Bergen is a city within the county of Hordaland. Sahg is also formed in Bergen, Norway, and thus also based in Hordaland. The other bands do not have explicit locations mentioned in the context, but both God Seed and Sahg, linked to King ov Hell, are based in Bergen (Hordaland). Ov Hell is a supergroup started by Shagrath and King ov Hell but no location is specified in the context; however, given the origin of its members, it may be related to Bergen as well, though this is not explicit. Therefore, at least one band with King ov Hell as a member—God Seed—is confirmed to be based in Bergen, Hordaland.
+
+### new_notes
+['King ov Hell is a Norwegian musician involved in several bands including God Seed and Sahg.', 'God Seed was a Norwegian black metal band based in Bergen, Norway.', 'Sahg was formed in Bergen, Norway, and includes King ov Hell as a founding member.', 'Bergen is a city located in the Norwegian county of Hordaland.', 'At least two bands involving King ov Hell, God Seed and Sahg, are based in Hordaland.']
+
+### titles
+["King ov Hell's Musical Involvements", "God Seed's Location", "Sahg's Formation and Location", 'Bergen and Hordaland Geography', 'Bands Based in Hordaland with King ov Hell']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['King ov Hell']. Documents remaining to be retrieved: ['Bergen', 'Gorgoroth'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The grandfather of Rainer Hoss conducted the negotiations with the owners and was the longest serving resident-commandant of Auschwitz concentration and extermination camp.
+
+### notes
+['Rudolf Höss was the longest-serving commandant of Auschwitz concentration camp during World War II.', 'There is no information provided about Rainer Hoss or his grandfather in the provided context or notes.', 'No evidence is found that the grandfather of Rainer Hoss conducted negotiations with owners of Auschwitz or had any command role there.', 'Rudolf Höss was the longest-serving commandant of Auschwitz concentration camp during World War II and implemented methods for mass extermination there.', 'There is no information or evidence linking Rudolf Höss or any other Auschwitz commandant to Rainer Hoss or his grandfather.', 'No evidence supports that the grandfather of Rainer Hoss conducted negotiations with the owners of Auschwitz or held any command position there.', 'The claim that the grandfather of Rainer Hoss was the longest-serving resident-commandant of Auschwitz and conducted negotiations is unverified and unsupported by provided information.', 'Rudolf Höss was the longest-serving commandant of Auschwitz concentration camp during World War II.', 'There is no information or evidence linking the grandfather of Rainer Hoss to Auschwitz concentration camp, including any command role or negotiations with owners.', 'The claim that the grandfather of Rainer Hoss was the longest-serving resident-commandant and conducted negotiations at Auschwitz is unsupported by available information.']
+
+### context
+['Józef Paczyński | Józef Paczyński (20 January 1920 – 26 April 2015) was a Polish man who was known for having been the personal barber of Rudolf Hoss during the time he spent as a prisoner in the Auschwitz concentration camp.', 'SS command of Auschwitz concentration camp | The SS command of Auschwitz concentration camp refers to those units, commands, and agencies of the German SS which operated and administered the Auschwitz concentration camp during World War II.  Due to its large size and key role in the Nazi genocide program, the Auschwitz Concentration Camp encompassed personnel from several different branches of the SS, some of which held overlapping and shared areas of responsibility.', 'Auschwitz concentration camp | Auschwitz concentration camp (German: "Konzentrationslager Auschwitz" , ] , also "KZ Auschwitz " or "KL Auschwitz ") was a network of German Nazi concentration camps and extermination camps built and operated by the Third Reich in Polish areas annexed by Nazi Germany during World War II.  It consisted of (the original camp), Auschwitz II–Birkenau (a combination concentration/extermination camp), (a labor camp to staff an IG Farben factory), and 45 satellite camps.', 'Rudolf Höss | Rudolf Höss (also Höß, Hoeß or Hoess; 25 November 1901 – 16 April 1947) was a Nazi German "SS"-"Obersturmbannführer" (lieutenant colonel) and the longest-serving commandant of Auschwitz concentration and extermination camp in World War II.  He tested and carried into effect various methods to accelerate Hitler\'s plan to systematically exterminate the Jewish population of Nazi-occupied Europe, known as the "Final Solution".  On the initiative of one of his subordinates, SS-"Hauptsturmführer" (captain) Karl Fritzsch, Höss introduced pesticide Zyklon B containing hydrogen cyanide to the killing process, thereby allowing SS soldiers at Auschwitz to murder 2,000 people every hour.  He created the largest installation for the continuous annihilation of human beings ever known.', 'Jasenovac concentration camp | The Jasenovac concentration camp (/Логор Јасеновац, ] ; Yiddish: יאסענאוואץ\u200e ) was an extermination camp established in Slavonia by the authorities of the Independent State of Croatia (NDH) during World War II.  The camp was established by the governing Ustaše regime and not operated by Nazi Germany.  It was one of the largest concentration camps in Europe and the camp has been referred to as "the Auschwitz of the Balkans" and "the Yugoslav Auschwitz".', 'List of subcamps of Auschwitz | The following, is the list of subcamps of the Auschwitz concentration camp run by Nazi Germany in occupied Poland during World War II.  The list, supplied by the Auschwitz-Birkenau State Museum, identifies camps of Auschwitz I, Auschwitz II (Birkenau), and Auschwitz III (Monowitz).  The satellite camps were named "Aussenlager" (external camp), "Nebenlager" (extension or subcamp), and "Arbeitslager" (labor camp).  Some of them were less than ten kilometers away from the main camps, with prisoner populations ranging from several dozen to several thousand.', 'Auschwitz-Birkenau Memorial and Museum | The Auschwitz-Birkenau Memorial and Museum (Polish: "Państwowe Muzeum Auschwitz-Birkenau w Oświęcimiu" ) is a memorial and museum in Oświęcim (German: Auschwitz), Poland, which includes the German concentration camps Auschwitz I and Auschwitz II-Birkenau.  It is devoted to the memory of the murders in both camps during World War II.  The museum performs several tasks, among them research into the Holocaust.', 'Robert Mulka | Robert Karl Ludwig Mulka (12 April 1895, Hamburg – 26 April 1969, Hamburg) was an SS-"Obersturmführer".  At Auschwitz concentration camp, he was adjutant to the camp commandant, SS-"Obersturmbannführer" Rudolf Höss.', 'Auschwitz (disambiguation) | Auschwitz, in English, most commonly refers to the Auschwitz concentration camp complex built by Nazi Germany during World War II.', 'Birkenau (disambiguation) | Birkenau commonly refers to the Nazi German extermination camp Auschwitz II–Birkenau in the Auschwitz concentration camp during World War II, located near Brzezinka, Poland.']
+
+## Generated Outputs
+### reasoning
+The claim makes two factual assertions about the grandfather of Rainer Hoss: first, that he conducted negotiations with the owners; second, that he was the longest-serving resident-commandant of Auschwitz concentration and extermination camp. The notes identify Rudolf Höss as the longest-serving commandant of Auschwitz but do not link him to Rainer Hoss or mention any familial relationship. The context similarly provides detailed information about Rudolf Höss's role and innovations as commandant but does not mention any connection to Rainer Hoss or his grandfather. Additionally, there is no indication that the commandant engaged in negotiations with owners of Auschwitz from either the notes or context. Consequently, the claim falsely or inaccurately associates the grandfather of Rainer Hoss with the role of Auschwitz commandant and negotiation activities. The only verifiable fact is that Rudolf Höss was the longest-serving Auschwitz commandant; however, no evidence supports connecting him to Rainer Hoss or the specific negotiation role mentioned.
+
+### new_notes
+['Rudolf Höss was the longest-serving commandant of Auschwitz concentration camp during World War II and implemented methods for mass extermination there.', 'There is no information or evidence linking Rudolf Höss or any other Auschwitz commandant to Rainer Hoss or his grandfather.', 'No evidence supports that the grandfather of Rainer Hoss conducted negotiations with the owners of Auschwitz or held any command position there.', 'The claim that the grandfather of Rainer Hoss was the longest-serving resident-commandant of Auschwitz and conducted negotiations is unverified and unsupported by provided information.']
+
+### titles
+['Rudolf Höss and Auschwitz Command', "Lack of Evidence Connecting Rainer Hoss's Grandfather to Auschwitz", 'Verification of Claim on Negotiation Role']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Rudolf Höss']. Documents remaining to be retrieved: ['Gerstein Report', 'Rainer Höss'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Orange is the main flavor of both soft drinks, Solo from Norway, and the drink advertised with Krupa (song).
+
+### notes
+["There is no information available in the provided context about the Norwegian soft drink Solo or its flavor profile, so the claim that Solo's main flavor is orange cannot be verified.", "There is no information relating any drink advertised with 'Krupa (song)' in the context or notes, making it impossible to verify that such a drink's main flavor is orange.", 'Solo is an orange-flavoured soft drink from Norway, owned by several Norwegian companies, confirming that orange is its main flavor.', "There is no information in the available notes or context to verify the flavor or the existence of any drink advertised with 'Krupa (song)'. Therefore, the claim about that drink's main flavor cannot be verified.", 'Solo is an orange-flavored soft drink from Norway, confirming that orange is its main flavor.', "There is no information available about any drink advertised with 'Krupa (song)', so the claim regarding that drink's main flavor being orange cannot be verified."]
+
+### context
+['Sunkist (soft drink) | Sunkist is a brand of primarily orange flavored soft drinks launched in 1979.', 'C.C. Lemon | C.C. Lemon is a Japanese soft drink created by Suntory.  It is known for its lemon flavor and for its advertisements featuring characters from the popular American cartoon "The Simpsons".  It has been recently introduced to Vietnam.  The Simpsons produced five advertisements for the drink from 2000 to 2002.', "Solo (Norwegian soft drink) | Solo is an orange-flavoured soft drink, owned by the Norwegian companies Ringnes, Oskar Sylte, Aass, and Mack.  The recipe was originally Spanish, and brought to the Tønsberg Bryggeri by Torleif Gulliksrud in 1934.  Solo quickly became Norway's most popular soft drink, and until the 1960s was bigger than Coca-Cola in Norway.  In 1999, Pepsi passed Solo in market share, leaving Solo as third most popular.", "Saint Clement's (cocktail) | The Saint Clement's is a non-alcoholic cocktail.  Though the ingredients may vary, it always consists of orange juice mixed with a lemon-flavored drink, usually in equal proportions; the name of the drink refers to the English nursery rhyme Oranges and Lemons.  The drink is therefore named (indirectly) after either St Clement Eastcheap or St Clement Danes, both churches in London.  The traditional recipe calls for equal parts orange juice and lemon juice served over ice in a highball glass.  There are many variations, in which the lemon juice is replaced with a sweeter drink (like lemonade), or even a carbonated citrus-flavored soft drink (like Sprite, 7-Up, or Fanta Lemon).", "Fanta Citrus | Citra was a grapefruit-flavored soft drink released into the U.S. market in 1996 by The Coca-Cola Company around the same time as Surge, another citrus-flavored soft drink marketed by Coca-Cola (although Surge contained caffeine while Citra was caffeine-free).  Citra had a very similar flavor to Fresca, especially the version of Fresca sold in Latin America, which is sweetened with sucrose (table sugar) rather than aspartame as in the American version of Fresca.  It also had a flavor similar flavor to Squirt, except that Squirt contains a trace of orange or tangerine flavoring.  Citra also had a very similar flavor to that of Canfield's 50/50.", 'Blue (soft drink) | Blue is the mark of a soda juice fruit and vitamins sold in Angola.  The drink is available in 10 flavors.  Released in 2005 by Refriango company, the market leader in Angola, it was awarded the Gold Medal at the International Monde Selection Quality.  The Blue brand is available in distinct flavors which other Angolan carbonated soft drinks do not use.', 'Trocadero (drink) | Trocadero is a caffeinated apple- and orange flavored soft drink from Sweden.  It has been produced by Saturnus AB since 1953.  Several Swedish breweries make Trocadero, including Kopparbergs, Spendrups and Nyckelbryggerier among others.', 'Jones Soda | Jones Soda Co. is a beverage company based in Pioneer Square, Seattle, Washington.  It bottles and distributes soft drinks, non-carbonated beverages, energy drinks, and candy.  Jones Soda is a carbonated soft drink that has many unusual flavors that are not offered by other soft drink makers.', 'Shasta (soft drink) | Shasta Beverages is an American soft drink manufacturer which markets a value priced soft drink line with a wide variety of soda flavors under the brand name Shasta Soda.  The company name is derived from Mount Shasta and an associated spring.', 'Bacon soft drink | Bacon soft drinks are soft drink beverages with the flavor of bacon.  Several US companies produce bacon soda brands, including Jones Soda, Lockhart Smokehouse and Rocket Fizz.']
+
+## Generated Outputs
+### reasoning
+The claim has two main parts:
+
+1. The main flavor of the Norwegian soft drink Solo is orange.
+2. The main flavor of the drink advertised with Krupa (song) is also orange.
+
+From the context, it is clearly stated that Solo is an orange-flavoured soft drink from Norway. This confirms the first part of the claim.
+
+Regarding the second part, there is no mention in the notes or the context about any drink associated with "Krupa (song)" or any drink advertised with it, nor is there any information about the flavor of such a drink. Therefore, this part cannot be verified.
+
+The notes reflect these same limitations by stating the first claim about Solo’s orange flavor cannot be verified in them, but the context does confirm it, clarifying the notes' initial lack of information. For the second claim, both notes and context lack relevant information, so verification is impossible.
+
+Hence, only the first part of the claim is fully verified; the second part remains unverifiable given the information provided.
+
+### new_notes
+['Solo is an orange-flavoured soft drink from Norway, owned by several Norwegian companies, confirming that orange is its main flavor.', "There is no information in the available notes or context to verify the flavor or the existence of any drink advertised with 'Krupa (song)'. Therefore, the claim about that drink's main flavor cannot be verified."]
+
+### titles
+['Solo Norwegian Soft Drink Flavor', "Drink Advertised with 'Krupa (song)' Verification"]
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Solo (Norwegian soft drink)', 'Sunkist (soft drink)']. Documents remaining to be retrieved: ['Krupa (song)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

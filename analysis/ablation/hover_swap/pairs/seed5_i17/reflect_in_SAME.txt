@@ -1,0 +1,168 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given a factual `claim` that may involve multiple interconnected facts or named entities (such as people, films, places, products, organizations, historical dates, or other domain-specific items). Together with the claim, you will receive a set of `notes` consisting of partial background information, known details, plus observations that highlight gaps, ambiguities, or contradictions around the claim’s elements.
+
+Your goal is to generate a focused set of one or more `queries` designed to verify or fact-check each component of the claim. These queries will be used to retrieve relevant evidence or documents (e.g., from Wikipedia or other authoritative sources) to confirm or refute the claim.
+
+Key Requirements and Domain-Specific Heuristics:
+
+1. **Entity Disambiguation:**  
+   - Explicitly identify all named entities mentioned in the claim.  
+   - Always disambiguate entities carefully using relevant descriptors, such as: clarifying a film’s release year, a person’s profession or nationality, distinguishing similarly named entities (e.g., “Solo (Norwegian soft drink)” instead of just “Solo”).  
+   - This avoids confusion and ensures queries retrieve targeted, relevant information.
+
+2. **Decompose Complex Claims into Components:**  
+   - If the claim includes multiple assertions (e.g., an actor acted in multiple movies, a director’s involvement, a formation date of a military unit), break it down into multiple specific queries, each verifying one discrete fact.  
+   - Queries should be connected logically, covering the full scope of the claim without leaving holes.
+
+3. **Target Missing, Ambiguous, or Contradictory Information from the Notes:**  
+   - Use the notes to identify what is already known, what is uncertain or missing, and contradictions that must be resolved.  
+   - Formulate queries that directly address these gaps or conflicting points to retrieve clarifying evidence.  
+   - For example, if it’s unclear whether a publication is a book or a magazine article, or exact formation years of military units, or the nationality of a named individual, queries should reflect these specifics.
+
+4. **Cover Every Fact Embedded in the Claim:**  
+   - Ensure your queries collectively verify all factual statements contained in the claim.  
+   - Avoid partial coverage that might retrieve documents relevant to only some parts of the claim.
+
+5. **Precise and Clear Query Formulation:**  
+   - Queries must be explicit, well-structured factual questions or entity-relationship prompts, suitable for document retrieval.  
+   - Avoid vague, overly broad, or open-ended questions.
+
+6. **Include Relevant Domain Context:**  
+   - When necessary, incorporate domain knowledge or contextual clues into the queries.  
+   - For example, when verifying a film claim, specify the film’s release year or director; for geographical entities, specify if a cemetery is within a park; for military units, specify their formation dates and relation to associated conflicts or films.
+
+Generalizable Strategy:
+
+- Carefully read and parse the claim to extract all named entities and discrete fact assertions.  
+- Examine the provided notes thoroughly to uncover what details are confirmed, missing, ambiguous, or contradictory in relation to the claim.  
+- For each factual element and especially for each gap or contradiction, generate a focused, specific question or search prompt to obtain clear supporting or refuting evidence.  
+- Ensure queries are comprehensive and well-targeted to verify the full claim.  
+- Format the final output strictly as one or more `query` lines, with no additional explanation or commentary.
+
+Example Query Patterns:
+
+- For a film claim:  
+  - “Who starred in [Film Name] ([Year])?”  
+  - “Who directed [Film Name] ([Year])?”  
+  - “Is [Person’s Name] an actor in [Film Name] ([Year])?”  
+
+- For a publication claim:  
+  - “What is the publication format and date of [Title] by [Author]?”  
+  - “Is [Publication Name] a periodical or a book publisher?”  
+
+- For geography or burial claims:  
+  - “Where is [Person] buried?”  
+  - “Is [Cemetery Name] located within [Park or Geographic Area]?”  
+
+- For military or historical claims:  
+  - “When was [Military Unit] formed?”  
+  - “What units are featured in [Film or Book Title]?”  
+
+By following these instructions carefully, you will produce precise queries capable of guiding the retrieval of comprehensive, relevant documents to validate or refute complex factual claims.
+
+Input Format:  
+- `claim`: A factual statement with one or more components involving named entities or facts.  
+- `notes`: A list of strings summarizing current knowledge, including unknowns or contradictions.
+
+Output Format:  
+- `query`: One or more explicit, decomposed, and disambiguated search queries targeting factual verifications for each part of the claim.
+
+Remember:  
+- Queries must be factual questions fit for document retrieval.  
+- Always cover all aspects requiring verification.  
+- Disambiguate entities using descriptive context.  
+- Use notes to identify which facts require particular attention.  
+- Structure queries to maximize retrieval precision and relevance.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The town is administered by the Eurobodalla Shire council. It is located near Higgin's Creek and Deua National Park.
+
+### notes
+['The claim that the town is administered by the Eurobodalla Shire council aligns with multiple towns in the context (e.g., Moruya, Mogo, Batemans Bay, Bodalla).', "None of the towns mentioned in the context explicitly reference Higgin's Creek or Deua National Park as nearby.", "The context lacks explicit confirmation that any town administered by Eurobodalla Shire council is located near Higgin's Creek and Deua National Park.", 'Multiple towns including Moruya, Mogo, Batemans Bay, and Bodalla are administered by the Eurobodalla Shire council.', "No explicit mention in the context of any town administered by Eurobodalla Shire being near Higgin's Creek or Deua National Park.", 'Context references other nearby national parks such as Eurobodalla National Park and Murramarang National Park but not Deua National Park.', "Claim about proximity to Higgin's Creek and Deua National Park is not supported by the provided context.", 'Eurobodalla Shire council administers several towns including Moruya, Mogo, Batemans Bay, and Bodalla.', "No mention of any Eurobodalla-administered town being located near Higgin's Creek or Deua National Park.", 'Context includes references to Eurobodalla and Murramarang National Parks but not Deua National Park.', "Claim about proximity to Higgin's Creek and Deua National Park is unverified and lacks support in the given context."]
+
+## Generated Outputs
+### reasoning
+The claim includes two factual assertions: first, that the town is administered by the Eurobodalla Shire council; second, that the town is located near Higgin's Creek and Deua National Park. To verify these, it is necessary to identify the town in question since it is not named in the claim. The lack of this information is a critical gap, but assuming the context or the town can be identified through related data, one must confirm the administrative authority for that town as Eurobodalla Shire council. Additionally, verifying the geographical proximity of the town to Higgin's Creek and Deua National Park requires geographical and administrative information about the town’s location relative to these landmarks.
+
+Therefore, the queries should:
+
+1. Confirm which town is being referenced or verify the administrative authority of the town purportedly under Eurobodalla Shire council.
+2. Establish the proximity or location of the specific town near Higgin's Creek.
+3. Establish the proximity or location of the same town relative to Deua National Park.
+
+These will collectively establish the accuracy of the administrative and geographical claims for this particular town.
+
+### query
+What towns are administered by Eurobodalla Shire council?  
+Is [Name of town] located near Higgin's Creek?  
+Is [Name of town] located near Deua National Park?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Batemans Bay']. Documents remaining to be retrieved: ['Cortinarius kioloensis', 'Deua National Park'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The TV series where the actor played the character Gaius Baltar joined in 2010. premiered on July 18, 2006. The serie was premiered on July 18, 2006.
+
+### notes
+["James Callis played Gaius Baltar in the TV series 'Battlestar Galactica,' which premiered on July 18, 2006.", "'Battlestar Galactica' is the series where the character Gaius Baltar appears.", "James Callis joined the TV series 'Eureka' in 2010, which is separate from 'Battlestar Galactica.'", "The claim confuses the premiere date of 'Battlestar Galactica' with the year James Callis joined 'Eureka.'", "James Callis played Gaius Baltar in the TV series 'Battlestar Galactica,' which premiered on July 18, 2006.", "James Callis joined the TV series 'Eureka' in 2010, which is a different series than 'Battlestar Galactica'.", "The claim incorrectly merges the premiere date of 'Battlestar Galactica' with the date James Callis joined 'Eureka'.", "'Battlestar Galactica' premiered on July 18, 2006, while James Callis joined the cast of 'Eureka' in 2010.", "The claim incorrectly combines the premiere date of 'Battlestar Galactica' with the year James Callis joined the TV series 'Eureka'.", "'Battlestar Galactica' premiered on July 18, 2006, and features James Callis as Gaius Baltar.", "James Callis joined the cast of 'Eureka' in 2010, which is a separate series from 'Battlestar Galactica'.", "The character Gaius Baltar is exclusive to 'Battlestar Galactica' and not related to 'Eureka'."]
+
+## Generated Outputs
+### reasoning
+The claim states that the TV series where the actor played Gaius Baltar joined in 2010 and premiered on July 18, 2006. According to the notes, James Callis played Gaius Baltar in the TV series "Battlestar Galactica," which premiered on July 18, 2006. James Callis joined a different TV series, "Eureka," in 2010. The claim incorrectly merges the premiere date of "Battlestar Galactica" with the date James Callis joined "Eureka," thus causing ambiguity and contradiction. To clarify and fact-check this claim, separate queries should confirm the premiere date of "Battlestar Galactica," identify the character Gaius Baltar and the actor who played him, confirm the year James Callis joined "Eureka," and also confirm that these are two distinct TV series.
+
+### query
+When did the TV series "Battlestar Galactica" premiere?  
+Who played the character Gaius Baltar in "Battlestar Galactica"?  
+In which year did James Callis join the TV series "Eureka"?  
+Are "Battlestar Galactica" and "Eureka" two separate TV series?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Gaius Baltar', 'James Callis']. Documents remaining to be retrieved: ['Eureka (U.S. TV series)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The auditorium where Backstreet Boys: Larger Than Life residency show perfomed at is located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada. This auditorium is located at a hotel and casino owned by Caesars Entertainment Corporation.
+
+### notes
+['Backstreet Boys: Larger Than Life residency show performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino, Las Vegas, Nevada.', 'Planet Hollywood Las Vegas is a hotel and casino on the Las Vegas Strip, owned and operated by Caesars Entertainment Corporation.', 'Backstreet Boys: Larger Than Life residency show performed at The AXIS auditorium in Planet Hollywood Resort & Casino, Las Vegas, Nevada.', 'Planet Hollywood Las Vegas is a hotel and casino owned and operated by Caesars Entertainment Corporation.', 'The AXIS auditorium is located inside the Planet Hollywood Resort & Casino in Las Vegas, Nevada.', 'The Planet Hollywood Las Vegas is a hotel and casino owned by Caesars Entertainment Corporation.', 'Backstreet Boys: Larger Than Life residency show was performed at The AXIS auditorium in Planet Hollywood Resort & Casino.', 'Caesars Entertainment Corporation owns and operates the Planet Hollywood hotel and casino on the Las Vegas Strip.', 'Planet Hollywood Resort & Casino has hosted multiple residency shows including Backstreet Boys, Jennifer Lopez, and Britney Spears.']
+
+## Generated Outputs
+### reasoning
+The claim states that the Backstreet Boys: Larger Than Life residency show performed at the auditorium located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada, and that this venue is owned by Caesars Entertainment Corporation. The notes confirm that the show took place at The AXIS auditorium within the Planet Hollywood Resort & Casino. They also confirm that Planet Hollywood Las Vegas is a hotel and casino located on the Las Vegas Strip and is owned and operated by Caesars Entertainment Corporation. To fully verify the claim, it is necessary to confirm that The AXIS auditorium is indeed part of the Planet Hollywood Resort & Casino and that Planet Hollywood Resort & Casino is owned by Caesars Entertainment Corporation, making it a hotel and casino owned by that corporation.
+
+### query
+- What is The AXIS auditorium and where is it located?  
+- Is The AXIS auditorium located within the Planet Hollywood Resort & Casino in Las Vegas, Nevada?  
+- Who owns and operates the Planet Hollywood Resort & Casino in Las Vegas, Nevada?  
+- Is the Planet Hollywood Resort & Casino on the Las Vegas Strip?  
+- Is the Planet Hollywood Resort & Casino owned by Caesars Entertainment Corporation?  
+- Does Caesars Entertainment Corporation own any hotels and casinos on the Las Vegas Strip including Planet Hollywood Resort & Casino?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Backstreet Boys: Larger Than Life', 'Planet Hollywood Las Vegas']. Documents remaining to be retrieved: ['The AXIS'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,107 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields as input: a `claim` and associated `notes`. Your task is to generate a single, concise, precise natural language `query` that is intended to verify or fact-check the `claim` based on information given in the `notes`. The final query should be designed for efficient retrieval of authoritative evidence that confirms or refutes all key factual elements presented in the claim.
+
+Detailed task instructions:
+
+1. **Analyze the claim:**  
+   - Identify all key factual components or assertions that need verification.  
+   - Recognize any implied relationships between entities or multiple claim components that must be verified together to confirm the claim’s overall truthfulness.
+
+2. **Utilize the notes:**  
+   - Review the notes carefully as they provide relevant factual data, context, and background information.  
+   - Notes may include domain-specific facts, indirect evidence, overlapping or repetitive information, dates, names, titles, awards, species counts, corporate details, etc.  
+   - Incorporate any domain-specific terminology (e.g., proper names of individuals, awards, companies, taxa) relevant to the claim verification.
+
+3. **Formulate the query:**  
+   - Compose a single, clear, direct question that targets all essential factual elements and their connections (when multiple parts exist).  
+   - The query should explicitly reference relevant domain-specific entities (e.g., a person’s full name and role, award titles, film titles and director names, species genus/species count, airline nationality and base).  
+   - Where the claim contains multiple related parts, integrate them logically into one query to avoid fragmented checks needing multiple queries.  
+   - Avoid vagueness or open-ended questions; the query should lead to precise validation or refutation.
+
+4. **Examples of domain-specific entities and components to consider (to be used as needed based on claim content):**  
+   - **Literary awards and persons:** full names of individuals (e.g., Alan Sillitoe, Miguel Ángel Asturias, Elfriede Jelinek), Nobel Prize in Literature, their nationality, and specific roles (poet, diplomat, writer).  
+   - **Film and screenwriting credits:** film titles (Finding Dory, A Bug's Life), directs/co-directors, authorship relations.  
+   - **Botanical classification:** genus names, number of species, vernacular names in various languages, and taxonomic status.  
+   - **Corporate identity and location:** company names, nationality, headquarters city, operational details.  
+   - **Sports teams and leadership:** individual roles (head coach, offensive coordinator), team names, relevant league or conference (e.g., Big Ten Conference 2013 season).  
+
+5. **General strategy:**  
+   - The query should be framed as a verification question (e.g., “Was X the Y in [context or time period]?” or “Did A direct B and also co-direct C?”).  
+   - Combine multiple linked facts into one integrated query for efficiency and clarity.  
+   - Reflect any temporal information if relevant (e.g., “in 2013”, “currently”).  
+   - Where entities might have similar names or multiple aspects, use full names and specific details to avoid confusion.  
+
+The objective is to produce a targeted query that, when answered using the notes or queried in authoritative sources, decisively clarifies the accuracy of the claim based on its main factual components and their relationships.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+In the 28th season a Spanish rally driver won the racing series which was not competed in by Harri Rovanperä from 1993 to 2006.
+
+### notes
+['Harri Rovanperä competed in the World Rally Championship from 1993 to 2006.', 'The World Rally Championship 44th and 45th seasons were in 2017 and 2018 respectively, implying the 28th season was around 2000-2001.', 'Sébastien Loeb, a French driver, is the most successful WRC driver but he is not Spanish.', 'No information in the context confirms a Spanish driver winning the 28th WRC season or that Rovanperä did not compete in that season.', 'The 28th season of the World Rally Championship was the year 2000.', "The 2000 WRC drivers' champion was Marcus Grönholm from Finland.", 'Carlos Sainz, a Spanish driver, finished behind Grönholm in 2000 but did not win the championship.', 'Harri Rovanperä competed continuously in the WRC from 1993 to 2006, including the 2000 season.', 'Therefore, no Spanish rally driver won the 28th season of the WRC.', 'The claim that Harri Rovanperä did not compete in that season is false.', 'The 28th season of the World Rally Championship was in 2000.', "Marcus Grönholm from Finland won the 2000 WRC drivers' championship.", 'Carlos Sainz, a Spanish driver, participated in the 2000 season but did not win the championship.', 'Harri Rovanperä competed in every WRC season from 1993 through 2006, including the 2000 season.', 'No Spanish driver won the World Rally Championship in the 28th season.', 'The claim that Harri Rovanperä did not compete in the 28th season is incorrect.']
+
+## Generated Outputs
+### reasoning
+The claim states that in the 28th season of the World Rally Championship, a Spanish driver won the series, and Harri Rovanperä did not compete in the series from 1993 to 2006. From the notes, we know that Harri Rovanperä competed in the WRC from 1993 to 2006, so he actually did compete during that entire period, which includes the 28th season (circa 2000-2001). There is no confirmation of a Spanish driver winning the 28th season, and Sébastien Loeb, a notable successful driver mentioned, is French, not Spanish. To verify the claim fully, we need to confirm: (1) Did a Spanish rally driver win the 28th season of the WRC? (2) Did Harri Rovanperä compete in the 28th season of the WRC, specifically between 1993 and 2006? This will clarify the factual accuracy of both parts of the claim regarding the winner's nationality and Rovanperä's participation.
+
+### query
+Did a Spanish rally driver win the 28th season (around 2000-2001) of the World Rally Championship, and did Harri Rovanperä compete in the World Rally Championship during that season within his 1993 to 2006 participation span?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['2000 World Rally Championship', 'Harri Rovanperä']. Documents remaining to be retrieved: ['Carlos Sainz'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Jay Park left the South Korean music group that Jay Park is a part of, before the release of the group's DVD called "Take Off".
+
+### notes
+['Jay Park was a member of 2PM, a South Korean music group.', "2PM released a DVD titled '1st Japan Tour 2011 Take Off' in 2011.", "Jay Park left 2PM in 2010, before the release of the 'Take Off' DVD.", 'Jay Park was a member of the South Korean boy band 2PM.', "2PM released the DVD '1st Japan Tour 2011 Take Off' in 2011.", "Jay Park officially left 2PM in early 2010, before the release of the 'Take Off' DVD.", 'Jay Park was a founding member and leader of the South Korean boy band 2PM.', "2PM released the DVD '1st Japan Tour 2011 Take Off' in 2011.", "Jay Park officially left 2PM in early 2010, prior to the release of the 'Take Off' DVD.", "The DVD '1st Japan Tour 2011 Take Off' features 2PM's Japan tour concert and is distinct from their single 'Take Off'.", "Jay Park's departure from 2PM preceded most of the group's Japanese promotions and releases."]
+
+## Generated Outputs
+### reasoning
+The claim states that Jay Park left the South Korean music group he was part of before the release of the group's DVD called "Take Off." Notes confirm that Jay Park was a member of the South Korean boy band 2PM and that 2PM released a DVD titled "1st Japan Tour 2011 Take Off" in 2011. It is also noted multiple times that Jay Park left 2PM in early 2010, prior to the DVD release in 2011. Thus, the claim is about Jay Park's membership in 2PM, his departure timing, and the timing of the DVD release.
+
+### query
+Did Jay Park leave the South Korean boy band 2PM in early 2010 before the release of their DVD titled "1st Japan Tour 2011 Take Off" in 2011?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['2PM', 'Ultra Lover']. Documents remaining to be retrieved: ['Go Crazy (album)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The platform, for which the fixed shooter Proof of Destruction was developed, and Prológica CP-400 were not from the same country.
+
+### notes
+['Prológica CP-400 was produced by a Brazilian company named Prológica.', 'Proof of Destruction was developed by Shaun Southern and published by Mastertronic for Commodore 64/16 computers.', 'Commodore 64/16 platforms were developed by Commodore International, an American company.', 'Mastertronic was a British company.', 'Therefore, the platform for Proof of Destruction and Prológica CP-400 are from different countries.', 'Prológica CP-400 was produced by a Brazilian company, Prológica.', 'Proof of Destruction was developed by Shaun Southern and published by Mastertronic for the Commodore 64/16 platforms.', 'Commodore 64/16 computers were developed by Commodore International, an American company.', 'Therefore, Prológica CP-400 and Commodore 64/16 come from different countries (Brazil and USA respectively).', 'Prológica CP-400 was produced by a Brazilian company, Prológica.', 'Proof of Destruction was developed by Shaun Southern and published by Mastertronic for the Commodore 64/16 platforms.', 'The Commodore 64/16 platforms were developed by Commodore International, an American company.', 'Therefore, the platform for Proof of Destruction (American Commodore 64/16) and Prológica CP-400 (Brazilian) are from different countries.']
+
+## Generated Outputs
+### reasoning
+The claim asserts a difference in the country of origin between the platform for which the fixed shooter game Proof of Destruction was developed and the Prológica CP-400. To verify this, it is necessary to identify the platform associated with Proof of Destruction and determine its country of origin, then determine the country of origin of the Prológica CP-400 and compare the two. If both entities originate from different countries, the claim is true; if not, it is false. Since the notes are not provided, the query must be crafted to retrieve this information.
+
+### query
+What country was the platform for the fixed shooter game Proof of Destruction developed in, and does this differ from the country of origin of the Prológica CP-400 computer?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Prológica CP-400', 'Proof of Destruction']. Documents remaining to be retrieved: ['Commodore 16'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

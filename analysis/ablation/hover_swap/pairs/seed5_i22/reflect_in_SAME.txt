@@ -1,0 +1,166 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given a factual `claim` that may involve multiple interconnected facts or named entities (such as people, films, places, products, organizations, historical dates, or other domain-specific items). Together with the claim, you will receive a set of `notes` consisting of partial background information, known details, plus observations that highlight gaps, ambiguities, or contradictions around the claim’s elements.
+
+Your goal is to generate a focused set of one or more `queries` designed to verify or fact-check each component of the claim. These queries will be used to retrieve relevant evidence or documents (e.g., from Wikipedia or other authoritative sources) to confirm or refute the claim.
+
+Key Requirements and Domain-Specific Heuristics:
+
+1. **Entity Disambiguation:**  
+   - Explicitly identify all named entities mentioned in the claim.  
+   - Always disambiguate entities carefully using relevant descriptors, such as: clarifying a film’s release year, a person’s profession or nationality, distinguishing similarly named entities (e.g., “Solo (Norwegian soft drink)” instead of just “Solo”).  
+   - This avoids confusion and ensures queries retrieve targeted, relevant information.
+
+2. **Decompose Complex Claims into Components:**  
+   - If the claim includes multiple assertions (e.g., an actor acted in multiple movies, a director’s involvement, a formation date of a military unit), break it down into multiple specific queries, each verifying one discrete fact.  
+   - Queries should be connected logically, covering the full scope of the claim without leaving holes.
+
+3. **Target Missing, Ambiguous, or Contradictory Information from the Notes:**  
+   - Use the notes to identify what is already known, what is uncertain or missing, and contradictions that must be resolved.  
+   - Formulate queries that directly address these gaps or conflicting points to retrieve clarifying evidence.  
+   - For example, if it’s unclear whether a publication is a book or a magazine article, or exact formation years of military units, or the nationality of a named individual, queries should reflect these specifics.
+
+4. **Cover Every Fact Embedded in the Claim:**  
+   - Ensure your queries collectively verify all factual statements contained in the claim.  
+   - Avoid partial coverage that might retrieve documents relevant to only some parts of the claim.
+
+5. **Precise and Clear Query Formulation:**  
+   - Queries must be explicit, well-structured factual questions or entity-relationship prompts, suitable for document retrieval.  
+   - Avoid vague, overly broad, or open-ended questions.
+
+6. **Include Relevant Domain Context:**  
+   - When necessary, incorporate domain knowledge or contextual clues into the queries.  
+   - For example, when verifying a film claim, specify the film’s release year or director; for geographical entities, specify if a cemetery is within a park; for military units, specify their formation dates and relation to associated conflicts or films.
+
+Generalizable Strategy:
+
+- Carefully read and parse the claim to extract all named entities and discrete fact assertions.  
+- Examine the provided notes thoroughly to uncover what details are confirmed, missing, ambiguous, or contradictory in relation to the claim.  
+- For each factual element and especially for each gap or contradiction, generate a focused, specific question or search prompt to obtain clear supporting or refuting evidence.  
+- Ensure queries are comprehensive and well-targeted to verify the full claim.  
+- Format the final output strictly as one or more `query` lines, with no additional explanation or commentary.
+
+Example Query Patterns:
+
+- For a film claim:  
+  - “Who starred in [Film Name] ([Year])?”  
+  - “Who directed [Film Name] ([Year])?”  
+  - “Is [Person’s Name] an actor in [Film Name] ([Year])?”  
+
+- For a publication claim:  
+  - “What is the publication format and date of [Title] by [Author]?”  
+  - “Is [Publication Name] a periodical or a book publisher?”  
+
+- For geography or burial claims:  
+  - “Where is [Person] buried?”  
+  - “Is [Cemetery Name] located within [Park or Geographic Area]?”  
+
+- For military or historical claims:  
+  - “When was [Military Unit] formed?”  
+  - “What units are featured in [Film or Book Title]?”  
+
+By following these instructions carefully, you will produce precise queries capable of guiding the retrieval of comprehensive, relevant documents to validate or refute complex factual claims.
+
+Input Format:  
+- `claim`: A factual statement with one or more components involving named entities or facts.  
+- `notes`: A list of strings summarizing current knowledge, including unknowns or contradictions.
+
+Output Format:  
+- `query`: One or more explicit, decomposed, and disambiguated search queries targeting factual verifications for each part of the claim.
+
+Remember:  
+- Queries must be factual questions fit for document retrieval.  
+- Always cover all aspects requiring verification.  
+- Disambiguate entities using descriptive context.  
+- Use notes to identify which facts require particular attention.  
+- Structure queries to maximize retrieval precision and relevance.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The actor who starred in a main role on A Lua Me Disse received the Golden Globe nomination for playing the lead role of "The King of Cocaine".
+
+### notes
+['A Lua Me Disse stars Adriana Esteves and Wagner Moura in main roles.', "No information indicates either actor received a Golden Globe nomination for 'The King of Cocaine' role.", "Context lists other actors with Golden Globe nominations but unrelated to 'A Lua Me Disse' or 'The King of Cocaine'.", "Adriana Esteves was a main actor in 'A Lua Me Disse' but has no Golden Globe nominations mentioned.", "Wagner Moura starred in 'A Lua Me Disse' and was nominated for a Golden Globe for playing Pablo Escobar in 'Narcos', not 'The King of Cocaine'.", "No actor connected to 'A Lua Me Disse' is linked to a role called 'The King of Cocaine' or a Golden Globe nomination for such a role.", "'The King of Cocaine' is not referenced as a role or title associated with any actors in the provided context.", "Wagner Moura was nominated for a Golden Globe for his role as Pablo Escobar in 'Narcos', not for 'The King of Cocaine'.", "No evidence of any Golden Globe nomination related to the role 'The King of Cocaine' in the context provided.", "Adriana Esteves and Wagner Moura are the main stars of 'A Lua Me Disse', but neither has a Golden Globe nomination for a role called 'The King of Cocaine'."]
+
+## Generated Outputs
+### reasoning
+The claim involves two linked facts: first, identifying an actor who starred in a main role in the TV series or film "A Lua Me Disse," and second, verifying whether that same actor received a Golden Globe nomination for playing a lead role titled "The King of Cocaine." From the notes, it is clear that the main actors in "A Lua Me Disse" are Adriana Esteves and Wagner Moura. Neither Adriana Esteves nor Wagner Moura is connected to a Golden Globe nomination for a role called "The King of Cocaine." Wagner Moura was nominated for a Golden Globe for playing Pablo Escobar in "Narcos," not for "The King of Cocaine." There is no evidence that any actor from "A Lua Me Disse" is linked to a role named "The King of Cocaine" or received a Golden Globe nomination for it. Therefore, the queries must confirm the main actors in "A Lua Me Disse," the existence or non-existence of a role called "The King of Cocaine," and any Golden Globe nominations related to both the actors and the specific role.
+
+### query
+Who are the main actors starring in the TV series or film "A Lua Me Disse"?  
+Did Wagner Moura receive a Golden Globe nomination for a role titled "The King of Cocaine"?  
+Did Adriana Esteves receive any Golden Globe nominations, particularly for any roles related to "The King of Cocaine"?  
+Is there any film, TV series, or role known as "The King of Cocaine"?  
+Which actor was nominated for a Golden Globe for playing "The King of Cocaine," if such a role exists?  
+What Golden Globe nominations has Wagner Moura received, and for which roles (specifically including "Narcos" and any "King of Cocaine" role)?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['A Lua Me Disse', 'Wagner Moura']. Documents remaining to be retrieved: ['Pablo Escobar'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Director Robert Stevenson was from a geographically smaller country than another director. That director directed his final film Romance of Astree and Celadon.
+
+### notes
+['Robert Stevenson was a British-American director.', "Éric Rohmer was a French director who directed 'Romance of Astree and Celadon'.", 'United Kingdom is geographically smaller than France.', "'Romance of Astree and Celadon' was Éric Rohmer's final film.", 'Robert Stevenson was associated with the United Kingdom (British-American).', "Éric Rohmer was a French director and directed 'Romance of Astree and Celadon.'", 'The United Kingdom is geographically smaller than France.', "'Romance of Astree and Celadon' was Éric Rohmer's final film.", 'Robert Stevenson is associated with the United Kingdom and United States (British-American).', 'Éric Rohmer was a French director who directed the film Romance of Astree and Celadon, his final film.', 'The United Kingdom is geographically smaller than France.', "Romance of Astree and Celadon was released in 2007 and is Éric Rohmer's final film.", 'Robert Stevenson is from the UK, which is geographically smaller than France, the country of Éric Rohmer.']
+
+## Generated Outputs
+### reasoning
+The claim contains two main assertions that need verification: 1) Robert Stevenson is a director from a geographically smaller country than another unnamed director, and 2) that other director directed their final film titled "Romance of Astree and Celadon." To fact-check this, it is necessary to identify the nationality or country of origin of Robert Stevenson and the other director, confirm the relative geographical sizes of those countries, and verify which director directed the final film "Romance of Astree and Celadon." Also, it must be checked whether "Romance of Astree and Celadon" is indeed the final film of that director. Since the claim does not specify the other director’s name, the query must ascertain who directed "Romance of Astree and Celadon."
+
+### query
+"Who is Robert Stevenson (film director) and what is his country of origin?"  
+"Who directed the film Romance of Astree and Celadon?"  
+"What is the country of origin of the director of Romance of Astree and Celadon?"  
+"What are the sizes of the countries of origin of Robert Stevenson and the director of Romance of Astree and Celadon, to compare their geographical size?"  
+"Is Romance of Astree and Celadon the final film directed by that director?"
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Romance of Astree and Celadon', 'Éric Rohmer']. Documents remaining to be retrieved: ['Robert Stevenson (director)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The platform, for which the fixed shooter Proof of Destruction was developed, and Prológica CP-400 were not from the same country.
+
+### notes
+['Prológica CP-400 is a Brazilian personal computer made by the company Prológica.', 'Proof of Destruction is a fixed shooter game developed for the ZX Spectrum platform.', 'ZX Spectrum was a British home computer platform, different from Brazil where Prológica CP-400 was made.', 'The ZX Spectrum was a British home computer platform.', 'Prológica CP-400 is a Brazilian personal computer produced by Prológica.', 'Proof of Destruction was developed for the ZX Spectrum platform, which is British, different from the Brazilian origin of the Prológica CP-400.', 'Proof of Destruction was developed for the ZX Spectrum, a British home computer platform.', 'The Prológica CP-400 is a Brazilian personal computer made by the company Prológica.', 'The ZX Spectrum platform originated from the UK, whereas the Prológica CP-400 was produced in Brazil.', 'Thus, the platform for Proof of Destruction and the Prológica CP-400 are from different countries.']
+
+## Generated Outputs
+### reasoning
+The claim states that the platform for which the fixed shooter game Proof of Destruction was developed and the Prológica CP-400 personal computer were not from the same country. According to the notes, Proof of Destruction was developed for the ZX Spectrum platform. The ZX Spectrum is identified as a British home computer platform. On the other hand, Prológica CP-400 is a Brazilian personal computer made by the company Prológica. Therefore, one platform is British and the other is Brazilian, confirming they are from different countries.
+
+To verify this claim fully, it is necessary to check:  
+1. The country of origin of the ZX Spectrum platform.  
+2. The country of origin of the Prológica CP-400 personal computer.  
+3. Confirm Proof of Destruction was developed for the ZX Spectrum.
+
+### query
+What is the country of origin of the ZX Spectrum home computer platform?  
+Which country is the Prológica CP-400 personal computer from?  
+For which platform was the fixed shooter game Proof of Destruction developed?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Prológica CP-400']. Documents remaining to be retrieved: ['Commodore 16', 'Proof of Destruction'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,126 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Instruction for the assistant:
+
+You are provided with two input fields: 
+- `claim`: A factual statement or set of statements whose truth or accuracy needs to be evaluated or verified.
+- `notes`: A list of text snippets, pieces of information, or context relevant to the claim.
+
+Your task is to produce an output field:
+- `query`: One or more precise, targeted, and factually grounded natural language questions or search queries derived from the claim and the notes, designed to retrieve all necessary documents or evidence to verify the claim fully.
+
+Guidelines for producing the `query`: 
+
+1. **Purpose**: The goal of the query is to facilitate retrieval of supporting or refuting evidence about the claim. This means the query must explicitly focus on key entities, facts, and relationships mentioned in the claim and implied or highlighted in the notes.
+
+2. **Use of notes**: 
+   - Extract relevant factual or contextual information from the notes to clarify ambiguous or incomplete parts of the claim.
+   - Incorporate key entities, dates, names, titles, and other factual data from notes to refine the query so that all required facts to verify the claim can be retrieved.
+   - Identify specific elements that remain unverified or partially verified in the notes and make sure the query targets those gaps explicitly.
+
+3. **Precision and Completeness**: 
+   - Include all principal components of the claim in the query: persons, places, works (like songs, films, books, or other creative works), dates, roles, and relationships.
+   - When multiple facts or assertions in the claim require verification, combine them into a single comprehensive query or multiple related queries, ensuring that all aspects are covered.
+   - Use the exact names, titles, and terminology as presented in the claim and the notes for precision.
+
+4. **Address ambiguity or missing information in claim**:
+   - If the claim uses vague designations (e.g., "the town", "the actress") without explicit identification, include questions that seek to identify or clarify those.
+   - When a claim involves verifying association or overlap (such as shared producers of two films), explicitly request information linking those entities.
+
+5. **Examples of question structures to include**:
+   - "Who is/are...?"
+   - "Is [entity/individual] credited with ...?"
+   - "Did [person] play/portray [character] in [work]?"
+   - "Are the producers of [film A] and [film B] the same?"
+   - "Which towns are administered by [council]? Are any located near [landmark]?"
+   - "Who wrote the lyrics/music for [song]? Are X or Y credited?"
+   
+6. **Domain-specific considerations**:
+   - For music-related claims, include songwriter/lyricist/performer credits as relevant.
+   - For film or acting claims, clarify roles, actors’ identities, and producer associations.
+   - For geographical claims, focus on administrative entities (e.g., councils), geographic proximity to named landmarks, and confirm town identities.
+   - For ambiguous or unclear entities mentioned in the claim, explicitly request identification or clarification.
+
+7. **Focus on verification of claim components rather than general exploratory queries**:
+   - Your query should be targeted to retrieve documents that directly confirm or refute each factual assertion in the claim.
+   - Avoid overly broad or vague queries.
+
+In summary, your query should be a carefully composed, fact-focused, and comprehensive question or set of questions that use the claim and notes to ensure retrieval of all necessary documents and evidence to verify each part of the claim completely.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The film that the father of the star of Sultanat starred in in 1970 was Bombay Talkie.
+
+### notes
+["The 1970 film 'Bombay Talkie' was produced by Merchant Ivory Productions.", "The film 'Sultanat' (2014) is a Pakistani action romance film but the star(s) and their paternal relations are not identified in the context.", "No evidence or information is present linking the father of the star of 'Sultanat' to the 1970 film 'Bombay Talkie'.", "The 1970 film 'Bombay Talkie' was produced by Merchant Ivory Productions.", "The film 'Sultanat' (2014) is a Pakistani action romance film, but the star(s) and their paternal relationships are not identified in the provided information.", "No evidence links the father of the star of 'Sultanat' to appearing or starring in the 1970 film 'Bombay Talkie'.", "The 1970 film 'Bombay Talkie' was produced by Merchant Ivory Productions and had no stated connections to the 'Sultanat' film stars or their family.", "'Sultanat' (2014) is a Pakistani action romance film with a multi-star cast, but details about the stars' fathers or their film involvements are absent.", "No evidence exists linking the father of the star of 'Sultanat' to the 1970 film 'Bombay Talkie'."]
+
+## Generated Outputs
+### reasoning
+The claim states that the father of the star of the film "Sultanat" starred in the 1970 film "Bombay Talkie." The notes provide information that "Bombay Talkie" was produced in 1970 by Merchant Ivory Productions and that "Sultanat" (2014) is a Pakistani action romance film. However, the notes explicitly mention there is no evidence identifying the star(s) of "Sultanat" or their paternal relationships, and no connection is found linking the father of the star of "Sultanat" to "Bombay Talkie." To verify the claim, it is necessary to identify the star of "Sultanat" and their father, then check if the father acted in "Bombay Talkie."
+
+Therefore, the query should focus on:
+1. Identifying the star(s) of the 2014 film "Sultanat."
+2. Identifying the father of the star(s) of "Sultanat."
+3. Determining the cast of the 1970 film "Bombay Talkie."
+4. Checking if the father of the "Sultanat" star(s) is listed among the cast or credited actors of "Bombay Talkie."
+
+### query
+Who is the lead star or main actors of the 2014 Pakistani film "Sultanat"? Who is the father of the star(s) of "Sultanat"? Did the father of the "Sultanat" star(s) act or star in the 1970 film "Bombay Talkie"? What is the full cast list of the 1970 film "Bombay Talkie"? Is the father of the "Sultanat" star(s) credited as an actor in "Bombay Talkie"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Sultanat']. Documents remaining to be retrieved: ['Jennifer Kendal', 'Karan Kapoor'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Singers Kim Tae-yeon and the Irish artist who released the EP "The First Collage", have both appeared in group bands.
+
+### notes
+["Kim Tae-yeon is a South Korean singer who debuted as a member of the girl group Girls' Generation in 2007 and has appeared in group band projects.", "No evidence is available in the notes or context to confirm the identity of an Irish artist who released an EP titled 'The First Collage' or to verify that this artist has appeared in a group band.", "Kim Tae-yeon is a South Korean singer who debuted as a member of the girl group Girls' Generation in 2007 and has participated in group band projects.", "There is no evidence in the notes or context identifying an Irish artist who released an EP titled 'The First Collage' or confirming that this artist has appeared in a group band.", "Kim Tae-yeon is a South Korean singer who debuted as a member of the girl group Girls' Generation in 2007 and has appeared in group band projects.", "There is no evidence in the notes or context identifying an Irish artist who released an EP titled 'The First Collage' or confirming that this artist has appeared in a group band."]
+
+## Generated Outputs
+### reasoning
+The claim states that both Kim Tae-yeon and an Irish artist who released an EP called "The First Collage" have appeared in group bands. The notes confirm that Kim Tae-yeon was a member of the girl group Girls' Generation, thus verifying her appearance in a group band. However, the notes do not provide any information about the Irish artist who released "The First Collage," including their identity or whether they appeared in any group band. To verify the claim fully, we need to identify the Irish artist who released "The First Collage" and confirm if they have been part of any group bands.
+
+### query
+Who is the Irish artist that released the EP titled "The First Collage"? Has this Irish artist appeared in any group bands? Additionally, confirm that Kim Tae-yeon was a member of the girl group Girls' Generation and appeared in group band projects.
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Kim Tae-yeon']. Documents remaining to be retrieved: ['The First Collage', 'Yang Yo-seob'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The star of the 2012 film  Fairhaven, appeared in Studio 60 on the Sunset Strip in 2007 and American Horror Story in 2014.
+
+### notes
+['The 2012 film Fairhaven and its star are not mentioned in the provided notes or context.', 'No evidence links the star of Fairhaven to Studio 60 on the Sunset Strip in 2007.', 'No evidence links the star of Fairhaven to American Horror Story in 2014.', 'The 2012 film Fairhaven and its star are not mentioned in the provided notes or context.', 'There is no evidence linking the star of Fairhaven to Studio 60 on the Sunset Strip in 2007.', 'There is no evidence linking the star of Fairhaven to American Horror Story in 2014.', 'The 2012 film Fairhaven and its star are not mentioned in the provided notes or context.', 'No evidence links the star of Fairhaven to Studio 60 on the Sunset Strip in 2007.', 'No evidence links the star of Fairhaven to American Horror Story in 2014.', 'Richard Short appeared on American Horror Story but is not linked to the 2012 film Fairhaven.', 'Cast and character information for Studio 60 on the Sunset Strip does not mention the star of Fairhaven.']
+
+## Generated Outputs
+### reasoning
+The claim states that the star of the 2012 film Fairhaven appeared in the TV series Studio 60 on the Sunset Strip in 2007 and American Horror Story in 2014. To verify this, it is necessary to identify who the star of Fairhaven (2012) is and then confirm whether this actor or actress had roles or appearances in the other two mentioned TV series in the specified years. Since no notes are provided, it is essential to focus on discovering the lead or starring actor of Fairhaven (2012) and then checking their credited appearances in Studio 60 on the Sunset Strip and American Horror Story for the indicated years.
+
+### query
+Who is the star or lead actor of the 2012 film Fairhaven? Did this actor appear in the TV series Studio 60 on the Sunset Strip in 2007? Did the same actor appear in American Horror Story in 2014?
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Blood Bath (American Horror Story)', 'Fairhaven (film)', 'Sarah Paulson'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

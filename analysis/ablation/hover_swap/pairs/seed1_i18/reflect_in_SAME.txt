@@ -1,0 +1,172 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You are tasked with a focused fact verification and evidence consolidation task, where you analyze three types of inputs—`claim`, `notes`, and `context`—to produce two outputs: `new_notes` and `titles`. The `claim` is a textual statement possibly containing multiple factual assertions that need verification. The `notes` are often extracted snippets, paraphrases, or partial evidences relevant to the claim, while the `context` comprises longer document texts or summaries potentially containing detailed source information related to entities, events, timelines, or attributes mentioned in the claim.
+
+Your overarching goal is to verify or refute each distinct component of the claim by synthesizing and consolidating information from both `notes` and `context`, avoiding redundancy, speculation, or irrelevant content.
+
+---
+
+Detailed Guidelines and Domain-Specific Considerations:
+
+1. **Input Structure and Understanding**  
+   - **claim**: A statement consisting of one or more assertions (e.g., about persons, events, dates, geographic locations, product characteristics, filmographies, or comparative facts).  
+   - **notes**: Fragmented facts, paraphrases, or extracted evidences that may partially support or contradict the claim. This input can contain redundancy.  
+   - **context**: Summaries or full-text snippets from diverse documents that may provide authoritative or more detailed information on the claim’s subjects.
+
+2. **Verification Approach and Reasoning Strategy**  
+   - Parse the claim into discrete assertions where possible and address each individually.  
+   - Map claim elements (entities, dates, events, attributes) to facts in both `notes` and `context`.  
+   - Cross-verify facts by probing both inputs together to spot confirmations, contradictions, or missing information.  
+   - Explicitly note when parts of the claim cannot be verified because critical information about entities, events, or attributes is absent from both inputs.  
+   - For geographic, historical, biographical, or product-related facts, use explicit details only—avoid assumptions or inference beyond the data given.  
+   - When multiple entities or facts overlap (e.g., multiple actors in movies, overlapping dates, competing geographic references), carefully separate which parts are supported and which are not.
+
+3. **Consolidation of `new_notes`**  
+   - Remove redundancy by combining similar or repeated facts into succinct, clear statements—preferably one or two sentences each.  
+   - Focus exclusively on information directly relevant to verifying the claim’s assertions, omitting irrelevant tangents or unrelated domain facts.  
+   - Clarify precisely which elements of the claim are supported, contradicted, or unverifiable.  
+   - If verification is impossible due to missing data or ambiguity, clearly state this instead of speculating.  
+   - Maintain factual accuracy and align notes closely with evidence found in the inputs.
+
+4. **Creation of `titles`**  
+   - Generate concise, descriptive headings that summarize key topics, entities, or factual relationships uncovered during verification.  
+   - Titles should be domain-relevant and reflect the organizing principles of your notes (e.g., names of persons, film titles with dates, product or geographic features, timeline relations).  
+   - They serve as topical indexes for the summarized evidences and facilitate quick understanding of verification focuses.
+
+5. **Domain-Specific Knowledge Embedded in the Task**  
+   - Common facts relate to soft drink brands, flavor profiles, and geographic market presence.  
+   - Biographical facts include film directors, voice actors, release years, animation movie titles, and actor nationalities.  
+   - Geographic comparisons, including city versus county boundaries, size, and jurisdictional status, are frequent.  
+   - Product ownership or company-railway station relations may appear, requiring careful geographic and corporate structure reasoning.  
+   - Scientific or technical terms (e.g., chemical or biological entities) may appear but are often not central to verification.
+
+6. **Generalizable Reasoning and Workflow**  
+   - Identify key components (entities, events, dates) in the claim first.  
+   - Search both `notes` and `context` for explicit assertions tied to these components.  
+   - Distill duplicated claims and reconcile contradictions; produce a coherent evaluation per factual assertion.  
+   - Explicitly separate verifiable from unverifiable or contradicted claim parts in `new_notes`.  
+   - Group related notes under thematic headings synthesized as `titles`.
+
+7. **Handling Missing or Conflicting Data**  
+   - When the claim contains information about an entity or event absent in all inputs, clearly note that verification is not possible.  
+   - If parts are verifiable but others are unsupported, separately highlight these distinctions.  
+   - Avoid speculation or implied connections not grounded in provided evidence.
+
+---
+
+Summary:
+
+Your task is a meticulous, evidence-based fact-checking and summarization exercise that integrates fragmented inputs into a concise, focused verification dossier. Your outputs must be:
+
+- **`new_notes`**: A reduced, clear, and precise list of facts confirming, contradicting, or indicating unverifiability of the claim’s components based on the complete input set.  
+- **`titles`**: A concise list of relevant topical headings that summarize and organize the key subjects, entities, or relationships essential to understanding the verification outcome.
+
+This task requires strict adherence to evidence, careful parsing of multi-part claims, clear handling of data absence or contradiction, and domain-aware synthesis of facts to aid downstream understanding or retrieval tasks.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The French star of The Cutting Edge voiced a character in an animated 1994 film. She voiced the character named Nala.
+
+### notes
+["Moira Kelly, an American actress, starred in the 1992 film The Cutting Edge and voiced the character Nala in Disney's 1994 animated film The Lion King.", 'Nala is a fictional lioness character introduced in the 1994 animated film The Lion King, voiced by Moira Kelly as an adult.', 'There is no evidence that a French actress from The Cutting Edge voiced the character Nala.', 'The claim that the French star of The Cutting Edge voiced Nala in a 1994 animated film is incorrect, as the actress was American.', "Moira Kelly, an American actress, starred in the 1992 film The Cutting Edge and voiced the character Nala in Disney's 1994 animated film The Lion King.", 'Nala is a fictional lioness character introduced in the 1994 animated film The Lion King, voiced as an adult by Moira Kelly.', 'There is no evidence that a French actress from The Cutting Edge voiced the character Nala.', 'The claim that the French star of The Cutting Edge voiced Nala in a 1994 animated film is incorrect, as the actress was American.', "Moira Kelly, an American actress, starred in the 1992 film The Cutting Edge and voiced the adult character Nala in Disney's 1994 animated film The Lion King.", "The character Nala was introduced in the 1994 animated film The Lion King; Moira Kelly provided the adult speaking voice while other actresses voiced young Nala's speaking and singing parts.", 'There is no evidence that a French actress from The Cutting Edge voiced Nala; the actress who did is American.', 'The claim that the French star of The Cutting Edge voiced Nala in a 1994 animated film is incorrect because Moira Kelly, the voice actor for Nala, is American.']
+
+### context
+['Nala (Disney) | Nala is a fictional lioness, a character who appears in the Disney "Lion King" franchise.  Introduced in the animated film "The Lion King" in 1994, Nala subsequently appears as a less prominent character in the film\'s sequels "" (1998) and "The Lion King 1½" (2004).  In the original film, the adult Nala was voiced by American actress Moira Kelly.  Young Nala\'s speaking voice is provided by actress Niketa Calame, while singers Laura Williams and Sally Dworsky provide the singing voices of young and adult Nala respectively.', 'Moira Kelly | Moira Kelly (born March 6, 1968) is an American actress.  She is best known for portraying Kate Moseley in the 1992 film "The Cutting Edge", as well as single mother Karen Roe on the teen drama "One Tree Hill".  She is also known for playing the role of Donna Hayward in "", replacing Lara Flynn Boyle in the prequel to the 1990 TV series "Twin Peaks".  Other roles include Dorothy Day in "", White House media consultant Mandy Hampton in the first season of "The West Wing", and the voice of Simba\'s love interest Nala in "The Lion King" and its sequel "".  She also played Hetty Kelly and Oona O\'Neill in "Chaplin".', 'I Just Can\'t Wait to Be King | "I Just Can\'t Wait to Be King" is a song from Disney\'s 1994 animated film, "The Lion King".  With music by Elton John and words written by Tim Rice, the song is performed by the characters of Simba (Jason Weaver), Nala (Laura Williams) and Zazu (Rowan Atkinson) in the film.', 'The Lion King | The Lion King is a 1994 American animated epic musical film produced by Walt Disney Feature Animation and released by Walt Disney Pictures.  It is the 32nd Disney animated feature film, and the fifth animated film produced during a period known as the Disney Renaissance.  "The Lion King" was directed by Roger Allers and Rob Minkoff, produced by Don Hahn, and has a screenplay credited to Irene Mecchi, Jonathan Roberts, and Linda Woolverton.  Its original songs were written by composer Elton John and lyricist Tim Rice, and original scores were written by Hans Zimmer.  The film features an ensemble voice cast that includes Matthew Broderick, James Earl Jones, Jeremy Irons, Jonathan Taylor Thomas, Moira Kelly, Nathan Lane, Ernie Sabella, Rowan Atkinson, Robert Guillaume, Madge Sinclair, Whoopi Goldberg, Cheech Marin, and Jim Cummings.  The story takes place in a kingdom of lions in Africa and was influenced by William Shakespeare\'s "Hamlet".', 'Scar (Disney) | Scar is a fictional character who appears in Walt Disney Pictures\' 32nd animated feature film "The Lion King" (1994).  The character is voiced by English actor Jeremy Irons, while his singing voice is provided by both Irons and American actor Jim Cummings, the latter of whom was hired to replace Irons when the former damaged his singing voice.  Subsequently, Scar makes minor appearances in the film\'s sequel " "(1998) and "The Lion King 1½ "(2004), in both of which he is voiced entirely by Cummings, as well as appearing in the Broadway musical adaptation of the film, in which the role of Scar was originated by American actor John Vickery.', 'The Lion King Celebration | The Lion King Celebration was a parade based on the animated film "The Lion King".  It was designed to tell story of Simba, the protagonist of "The Lion King", as if it were a tale passed down in Africa for generations.  Its parade featured six floats designed around different aspects of Africa, dancers dressed in animal costumes and a Pride Rock float featuring Simba and Nala.  The parade ran at Disneyland from June 1, 1994 to June 1, 1997, after which four of the floats were moved to Disney\'s Animal Kingdom for the Festival of the Lion King show.', 'The Madness of King Scar | "The Madness of King Scar" is a song written by composer Elton John and lyricist Tim Rice, which premiered in the musical "The Lion King", a stage adaptation of Disney\'s 1994 animated film of the same name.  Originally recorded and storyboarded for the movie, it was removed from the final version.  Media outlets believed the decision to exclude the song was based on its explicit references to sexuality.  "The Madness of King Scar" had been added to the musical along with two other songs.  It is one of two tracks that more prominently features vocals from the character Nala.  The title is a reference to the 1994 film "The Madness of King George".', 'Aladdin (Disney character) | Aladdin is a fictional character and the protagonist of Disney\'s 1992 animated feature film "Aladdin", and its two direct-to-video sequels "The Return of Jafar" (1994) and "Aladdin and the King of Thieves" (1996).  He also stars in the animated television series based on the film.  In all animated productions, Aladdin is voiced by American actor Scott Weinger, while his singing voice is provided by Brad Kane.  Mena Massoud is set to play a live-action version of the character in a live action adaptation of the 1992 film.', 'Kelli Cousins | Kelli Cousins is an American former voice actress.  She has provided voices for Japanese anime titles for ADV Films.  She also wrote script adaptations for anime under the alias Kathleen Moynihan.  She currently lives in Chicago, Illinois.', 'Cinderella (Disney character) | Cinderella is a fictional character who appears in Walt Disney Pictures\' 12th animated feature film "Cinderella" (1950) and its sequels "" (2002) and "" (2007).  In the original film, Cinderella is voiced by American singer and actress Ilene Woods.  For the sequels and subsequent film and television appearances, Woods was replaced by American actresses Jennifer Hale and Tami Tappan, who provide the character\'s speaking and singing voices respectively.']
+
+## Generated Outputs
+### reasoning
+The claim states that the French star of The Cutting Edge voiced the character named Nala in an animated 1994 film. Upon analysis, the notes repeatedly identify Moira Kelly as the actress who starred in the 1992 film The Cutting Edge and voiced Nala in Disney's 1994 animated film The Lion King. However, Moira Kelly is consistently described as an American actress, not French, directly contradicting the "French star" part of the claim. The context similarly confirms Moira Kelly's American nationality, her role in The Cutting Edge, and her voice role as adult Nala in The Lion King. There is no evidence supporting the existence of a French actress connected to both The Cutting Edge and Nala's voice role. Therefore, while the voice actor information and the film are correct, the nationality attribution in the claim is incorrect.
+
+### new_notes
+["Moira Kelly, an American actress, starred in the 1992 film The Cutting Edge and voiced the adult character Nala in Disney's 1994 animated film The Lion King.", "The character Nala was introduced in the 1994 animated film The Lion King; Moira Kelly provided the adult speaking voice while other actresses voiced young Nala's speaking and singing parts.", 'There is no evidence that a French actress from The Cutting Edge voiced Nala; the actress who did is American.', 'The claim that the French star of The Cutting Edge voiced Nala in a 1994 animated film is incorrect because Moira Kelly, the voice actor for Nala, is American.']
+
+### titles
+["Moira Kelly's Roles", 'Nala Character and Voice Cast', 'Nationality of The Cutting Edge Star', 'Verification of Claim on Voice Acting']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Moira Kelly', 'The Lion King']. Documents remaining to be retrieved: ['The Cutting Edge'].
+
+
+
+# Example 2
+## Inputs
+### claim
+1969 saw the founding of the Canadian baseball team where the future manager played from 1973-87. He managed the Tampa Bay Devil Rays season.
+
+### notes
+['The Tampa Bay Devil Rays were founded as an MLB expansion team in 1998, based in St. Petersburg, Florida.', 'No evidence in the context or notes confirms the existence of a Canadian baseball team founded in 1969 relevant to this claim.', 'The claim that a future Tampa Bay Devil Rays manager played for a Canadian baseball team from 1973 to 1987 is not supported by the provided data.', 'Managers of the Tampa Bay Devil Rays mentioned include Larry Rothschild, Lou Piniella, Hal McRae, and Joe Maddon, but no direct link to a Canadian playing career is provided.', "Due to lack of evidence, the claim's first assertion about the Canadian team's founding and player history cannot be verified, nor can the managerial connection be confirmed.", 'The Tampa Bay Devil Rays were founded as an MLB expansion team in 1998 in St. Petersburg, Florida.', 'No evidence confirms the existence of a Canadian baseball team founded in 1969 relevant to this claim.', 'Managers of the Tampa Bay Devil Rays include Larry Rothschild, Lou Piniella, Hal McRae, and Joe Maddon, with no links to Canadian playing careers.', 'The claim that a future Tampa Bay Devil Rays manager played for a Canadian baseball team from 1973 to 1987 is not supported by any provided information.', "Due to lack of evidence, the parts of the claim regarding the Canadian team's founding and the managerial connection cannot be verified.", 'The Tampa Bay Devil Rays were founded in 1998 in St. Petersburg, Florida as an MLB expansion team; no Canadian baseball team founded in 1969 relevant to this claim is mentioned in the provided information.', 'No evidence supports that any Tampa Bay Devil Rays manager played for a Canadian baseball team from 1973 to 1987.', 'Managers of the Tampa Bay Devil Rays include Larry Rothschild, Lou Piniella, Hal McRae, and Joe Maddon, but none are linked to playing for a Canadian baseball team during the stated period.', 'The claim that a future Tampa Bay Devil Rays manager played for a Canadian team prior to managing the Devil Rays and managed the Devil Rays for at least one season is not supported by the available data.', 'Due to lack of evidence, both the founding of a Canadian baseball team in 1969 related to the claim and the managerial connection to the Tampa Bay Devil Rays cannot be verified.']
+
+### context
+['List of Tampa Bay Rays managers | The Tampa Bay Rays are a professional baseball franchise based in St. Petersburg, Florida.  They are a member of the American League (AL) East in Major League Baseball (MLB).  The team joined MLB in 1998 as an expansion team with the Arizona Diamondbacks.  In November 2007, Rays owner Stuart Sternberg renamed his team from the "Tampa Bay Devil Rays" to the "Tampa Bay Rays", which he described as "A beacon that radiates throughout Tampa Bay and across the entire state of Florida."  The Rays won their first AL championship in 2008.  The Rays have played their home games at Tropicana Field since their inaugural season.  Andrew Friedman is the Vice President of Baseball operations, in essence the general manager.', 'List of Tampa Bay Rays seasons | The Tampa Bay Rays are a professional baseball team based in St. Petersburg, Florida.  The Rays are a member of both the Major League Baseball\'s (MLB) American League Eastern Division and the American League (AL) itself.  Since their inaugural season in 1998, the Rays have played their home games at Tropicana Field.  The team was originally known as the "Tampa Bay Devil Rays", which was inspired by a common nickname of the manta ray, but after the 2007 season, they changed their official name to the "Tampa Bay Rays."', 'List of Tampa Bay Rays team records | The Tampa Bay Rays are a professional baseball team based in St. Petersburg, Florida.  They compete in the Eastern Division of Major League Baseball\'s (MLB) American League (AL).  Tampa Bay first competed in Major League Baseball during the 1998 baseball season as the "Tampa Bay Devil Rays", an expansion team.  Prior to the 2008 season, the team\'s name was officially shortened to "Rays".  The list below documents players and teams that hold particular club records.', "2005 Tampa Bay Devil Rays season | The 2005 Tampa Bay Devil Rays season was the team's eighth since the franchise was created.  This season, they finished last in the AL East division, and managed to finish the season with the AL's third-worst record of 67-95.  Their manager was Lou Piniella who entered his 3rd and last season with the Devil Rays.", "2007 Tampa Bay Devil Rays season | The Tampa Bay Devil Rays' 2007 season, the tenth season in franchise history, involved the Devil Rays trying to improve on their 2006 season, where they finished last in the American League East Division, and managed to finish the season with a league-worst record of 69-96.  During the offseason they signed Japanese infielder Akinori Iwamura to a three-year deal.  Their manager was Joe Maddon who entered his 2nd season with the Devil Rays.", "History of the Tampa Bay Rays | The Devil Rays began to build their organization shortly after the franchise was awarded in 1995 by naming former Atlanta Braves assistant general manager Chuck LaMar the senior vice president of baseball operations and general manager.  The franchise's first minor league games took place in the 1996 season.  On November 7, 1997, Larry Rothschild was named the team's first manager.  The team acquired 35 players in the Expansion Draft on November 18, 1997.  Tony Saunders from the Florida Marlins was the first player drafted by the Devil Rays.  The team also drafted future star Bobby Abreu but traded him to the Philadelphia Phillies for Kevin Stocker, who had very little success for the Rays.  Before the 1998 season, veteran stars Wade Boggs, Fred McGriff, and Wilson Álvarez were acquired.", '2004 Tampa Bay Devil Rays season | The 2004 Tampa Bay Devil Rays season was their seventh since the franchise was created.  This season, they finished fourth in the AL East division, Toronto Blue Jays in last place.  They managed to finish the season with a record of 70-91, finishing out of last for the first time in their 7-year history.  Their manager was Lou Piniella who entered his 2nd season with the Devil Rays.', "1998 Major League Baseball expansion | The 1998 Major League Baseball expansion resulted in the establishment of MLB's 29th and 30th teams beginning play for the 1998 season.  After initiating an expansion committee in March 1994, 27 groups representing nine cities submitted bids for the proposed expansion teams.  After a yearlong process, on March 9, 1995, the league awarded the National League franchise to Phoenix and the American League franchise to Tampa.  The Arizona Diamondbacks and the Tampa Bay Devil Rays (currently the Tampa Bay Rays), would subsequently begin play for the 1998 season.", '2006 Tampa Bay Devil Rays season | The 2006 Tampa Bay Devil Rays season was their ninth since the franchise was created.  This season, they finished last in the AL East division, and managed to finish the season with a league-worst record of 61-101.  Their manager was Joe Maddon who entered his 1st season with the Devil Rays.', 'List of Tampa Bay Rays no-hitters | The Tampa Bay Rays (formerly "Tampa Bay Devil Rays" (1998–2007)) are a Major League Baseball franchise based in St. Petersburg, Florida.  Formed in 1998, they play in the American League East division.  Pitchers for the Rays have thrown one no-hitter in franchise history, which was accomplished by Matt Garza on July 26, 2010.  A no-hitter is officially recognized by Major League Baseball only “when a pitcher (or pitchers) retires each batter on the opposing team during the entire course of a game, which consists of at least nine innings”.  No-hitters of less than nine complete innings were previously recognized by the league as official; however, several rule alterations in 1991 changed the rule to its current form.  A no-hitter is rare enough that one team in Major League Baseball has never had a pitcher accomplish the feat.']
+
+## Generated Outputs
+### reasoning
+The claim involves two key assertions: first, that a Canadian baseball team was founded in 1969 where a future Tampa Bay Devil Rays manager played from 1973 to 1987, and second, that this individual later managed the Tampa Bay Devil Rays in at least one season.
+
+From the notes and context, it is clear that the Tampa Bay Devil Rays were founded as an MLB expansion team in 1998 in St. Petersburg, Florida. There is no evidence presented in either the notes or the context mentioning a Canadian baseball team founded in 1969 that relates to the claim. Additionally, the notes mention possible managers of the Tampa Bay Devil Rays—Larry Rothschild, Lou Piniella, Hal McRae, and Joe Maddon—but none are linked to having played for a Canadian baseball team across the specified period (1973-1987).
+
+The information about management years of each manager is not sufficient to confirm that any of these individuals managed the team specifically in a season after its founding, nor is there a verification that any played for a Canadian team for the stated period. The Tampa Bay Devil Rays history is well documented starting from 1998, with no mention of a Canadian team founded in 1969 connected to their future managers.
+
+Therefore, the first part of the claim regarding the Canadian baseball team and playing career cannot be verified, nor can the second part about managing the Tampa Bay Devil Rays. In summary, the claim is not supported by the provided evidence due to lack of relevant information.
+
+### new_notes
+['The Tampa Bay Devil Rays were founded in 1998 in St. Petersburg, Florida as an MLB expansion team; no Canadian baseball team founded in 1969 relevant to this claim is mentioned in the provided information.', 'No evidence supports that any Tampa Bay Devil Rays manager played for a Canadian baseball team from 1973 to 1987.', 'Managers of the Tampa Bay Devil Rays include Larry Rothschild, Lou Piniella, Hal McRae, and Joe Maddon, but none are linked to playing for a Canadian baseball team during the stated period.', 'The claim that a future Tampa Bay Devil Rays manager played for a Canadian team prior to managing the Devil Rays and managed the Devil Rays for at least one season is not supported by the available data.', 'Due to lack of evidence, both the founding of a Canadian baseball team in 1969 related to the claim and the managerial connection to the Tampa Bay Devil Rays cannot be verified.']
+
+### titles
+['Tampa Bay Devil Rays Team History', 'Canadian Baseball Team Founding Verification', 'Tampa Bay Devil Rays Managers and Playing Careers', 'Claim Verification Summary']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['2002 Tampa Bay Devil Rays season']. Documents remaining to be retrieved: ['Hal McRae', 'Kansas City Royals'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Ellesmere Port Town Football Club are currently members of the league, whose current principal sponsor is the Football Conference, that Ford Motors F.C. is a part of.
+
+### notes
+['Ellesmere Port Town Football Club currently plays in the West Cheshire League Division Two.', "The West Cheshire League's current principal sponsor is Carlsberg, not the Football Conference.", 'Ford Motors F.C. is not mentioned in the context and cannot be verified as a member of any league.', 'Vauxhall Motors F.C., another Ellesmere Port-based club, plays in the West Cheshire League Division One.', 'There is no evidence that the Football Conference sponsors the West Cheshire League or that Ellesmere Port Town F.C. or Ford Motors F.C. are members of such a league.', 'Ellesmere Port Town Football Club currently plays in the West Cheshire League Division Two.', "The West Cheshire League's principal sponsor is Carlsberg, not the Football Conference.", 'There is no evidence that Ellesmere Port Town F.C. plays in a league sponsored by the Football Conference.', 'Ford Motors F.C. is not mentioned in the context and has no verifiable league membership in the provided data.', 'There is no evidence that Ford Motors F.C. is part of the Football Conference or the West Cheshire League.', 'Ellesmere Port Town Football Club currently plays in the West Cheshire League Division Two.', "The West Cheshire League's current principal sponsor is Carlsberg, not the Football Conference.", 'There is no evidence that Ellesmere Port Town Football Club plays in a league sponsored by the Football Conference.', 'Ford Motors F.C. is not mentioned in the context and has no verifiable league membership in the provided data.', 'There is no evidence that Ford Motors F.C. is part of the Football Conference or the West Cheshire League.']
+
+### context
+['Ellesmere Port Town F.C. | Ellesmere Port Town Football Club is a football club based in Ellesmere Port, Cheshire, England.  They are currently members of the West Cheshire League Division Two and play at Dunkirk Lane.', 'Vauxhall Motors F.C. | Vauxhall Motors Football Club is a football club based in Ellesmere Port, Cheshire, England.  The club are currently members of the West Cheshire League Division One and play at Rivacre Park.', 'Ellesmere Rangers F.C. | Ellesmere Rangers Football Club are an English football club based in the town of Ellesmere, Shropshire.  They are members of the West Midlands (Regional) League Premier Division .', 'Ellesmere Port &amp; Neston F.C. | Ellesmere Port & Neston F.C. was an English association football club.', 'Vauxhall Ellesmere Port | Vauxhall Ellesmere Port is a motor vehicle assembly plant, located in the town of Ellesmere Port, south of the Wirral Peninsula in Cheshire, England.', 'Alf Bellis | Alfred Bellis (8 October 1920 – 28 April 2013) was an English footballer who played at outside left in the Football League for Port Vale, Bury, Swansea Town, and Chesterfield.  He also played for Ellesmere Port Town, Rochdale, Notts County, Manchester United and Manchester City during World War II.', 'Kevin Lewis (footballer, born 1940) | Kevin Lewis (born 19 September 1940 in Ellesmere Port) is an English former professional footballer who played as a winger in the Football League for Sheffield United, Liverpool and Huddersfield Town.', 'Paul Jones (footballer, born 1953) | Paul Bernard Jones (born 13 May 1953 in Ellesmere Port, Cheshire) is a former professional footballer who played as a defender in the Football League for Bolton Wanderers, where he spent most of his career, Huddersfield Town, Oldham Athletic, Blackpool, Rochdale and Stockport County.  He was educated at The Whitby High School, Ellesmere Port, where he was spotted by a Bolton scout; as were Barry Siddall and Neil Whatmore.  Paul also made the Full England Squad in 1977 but did not make an appearance.', 'Mick Wright (footballer, born 1946) | John Michael "Mick" Wright (born 25 September 1946) is an English former professional footballer who made 282 appearances in the Football League playing as a right back for Aston Villa.  Wright started his career at Ellesmere Port Grammar School and Ellesmere Port F.C. His career was cut short when he had to retire through injury.', 'Ellesmere Port Stadium | Ellesmere Port Stadium was a greyhound racing, football and speedway stadium on Thornton Road, Ellesmere Port, in the Wirral, Cheshire, England.']
+
+## Generated Outputs
+### reasoning
+The claim makes several assertions about Ellesmere Port Town Football Club, the league they are members of, the identity of the league's principal sponsor, and the league membership of Ford Motors F.C. Based on the notes and context:
+
+1. Ellesmere Port Town Football Club is currently a member of the West Cheshire League Division Two. This is confirmed in both notes and context.
+
+2. The league's current principal sponsor is not the Football Conference; it is Carlsberg. This is stated in several notes.
+
+3. There is no evidence in the notes or context that Ford Motors F.C. is part of the Football Conference or any other league mentioned, nor is there evidence linking Ford Motors F.C. to the West Cheshire League.
+
+4. There is no evidence that the Football Conference sponsors any league in which Ellesmere Port Town Football Club or Ford Motors F.C. participate.
+
+Therefore, the claim that Ellesmere Port Town Football Club is a member of a league sponsored by the Football Conference, and that Ford Motors F.C. is part of this league, is not supported by the evidence.
+
+### new_notes
+['Ellesmere Port Town Football Club currently plays in the West Cheshire League Division Two.', "The West Cheshire League's current principal sponsor is Carlsberg, not the Football Conference.", 'There is no evidence that Ellesmere Port Town Football Club plays in a league sponsored by the Football Conference.', 'Ford Motors F.C. is not mentioned in the context and has no verifiable league membership in the provided data.', 'There is no evidence that Ford Motors F.C. is part of the Football Conference or the West Cheshire League.']
+
+### titles
+['Ellesmere Port Town Football Club League Membership', 'West Cheshire League Sponsorship', 'Ford Motors F.C. League Status']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Ellesmere Port Town F.C.', 'West Cheshire Association Football League']. Documents remaining to be retrieved: ['Ford Motors F.C.'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

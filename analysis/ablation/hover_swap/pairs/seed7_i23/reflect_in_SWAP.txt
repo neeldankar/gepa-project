@@ -1,0 +1,95 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given the fields `claim`, `notes`, produce the fields `query`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Bruce Guthro  and another rock musician are not both members of the alternative rock band Radiohead. The other rock musician sins on the Radiohead song "All I need".
+
+### notes
+['Bruce Guthro is not a member of the English alternative rock band Radiohead.', "The members of Radiohead are Thom Yorke, Jonny Greenwood, Colin Greenwood, Ed O'Brien, and Philip Selway.", "The song 'All I Need' by Radiohead is sung by Thom Yorke, Radiohead's lead vocalist.", "There is no evidence that Bruce Guthro sings on any Radiohead song, including 'All I Need'.", 'Bruce Guthro is not a member of the English alternative rock band Radiohead.', "The members of Radiohead are Thom Yorke, Jonny Greenwood, Colin Greenwood, Ed O'Brien, and Philip Selway.", "The song 'All I Need' by Radiohead is sung by Thom Yorke, Radiohead's lead vocalist.", "There is no evidence that Bruce Guthro sings on any Radiohead song, including 'All I Need'.", 'Bruce Guthro is confirmed to not be a member of the English alternative rock band Radiohead.', "Radiohead's members are Thom Yorke, Jonny Greenwood, Colin Greenwood, Ed O'Brien, and Philip Selway.", "The song 'All I Need' by Radiohead features vocals by Thom Yorke, Radiohead's lead vocalist.", "No evidence exists that Bruce Guthro sings on any Radiohead songs, including 'All I Need'."]
+
+## Generated Outputs
+### reasoning
+Bruce Guthro is not a member of Radiohead. The members of Radiohead are Thom Yorke, Jonny Greenwood, Colin Greenwood, Ed O'Brien, and Philip Selway. The song "All I Need" by Radiohead is sung by Thom Yorke, their lead vocalist. Therefore, the other rock musician who sings on "All I Need" is Thom Yorke. Since Bruce Guthro and Thom Yorke are not both members of Radiohead, the claim is consistent with the available information.
+
+### query
+Are Thom Yorke and Bruce Guthro both members of Radiohead, and who sings on Radiohead's song "All I Need"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['All I Need (Radiohead song)']. Documents remaining to be retrieved: ['Bruce Guthro', 'Thom Yorke'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Christopher B. Landon wrote a 2007 movie that stars Shia Saide LaBeouf, an American actor who starred in the Disney Channel series Even Stevens that premiered in 2004.
+
+### notes
+["Christopher B. Landon is credited as a writer for the 2007 film 'Disturbia'.", "Shia LaBeouf starred in 'Disturbia' (2007), which was written by Christopher Landon.", 'Shia LaBeouf is an American actor who starred in the Disney Channel series Even Stevens, which premiered before or around 2004.', "Christopher B. Landon is credited as a writer for the 2007 film 'Disturbia', which stars Shia LaBeouf.", "Shia LaBeouf is an American actor who played the lead role in the Disney Channel series 'Even Stevens', which started around 2000-2001, prior to 2004.", "Christopher B. Landon is credited as a writer for the 2007 film 'Disturbia', which stars Shia LaBeouf.", "Shia LaBeouf is an American actor who starred in the Disney Channel series 'Even Stevens', which premiered around 2000 and had a movie finale in 2003.", "Shia Saide LaBeouf is the full name of the actor Shia LaBeouf, linking the individual starring in 'Disturbia' and 'Even Stevens'."]
+
+## Generated Outputs
+### reasoning
+The claim states that Christopher B. Landon wrote a 2007 movie starring Shia LaBeouf, who is an American actor known for starring in the Disney Channel series Even Stevens that premiered in 2004. The notes confirm that Christopher B. Landon is credited as a writer for the 2007 film "Disturbia" [1], that Shia LaBeouf starred in "Disturbia" [2], and that he is an American actor who starred in Even Stevens, which premiered by 2004 [3]. These points collectively support the claim.
+
+### query
+Did Christopher B. Landon write the 2007 movie "Disturbia," which starred Shia LaBeouf, an American actor who also starred in the Disney Channel series Even Stevens that premiered in or before 2004?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Disturbia (film)', 'Shia LaBeouf']. Documents remaining to be retrieved: ['Christopher B. Landon'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Relient K vocalist, who wrote Rebuild with Jon Foreman of Switchfoot, and George Thorogood have the profession of musician in common.
+
+### notes
+['Matt Thiessen is the lead singer and primary songwriter for Relient K.', 'Matt Thiessen co-wrote the song "Rebuild" with Jon Foreman of Switchfoot.', 'George Thorogood is a musician, known for rock and blues music.', 'Matt Thiessen is a Canadian-American musician, singer, and songwriter, known for being the lead singer and primary songwriter for the Christian rock band Relient K.', "Matt Thiessen co-wrote the song 'Rebuild' with Jon Foreman of Switchfoot during the 2007 Appetite for Construction Tour.", "George Thorogood is an American musician, singer, and songwriter known for his blues rock style and hits like 'Bad to the Bone' and 'I Drink Alone'.", "Matt Thiessen is the lead singer and primary songwriter of Relient K and co-wrote 'Rebuild' with Jon Foreman.", 'George Thorogood is a musician known for rock and blues music.']
+
+## Generated Outputs
+### reasoning
+The claim states that the vocalist of Relient K, who co-wrote the song "Rebuild" with Jon Foreman of Switchfoot, and George Thorogood both share the profession of musician. To verify this, it is necessary to confirm two key points: first, identify the vocalist of Relient K and verify that he co-wrote "Rebuild" with Jon Foreman; second, verify whether George Thorogood has the profession of musician. If both individuals are musicians, the claim holds true.
+
+### query
+SELECT ?relientKVocalist ?relientKVocalistProfession ?georgeThorogoodProfession WHERE {
+  ?relientKBand wdt:P31 wd:Q215380;  # instance of band
+             rdfs:label "Relient K"@en.
+  ?relientKVocalist wdt:P175 ?relientKBand;  # performer member of Relient K
+                       rdfs:label ?relientKVocalistLabel.
+  FILTER(CONTAINS(LCASE(?relientKVocalistLabel), "relient k vocalist") || 
+         CONTAINS(LCASE(?relientKVocalistLabel), "matt thiessen"))
+  
+  ?song wdt:P175 ?relientKVocalist;
+        wdt:P175 ?jonForeman;
+        rdfs:label ?songLabel.
+  
+  ?relientKVocalist wdt:P106 ?relientKVocalistProfession.
+  ?georgeThorogood wdt:P31 wd:Q5;
+                   rdfs:label "George Thorogood"@en;
+                   wdt:P106 ?georgeThorogoodProfession.
+  
+  FILTER(CONTAINS(LCASE(?songLabel), "rebuild"))
+  FILTER(CONTAINS(LCASE(STR(?relientKVocalistProfession)), "musician"))
+  FILTER(CONTAINS(LCASE(STR(?georgeThorogoodProfession)), "musician"))
+} LIMIT 10
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['George Thorogood', 'Matt Thiessen', 'Rebuild (song)']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,130 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be provided with a `claim` (a factual statement that may involve multiple interconnected facts or entities) and a set of `notes` that include partial background information, relevant contextual details, or observations regarding the claim. Your goal is to generate a concise, clear, and focused `query` (or set of queries) that can be used to verify or fact-check the claim by retrieving relevant documents or evidence from external sources (e.g., Wikipedia articles).
+
+Input Format:
+
+- `claim`: A factual statement that may cover multiple aspects or assertions, often involving named entities such as people, films, places, products, or other specific domain-related items.
+- `notes`: A list of context snippets or observations summarizing the currently known information, including what is missing, ambiguous, or contradictory about the claim’s components. These notes reflect gaps in the information or conflicting details discovered during initial investigation.
+
+Output:
+
+- `query`: One or more clear, well-structured questions or search prompts that directly target the critical pieces of factual information needed to verify each part of the claim. Each query should be specific enough to retrieve relevant documents corresponding to key entities, relationships, or facts mentioned in the claim.
+
+Key details and domain-specific heuristics to include:
+
+1. **Disambiguate Entities Carefully:** When the claim references specific named entities (persons, films, songs, products, places), the query should explicitly name these entities, including relevant descriptors or disambiguation to avoid confusion (e.g., “Solo (Norwegian soft drink)” rather than just “Solo”).
+
+2. **Decompose Complex Claims:** If the claim involves multiple interrelated facts (e.g., an actor starring in two films and a director credit), break down the verification into stepwise, connected questions addressing each part individually, so that sources can be retrieved for all relevant components.
+
+3. **Identify and Target Missing or Ambiguous Links:** Use the `notes` to spot what information is lacking or uncertain. Focus queries on resolving those uncertainties (e.g., if burial location or whether a cemetery is part of a park is unclear, query specifically for these facts).
+
+4. **Cover All Verification Points:** Make sure queries collectively cover every factual assertion embedded in the claim to avoid partial retrieval of relevant resources.
+
+5. **Use Precise and Specific Language:** Frame queries in a form suited for document retrieval, often as clear factual questions or entity-relationship questions. Avoid vague or overly broad queries.
+
+6. **Include Domain Context When Needed:** When domain knowledge influences interpretation (e.g., a director’s known roles, or geographic relationships between cemeteries and parks), reference such context in formulating queries to guide retrieval towards the correct entities and relevant data.
+
+Generalizable Strategy:
+
+- Read the claim carefully, identify all named entities and relationships.
+- Cross-reference those with the `notes` to find gaps or contradictions.
+- For each gap or verification point, generate a direct factual question or phrase that would retrieve documents clarifying or confirming that point.
+- Combine these into a coherent set of queries ensuring coverage of the entire claim.
+- Format the output strictly as `query` without additional explanations.
+
+Example guidance:
+
+For a claim about a film actor and director, queries might include:  
+- "Who starred alongside [Known Actor] in [Film Name]?"  
+- "Did that actor appear in [Second Film Name]?"  
+- "Who directed [Second Film Name]?"
+
+For a claim about a burial place and its geographic association:  
+- "Where is [Person Name] buried?"  
+- "Is [Cemetery Name] located within the [Park or Recreation Area Name]?"
+
+By following these detailed instructions, your generated queries will effectively target the key facts needed for thorough claim verification and ensure retrieval of all necessary supporting documents.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Cast is considered a rock band. The band Jacob Gentry collaborated with is also considered a rock band.
+
+### notes
+['Jacob Gentry collaborated with Broken Bells on short films based on their music.', 'No direct information in the context about Cast being a rock band.', 'No direct information about Broken Bells’ genre in the context.', 'Jacob Gentry collaborated with Broken Bells, which is an American alternative rock band.', 'No information available in the context to confirm whether Cast is a rock band.', 'Jacob Gentry collaborated with Broken Bells, an American indie rock band.', 'No information available to confirm Cast is a rock band.']
+
+## Generated Outputs
+### reasoning
+The claim involves verifying two main points: first, that Cast is considered a rock band, and second, that the band with which Jacob Gentry collaborated is also categorized as a rock band. To fact-check this, we need to confirm the genre designation for Cast as a band and determine which band Jacob Gentry collaborated with, along with that band's genre classification. There is no indication in the notes about which band Jacob Gentry collaborated with, so an inquiry into his collaborations is required.
+
+### query
+Is Cast a rock band?  
+With which band did Jacob Gentry collaborate?  
+Is the band Jacob Gentry collaborated with considered a rock band?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Broken Bells', 'Jacob Gentry']. Documents remaining to be retrieved: ['Cast (band)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Teide National Park, established in 1943, is located in Spain's Canary Islands. So is the park where you would find the plant Echium wildpretii subsp. trichosiphon.
+
+### notes
+['Teide National Park is located on Tenerife in the Canary Islands.', 'Echium wildpretii subsp. trichosiphon is found at high altitudes on La Palma, another island in the Canary Islands.', 'Teide National Park and the habitat of Echium wildpretii subsp. trichosiphon are on different islands within the Canary Islands.', 'Teide National Park is located on Tenerife in the Canary Islands.', 'Echium wildpretii subsp. trichosiphon is endemic to high altitudes on La Palma, a different island in the Canary Islands from Tenerife.', 'Teide National Park and the natural habitat of Echium wildpretii subsp. trichosiphon are on separate islands within the Canary Islands archipelago.', 'Teide National Park is located on Tenerife in the Canary Islands, established in 1943.', 'Echium wildpretii subsp. trichosiphon is found at high altitudes on La Palma, a different island in the Canary Islands from Tenerife.', 'Teide National Park and the natural habitat of Echium wildpretii subsp. trichosiphon are located on separate islands within the Canary Islands archipelago.']
+
+## Generated Outputs
+### reasoning
+The claim asserts two main points: first, that Teide National Park was established in 1943 and is located in the Canary Islands of Spain; second, that the park where Echium wildpretii subsp. trichosiphon is found is also located in the Canary Islands. The notes confirm Teide National Park is on Tenerife, one of the Canary Islands, and that the plant subspecies is found on La Palma, another island in the Canary Islands, indicating that the two parks are on different islands but still both in the Canary Islands. Thus, verification is needed for the establishment year of Teide National Park, its location, the exact distribution of Echium wildpretii subsp. trichosiphon, and the park or protected area where the plant is found to confirm if it is indeed a park and ascertain its location within the Canary Islands.
+
+### query
+- When was Teide National Park in Tenerife, Canary Islands, established?  
+- Where is Teide National Park located?  
+- What is the natural habitat and geographic distribution of Echium wildpretii subsp. trichosiphon?  
+- In which protected area or park is Echium wildpretii subsp. trichosiphon found on La Palma, Canary Islands?  
+- Is the habitat of Echium wildpretii subsp. trichosiphon within a national park or nature reserve on La Palma?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Echium wildpretii subsp. trichosiphon', 'Teide National Park']. Documents remaining to be retrieved: ['Caldera de Taburiente National Park'].
+
+
+
+# Example 3
+## Inputs
+### claim
+An Greek actor who was a CIA operative in Chuck Versus the A-Team was born in 1974. The actor plays a character in commercials for Old Spice.
+
+### notes
+["Isaiah Mustafa appeared as a CIA operative in 'Chuck Versus the A-Team'.", 'Isaiah Mustafa was born in 1974.', 'Isaiah Mustafa is famous for playing the Old Spice Guy in commercials.', 'Isaiah Mustafa is not Greek but American.', "Isaiah Mustafa, who was born in 1974, played a CIA operative in 'Chuck Versus the A-Team' and is famous for his role as the Old Spice Guy in commercials.", 'Isaiah Mustafa is American, not Greek.', "There is no evidence of a Greek actor born in 1974 who played a CIA operative in 'Chuck Versus the A-Team' and appeared in Old Spice commercials.", "Isaiah Mustafa is the actor who played a CIA operative in 'Chuck Versus the A-Team'.", 'Isaiah Mustafa was born in 1974.', 'Isaiah Mustafa is known for playing the Old Spice Guy in commercials.', 'Isaiah Mustafa is American, not Greek.', "No Greek actor born in 1974 played a CIA operative in 'Chuck Versus the A-Team' and appeared in Old Spice commercials."]
+
+## Generated Outputs
+### reasoning
+The claim states that a Greek actor who was a CIA operative in "Chuck Versus the A-Team" and was born in 1974 also plays a character in Old Spice commercials. From the notes, Isaiah Mustafa is identified as the actor who played a CIA operative in that show, was born in 1974, and is known for Old Spice commercials. However, Isaiah Mustafa is not Greek but American. Therefore, the claim incorrectly identifies the actor's ethnicity. To fact-check this claim, it is necessary to verify the actor’s identity and ethnicity, his role in "Chuck Versus the A-Team," his birth year, and his association with Old Spice commercials.
+
+### query
+1. "Who played the CIA operative in Chuck Versus the A-Team?"
+2. "What is the ethnicity or nationality of Isaiah Mustafa?"
+3. "Was Isaiah Mustafa born in 1974?"
+4. "Does Isaiah Mustafa appear in Old Spice commercials?"
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Chuck Versus the A-Team', 'Isaiah Mustafa', 'Make a Smellmitment']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

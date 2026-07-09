@@ -1,0 +1,183 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You are tasked with a focused fact verification and evidence consolidation task, where you analyze three types of inputs—`claim`, `notes`, and `context`—to produce two outputs: `new_notes` and `titles`. The `claim` is a textual statement possibly containing multiple factual assertions that need verification. The `notes` are often extracted snippets, paraphrases, or partial evidences relevant to the claim, while the `context` comprises longer document texts or summaries potentially containing detailed source information related to entities, events, timelines, or attributes mentioned in the claim.
+
+Your overarching goal is to verify or refute each distinct component of the claim by synthesizing and consolidating information from both `notes` and `context`, avoiding redundancy, speculation, or irrelevant content.
+
+---
+
+Detailed Guidelines and Domain-Specific Considerations:
+
+1. **Input Structure and Understanding**  
+   - **claim**: A statement consisting of one or more assertions (e.g., about persons, events, dates, geographic locations, product characteristics, filmographies, or comparative facts).  
+   - **notes**: Fragmented facts, paraphrases, or extracted evidences that may partially support or contradict the claim. This input can contain redundancy.  
+   - **context**: Summaries or full-text snippets from diverse documents that may provide authoritative or more detailed information on the claim’s subjects.
+
+2. **Verification Approach and Reasoning Strategy**  
+   - Parse the claim into discrete assertions where possible and address each individually.  
+   - Map claim elements (entities, dates, events, attributes) to facts in both `notes` and `context`.  
+   - Cross-verify facts by probing both inputs together to spot confirmations, contradictions, or missing information.  
+   - Explicitly note when parts of the claim cannot be verified because critical information about entities, events, or attributes is absent from both inputs.  
+   - For geographic, historical, biographical, or product-related facts, use explicit details only—avoid assumptions or inference beyond the data given.  
+   - When multiple entities or facts overlap (e.g., multiple actors in movies, overlapping dates, competing geographic references), carefully separate which parts are supported and which are not.
+
+3. **Consolidation of `new_notes`**  
+   - Remove redundancy by combining similar or repeated facts into succinct, clear statements—preferably one or two sentences each.  
+   - Focus exclusively on information directly relevant to verifying the claim’s assertions, omitting irrelevant tangents or unrelated domain facts.  
+   - Clarify precisely which elements of the claim are supported, contradicted, or unverifiable.  
+   - If verification is impossible due to missing data or ambiguity, clearly state this instead of speculating.  
+   - Maintain factual accuracy and align notes closely with evidence found in the inputs.
+
+4. **Creation of `titles`**  
+   - Generate concise, descriptive headings that summarize key topics, entities, or factual relationships uncovered during verification.  
+   - Titles should be domain-relevant and reflect the organizing principles of your notes (e.g., names of persons, film titles with dates, product or geographic features, timeline relations).  
+   - They serve as topical indexes for the summarized evidences and facilitate quick understanding of verification focuses.
+
+5. **Domain-Specific Knowledge Embedded in the Task**  
+   - Common facts relate to soft drink brands, flavor profiles, and geographic market presence.  
+   - Biographical facts include film directors, voice actors, release years, animation movie titles, and actor nationalities.  
+   - Geographic comparisons, including city versus county boundaries, size, and jurisdictional status, are frequent.  
+   - Product ownership or company-railway station relations may appear, requiring careful geographic and corporate structure reasoning.  
+   - Scientific or technical terms (e.g., chemical or biological entities) may appear but are often not central to verification.
+
+6. **Generalizable Reasoning and Workflow**  
+   - Identify key components (entities, events, dates) in the claim first.  
+   - Search both `notes` and `context` for explicit assertions tied to these components.  
+   - Distill duplicated claims and reconcile contradictions; produce a coherent evaluation per factual assertion.  
+   - Explicitly separate verifiable from unverifiable or contradicted claim parts in `new_notes`.  
+   - Group related notes under thematic headings synthesized as `titles`.
+
+7. **Handling Missing or Conflicting Data**  
+   - When the claim contains information about an entity or event absent in all inputs, clearly note that verification is not possible.  
+   - If parts are verifiable but others are unsupported, separately highlight these distinctions.  
+   - Avoid speculation or implied connections not grounded in provided evidence.
+
+---
+
+Summary:
+
+Your task is a meticulous, evidence-based fact-checking and summarization exercise that integrates fragmented inputs into a concise, focused verification dossier. Your outputs must be:
+
+- **`new_notes`**: A reduced, clear, and precise list of facts confirming, contradicting, or indicating unverifiability of the claim’s components based on the complete input set.  
+- **`titles`**: A concise list of relevant topical headings that summarize and organize the key subjects, entities, or relationships essential to understanding the verification outcome.
+
+This task requires strict adherence to evidence, careful parsing of multi-part claims, clear handling of data absence or contradiction, and domain-aware synthesis of facts to aid downstream understanding or retrieval tasks.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Director Robert Stevenson was from a geographically smaller country than another director. That director directed his final film Romance of Astree and Celadon.
+
+### notes
+["Éric Rohmer directed the final film 'Romance of Astree and Celadon', released in 2007.", "Robert Stevenson is not mentioned in the provided context, so his country of origin and its geographic size relative to Éric Rohmer's country cannot be verified.", "Therefore, the claim that Robert Stevenson was from a geographically smaller country than the director of 'Romance of Astree and Celadon' cannot be confirmed or refuted based on the given information.", "Éric Rohmer directed the final film 'Romance of Astree and Celadon,' released in 2007.", 'Éric Rohmer was a French film director.', "There is no information about Robert Stevenson's country of origin or its geographic size in the provided data.", "The claim that Robert Stevenson was from a geographically smaller country than Éric Rohmer's France cannot be confirmed or refuted based on the given information.", "Éric Rohmer was a French director who directed the final film 'Romance of Astree and Celadon' released in 2007.", "There is no available information about Robert Stevenson's country of origin or its geographic size in the provided data.", 'Therefore, the claim that Robert Stevenson was from a geographically smaller country than Éric Rohmer cannot be confirmed or refuted based on the given information.']
+
+### context
+['Romance of Astree and Celadon | Romance of Astrea and Celadon (French: "Les Amours d\'Astrée et de Céladon" ) is the final film directed by Éric Rohmer.  It was released September 5, 2007.', 'Maestro (2014 film) | Maestro is a 2014 French comedy-drama film directed by Léa Fazer.  The idea of the film came from co-writer Jocelyn Quivrin\'s experience of working with director Éric Rohmer in 2006 on Rohmer\'s last film "Romance of Astree and Celadon".  It stars Pio Marmaï, Michael Lonsdale, Déborah François and Alice Belaïdi.', 'Spirit of Korean Celadon | Spirit of Korean Celadon () is a 2002 North Korean film directed by Phyo Kwang.  A drama with "fun, unconventional musical sequences", the film is set during the Goryeo period and tells the story of a craftsman devoted to making traditional Korean celadon.', 'Koryo Celadon | Koryo Celadon is a 1979 American short documentary film directed by Paul Raimondi about Goryeo dynasty pottery.  It was nominated for an Academy Award for Best Documentary Short.  It documents the manufacturing process of celadon vessels by Living National Treasure Yu Geun-Hyeong.', "Bachelor Apartment | Bachelor Apartment is a 1931 American pre-Code RKO comedy/romance film directed by and starring Lowell Sherman as a womanizing playboy who falls in love with Irene Dunne's honest working girl.  The credits for the film, and all sources from that time show that the film was based on a story by New York playwright John Howard Lawson, the screenplay was adapted by J. Walter Ruben.  However, Lawson would later claim that the final screenplay had not been altered from what he had originally written.  The cast features Mae Murray (a former silent film star, who was attempting to make a come-back in talkies), Norman Kerry and Ivan Lebedeff.", 'Celadon | Celadon is a term for pottery denoting both wares glazed in the jade green celadon color, also known as greenware (the term specialists now tend to use) and a type of transparent glaze, often with small cracks, that was first used on greenware, but later used on other porcelains.  Celadon originated in China, though the term is purely European, and notable kilns such as the Longquan kiln in Zhejiang province are renowned for their celadon glazes.  Celadon production later spread to other regions in Asia, such as Japan, Korea and Thailand.  Eventually European potteries produced some pieces, but it was never a major element there.  Finer pieces are in porcelain, but both the color and the glaze can be produced in stoneware and earthenware.  Most of the earlier Longquan celadon is on the border of stoneware and porcelain, meeting the Chinese but not the European definitions of porcelain.', 'The Romance of Crime | The Romance of Crime is an original novel written by Gareth Roberts and based on the long-running British science fiction television series "Doctor Who".  It features the Fourth Doctor, Romana II and K-9.  It takes place directly before the Missing Adventure "The English Way of Death", also by Roberts.', 'This Is Not What I Expected | This Is Not What I Expected (Chinese: 喜欢你) is a 2017 Chinese romance comedy film directed by Xu Hong Yu and produced by Peter Chan, starring Zhou Dongyu and Takeshi Kaneshiro.  It is adapted from the novel "Finally I Get You" written by Lan Bai Se.  The film was released on April 27, 2017.', 'In Your Eyes (2014 film) | In Your Eyes is a 2014 American paranormal romance film directed by Brin Hill and written by Joss Whedon, starring Zoe Kazan, Michael Stahl-David, Nikki Reed, Steve Harris and Mark Feuerstein.  It is the second feature by Bellwether Pictures.  "In Your Eyes", set in New Mexico and New Hampshire, follows Dylan and Rebecca.  They live on opposite sides of the country, but are able to sense what the other is feeling - despite being strangers.', 'Terra Cotta Building (Alfred, New York) | Terra Cotta Building is a historic office building and display center located at Alfred in Allegany County, New York.  It was built in 1892 by the Celadon Terra Cotta Co and later sold in 1906, to the Ludowici Company of Ohio, which became the Ludowici-Celadon Company.  It is a one-story, 16 ft , 25 ft building built almost entirely of terra cotta bricks, ornamental and roofing tiles manufactured by Celadon.  The building was designed as a sales office for the company, and was considered a "catalog" of their work.  A replica was erected at the 1893 Columbian Exposition in Chicago.  The building was the only remaining structure after a fire broke out on August 29, 1909 and destroyed what was at the time called Ludowici-Celadon Company.']
+
+## Generated Outputs
+### reasoning
+The claim involves two directors: Robert Stevenson and another director who directed the final film "Romance of Astree and Celadon." The only director connected explicitly to "Romance of Astree and Celadon" in the context is Éric Rohmer, who directed that film, released in 2007. The claim also states that Robert Stevenson is from a geographically smaller country than this other director.
+
+First, we confirm that Éric Rohmer directed "Romance of Astree and Celadon" as his final film, which the context verifies clearly.
+
+Second, we consider the nationalities and the relative geographical size of the countries of the two directors. No direct information about Robert Stevenson's or Éric Rohmer's country of origin or the size of their countries is given in the notes or context. The context does not mention Robert Stevenson at all. Thus, there is no data to verify the claim about the relative sizes of their countries.
+
+Therefore:
+- The part of the claim that "Romance of Astree and Celadon" was directed by the second director (Éric Rohmer) is supported.
+- The part of the claim about Robert Stevenson's country being geographically smaller than that of Éric Rohmer cannot be verified from the provided information, as there is no mention of Robert Stevenson or relevant geographic data.
+
+### new_notes
+["Éric Rohmer directed the final film 'Romance of Astree and Celadon', released in 2007.", "Robert Stevenson is not mentioned in the provided context, so his country of origin and its geographic size relative to Éric Rohmer's country cannot be verified.", "Therefore, the claim that Robert Stevenson was from a geographically smaller country than the director of 'Romance of Astree and Celadon' cannot be confirmed or refuted based on the given information."]
+
+### titles
+["Éric Rohmer and 'Romance of Astree and Celadon'", 'Verification Limitations Regarding Robert Stevenson and Country Size']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Romance of Astree and Celadon', 'Éric Rohmer']. Documents remaining to be retrieved: ['Robert Stevenson (director)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The Relient K vocalist, who wrote Rebuild with Jon Foreman of Switchfoot, and George Thorogood have the profession of musician in common.
+
+### notes
+['The provided context and notes contain no information on Relient K, Jon Foreman, George Thorogood, or their professions.', "Verification of the claim that the Relient K vocalist co-wrote 'Rebuild' with Jon Foreman and that George Thorogood shares the profession of musician is not possible based on the given inputs.", 'The song "Rebuild" was co-written by Jon Foreman of Switchfoot and Matt Thiessen, the vocalist of Relient K, who also provided second vocals on the track.', 'Jon Foreman is confirmed as a musician (lead singer and songwriter of Switchfoot), supporting that the Relient K vocalist is also a musician by virtue of songwriting and performing.', 'There is no information in the provided notes or context about George Thorogood or his profession, so verification of his musician status is not possible.', "Matt Thiessen is the vocalist of Relient K and co-wrote the song 'Rebuild' with Jon Foreman of Switchfoot, also providing second vocals on the track.", 'Jon Foreman is a musician, lead singer, and songwriter of Switchfoot, confirming his profession.', "George Thorogood is an American musician, singer, and songwriter, known for his high-energy boogie-blues music and hits like 'Bad to the Bone'.", 'Given that both Matt Thiessen (Relient K vocalist) and George Thorogood are musicians, they share the profession of musician.']
+
+### context
+["More George Thorogood and The Destroyers | More George Thorogood and the Destroyers is the fourth album by George Thorogood and The Destroyers, released in 1980.  An alternate name for the album is I'm Wanted.", 'Better Than the Rest | Better Than the Rest is the third album (mini-album) of songs by George Thorogood and the Destroyers, recorded in 1974 and released in 1979.  At the time the songs were recorded, Thorogood was an unknown artist who was not signed to a record label.  In 1979, after Thorogood had released his first two official albums on Rounder Records, "Better Than The Rest" was released by MCA.  In 1986, the songs from this album were released on compact disc with the title "Nadine" using a different track order.', 'George Thorogood | George Thorogood (born February 24, 1950) is an American musician, singer and songwriter from Wilmington, Delaware.  His "high-energy boogie-blues" sound became a staple of 1980s rock radio, with hits like his original songs "Bad to the Bone" and "I Drink Alone".  He has also helped popularize older songs by American icons, such as "Move It on Over", "Who Do You Love? ", and "House Rent Boogie/One Bourbon, One Scotch, One Beer", which became staples of classic rock radio.', 'George Thorogood discography | A discography of George Thorogood.', 'Maverick (George Thorogood and the Destroyers album) | Maverick (George Thorogood and the Destroyers album)', 'Bad to the Bone (George Thorogood &amp; The Destroyers album) | Bad to the Bone (George Thorogood &amp; The Destroyers album)', 'George Thorogood and the Destroyers (album) | George Thorogood and the Destroyers is the self-titled debut album by American blues rock band George Thorogood and the Destroyers, released in 1977.  Consisting mostly of covers of blues hits, it included a medley of John Lee Hooker\'s "House Rent Boogie" and "One Bourbon, One Scotch, One Beer", the latter a song written by Rudy Toombs for Amos Milburn, and later covered by Hooker.', 'Nadine (album) | Nadine is an album by George Thorogood and the Destroyers.  Although it was marketed as a new release in 1986, "Nadine" is actually a repackaged version of the 1979 vinyl album "Better Than the Rest" that was reissued on compact disc.  The songs on "Nadine" were Thorogood\'s first recordings, which were made in 1974.', 'Alison Thorogood | Alison Thorogood (born 30 November 1960) is a British sprint canoer who competed in the early-to-mid-1990s.  At the 1992 Summer Olympics in Barcelona, she was eliminated in the semifinals of both the K-1 500 m and the K-4 500 m event.  Four years later in Atlanta, Thorogood was eliminated in the semifinals of the K-2 500 m event.', 'Willie and the Hand Jive | "Willie and the Hand Jive" is a song written by Johnny Otis and originally released as a single in 1958 by Johnny Otis Show, reaching #9 on the "Billboard" Hot 100 chart and #5 on the Billboard R&B chart.  The song has a Bo Diddley beat and was partly inspired by the music sung by a chain gang Otis heard while he was touring.  The lyrics are about a man who became famous for doing a dance with his hands, but the song has been accused of glorifying masturbation.  It has since been covered by numerous artists, including The Strangeloves, Eric Clapton, Cliff Richard, Kim Carnes, George Thorogood and The Grateful Dead.  Clapton\'s 1974 version was also released as a single and also reached the Billboard Top 40, peaking at #26.  Thorogood\'s 1985 version reached #25 on the Hot Mainstream Rock Tracks chart.']
+
+## Generated Outputs
+### reasoning
+The claim consists of two main assertions: 
+
+1. The vocalist of Relient K co-wrote the song "Rebuild" with Jon Foreman of Switchfoot.
+2. George Thorogood shares the profession of musician with the Relient K vocalist (and by extension Jon Foreman).
+
+Regarding the first assertion, the notes state that the song "Rebuild" was co-written by Jon Foreman and Matt Thiessen, who is the vocalist for Relient K and also provided second vocals on the track. This confirms the first assertion.
+
+Regarding the second assertion, the context provides detailed information about George Thorogood, stating he is an American musician, singer, and songwriter. Meanwhile, the notes confirm that Jon Foreman is a musician and the Relient K vocalist is also a musician by virtue of songwriting and performing. Therefore, George Thorogood and the Relient K vocalist share the profession of musician.
+
+All parts of the claim are supported by the input data; there is no contradictory information present. The claim is verified as accurate.
+
+### new_notes
+["Matt Thiessen is the vocalist of Relient K and co-wrote the song 'Rebuild' with Jon Foreman of Switchfoot, also providing second vocals on the track.", 'Jon Foreman is a musician, lead singer, and songwriter of Switchfoot, confirming his profession.', "George Thorogood is an American musician, singer, and songwriter, known for his high-energy boogie-blues music and hits like 'Bad to the Bone'.", 'Given that both Matt Thiessen (Relient K vocalist) and George Thorogood are musicians, they share the profession of musician.']
+
+### titles
+["Relient K and 'Rebuild' Songwriting Collaboration", 'Jon Foreman as Musician and Songwriter', "George Thorogood's Musical Career", 'Shared Profession of Musician']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['George Thorogood', 'Rebuild (song)']. Documents remaining to be retrieved: ['Matt Thiessen'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The album that included the cover of the song Stormy, is the studio album by Carlos Santana, a musician who first became famous in the late 1960s and early 1970s.
+
+### notes
+["There is no information in the provided context or notes that identifies the cover of the song 'Stormy' as part of any Carlos Santana studio album.", 'Carlos Santana is a Mexican-American rock guitarist who achieved fame by the late 1960s, as evidenced by his 1969 Woodstock performance and debut album.', "Santana's discography includes multiple studio albums dating back to the late 1960s and early 1970s.", 'Carlos Santana, a Mexican-American rock guitarist, first became famous in the late 1960s and early 1970s, as evidenced by his 1969 Woodstock performance and early albums.', "Santana covered the song 'Stormy' in 1978 on his ninth studio album 'Inner Secrets'.", "The album 'Inner Secrets' is a studio album by Santana, marking a directional shift in his music style.", 'Carlos Santana is a Mexican-American musician who first gained fame in the late 1960s and early 1970s, as evidenced by his 1969 Woodstock performance and early albums.', "The song 'Stormy' was originally released by Classics IV in 1968 and has been covered by multiple artists including Santana.", "Santana covered the song 'Stormy' in 1978 on his ninth studio album 'Inner Secrets'.", "'Inner Secrets' is a studio album by Carlos Santana marking a shift towards album-oriented rock.", "Therefore, 'Stormy' appears on a studio album by Carlos Santana, confirming that the cover is part of his studio album discography."]
+
+### context
+['Trey Anastasio with Special Guest Carlos Santana | Recorded live at the Warfield Theater in San Francisco, California on May 31, 2003, this video features the Trey Anastasio Band (TAB) with Carlos Santana sitting in for a number of covers and Anastasio originals.  It was released under the name Live at the Warfield.  It features the entire second set of the show, with Santana sitting in on every song.  Each of the four songs in the second set segued into one another.  In addition, a bonus track, "The Way I Feel", was taken from the first set of the show and also includes Santana sitting in.  Santana also sat in for the song "Last Tube" during the first set, but that was not included on the DVD.', 'Oneness (Carlos Santana album) | Oneness: Silver Dreams - Golden Reality is a 1979 album by Carlos Santana.  It was his second of three solo albums (the others being "Illuminations and The Swing of Delight") to be released under his temporary Sanskrit name "Devadip" Carlos Santana, given to him by Sri Chinmoy.  The album features members of the band Santana, and consists mostly of instrumental songs and ballads.', 'Shape Shifter (album) | Shape Shifter is the twenty-first studio album (thirty-sixth album overall) by Santana.  It was released on May 14, 2012.  This album is the first from his new record label Starfaith Records, which is distributed by Sony Music Entertainment, owners of most of Santana\'s albums (except those recorded for Polydor Records which are owned by Universal Music Group).  It is also the first album since 1992\'s "Milagro" that does not feature guest singers in any of the songs, a style that characterized Santana\'s albums since "Supernatural".  The album contains only one song with vocals ("Eres La Luz").  The track "Mr. Szabo" is a homage to the Hungarian guitarist Gábor Szabó, who released a series of 8 albums for Impulse Records between 1966 and 1967, and one of Carlos Santana\'s early idols, and features a similar rhythmical and harmonic structure to "Gypsy Queen", a Szabó hit from 1966 covered by Santana in 1970 as a medley with Fleetwood Mac\'s "Black Magic Woman".', 'Soul Sacrifice (song) | "Soul Sacrifice" is an instrumental written and recorded by the American rock group Santana.  Identified as one of the highlights of the 1969 Woodstock festival and documentary film, "Soul Sacrifice" features extended guitar passages by Carlos Santana and a percussion section with a solo by drummer Michael Shrieve.  It is included as the final track on their 1969 debut album, "Santana", and on several live and compilation albums.  The studio and Woodstock versions as well as an alternate take are included on the 2004 25th anniversary of "Santana".', 'Carlos Santana Live | Carlos Santana Live is a 2004 live album by guitarist Carlos Santana, released with Santana as a solo performer.', 'Carlos Santana discography | The discography of Carlos Santana, a Mexican-American rock guitarist, consists of seven studio albums, three live albums, six compilation albums and five singles.', 'Dance of the Rainbow Serpent | Dance of the Rainbow Serpent is a 1995 three-CD retrospective box set by Santana that also covers Carlos Santana solo projects and appearances with other artists.  Unless noted, all tracks are studio recordings, with some of them previously unreleased (all are on the third disc).  The individual discs are sub-titled Heart, Soul, and Spirit.  It includes a 60-page booklet with detailed track listing, song comments by Carlos Santana, musician credits, biographical essay and a poem by Hal Miller, a list of touring band members through the years, and a band/solo discography up to 1995.  The cover art was done by Michael Rios and Anthony Machado.', 'Carlos Santana &amp; Buddy Miles! Live! | Carlos Santana & Buddy Miles!  Live!  is a live album by Carlos Santana and Buddy Miles.', 'Santana discography | The discography of the rock band Santana formed by the Mexican-American rock guitarist Carlos Santana consists of 24 studio albums, seven live albums, 61 singles and 23 compilation albums.', 'Santana Brothers | Santana Brothers (sometimes credited as simply Brothers) is a 1994 album by Carlos Santana, his brother Jorge, and his nephew Carlos Hernandez.  It reached 191 on the "Billboard" 200 album chart.']
+
+## Generated Outputs
+### reasoning
+The claim has two assertions: first, that the album including the cover of the song "Stormy" is a studio album by Carlos Santana; second, that Carlos Santana is a musician who first became famous in the late 1960s and early 1970s.
+
+The provided context includes information about various Carlos Santana albums, his discography, and some background. However, none of the context entries specifically mention the song "Stormy" or an album that includes a cover of that song. The notes explicitly state "N/A," providing no additional information.
+
+Regarding the second part of the claim, the context indirectly supports that Carlos Santana is a Mexican-American rock guitarist who has been active since at least the 1969 Woodstock festival (see context [4]), supporting that he became famous in the late 1960s and early 1970s.
+
+Since the presence of the song "Stormy" on any Santana studio album cannot be verified from the given inputs, this part of the claim is unverified. The claim about Carlos Santana's period of rising fame is supported implicitly by the 1969 Woodstock reference, indicating the late 1960s.
+
+Thus, the verification results are:
+- The assertion that "Stormy" is included on a Santana studio album is unverifiable with the given data.
+- The assertion that Santana first became famous in the late 1960s and early 1970s is supported.
+
+### new_notes
+["There is no information in the provided context or notes that identifies the cover of the song 'Stormy' as part of any Carlos Santana studio album.", 'Carlos Santana is a Mexican-American rock guitarist who achieved fame by the late 1960s, as evidenced by his 1969 Woodstock performance and debut album.', "Santana's discography includes multiple studio albums dating back to the late 1960s and early 1970s."]
+
+### titles
+['Carlos Santana Early Fame and Career', "Unknown Status of the Song 'Stormy' Cover on Santana Albums"]
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Carlos Santana', 'Inner Secrets', 'Stormy (song)']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

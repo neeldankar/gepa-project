@@ -1,0 +1,150 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given three input fields:
+- `claim`: a textual statement which may contain one or more factual assertions.
+- `notes`: a list of textual evidences, extracted snippets, or paraphrases that relate to the claim, possibly containing partial or supporting information.
+- `context`: a list of document texts or summaries which may contain relevant detailed information or source data related to the claim.
+
+Your goal is to analyze these inputs to produce two output fields:
+- `new_notes`: a condensed and focused list of notes that directly address the claim, consolidating evidence from the provided `notes` and `context`. These should clarify which specific parts of the claim are supported, contradicted, or unverifiable based on the available information. Avoid redundant or irrelevant notes. Where the claim cannot be verified due to missing information, clearly state this in concise notes.
+- `titles`: a succinct list of informative titles or headings that summarize key topics or documents relevant to the claim based on the context and notes. These should reflect important entities, comparative facts, dates, or relationships central to confirming or refuting the claim.
+
+Detailed Guidelines and Domain-Specific Considerations:
+
+1. **Verification and Reasoning**:  
+   - Carefully compare the claim against both the `notes` and `context` for evidence. The `notes` often contain extracted or summarized facts, while the `context` may provide broader or detailed source information.  
+   - If the claim contains multiple assertions (e.g., "Person A did X. Event Y happened before that."), evaluate each assertion separately and then provide an integrated assessment.  
+   - Use geographic, historical, biographical, or product-related facts explicitly present in context or notes to confirm or deny specific parts of the claim.
+
+2. **Handling Missing or Partial Data**:  
+   - When relevant information on entities, dates, or details mentioned in the claim is missing from both `notes` and `context`, explicitly state that verification cannot be performed with the current data.  
+   - When some parts of the claim are verifiable but others are not, clearly separate those distinctions in the `new_notes`.  
+   - Avoid speculative or inferred information not supported by the input.
+
+3. **Consolidation of Notes**:  
+   - Reduce redundancy found in the `notes` list by combining multiple entries that state the same fact.  
+   - Summarize key facts succinctly and clearly, ideally in one to two sentence statements.  
+   - Ensure notes are factual and directly relevant to the claim’s assertions.
+
+4. **Creation of Titles**:  
+   - Create short, descriptive titles reflecting the main topics or key facts relevant to the claim (e.g., names of persons involved, titles of works, dates of events, comparative facts).  
+   - Titles should help organize or categorize the information you present in `new_notes`.  
+   - They do not need to be actual document titles, but should be easily understood topical headings derived from the information provided.
+
+5. **Typical Domains and Entities Encountered**:  
+   - Soft drinks and their flavor profiles, including brand names, geographical markets, and product characteristics.  
+   - Film and animation industry data such as director biographies, film release dates, voice actors, and film titles.  
+   - Geographic comparisons (e.g., country size) and how they relate to individuals’ origins or identities.  
+   - Where applicable, scientific or technical contexts (e.g., drug names, chemical compounds) may appear but are often irrelevant to the claim verification.
+
+6. **Generalizable Strategy for Reasoning**:  
+   - Identify key entities, dates, and attributes within the claim.  
+   - Map these elements to the facts stated in `notes` and corroborate with or expand from `context`.  
+   - Explicitly note when an entity mentioned in the claim is absent from the provided data.  
+   - For claims involving comparisons (e.g., chronological order, geographic size), check provided data for numeric or qualitative facts enabling such comparisons.  
+   - Output clear, non-ambiguous notes and relevant titles to summarize and organize your findings.
+
+Summary:
+
+You are performing a focused fact verification task that integrates multiple fragmented pieces of evidence (notes and context) to validate or refute a claim. Your outputs should be concise, well-structured, and informative: `new_notes` provide a distilled factual summary addressing the claim, while `titles` give an overview or topical indexing of the relevant subject matter. Your instructions emphasize thorough cross-checking, explicit handling of missing data, and organizing information clearly for future reference or downstream tasks.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+John S. Hall is younger than the former Midtown bassist and lead vocalist who created Cobra Starship.
+
+### notes
+['Gabe Saporta, former Midtown bassist and lead vocalist, created Cobra Starship in 2006.', 'Gabe Saporta was born on October 11, 1979.', 'There is no information available about John S. Hall’s age or birth date in the provided data.', 'Therefore, the claim comparing John S. Hall’s age to Gabe Saporta’s cannot be verified with the current information.', 'Gabe Saporta, born on October 11, 1979, was the former Midtown bassist and lead vocalist who created Cobra Starship in 2006.', "There is no available information on John S. Hall's date of birth or age in the provided data.", "Because John S. Hall's age is unknown, the claim that he is younger than Gabe Saporta cannot be verified with the current information.", 'Gabe Saporta, born October 11, 1979, was the former Midtown bassist and lead vocalist who created Cobra Starship in 2006.', "There is no information available regarding John S. Hall's birth date or age in the provided data.", "Due to the lack of data on John S. Hall's age, the claim that he is younger than Gabe Saporta cannot be verified."]
+
+### context
+['Cobra Starship | Cobra Starship was an American dance-pop band created by former Midtown bassist and lead vocalist Gabe Saporta in 2006 in New York City, New York.  After writing and recording the band\'s debut album "While the City Sleeps, We Rule the Streets" as a solo project, Saporta enlisted guitarist Ryland Blackinton, bassist Alex Suarez, drummer Nate Novarro, and keytarist Victoria Asher, all of whom provide backing vocals.', 'Gabe Saporta | Gabriel Eduardo "Gabe" Saporta (born October 11, 1979) is an Uruguayan-American musician and entrepreneur.  Through late 2015, he was a singer and the primary creative force behind the electronic pop group Cobra Starship.  On November 10, 2015, after nearly ten years and two Billboard Hot 100 top 10 hits, Saporta announced that the band would stop its work, and that he would be focusing on helping other musicians through his new venture, The Artist Group.  Prior to Cobra Starship, Saporta had been the lead singer, bassist, and lyricist for the punk band Midtown.', 'Alex Suarez | Alex Suarez is an American musician, best known for his work as the bass player and additional keyboardist and vocalist for Cobra Starship until his departure in 2014.  He is also the co-founder of This is Ivy League, a band created with fellow Cobra Starship member and high school best friend Ryland Blackinton.', 'What About Love | "What About Love?"  is a song originally recorded by Canadian rock group Toronto but is best known for the 1985 release by the rock group Heart.  The song was Heart\'s "comeback" single.  It was the first Heart track to reach the top 40 in three years, and their first top 10 hit in five.  It was released as the first single from the band\'s self-titled 1985 album, "Heart", as well as their first hit single on their new record label, Capitol Records.  Grace Slick and Mickey Thomas, co-lead vocalists of Starship at the time, provide additional background vocals on the song.', "Floyd's Station, Kentucky | Floyd's Station was a fort on Beargrass Creek in what is now St. Matthews, Kentucky.  In November 1779 James John Floyd built cabins and a stockade near what is now Breckenridge Lane.  In 1783, John Floyd, future Governor of Virginia was born in the Station.  The pioneer's father was killed by Indians twelve days before the birth of his son.  The station was one of six on Beargrass Creek and was involved in local conflict with Native Americans in the area for the next five years.  All that remain today of Floyd's Station are a spring house and cemetery.", 'Death midwife | A death midwife or death doula is a person who assists in the dying process much like a midwife or doula does with the birthing process.  It is "a community centred response that recognizes death as a natural, accepted and honoured part of life.  One might say that death midwifery is to hospice palliative care [...] as birth midwifery is to obstetrics."  Practitioners "can help create death plans, some provide spiritual care, psychological and social support, and sometimes even physical care.  They can help plan home vigils and home funerals, and offer guidance with respect to what your rights and responsibilities are in caring for someone who\'s died."', "Briscoe baronets | The Briscoe Baronetcy, of Bourn Hall, in the Parish of Bourn, in the County of Cambridge, is a title in the Baronetage of the United Kingdom.  It was created on 12 July 1910 for John James Briscoe.  He was a County Alderman, a Justice of the Peace and Deputy Lieutenant for Cambridgeshire.  His eldest son, the second Baronet, died childless and was succeeded by his younger brother, the third Baronet.  As of 2009 the title is held by the latter's great-grandson, the sixth Baronet, who succeeded from birth in 1994, his father having died earlier that year.", 'Takariya Napaltjarri | Takariya was born around 1960 or 1965 in the desert near what is now Kiwirrkurra Community, Western Australia, on the Western Australia–Northern Territory border.  Sources differ regarding her birth date: the Art Gallery of New South Wales indicates 1960, while expert Vivien Johnson reports two possible years, 1960 or 1965.  The ambiguity around the year of birth is in part because Indigenous Australians operate using a different conception of time, often estimating dates through comparisons with the occurrence of other events.', 'What a Year | What a Year was an Australian television documentary series, hosted by former ACA host Mike Munro and supermodel Megan Gale in 2006 and Bert Newton and Julia Zemiro in 2007.  What a Year looked at the news, events, sporting achievements, entertainment and fads of a selected year in each episode.  The hosts spoke to people who witnessed and experienced the particular events first-hand.', 'Cobra Starship discography | Cobra Starship was an American pop punk band, formed by Gabe Saporta in 2005.  Other members are guitarist Ryland Blackinton, bassist Alex Suarez, drummer Nate Novarro, and keytarist Victoria Asher, all of whom provide backing vocals.  The group released their debut album, "While the City Sleeps, We Rule the Streets" in 2006. " Snakes on a Plane (Bring It)", is the debut single of dance rock band Cobra Starship from the soundtrack album "".']
+
+## Generated Outputs
+### reasoning
+The claim states that John S. Hall is younger than Gabe Saporta, the former Midtown bassist and lead vocalist who created Cobra Starship. From the provided context, it is confirmed that Gabe Saporta was the former bassist and lead vocalist of Midtown and the creator of Cobra Starship. His birth date is given as October 11, 1979. However, there is no information in the notes or context regarding John S. Hall’s age or birth date, nor any other data to compare the ages of John S. Hall and Gabe Saporta. Therefore, it is impossible to verify the claim about John S. Hall being younger than Gabe Saporta based on the information provided.
+
+### new_notes
+['Gabe Saporta, former Midtown bassist and lead vocalist, created Cobra Starship in 2006.', 'Gabe Saporta was born on October 11, 1979.', 'There is no information available about John S. Hall’s age or birth date in the provided data.', 'Therefore, the claim comparing John S. Hall’s age to Gabe Saporta’s cannot be verified with the current information.']
+
+### titles
+["Gabe Saporta's Role in Midtown and Cobra Starship", "Gabe Saporta's Birth Date", "Missing Information on John S. Hall's Age"]
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Cobra Starship', 'Gabe Saporta']. Documents remaining to be retrieved: ['John S. Hall'].
+
+
+
+# Example 2
+## Inputs
+### claim
+An actor in a musical film was also a United States Navy Combat veteran in World War II. This film was awarded The Golden Bear at the 50th Berlin International Film Festival.
+
+### notes
+['Jason Robards was a United States Navy combat veteran of World War II and an actor.', "The Golden Bear at the 50th Berlin International Film Festival was awarded to the American film 'Magnolia,' which is not a musical film.", 'No evidence is found linking an actor who was a US Navy WWII combat veteran to a musical film that won the Golden Bear at the 50th Berlin International Film Festival.', "Musical films mentioned, such as 'Chicago,' did not win the Golden Bear at the 50th Berlin International Film Festival.", 'Jason Robards was a United States Navy combat veteran of World War II and an actor, but no evidence links him to a musical film that won the Golden Bear at the 50th Berlin International Film Festival.', "The Golden Bear at the 50th Berlin International Film Festival (2000) was awarded to the American film 'Magnolia,' which is not a musical film.", "Musical films such as 'Chicago' and 'Linie 1' were screened at various Berlin International Film Festivals but did not win the Golden Bear.", 'No evidence supports that a musical film featuring a U.S. Navy WWII combat veteran actor won the Golden Bear at the 50th Berlin International Film Festival.', 'Jason Robards was a United States Navy combat veteran of World War II and an actor, but no record links him to a musical film that won the Golden Bear.', "The Golden Bear at the 50th Berlin International Film Festival (2000) was awarded to the American film 'Magnolia,' which is not a musical film.", "Musical films like 'Chicago' were screened at various Berlin International Film Festivals but did not win the Golden Bear.", 'No evidence exists of any musical film starring a U.S. Navy WWII combat veteran actor winning the Golden Bear at the 50th Berlin International Film Festival.']
+
+### context
+['50th Berlin International Film Festival | The 50th annual Berlin International Film Festival was held from February 9 to 20, 2000.  The festival opened with "The Million Dollar Hotel" by Wim Wenders. " Bossa Nova" by Bruno Barreto, screened out of competition was the closing film of the festival.  The Golden Bear was awarded to American film "Magnolia" directed by Paul Thomas Anderson.', '4th Berlin International Film Festival | The 4th annual Berlin International Film Festival was held from 18 June to 29 June 1954.  This year\'s festival did not give any official jury prizes, instead awards were given by audience voting.  This continued until the FIAPF granted Berlin "A-Status" in 1956.  David Lean won the Golden Bear by the audience voting for his film "Hobson\'s Choice" at the festival.', '5th Berlin International Film Festival | The 5th annual Berlin International Film Festival was held from 24 June to 5 July 1955.  This year\'s festival did not give any official jury prizes, instead awards were given by audience voting.  This continued until the FIAPF granted Berlin "A-Status" in 1956.  The Golden Bear was awarded to "Die Ratten" by audience vote.', '53rd Berlin International Film Festival | The 54th annual Berlin International Film Festival was held from February 6–16, 2003.  The festival opened with musical film "Chicago" by Rob Marshall and closed with Martin Scorsese\'s "Gangs of New York", both films played out of competition at the festival.  The Golden Bear was awarded to British film "In This World" directed by Michael Winterbottom.', '38th Berlin International Film Festival | The 38th annual Berlin International Film Festival was held from February 12 to 23, 1988.  The festival opened with musical film "Linie 1" by Reinhard Hauff.  The Golden Bear was awarded to the Chinese film "Red Sorghum" directed by Zhang Yimou.', '41st Berlin International Film Festival | The 41st annual Berlin International Film Festival was held from February 15 to 26, 1991.  The festival opened with "Uranus" by Claude Berri.  The Golden Bear was awarded to Italian film "La casa del sorriso" directed by Marco Ferreri.  The retrospective dedicated to Cold War films was shown at the festival.', '51st Berlin International Film Festival | The 51st annual Berlin International Film Festival was held from February 7 to 18, 2001.  The festival opened with war-drama film "Enemy at the Gates" by Jean-Jacques Annaud.  70 mm restored version of Stanley Kubrick\'s 1968 Sci-fi film "" was the closing film of the festival.  The Golden Bear was awarded to French-British film "Intimacy" directed by Patrice Chéreau.', '64th Berlin International Film Festival | The 64th annual Berlin International Film Festival was held from 6 to 16 February 2014.  Wes Anderson\'s film "The Grand Budapest Hotel" opened the festival.  British film director Ken Loach was presented with the Honorary Golden Bear.  The Golden Bear was awarded to the Chinese film "Black Coal, Thin Ice" directed by Diao Yinan, which also served as closing film.', '1st Berlin International Film Festival | The 1st annual Berlin International Film Festival was held from 6 to 17 June 1951.  The opening film was Alfred Hitchcock\'s "Rebecca".  At this very first Berlin Festival, the Golden Bear award was introduced, and it was awarded to the best film in each of five categories: drama, comedy, crime or adventure, music film, and documentary.  This system disappeared already the following year, partly because films that year were voted on by the audience.', '40th Berlin International Film Festival | The 40th annual Berlin International Film Festival was held from 9 to 20 February 1990.  The festival opened with "Steel Magnolias" by Herbert Ross, which was shown out of competition.  The Golden Bear was awarded to the American film "Music Box" directed by Costa-Gavras and Czech film "Skřivánci na niti" directed by Jiří Menzel.']
+
+## Generated Outputs
+### reasoning
+The claim contains two main assertions: (1) an actor in a musical film was a United States Navy combat veteran in World War II, and (2) this film was awarded the Golden Bear at the 50th Berlin International Film Festival.
+
+From the notes and context:
+
+- Jason Robards is confirmed as a US Navy combat veteran of World War II and an actor, but there is no mention of him acting in a musical film that won the Golden Bear.
+- The Golden Bear at the 50th Berlin International Film Festival was awarded to the American film "Magnolia," which is not a musical film.
+- Known musical films such as "Chicago" and "Linie 1" screened at Berlin Festivals did not win the Golden Bear.
+- There is no evidence linking any actor who was a US Navy WWII combat veteran to a musical film that won the Golden Bear at the 50th Berlin festival or in general.
+
+Therefore, the claim cannot be substantiated as true because the film that won the Golden Bear at the 50th Berlin International Film Festival was not a musical, and no connection to an actor who was a US Navy WWII combat veteran in a musical film winning that award is found.
+
+### new_notes
+['Jason Robards was a United States Navy combat veteran of World War II and an actor, but no evidence links him to a musical film that won the Golden Bear at the 50th Berlin International Film Festival.', "The Golden Bear at the 50th Berlin International Film Festival (2000) was awarded to the American film 'Magnolia,' which is not a musical film.", "Musical films such as 'Chicago' and 'Linie 1' were screened at various Berlin International Film Festivals but did not win the Golden Bear.", 'No evidence supports that a musical film featuring a U.S. Navy WWII combat veteran actor won the Golden Bear at the 50th Berlin International Film Festival.']
+
+### titles
+['Jason Robards - US Navy WWII Veteran Actor', "50th Berlin International Film Festival - Golden Bear Winner 'Magnolia'", 'Musical Films at Berlin International Film Festival', 'Lack of Connection Between WWII Veteran Actor and Golden Bear-winning Musical Film']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['50th Berlin International Film Festival', 'Jason Robards']. Documents remaining to be retrieved: ['Magnolia (film)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The football ground that held The UEFA Euro 2012 Final is in this multi-use sports and recreation facility in England that currently houses professional football club Dynamo Kyiv.
+
+### notes
+['The UEFA Euro 2012 Final was held at the Olympic National Sports Complex (Olympic Stadium) in Kyiv, Ukraine.', 'The Olympic National Sports Complex is a multi-use sports and recreation facility located in Kyiv, Ukraine.', 'FC Dynamo Kyiv is a professional football club based in Kyiv, Ukraine, and they play their home matches in Kyiv.', 'There is no indication that Dynamo Kyiv plays in any stadium located in England.', 'The UEFA Euro 2012 Final was not held in England but in Ukraine.', 'The UEFA Euro 2012 Final was held at the Olympic National Sports Complex in Kyiv, Ukraine, not in England.', 'The Olympic National Sports Complex is a multi-use sports and recreation facility located in Kyiv, Ukraine.', 'FC Dynamo Kyiv is a professional football club based in Kyiv, Ukraine, that plays home matches at the Olympic National Sports Complex.', 'There is no evidence that Dynamo Kyiv plays at any stadium located in England.', 'The UEFA Euro 2012 Final was held at the Olympic National Sports Complex in Kyiv, Ukraine.', 'The Olympic National Sports Complex in Kyiv, Ukraine, is a multi-use sports and recreation facility.', 'FC Dynamo Kyiv is a professional football club based in Kyiv, Ukraine, and plays home matches at the Olympic National Sports Complex.', 'There is no evidence that Dynamo Kyiv plays in any stadium located in England.', 'The UEFA Euro 2012 Final stadium is located in Ukraine, not England.']
+
+### context
+['FC Dynamo Kyiv | Football Club Dynamo Kyiv (Ukrainian: Футбольний клуб «Динамо» Київ , ] ) is a Ukrainian professional football club based in Kiev.  Founded in 1927 as part of the Soviet Dynamo Sports Society, the club plays in the Ukrainian Premier League, and has never been relegated to a lower division.  Their home is the 70,050 capacity Olimpiyskiy National Sports Complex.', "2008–09 FC Dynamo Kyiv season | Following are the results of the 2008–09 FC Dynamo Kyiv season.  FC Dynamo Kyiv (Ukrainian: ФК «Динамо» Київ ) is a professional football club based in the Ukrainian capital city of Kyiv.  Founded in 1927, the club currently participates in the Ukrainian Premier League and has spent its entire history in the top league of Soviet and later Ukrainian football.  Dynamo Kyiv has won thirteen league titles, nine Ukrainian Cups, one UEFA Super Cup and two UEFA Cup Winners' Cups, and played three times in the semi-final of the UEFA Champions League.", 'BC Dynamo Kyiv | BC Dynamo Kyiv is a professional basketball club based in Kiev, Ukraine.  In the 2015–16 season, the team entered the Ukrainian SL Favorit Sport – a newly formed top tier league in Ukraine.', 'Olimpiyskiy National Sports Complex | The Olympic National Sports Complex (also known as Olympic Stadium; Ukrainian: Національний спортивний комплекс "Олімпійський" ) is a multi-use sports and recreation facility in Kiev, Ukraine, located on the slopes of the city\'s central Cherepanov Hill, Pechersk Raion.  The stadium is the premier sports venue in Ukraine and the second largest in Eastern Europe after Moscow\'s Luzhniki Stadium.  The complex beside its stadium also features several other sports facilities and is designed to host the Olympic Games (the stadium hosted some football matches at the 1980 Summer Olympics).', 'Bannikov Stadium | The Educational-Training Complex of the Football Federation of Ukraine named after – Victor Maksymovych Bannikov is a small football stadium located close to the House of Football and the Olympic Stadium in Kyiv, Ukraine.  The stadium is named after a goalkeeper of FC Dynamo Kyiv and the first president of the Football Federation of Ukraine.', 'FC Dynamo-2 Kyiv | FC Dynamo-2 Kyiv was the second football team of the Ukrainian football club Dynamo Kyiv based in Kiev, Ukraine.  The team was created in 1946, and the club ceased its operations after the 2015–16 season.', 'Metalist Oblast Sports Complex | "Metalist" Oblast Sports Complex (Ukrainian: Обласний спортивний комплекс «Металіст» ), which includes the Metalist Stadium (Ukrainian: Стадіон «Металіст» ), is a multi-use stadium in Kharkiv, Ukraine.  It is currently used chiefly for football matches and is the home of FC Metalist Kharkiv and Shakhtar Donetsk.  The stadium, which was a venue for Euro 2012, currently seats 40,003.', 'BC Kyiv | BC Kyiv (Ukrainian: БК "Київ" ) was an Ukrainian professional basketball club based in Kiev.  The club\'s home court for Ukrainian domestic league matches was the Meridian Sports Complex, which has a seating capacity of 1,500.  Large attendance games and European-wide competition games were held at the 7,000 seat Kiev Sports Palace.', 'FC CSKA Kyiv | FC CSCA Kyiv (Ukrainian: "ЦСКА Київ" ) is a Ukrainian association football club, until 2001 of the Central Sports Club of the Armed Forces of Ukraine, which is government sponsored by the Ministry of Defense.  In 1994-2001 it served as a farm team CSKA-2 Kyiv of FC Boryspil which was renamed into CSKA Kyiv.', 'Mykyta Burda | Mykyta Valeriyovych Burda (; born 24 March 1995) is a professional Ukrainian football defender who plays for FC Dynamo Kyiv in the Ukrainian Premier League.  Born in Yenakiyeve, a city village in Donetsk Oblast, Mykyta began playing football in Yahotyn, Kyiv Oblast where he attended local sports school.  When he was sixteen, Burda transferred to FC Dynamo Kyiv football academy, where he began playing for FC Dynamo Kyiv youth and reserve squads.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that the UEFA Euro 2012 Final was held at a multi-use sports and recreation facility in England which currently houses the professional football club Dynamo Kyiv. The notes and context consistently specify that the UEFA Euro 2012 Final was held at the Olympic National Sports Complex (also known as Olympic Stadium) in Kyiv, Ukraine — not in England. This multi-use facility is indeed located in Kyiv, Ukraine, and is the home stadium of FC Dynamo Kyiv, which is a professional football club based in Kyiv, Ukraine. There is no indication or evidence that Dynamo Kyiv is based in or plays its home matches at any stadium in England. Therefore, the claim is incorrect in stating the location is in England, when it is actually in Kyiv, Ukraine.
+
+### new_notes
+['The UEFA Euro 2012 Final was held at the Olympic National Sports Complex in Kyiv, Ukraine, not in England.', 'The Olympic National Sports Complex is a multi-use sports and recreation facility located in Kyiv, Ukraine.', 'FC Dynamo Kyiv is a professional football club based in Kyiv, Ukraine, that plays home matches at the Olympic National Sports Complex.', 'There is no evidence that Dynamo Kyiv plays at any stadium located in England.']
+
+### titles
+['UEFA Euro 2012 Final Venue', 'Olympic National Sports Complex, Kyiv', 'FC Dynamo Kyiv Home Stadium', 'Geographic Location of Dynamo Kyiv']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['FC Dynamo Kyiv', 'Olimpiyskiy National Sports Complex']. Documents remaining to be retrieved: ['UEFA Euro 2012 Final'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

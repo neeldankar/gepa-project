@@ -1,0 +1,101 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given the fields `claim`, `notes`, produce the fields `query`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+In the 28th season a Spanish rally driver won the racing series which was not competed in by Harri Rovanperä from 1993 to 2006.
+
+### notes
+['The 28th season of the World Rally Championship was in 2000.', "The drivers' world championship in the 28th season (2000) was won by Marcus Grönholm, not a Spanish driver.", 'Carlos Sainz, a Spanish driver, finished second runner-up in the 2000 World Rally Championship.', 'Harri Rovanperä competed in the World Rally Championship from 1993 to 2006, inclusive.', 'The 28th season of the World Rally Championship was in 2000.', "The drivers' world championship in the 28th season (2000) was won by Marcus Grönholm, a Finnish driver, not a Spanish driver.", 'Carlos Sainz, a Spanish driver, finished third in the 2000 World Rally Championship.', 'Harri Rovanperä competed in the World Rally Championship from 1993 through 2006, including the year 2000.']
+
+## Generated Outputs
+### reasoning
+The claim indicates that in the 28th season of a particular racing series, a Spanish rally driver won the series, and that Harri Rovanperä did not compete in this series from 1993 to 2006. To verify this claim, I need to determine which racing series is being referred to (likely the World Rally Championship or a similar rally series), identify its 28th season, find the champion that season, confirm their nationality (Spanish), and check if Harri Rovanperä participated in that series from 1993 to 2006.
+
+### query
+Who won the 28th season of the World Rally Championship? What was the nationality of the winner? Did Harri Rovanperä compete in the World Rally Championship from 1993 to 2006?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['2000 World Rally Championship', 'Harri Rovanperä']. Documents remaining to be retrieved: ['Carlos Sainz'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The actor who starred, along with Go Ah-sung, in the South-Korean film, Office,  appeared in The Deal. The Deal was directed by Choi Woo-shik.
+
+### notes
+['The South Korean film Office (2015) starred Go Ah-sung and Park Sung-woong.', 'Park Sung-woong starred as a serial killer in The Deal (2015).', 'There is no information that Choi Woo-shik directed The Deal.']
+
+## Generated Outputs
+### reasoning
+The claim states that the actor who starred with Go Ah-sung in the South Korean film "Office" also appeared in "The Deal." Additionally, it claims that "The Deal" was directed by Choi Woo-shik. To verify this, we need to:
+1. Identify who starred alongside Go Ah-sung in "Office."
+2. Check if that actor appeared in "The Deal."
+3. Verify if "The Deal" was directed by Choi Woo-shik, who is primarily known as an actor, not a director.
+The query needs to gather these data points to confirm or refute the claim.
+
+### query
+SELECT 
+  office_co_star.name AS co_star_name,
+  credit_mov.title AS deal_title,
+  deal_director.name AS deal_director_name
+FROM 
+  Film office
+JOIN 
+  Cast office_cast ON office.id = office_cast.film_id
+JOIN 
+  Actor office_co_star ON office_cast.actor_id = office_co_star.id
+JOIN 
+  Film credit_mov ON credit_mov.title = 'The Deal'
+JOIN 
+  Cast deal_cast ON credit_mov.id = deal_cast.film_id
+JOIN 
+  Actor deal_actor ON deal_cast.actor_id = deal_actor.id
+JOIN 
+  Director deal_director ON credit_mov.director_id = deal_director.id
+WHERE 
+  office.title = 'Office'
+  AND office_co_star.name != 'Go Ah-sung'
+  AND office_co_star.name = deal_actor.name
+LIMIT 1;
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Office (2015 South Korean film)', 'Park Sung-woong']. Documents remaining to be retrieved: ['The Deal (2015 film)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Chess is more popular around the world than a game designed by Leo Colovini.
+
+### notes
+['Chess is a globally popular game with formal organizations such as FIDE and the US Chess Federation that maintain rating systems, and it is widely played internationally.', "Leo Colovini is an Italian designer known for German-style board games like 'Cartagena', 'Clans', and 'Familienbande', which are niche board games with limited international recognition compared to chess.", 'Chess is a globally popular game with formal organizations such as FIDE and the US Chess Federation that maintain rating systems, and it is widely played internationally.', "Leo Colovini is an Italian designer known for German-style board games like 'Cartagena', 'Clans', and 'Familienbande', which are niche board games with limited international recognition compared to chess.", 'Leo Colovini is one of the few top board game designers who has owned a game store, but his games do not have the global popularity of chess.', 'Chess is a globally popular game with formal organizations such as FIDE and the US Chess Federation that maintain rating systems and widespread international play.', "Variants of chess like xiangqi and shogi are popular in various countries, demonstrating chess's extensive global reach.", 'Leo Colovini is an Italian designer known for German-style board games such as Cartagena, Clans, and Familienbande, which have limited international recognition compared to chess.', "Leo Colovini's games are niche and do not have the global popularity or organized rating systems like chess."]
+
+## Generated Outputs
+### reasoning
+Chess is recognized worldwide with millions of players, official governing bodies like FIDE, and a longstanding tradition as an internationally played and competitive game. On the other hand, Leo Colovini is a known designer predominantly within the niche segment of German-style board games, which generally have smaller, more specialized followings. Given the scale and global reach of chess contrasted with the niche status of Colovini's games, it is reasonable to conclude that chess is indeed more popular worldwide than any single game designed by Leo Colovini.
+
+### query
+Is chess more popular worldwide than any board game designed by Leo Colovini?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Leo Colovini']. Documents remaining to be retrieved: ['Cartagena (board game)', 'Chess'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

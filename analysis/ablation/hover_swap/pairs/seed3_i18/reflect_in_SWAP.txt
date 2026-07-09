@@ -1,0 +1,106 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given two input fields:  
+- `claim`: a statement asserting certain facts or relationships about entities, including genre classifications, character roles, temporal orderings, or member counts of groups/bands.  
+- `notes`: a list of factual sentences or extracted information pieces relevant to the claim, often providing partial evidence or clarifications about entities, their attributes, and relationships.
+
+Your task is to produce a single output field:  
+- `query`: a clear, concise, and targeted question (or set of closely related questions) designed to retrieve the missing or confirming factual information needed to verify or refute the `claim`.  
+
+The `query` should focus on:  
+- Confirming exact classifications or categories (e.g., movie genres, band genres).  
+- Clarifying membership counts or comparisons between groups.  
+- Establishing temporal relations or event sequences (e.g., release dates).  
+- Disambiguating entities with similar names or verifying the presence or role of a character or individual in a given work.  
+
+Strategies and considerations for generating the `query`:  
+1. Analyze the `claim` carefully to identify key factual points or comparisons that require verification.  
+2. Leverage the `notes` to understand which aspects of the claim are supported or contradicted, and which remain uncertain or missing.  
+3. Formulate the `query` to explicitly seek the missing information or clarification necessary to decide the truth of the claim. Avoid overly broad or vague queries—focus on the minimal but sufficient question(s) to confirm or refute the claim.  
+4. When the claim involves multiple entities or facts, and the notes partially cover these, include all relevant verification points in the `query`.  
+5. Maintain the specificity of entities by including relevant context in the `query` (e.g., include years for movies, full names for bands or characters).  
+
+Domain-specific notes that might not be explicitly known by the assistant but are useful for query formulation:  
+- Movie genre classifications can be nuanced, with some movies emphasizing family, comedy, adventure, or action genres to varying degrees.  
+- Voice actor roles often need precise linking to specific film releases and characters.  
+- Band classifications can vary between musical genres, and member counts are important quantitative facts for comparison claims.  
+- Temporal comparisons often hinge on release dates of movies or events and require clear references to those dates in queries.  
+- Entity disambiguation can require specifying the version or year of a movie or release to avoid confusion.  
+
+The ultimate goal is to produce a `query` that, when used to retrieve or check factual documents, will provide the exact information needed to confirm or deny the `claim`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+In the 1755 revived opera that Henri Larrivée appeared in and mezzo soprano Manon Lescaut are not composed by the same people.
+
+### notes
+['Henri Larrivée appeared in the 1755 revival of Jean-Philippe Rameau\'s opera "Castor et Pollux."', '"Manon Lescaut" is an opera composed by Giacomo Puccini between 1890 and 1893.', 'The 1755 opera with Larrivée and Puccini\'s "Manon Lescaut" are composed by different individuals, separated by time and composer identity.', 'Henri Larrivée appeared in the 1755 revival of Jean-Philippe Rameau\'s opera "Castor et Pollux".', '"Manon Lescaut" is an opera composed by Giacomo Puccini between 1890 and 1893.', 'The 1755 opera featuring Larrivée and Puccini\'s "Manon Lescaut" are composed by different individuals from distinct time periods.', "Henri Larrivée appeared in the 1755 revival of Jean-Philippe Rameau's opera 'Castor et Pollux'.", "'Manon Lescaut' is an opera composed by Giacomo Puccini between 1890 and 1893.", "The two operas—Rameau's 'Castor et Pollux' and Puccini's 'Manon Lescaut'—were composed by different individuals from distinct time periods.", "Henri Larrivée and Puccini's 'Manon Lescaut' are not connected by composer or production era."]
+
+## Generated Outputs
+### reasoning
+The claim is that the 1755 revived opera in which Henri Larrivée appeared and the mezzo soprano Manon Lescaut are not composed by the same individuals. From the notes, we know Henri Larrivée appeared in the 1755 revival of Jean-Philippe Rameau's opera "Castor et Pollux," and "Manon Lescaut" is an opera composed by Giacomo Puccini between 1890 and 1893. The notes explicitly state these two operas were composed by different individuals and during different time periods. The claim is essentially about confirming that the composer of the 1755 opera is different from the composer of "Manon Lescaut."
+
+The only potential ambiguity is the phrase "mezzo soprano Manon Lescaut," which may incorrectly imply Manon Lescaut is a person rather than the name of an opera. To verify the claim fully, we need to confirm that "Manon Lescaut" is indeed an opera (not a person) and that the composer of the opera Henri Larrivée appeared in (1755 revival) is not the same as the composer of "Manon Lescaut." Given the information, the 1755 opera is Rameau's, while "Manon Lescaut" is Puccini's, so they are composed by different people.
+
+Therefore, to confirm the claim, the query must verify the composer of the 1755 revival opera featuring Henri Larrivée and confirm the composer of "Manon Lescaut," and further confirm the identity and nature of "Manon Lescaut."
+
+### query
+Who is the composer of the 1755 revived opera in which Henri Larrivée appeared? What is "Manon Lescaut"—an opera or a person—and who composed it? Are the composers of these two operas the same or different individuals?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Henri Larrivée', 'Manon Lescaut (Puccini)']. Documents remaining to be retrieved: ['Castor et Pollux'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The TV series where the actor played the character Gaius Baltar joined in 2010. premiered on July 18, 2006. The serie was premiered on July 18, 2006.
+
+### notes
+["James Callis played Dr. Gaius Baltar in the re-imagined TV series 'Battlestar Galactica.'", "'Battlestar Galactica' premiered on July 18, 2006.", "James Callis joined the cast of the TV series 'Eureka' in 2010.", "The claim incorrectly associates the 2010 joining date with the 'Battlestar Galactica' series.", "James Callis played Dr. Gaius Baltar in the reimagined TV series 'Battlestar Galactica.'", "'Battlestar Galactica' premiered on July 18, 2006, with its miniseries initially airing in 2003 and the series running until 2009.", "James Callis joined the cast of the TV series 'Eureka' in 2010, a different show unrelated to his role as Gaius Baltar.", "The 2010 joining date is incorrectly associated with 'Battlestar Galactica' in the claim.", 'James Callis played Dr. Gaius Baltar in the re-imagined TV series Battlestar Galactica.', 'Battlestar Galactica premiered on July 18, 2006, and ran until 2009.', 'James Callis joined the cast of the TV series Eureka in 2010, which is unrelated to his role as Gaius Baltar.', 'The claim incorrectly links the 2010 joining date to Battlestar Galactica instead of Eureka.']
+
+## Generated Outputs
+### reasoning
+The claim includes two main points that need verification: the TV series featuring the character Gaius Baltar, played by a certain actor, started in 2010; and that the series premiered on July 18, 2006. There seems to be a contradiction between the stated joining date and the premiere date. We need to identify the exact TV series where the character Gaius Baltar appears, confirm the actor who played him, and then verify the premiere date of the series and if the actor joined it in 2010 or earlier. This will clarify if the claim is consistent or contradictory.
+
+### query
+What is the TV series in which the character Gaius Baltar appears, who portrayed this character, when did this TV series premiere, and what year did the actor join or appear in the series?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Gaius Baltar', 'James Callis']. Documents remaining to be retrieved: ['Eureka (U.S. TV series)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+This publication is published more often than Bookmarks. Keith Moon was inducted into its Hall of Fame in the early 'eighties.
+
+### notes
+["No evidence in the context supports that the unnamed publication is published more often than 'Bookmarks'.", 'There is no mention of Keith Moon’s induction into any Hall of Fame associated with the publication, especially in the early 1980s.', 'The UK Music Hall of Fame, which might relate to Keith Moon, began in 2004, not in the early 1980s.', "There is no evidence that the unnamed publication is published more frequently than 'Bookmarks'.", "Keith Moon was posthumously inducted into the 'Modern Drummer' Hall of Fame in 1982, not in any publication's Hall of Fame.", 'The UK Music Hall of Fame began in 2004, which contradicts the claim of an early 1980s induction related to the publication.', "There is no evidence that the unnamed publication is published more frequently than 'Bookmarks'.", "Keith Moon was inducted posthumously into the 'Modern Drummer' Hall of Fame in 1982, which is unrelated to the publication in question.", 'The UK Music Hall of Fame, which might involve Keith Moon, was established in 2004, not in the early 1980s.', "No contextual source indicates Keith Moon's induction into a publication's Hall of Fame in the early 1980s.", 'Relevant halls of fame in the context started either after the early 1980s or are not connected to Keith Moon.']
+
+## Generated Outputs
+### reasoning
+The claim makes two main assertions: 1) that a certain publication (unnamed) is published more often than Bookmarks, and 2) that Keith Moon was inducted into its Hall of Fame in the early 1980s. The notes show no evidence supporting either the frequency comparison or the Hall of Fame induction related to any publication. While Keith Moon was inducted into the 'Modern Drummer' Hall of Fame in 1982, this is not connected to a publication's Hall of Fame. Additionally, the UK Music Hall of Fame started well after the early '80s. Thus, clarifying which publication is involved, its publishing frequency relative to Bookmarks, and whether it has a Hall of Fame that inducted Keith Moon in the early 1980s is necessary.
+
+### query
+What is the publishing frequency of the publication compared to Bookmarks? Does this publication have a Hall of Fame that inducted Keith Moon in the early 1980s? If so, please provide details of that induction and the nature of the Hall of Fame.
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Keith Moon']. Documents remaining to be retrieved: ['Bookmarks (magazine)', 'Modern Drummer'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,167 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given a factual `claim` that may involve multiple interconnected facts or named entities (such as people, films, places, products, organizations, historical dates, or other domain-specific items). Together with the claim, you will receive a set of `notes` consisting of partial background information, known details, plus observations that highlight gaps, ambiguities, or contradictions around the claim’s elements.
+
+Your goal is to generate a focused set of one or more `queries` designed to verify or fact-check each component of the claim. These queries will be used to retrieve relevant evidence or documents (e.g., from Wikipedia or other authoritative sources) to confirm or refute the claim.
+
+Key Requirements and Domain-Specific Heuristics:
+
+1. **Entity Disambiguation:**  
+   - Explicitly identify all named entities mentioned in the claim.  
+   - Always disambiguate entities carefully using relevant descriptors, such as: clarifying a film’s release year, a person’s profession or nationality, distinguishing similarly named entities (e.g., “Solo (Norwegian soft drink)” instead of just “Solo”).  
+   - This avoids confusion and ensures queries retrieve targeted, relevant information.
+
+2. **Decompose Complex Claims into Components:**  
+   - If the claim includes multiple assertions (e.g., an actor acted in multiple movies, a director’s involvement, a formation date of a military unit), break it down into multiple specific queries, each verifying one discrete fact.  
+   - Queries should be connected logically, covering the full scope of the claim without leaving holes.
+
+3. **Target Missing, Ambiguous, or Contradictory Information from the Notes:**  
+   - Use the notes to identify what is already known, what is uncertain or missing, and contradictions that must be resolved.  
+   - Formulate queries that directly address these gaps or conflicting points to retrieve clarifying evidence.  
+   - For example, if it’s unclear whether a publication is a book or a magazine article, or exact formation years of military units, or the nationality of a named individual, queries should reflect these specifics.
+
+4. **Cover Every Fact Embedded in the Claim:**  
+   - Ensure your queries collectively verify all factual statements contained in the claim.  
+   - Avoid partial coverage that might retrieve documents relevant to only some parts of the claim.
+
+5. **Precise and Clear Query Formulation:**  
+   - Queries must be explicit, well-structured factual questions or entity-relationship prompts, suitable for document retrieval.  
+   - Avoid vague, overly broad, or open-ended questions.
+
+6. **Include Relevant Domain Context:**  
+   - When necessary, incorporate domain knowledge or contextual clues into the queries.  
+   - For example, when verifying a film claim, specify the film’s release year or director; for geographical entities, specify if a cemetery is within a park; for military units, specify their formation dates and relation to associated conflicts or films.
+
+Generalizable Strategy:
+
+- Carefully read and parse the claim to extract all named entities and discrete fact assertions.  
+- Examine the provided notes thoroughly to uncover what details are confirmed, missing, ambiguous, or contradictory in relation to the claim.  
+- For each factual element and especially for each gap or contradiction, generate a focused, specific question or search prompt to obtain clear supporting or refuting evidence.  
+- Ensure queries are comprehensive and well-targeted to verify the full claim.  
+- Format the final output strictly as one or more `query` lines, with no additional explanation or commentary.
+
+Example Query Patterns:
+
+- For a film claim:  
+  - “Who starred in [Film Name] ([Year])?”  
+  - “Who directed [Film Name] ([Year])?”  
+  - “Is [Person’s Name] an actor in [Film Name] ([Year])?”  
+
+- For a publication claim:  
+  - “What is the publication format and date of [Title] by [Author]?”  
+  - “Is [Publication Name] a periodical or a book publisher?”  
+
+- For geography or burial claims:  
+  - “Where is [Person] buried?”  
+  - “Is [Cemetery Name] located within [Park or Geographic Area]?”  
+
+- For military or historical claims:  
+  - “When was [Military Unit] formed?”  
+  - “What units are featured in [Film or Book Title]?”  
+
+By following these instructions carefully, you will produce precise queries capable of guiding the retrieval of comprehensive, relevant documents to validate or refute complex factual claims.
+
+Input Format:  
+- `claim`: A factual statement with one or more components involving named entities or facts.  
+- `notes`: A list of strings summarizing current knowledge, including unknowns or contradictions.
+
+Output Format:  
+- `query`: One or more explicit, decomposed, and disambiguated search queries targeting factual verifications for each part of the claim.
+
+Remember:  
+- Queries must be factual questions fit for document retrieval.  
+- Always cover all aspects requiring verification.  
+- Disambiguate entities using descriptive context.  
+- Use notes to identify which facts require particular attention.  
+- Structure queries to maximize retrieval precision and relevance.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+English actor Gary Oldman starred in the 1995 american romantic drama film, made by Cinergi Pictures, 
+alongside Demi Moore and Meryl Streep.
+
+### notes
+["Gary Oldman starred in the 1995 American romantic drama film 'The Scarlet Letter' alongside Demi Moore and Robert Duvall.", "Meryl Streep was not listed as part of the cast of 'The Scarlet Letter' (1995).", "The production company Cinergi Pictures is not confirmed for 'The Scarlet Letter' in the given context.", "Gary Oldman starred in the 1995 American romantic drama film 'The Scarlet Letter' alongside Demi Moore and Robert Duvall.", "Meryl Streep was not part of the 1995 film 'The Scarlet Letter' and did not star alongside Gary Oldman or Demi Moore in that film.", "'The Scarlet Letter' (1995) was produced by Cinergi Pictures.", "Meryl Streep starred in the 1995 romantic drama 'The Bridges of Madison County', which did not feature Gary Oldman or Demi Moore.", 'No known 1995 American romantic drama film by Cinergi Pictures featured Gary Oldman, Demi Moore, and Meryl Streep together.', "Gary Oldman starred in the 1995 American romantic drama film 'The Scarlet Letter' alongside Demi Moore and Robert Duvall, not Meryl Streep.", "Meryl Streep was not part of the cast of 'The Scarlet Letter' (1995) and instead starred in 'The Bridges of Madison County' (1995), which did not feature Gary Oldman or Demi Moore.", "'The Scarlet Letter' (1995) was produced by Cinergi Pictures.", 'No 1995 American romantic drama film produced by Cinergi Pictures featured Gary Oldman, Demi Moore, and Meryl Streep together.']
+
+## Generated Outputs
+### reasoning
+The claim contains multiple factual elements to verify:  
+1. That Gary Oldman, specifically the English actor, starred in a film released in 1995.  
+2. That the film is an American romantic drama.  
+3. That the film was made by Cinergi Pictures.  
+4. That the film starred Demi Moore.  
+5. That the film starred Meryl Streep.  
+To verify this, I need to identify the film title and confirm these details about cast and production.
+
+### query
+"What 1995 American romantic drama films did English actor Gary Oldman star in?"  
+"Was the 1995 American romantic drama film starring Gary Oldman produced by Cinergi Pictures?"  
+"Did Demi Moore star alongside Gary Oldman in any 1995 American romantic drama films?"  
+"Did Meryl Streep star alongside Gary Oldman in any 1995 American romantic drama films?"  
+"What is the cast of the 1995 American romantic drama film produced by Cinergi Pictures starring Gary Oldman?"
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Cinergi Pictures', 'The Scarlet Letter (1995 film)']. Documents remaining to be retrieved: ['Gary Oldman'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The Scottish punk band that worked 3 years with Young American Recordings and Sleeper, are both from Britain.
+
+### notes
+['Young American Recordings was an American label that worked with the Scottish punk band APB.', 'Sleeper was a British band signed to Indolent Records, a British label.', 'APB is a Scottish punk band, and Scotland is part of Britain, so APB is British.', 'There is no evidence from the provided context that APB worked with Sleeper or that the collaboration lasted three years.', 'Sleeper and APB are both British, but only APB is linked to Young American Recordings.', 'APB is a Scottish punk band signed to American label Young American Recordings.', 'Sleeper is a British band signed to a British label, Indolent Records.', 'No evidence supports a collaboration between APB and Sleeper.', 'There is no proof the collaboration with Young American Recordings or any collaboration with Sleeper lasted three years.', 'Both APB and Sleeper are from Britain, but only APB is associated with Young American Recordings.', 'APB is a Scottish punk band associated with the American label Young American Recordings.', 'Sleeper is a British band but is signed to a British label, not Young American Recordings.', 'There is no evidence that APB worked with Sleeper or that any collaboration lasted three years.', 'Both APB and Sleeper are British bands, as Scotland is part of Britain.', 'The claim that the Scottish band worked 3 years with Young American Recordings and Sleeper is unsupported by the provided information.']
+
+## Generated Outputs
+### reasoning
+The claim contains multiple assertions: 1) A Scottish punk band worked three years with Young American Recordings and Sleeper; 2) Both Young American Recordings and Sleeper are from Britain. From the notes, we know Young American Recordings is an American label, not British; Sleeper is a British band, but not a record label; APB is the Scottish punk band linked to Young American Recordings; there is no evidence APB worked with Sleeper nor any 3-year collaboration; both APB and Sleeper are British (as Scotland is part of Britain). The claim confuses entities and collaborations. To verify, we need to clarify (1) nationality and nature of Young American Recordings, (2) nationality and nature of Sleeper, (3) who is the Scottish punk band associated with Young American Recordings, (4) whether the band worked with Sleeper, and (5) if there was a three-year collaboration.
+
+### query
+What is the nationality and origin of Young American Recordings record label?  
+Who is Sleeper (band) and what is their nationality and record label?  
+Which Scottish punk band worked with Young American Recordings?  
+Did the Scottish punk band APB collaborate with the band Sleeper?  
+Did the Scottish punk band have a collaboration lasting three years with Young American Recordings or Sleeper?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['APB (band)', 'Young American Recordings']. Documents remaining to be retrieved: ['Sleeper (band)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The person from Albania who is known for the 1980 film Cannibal Holocaust and Mexican Alejandro Springall, are both film directors.
+
+### notes
+['Alejandro Springall is a Mexican film director and producer.', 'Cannibal Holocaust (1980) was directed by Ruggero Deodato, an Italian filmmaker.', 'There is no evidence that a person from Albania was involved in directing Cannibal Holocaust.', 'Ruggero Deodato, an Italian filmmaker, directed the 1980 film Cannibal Holocaust.', 'Alejandro Springall is confirmed to be a Mexican film director and producer.', 'There is no evidence that a person from Albania was involved in directing or associated with Cannibal Holocaust as a director.', 'Alejandro Springall is a Mexican film director and producer.', 'Cannibal Holocaust (1980) was directed by Ruggero Deodato, an Italian filmmaker.', 'No person from Albania is known to have directed or been involved as a director in Cannibal Holocaust.', 'Ruggero Deodato is confirmed as the sole director of Cannibal Holocaust (1980).']
+
+## Generated Outputs
+### reasoning
+The claim states that a person from Albania known for the 1980 film Cannibal Holocaust and Alejandro Springall from Mexico are both film directors. The notes clarify that Alejandro Springall is indeed a Mexican film director and producer. However, it also states that the 1980 film Cannibal Holocaust was directed by Ruggero Deodato, an Italian filmmaker, and there is no evidence that any person from Albania was involved in directing or associated with the film in that capacity. This reveals a contradiction or misinformation in the claim regarding the Albanian director linked to Cannibal Holocaust. To verify the claim completely, we need to confirm who directed Cannibal Holocaust, whether there is any Albanian person known for that film as a director or in a similar role, and verify Alejandro Springall's profession.
+
+### query
+Who directed the 1980 film Cannibal Holocaust?  
+Is there any person from Albania known for directing the film Cannibal Holocaust (1980)?  
+What is the profession of Alejandro Springall, and is he a Mexican film director?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Alejandro Springall', 'Cannibal Holocaust']. Documents remaining to be retrieved: ['Ruggero Deodato'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

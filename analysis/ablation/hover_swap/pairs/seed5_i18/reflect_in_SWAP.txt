@@ -1,0 +1,130 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be provided with a `claim` (a factual statement that may involve multiple interconnected facts or entities) and a set of `notes` that include partial background information, relevant contextual details, or observations regarding the claim. Your goal is to generate a concise, clear, and focused `query` (or set of queries) that can be used to verify or fact-check the claim by retrieving relevant documents or evidence from external sources (e.g., Wikipedia articles).
+
+Input Format:
+
+- `claim`: A factual statement that may cover multiple aspects or assertions, often involving named entities such as people, films, places, products, or other specific domain-related items.
+- `notes`: A list of context snippets or observations summarizing the currently known information, including what is missing, ambiguous, or contradictory about the claim’s components. These notes reflect gaps in the information or conflicting details discovered during initial investigation.
+
+Output:
+
+- `query`: One or more clear, well-structured questions or search prompts that directly target the critical pieces of factual information needed to verify each part of the claim. Each query should be specific enough to retrieve relevant documents corresponding to key entities, relationships, or facts mentioned in the claim.
+
+Key details and domain-specific heuristics to include:
+
+1. **Disambiguate Entities Carefully:** When the claim references specific named entities (persons, films, songs, products, places), the query should explicitly name these entities, including relevant descriptors or disambiguation to avoid confusion (e.g., “Solo (Norwegian soft drink)” rather than just “Solo”).
+
+2. **Decompose Complex Claims:** If the claim involves multiple interrelated facts (e.g., an actor starring in two films and a director credit), break down the verification into stepwise, connected questions addressing each part individually, so that sources can be retrieved for all relevant components.
+
+3. **Identify and Target Missing or Ambiguous Links:** Use the `notes` to spot what information is lacking or uncertain. Focus queries on resolving those uncertainties (e.g., if burial location or whether a cemetery is part of a park is unclear, query specifically for these facts).
+
+4. **Cover All Verification Points:** Make sure queries collectively cover every factual assertion embedded in the claim to avoid partial retrieval of relevant resources.
+
+5. **Use Precise and Specific Language:** Frame queries in a form suited for document retrieval, often as clear factual questions or entity-relationship questions. Avoid vague or overly broad queries.
+
+6. **Include Domain Context When Needed:** When domain knowledge influences interpretation (e.g., a director’s known roles, or geographic relationships between cemeteries and parks), reference such context in formulating queries to guide retrieval towards the correct entities and relevant data.
+
+Generalizable Strategy:
+
+- Read the claim carefully, identify all named entities and relationships.
+- Cross-reference those with the `notes` to find gaps or contradictions.
+- For each gap or verification point, generate a direct factual question or phrase that would retrieve documents clarifying or confirming that point.
+- Combine these into a coherent set of queries ensuring coverage of the entire claim.
+- Format the output strictly as `query` without additional explanations.
+
+Example guidance:
+
+For a claim about a film actor and director, queries might include:  
+- "Who starred alongside [Known Actor] in [Film Name]?"  
+- "Did that actor appear in [Second Film Name]?"  
+- "Who directed [Second Film Name]?"
+
+For a claim about a burial place and its geographic association:  
+- "Where is [Person Name] buried?"  
+- "Is [Cemetery Name] located within the [Park or Recreation Area Name]?"
+
+By following these detailed instructions, your generated queries will effectively target the key facts needed for thorough claim verification and ensure retrieval of all necessary supporting documents.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Cast is considered a rock band. The band Jacob Gentry collaborated with is also considered a rock band.
+
+### notes
+['Cast is not mentioned in the provided context as a rock band or otherwise.', 'Jacob Gentry collaborated with the band Broken Bells, which is considered a rock band.', 'Multiple bands mentioned are classified or partially classified as rock bands, such as The Gentry, Montgomery Gentry, The Honeymoon Killers, and BLØF.', 'Cast (Mexican band) is specifically described as a rock band specializing in progressive rock.', 'Jacob Gentry collaborated with Broken Bells, which is categorized as an American indie rock band.', 'Both Cast and Broken Bells fit the classification of rock bands, supporting the claim.', 'Cast is explicitly described as a rock band specializing in progressive rock from Mexico.', 'Jacob Gentry collaborated with the band Broken Bells.', 'Broken Bells is classified as an American indie rock band.', 'Thus, both Cast and Broken Bells can be classified as rock bands.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that Cast is considered a rock band, and also that the band with which Jacob Gentry collaborated is a rock band. From the notes, there is no direct information confirming Cast as a rock band, rendering this part unverified. For Jacob Gentry, it is noted he collaborated with Broken Bells, which is considered a rock band, supporting that part of the claim. However, verification is needed on two points: whether Cast is a rock band, and confirming the band Jacob Gentry collaborated with is Broken Bells and that Broken Bells is indeed a rock band.
+
+### query
+Is Cast considered a rock band?; With which band did Jacob Gentry collaborate?; Is Broken Bells classified as a rock band?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Broken Bells', 'Jacob Gentry']. Documents remaining to be retrieved: ['Cast (band)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The Relient K vocalist, who wrote Rebuild with Jon Foreman of Switchfoot, and George Thorogood have the profession of musician in common.
+
+### notes
+["Matt Thiessen is the lead singer and primary songwriter for Relient K and co-wrote 'Rebuild' with Jon Foreman.", 'Matt Thiessen is a musician involved in singing, guitar, piano, and songwriting.', 'George Thorogood is a musician.', "Matt Thiessen is the lead singer and primary songwriter for Relient K and co-wrote 'Rebuild' with Jon Foreman.", 'Matt Thiessen is a musician involved in singing, guitar, piano, and songwriting.', 'George Thorogood is a musician.', "Matt Thiessen is the lead vocalist of Relient K and co-wrote 'Rebuild' with Jon Foreman of Switchfoot.", "Matt Thiessen's professions include musician, singer, guitarist, pianist, and songwriter.", 'George Thorogood is a musician.', 'Jon Foreman is a musician and lead singer of Switchfoot.']
+
+## Generated Outputs
+### reasoning
+The claim involves verifying three main factual elements: (1) that the Relient K vocalist wrote the song "Rebuild" together with Jon Foreman of Switchfoot, (2) that this vocalist and Jon Foreman share the profession of musician, and (3) that George Thorogood shares the profession of musician with the Relient K vocalist. The notes confirm Matt Thiessen is the lead singer of Relient K and co-wrote "Rebuild" with Jon Foreman, and that both Matt Thiessen and George Thorogood are musicians. To fully confirm the claim, the queries must explicitly confirm Matt Thiessen as the Relient K vocalist, the collaboration on "Rebuild" with Jon Foreman of Switchfoot, Jon Foreman’s profession, and George Thorogood’s profession, and confirm all share the musician profession.
+
+### query
+Who is the lead vocalist of the band Relient K?  
+Did Matt Thiessen co-write the song "Rebuild" with Jon Foreman of Switchfoot?  
+What is Jon Foreman’s profession?  
+Is George Thorogood a musician?  
+Is Matt Thiessen a musician?  
+Do Matt Thiessen and George Thorogood share the profession of musician?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Matt Thiessen', 'Rebuild (song)']. Documents remaining to be retrieved: ['George Thorogood'].
+
+
+
+# Example 3
+## Inputs
+### claim
+This publication is published more often than Bookmarks. Keith Moon was inducted into its Hall of Fame in the early 'eighties.
+
+### notes
+["Keith Moon was posthumously inducted into the Modern Drummer Hall of Fame in 1982, which is in the early 'eighties.", 'No information is available about the publication frequency of this publication compared to Bookmarks.', "Keith Moon was inducted into the Modern Drummer Hall of Fame in 1982, which is in the early 'eighties'.", 'No data was found about the publication frequency of Modern Drummer compared to Bookmarks.', 'Keith Moon was inducted into the Modern Drummer Hall of Fame in 1982, which is in the early 1980s, confirming the timeline of his induction.', 'No information or data is found to compare the publication frequency of Modern Drummer to Bookmarks; the claim about publication frequency cannot be verified.']
+
+## Generated Outputs
+### reasoning
+The claim includes two main factual assertions that require verification: 1) that a certain publication is published more frequently than another publication called "Bookmarks," and 2) that Keith Moon was inducted into the Hall of Fame of this publication in the early 1980s. To verify this claim, it is necessary to identify the publication being referred to in the first sentence (since it is unnamed in the claim), determine its publication frequency compared to Bookmarks, and confirm whether it has a Hall of Fame into which Keith Moon was inducted in the early 1980s. The notes do not provide any supplementary information, so the queries should explicitly seek to identify these key details to confirm or refute the claim.
+
+### query
+1. What is the publication frequency of Bookmarks magazine?  
+2. Which publication is indicated as being published more often than Bookmarks?  
+3. Does this publication have a Hall of Fame?  
+4. Was Keith Moon inducted into the Hall of Fame of this publication, and if so, in what year or timeframe?  
+5. What is the history of Keith Moon's posthumous honors, specifically any Hall of Fame inductions in the early 1980s?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Keith Moon']. Documents remaining to be retrieved: ['Bookmarks (magazine)', 'Modern Drummer'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

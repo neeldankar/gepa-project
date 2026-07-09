@@ -1,0 +1,120 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Instruction for the assistant:
+
+You are provided with two input fields: 
+- `claim`: A factual statement or set of statements whose truth or accuracy needs to be evaluated or verified.
+- `notes`: A list of text snippets, pieces of information, or context relevant to the claim.
+
+Your task is to produce an output field:
+- `query`: One or more precise, targeted, and factually grounded natural language questions or search queries derived from the claim and the notes, designed to retrieve all necessary documents or evidence to verify the claim fully.
+
+Guidelines for producing the `query`: 
+
+1. **Purpose**: The goal of the query is to facilitate retrieval of supporting or refuting evidence about the claim. This means the query must explicitly focus on key entities, facts, and relationships mentioned in the claim and implied or highlighted in the notes.
+
+2. **Use of notes**: 
+   - Extract relevant factual or contextual information from the notes to clarify ambiguous or incomplete parts of the claim.
+   - Incorporate key entities, dates, names, titles, and other factual data from notes to refine the query so that all required facts to verify the claim can be retrieved.
+   - Identify specific elements that remain unverified or partially verified in the notes and make sure the query targets those gaps explicitly.
+
+3. **Precision and Completeness**: 
+   - Include all principal components of the claim in the query: persons, places, works (like songs, films, books, or other creative works), dates, roles, and relationships.
+   - When multiple facts or assertions in the claim require verification, combine them into a single comprehensive query or multiple related queries, ensuring that all aspects are covered.
+   - Use the exact names, titles, and terminology as presented in the claim and the notes for precision.
+
+4. **Address ambiguity or missing information in claim**:
+   - If the claim uses vague designations (e.g., "the town", "the actress") without explicit identification, include questions that seek to identify or clarify those.
+   - When a claim involves verifying association or overlap (such as shared producers of two films), explicitly request information linking those entities.
+
+5. **Examples of question structures to include**:
+   - "Who is/are...?"
+   - "Is [entity/individual] credited with ...?"
+   - "Did [person] play/portray [character] in [work]?"
+   - "Are the producers of [film A] and [film B] the same?"
+   - "Which towns are administered by [council]? Are any located near [landmark]?"
+   - "Who wrote the lyrics/music for [song]? Are X or Y credited?"
+   
+6. **Domain-specific considerations**:
+   - For music-related claims, include songwriter/lyricist/performer credits as relevant.
+   - For film or acting claims, clarify roles, actors’ identities, and producer associations.
+   - For geographical claims, focus on administrative entities (e.g., councils), geographic proximity to named landmarks, and confirm town identities.
+   - For ambiguous or unclear entities mentioned in the claim, explicitly request identification or clarification.
+
+7. **Focus on verification of claim components rather than general exploratory queries**:
+   - Your query should be targeted to retrieve documents that directly confirm or refute each factual assertion in the claim.
+   - Avoid overly broad or vague queries.
+
+In summary, your query should be a carefully composed, fact-focused, and comprehensive question or set of questions that use the claim and notes to ensure retrieval of all necessary documents and evidence to verify each part of the claim completely.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Between this plant and Darwinia, the genus with more species is Darwinia. This plant is called Saule in French.
+
+### notes
+['Darwinia is a genus of about 70 species of evergreen shrubs endemic to Australia.', "Salix (willows), known as 'Saule' in French, is a genus containing around 400 species.", "'Saule' is the French name for plants in the genus Salix (willows).", 'Salix has more species than Darwinia, contradicting the claim that Darwinia has more species.', 'Darwinia is a genus of about 70 species of evergreen shrubs endemic to Australia.', "The genus Salix, known as willows and called 'Saule' in French, contains around 400 species.", 'Salix has more species than Darwinia, contradicting the claim that Darwinia has more species.', "The French name 'Saule' refers specifically to plants in the genus Salix.", 'Darwinia is a genus of about 70 species of evergreen shrubs endemic to Australia.', "Salix, known as 'Saule' in French, is a genus containing around 400 species of deciduous trees and shrubs globally.", 'Salix (willows) has more species than Darwinia, contradicting the claim that Darwinia has more species.', "The French name 'Saule' specifically refers to plants in the genus Salix."]
+
+## Generated Outputs
+### reasoning
+The claim compares the number of species in two genera, stating that Darwinia has more species than a plant called Saule in French, and implies that Saule refers to a different genus. The notes identify "Saule" as the French name for plants in the genus Salix, which has about 400 species, whereas Darwinia has about 70 species. The notes indicate that Salix has more species than Darwinia, so the first part of the claim is contradicted by the notes. The claim also states that the plant called Saule in French is compared with Darwinia, but the genus corresponding to Saule is Salix. Therefore, to verify the claim, it is necessary to check the number of species in Darwinia and Salix, confirm that Saule is the French name for Salix, and verify that Darwinia has fewer species than Salix.
+
+### query
+How many species are there in the genus Darwinia? How many species are there in the genus Salix? Is the French name "Saule" used for the genus Salix? Does Salix have more species than Darwinia?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Darwinia (plant)', 'Willow']. Documents remaining to be retrieved: ['Saule'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Candlelight Red the musical group has released twice as many albums as the band who also performs as One Unique Signal.
+
+### notes
+['One Unique Signal is a British band formed in 2002 that also performs as The Telescopes since 2010.', 'There is no information about the musical group Candlelight Red or their album releases in the provided notes or context.', 'No data is available to verify the number of albums released by Candlelight Red or One Unique Signal.', 'Therefore, the claim that Candlelight Red has released twice as many albums as the band who also performs as One Unique Signal cannot be verified with the given information.', 'One Unique Signal is a British band formed in 2002 that also performs live and records as The Telescopes since 2010.', 'There is no available information regarding the number of albums released by Candlelight Red in the notes or context.', 'No data is provided on the number of albums released by One Unique Signal or the band performing as One Unique Signal.', 'The claim that Candlelight Red has released twice as many albums as the band who also performs as One Unique Signal cannot be verified due to missing information on both sides.', 'One Unique Signal is a British band formed in 2002 that also performs and records as The Telescopes since 2010.', 'There is no information available about Candlelight Red as a musical group, nor about their album releases.', 'No data is provided regarding the number of albums released by One Unique Signal or Candlelight Red.', 'Thus, the claim that Candlelight Red has released twice as many albums as the band who also performs as One Unique Signal cannot be verified with the given information.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that the musical group Candlelight Red has released twice as many albums as the band that also performs as One Unique Signal. From the notes, it is established that One Unique Signal is a British band formed in 2002, which also performs as The Telescopes since 2010. However, there is no available information regarding the number of albums released by Candlelight Red or One Unique Signal/The Telescopes. Therefore, to verify the claim, it is necessary to find detailed discography counts for both bands, confirming the number of albums released by Candlelight Red and the number released by One Unique Signal or The Telescopes, and then compare those numbers.
+
+### query
+How many albums has Candlelight Red released? How many albums has One Unique Signal released? Has One Unique Signal performed or released albums under the name The Telescopes? Are the counts of albums released by Candlelight Red and One Unique Signal (including The Telescopes) such that Candlelight Red’s total albums are twice the number of those released by One Unique Signal or The Telescopes?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['One Unique Signal']. Documents remaining to be retrieved: ['Candlelight Red', 'The Telescopes'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Relient K vocalist, who wrote Rebuild with Jon Foreman of Switchfoot, and George Thorogood have the profession of musician in common.
+
+### notes
+['Matt Thiessen is the vocalist and lead singer of the band Relient K and is a musician and songwriter.', 'Matt Thiessen co-wrote the song "Rebuild" with Jon Foreman of Switchfoot.', 'George Thorogood’s profession as a musician is not detailed in the current context but is publicly known.', 'Both Matt Thiessen and George Thorogood share the profession of musician.', 'Matt Thiessen is the lead vocalist and a musician in the band Relient K.', "Matt Thiessen co-wrote the song 'Rebuild' with Jon Foreman of the band Switchfoot.", 'Jon Foreman is an American musician and lead singer of Switchfoot.', 'George Thorogood is an American musician and band leader of George Thorogood and the Destroyers.', 'Both Matt Thiessen and George Thorogood share the profession of musician.', 'Matt Thiessen is the lead vocalist and primary songwriter for the band Relient K.', "Matt Thiessen co-wrote the song 'Rebuild' with Jon Foreman, the lead singer of Switchfoot.", "'Rebuild' was written during the 2007 Appetite for Construction Tour involving Relient K, Switchfoot, and Ruth.", 'George Thorogood is an American musician, singer, and songwriter known for his blues rock music with his band George Thorogood and the Destroyers.', 'Both Matt Thiessen and George Thorogood share the profession of musician.']
+
+## Generated Outputs
+### reasoning
+The claim states that the Relient K vocalist who co-wrote "Rebuild" with Jon Foreman of Switchfoot and George Thorogood share the musician profession. The notes confirm Matt Thiessen is the vocalist and lead singer of Relient K, that he co-wrote "Rebuild" with Jon Foreman, and both Matt Thiessen and George Thorogood share the profession of musician. However, George Thorogood's specific musician profession detail is not given in the notes but is publicly known. To fully verify the claim, it is necessary to confirm Matt Thiessen's role as Relient K's vocalist and co-writer of "Rebuild" with Jon Foreman, and establish George Thorogood's status as a musician.
+
+### query
+Who is the lead vocalist of the band Relient K? Did Matt Thiessen co-write the song "Rebuild" with Jon Foreman of Switchfoot? What is George Thorogood's profession? Are both Matt Thiessen and George Thorogood recognized as musicians?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['George Thorogood', 'Matt Thiessen', 'Rebuild (song)']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

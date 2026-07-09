@@ -1,0 +1,121 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You are given three input fields:
+- `claim`: a statement or assertion that combines one or more factual elements, sometimes complex or composite, potentially involving named entities, relationships, or categorizations.
+- `notes`: a list of factually relevant sentences or fragments that refer to or clarify various details related to the claim. These notes may include corrections, clarifications, or evidence supporting or refuting aspects of the claim.
+- `context`: a list of longer, encyclopedic or descriptive documents that contain detailed background information, definitions, or verification materials related to entities, events, or topics mentioned in the claim.
+
+Your goal is to produce two output fields:
+- `new_notes`: a distilled, concise, and accurate subset of the notes that directly address the factual correctness of the claim. This summary should resolve inconsistencies, filter out irrelevant or redundant information from the original notes, and highlight the key factual points needed to verify or understand the claim. If some notes provide strong evidence refuting or supporting claim elements, prioritize those. Avoid including speculative or unsupported assertions.
+- `titles`: a list of short, precise document titles or topic headings extracted or inferred from the context that most directly support the reasoning and factual validation of the claim. These should ideally reflect key entities, events, or thematic categories relevant to the claim (e.g., names of notable people, awards, geographic regions, organizations, or cultural artifacts).
+
+Generalizable Strategy:
+1. Understand the claim carefully and identify its key components — entities, roles, relationships, and assertions.
+2. Examine the notes to differentiate factually relevant information from noise or contradictory details. Aggregate corroborating evidence and important clarifications.
+3. Use the context to confirm or supplement note information, focusing on named entities or topics central to the claim.
+4. Summarize the essential evidence into `new_notes` that sufficiently support or refute the claim without redundancy.
+5. Extract or infer relevant document or topic titles from the context correlated with the verified facts and entities in your summary; ideally selecting documents that substantively contributed to your reasoning.
+6. Ensure your output balances brevity and completeness to facilitate effective fact-checking and information retrieval.
+
+Domain-Specific Considerations:
+- Named entities might include people (with precise professions, awards, or affiliations), places (including administrative divisions, provinces, or cities), events, awards (e.g. Nobel Prize in Literature), television shows, or cultural productions.
+- Pay attention to roles or titles (e.g., “judge on Music Icons”, “producer and singer of Aaina”), ensuring factual correctness about such roles.
+- Distinguish between similar-sounding or related entities (e.g., differentiating between “Junaid Khan” as a singer/actor and as a judge) to avoid conflation.
+- Confirm geographic hierarchies and jurisdictions carefully (e.g., county, city, province, country) and their relationships.
+- When verifying claims about awards and distinctions, be precise whether someone has won, been nominated, or not confirmed.
+- Understand that some evidence may be indirect or imply a conclusion rather than stating it explicitly; integrate these carefully.
+- In cases where a claim mixes true and unconfirmed or false elements, your summary should clearly separate what is supported from what is not.
+
+The instructions above incorporate the evidence evaluation, entity disambiguation, and context relevance selection strategies that you should apply consistently.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The actor who starred, along with Go Ah-sung, in the South-Korean film, Office,  appeared in The Deal. The Deal was directed by Choi Woo-shik.
+
+### notes
+['Office (2015) is a South Korean film starring Go Ah-sung and Park Sung-woong.', "Kim Eui-sung is a South Korean actor who starred in 'Office' (2015).", "There is no information confirming either that the actor from 'Office' appeared in 'The Deal' or that 'The Deal' was directed by Choi Woo-shik.", 'Choi Woo-shik is primarily known as an actor, not as a film director.', 'Office (2015) is a South Korean film starring Go Ah-sung and Park Sung-woong.', "Kim Eui-sung is also a South Korean actor who starred in 'Office' (2015).", "There is no information confirming that the actor from 'Office' appeared in 'The Deal' or that 'The Deal' was directed by Choi Woo-shik.", 'Choi Woo-shik is primarily known as an actor, not as a film director.', 'Office (2015) is a South Korean film starring Go Ah-sung and Park Sung-woong.', 'Park Sung-woong appeared in The Deal (2015) as a serial killer.', 'Choi Woo-shik is primarily known as an actor, not as a film director.', 'There is no information confirming that The Deal was directed by Choi Woo-shik.']
+
+### context
+['Monster (2017 film) | Monster is an upcoming South Korean period thriller film directed by Heo Jong-ho.  It stars Kim Myung-min, Park Hee-soon, Lee Geung-young, Choi Woo-shik, Park Sung-woong, Kim In-kwon and Lee Hye-ri.', 'Kim Eui-sung | Kim Eui-sung (; born December 17, 1965) is a South Korean actor.  He starred in film such as "Office" (2015), "" (2015), "Train to Busan" (2016) and "The Truth Beneath".  He also appears in the TV series "W" (2016).', 'Office (2015 South Korean film) | Office (오피스 ) is 2015 South Korean slasher-thriller film directed by Hong Won-chan and starring Go Ah-sung and Park Sung-woong.  It is about a detective trying to figure out why a mild-mannered man has killed his family and is targeting his co-workers.  The film premiered at the Midnight Screenings section of the 2015 Cannes Film Festival.', 'Park Sung-woong | Park Sung-woong (born January 9, 1973) is a South Korean actor.  Following his acting debut in "No. 3" in 1997, Park has starred in several movies and television series, notably as a gangster in "New World" (2013) and a serial killer in "The Deal" (2015).', 'Real (2017 film) | Real () is a South Korean action thriller noir film directed by Lee Sa-rang, starring Kim Soo-hyun, Sung Dong-il, Lee Sung-min, Choi Jin-ri and Jo Woo-jin.  The film was released on June 28, 2017 in South Korea.', 'Tabloid Truth | Tabloid Truth (; lit.  "Leaflet: Dangerous Rumors") is a 2014 South Korean thriller film directed by Kim Kwang-sik, and starring Kim Kang-woo, Jung Jin-young, Ko Chang-seok and Park Sung-woong.', 'Now and Forever (2006 film) | Now and Forever () is a 2006 South Korean film directed by Kim Seong-joong and starring Choi Ji-woo, Jo Han-sun, Choi Sung-kook and Seo Young-hee. it also has a Japanese manga named RENRI NO EDA (連理の枝) Intertwined Branches .', 'My World Only | My World Only is an upcoming South Korean drama film directed by Choi Sung-hyun.  The film stars Lee Byung-hun, Youn Yuh-jung, Park Jung-min, Han Ji-min and Kim Sung-ryung.', 'The Swindlers (2017 film) | The Swindlers is an upcoming South Korean crime drama film directed by Jang Chang-won.  The film stars Hyun Bin, Yoo Ji-tae, Bae Seong-woo, Park Sung-woong, Nana and Ahn Se-ha.', 'Big Bang (film) | Big Bang (; lit.  "I\'ll Shoot") is a 2007 South Korean action-comedy film written and directed by Park Jung-woo, and starring Kam Woo-sung and Kim Su-ro.']
+
+## Generated Outputs
+### reasoning
+The claim states that the actor who starred with Go Ah-sung in the South Korean film "Office" also appeared in "The Deal," which was directed by Choi Woo-shik. From the notes and context, "Office" (2015) stars Go Ah-sung and Park Sung-woong (notes 1 and 5) as well as Kim Eui-sung (notes 2 and 6). Regarding "The Deal," Park Sung-woong is confirmed to have starred in it (context 4), with the note specifying his role as a serial killer in "The Deal" (2015). However, there is no information confirming that Choi Woo-shik directed "The Deal"; in fact, Choi Woo-shik is primarily known as an actor, not as a film director (notes 3, 4, 7, 8). Thus, the first part of the claim is partially supported because Park Sung-woong, who starred alongside Go Ah-sung in "Office," appeared in "The Deal." The second part of the claim—that "The Deal" was directed by Choi Woo-shik—is not supported and likely false.
+
+### new_notes
+['Office (2015) is a South Korean film starring Go Ah-sung and Park Sung-woong.', 'Park Sung-woong appeared in The Deal (2015) as a serial killer.', 'Choi Woo-shik is primarily known as an actor, not as a film director.', 'There is no information confirming that The Deal was directed by Choi Woo-shik.']
+
+### titles
+['Office (2015 South Korean film)', 'Park Sung-woong', 'The Deal (2015 film)', 'Choi Woo-shik']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Office (2015 South Korean film)', 'Park Sung-woong']. Documents remaining to be retrieved: ['The Deal (2015 film)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The writer Norman Alfred Norman Lindsay enjoyed boxing, but the author of The Hundred Secret Senses did not.
+
+### notes
+['Norman Alfred William Lindsay was an accomplished amateur boxer.', 'No information is available regarding the author of The Hundred Secret Senses and their interest in boxing.', 'Norman Alfred William Lindsay was an accomplished amateur boxer.', 'The author of The Hundred Secret Senses is Amy Tan, and no information is available regarding her interest in boxing.', 'Norman Alfred William Lindsay was an accomplished amateur boxer.', 'The author of The Hundred Secret Senses is Amy Tan.', "No information is available regarding Amy Tan's interest in boxing."]
+
+### context
+["Mr S and the Secrets of Andorra's Box | Mr S and the Secrets of Andorra's Box is a 2008 novel by Irish journalist and author Paul Howard, and the eighth in the Ross O'Carroll-Kelly series.", 'Jack-in-the-Box (Astro City) | Jack-in-the-Box is a fictional character in the comic book series "Astro City".  Created by writer Kurt Busiek and artists Brent Anderson and Alex Ross, Jack-in-the-Box is a prominent superhero of Astro City.  He is motivated by a powerful desire for justice based on his own family history, with a strong sense of responsibility to society based on his expertise, capabilities and the sheer enjoyment of being a superhero.  A conflicting sense of responsibility to his own family, however, combine with reminders of his own mortality to make him question his superheroic mission.', 'Musical Box Society International | The Music Box Society International (MBSI) is a non-profit organization dedicated to the enjoyment, study and preservation of all automatic musical instruments. Founded in 1949, MBSI now numbers several thousand members with representation in 50 US states and nineteen other countries.  It focuses on music boxes of all sizes, from small, hand-held wind-up boxes, to fairground organs or room sized orchestrions, including musical clocks and snuff boxes, singing bird boxes, player pianos (reproducing pianos, nickelodeons), and automatic musical instruments of any kind.', 'Foxy boxing | Foxy boxing is a form of sports entertainment which involves two or more women boxing (or pretending to do so) in a sexualized context as a form of erotic entertainment.  The participants are typically dressed in revealing clothing such as bikinis or skintight leotards, while the actual fight usually focuses on the beauty of the combatants rather than fighting skills.  Foxy boxing is unusual in that the audience generally does not care who wins.  It is believed to have its roots in "singles\' bars in southern California" after the interest in women\'s boxing began to decline in the late 1980s.', 'Box office bomb | In the motion picture industry, a "box office bomb" or "box office flop" is a film that is considered highly unsuccessful or unprofitable during its theatrical run, often following significant hype regarding its cost, production, or marketing efforts.  Generally, any film for which the production and marketing costs exceed the combined revenue recovered after release is considered to have "bombed".', 'Box of Secrets (song) | "Box of Secrets" is the second single by singer/songwriter Zarif and the second single taken from her debut album "Box of Secrets".  The song contains samples from the song "Sing, Sing, Sing" by Louis Prima and the commercial single version contains a rap from Mz Bratt.', 'Puzzle box | A puzzle box (also called a secret box or trick box) is a box that can only be opened by solving a puzzle.  Some require only a simple move and others a series of discoveries.', 'Box of Secrets (Zarif album) | " Box of Secrets "is the debut album by singer-songwriter Zarif.  It was released on 30 August 2010.', 'The Hundred Secret Senses | The Hundred Secret Senses is a bestselling 1995 novel by Chinese-American writer Amy Tan.  It was published by Putnam, and was shortlisted for the 1996 Orange Prize for Fiction.  While the story is fictional, it is based on the experiences of Tan and on stories told by her mother.', 'Helmet Boxing | The game is often seen as rite of passage for players and fighters feel peer pressure to participate.  There is false sense of security among teens that face and head are protected.']
+
+## Generated Outputs
+### reasoning
+The claim states that Norman Alfred Norman Lindsay enjoyed boxing, while the author of The Hundred Secret Senses did not. From the notes provided, it is confirmed that Norman Alfred William Lindsay was an accomplished amateur boxer, directly supporting the part of the claim about his interest in boxing. Regarding the author of The Hundred Secret Senses (Amy Tan), no information is available about any interest or involvement in boxing. Therefore, the claim about Norman Lindsay enjoying boxing is supported, but the claim that Amy Tan did not enjoy boxing cannot be confirmed or refuted due to lack of data. The context confirms Amy Tan is the author of The Hundred Secret Senses and includes no relevant information about boxing interests for her. Thus, the summary should affirm Lindsay's boxing and note the absence of information about Amy Tan's boxing interest.
+
+### new_notes
+['Norman Alfred William Lindsay was an accomplished amateur boxer.', 'The author of The Hundred Secret Senses is Amy Tan, and no information is available regarding her interest in boxing.']
+
+### titles
+['Norman Alfred William Lindsay', 'The Hundred Secret Senses', 'Amy Tan']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Norman Lindsay', 'The Hundred Secret Senses']. Documents remaining to be retrieved: ['Amy Tan'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Travis Oates voiced Piglet in the 2011 movie. The Jungle Book was released before this movie.
+
+### notes
+["Travis Oates voiced Piglet in the 2011 Disney animated film 'Winnie the Pooh' and was one of the original voice actors to return for this movie.", "The original Disney animated movie 'The Jungle Book' was released in 1967, which predates the 2011 release of 'Winnie the Pooh'.", "Travis Oates voiced Piglet in the 2011 Disney animated film 'Winnie the Pooh' and was one of the original voice actors to return for this movie.", "The original Disney animated movie 'The Jungle Book' was released in 1967, which predates the 2011 release of 'Winnie the Pooh'.", "Travis Oates voiced Piglet in the 2011 Disney animated film 'Winnie the Pooh' and was one of the original voice actors to return for this movie.", "The original Disney animated movie 'The Jungle Book' was released in 1967, which predates the 2011 release of 'Winnie the Pooh'."]
+
+### context
+['Winnie the Pooh (2011 film) | Winnie the Pooh is a 2011 American animated buddy musical comedy film produced by Walt Disney Animation Studios and released by Walt Disney Pictures.  It is the 51st Disney animated feature film.  Inspired by A. A. Milne\'s stories of the same name, the film is part of Disney\'s "Winnie the Pooh" franchise, the fifth theatrical "Winnie the Pooh" film released, and Walt Disney Animation Studios\' second adaptation of "Winnie-the-Pooh" stories.  Jim Cummings reprises his vocal roles as Winnie the Pooh and Tigger, while series newcomers Travis Oates, Tom Kenny, Craig Ferguson, Bud Luckey, and Kristen Anderson-Lopez provide the voices of Piglet, Rabbit, Owl, Eeyore, and Kanga, respectively.  In the film, the aforementioned residents of the Hundred Acre Wood embark on a quest to save Christopher Robin from an imaginary culprit while Pooh deals with a hunger for honey.  The film is directed by Stephen Anderson and Don Hall, adapted from Milne\'s books by a story team led by Burny Mattinson, produced by Peter Del Vecho, Clark Spencer, John Lasseter, and Craig Sost, and narrated by John Cleese.', 'Piglet\'s Big Movie | Piglet\'s Big Movie is a 2003 American animated musical comedy-drama adventure film produced by Walt Disney Feature Animation and animated by Walt Disney Animation (Japan).  It was released by Walt Disney Pictures on March 21, 2003.  The film is based upon the characters in the "Winnie-the-Pooh" books written by A. A. Milne.  It is the second in a recent series of theatrically released "Winnie the Pooh" films, preceded by "The Tigger Movie" (2000) and followed by "Pooh\'s Heffalump Movie" (2005).  In the film, Piglet is ashamed of being small and wanders off into the Hundred Acre Woods, leading his friends to form a search party to find him.', 'Pooh\'s Heffalump Halloween Movie | Pooh\'s Heffalump Halloween Movie is an 2005 American animated direct-to-video film produced by DisneyToon Studios, featuring the characters from Winnie the Pooh franchise.  This is the first Pooh movie since the death of Paul Winchell and the last in which John Fiedler provides Piglet\'s voice, as Fiedler died in 2005.  Nikita Hopkins the voice of Roo was replaced by Jimmy Bennett.  It followed by a television film produced by Walt Disney Television Animation, "Pooh\'s Super Sleuth Christmas Movie", released on November 20, 2007, an animated feature served as the episodes of television series "My Friends Tigger & Pooh".', 'Travis Oates | Travis Oates is an American actor, voice actor and director.  He continued the role of Piglet in "My Friends Tigger & Pooh" and other "Winnie the Pooh"-related media after the death of John Fiedler on June 25, 2005.  He and Jim Cummings were the only two original voice actors to return for the 2011 movie.  He also was one of the original co-hosts of the G4TV original program "Arena", a competitive gaming show with Wil Wheaton in 2002.  Oates owns and manages the ACME Comedy Theatre in Costa Mesa, California.', 'Winnie the Pooh and a Day for Eeyore | Winnie the Pooh and a Day for Eeyore is a 1983 Disney Winnie the Pooh animated featurette, based on two chapters from the books "Winnie-the-Pooh" and "The House at Pooh Corner", originally released theatrically on March 25, 1983, with the 1983 re-issue of "The Sword in the Stone".  It is the fourth and final of Disney\'s original theatrical featurettes adapted from the Pooh books by A. A. Milne.', 'Winnie the Pooh and Christmas Too | Winnie the Pooh and Christmas Too is a 1991 Christmas television special based on the Disney television series "The New Adventures of Winnie the Pooh", originally broadcast on Saturday, December 14, 1991 on ABC and produced by Walt Disney Animation (France), S.A. and Walt Disney Television Animation.', 'Super Duper Super Sleuths | My Friends Tigger & Pooh: Super-Duper Super Sleuths is one of three "Winnie the Pooh" films based on the hit Playhouse Disney series "My Friends Tigger & Pooh".  This is the fifth "Winnie the Pooh" film to feature Lumpy the Heffalump, and was released Straight-to-DVD on April 6, 2010.  It aired on Playhouse Disney four days after on April 10, 2010.  The film was produced by Walt Disney Television Animation, with animation production by Polygon Pictures in Japan.', 'The Many Adventures of Winnie the Pooh | The Many Adventures of Winnie the Pooh is a 1977 American animated film produced by Walt Disney Productions and distributed by Buena Vista Distribution.  It is the 22nd Disney animated feature film and was first released on March 11, 1977 on a double bill with "The Littlest Horse Thieves".', 'Pooh\'s Heffalump Movie | Pooh\'s Heffalump Movie is a 2005 American animated film produced by DisneyToon Studios and released by Walt Disney Pictures, featuring characters from A. A. Milne\'s "Winnie-the-Pooh" stories.  This film features songs by Carly Simon.', 'The Book of Pooh | The Book of Pooh is an American children\'s television series that aired on Disney Channel.  It is the third television series to feature the characters from the Disney franchise based on A. A. Milne\'s works; the other two were the live-action "Welcome to Pooh Corner" (to which this series bears resemblance) and the animated "The New Adventures of Winnie the Pooh" which ran from 1988–1991.  It premiered on January 22, 2001, and completed its run on July 8, 2003.  The show is produced by Shadow Projects and Playhouse Disney.  Walt Disney Pictures released the first of two films, a direct-to-video spin-off film based on the animated television series, "", 2001.']
+
+## Generated Outputs
+### reasoning
+Travis Oates is confirmed as the voice of Piglet in the 2011 Disney animated film "Winnie the Pooh." The original Disney animated movie "The Jungle Book" was released in 1967, which is well before the 2011 release of "Winnie the Pooh." Therefore, the claim that Travis Oates voiced Piglet in the 2011 movie is true, and "The Jungle Book" was released prior to this movie as stated.
+
+### new_notes
+["Travis Oates voiced Piglet in the 2011 Disney animated film 'Winnie the Pooh' and was one of the original voice actors to return for this movie.", "The original Disney animated movie 'The Jungle Book' was released in 1967, which predates the 2011 release of 'Winnie the Pooh'."]
+
+### titles
+['Winnie the Pooh (2011 film)', 'The Jungle Book (1967 film)', 'Travis Oates']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Travis Oates', 'Winnie the Pooh (2011 film)']. Documents remaining to be retrieved: ['The Jungle Book (1994 film)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,170 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You are tasked with a focused fact verification and evidence consolidation task, where you analyze three types of inputs—`claim`, `notes`, and `context`—to produce two outputs: `new_notes` and `titles`. The `claim` is a textual statement possibly containing multiple factual assertions that need verification. The `notes` are often extracted snippets, paraphrases, or partial evidences relevant to the claim, while the `context` comprises longer document texts or summaries potentially containing detailed source information related to entities, events, timelines, or attributes mentioned in the claim.
+
+Your overarching goal is to verify or refute each distinct component of the claim by synthesizing and consolidating information from both `notes` and `context`, avoiding redundancy, speculation, or irrelevant content.
+
+---
+
+Detailed Guidelines and Domain-Specific Considerations:
+
+1. **Input Structure and Understanding**  
+   - **claim**: A statement consisting of one or more assertions (e.g., about persons, events, dates, geographic locations, product characteristics, filmographies, or comparative facts).  
+   - **notes**: Fragmented facts, paraphrases, or extracted evidences that may partially support or contradict the claim. This input can contain redundancy.  
+   - **context**: Summaries or full-text snippets from diverse documents that may provide authoritative or more detailed information on the claim’s subjects.
+
+2. **Verification Approach and Reasoning Strategy**  
+   - Parse the claim into discrete assertions where possible and address each individually.  
+   - Map claim elements (entities, dates, events, attributes) to facts in both `notes` and `context`.  
+   - Cross-verify facts by probing both inputs together to spot confirmations, contradictions, or missing information.  
+   - Explicitly note when parts of the claim cannot be verified because critical information about entities, events, or attributes is absent from both inputs.  
+   - For geographic, historical, biographical, or product-related facts, use explicit details only—avoid assumptions or inference beyond the data given.  
+   - When multiple entities or facts overlap (e.g., multiple actors in movies, overlapping dates, competing geographic references), carefully separate which parts are supported and which are not.
+
+3. **Consolidation of `new_notes`**  
+   - Remove redundancy by combining similar or repeated facts into succinct, clear statements—preferably one or two sentences each.  
+   - Focus exclusively on information directly relevant to verifying the claim’s assertions, omitting irrelevant tangents or unrelated domain facts.  
+   - Clarify precisely which elements of the claim are supported, contradicted, or unverifiable.  
+   - If verification is impossible due to missing data or ambiguity, clearly state this instead of speculating.  
+   - Maintain factual accuracy and align notes closely with evidence found in the inputs.
+
+4. **Creation of `titles`**  
+   - Generate concise, descriptive headings that summarize key topics, entities, or factual relationships uncovered during verification.  
+   - Titles should be domain-relevant and reflect the organizing principles of your notes (e.g., names of persons, film titles with dates, product or geographic features, timeline relations).  
+   - They serve as topical indexes for the summarized evidences and facilitate quick understanding of verification focuses.
+
+5. **Domain-Specific Knowledge Embedded in the Task**  
+   - Common facts relate to soft drink brands, flavor profiles, and geographic market presence.  
+   - Biographical facts include film directors, voice actors, release years, animation movie titles, and actor nationalities.  
+   - Geographic comparisons, including city versus county boundaries, size, and jurisdictional status, are frequent.  
+   - Product ownership or company-railway station relations may appear, requiring careful geographic and corporate structure reasoning.  
+   - Scientific or technical terms (e.g., chemical or biological entities) may appear but are often not central to verification.
+
+6. **Generalizable Reasoning and Workflow**  
+   - Identify key components (entities, events, dates) in the claim first.  
+   - Search both `notes` and `context` for explicit assertions tied to these components.  
+   - Distill duplicated claims and reconcile contradictions; produce a coherent evaluation per factual assertion.  
+   - Explicitly separate verifiable from unverifiable or contradicted claim parts in `new_notes`.  
+   - Group related notes under thematic headings synthesized as `titles`.
+
+7. **Handling Missing or Conflicting Data**  
+   - When the claim contains information about an entity or event absent in all inputs, clearly note that verification is not possible.  
+   - If parts are verifiable but others are unsupported, separately highlight these distinctions.  
+   - Avoid speculation or implied connections not grounded in provided evidence.
+
+---
+
+Summary:
+
+Your task is a meticulous, evidence-based fact-checking and summarization exercise that integrates fragmented inputs into a concise, focused verification dossier. Your outputs must be:
+
+- **`new_notes`**: A reduced, clear, and precise list of facts confirming, contradicting, or indicating unverifiability of the claim’s components based on the complete input set.  
+- **`titles`**: A concise list of relevant topical headings that summarize and organize the key subjects, entities, or relationships essential to understanding the verification outcome.
+
+This task requires strict adherence to evidence, careful parsing of multi-part claims, clear handling of data absence or contradiction, and domain-aware synthesis of facts to aid downstream understanding or retrieval tasks.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The auditorium where Backstreet Boys: Larger Than Life residency show perfomed at is located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada. This auditorium is located at a hotel and casino owned by Caesars Entertainment Corporation.
+
+### notes
+['The Backstreet Boys: Larger Than Life residency show is performed at The AXIS auditorium within the Planet Hollywood Resort & Casino in Las Vegas, Nevada.', 'Planet Hollywood Resort & Casino in Las Vegas, where The AXIS auditorium is located, is a hotel and casino owned and operated by Caesars Entertainment Corporation.', 'The Backstreet Boys: Larger Than Life residency show is performed at The AXIS auditorium located within the Planet Hollywood Resort & Casino in Las Vegas, Nevada.', 'The Planet Hollywood Resort & Casino in Las Vegas is a hotel and casino owned and operated by Caesars Entertainment Corporation.', 'Therefore, the auditorium where the Backstreet Boys residency show is performed is in a hotel and casino owned by Caesars Entertainment Corporation.', 'The Backstreet Boys: Larger Than Life residency show is performed at The AXIS auditorium located within the Planet Hollywood Resort & Casino in Las Vegas, Nevada.', 'Planet Hollywood Resort & Casino, the location of The AXIS auditorium, is a hotel and casino owned and operated by Caesars Entertainment Corporation.']
+
+### context
+['Backstreet Boys: Larger Than Life | Backstreet Boys: Larger Than Life is the first residency show by American vocal group Backstreet Boys, performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada.  The show had its opening night on March 1, 2017 and is currently scheduled to run through February 17, 2018.', "Planet Hollywood Las Vegas | Planet Hollywood Las Vegas (formerly Tally-Ho, King's Crown and Aladdin) is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada.  It is owned and operated by Caesars Entertainment Corporation.", 'Jennifer Lopez: All I Have | Jennifer Lopez: All I Have is the first residency show by American entertainer Jennifer Lopez.  Performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada, the residency show began on January 20, 2016.', 'Robert Earl | Robert Earl (born May 29, 1951) is the founder and CEO of Planet Hollywood, Chairman of the Planet Hollywood Resort & Casino in Las Vegas, and host of "Robert Earl\'s Be My Guest" television program which airs weekly on the Cooking Channel.', 'Britney: Piece of Me | Britney: Piece of Me is the first residency show by American singer Britney Spears, performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada.  The show had its opening night on December 27, 2013.  In 2015, Spears extended her contract with Planet Hollywood through 2017.', "Planet Hollywood Goa | Planet Hollywood Beach Resort, (stylized as planet hollywood) is a luxury 5 star hotel based in Goa, India inspired by the popular Las Vegas’s casino hotel Planet Hollywood and it is launched in Goa December 2014, It is India's 1st Hollywood themed Beach Resort in Goa.  Sachiin Joshi is the founder and Voice chairman of this beach resort, who is an Indian film actor, producer and son of JMJ Group owner Jagdish Mohanlal Joshi.", 'Rio All Suite Hotel and Casino | Rio Las Vegas is a hotel and casino near the Las Vegas Strip in Paradise, Nevada, United States.  It is owned and operated by Caesars Entertainment Corporation.  The Rio was the first all suite resort in the Las Vegas area.  It was named after the city of Rio de Janeiro and is influenced by Brazilian culture.  It is the host casino for the World Series of Poker.', 'Otakon Vegas | Otakon Vegas ( ) is a three-day anime convention held during January at the Planet Hollywood Resort and Casino in Las Vegas, Nevada.  The convention is organized by Otakorp, the group behind Otakon.', 'Miss America 2008 | Miss America 2008, the 81st Miss America pageant, was held at the Planet Hollywood Resort & Casino in Las Vegas on January 26, 2008.', 'Paris by Night 98 | Paris By Night 98 - Fly With Us to Las Vegas is a "Paris By Night" program produced by Thúy Nga that was filmed at the Theatre for the Performing Arts in Planet Hollywood Resort & Casino on September 26, 2009 and September 27, 2009 and release DVD from December 10, 2009.  The show was hosted by Nguyễn Ngọc Ngạn and Nguyễn Cao Kỳ Duyên.']
+
+## Generated Outputs
+### reasoning
+The claim consists of two assertions: (1) that the auditorium where the Backstreet Boys: Larger Than Life residency show is performed is located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada, and (2) that this auditorium is located in a hotel and casino owned by Caesars Entertainment Corporation.
+
+From the context:
+- The show is performed at The AXIS auditorium located in Planet Hollywood Resort & Casino in Las Vegas, Nevada (source [1]). This confirms the first part of the claim.
+- Planet Hollywood Las Vegas, the hotel and casino where The AXIS auditorium is located, is owned and operated by Caesars Entertainment Corporation (source [2]). This confirms the second part of the claim.
+
+No contradictory information or missing details for these claims are found in the notes or context.
+
+### new_notes
+['The Backstreet Boys: Larger Than Life residency show is performed at The AXIS auditorium within the Planet Hollywood Resort & Casino in Las Vegas, Nevada.', 'Planet Hollywood Resort & Casino in Las Vegas, where The AXIS auditorium is located, is a hotel and casino owned and operated by Caesars Entertainment Corporation.']
+
+### titles
+['Backstreet Boys Residency at The AXIS Auditorium', 'Planet Hollywood Resort & Casino Ownership']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Backstreet Boys: Larger Than Life', 'Planet Hollywood Las Vegas']. Documents remaining to be retrieved: ['The AXIS'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Christopher B. Landon wrote a 2007 movie that stars Shia Saide LaBeouf, an American actor who starred in the Disney Channel series Even Stevens that premiered in 2004.
+
+### notes
+['No information is available in the given notes or context to verify that Christopher B. Landon wrote a movie in 2007.', 'No data is provided to confirm that the 2007 movie starred Shia Saide LaBeouf.', 'There is no evidence in the materials provided to confirm that Shia Saide LaBeouf is an American actor who starred in the Disney Channel series Even Stevens, or when the series premiered.', 'Christopher Landon co-wrote the 2007 film Disturbia, which stars Shia LaBeouf.', 'Shia LaBeouf is an American actor who starred as Louis Stevens in the Disney Channel series Even Stevens.', 'Even Stevens did not premiere in 2004; the series was active earlier, with a movie airing in 2003, and LaBeouf received a Young Artist Award nomination in 2001 and a Daytime Emmy Award in 2003 for this role.', 'Christopher Landon co-wrote the 2007 film Disturbia, which stars American actor Shia LaBeouf.', 'Shia LaBeouf is an American actor known for his role as Louis Stevens in the Disney Channel series Even Stevens.', 'The Disney Channel series Even Stevens did not premiere in 2004; it was active earlier, with the related Even Stevens Movie airing in 2003, and LaBeouf receiving awards for the role in 2001 and 2003.']
+
+### context
+['Shia LaBeouf | Shia Saide LaBeouf ( ; born June 11, 1986) is an American actor, performance artist, and filmmaker.  He became known among younger audiences as Louis Stevens in the Disney Channel series "Even Stevens", a role for which LaBeouf received a Young Artist Award nomination in 2001 and won a Daytime Emmy Award in 2003.  He made his film debut in "The Christmas Path" (1998).  In 2004, he made his directorial debut with the short film "Let\'s Love Hate" and later directed a short film titled "Maniac" (2011), starring American rappers Cage and Kid Cudi.', 'Hounded (film) | Hounded is a 2001 Disney Channel Original Movie starring Tahj Mowry, Craig Kirkwood, Shia LaBeouf and Ed Begley, Jr. It was filmed in Salt Lake City, Utah at the Madeleine Choir School campus.', 'Shia LaBeouf (song) | Shia LaBeouf is a comedy song by Rob Cantor about Shia LaBeouf.  The song, which was released in 2012, depicts LaBeouf as an "actual cannibal" who kills other people for sport.', 'Disturbia (film) | Disturbia is a 2007 American horror thriller film directed by D. J. Caruso, written by Christopher Landon and Carl Ellsworth and stars Shia LaBeouf, David Morse, Sarah Roemer and Carrie-Anne Moss.  The film follows a teenager who is placed on house arrest and begins to spy on his neighbors, thinking one of them is a serial killer.', 'Howard Cantour.com | Howard Cantour.com is a 2012 short film directed by actor Shia LaBeouf.  The short was shown at the Cannes Film Festival on May 18, 2012, followed by an online premiere on December 17, 2013.  The short film follows the eponymous internet film critic Howard Cantour, who was played by Jim Gaffigan.  "Howard Cantour.com" is derived from "Justin M. Damiano", a comic by Dan Clowes, although LaBeouf did not seek permission from Clowes, or acknowledge Clowes in the film\'s credits.', 'The Even Stevens Movie | The Even Stevens Movie is a 2003 American Disney Channel Original Movie that is based on the Disney Channel Original Series "Even Stevens".  It premiered on June 13, 2003, serving as the series finale.  The movie drew an audience of 5.1 million viewers.', "Tru Confessions | Tru Confessions is a 2002 Disney Channel Original Movie.  Tru Walker (Clara Bryant) aspires to be a famous filmmaker.  She has a twin brother Eddie (Shia LaBeouf), who has autism (though like the book, the movie never explicitly referred it by name) due to oxygen deprivation at birth.  Eddie becomes the subject of Tru's documentary for a film contest she enters.  The film was directed by Paul Hoen and is based on the book of the same name by Janet Tashjian.", 'Maniac (2011 film) | Maniac (stylized as MANIAC) is an American short slasher film, directed by Shia LaBeouf.  It was released on October 31, 2011.  The short film stars American rappers Scott "Kid Cudi" Mecudi and Chris "Cage" Palko, as French-speaking serial killers. Mescudi and Palko also co-wrote the film with LaBeouf.', 'Nick Spano | Nick Fortunato Spano (born March 16, 1976 in Los Angeles, California) is a former American actor and current acting coach.  Spano is best known for his role as Donnie Stevens in the Disney Channel Original Series "Even Stevens" and Disney Channel Original Movie "The Even Stevens Movie."', 'Fred Meyers | Fred Meyers (born August 8, 1983 in Fort Leavenworth, Kansas) is an American actor.  He is best known for his recurring role as Tom Gribalski in the Disney Channel Original Series "Even Stevens" and the follow-up Disney Channel Original Movie "The Even Stevens Movie".']
+
+## Generated Outputs
+### reasoning
+The claim makes three distinct assertions: (1) Christopher B. Landon wrote a 2007 movie; (2) that movie starred Shia Saide LaBeouf, identified as an American actor; and (3) Shia Saide LaBeouf starred in the Disney Channel series Even Stevens, which premiered in 2004.
+
+Verification from the context shows that Christopher Landon (stated as Christopher Landon and also "Christopher B. Landon" in the claim) co-wrote a 2007 movie called Disturbia, which starred Shia LaBeouf. This confirms assertions (1) and (2).
+
+Regarding assertion (3), Shia LaBeouf is an American actor and did star as Louis Stevens in the Disney Channel series Even Stevens. However, Even Stevens did not premiere in 2004; the series was active earlier, with a related movie in 2003, and LaBeouf received awards for his role as early as 2001 and 2003. Therefore, the premiere date of 2004 is incorrect.
+
+Hence, the claim is mostly supported except for the incorrect premiere year of Even Stevens.
+
+### new_notes
+['Christopher Landon co-wrote the 2007 film Disturbia, which stars Shia LaBeouf.', 'Shia LaBeouf is an American actor who starred as Louis Stevens in the Disney Channel series Even Stevens.', 'Even Stevens did not premiere in 2004; the series was active earlier, with a movie airing in 2003, and LaBeouf received a Young Artist Award nomination in 2001 and a Daytime Emmy Award in 2003 for this role.']
+
+### titles
+['Christopher Landon and Disturbia (2007 Film)', "Shia LaBeouf's Role in Even Stevens", 'Premier Date of Even Stevens Series']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Disturbia (film)', 'Shia LaBeouf']. Documents remaining to be retrieved: ['Christopher B. Landon'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Goodbye Mr. Mackenzie is a country band with more members than the band that recorded "Make Them Gold".
+
+### notes
+['Goodbye Mr. Mackenzie is a Scottish alternative rock group, not a country band.', "'Make Them Gold' is a song by Scottish synthpop band Chvrches.", 'There is no information available about the number of members in either Goodbye Mr. Mackenzie or Chvrches, so membership comparison cannot be verified.', 'Goodbye Mr. Mackenzie is a Scottish alternative rock group, not a country band.', "'Make Them Gold' is a song by the Scottish synthpop band Chvrches.", 'The number of members in Goodbye Mr. Mackenzie and Chvrches is not available, so the claim that Goodbye Mr. Mackenzie has more members cannot be verified.', 'Goodbye Mr. Mackenzie is a Scottish alternative rock group, not a country band.', "'Make Them Gold' is a song by Scottish synthpop band Chvrches.", 'The number of members in Goodbye Mr. Mackenzie and Chvrches is not available, so it cannot be verified if one band has more members than the other.']
+
+### context
+['Goodbye Mr. Mackenzie (song) | Goodbye Mr. Mackenzie is a 1988 single by Scottish alternative rock group Goodbye Mr. Mackenzie.  It was their debut major label single, recorded for EMI\'s Capitol Records, following a string of well-received independent releases.  Supported by the band performing the single live on national music show "The Tube", "Goodbye Mr. Mackenzie" was the band\'s first single to reach the Top 75 of the UK Singles chart, when it peaked at #62 on its third week of release.', 'Shirley Manson discography | This is a discography of Scottish recording artist Shirley Manson, who has performed as the lead singer of American rock band shes pretty good but shes no David Bowie.  Garbage since 1994.  Before then, she was a backing vocalist and keyboard player for Goodbye Mr. Mackenzie from 1981 to 1992.  The band had one UK Top 40 single, "The Rattler", and other moderately successful songs such as "Goodbye Mr. Mackenzie".  Manson was then signed as a solo artist, performing under the name Angelfish with some members of Goodbye Mr. Mackenzie, releasing "Angelfish" in the early 1990s.', 'Blacker Than Black | "Blacker Than Black" is a 1990 single by Scottish alternative rock group Goodbye Mr. Mackenzie.  "Blacker Than Black" was the bands second and final single release under the Parlophone label, and preceded its parent album "Hammer and Tongs" by almost a year.  In 1991, after Goodbye Mr. Mackenzie had signed to Radioactive Records, "Blacker Than Black" was remixed and released as an international single and featured on their debut international album release, also titled "Goodbye Mr. Mackenzie".', 'Face to Face (Goodbye Mr. Mackenzie song) | "Face to Face" is a 1987 single released by Scottish alternative rock group Goodbye Mr. Mackenzie.  It was their third independent single release, and their last before signing a major label record deal with EMI\'s Capitol Records.', 'Gun (Chvrches song) | "Gun" is a song by Scottish synth-pop band Chvrches from their 2013 debut album "The Bones of What You Believe".  It was released as the band\'s third official single on 15 June 2013 via Virgin and Goodbye Records.', 'Goodbye Mr. Mackenzie | Goodbye Mr Mackenzie (known informally as "The Mackenzies") was a Scottish 1980s and 1990s rock group formed in Bathgate, near Edinburgh, Scotland.  At the band\'s commercial peak, the line-up consisted of Martin Metcalfe on vocals, John Duncan on guitar, Fin Wilson on bass guitar, Shirley Manson and Rona Scobie on keyboards and backing vocals, and Derek Kelly on drums.', 'Love Child (Goodbye Mr. Mackenzie song) | "Love Child" is a 1990 single by Scottish alternative rock group Goodbye Mr. Mackenzie.  It was their debut single release for EMI\'s Parlophone record label.  "Love Child" was taken from the band\'s second studio album "Hammer and Tongs" which was released the following year.', 'Five (Goodbye Mr Mackenzie album) | Five is the third album from the Scottish group Goodbye Mr. Mackenzie and was self-released in 1994 by the band on their own label Blokshok Records.  It has a rougher edge to it than their two previous major label albums, partly due to Martin Metcalfe being inspired by grunge music and The Pixies.  The album was supported by the extended play release of "Hard" as a single.  "Five" failed to revive interest outside of the band’s existing fanbase.  Metcalfe later explained: "We turned to a harder sound and radio wasn’t prepared to play it".', 'The Glory Hole (disambiguation) | The Glory Hole is a musical recording by Goodbye Mr. Mackenzie.', 'The Glory Hole | The Glory Hole is the fourth and final studio album from Scottish band Goodbye Mr. Mackenzie.']
+
+## Generated Outputs
+### reasoning
+The claim makes two key assertions: first, that Goodbye Mr. Mackenzie is a country band, and second, that it has more members than the band that recorded "Make Them Gold." From the notes and context, Goodbye Mr. Mackenzie is clearly described as a Scottish alternative rock group, not a country band, which directly contradicts the first part of the claim. "Make Them Gold" is confirmed as a song by Scottish synthpop band Chvrches. There is no information provided about the number of members in either band, so it is impossible to verify the comparative size claim.
+
+Thus, the first part of the claim is refuted, the second band identification is confirmed, but the size comparison is unverifiable due to missing data on membership counts for both.
+
+### new_notes
+['Goodbye Mr. Mackenzie is a Scottish alternative rock group, not a country band.', "'Make Them Gold' is a song by the Scottish synthpop band Chvrches.", 'The number of members in Goodbye Mr. Mackenzie and Chvrches is not available, so the claim that Goodbye Mr. Mackenzie has more members cannot be verified.']
+
+### titles
+['Genre and Identity of Goodbye Mr. Mackenzie', "'Make Them Gold' and Chvrches", 'Band Membership Numbers Unavailable']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Goodbye Mr. Mackenzie', 'Make Them Gold']. Documents remaining to be retrieved: ['Chvrches'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

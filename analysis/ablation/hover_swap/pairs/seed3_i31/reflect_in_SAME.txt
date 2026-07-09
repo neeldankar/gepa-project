@@ -1,0 +1,113 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields as input: `claim` and `notes`.
+
+- The `claim` is a factual statement (or set of statements) that needs to be verified or refuted.
+- The `notes` field is a list of sentences or facts relevant to evaluating the claim.
+
+Your task is to produce a single output field called `query` that represents a clear, focused, and specific information need derived from the `claim` and supported by the essential factual details in `notes`. This query will be used to retrieve documents that help verify or refute the claim, so it should be formulated as a precise and answerable question.
+
+Detailed guidance:
+
+1. **Understanding the Claim:**  
+   - Parse the claim carefully, noting entities (people, places, products, dates, concepts), relationships, and any comparisons or conjunctions within it.  
+   - Pay particular attention to complex claims involving multiple entities, attributes (like birthdates or nationalities), and relationships (such as "is younger than", "are from different countries", or "appeared in X and Y").
+
+2. **Leveraging the Notes:**  
+   - The `notes` provide evidence related to the claim, often containing key factual information such as dates of birth, origins of products or entities, roles played by actors, or associations between entities.  
+   - Identify factual details that are directly relevant to verifying the claim. For example, birth years, nationality origins, roles portrayed, product provenance, or other specific attributes mentioned in the claim.  
+   - The notes may contain multiple slightly different facts or clarifications; use these to enrich and specify your query.
+
+3. **Formulating the Query:**  
+   - The query should be a natural language question that clearly and unambiguously asks for the key factual information necessary to verify the claim.  
+   - Include in the query all critical entities and attributes needed to disambiguate the query, such as full names, specific dates, roles, or relationships involved.  
+   - If the claim is a comparative or multi-part claim, the query should reflect the structure, asking for the relevant relationships (e.g., comparing ages, confirming mutual exclusivity, verifying joint presence).  
+   - Avoid overly broad or generic queries; specificity will lead to better retrieval of relevant documents.  
+   - Prefer "Are X and Y ... ?" style or "Who is ... and what is ... ?" style queries that map directly to key facts or conditions in the claim.
+
+4. **Generalizable Strategy Observed:**  
+   - Analyze the claim’s entities and predicates.  
+   - Map complex claims into simpler, direct questions that encapsulate the claim’s factual verification needs.  
+   - Use the notes to ensure the query captures the essential details indicated by the evidence, especially to capture multiple entities, dates, and relations.  
+   - If the claim involves verifying the existence or non-existence of a fact or a particular configuration (e.g., existence of an actor with specific traits), phrase the query accordingly.
+
+Examples from prior assistant responses:  
+- For a claim about different country origins of two computers, the query asked explicitly if the two computers originate from different countries and named those countries.  
+- For a claim about an actor’s birth year, ethnicity, and roles in TV and commercials, the query explicitly asks if any actor fits all those conditions together.  
+- For a claim comparing two musicians’ ages, the query asks for identification of the relevant persons and their birthdates to enable age comparison.
+
+---
+
+**In summary:** Given a claim and notes, generate a concise, precise factual query that directly corresponds to the verification task implied by the claim, using the details found in the notes to inform the formulation and scope of the query.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Nathaniel "Nate" Jacks is the colloquial name of the professional football team in which this striker, who scored in Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final, played.
+
+### notes
+['Brazil defeated Spain 3-0 in the 2013 FIFA Confederations Cup Final with goals scored by Fred and Neymar.', "Nathaniel 'Nate' Jacks is not associated as a colloquial name of any professional football team in the context of the 2013 FIFA Confederations Cup or Brazilian football.", 'No known football team bears the colloquial name \'Nathaniel "Nate" Jacks\' connected to the 2013 Confederations Cup Final or any of its scorers.', "Brazil defeated Spain 3-0 in the 2013 FIFA Confederations Cup Final with goals scored by Fred and Neymar, not by a player named Nathaniel 'Nate' Jacks.", "Nathaniel 'Nate' Jacks is a former American professional football player (gridiron), not associated with any professional soccer team or the Brazilian national team.", 'No professional football (soccer) team is colloquially known as \'Nathaniel "Nate" Jacks,\' nor is this name linked to any scorer or participant in the 2013 FIFA Confederations Cup.', "Neymar and Fred are the recognized goal scorers for Brazil in the mentioned match, confirming the absence of any connection to Nathaniel 'Nate' Jacks.", "Brazil defeated Spain 3-0 in the 2013 FIFA Confederations Cup Final with goals scored by Fred and Neymar, with no goals scored by a player named Nathaniel 'Nate' Jacks.", "Nathaniel 'Nate' Jacks is a former American professional gridiron football player who played as a cornerback in the National Indoor Football League and other American football leagues, not soccer.", 'No professional soccer team or striker associated with Brazil\'s 2013 FIFA Confederations Cup victory is colloquially known as \'Nathaniel "Nate" Jacks\' or linked to that name.', "The professional football teams involved in the match and the scoreline are well documented, with no connection to the name Nathaniel 'Nate' Jacks as a player or team nickname."]
+
+## Generated Outputs
+### reasoning
+The claim associates "Nathaniel 'Nate' Jacks" as a colloquial name of a professional football team for which the striker who scored in Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final played. The notes clarify that Brazil won with goals from Fred and Neymar, and that no professional football team is colloquially known as "Nathaniel 'Nate' Jacks" related to this event or players involved. To verify the claim, the key question is whether "Nathaniel 'Nate' Jacks" is a known nickname or colloquial name for any professional football team, especially one connected to the scorers Fred or Neymar in that match.
+
+### query
+Is "Nathaniel 'Nate' Jacks" a colloquial or common nickname for any professional football team, particularly the team for which Fred or Neymar played during Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['2013 FIFA Confederations Cup Final']. Documents remaining to be retrieved: ['Clube Atlético Mineiro', 'Fred (footballer)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The star of the 2012 film  Fairhaven, appeared in Studio 60 on the Sunset Strip in 2007 and American Horror Story in 2014.
+
+### notes
+['Sarah Paulson starred in the NBC series Studio 60 on the Sunset Strip as Harriet Hayes from 2006 to 2007.', 'Sarah Paulson has appeared in American Horror Story starting in 2011 and including the 2014 season.', 'There is no information connecting Sarah Paulson or any other actor mentioned to starring in the 2012 film Fairhaven.', 'Other actors mentioned with credits in Studio 60 do not have known connections to both Fairhaven (2012) and American Horror Story (2014).', 'Sarah Paulson starred in the NBC series Studio 60 on the Sunset Strip as Harriet Hayes from 2006 to 2007.', 'Sarah Paulson appeared in American Horror Story starting in 2011 and including the 2014 season.', 'There is no information linking Sarah Paulson or any other known Studio 60 actor to starring in the 2012 film Fairhaven.', 'Actors credited in Studio 60 do not have documented connections to both Fairhaven (2012) and American Horror Story (2014).', 'Sarah Paulson starred in Studio 60 on the Sunset Strip as Harriet Hayes from 2006 to 2007.', 'Sarah Paulson appeared in American Horror Story starting in 2011 and including the 2014 season.', 'There is no evidence that Sarah Paulson or any other actor from Studio 60 starred in the 2012 film Fairhaven.', 'No actors with credits in Studio 60 have documented connections to both Fairhaven (2012) and American Horror Story (2014).']
+
+## Generated Outputs
+### reasoning
+The claim asserts that the star of the 2012 film Fairhaven appeared in both Studio 60 on the Sunset Strip in 2007 and American Horror Story in 2014. The notes indicate that Sarah Paulson starred in Studio 60 on the Sunset Strip (2006-2007) and appeared in American Horror Story (including 2014), but there is no information linking her or any other actors from Studio 60 to starring in Fairhaven (2012). Additionally, other actors in Studio 60 also have no known connections to both Fairhaven and American Horror Story. Therefore, to verify the claim, it is crucial to determine the lead actor of Fairhaven (2012) and whether that actor appeared in both Studio 60 and American Horror Story around the specified years.
+
+### query
+Who starred in the 2012 film Fairhaven, and did this actor also appear in both Studio 60 on the Sunset Strip in 2007 and American Horror Story in 2014?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Sarah Paulson']. Documents remaining to be retrieved: ['Blood Bath (American Horror Story)', 'Fairhaven (film)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Chess is more popular around the world than a game designed by Leo Colovini.
+
+### notes
+["Leo Colovini is an Italian designer of German-style board games, with 'Cartagena' being his most popular game.", 'Chess is a historically established, globally recognized, and widely played traditional board game.', 'Chess has a well-known international presence and has influenced systems like the Elo rating system used in competitive gaming.', "Leo Colovini's games, while popular in the niche German-style board game community, do not have the broad global reach and cultural impact of chess.", 'Leo Colovini is an Italian designer known for German-style board games, with Cartagena as his most famous title.', 'Chess is a globally recognized, historically established traditional board game with widespread international presence.', 'Chess influences competitive gaming systems and has a broad, worldwide cultural impact far exceeding niche board games.', "Leo Colovini's games have popularity within the German-style board game niche but lack the global cultural reach and widespread play of chess.", 'Chess is a historically established, globally recognized traditional board game with widespread international presence and significant cultural impact.', 'Chess influences competitive gaming systems, such as the Elo rating system, reflecting its global reach.', "Leo Colovini is an Italian designer of German-style board games, with 'Cartagena' as his most popular title.", "Colovini's games are popular primarily within the niche community of German-style board games and do not have the broad global popularity or cultural influence that chess enjoys."]
+
+## Generated Outputs
+### reasoning
+The claim states that chess is more popular worldwide than any game designed by Leo Colovini. The notes provide relevant information about Leo Colovini being an Italian designer known particularly for his German-style board games like 'Cartagena'. They also affirm that chess is a historically established and globally recognized game with wide international presence and significant cultural impact, which his games lack. Based on this, the key factual detail to verify is whether chess has a broader global popularity and recognition compared to any Leo Colovini-designed game.
+
+### query
+Is chess more globally popular and widely recognized around the world than any board game designed by Leo Colovini, such as 'Cartagena'?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Cartagena (board game)', 'Leo Colovini']. Documents remaining to be retrieved: ['Chess'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

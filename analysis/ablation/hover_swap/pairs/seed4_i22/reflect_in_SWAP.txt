@@ -1,0 +1,114 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields: `claim` and `notes`. Your task is to produce a new field `query`.
+
+- The `claim` is a complex factual statement or set of statements that asserts certain relationships, events, or facts involving multiple entities.
+- The `notes` are supporting or refuting fragments of factual information, background details, and evidence relevant to assessing or verifying the `claim`.
+
+Your goal is to formulate an information retrieval or database query (`query`) that, if executed, would retrieve all supporting documents or data needed to verify every part of the claim accurately. The query should be specifically designed to capture all key entities, relationships, and factual aspects mentioned or implied in the given claim.
+
+Key Points and Strategy:
+1. **Identify factual components in the claim**  
+   Parse the claim to identify:
+   - Key entities (people, organizations, films, events, teams, places, dates, roles, etc.)
+   - Relationships between entities (e.g., "starred with", "founded in", "managed", "directed by")
+   - Attributes or predicates that need verification (e.g., professional overlap, filmography, team foundation dates, managerial roles)
+
+2. **Leverage evidence in `notes`**  
+   The `notes` contain verified or likely verified facts that relate to the entities and claims. Use these to guide your understanding of which pieces of information are central and what queries could retrieve documents covering those pieces.
+
+3. **Formulate a comprehensive yet precise query**  
+   The query should:  
+   - Request information that covers all key entities involved  
+   - Cover all relationships or assertions made  
+   - Be sufficiently detailed to guide retrieval of all necessary documents, ensuring that none of the claim’s critical assertions are left unverifiable
+
+4. **Generalizable querying approach**  
+   - For claims involving relationships or overlap between two or more persons or entities, query their respective profiles, roles, and overlaps (e.g., shared professions, co-appearances)  
+   - For claims involving filmography or works, query casts, co-stars, directors and release details for each relevant film  
+   - For claims involving teams or organizations, query founding dates, player rosters during specified periods, and managerial histories  
+   - For claims involving timelines, query historical data for proper date and role alignment  
+
+5. **Prioritize retrieval of documents for all entities referenced**  
+   The goal is to retrieve a full set of relevant documents that together confirm or refute the claim. The query should explicitly try to capture all gold documents identified in notes or feedback.
+
+Example considerations from provided cases:
+- When claim involves whether two professionals share a profession, the query should seek explicit mentions of professions for both individuals.
+- When claim involves people starring together in films and their participation in other films and directors, the query should request casts of the films and director credits.
+- When claim involves sports teams and individuals across specific time periods, the query should request founding dates, rosters by years, managerial records, and affiliations with any teams.
+
+Output Format:
+- Output only the `query` text, formatted as a natural language request or series of requests designed to retrieve all relevant and complete supporting information for verifying the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+A song from the Kathy Mattea discography, that peaked at #1 on the Billboard Hot Country Singles & Tracks chart, was first recorded by a singer that sang country music.
+
+### notes
+['"Untold Stories" by Kathy Mattea reached #4 on the Billboard Hot Country Singles & Tracks chart.', '"Love at the Five and Dime" was originally recorded by Nanci Griffith, a country music singer; Kathy Mattea\'s version peaked at #3 on the Billboard Hot Country Singles & Tracks chart.', 'All listed Kathy Mattea songs peaked below #1 on the Billboard Hot Country Singles & Tracks chart.', 'No Kathy Mattea song in the given context is noted as having peaked at #1 on the Billboard Hot Country Singles & Tracks chart.', 'Kathy Mattea had four #1 hits on the Billboard Hot Country Singles & Tracks chart: "Goin\' Gone", "Eighteen Wheels and a Dozen Roses", "Come from the Heart", and "Burnin\' Old Memories".', '"Love at the Five and Dime" was originally recorded by Nanci Griffith, a country music singer, but Kathy Mattea\'s version peaked only at #3 on the Billboard chart.', 'No Kathy Mattea song that peaked at #1 on the Billboard Hot Country Singles & Tracks chart was noted as having been first recorded by another singer.', 'All other Kathy Mattea #1 hits did not have documented prior recordings by other country singers.', "Kathy Mattea had four #1 hits on the Billboard Hot Country Singles & Tracks chart: 'Goin' Gone', 'Eighteen Wheels and a Dozen Roses', 'Come from the Heart', and 'Burnin' Old Memories'.", 'No Kathy Mattea song that peaked at #1 on the Billboard chart was noted as having been first recorded by another country singer.', "'Love at the Five and Dime' was originally recorded by Nanci Griffith, a country music singer, but Kathy Mattea's version peaked only at #3.", 'All other Kathy Mattea #1 hits did not have documented prior recordings by other country singers.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that a Kathy Mattea song which reached #1 on the Billboard Hot Country Singles & Tracks chart was first recorded by a country music singer. The notes provide detailed information about Kathy Mattea’s chart history and original recordings. According to the notes, no Kathy Mattea songs that peaked at #1 were first recorded by another singer (notes [3], [4], [7], [8]). Additionally, the songs that did peak at #1 by Kathy Mattea were not documented as having prior versions by other country singers. Other songs that were originally recorded by country singers, such as "Love at the Five and Dime" by Nanci Griffith, only peaked at #3 when performed by Mattea. Therefore, to verify this claim thoroughly, we need comprehensive data on Kathy Mattea #1 hits, their original recording artists, chart peak positions, and the original artists' genres, specifically confirming whether any #1 hits were first recorded by another country singer.
+
+### query
+Retrieve a list of all Kathy Mattea songs that peaked at #1 on the Billboard Hot Country Singles & Tracks chart, including release dates and chart history. For each of these #1 hits, provide information on whether the song was previously recorded by another artist prior to Kathy Mattea’s version. Additionally, gather biographical and genre information about those original recording artists, focusing on whether they are country music singers. Also, retrieve chart histories of songs by other country artists that Kathy Mattea later covered, noting their original chart performance and peak positions of Mattea’s versions. This comprehensive data will verify if any Kathy Mattea #1 hit was first recorded by another country music singer.
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Kathy Mattea discography']. Documents remaining to be retrieved: ['Come from the Heart', 'Don Williams discography'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The writer Norman Alfred Norman Lindsay enjoyed boxing, but the author of The Hundred Secret Senses did not.
+
+### notes
+['Norman Alfred Lindsay was an Australian artist and writer known to have enjoyed boxing among his varied interests.', 'The Hundred Secret Senses is a novel written by Amy Tan, an American author without any known association with boxing.', 'There is no publicly known record of Amy Tan enjoying or practicing boxing.', 'Norman Alfred Lindsay was an Australian artist and writer known to have enjoyed boxing among his varied interests.', 'The Hundred Secret Senses is a novel written by Amy Tan, an American author without any known association with boxing.', 'There is no publicly known record of Amy Tan enjoying or practicing boxing.', 'Norman Alfred Lindsay was an Australian artist and writer known to have enjoyed boxing among his varied interests.', 'Amy Tan is an American author who wrote The Hundred Secret Senses.', 'There is no publicly known record or association of Amy Tan enjoying or practicing boxing.']
+
+## Generated Outputs
+### reasoning
+The claim involves two distinct individuals: one being Norman Alfred Norman Lindsay, who is described as a writer who enjoyed boxing, and the other being the author of The Hundred Secret Senses, who is stated not to have enjoyed boxing. To verify this claim, we need to confirm: (1) the identity and profession of Norman Alfred Norman Lindsay and whether he enjoyed boxing, and (2) the identity of the author of The Hundred Secret Senses and whether that author had an interest in boxing or explicitly did not enjoy it. This requires retrieving biographical and personal interest information for both authors, focusing particularly on references to boxing or fighting as a hobby or interest.
+
+### query
+Retrieve biographical information on Norman Alfred Norman Lindsay including his professions and personal interests, with emphasis on references to boxing or combat sports. Also, retrieve biographical and personal interest details on the author of The Hundred Secret Senses, verifying the author’s identity and any information about their interest or non-interest in boxing.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Amy Tan', 'The Hundred Secret Senses']. Documents remaining to be retrieved: ['Norman Lindsay'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The  Vines' frontman wrote the song "Get Free". He and Boy George are not both from the same country.
+
+### notes
+['"Get Free" is a song by the garage rock band The Vines from their debut album "Highly Evolved".', "The song was written by Vines' frontman Craig Nicholls.", 'Craig Nicholls is Australian.', 'Boy George is an English singer.', 'Therefore, Craig Nicholls and Boy George are not from the same country.', '"Get Free" is a song by the garage rock band The Vines from their debut album "Highly Evolved".', "The song was written by Vines' frontman Craig Nicholls.", 'Craig Nicholls is Australian.', 'Boy George is an English singer.', 'Therefore, Craig Nicholls and Boy George are not from the same country.', '"Get Free" is a song by the garage rock band The Vines from their debut album "Highly Evolved".', "The song was written by Vines' frontman Craig Nicholls.", 'Craig Nicholls is Australian.', 'Boy George is an English singer.', 'Craig Nicholls and Boy George are not from the same country.']
+
+## Generated Outputs
+### reasoning
+To verify the claim, we need to confirm that the frontman of The Vines wrote the song "Get Free" and establish the nationalities of Craig Nicholls (the Vines' frontman) and Boy George, to confirm they are not from the same country. According to the notes: "Get Free" was written by Craig Nicholls, who is Australian, and Boy George is English. This supports the claim, but a comprehensive verification would benefit from querying details on The Vines' song authorship for "Get Free," the biography of Craig Nicholls including his nationality, and the biography of Boy George including his nationality.
+
+### query
+Retrieve information about the song "Get Free" by The Vines, specifically the songwriting credits identifying the writer(s). Retrieve biographical details about Craig Nicholls, focusing on his role in The Vines and his nationality. Retrieve biographical details on Boy George, including his nationality. Verify whether Craig Nicholls and Boy George share the same country of origin.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Craig Nicholls', 'Get Free']. Documents remaining to be retrieved: ['Boy George'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

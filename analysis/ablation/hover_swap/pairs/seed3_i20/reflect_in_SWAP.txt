@@ -1,0 +1,102 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given two input fields:  
+- `claim`: a statement asserting certain facts or relationships about entities, including genre classifications, character roles, temporal orderings, or member counts of groups/bands.  
+- `notes`: a list of factual sentences or extracted information pieces relevant to the claim, often providing partial evidence or clarifications about entities, their attributes, and relationships.
+
+Your task is to produce a single output field:  
+- `query`: a clear, concise, and targeted question (or set of closely related questions) designed to retrieve the missing or confirming factual information needed to verify or refute the `claim`.  
+
+The `query` should focus on:  
+- Confirming exact classifications or categories (e.g., movie genres, band genres).  
+- Clarifying membership counts or comparisons between groups.  
+- Establishing temporal relations or event sequences (e.g., release dates).  
+- Disambiguating entities with similar names or verifying the presence or role of a character or individual in a given work.  
+
+Strategies and considerations for generating the `query`:  
+1. Analyze the `claim` carefully to identify key factual points or comparisons that require verification.  
+2. Leverage the `notes` to understand which aspects of the claim are supported or contradicted, and which remain uncertain or missing.  
+3. Formulate the `query` to explicitly seek the missing information or clarification necessary to decide the truth of the claim. Avoid overly broad or vague queries—focus on the minimal but sufficient question(s) to confirm or refute the claim.  
+4. When the claim involves multiple entities or facts, and the notes partially cover these, include all relevant verification points in the `query`.  
+5. Maintain the specificity of entities by including relevant context in the `query` (e.g., include years for movies, full names for bands or characters).  
+
+Domain-specific notes that might not be explicitly known by the assistant but are useful for query formulation:  
+- Movie genre classifications can be nuanced, with some movies emphasizing family, comedy, adventure, or action genres to varying degrees.  
+- Voice actor roles often need precise linking to specific film releases and characters.  
+- Band classifications can vary between musical genres, and member counts are important quantitative facts for comparison claims.  
+- Temporal comparisons often hinge on release dates of movies or events and require clear references to those dates in queries.  
+- Entity disambiguation can require specifying the version or year of a movie or release to avoid confusion.  
+
+The ultimate goal is to produce a `query` that, when used to retrieve or check factual documents, will provide the exact information needed to confirm or deny the `claim`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The Scottish punk band that worked 3 years with Young American Recordings and Sleeper, are both from Britain.
+
+### notes
+['Young American Recordings is an American record label based in New York City.', 'Young American Recordings worked with the Scottish punk band APB.', 'Sleeper is a name associated with a British rock band and also with other bands.', 'There is no evidence in the context that a Scottish punk band worked three years with both Young American Recordings and Sleeper.', 'Claim that both Young American Recordings and Sleeper are British is false because Young American Recordings is American.', 'Young American Recordings is American, not British.', 'Sleeper refers to multiple bands; some are British, others American.', 'There is no evidence that a Scottish punk band worked for three years with both Young American Recordings and Sleeper.', 'APB is a Scottish post-punk band that worked with Young American Recordings.', 'Sleep for Sleepers is an American band, not related to the Scottish punk band or Young American Recordings.', 'Young American Recordings is an American record label based in New York City, founded by Rocco Giordano and Josh Swade.', 'Young American Recordings worked with the Scottish punk band APB, but no indication of a 3-year collaboration.', 'Sleeper refers to more than one band, some British, others not, with no confirmed connection to the Scottish punk band or Young American Recordings.', 'No evidence exists that a Scottish punk band worked three years with both Young American Recordings and Sleeper.', 'The claim that both Young American Recordings and Sleeper are British is incorrect because Young American Recordings is American.', 'APB is a Scottish post-punk band associated with Young American Recordings but not specifically with Sleeper.']
+
+## Generated Outputs
+### reasoning
+The claim states that a Scottish punk band worked three years with both Young American Recordings and Sleeper, and that both Young American Recordings and Sleeper are British. The notes clarify that Young American Recordings is an American label, not British, and that it did work with the Scottish post-punk band APB. Sleeper is a name associated with multiple bands, some British and some American. There is no evidence that the Scottish punk band worked for three years with both entities. The claim that both Young American Recordings and Sleeper are British is false because Young American Recordings is American. To verify the claim, it is necessary to check if the Scottish punk band worked specifically three years with both entities, and clarify the national origin of Sleeper associated with the band in question.
+
+### query
+Did the Scottish punk band APB work for three years with both Young American Recordings and any band named Sleeper? Additionally, is the Sleeper band that worked with this Scottish punk band British, and is Young American Recordings British or American?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['APB (band)', 'Young American Recordings']. Documents remaining to be retrieved: ['Sleeper (band)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The album that included the cover of the song Stormy, is the studio album by Carlos Santana, a musician who first became famous in the late 1960s and early 1970s.
+
+### notes
+['Carlos Santana became famous in the late 1960s and early 1970s.', 'Carlos Santana has multiple studio albums including Shape Shifter (2012), Oneness (1979), and Moonflower (1977).', "No explicit mention of the cover of the song 'Stormy' in the provided album descriptions.", "Further information is required to identify which album contains the cover of 'Stormy'.", "Carlos Santana covered the song 'Stormy' on the 1978 album 'Inner Secrets'.", "'Inner Secrets' is a studio album by Santana, the band led by Carlos Santana.", "Carlos Santana, famous from the late 1960s and early 1970s, led the band Santana which released 'Inner Secrets'.", 'Carlos Santana is a Mexican-American musician who rose to fame in the late 1960s and early 1970s with his band Santana.', "The song 'Stormy' was covered by Santana on their 1978 album 'Inner Secrets'.", "'Inner Secrets' is the ninth studio album by the band Santana, led by Carlos Santana.", "'Inner Secrets' marked a stylistic shift for Santana towards album-oriented rock.", 'Carlos Santana has released multiple solo projects and studio albums both as a solo artist and with his band.']
+
+## Generated Outputs
+### reasoning
+The claim states that the album including the cover of the song "Stormy" is a studio album by Carlos Santana, who rose to fame in the late 1960s and early 1970s. The notes confirm Carlos Santana's fame timeline and list some of his studio albums but do not specify which album contains the cover of "Stormy". There is no direct information about the song "Stormy" being covered by Santana or which exact album it appears on. To verify or refute the claim, we need to identify if Carlos Santana covered the song "Stormy" on any of his studio albums, and confirm that the album is indeed by Carlos Santana, the musician famous in the specified period.
+
+### query
+Which studio album by Carlos Santana includes a cover of the song "Stormy"? Did Carlos Santana, who became famous in the late 1960s and early 1970s, record a cover of "Stormy" on any of his albums?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Carlos Santana', 'Inner Secrets', 'Stormy (song)']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+The player who was defeated by Johan Kriek in the 1982 Australian Open – Men's Singles and Albert Costa are both sportsmen, and one of them, Costa, began competing at the age of five.
+
+### notes
+["Johan Kriek defeated Steve Denton in the 1982 Australian Open men's singles final.", 'Albert Costa began playing tennis at the age of five.', "Johan Kriek defeated Steve Denton in the 1982 Australian Open men's singles final.", 'Albert Costa began playing tennis at the age of five.', 'Steve Denton and Albert Costa are both professional tennis players.', "Johan Kriek defeated Steve Denton in the 1982 Australian Open men's singles final.", 'Albert Costa began playing tennis at the age of five.', 'Steve Denton and Albert Costa are both professional tennis players.']
+
+## Generated Outputs
+### reasoning
+The claim states that the player defeated by Johan Kriek in the 1982 Australian Open men's singles final and Albert Costa are both sportsmen, with Costa beginning to compete at age five. According to the notes, Johan Kriek defeated Steve Denton in the 1982 Australian Open men's singles final, Albert Costa began playing tennis at five, and both Steve Denton and Albert Costa are professional tennis players. The claim is supported by the notes, but to fully verify, the query should confirm that both Denton and Costa are considered sportsmen and that Costa did indeed start competing at five (not just playing recreationally).
+
+### query
+Are Steve Denton and Albert Costa both considered professional sportsmen, and did Albert Costa begin competing in tennis at the age of five?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ["1982 Australian Open – Men's Singles", 'Albert Costa']. Documents remaining to be retrieved: ['Steve Denton'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,86 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given the fields `claim`, `notes`, produce the fields `query`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Director Robert Stevenson was from a geographically smaller country than another director. That director directed his final film Romance of Astree and Celadon.
+
+### notes
+['Robert Stevenson (1905–1986) was an English film writer and director.', "England (Robert Stevenson's country) is geographically smaller than many other countries.", "No information is provided on the director of the film 'Romance of Astree and Celadon' or their nationality.", "No evidence is available to confirm which director directed the final film 'Romance of Astree and Celadon'.", 'Robert Stevenson was an English film writer and director, and England is geographically smaller than many other countries.', "'Romance of Astree and Celadon' is the final film directed by Éric Rohmer.", "Éric Rohmer, the director of 'Romance of Astree and Celadon', is from France, which is geographically larger than England.", 'Robert Stevenson (1905–1986) was an English film writer and director.', "England, Robert Stevenson's country, is geographically smaller than France.", 'Romance of Astree and Celadon is the final film directed by Éric Rohmer.', 'Éric Rohmer is from France, a country geographically larger than England.']
+
+## Generated Outputs
+### reasoning
+The claim involves two directors: Robert Stevenson and another director who directed his final film "Romance of Astree and Celadon." We need to determine from which countries these directors hail and compare the countries' geographical sizes. Specifically, the claim states that Robert Stevenson was from a geographically smaller country than the other director. To verify this, we must identify the country of origin of Robert Stevenson, identify the director of "Romance of Astree and Celadon," identify that director's country of origin, and then compare the sizes of the two countries to see if Stevenson's country is smaller.
+
+### query
+SELECT 
+  Stevenson.country AS StevensonCountry, 
+  DirectorAstree.country AS AstreeDirectorCountry,
+  Stevenson.country_area AS StevensonCountryArea,
+  DirectorAstree.country_area AS AstreeDirectorCountryArea
+FROM 
+  (SELECT director_id, country, country_area FROM Directors WHERE name = 'Robert Stevenson') AS Stevenson,
+  (SELECT d.director_id, d.country, d.country_area 
+   FROM Directors d
+   JOIN Films f ON d.director_id = f.director_id
+   WHERE f.title = 'Romance of Astree and Celadon'
+   ORDER BY f.release_year DESC LIMIT 1) AS DirectorAstree;
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Robert Stevenson (director)', 'Romance of Astree and Celadon']. Documents remaining to be retrieved: ['Éric Rohmer'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The platform, for which the fixed shooter Proof of Destruction was developed, and Prológica CP-400 were not from the same country.
+
+### notes
+['Prológica CP-400 was developed by the Brazilian company Prológica and marketed in Brazil in 1984.', 'There is no available information about the platform for which Proof of Destruction was developed or its country of origin.', 'Prológica CP-400 was developed by the Brazilian company Prológica in Brazil in 1984.', 'Proof of Destruction is a fixed shooter game released in 1987 for the Commodore 64 and Commodore 16 platforms.', 'Commodore 64 and Commodore 16, the platforms for Proof of Destruction, were developed by Commodore International, a company based in the United States.', 'Therefore, the platform for Proof of Destruction (Commodore 64/16) is not from Brazil, unlike the Prológica CP-400, confirming they were from different countries.', 'Prológica CP-400 was developed by the Brazilian company Prológica and marketed in Brazil in 1984.', 'Proof of Destruction is a fixed shooter game released in 1987 for the Commodore 64 and Commodore 16 platforms.', 'Commodore 64 and Commodore 16, the platforms for Proof of Destruction, were developed by Commodore International, a company based in the United States.', 'Therefore, the platform for Proof of Destruction (Commodore 64/16) is not from Brazil, unlike the Prológica CP-400, confirming they were from different countries.']
+
+## Generated Outputs
+### reasoning
+To verify whether the platform for which Proof of Destruction was developed and the Prológica CP-400 are from different countries, we need to identify the country of origin of both the platform for Proof of Destruction and the Prológica CP-400. The Prológica CP-400 is a Brazilian microcomputer, so it is from Brazil. Proof of Destruction is a fixed shooter game that was developed for the ZX Spectrum, which is a British computer platform. Therefore, the ZX Spectrum is from the United Kingdom while the Prológica CP-400 is from Brazil. Thus, the two are from different countries.
+
+### query
+What country is the platform for which Proof of Destruction was developed from, and what country is the Prológica CP-400 from?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Prológica CP-400', 'Proof of Destruction']. Documents remaining to be retrieved: ['Commodore 16'].
+
+
+
+# Example 3
+## Inputs
+### claim
+An Greek actor who was a CIA operative in Chuck Versus the A-Team was born in 1974. The actor plays a character in commercials for Old Spice.
+
+### notes
+['Isaiah Mustafa was born in 1974 and is known for starring in Old Spice commercials, but he is American, not Greek, and not associated with the TV show Chuck.', 'The CIA operative character in Chuck, John Casey, is played by Adam Baldwin; there is no indication he is Greek or born in 1974.', 'No Greek actor born in 1974 is identified in the provided information as appearing in Chuck or Old Spice commercials.', 'No evidence supports the existence of a Greek actor born in 1974 who was a CIA operative in Chuck Versus the A-Team and also appeared in Old Spice commercials.', 'Isaiah Mustafa was born in 1974, is American (not Greek), and known for Old Spice commercials.', "Isaiah Mustafa appeared as a CIA operative in 'Chuck Versus the A-Team' but is not Greek.", "The CIA operative character John Casey in 'Chuck' is played by Adam Baldwin, who is not Greek and was not born in 1974.", "No evidence exists of a Greek actor born in 1974 who played a CIA operative in 'Chuck' and appeared in Old Spice commercials."]
+
+## Generated Outputs
+### reasoning
+To verify the claim, I need to find a Greek actor born in 1974 who was a CIA operative in the TV show "Chuck" or "The A-Team" (though these are two different shows, so clarity is needed). Additionally, the actor should appear in Old Spice commercials. I will search for Greek actors born in 1974 involved in the TV show "Chuck" or "The A-Team" and confirm their role as CIA operative. Then I will check if this actor appears in Old Spice commercials.
+
+### query
+Find a Greek actor born in 1974 who played a CIA operative in the TV show "Chuck" or "The A-Team" and also appears in Old Spice commercials.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Chuck Versus the A-Team', 'Isaiah Mustafa']. Documents remaining to be retrieved: ['Make a Smellmitment'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

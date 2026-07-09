@@ -1,0 +1,100 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields: `claim` and `notes`. Your task is to produce a `query` designed to verify or fact-check the claim based on the information and context contained in the notes. Specifically:
+
+1. Analyze the `claim` to identify the key factual assertions or components that need verification.
+
+2. Carefully review the `notes`, which provide relevant factual data, background information, and indirect evidence related to the `claim`. These notes may include partially overlapping, repetitive, or nuanced domain-specific facts.
+
+3. Your objective is to formulate a concise and clear `query` that, when answered, would determine the truthfulness or accuracy of the claim. The query should:
+   - Incorporate all essential elements from the claim that require validation.
+   - Reference domain-specific entities, terms, or context as needed (e.g., proper names, dates, place names, literary awards, species counts, company nationality and headquarters).
+   - Aim to retrieve or confirm authoritative information from relevant documents or sources that would settle any ambiguity.
+
+4. The `query` should be precise and structured in a way that lends itself to searching or requesting specific evidence, minimizing vagueness or open-endedness.
+
+5. Include multiple facets of the claim in a single query when their verification is interconnected, to avoid unnecessary complexity or multiple queries.
+
+6. In cases where the `claim` contains multiple parts, ensure the query integrates these logically (e.g., verifying a connection between entities, or whether two conditions coexist).
+
+Domain-specific details exemplified in the task:
+
+- Verification of literary awards such as the Nobel Prize in Literature in relation to named individuals and their works.
+- Relationships between films, screenplays, novels, and their authorship.
+- Scientific botanical classification involving genus names, species counts, and vernacular names in different languages.
+- Corporate identity and headquarters location including nationality of an airline and its operation details.
+- Detailed biographical or event-specific claims linking individuals to specific companies or geographic data.
+
+Your output should be a single `query` statement in natural language, focused on efficient fact verification grounded in the provided `notes`. This approach enables precise retrieval of relevant documentary evidence necessary to confirm or refute the `claim`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+A participant in the summer 2013 Big Ten Conference football season was led by Kevin Reece Wilson. He is the current offensive coordinator at Ohio State.
+
+### notes
+['Kevin Wilson was the head coach of the Indiana Hoosiers football team during the 2013 NCAA Division I FBS football season.', 'The 2013 Indiana Hoosiers football team was a participant in the Big Ten Conference.', 'Kevin Wilson is currently the offensive coordinator at Ohio State University.', 'Kevin Wilson served as the head coach for the Indiana Hoosiers football team during the 2013 NCAA Division I FBS football season.', 'The 2013 Indiana Hoosiers football team competed in the Big Ten Conference.', 'Kevin Wilson is currently the offensive coordinator at Ohio State University.', 'Kevin Wilson was the head coach of the Indiana Hoosiers football team during the 2013 NCAA Division I FBS football season, and the team participated in the Big Ten Conference.', 'Kevin Wilson is currently the offensive coordinator at Ohio State University.', 'The 2013 Indiana Hoosiers football team was led by head coach Kevin Wilson and competed in the Leaders Division of the Big Ten Conference.', "Kevin Wilson's full name includes 'Reece' as a middle name (inferred from claim matching known career facts)."]
+
+## Generated Outputs
+### reasoning
+The claim states that a participant in the summer 2013 Big Ten Conference football season was led by Kevin Reece Wilson and that he is currently the offensive coordinator at Ohio State. The notes confirm that Kevin Wilson (likely the same person, despite the middle name Reece being omitted) was the head coach for the Indiana Hoosiers football team during the 2013 season, and Indiana Hoosiers participated in the Big Ten Conference in 2013. Additionally, Kevin Wilson is currently the offensive coordinator at Ohio State University. Thus, the claim’s core assertions are that Kevin Wilson led a Big Ten team in 2013 and that he is currently Ohio State’s offensive coordinator. The mention of "Kevin Reece Wilson" may require verifying if this full name corresponds to the same individual.
+
+### query
+Was Kevin Reece Wilson the head coach leading a team participating in the 2013 Big Ten Conference football season, specifically the Indiana Hoosiers, and is Kevin Wilson currently the offensive coordinator at Ohio State University?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['2013 Indiana Hoosiers football team', 'Kevin Wilson (American football)']. Documents remaining to be retrieved: ['2013 Big Ten Conference football season'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The director of Finding Dory co-directed the film A Bug's Life.
+
+### notes
+["Andrew Stanton directed Finding Dory and co-directed A Bug's Life.", "Angus MacLane co-directed Finding Dory but is not credited with A Bug's Life.", "John Lasseter directed A Bug's Life, but Andrew Stanton was a co-director.", "Therefore, the director (Andrew Stanton) of Finding Dory co-directed A Bug's Life.", "Andrew Stanton directed Finding Dory and co-directed A Bug's Life.", "John Lasseter directed A Bug's Life, with Andrew Stanton as co-director.", "Angus MacLane co-directed Finding Dory but is not credited with A Bug's Life.", "Andrew Stanton directed Finding Dory and was co-director of A Bug's Life alongside John Lasseter.", "John Lasseter directed A Bug's Life, with Andrew Stanton as co-director.", "Andrew Stanton is credited for directing Finding Dory and co-directing A Bug's Life.", "Angus MacLane co-directed Finding Dory but is not credited with A Bug's Life, confirming that the co-director of Finding Dory who co-directed A Bug's Life is Andrew Stanton."]
+
+## Generated Outputs
+### reasoning
+The claim states that the director of Finding Dory co-directed the film A Bug's Life. The notes confirm that Andrew Stanton directed Finding Dory and also co-directed A Bug's Life alongside John Lasseter, who was the main director of A Bug's Life. Angus MacLane, who co-directed Finding Dory, is not credited with A Bug's Life. Therefore, the key factual elements to verify are that Andrew Stanton directed Finding Dory and that he was a co-director of A Bug's Life. Verifying these details will confirm or refute the claim.
+
+### query
+Did Andrew Stanton direct Finding Dory and co-direct A Bug's Life with John Lasseter?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ["A Bug's Life", 'Andrew Stanton', 'Finding Dory']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Austrian Poet-Dliplomat who also won the Nobel Prize in Literature, and Alan Sillitoe were both writers.
+
+### notes
+['Poet-diplomats are poets who have also served as diplomats.', 'Several poet-diplomats have won the Nobel Prize in Literature.', 'Alan Sillitoe is a recognized writer.', 'Recipients of the Nobel Prize in Literature are authors recognized for outstanding literary work.', 'Poet-diplomats who have won the Nobel Prize in Literature are considered writers, as the Nobel Prize in Literature is awarded for outstanding literary work.', 'Alan Sillitoe is a confirmed writer.', 'The claim does not specify the name of the Austrian poet-diplomat Nobel laureate, but given the definitions and examples of poet-diplomats winning the Nobel Prize, it is plausible they were a writer.', 'The Nobel Prize in Literature is awarded to authors recognized for outstanding literary achievement.', 'Poet-diplomats who have won the Nobel Prize in Literature are by definition writers.', 'Alan Sillitoe is a confirmed writer.', 'The Austrian poet-diplomat Nobel laureate is not named but fits the category of Nobel-winning poet-diplomats who are writers.']
+
+## Generated Outputs
+### reasoning
+The claim states that the Austrian poet-diplomat who also won the Nobel Prize in Literature and Alan Sillitoe were both writers. According to the notes, poet-diplomats are poets who also served as diplomats, and several poet-diplomats have won the Nobel Prize in Literature, indicating that such a person exists and is recognized for literary achievements. Alan Sillitoe is explicitly mentioned as a recognized writer. Additionally, Nobel Prize in Literature recipients are authors recognized for outstanding literary work, reinforcing that the Austrian poet-diplomat Nobel laureate is also a writer. Therefore, verifying the claim involves confirming that the Austrian poet-diplomat who won the Nobel Prize in Literature is indeed recognized as a writer, and that Alan Sillitoe is also a writer, confirming the shared status of both as writers.
+
+### query
+Was there an Austrian poet-diplomat who won the Nobel Prize in Literature recognized as a writer, and is Alan Sillitoe also recognized as a writer?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Poet-diplomat']. Documents remaining to be retrieved: ['Alan Sillitoe', 'Gabriela Mistral'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

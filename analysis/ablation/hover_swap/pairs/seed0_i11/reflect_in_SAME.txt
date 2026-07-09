@@ -1,0 +1,107 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields as input: a `claim` and associated `notes`. Your task is to generate a single, concise, precise natural language `query` that is intended to verify or fact-check the `claim` based on information given in the `notes`. The final query should be designed for efficient retrieval of authoritative evidence that confirms or refutes all key factual elements presented in the claim.
+
+Detailed task instructions:
+
+1. **Analyze the claim:**  
+   - Identify all key factual components or assertions that need verification.  
+   - Recognize any implied relationships between entities or multiple claim components that must be verified together to confirm the claim’s overall truthfulness.
+
+2. **Utilize the notes:**  
+   - Review the notes carefully as they provide relevant factual data, context, and background information.  
+   - Notes may include domain-specific facts, indirect evidence, overlapping or repetitive information, dates, names, titles, awards, species counts, corporate details, etc.  
+   - Incorporate any domain-specific terminology (e.g., proper names of individuals, awards, companies, taxa) relevant to the claim verification.
+
+3. **Formulate the query:**  
+   - Compose a single, clear, direct question that targets all essential factual elements and their connections (when multiple parts exist).  
+   - The query should explicitly reference relevant domain-specific entities (e.g., a person’s full name and role, award titles, film titles and director names, species genus/species count, airline nationality and base).  
+   - Where the claim contains multiple related parts, integrate them logically into one query to avoid fragmented checks needing multiple queries.  
+   - Avoid vagueness or open-ended questions; the query should lead to precise validation or refutation.
+
+4. **Examples of domain-specific entities and components to consider (to be used as needed based on claim content):**  
+   - **Literary awards and persons:** full names of individuals (e.g., Alan Sillitoe, Miguel Ángel Asturias, Elfriede Jelinek), Nobel Prize in Literature, their nationality, and specific roles (poet, diplomat, writer).  
+   - **Film and screenwriting credits:** film titles (Finding Dory, A Bug's Life), directs/co-directors, authorship relations.  
+   - **Botanical classification:** genus names, number of species, vernacular names in various languages, and taxonomic status.  
+   - **Corporate identity and location:** company names, nationality, headquarters city, operational details.  
+   - **Sports teams and leadership:** individual roles (head coach, offensive coordinator), team names, relevant league or conference (e.g., Big Ten Conference 2013 season).  
+
+5. **General strategy:**  
+   - The query should be framed as a verification question (e.g., “Was X the Y in [context or time period]?” or “Did A direct B and also co-direct C?”).  
+   - Combine multiple linked facts into one integrated query for efficiency and clarity.  
+   - Reflect any temporal information if relevant (e.g., “in 2013”, “currently”).  
+   - Where entities might have similar names or multiple aspects, use full names and specific details to avoid confusion.  
+
+The objective is to produce a targeted query that, when answered using the notes or queried in authoritative sources, decisively clarifies the accuracy of the claim based on its main factual components and their relationships.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The grandfather of Rainer Hoss conducted the negotiations with the owners and was the longest serving resident-commandant of Auschwitz concentration and extermination camp.
+
+### notes
+['Rudolf Höss was the longest-serving commandant of Auschwitz concentration camp during WWII.', 'Kurt Gerstein conducted negotiations related to Zyklon B supply, not Rudolf Höss or his relatives.', 'There is no information about Rainer Hoss or his grandfather in relation to Auschwitz camp commandants or negotiations.', 'Rudolf Höss was the longest-serving commandant of Auschwitz concentration camp during WWII and the grandfather of Rainer Höss.', 'Kurt Gerstein conducted the negotiations with the owners related to Zyklon B supply, not Rudolf Höss or his relatives.', 'Rainer Höss, born 1965, is the grandson of Rudolf Höss and is a tolerance preacher.', 'There is no information indicating Rudolf Höss conducted negotiations with the owners.', 'Rudolf Höss was the longest-serving commandant of Auschwitz concentration camp.', 'Rudolf Höss was the grandfather of Rainer Höss.', 'Kurt Gerstein conducted the negotiations with the owners related to Zyklon B supply, not Rudolf Höss or his relatives.', 'There is no information indicating Rudolf Höss conducted negotiations with the owners.']
+
+## Generated Outputs
+### reasoning
+The claim includes two main factual assertions: first, that the grandfather of Rainer Hoss conducted negotiations with the owners, and second, that he was the longest-serving resident-commandant of Auschwitz concentration and extermination camp. The notes clarify that Rudolf Höss was the longest-serving commandant of Auschwitz and the grandfather of Rainer Höss. However, the negotiations related to Zyklon B supply were conducted by Kurt Gerstein, not Rudolf Höss or his relatives. There is no information supporting that Rudolf Höss conducted negotiations with the owners. Therefore, verification should focus on whether Rudolf Höss, Rainer Höss's grandfather, was both the longest-serving commandant of Auschwitz and conducted negotiations with the owners.
+
+### query
+Was Rudolf Höss, the grandfather of Rainer Höss, the longest-serving resident-commandant of Auschwitz concentration camp during WWII, and did he conduct negotiations with the owners related to Auschwitz operations or Zyklon B supply?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Gerstein Report', 'Rainer Höss', 'Rudolf Höss']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+The player who was defeated by Johan Kriek in the 1982 Australian Open – Men's Singles and Albert Costa are both sportsmen, and one of them, Costa, began competing at the age of five.
+
+### notes
+['Johan Kriek defeated Steve Denton in the 1982 Australian Open Men’s Singles final.', 'Steve Denton is a professional tennis player (sportsman).', 'Albert Costa began playing tennis at age five.', "Johan Kriek defeated Steve Denton in the 1982 Australian Open Men's Singles final.", 'Steve Denton is a professional tennis player (sportsman).', 'Albert Costa began playing tennis at age five.', 'Both Steve Denton and Albert Costa are sportsmen.', 'Albert Costa started competing in tennis at the age of five.', "Johan Kriek defeated Steve Denton in the 1982 Australian Open Men's Singles final.", 'Steve Denton is a professional tennis player.', 'Albert Costa began playing tennis at the age of five.', 'Both Steve Denton and Albert Costa are sportsmen.']
+
+## Generated Outputs
+### reasoning
+The claim involves two sportsmen: the player defeated by Johan Kriek in the 1982 Australian Open Men's Singles final, and Albert Costa. It asserts that the defeated player was Steve Denton and that both Steve Denton and Albert Costa are sportsmen. Additionally, it claims Albert Costa started playing tennis at age five. The notes confirm that Johan Kriek defeated Steve Denton in the 1982 Australian Open, Steve Denton is a professional tennis player, and Albert Costa began playing tennis at age five. Verifying all these linked facts will confirm the claim.
+
+### query
+Did Johan Kriek defeat Steve Denton in the 1982 Australian Open Men’s Singles final, is Steve Denton recognized as a professional tennis player, and did Albert Costa begin playing tennis at the age of five?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ["1982 Australian Open – Men's Singles", 'Albert Costa', 'Steve Denton']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+John S. Hall is younger than the former Midtown bassist and lead vocalist who created Cobra Starship.
+
+### notes
+['Gabe Saporta was born on October 11, 1979.', 'Gabe Saporta was the former Midtown bassist and lead vocalist who created Cobra Starship.', "John S. Hall's birth date is not provided in the current context or notes.", "John S. Hall's birth date is currently unknown or not provided, making it impossible to determine if he is younger than Gabe Saporta.", 'Gabe Saporta was born on October 11, 1979, and was the former Midtown bassist and lead vocalist who created Cobra Starship.', "John S. Hall's birth date is not available in the current notes or context, so his age relative to Gabe Saporta is unknown."]
+
+## Generated Outputs
+### reasoning
+The claim compares the ages of two individuals: John S. Hall and the former Midtown bassist and lead vocalist who created Cobra Starship. To verify this, it is necessary to identify the full names of both persons and their birthdates or current ages. The key facts that need to be confirmed together are: 1) who the former Midtown bassist and lead vocalist who created Cobra Starship is, and 2) whether John S. Hall is younger than that person.
+
+### query
+Who is the former bassist and lead vocalist of Midtown who created Cobra Starship, and is John S. Hall younger than this person based on their birthdates?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Cobra Starship', 'Gabe Saporta']. Documents remaining to be retrieved: ['John S. Hall'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

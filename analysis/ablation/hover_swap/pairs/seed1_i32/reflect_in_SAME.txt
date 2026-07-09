@@ -1,0 +1,120 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Instruction for the assistant:
+
+You are provided with two input fields: 
+- `claim`: A factual statement or set of statements whose truth or accuracy needs to be evaluated or verified.
+- `notes`: A list of text snippets, pieces of information, or context relevant to the claim.
+
+Your task is to produce an output field:
+- `query`: One or more precise, targeted, and factually grounded natural language questions or search queries derived from the claim and the notes, designed to retrieve all necessary documents or evidence to verify the claim fully.
+
+Guidelines for producing the `query`: 
+
+1. **Purpose**: The goal of the query is to facilitate retrieval of supporting or refuting evidence about the claim. This means the query must explicitly focus on key entities, facts, and relationships mentioned in the claim and implied or highlighted in the notes.
+
+2. **Use of notes**: 
+   - Extract relevant factual or contextual information from the notes to clarify ambiguous or incomplete parts of the claim.
+   - Incorporate key entities, dates, names, titles, and other factual data from notes to refine the query so that all required facts to verify the claim can be retrieved.
+   - Identify specific elements that remain unverified or partially verified in the notes and make sure the query targets those gaps explicitly.
+
+3. **Precision and Completeness**: 
+   - Include all principal components of the claim in the query: persons, places, works (like songs, films, books, or other creative works), dates, roles, and relationships.
+   - When multiple facts or assertions in the claim require verification, combine them into a single comprehensive query or multiple related queries, ensuring that all aspects are covered.
+   - Use the exact names, titles, and terminology as presented in the claim and the notes for precision.
+
+4. **Address ambiguity or missing information in claim**:
+   - If the claim uses vague designations (e.g., "the town", "the actress") without explicit identification, include questions that seek to identify or clarify those.
+   - When a claim involves verifying association or overlap (such as shared producers of two films), explicitly request information linking those entities.
+
+5. **Examples of question structures to include**:
+   - "Who is/are...?"
+   - "Is [entity/individual] credited with ...?"
+   - "Did [person] play/portray [character] in [work]?"
+   - "Are the producers of [film A] and [film B] the same?"
+   - "Which towns are administered by [council]? Are any located near [landmark]?"
+   - "Who wrote the lyrics/music for [song]? Are X or Y credited?"
+   
+6. **Domain-specific considerations**:
+   - For music-related claims, include songwriter/lyricist/performer credits as relevant.
+   - For film or acting claims, clarify roles, actors’ identities, and producer associations.
+   - For geographical claims, focus on administrative entities (e.g., councils), geographic proximity to named landmarks, and confirm town identities.
+   - For ambiguous or unclear entities mentioned in the claim, explicitly request identification or clarification.
+
+7. **Focus on verification of claim components rather than general exploratory queries**:
+   - Your query should be targeted to retrieve documents that directly confirm or refute each factual assertion in the claim.
+   - Avoid overly broad or vague queries.
+
+In summary, your query should be a carefully composed, fact-focused, and comprehensive question or set of questions that use the claim and notes to ensure retrieval of all necessary documents and evidence to verify each part of the claim completely.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Rhapsody, Op. 1 was written by a male composer. This composer was Hungarian, not Johann Christoph Pepusch.
+
+### notes
+['Rhapsody, Op. 1, is a piano composition by Hungarian composer Béla Bartók, completed in 1904.', 'Béla Bartók was a male Hungarian composer.', 'Johann Christoph Pepusch was a German-born composer, not Hungarian.', 'There is no evidence that Johann Christoph Pepusch composed Rhapsody, Op. 1.', 'Rhapsody, Op. 1 is a piano composition by Béla Bartók, a male Hungarian composer, completed in 1904.', 'Johann Christoph Pepusch was a German-born composer, not Hungarian, and there is no evidence he composed Rhapsody, Op. 1.', 'Rhapsody, Op. 1 is a piano composition completed in 1904 by Hungarian male composer Béla Bartók.', 'Johann Christoph Pepusch was a German-born composer with no evidence linking him to Rhapsody, Op. 1.']
+
+## Generated Outputs
+### reasoning
+The claim states that "Rhapsody, Op. 1" was written by a male composer, specifically a Hungarian composer, and explicitly not by Johann Christoph Pepusch. The notes confirm that "Rhapsody, Op. 1" is a piano composition by Béla Bartók, who was a male Hungarian composer. Additionally, Johann Christoph Pepusch was a German-born composer and there is no evidence linking him to "Rhapsody, Op. 1." Therefore, the claim’s accuracy depends on verifying that Béla Bartók, a male Hungarian, wrote "Rhapsody, Op. 1" and that Johann Christoph Pepusch did not compose this work.
+
+### query
+Who composed "Rhapsody, Op. 1"? Is Béla Bartók credited as the composer of "Rhapsody, Op. 1"? Was Béla Bartók a male Hungarian composer? Was Johann Christoph Pepusch ever credited with composing "Rhapsody, Op. 1"? What is the nationality and gender of Johann Christoph Pepusch?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Johann Christoph Pepusch', 'Rhapsody, Op. 1 (Bartók)']. Documents remaining to be retrieved: ['Béla Bartók'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Between this plant and Darwinia, the genus with more species is Darwinia. This plant is called Saule in French.
+
+### notes
+['Darwinia is a genus with about 70 species of evergreen shrubs.', "The identity of 'this plant' mentioned in the claim is not provided in the notes or context.", "No information in the provided data connects 'this plant' with the French name 'Saule'.", "It is therefore not possible to verify whether Darwinia has more species than 'this plant'.", "The claim that 'this plant' is called 'Saule' in French cannot be verified from the given information.", 'Darwinia is a genus of about 70 species of evergreen shrubs.', "The identity of 'this plant' mentioned in the claim is not provided in the notes or context, so comparison with Darwinia's species count is not possible.", "There is no information connecting 'this plant' to the French name 'Saule' in the provided data.", "Therefore, it is not possible to verify whether Darwinia has more species than 'this plant'.", "The claim that 'this plant' is called 'Saule' in French cannot be verified from the given information.", 'Darwinia is a genus with about 70 species of evergreen shrubs.', "The identity of 'this plant' in the claim is not provided in the notes or context, making it impossible to verify which genus has more species.", "There is no information in the provided data connecting 'this plant' to the French name 'Saule'.", "Therefore, it is not possible to verify whether Darwinia has more species than 'this plant' or whether 'this plant' is called Saule in French."]
+
+## Generated Outputs
+### reasoning
+The claim compares the species count of Darwinia with another unnamed plant and asserts that Darwinia has more species. It also states that the other plant is called "Saule" in French. The notes mention that Darwinia has about 70 species of evergreen shrubs but do not identify what "this plant" is, nor do they clarify the connection to the French name "Saule." Without knowing the identity of "this plant," it is impossible to verify the comparative number of species or verify that it is called "Saule" in French. Therefore, the query must seek the identification of the plant known as "Saule" in French, find its genus and species count, and compare it against Darwinia's known species count.
+
+### query
+What plant genus or species is referred to as "Saule" in French? How many species does that genus contain? How many species are in the genus Darwinia? Does Darwinia have more species than the genus referred to as "Saule"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Darwinia (plant)']. Documents remaining to be retrieved: ['Saule', 'Willow'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The co-director of Winning America, and Harley Knoles are both known for being a director.
+
+### notes
+['Harley Knoles was a British film director active during the silent film era.', 'There is no available information regarding the co-director of "Winning America" or their profession from the provided notes or context.', 'Harley Knoles was a British film director active during the silent film era.', 'There is no available information about the co-director of Winning America or their profession in the provided notes or context.', 'Harley Knoles was a British film director active during the silent film era.', "There is no available information regarding the identity or profession of the co-director of the film 'Winning America' in the provided notes or context."]
+
+## Generated Outputs
+### reasoning
+The claim asserts that the co-director of "Winning America" and Harley Knoles are both recognized as directors. To verify this, it is necessary to identify who the co-director(s) of "Winning America" are and confirm whether Harley Knoles is credited as a director in any recognized capacity. Since no notes are provided, the query must focus on establishing the directorial roles related to both "Winning America" and Harley Knoles.
+
+### query
+Who is the co-director of the film "Winning America"? Is Harley Knoles credited as a director in any film or production? Are both the co-director of "Winning America" and Harley Knoles recognized as directors?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Harley Knoles']. Documents remaining to be retrieved: ['Brent Hodge', 'Winning America'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

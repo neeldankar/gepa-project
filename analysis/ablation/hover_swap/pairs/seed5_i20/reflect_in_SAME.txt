@@ -1,0 +1,171 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given a factual `claim` that may involve multiple interconnected facts or named entities (such as people, films, places, products, organizations, historical dates, or other domain-specific items). Together with the claim, you will receive a set of `notes` consisting of partial background information, known details, plus observations that highlight gaps, ambiguities, or contradictions around the claim’s elements.
+
+Your goal is to generate a focused set of one or more `queries` designed to verify or fact-check each component of the claim. These queries will be used to retrieve relevant evidence or documents (e.g., from Wikipedia or other authoritative sources) to confirm or refute the claim.
+
+Key Requirements and Domain-Specific Heuristics:
+
+1. **Entity Disambiguation:**  
+   - Explicitly identify all named entities mentioned in the claim.  
+   - Always disambiguate entities carefully using relevant descriptors, such as: clarifying a film’s release year, a person’s profession or nationality, distinguishing similarly named entities (e.g., “Solo (Norwegian soft drink)” instead of just “Solo”).  
+   - This avoids confusion and ensures queries retrieve targeted, relevant information.
+
+2. **Decompose Complex Claims into Components:**  
+   - If the claim includes multiple assertions (e.g., an actor acted in multiple movies, a director’s involvement, a formation date of a military unit), break it down into multiple specific queries, each verifying one discrete fact.  
+   - Queries should be connected logically, covering the full scope of the claim without leaving holes.
+
+3. **Target Missing, Ambiguous, or Contradictory Information from the Notes:**  
+   - Use the notes to identify what is already known, what is uncertain or missing, and contradictions that must be resolved.  
+   - Formulate queries that directly address these gaps or conflicting points to retrieve clarifying evidence.  
+   - For example, if it’s unclear whether a publication is a book or a magazine article, or exact formation years of military units, or the nationality of a named individual, queries should reflect these specifics.
+
+4. **Cover Every Fact Embedded in the Claim:**  
+   - Ensure your queries collectively verify all factual statements contained in the claim.  
+   - Avoid partial coverage that might retrieve documents relevant to only some parts of the claim.
+
+5. **Precise and Clear Query Formulation:**  
+   - Queries must be explicit, well-structured factual questions or entity-relationship prompts, suitable for document retrieval.  
+   - Avoid vague, overly broad, or open-ended questions.
+
+6. **Include Relevant Domain Context:**  
+   - When necessary, incorporate domain knowledge or contextual clues into the queries.  
+   - For example, when verifying a film claim, specify the film’s release year or director; for geographical entities, specify if a cemetery is within a park; for military units, specify their formation dates and relation to associated conflicts or films.
+
+Generalizable Strategy:
+
+- Carefully read and parse the claim to extract all named entities and discrete fact assertions.  
+- Examine the provided notes thoroughly to uncover what details are confirmed, missing, ambiguous, or contradictory in relation to the claim.  
+- For each factual element and especially for each gap or contradiction, generate a focused, specific question or search prompt to obtain clear supporting or refuting evidence.  
+- Ensure queries are comprehensive and well-targeted to verify the full claim.  
+- Format the final output strictly as one or more `query` lines, with no additional explanation or commentary.
+
+Example Query Patterns:
+
+- For a film claim:  
+  - “Who starred in [Film Name] ([Year])?”  
+  - “Who directed [Film Name] ([Year])?”  
+  - “Is [Person’s Name] an actor in [Film Name] ([Year])?”  
+
+- For a publication claim:  
+  - “What is the publication format and date of [Title] by [Author]?”  
+  - “Is [Publication Name] a periodical or a book publisher?”  
+
+- For geography or burial claims:  
+  - “Where is [Person] buried?”  
+  - “Is [Cemetery Name] located within [Park or Geographic Area]?”  
+
+- For military or historical claims:  
+  - “When was [Military Unit] formed?”  
+  - “What units are featured in [Film or Book Title]?”  
+
+By following these instructions carefully, you will produce precise queries capable of guiding the retrieval of comprehensive, relevant documents to validate or refute complex factual claims.
+
+Input Format:  
+- `claim`: A factual statement with one or more components involving named entities or facts.  
+- `notes`: A list of strings summarizing current knowledge, including unknowns or contradictions.
+
+Output Format:  
+- `query`: One or more explicit, decomposed, and disambiguated search queries targeting factual verifications for each part of the claim.
+
+Remember:  
+- Queries must be factual questions fit for document retrieval.  
+- Always cover all aspects requiring verification.  
+- Disambiguate entities using descriptive context.  
+- Use notes to identify which facts require particular attention.  
+- Structure queries to maximize retrieval precision and relevance.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Bruce Guthro  and another rock musician are not both members of the alternative rock band Radiohead. The other rock musician sins on the Radiohead song "All I need".
+
+### notes
+['Radiohead is an English alternative rock band with no record of Bruce Guthro as a member.', "'All I Need' is a song by Radiohead, featured on their 2007 album 'In Rainbows'.", "Thom Yorke, the Radiohead frontman, sings 'All I Need'.", 'There is no evidence Bruce Guthro performed or recorded with Radiohead.', 'Bruce Guthro is not a member of the English alternative rock band Radiohead.', "'All I Need' is a song by Radiohead from their 2007 album 'In Rainbows'.", "Thom Yorke, Radiohead's frontman, sings the song 'All I Need'.", 'There is no evidence of Bruce Guthro performing or recording with Radiohead.', 'Radiohead is an English alternative rock band with no record of Bruce Guthro as a member.', '"All I Need" is a Radiohead song from their 2007 album "In Rainbows".', 'Thom Yorke, Radiohead\'s frontman, sings "All I Need."', 'There is no evidence Bruce Guthro performed or recorded with Radiohead.']
+
+## Generated Outputs
+### reasoning
+The claim involves two main factual assertions: first, that Bruce Guthro and another rock musician are not both members of Radiohead, an alternative rock band; second, that this other rock musician performs vocals (sins is presumably a typo for sings) on the Radiohead song "All I Need." Verification requires identifying the members of Radiohead to confirm if Bruce Guthro is among them; identifying the other rock musician referenced and confirming their membership in Radiohead; and confirming who performs vocals on the song "All I Need" by Radiohead. Since the claim implies Bruce Guthro is not a Radiohead member, we need to establish who the Radiohead members are and whether Bruce Guthro is among them. We also need to verify the performers on "All I Need" specifically for vocal contributions and their identities.
+
+### query
+Who are the members of the alternative rock band Radiohead?  
+Is Bruce Guthro a member of Radiohead?  
+Who sings lead vocals on the Radiohead song "All I Need"?  
+Which musicians sang on the Radiohead song "All I Need"?  
+Is there a notable rock musician associated with the song "All I Need" by Radiohead other than Radiohead band members?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['All I Need (Radiohead song)', 'Bruce Guthro']. Documents remaining to be retrieved: ['Thom Yorke'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Nathaniel "Nate" Jacks is the colloquial name of the professional football team in which this striker, who scored in Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final, played.
+
+### notes
+['Brazil defeated Spain 3-0 in the 2013 FIFA Confederations Cup Final.', 'Goals were scored by Fred and Neymar for Brazil in that final.', "There is no mention of a player named Nathaniel 'Nate' Jacks in the context.", "No professional football team is referred to as Nathaniel 'Nate' Jacks in the context.", "The claim linking Nathaniel 'Nate' Jacks to the 2013 final match or scorers is unsupported.", 'Brazil defeated Spain 3-0 in the 2013 FIFA Confederations Cup Final with goals by Fred and Neymar.', 'Nathaniel "Nate" Jacks is a former American football cornerback who played in the National Indoor Football League and other American football leagues, not in soccer.', 'There is no record of a professional soccer team named Nathaniel "Nate" Jacks or nickname thereof.', 'Nate Jacks is not connected to the 2013 FIFA Confederations Cup or the involved soccer teams.', "The claim linking Nathaniel 'Nate' Jacks to the soccer final or its scorers is unsupported and false.", "Nathaniel 'Nate' Jacks is a former American football player, not a soccer player.", "There is no professional soccer team named 'Nathaniel Nate Jacks' or colloquially known as this.", 'Brazil defeated Spain 3-0 in the 2013 FIFA Confederations Cup Final with goals scored by Fred and Neymar.', 'The 2013 FIFA Confederations Cup Final was contested between Brazil and Spain at Estádio do Maracanã.', "No record links Nathaniel 'Nate' Jacks to the 2013 FIFA Confederations Cup or its goal scorers."]
+
+## Generated Outputs
+### reasoning
+The claim involves multiple interlinked elements: the identity of Nathaniel "Nate" Jacks as the colloquial name of a professional football (soccer) team, the fact that this team had a striker who scored in Brazil's 3-0 win against Spain in the 2013 FIFA Confederations Cup Final, and the connection of the striker to this team. The notes clarify that Brazil won 3-0 with goals by Fred and Neymar, with no mention of Nathaniel "Nate" Jacks related to soccer, professional football teams, or the 2013 final. Note [7] states that Nathaniel "Nate" Jacks is a former American football cornerback, not a soccer player. Also, no professional soccer team or nickname is known as Nathaniel "Nate" Jacks.
+
+Hence, the claim appears to be incorrect on multiple fronts: No player named Nathaniel "Nate" Jacks scored in the 2013 final; no team is colloquially known by that name; and Nathaniel "Nate" Jacks is unrelated to soccer.
+
+To verify and debunk this claim comprehensively, queries must confirm:
+1. Identity and details of the scorers in the 2013 FIFA Confederations Cup Final between Brazil and Spain.
+2. Confirmation whether Nathaniel "Nate" Jacks is associated with any professional soccer team or as a soccer player.
+3. Whether any professional soccer team is colloquially or officially referred to as Nathaniel "Nate" Jacks.
+4. The professional background of Nathaniel "Nate" Jacks with respect to American football and soccer.
+
+These queries will ensure comprehensive coverage and verification of all embedded factual components of the claim.
+
+### query
+Who scored goals for Brazil in the 2013 FIFA Confederations Cup Final against Spain?
+Is there any record of a soccer player named Nathaniel "Nate" Jacks participating in the 2013 FIFA Confederations Cup or associated with Brazil or Spain national soccer teams?
+Is there any professional soccer team colloquially or officially nicknamed Nathaniel "Nate" Jacks?
+What is the professional sports background of Nathaniel "Nate" Jacks, specifically regarding soccer and American football careers?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['2013 FIFA Confederations Cup Final']. Documents remaining to be retrieved: ['Clube Atlético Mineiro', 'Fred (footballer)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+An Greek actor who was a CIA operative in Chuck Versus the A-Team was born in 1974. The actor plays a character in commercials for Old Spice.
+
+### notes
+["The episode 'Chuck Versus the A-Team' involves CIA operatives including John Casey and introduces new operatives Isaiah Mustafa and Stacy Keibler.", "Isaiah Mustafa, known for Old Spice commercials, appears as a CIA operative in 'Chuck Versus the A-Team'.", 'Isaiah Mustafa was born in 1974 but is not Greek; the context does not support the claim of a Greek actor in this role.', "No Greek actor born in 1974 is mentioned in the context related to 'Chuck Versus the A-Team' or Old Spice commercials.", "Isaiah Mustafa, born in 1974, is an American actor known for Old Spice commercials and appeared as a CIA operative in 'Chuck Versus the A-Team'.", "There is no mention of a Greek actor born in 1974 involved in 'Chuck Versus the A-Team' or Old Spice commercials in the provided context.", "Isaiah Mustafa, born in 1974, is an American actor known for Old Spice commercials and for playing a CIA operative in 'Chuck Versus the A-Team'.", "There is no mention of a Greek actor born in 1974 associated with 'Chuck Versus the A-Team' or Old Spice commercials in the provided context."]
+
+## Generated Outputs
+### reasoning
+The claim centers on a Greek actor born in 1974 who was a CIA operative in the TV episode "Chuck Versus the A-Team" and who appears in Old Spice commercials. The notes clarify that Isaiah Mustafa is a CIA operative character in that episode and is known for Old Spice commercials, and that he was born in 1974. However, it explicitly mentions he is not Greek. Additionally, there is no evidence or mention of any Greek actor born in 1974 linked to both the "Chuck Versus the A-Team" episode and Old Spice commercials. To verify the claim, it is necessary to: (1) confirm which actors played CIA operatives in "Chuck Versus the A-Team", especially any Greek-born actors born in 1974; (2) confirm the birth dates and nationalities of these actors; and (3) confirm which actors appear in Old Spice commercials. This will address whether the claim’s assertion of a Greek actor fulfilling both roles is accurate or mistaken.
+
+### query
+Who are the actors portraying CIA operatives in the TV episode "Chuck Versus the A-Team"?  
+Was any actor who played a CIA operative in "Chuck Versus the A-Team" born in 1974 and is of Greek nationality?  
+Who is Isaiah Mustafa and what is his nationality and birth year?  
+Which actor(s) featured in Old Spice commercials?  
+Is there any Greek actor born in 1974 known for appearing in Old Spice commercials?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Chuck Versus the A-Team', 'Isaiah Mustafa', 'Make a Smellmitment']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

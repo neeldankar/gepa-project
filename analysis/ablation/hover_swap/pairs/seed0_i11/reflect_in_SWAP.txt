@@ -1,0 +1,107 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields as input: a `claim` and associated `notes`. Your task is to generate a single, concise, precise natural language `query` that is intended to verify or fact-check the `claim` based on information given in the `notes`. The final query should be designed for efficient retrieval of authoritative evidence that confirms or refutes all key factual elements presented in the claim.
+
+Detailed task instructions:
+
+1. **Analyze the claim:**  
+   - Identify all key factual components or assertions that need verification.  
+   - Recognize any implied relationships between entities or multiple claim components that must be verified together to confirm the claim’s overall truthfulness.
+
+2. **Utilize the notes:**  
+   - Review the notes carefully as they provide relevant factual data, context, and background information.  
+   - Notes may include domain-specific facts, indirect evidence, overlapping or repetitive information, dates, names, titles, awards, species counts, corporate details, etc.  
+   - Incorporate any domain-specific terminology (e.g., proper names of individuals, awards, companies, taxa) relevant to the claim verification.
+
+3. **Formulate the query:**  
+   - Compose a single, clear, direct question that targets all essential factual elements and their connections (when multiple parts exist).  
+   - The query should explicitly reference relevant domain-specific entities (e.g., a person’s full name and role, award titles, film titles and director names, species genus/species count, airline nationality and base).  
+   - Where the claim contains multiple related parts, integrate them logically into one query to avoid fragmented checks needing multiple queries.  
+   - Avoid vagueness or open-ended questions; the query should lead to precise validation or refutation.
+
+4. **Examples of domain-specific entities and components to consider (to be used as needed based on claim content):**  
+   - **Literary awards and persons:** full names of individuals (e.g., Alan Sillitoe, Miguel Ángel Asturias, Elfriede Jelinek), Nobel Prize in Literature, their nationality, and specific roles (poet, diplomat, writer).  
+   - **Film and screenwriting credits:** film titles (Finding Dory, A Bug's Life), directs/co-directors, authorship relations.  
+   - **Botanical classification:** genus names, number of species, vernacular names in various languages, and taxonomic status.  
+   - **Corporate identity and location:** company names, nationality, headquarters city, operational details.  
+   - **Sports teams and leadership:** individual roles (head coach, offensive coordinator), team names, relevant league or conference (e.g., Big Ten Conference 2013 season).  
+
+5. **General strategy:**  
+   - The query should be framed as a verification question (e.g., “Was X the Y in [context or time period]?” or “Did A direct B and also co-direct C?”).  
+   - Combine multiple linked facts into one integrated query for efficiency and clarity.  
+   - Reflect any temporal information if relevant (e.g., “in 2013”, “currently”).  
+   - Where entities might have similar names or multiple aspects, use full names and specific details to avoid confusion.  
+
+The objective is to produce a targeted query that, when answered using the notes or queried in authoritative sources, decisively clarifies the accuracy of the claim based on its main factual components and their relationships.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Il trovatore has more acts than the 1994 Hungarian-Swiss-Italian fantasy film which was loosely inspired by. This Hungarian-Swiss-Italian fantasy film was directed by Ildikó Enyedi and called Magic Hunter.
+
+### notes
+['Il trovatore is an opera in four acts by Giuseppe Verdi.', 'Magic Hunter is a 1994 fantasy film directed by Ildikó Enyedi.', 'Films typically do not have acts in the same way operas do.', 'Magic Hunter was loosely inspired by the opera Der Freischütz.', 'Il trovatore is an opera in four acts by Giuseppe Verdi, and has a well-defined act structure.', 'Magic Hunter is a 1994 fantasy film directed by Ildikó Enyedi and does not have an act structure similar to operas.', 'Films generally do not have acts in the same way operas do, so comparing the number of acts between a film and an opera is typically invalid but in this case confirms the claim.', 'Il trovatore has four acts according to its opera structure.', 'Magic Hunter does not have acts as it is a film, and films typically do not have an act structure comparable to operas.', 'Therefore, Il trovatore has more acts than Magic Hunter, as the latter has none.']
+
+## Generated Outputs
+### reasoning
+The claim makes two key assertions: (1) the Hungarian-Swiss-Italian fantasy film "Magic Hunter" was directed by Ildikó Enyedi, and (2) "Il trovatore" has more acts than this film to which it was loosely related or inspired by. To verify it thoroughly, one must confirm the director and title of the film, its multinational production status (Hungarian-Swiss-Italian), and establish the number of acts or structural segments of both the opera "Il trovatore" and "Magic Hunter," comparing these to validate the relative number of acts claim.
+
+### query
+Is the 1994 Hungarian-Swiss-Italian fantasy film "Magic Hunter" directed by Ildikó Enyedi, and does the opera "Il trovatore" have more acts than the number of acts or comparable structural parts in "Magic Hunter"?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Il trovatore', 'Magic Hunter']. Documents remaining to be retrieved: ['Der Freischütz'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Veyyil was the first film scored by the man who composed the soundtrack for the film in which Ashrita Shetty had a part.
+
+### notes
+["Ashrita Shetty acted in the film 'Udhayam NH4'.", "'Udhayam NH4' soundtrack and background score were composed by G. V. Prakash Kumar.", "G. V. Prakash Kumar's first film as a composer was 'Veyyil' (2006).", "Ashrita Shetty acted in the film 'Udhayam NH4' which was released in 2013.", "'Udhayam NH4' soundtrack and background score were composed by G. V. Prakash Kumar.", "G. V. Prakash Kumar's first film as a composer was 'Veyyil' released in 2006.", "Ashrita Shetty acted in 'Udhayam NH4'.", "'Udhayam NH4' soundtrack was composed by G. V. Prakash Kumar.", "G. V. Prakash Kumar's first film as a composer was 'Veyyil' (2006)."]
+
+## Generated Outputs
+### reasoning
+The claim is that the film "Veyyil" was the first composed by the same person who created the soundtrack for the film in which Ashrita Shetty acted. From the notes provided, Ashrita Shetty acted in "Udhayam NH4." The soundtrack and background score for "Udhayam NH4" were composed by G. V. Prakash Kumar, whose first film as a composer was "Veyyil" in 2006. These facts directly support the claim's components and their relationships.
+
+### query
+Was "Veyyil" the first film scored by G. V. Prakash Kumar, who also composed the soundtrack for "Udhayam NH4," a film featuring Ashrita Shetty?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Ashrita Shetty', 'G. V. Prakash Kumar', 'Udhayam NH4']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+Basil Dean and a creator of Godfather Part II were both alive at some point in time.
+
+### notes
+['Basil Dean (1888–1978) and Francis Ford Coppola, a creator of The Godfather Part II (released in 1974), were contemporaries living at the same time.', 'Basil Dean (1888–1978) was alive during the release of The Godfather Part II in 1974.', 'Francis Ford Coppola, a creator (director and co-writer) of The Godfather Part II, was alive at least since the film’s release in 1974.', 'Therefore, Basil Dean and Francis Ford Coppola were alive simultaneously for at least the period 1974–1978.', 'Basil Dean (1888–1978) was alive when The Godfather Part II was released in 1974.', "Francis Ford Coppola, director and co-writer of The Godfather Part II, was alive at the film's release in 1974.", 'Basil Dean and Francis Ford Coppola were alive simultaneously from 1974 to 1978.']
+
+## Generated Outputs
+### reasoning
+The claim states that Basil Dean and a creator of Godfather Part II were both alive at some point in time. To verify this, we need to confirm (1) the lifespan or life dates of Basil Dean, and (2) the identity and lifespan or existence dates of the creators of Godfather Part II (e.g., director, screenwriter, producer). If there is an overlap in their life periods, the claim is true.
+
+### query
+What are the life dates of Basil Dean and the creators (director, screenwriter, producers) of the film Godfather Part II, and did their lifespans overlap at any point in time?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Basil Dean', 'The Godfather Part II']. Documents remaining to be retrieved: ['Francis Ford Coppola'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

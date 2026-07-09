@@ -1,0 +1,130 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be provided with a `claim` (a factual statement that may involve multiple interconnected facts or entities) and a set of `notes` that include partial background information, relevant contextual details, or observations regarding the claim. Your goal is to generate a concise, clear, and focused `query` (or set of queries) that can be used to verify or fact-check the claim by retrieving relevant documents or evidence from external sources (e.g., Wikipedia articles).
+
+Input Format:
+
+- `claim`: A factual statement that may cover multiple aspects or assertions, often involving named entities such as people, films, places, products, or other specific domain-related items.
+- `notes`: A list of context snippets or observations summarizing the currently known information, including what is missing, ambiguous, or contradictory about the claim’s components. These notes reflect gaps in the information or conflicting details discovered during initial investigation.
+
+Output:
+
+- `query`: One or more clear, well-structured questions or search prompts that directly target the critical pieces of factual information needed to verify each part of the claim. Each query should be specific enough to retrieve relevant documents corresponding to key entities, relationships, or facts mentioned in the claim.
+
+Key details and domain-specific heuristics to include:
+
+1. **Disambiguate Entities Carefully:** When the claim references specific named entities (persons, films, songs, products, places), the query should explicitly name these entities, including relevant descriptors or disambiguation to avoid confusion (e.g., “Solo (Norwegian soft drink)” rather than just “Solo”).
+
+2. **Decompose Complex Claims:** If the claim involves multiple interrelated facts (e.g., an actor starring in two films and a director credit), break down the verification into stepwise, connected questions addressing each part individually, so that sources can be retrieved for all relevant components.
+
+3. **Identify and Target Missing or Ambiguous Links:** Use the `notes` to spot what information is lacking or uncertain. Focus queries on resolving those uncertainties (e.g., if burial location or whether a cemetery is part of a park is unclear, query specifically for these facts).
+
+4. **Cover All Verification Points:** Make sure queries collectively cover every factual assertion embedded in the claim to avoid partial retrieval of relevant resources.
+
+5. **Use Precise and Specific Language:** Frame queries in a form suited for document retrieval, often as clear factual questions or entity-relationship questions. Avoid vague or overly broad queries.
+
+6. **Include Domain Context When Needed:** When domain knowledge influences interpretation (e.g., a director’s known roles, or geographic relationships between cemeteries and parks), reference such context in formulating queries to guide retrieval towards the correct entities and relevant data.
+
+Generalizable Strategy:
+
+- Read the claim carefully, identify all named entities and relationships.
+- Cross-reference those with the `notes` to find gaps or contradictions.
+- For each gap or verification point, generate a direct factual question or phrase that would retrieve documents clarifying or confirming that point.
+- Combine these into a coherent set of queries ensuring coverage of the entire claim.
+- Format the output strictly as `query` without additional explanations.
+
+Example guidance:
+
+For a claim about a film actor and director, queries might include:  
+- "Who starred alongside [Known Actor] in [Film Name]?"  
+- "Did that actor appear in [Second Film Name]?"  
+- "Who directed [Second Film Name]?"
+
+For a claim about a burial place and its geographic association:  
+- "Where is [Person Name] buried?"  
+- "Is [Cemetery Name] located within the [Park or Recreation Area Name]?"
+
+By following these detailed instructions, your generated queries will effectively target the key facts needed for thorough claim verification and ensure retrieval of all necessary supporting documents.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+An actor that was in the Wonder Woman (2017 film) of the action adventure genre, performed in Anomalisa after the premier of Fargo.
+
+### notes
+['David Thewlis appeared in the Wonder Woman (2017) film.', 'David Thewlis voiced a character in Anomalisa (2015), which was released before the Fargo (TV series season 3) premiere in 2017.', "David Thewlis played a role in Fargo season 3, which premiered after Anomalisa's release.", 'Anomalisa was released on December 30, 2015.', 'Fargo season 3 aired starting in April 2017.', 'The timeline shows Anomalisa before Fargo, not after.', 'David Thewlis acted in Wonder Woman (2017), an action-adventure film.', 'David Thewlis voiced a character in Anomalisa (2015), released before Fargo season 3.', "Fargo season 3, featuring David Thewlis, premiered in April 2017, after Anomalisa's release.", 'David Thewlis acted in Wonder Woman (2017), an action-adventure film.', 'David Thewlis voiced a character in Anomalisa, which was released on December 30, 2015.', 'Fargo season 3, featuring David Thewlis, premiered in April 2017.', "David Thewlis's performance in Anomalisa preceded his role in Fargo season 3.", 'The claim that the actor performed in Anomalisa after the Fargo premiere is incorrect.']
+
+## Generated Outputs
+### reasoning
+The claim states that an actor from the 2017 action-adventure film Wonder Woman performed in Anomalisa after the premiere of Fargo. The notes identify David Thewlis as the relevant actor. However, the timeline in the notes clearly states that Anomalisa (2015) was released before the premiere of Fargo season 3 (2017). Since Anomalisa preceded Fargo, the claim's sequence that the actor performed in Anomalisa after Fargo’s premiere is incorrect. To fully verify the claim, it is necessary to confirm the actor’s involvement in Wonder Woman (2017), in Anomalisa, and in Fargo, and to establish the release and premiere dates related to these works.
+
+### query
+- Was David Thewlis an actor in the 2017 action-adventure film Wonder Woman?  
+- Did David Thewlis perform (act or voice a character) in Anomalisa?  
+- When was Anomalisa released?  
+- Did David Thewlis have a role in Fargo season 3?  
+- When did Fargo season 3 premiere?  
+- What is the chronological order of the release or premiere dates of Anomalisa (film), Fargo season 3, and Wonder Woman (2017 film)?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['David Thewlis', 'Fargo (TV series)', 'Wonder Woman (2017 film)']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+The platform, for which the fixed shooter Proof of Destruction was developed, and Prológica CP-400 were not from the same country.
+
+### notes
+['Prológica CP-400 was developed by Prológica, a Brazilian company.', "Fixed shooter games like 'Proof of Destruction' are typically developed in countries such as Japan or the United States.", "Proof of Destruction's platform likely originates from a different country than Brazil.", 'Proof of Destruction was developed for the Commodore 64 and Commodore 16, platforms originating from the United States.', 'Prológica CP-400 was developed by a Brazilian company, Prológica.', 'Commodore 64 and Commodore 16 platforms are distinct from the Brazilian-made Prológica CP-400.', 'Prológica CP-400 was developed by Prológica, a Brazilian company.', 'Proof of Destruction was developed for the Commodore 64 and Commodore 16, which are platforms originating from the United States.', 'Therefore, the platform for Proof of Destruction (Commodore 64/16) and Prológica CP-400 come from different countries: the US and Brazil respectively.']
+
+## Generated Outputs
+### reasoning
+The claim involves two entities: the platform for which the game "Proof of Destruction" (a fixed shooter) was developed, and the Prológica CP-400. The claim asserts that these two are not from the same country. To verify this, it is necessary to identify the country of origin of the platform for "Proof of Destruction," and separately identify the country where the Prológica CP-400 was developed or produced. By comparing these countries, the claim that they are not from the same country can be confirmed or refuted. Since no additional notes clarify which platform "Proof of Destruction" was developed for or where the Prológica CP-400 originates, queries must target the country of origin and development of both the game’s platform and the Prológica CP-400.
+
+### query
+What platform was the fixed shooter game Proof of Destruction developed for and which country is this platform from?  
+What country was the Prológica CP-400 developed or manufactured in?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Prológica CP-400', 'Proof of Destruction']. Documents remaining to be retrieved: ['Commodore 16'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Austrian Poet-Dliplomat who also won the Nobel Prize in Literature, and Alan Sillitoe were both writers.
+
+### notes
+['Poet-diplomats are poets who have served as diplomats and include Nobel Prize in Literature winners such as Ivo Andrić and others.', 'Alan Sillitoe was a known writer.', 'The claim involves an Austrian Poet-Diplomat Nobel laureate, but no specific Austrian poet-diplomat Nobel winner is named in the context.', 'All Nobel Prize winners in Literature referenced as poet-diplomats are considered writers.', 'No Austrian poet-diplomat has been confirmed as a Nobel Prize winner in Literature in the provided context.', 'Erwin Guido Kolbenheyer was an Austrian poet nominated but never won the Nobel Prize in Literature.', 'Alan Sillitoe is confirmed as a writer.', 'Winners of the Nobel Prize in Literature who are poet-diplomats listed are not Austrian.', 'The claim that both individuals in the claim are writers is true, but the Nobel-winning Austrian poet-diplomat part lacks evidence.', 'Alan Sillitoe is confirmed to be a writer.', 'Poet-diplomats who have won the Nobel Prize in Literature are considered writers.', 'The provided context lists several poet-diplomat Nobel laureates, but none are Austrian.', 'Erwin Guido Kolbenheyer was an Austrian poet nominated for the Nobel Prize in Literature but never won.', "The claim's mention of an Austrian poet-diplomat Nobel laureate lacks confirmation and evidence."]
+
+## Generated Outputs
+### reasoning
+The claim involves verifying whether the entity described as the "Austrian Poet-Diplomat who also won the Nobel Prize in Literature" qualifies as a writer and also confirming that Alan Sillitoe is a writer. To fact-check this, it is necessary to identify the Austrian poet-diplomat who won the Nobel Prize in Literature and confirm their occupations. Additionally, confirming Alan Sillitoe's identity as a writer is straightforward but should be verified. The queries should target the identity and professions of both individuals.
+
+### query
+Who is the Austrian poet and diplomat who won the Nobel Prize in Literature?  
+Is this Austrian Nobel laureate in literature recognized as a writer or poet?  
+Who is Alan Sillitoe?  
+Is Alan Sillitoe recognized as a writer?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Poet-diplomat']. Documents remaining to be retrieved: ['Alan Sillitoe', 'Gabriela Mistral'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

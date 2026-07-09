@@ -1,0 +1,107 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields as input: a `claim` and associated `notes`. Your task is to generate a single, concise, precise natural language `query` that is intended to verify or fact-check the `claim` based on information given in the `notes`. The final query should be designed for efficient retrieval of authoritative evidence that confirms or refutes all key factual elements presented in the claim.
+
+Detailed task instructions:
+
+1. **Analyze the claim:**  
+   - Identify all key factual components or assertions that need verification.  
+   - Recognize any implied relationships between entities or multiple claim components that must be verified together to confirm the claim’s overall truthfulness.
+
+2. **Utilize the notes:**  
+   - Review the notes carefully as they provide relevant factual data, context, and background information.  
+   - Notes may include domain-specific facts, indirect evidence, overlapping or repetitive information, dates, names, titles, awards, species counts, corporate details, etc.  
+   - Incorporate any domain-specific terminology (e.g., proper names of individuals, awards, companies, taxa) relevant to the claim verification.
+
+3. **Formulate the query:**  
+   - Compose a single, clear, direct question that targets all essential factual elements and their connections (when multiple parts exist).  
+   - The query should explicitly reference relevant domain-specific entities (e.g., a person’s full name and role, award titles, film titles and director names, species genus/species count, airline nationality and base).  
+   - Where the claim contains multiple related parts, integrate them logically into one query to avoid fragmented checks needing multiple queries.  
+   - Avoid vagueness or open-ended questions; the query should lead to precise validation or refutation.
+
+4. **Examples of domain-specific entities and components to consider (to be used as needed based on claim content):**  
+   - **Literary awards and persons:** full names of individuals (e.g., Alan Sillitoe, Miguel Ángel Asturias, Elfriede Jelinek), Nobel Prize in Literature, their nationality, and specific roles (poet, diplomat, writer).  
+   - **Film and screenwriting credits:** film titles (Finding Dory, A Bug's Life), directs/co-directors, authorship relations.  
+   - **Botanical classification:** genus names, number of species, vernacular names in various languages, and taxonomic status.  
+   - **Corporate identity and location:** company names, nationality, headquarters city, operational details.  
+   - **Sports teams and leadership:** individual roles (head coach, offensive coordinator), team names, relevant league or conference (e.g., Big Ten Conference 2013 season).  
+
+5. **General strategy:**  
+   - The query should be framed as a verification question (e.g., “Was X the Y in [context or time period]?” or “Did A direct B and also co-direct C?”).  
+   - Combine multiple linked facts into one integrated query for efficiency and clarity.  
+   - Reflect any temporal information if relevant (e.g., “in 2013”, “currently”).  
+   - Where entities might have similar names or multiple aspects, use full names and specific details to avoid confusion.  
+
+The objective is to produce a targeted query that, when answered using the notes or queried in authoritative sources, decisively clarifies the accuracy of the claim based on its main factual components and their relationships.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+American film director and actor Eli Roth, famous for his role as Donny "The Bear Jew" Donowitz, wrote the 2012 film that was directed by the founder of Soul Temple Records.
+
+### notes
+['Eli Roth is credited as a writer for the 2012 film Aftershock, directed by Nicolás López.', 'The founder of Soul Temple Records, RZA, directed the 2012 film The Man with the Iron Fists.', 'Eli Roth was not involved in writing The Man with the Iron Fists.', 'Nicolás López, who co-wrote and directed Aftershock with Roth as co-writer, is not linked to Soul Temple Records.', "Eli Roth is credited as co-writer for the 2012 film 'The Man with the Iron Fists', which was directed by RZA, founder of Soul Temple Records.", "RZA, founder of Soul Temple Records, directed 'The Man with the Iron Fists' in 2012.", "Eli Roth is famously known for his acting role as Donny 'The Bear Jew' Donowitz in 'Inglourious Basterds'.", 'Eli Roth co-wrote the 2012 martial arts film The Man with the Iron Fists, which was directed by RZA, founder of Soul Temple Records.', "Eli Roth is widely known for his role as Donny 'The Bear Jew' Donowitz in Quentin Tarantino's Inglourious Basterds.", 'RZA founded Soul Temple Records in 2012 following the release of The Man with the Iron Fists.', 'The Man with the Iron Fists soundtrack was produced by RZA and released by Soul Temple Records.']
+
+## Generated Outputs
+### reasoning
+The claim states that Eli Roth, known for his role as Donny "The Bear Jew" Donowitz, wrote the 2012 film directed by the founder of Soul Temple Records. The notes clarify Eli Roth is an actor famous for that role and a co-writer of the 2012 film "The Man with the Iron Fists," which was directed by RZA, the founder of Soul Temple Records. Additional notes mention that although Roth co-wrote "Aftershock" (2012), that film was directed by Nicolás López, who is not connected to Soul Temple Records. Also, Roth was not involved in writing "The Man with the Iron Fists" is contradicted by another note, but the majority and most direct evidence confirm Roth as co-writer of "The Man with the Iron Fists." Therefore, verifying if Eli Roth, known for his role as Donny "The Bear Jew" Donowitz, co-wrote the 2012 film "The Man with the Iron Fists," directed by RZA, founder of Soul Temple Records, addresses the key elements of the claim accurately.
+
+### query
+Did Eli Roth, famously known for his role as Donny "The Bear Jew" Donowitz, co-write the 2012 film "The Man with the Iron Fists," which was directed by RZA, the founder of Soul Temple Records?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Eli Roth', 'Soul Temple Records', 'The Man with the Iron Fists']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+Fàn County falls under the jurisdiction of a city in  Henan Province. That city and Pu'er City are located in the same country.
+
+### notes
+["Pu'er City is a prefecture-level city in Yunnan Province, China.", 'Henan Province and Yunnan Province are both provinces within China.', 'Cities and counties listed under Henan Province belong to China.', 'Fàn County is likely under administration of a city within Henan Province, China.', 'Fàn County is administered by a city in Henan Province, China.', "Pu'er City is a prefecture-level city in Yunnan Province, China.", 'Henan Province and Yunnan Province are both located in China.', "Hence, the city that administers Fàn County and Pu'er City are both in China.", 'Fàn County is administered by a city in Henan Province, China.', "Pu'er City is a prefecture-level city in Yunnan Province, China.", 'Henan Province and Yunnan Province are both provinces located within China.', "Therefore, both the city administering Fàn County and Pu'er City are in the country of China."]
+
+## Generated Outputs
+### reasoning
+The claim involves two factual components. First, it asserts that Fàn County is administratively governed by a city in Henan Province. This requires confirming the location of Fàn County and identifying whether it is indeed under a city's jurisdiction within Henan Province. Second, it claims that the city administering Fàn County and Pu'er City share the same national affiliation. This requires confirming that both locations are in the same country. Without notes, this basic geographical and administrative information must be verified to confirm the claim.
+
+### query
+Is Fàn County located under the jurisdiction of a city within Henan Province in China, and are both that city and Pu'er City located in the same country of China?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ["Pu'er City"]. Documents remaining to be retrieved: ['Fan County', 'Puyang'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Clark County in Nevada contains both Las Vegas and another college. Craig Heyer played baseball at that college.
+
+### notes
+['Craig Heyer played college baseball at both the College of Southern Nevada and University of Nevada, Las Vegas (UNLV).', 'The College of Southern Nevada and UNLV are both located within Clark County, Nevada, which also contains the city of Las Vegas.', 'Craig Heyer played college baseball at both the College of Southern Nevada and University of Nevada, Las Vegas (UNLV), both located within Clark County, Nevada, which includes Las Vegas.', 'Clark County in Nevada contains the city of Las Vegas.', 'The College of Southern Nevada and the University of Nevada, Las Vegas (UNLV) are both located in Clark County, Nevada.', 'Craig Heyer played college baseball at the College of Southern Nevada and University of Nevada, Las Vegas (UNLV), both located in Clark County.', 'Thus, Clark County contains Las Vegas and at least two colleges where Craig Heyer played baseball.']
+
+## Generated Outputs
+### reasoning
+The claim states that Clark County in Nevada contains both Las Vegas and another college, and that Craig Heyer played baseball at that college. From the notes, Clark County includes Las Vegas as well as the College of Southern Nevada and University of Nevada, Las Vegas (UNLV). Craig Heyer played baseball at both the College of Southern Nevada and UNLV. So the claim's elements are that Clark County contains Las Vegas and at least one other college beyond UNLV, and that Craig Heyer played baseball at that other college. The notes confirm both colleges, both in Clark County with Las Vegas, and that Heyer played baseball at both, thus validating the claim if it is about "another college" meaning one of the two colleges plus UNLV. The key point is verifying the presence of multiple colleges including Las Vegas and that Heyer played baseball at both.
+
+### query
+Does Clark County, Nevada contain both Las Vegas and multiple colleges including the College of Southern Nevada and University of Nevada, Las Vegas (UNLV), and did Craig Heyer play college baseball at both of these institutions?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Craig Heyer']. Documents remaining to be retrieved: ['Clark County, Nevada', 'College of Southern Nevada'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

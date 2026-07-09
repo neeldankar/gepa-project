@@ -1,0 +1,107 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields as input: a `claim` and associated `notes`. Your task is to generate a single, concise, precise natural language `query` that is intended to verify or fact-check the `claim` based on information given in the `notes`. The final query should be designed for efficient retrieval of authoritative evidence that confirms or refutes all key factual elements presented in the claim.
+
+Detailed task instructions:
+
+1. **Analyze the claim:**  
+   - Identify all key factual components or assertions that need verification.  
+   - Recognize any implied relationships between entities or multiple claim components that must be verified together to confirm the claim’s overall truthfulness.
+
+2. **Utilize the notes:**  
+   - Review the notes carefully as they provide relevant factual data, context, and background information.  
+   - Notes may include domain-specific facts, indirect evidence, overlapping or repetitive information, dates, names, titles, awards, species counts, corporate details, etc.  
+   - Incorporate any domain-specific terminology (e.g., proper names of individuals, awards, companies, taxa) relevant to the claim verification.
+
+3. **Formulate the query:**  
+   - Compose a single, clear, direct question that targets all essential factual elements and their connections (when multiple parts exist).  
+   - The query should explicitly reference relevant domain-specific entities (e.g., a person’s full name and role, award titles, film titles and director names, species genus/species count, airline nationality and base).  
+   - Where the claim contains multiple related parts, integrate them logically into one query to avoid fragmented checks needing multiple queries.  
+   - Avoid vagueness or open-ended questions; the query should lead to precise validation or refutation.
+
+4. **Examples of domain-specific entities and components to consider (to be used as needed based on claim content):**  
+   - **Literary awards and persons:** full names of individuals (e.g., Alan Sillitoe, Miguel Ángel Asturias, Elfriede Jelinek), Nobel Prize in Literature, their nationality, and specific roles (poet, diplomat, writer).  
+   - **Film and screenwriting credits:** film titles (Finding Dory, A Bug's Life), directs/co-directors, authorship relations.  
+   - **Botanical classification:** genus names, number of species, vernacular names in various languages, and taxonomic status.  
+   - **Corporate identity and location:** company names, nationality, headquarters city, operational details.  
+   - **Sports teams and leadership:** individual roles (head coach, offensive coordinator), team names, relevant league or conference (e.g., Big Ten Conference 2013 season).  
+
+5. **General strategy:**  
+   - The query should be framed as a verification question (e.g., “Was X the Y in [context or time period]?” or “Did A direct B and also co-direct C?”).  
+   - Combine multiple linked facts into one integrated query for efficiency and clarity.  
+   - Reflect any temporal information if relevant (e.g., “in 2013”, “currently”).  
+   - Where entities might have similar names or multiple aspects, use full names and specific details to avoid confusion.  
+
+The objective is to produce a targeted query that, when answered using the notes or queried in authoritative sources, decisively clarifies the accuracy of the claim based on its main factual components and their relationships.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+His screenplay of the film The Night Hunter was based on a novel. the writer and Nelly Sachs have not both won a Nobel Prize in Literature.
+
+### notes
+['The Night of the Hunter (film) screenplay by James Agee was based on the 1953 novel by Davis Grubb.', 'James Agee and Davis Grubb did not win the Nobel Prize in Literature.', 'Nelly Sachs was a Nobel Prize winner in Literature.', "The screenplay for the film 'The Night of the Hunter' was written by James Agee, based on Davis Grubb's novel.", 'Neither James Agee nor Davis Grubb won the Nobel Prize in Literature.', 'Nelly Sachs was awarded the Nobel Prize in Literature.', "The screenplay of the film 'The Night of the Hunter' by James Agee was based on the novel by Davis Grubb.", 'James Agee and Davis Grubb did not win the Nobel Prize in Literature.', 'Nelly Sachs won the Nobel Prize in Literature.']
+
+## Generated Outputs
+### reasoning
+The claim consists of two components: (1) the screenplay for the film The Night Hunter is based on a novel, and (2) the writer of that screenplay and Nelly Sachs have not both won the Nobel Prize in Literature. The notes clarify that the film is actually titled The Night of the Hunter, and its screenplay was written by James Agee, based on a novel by Davis Grubb. Further, neither James Agee nor Davis Grubb won the Nobel Prize in Literature, while Nelly Sachs did win that prize. Therefore, to verify the claim, the query should confirm the specific screenplay author, the connection of the screenplay to a novel, and the Nobel Prize winners among the involved writers and Nelly Sachs.
+
+### query
+Was the screenplay for the film The Night of the Hunter written by James Agee based on a novel by Davis Grubb, and is it true that neither James Agee nor Davis Grubb won the Nobel Prize in Literature while Nelly Sachs did win it?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['The Night of the Hunter (film)']. Documents remaining to be retrieved: ['James Agee', 'Nelly Sachs'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The infantry regiment featured in the 2006 film directed by Lane Nishikawa began in 1944.
+
+### notes
+["The 2006 film 'Only the Brave' directed by Lane Nishikawa is about the 100th Infantry Battalion/442nd Regimental Combat Team.", 'The 100th Infantry Battalion was formed in 1942.', 'The 442nd Regimental Combat Team was activated during World War II before 1944.', 'The infantry regiment featured in the 2006 film did not begin in 1944 but earlier.', 'The 100th Infantry Battalion was formed in 1942, prior to 1944.', 'The 442nd Regimental Combat Team was activated during World War II before 1944 but fought primarily from 1944.', "The infantry regiment featured in 'Only the Brave' began earlier than 1944, contradicting the claim.", "The 100th Infantry Battalion, featured in 'Only the Brave', was formed in 1942, prior to 1944.", 'The 442nd Regimental Combat Team was activated before 1944 but engaged primarily in combat from 1944.', "The film 'Only the Brave' focuses on the combined 100th Infantry Battalion/442nd Regimental Combat Team.", 'The claim that the infantry regiment began in 1944 is incorrect; it originated earlier.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that the infantry regiment featured in the 2006 film directed by Lane Nishikawa began in 1944. From the notes, the film is "Only the Brave," directed by Lane Nishikawa, which is about the 100th Infantry Battalion/442nd Regimental Combat Team. The 100th Infantry Battalion was formed in 1942, and the 442nd Regimental Combat Team was activated before 1944. Additionally, it is stated that the infantry regiment featured in the film did not begin in 1944 but earlier. Therefore, the claim is factually inconsistent with the provided information, which highlights the formation dates prior to 1944.
+
+### query
+Did the infantry regiment—the 100th Infantry Battalion/442nd Regimental Combat Team—featured in the 2006 film "Only the Brave" directed by Lane Nishikawa, begin in 1944, or was it formed earlier?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['442nd Infantry Regiment (United States)', 'Lane Nishikawa', 'Only the Brave (2006 film)']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+Chess is more popular around the world than a game designed by Leo Colovini.
+
+### notes
+["Leo Colovini is an Italian board game designer with several notable games including 'Cartagena,' 'Clans,' 'Familienbande,' and 'Inkognito.'", 'Chess is a historically global and popular game with widespread international recognition, competitive organizations, and a long-standing tradition.', "Leo Colovini's games are well-regarded within the board gaming community but do not have the same global popularity or cultural penetration as chess.", 'Chess is a centuries-old game with a vast international player base and significant cultural impact.', "Leo Colovini's games have niche popularity and are primarily known within dedicated board gaming circles.", 'Chess has extensive infrastructure including world championships, ranking systems, and online platforms, contributing to its global appeal.', "Colovini's well-known games like Cartagena enjoy recognition but have not achieved widespread global popularity comparable to chess.", 'Chess has a long global history, a large player base, and significant cultural impact internationally.', 'Chess has established competitive organizations, world championships, and online platforms contributing to its global reach.', 'Leo Colovini is a respected board game designer recognized mainly within niche board gaming circles.', "Colovini's popular games such as Cartagena have limited global reach compared to the widespread prominence of chess.", 'The global popularity and cultural penetration of chess far exceed that of any single game designed by Leo Colovini.']
+
+## Generated Outputs
+### reasoning
+The claim compares the global popularity of chess with that of a game designed by Leo Colovini. To verify the claim, it is necessary to confirm that chess is indeed more widely known or played worldwide than any game designed by Leo Colovini. Since the notes provide no information about Colovini's games or their popularity, the query must seek authoritative data on both chess's global popularity and the worldwide recognition or player base of games designed by Leo Colovini.
+
+### query
+Is chess more globally popular and widely played around the world compared to any board or card game designed by Leo Colovini?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Leo Colovini']. Documents remaining to be retrieved: ['Cartagena (board game)', 'Chess'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

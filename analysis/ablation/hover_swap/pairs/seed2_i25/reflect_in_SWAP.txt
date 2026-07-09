@@ -1,0 +1,110 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given the input fields:
+
+- `claim`: a factual statement involving entities, dates, events, or named items that require verification or information support.
+- `notes`: a list of short factual evidence snippets relevant to the claim, containing domain-specific, historical, or encyclopedic information that may support or refute the claim.
+
+Produce the output field:
+
+- `query`: a concise and precise natural language search query or set of related questions designed to retrieve supporting documents or evidence to verify the claim. This query should capture all essential elements and relationships mentioned in the claim, broken down if needed into sub-questions, to maximize effective retrieval of relevant information.
+
+Task details and best practices:
+
+1. **Entity identification:** Identify named entities, dates, events, titles, and their relationships in the claim. Examples of entities include named people, teams, operas, publications, dates, roles (e.g., manager, composer), and titles of works.
+
+2. **Verification objectives:** The query must target the facts or relationships to verify or find evidence for, such as:
+   - Confirming existence and founding dates of organizations (e.g., sports teams).
+   - Identifying people connected to events or roles (e.g., players, managers).
+   - Clarifying authorship or composition of works (e.g., operas, books).
+   - Establishing classifications of items (e.g., whether a magazine is a periodical).
+   - Cross-referencing overlapping facts or claims (e.g., whether the same person held two roles).
+
+3. **Complex claims:** For compound claims linking multiple facts or entities, the query should reflect the complexity by explicitly including sub-questions that consider:
+   - Multiple entities’ identities and relationships.
+   - Time frames specified.
+   - Cross-comparisons (e.g., are composers the same or different?).
+
+4. **Use claim and notes collectively:** Use the domain knowledge embedded in the `notes` to disambiguate or focus the query by emphasizing key details or constraints (e.g., dates, specific seasons, role titles, publication type) that are potential retrieval targets.
+
+5. **Query clarity and completeness:** Formulate the query to be direct, unambiguous, and sufficiently detailed to locate authoritative documents or data that provide clear answers. Avoid vagueness or omission of critical conditions.
+
+6. **Generalizable approach:** 
+   - Extract entities and their relationships.
+   - Translate claim’s logic into question(s) that can be answered by factual sources.
+   - Incorporate qualifiers (dates, roles, composition, publication types) from notes.
+   - Cover all elements of the claim to verify the entirety of the statement.
+
+By following these instructions, the assistant will craft focused queries that improve retrieval accuracy of supporting evidence for verifying complex factual claims across diverse domains such as sports history, musicology, publishing, and more.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+"Leni" Riefenstahl was born before the Ukrainian director of "Young Doctors in Love".
+
+### notes
+['Leni Riefenstahl was born on August 22, 1902.', 'No information on the birthdate or identity of the Ukrainian director of "Young Doctors in Love" was provided in the current context.', 'Leni Riefenstahl was born on August 22, 1902.', 'Young Doctors in Love was directed by Garry Marshall, who is an American director, not Ukrainian.', "No information about a Ukrainian director of 'Young Doctors in Love' exists; the film's director is known to be Garry Marshall.", 'Leni Riefenstahl was born on August 22, 1902.', "'Young Doctors in Love' was directed by Garry Marshall, an American director, not Ukrainian.", "Garry Marshall, the director of 'Young Doctors in Love,' was born in 1934.", "No information exists about a Ukrainian director of 'Young Doctors in Love.'"]
+
+## Generated Outputs
+### reasoning
+The claim compares the birthdate of Leni Riefenstahl to that of the Ukrainian director of "Young Doctors in Love". The notes provide Leni Riefenstahl’s birthdate as August 22, 1902. However, they also clarify that "Young Doctors in Love" was directed by Garry Marshall, an American, not a Ukrainian director. There is no evidence or information supporting the existence of a Ukrainian director for this film in the available notes. Thus, to verify the claim, one needs to confirm both Leni Riefenstahl's birthdate and whether there is any Ukrainian director linked to the film "Young Doctors in Love," including their birthdate if any exists. The claim appears flawed because the director is American, not Ukrainian, so it is likely incorrect or based on a mistaken premise. The query should therefore focus on verifying Leni Riefenstahl's birthdate, identifying the director(s) of "Young Doctors in Love" including their nationality, and confirming whether any Ukrainian director is associated with that film, along with their birthdate.
+
+### query
+What is Leni Riefenstahl's birthdate? Who directed the film "Young Doctors in Love"? What is the nationality and birthdate of the director(s) of "Young Doctors in Love"? Is there any Ukrainian director associated with "Young Doctors in Love"? If so, what is their birthdate?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Leni Riefenstahl', 'Young Doctors in Love']. Documents remaining to be retrieved: ['Garry Marshall'].
+
+
+
+# Example 2
+## Inputs
+### claim
+An English actor starred in "Hollywood Goes Classical", which was performed at the Dorothy Chandler Pavilion. He also starred in "Lethal Obsession".
+
+### notes
+["Terry Ray, an American actor, wrote and starred in 'Hollywood Goes Classical' at the Dorothy Chandler Pavilion.", "Martin Benson was an English actor but is not connected in the context to 'Hollywood Goes Classical' or 'Lethal Obsession'.", "No information on an English actor starring in both 'Hollywood Goes Classical' and 'Lethal Obsession' is found.", "Terry Ray is an American actor who wrote and starred in 'Hollywood Goes Classical' at the Dorothy Chandler Pavilion, not an English actor.", "No English actor is connected to starring in both 'Hollywood Goes Classical' and 'Lethal Obsession' based on the available information.", "Martin Benson, an English actor, is not linked to either 'Hollywood Goes Classical' or 'Lethal Obsession' in the context.", "'Hollywood Goes Classical' featured classic film stars such as Mickey Rooney and Michael York, but the lead or starring English actor is not identified in the provided data.", "Michael York, an English actor, is mentioned among the classic film stars in 'Hollywood Goes Classical' performed at the Dorothy Chandler Pavilion.", "'Lethal Obsession' stars Michael York, linking him to both productions.", "Terry Ray, who wrote and starred in 'Hollywood Goes Classical', is American and unrelated to the claim of an English actor starring in both productions."]
+
+## Generated Outputs
+### reasoning
+The claim requires verifying whether an English actor starred in the production "Hollywood Goes Classical" at the Dorothy Chandler Pavilion and also starred in the film "Lethal Obsession." The notes specify that Terry Ray, an American actor, wrote and starred in "Hollywood Goes Classical" but is not English. Martin Benson is an English actor mentioned but is not connected to either production. There is no information supporting that any English actor starred in both "Hollywood Goes Classical" and "Lethal Obsession." The claim is essentially about the existence of an English actor linking these two works. To verify, we need to identify the main actors in "Hollywood Goes Classical," focusing on their nationality and starring status, and determine the English actors in "Lethal Obsession," verifying any overlap.
+
+### query
+"Who starred in 'Hollywood Goes Classical' at the Dorothy Chandler Pavilion? Was there an English actor among the stars or leads? What is the nationality of the leading actors in 'Hollywood Goes Classical'? Who starred in the film 'Lethal Obsession'? Identify any English actors starring in 'Lethal Obsession'. Did any English actor star in both 'Hollywood Goes Classical' and 'Lethal Obsession'?"
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Lethal Obsession', 'Terry Ray (actor)']. Documents remaining to be retrieved: ['Michael York'].
+
+
+
+# Example 3
+## Inputs
+### claim
+This publication is published more often than Bookmarks. Keith Moon was inducted into its Hall of Fame in the early 'eighties.
+
+### notes
+['Keith Moon was not inducted into the UK Music Hall of Fame in the early 1980s; the UK Music Hall of Fame began in 2004.', 'No information on a publication called Bookmarks or comparisons of publication frequency in the context.', 'SiteBar is a bookmark manager but unrelated to publications or Hall of Fame inductions.', 'No Hall of Fame related to Keith Moon mentioned in the 1980s in the given context.', 'No verifiable information indicates that Keith Moon was inducted into any Hall of Fame in the early 1980s; the UK Music Hall of Fame started in 2004.', "There is no information about a publication named 'Bookmarks' or a comparison of publication frequency in the provided context.", "The claim about its publication frequency relative to 'Bookmarks' is not supported by any provided data.", 'No Hall of Fame related to Keith Moon is mentioned in the early 1980s within the available context.', 'Keith Moon was inducted into the Modern Drummer Hall of Fame in 1982, which fits the early 1980s timeframe.', "No information is provided about a publication named 'Bookmarks' or its publication frequency relative to any other.", "The UK Music Hall of Fame began in 2004 and is unrelated to Keith Moon's 1980s induction.", "The claim linking Keith Moon's Hall of Fame induction to a publication published more often than Bookmarks is unsupported by the provided context."]
+
+## Generated Outputs
+### reasoning
+The claim mentions two facts: (1) a certain publication is published more frequently than Bookmarks, and (2) Keith Moon was inducted into its Hall of Fame in the early 1980s. To verify this claim, the query needs to first identify the publication that is being compared to Bookmarks. Since the claim says "this publication," the publication must be established or clarified. Next, the query needs to check the publishing frequency of Bookmarks and that of the other publication to verify which is published more often. Lastly, it must verify whether Keith Moon was inducted into the Hall of Fame of that publication in the early 1980s (around 1980-1985). This means looking up the Hall of Fame associated with that publication and verifying Keith Moon’s induction and the timing. Since notes provide no additional information, the query must be broad enough to determine the relevant publication and check both publishing frequency and Hall of Fame induction details related to Keith Moon.
+
+### query
+What is the publishing frequency of Bookmarks magazine? Which publication is published more frequently than Bookmarks? Does this publication have a Hall of Fame? Was Keith Moon inducted into the Hall of Fame of that publication in the early 1980s?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Keith Moon']. Documents remaining to be retrieved: ['Bookmarks (magazine)', 'Modern Drummer'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

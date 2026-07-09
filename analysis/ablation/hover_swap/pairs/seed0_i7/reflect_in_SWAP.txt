@@ -1,0 +1,104 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two fields: `claim` and `notes`. Your task is to produce a `query` designed to verify or fact-check the claim based on the information and context contained in the notes. Specifically:
+
+1. Analyze the `claim` to identify the key factual assertions or components that need verification.
+
+2. Carefully review the `notes`, which provide relevant factual data, background information, and indirect evidence related to the `claim`. These notes may include partially overlapping, repetitive, or nuanced domain-specific facts.
+
+3. Your objective is to formulate a concise and clear `query` that, when answered, would determine the truthfulness or accuracy of the claim. The query should:
+   - Incorporate all essential elements from the claim that require validation.
+   - Reference domain-specific entities, terms, or context as needed (e.g., proper names, dates, place names, literary awards, species counts, company nationality and headquarters).
+   - Aim to retrieve or confirm authoritative information from relevant documents or sources that would settle any ambiguity.
+
+4. The `query` should be precise and structured in a way that lends itself to searching or requesting specific evidence, minimizing vagueness or open-endedness.
+
+5. Include multiple facets of the claim in a single query when their verification is interconnected, to avoid unnecessary complexity or multiple queries.
+
+6. In cases where the `claim` contains multiple parts, ensure the query integrates these logically (e.g., verifying a connection between entities, or whether two conditions coexist).
+
+Domain-specific details exemplified in the task:
+
+- Verification of literary awards such as the Nobel Prize in Literature in relation to named individuals and their works.
+- Relationships between films, screenplays, novels, and their authorship.
+- Scientific botanical classification involving genus names, species counts, and vernacular names in different languages.
+- Corporate identity and headquarters location including nationality of an airline and its operation details.
+- Detailed biographical or event-specific claims linking individuals to specific companies or geographic data.
+
+Your output should be a single `query` statement in natural language, focused on efficient fact verification grounded in the provided `notes`. This approach enables precise retrieval of relevant documentary evidence necessary to confirm or refute the `claim`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Ariel Ramírez died February 18, 2010. Ariel's science teacher also taught Marta Lambertini.
+
+### notes
+['Ariel Ramírez was an Argentine composer who died on February 18, 2010.', "No information is available about Ariel Ramírez's science teacher or their connection to Marta Lambertini.", "No evidence suggests that Ariel Ramírez's science teacher taught Marta Lambertini.", 'Ariel Ramírez was an Argentine composer who died on February 18, 2010.', "No information or evidence was found about Ariel Ramírez's science teacher or any teaching connection to Marta Lambertini.", 'Ariel Ramírez was an Argentine composer who died on February 18, 2010, confirming the death date claim.', "There is no available information or evidence linking Ariel Ramírez's science teacher to Marta Lambertini as a teacher.", "The claim about Ariel Ramírez's science teacher also teaching Marta Lambertini cannot be verified from the given data."]
+
+## Generated Outputs
+### reasoning
+The claim consists of two parts: first, that Ariel Ramírez died on February 18, 2010; second, that Ariel's science teacher also taught Marta Lambertini. To verify this claim, we need authoritative information confirming Ariel Ramírez's date of death and any relevant connections between Ariel's science teacher and Marta Lambertini. Since the notes do not provide any information, the query must seek these specific facts.
+
+### query
+What is the date of death of Ariel Ramírez, and is there evidence that Ariel Ramírez's science teacher also taught Marta Lambertini?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Ariel Ramírez']. Documents remaining to be retrieved: ['Luis Gianneo', 'Marta Lambertini'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Candi Kubeck was the captain of a plane. That plane was operated by the Swiss company headquartered in Clayton County, Georgia.
+
+### notes
+['Candi Kubeck was the captain of ValuJet Flight 592.', 'ValuJet Airlines was an American airline headquartered in Clayton County, Georgia.', 'There is no indication that ValuJet or the plane was operated by a Swiss company.', 'Clayton County, Georgia is in the United States, not Switzerland.', 'Candi Kubeck was the captain of ValuJet Flight 592, which was operated by ValuJet Airlines, an American company headquartered in Clayton County, Georgia in the United States.', 'There is no evidence that ValuJet or the plane was operated by a Swiss company.', 'Clayton County, Georgia is located in the United States, not Switzerland.', 'Candi Kubeck was the captain of ValuJet Flight 592.', 'ValuJet Airlines was an American airline headquartered in Clayton County, Georgia, United States.', 'There is no evidence that ValuJet or the plane was operated by a Swiss company.', 'Clayton County, Georgia is in the United States, not Switzerland.']
+
+## Generated Outputs
+### reasoning
+The claim states that Candi Kubeck was the captain of a plane operated by a Swiss company headquartered in Clayton County, Georgia. The notes clarify that Candi Kubeck was indeed the captain of ValuJet Flight 592, which was operated by ValuJet Airlines, an American airline headquartered in Clayton County, Georgia, United States. There is no information supporting that ValuJet or the plane was operated by a Swiss company. Additionally, Clayton County, Georgia, is located in the United States, not Switzerland. Therefore, the claim that the plane was operated by a Swiss company headquartered there is inconsistent with the verified facts. To fact-check, the query must verify the operator of ValuJet Flight 592, the nationality and headquarters location of ValuJet Airlines, the nationality of the airline company in question, and the geographic location of Clayton County, Georgia.
+
+### query
+Was ValuJet Airlines, the operator of ValuJet Flight 592 captained by Candi Kubeck, a Swiss company headquartered in Clayton County, Georgia, or was it an American airline headquartered in Clayton County, Georgia, United States?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Candi Kubeck', 'ValuJet Airlines', 'ValuJet Flight 592']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+German Frank Sinatra has won more awards than this Skinny Puppy band member, for whom the Rx (band) was a one-off side project.
+
+### notes
+['Rx was a one-off side project by Skinny Puppy member Nivek Ogre.', 'Nivek Ogre is a founding member and vocalist of Skinny Puppy and was involved in the Rx project.', 'There is no contextual information on German Frank Sinatra or his awards.', 'The claim involves a comparison of awards won by German Frank Sinatra and Nivek Ogre, which cannot be verified from the given context.', 'Nivek Ogre is the Skinny Puppy member associated with the Rx one-off side project.', 'No information is available about German Frank Sinatra or his awards.', 'There is no information on the number or type of awards won by Nivek Ogre.', "The claim's comparison of awards cannot be verified due to lack of data on both subjects.", 'Nivek Ogre is confirmed as the Skinny Puppy band member involved in the Rx one-off side project.', 'There is no information available regarding the awards won by German Frank Sinatra.', 'There is no information available regarding the awards won by Nivek Ogre.', "The claim's comparative statement about awards cannot be verified due to lack of data about both German Frank Sinatra and Nivek Ogre's awards."]
+
+## Generated Outputs
+### reasoning
+The claim compares the number of awards won by "German Frank Sinatra" and a specific Skinny Puppy band member associated with the Rx (band) side project. To verify this, key steps include identifying the real identity or stage names of both "German Frank Sinatra" and the Skinny Puppy band member in question. Then, gather data on the awards each individual has won, including the number and significance of those awards. Also, confirm that the Rx (band) is a side project of the Skinny Puppy band member mentioned, ensuring the correct person is identified. Since the notes are empty, external information is needed to confirm:
+1) Who is "German Frank Sinatra"?
+2) Which Skinny Puppy band member was involved in the Rx (band) as a one-off side project?
+3) The number and types of awards each individual has won.
+The query should be precise with these components to fact-check the comparative claim about awards won.
+
+### query
+Who is the individual known as "German Frank Sinatra," which Skinny Puppy band member had the Rx (band) as a one-off side project, and how many awards has each of these two musicians won in their careers?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Nivek Ogre', 'Rx (band)']. Documents remaining to be retrieved: ['Frank Sinatra'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.
