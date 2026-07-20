@@ -116,3 +116,17 @@ rule returns: no verdict.
 
 Leave this comment in place. Write below it.
 -->
+
+Verdict: cell 1. Specificity is positive: point +0.0274, 95% CI [+0.0149, +0.0415],
+excludes zero. The lower bound sits just under the MDE (0.0191), which caps how large
+I claim the effect is but does not change the sign; the map's decision boundary is
+zero and the CI clears it. Transfer is unresolved: CI [-0.0040, +0.0367] spans zero,
+no positive verdict, point estimate below its MDE. Reading: the reflection input
+channel is causally active on HoVer; the IFBench null was task-scoped, not
+GEPA-general; the generic-target confound was real. Overfit vs generalize is not yet
+distinguished; the spec-transfer difference is the next read. Scope: one-step, K=3,
+own-batch specificity, 8-cluster bootstrap anti-conservative.
+
+[Provenance: verdict text drafted by Desktop Claude, approved verbatim by Neel in
+chat, written to file by CC on Neel's explicit override instruction, 2026-07-20. The
+Neel-only writing convention was overridden for this entry at Neel's direction.]
