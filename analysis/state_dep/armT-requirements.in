@@ -1,0 +1,45 @@
+# Arm-T runtime: the explicit input pins. The RESOLVED output is armT-lock.txt, which is the
+# artifact v2.1 §0 cites and the thing that gets rebuilt from.
+#
+# Two donors, and a rule for who wins where they collide:
+#
+#   OPTIMIZATION / LM / RETRIEVAL PATH  ->  the probe donor (scratch/hover_probe/.venv), because
+#   that is the environment Stage 1 actually ran in. Arm B is supposed to reproduce Stage-1 cost
+#   and behaviour, and litellm is where cost accounting and retry/backoff live, so litellm and
+#   openai are pinned DOWN to the Stage-1 versions rather than left at whatever a fresh dspy
+#   install pulls.
+#
+#   EMBEDDING STACK  ->  the screen donor, at the versions the previous .venv-armT carried, because
+#   those are the versions under which the two $0 acceptance gates passed: cross-venv embedding
+#   equivalence (bitwise identical, max|delta| = 0.0) and the 235/235 novelty byte-verification
+#   against the screen's features.csv. Those measurements are the evidence; the version numbers are
+#   just their label.
+#
+#   COLLISION: tokenizers. Probe carries 0.23.1, the embedding stack 0.22.2. The embedding stack
+#   wins -- transformers 5.13.0 constrains it, the byte-verification ran under it, and litellm's own
+#   requirement is tokenizers>=0.21.0,<1.0, which 0.22.2 satisfies. tokenizers is not on the
+#   optimization path.
+#
+# Python 3.12.13 (uv cpython-3.12-macos-aarch64-none), the same base both donors were built from.
+# The screen donor is Python 3.14.3 with numpy 2.5.1; armT stays 3.12.13 / numpy 2.5.0 per §0, and
+# the cross-venv gate is what certifies that the difference does not move the embeddings.
+
+# ---- optimizer + task path (probe donor versions, v2.1 §0) ----
+gepa==0.0.27
+dspy==3.2.1
+litellm==1.90.1
+openai==2.44.0
+numpy==2.5.0
+
+# ---- retrieval (probe donor; absent from the pre-lockfile armT, which is why it could not run) ----
+bm25s==0.3.9
+PyStemmer==3.1.0
+orjson==3.11.9
+
+# ---- embedding stack (screen donor, v2.1 §0) ----
+sentence-transformers==5.6.0
+torch==2.13.0
+transformers==5.13.0
+tokenizers==0.22.2
+huggingface_hub==1.23.0
+safetensors==0.8.0

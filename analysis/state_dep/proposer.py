@@ -265,7 +265,14 @@ class SubsetSelectingProposer(ReflectiveMutationProposer):
 
         # ---- THE INTERVENTION: choose 3 of M ---------------------------------------------
         n_arch = len(self.archive_embs)
-        novelties, embs = self._novelties(feedback_texts) if self.arm == "T" else (None, None)
+        # Both arms score novelty; only T selects on it. v2 §12 requires C to log novelty
+        # descriptively, and §8/§15-5's saturation-curve descriptive is a T-vs-C comparison that
+        # does not exist without C's numbers. Scoring is local embedding work: $0, no LM, and it
+        # touches none of the RNG streams, so C's selection is bit-for-bit what it was when the
+        # counter audit passed. `embs` is reused for the archive advance below rather than
+        # re-encoding the chosen texts -- same encoder, same texts, same vectors.
+        novelties, embs = (self._novelties(feedback_texts) if self.embedder is not None
+                           else (None, None))
 
         if self.arm == "T" and n_arch >= 3:
             chosen_slots, rationale = select_top3(novelties, self.tiebreak_rng)
@@ -412,16 +419,12 @@ class SubsetSelectingProposer(ReflectiveMutationProposer):
 
         # ---- archive advances STRICTLY after the event is scored and selected (screen :327) --
         chosen_texts = [feedback_texts[j] for j in chosen_slots]
-        if self.arm == "T":
+        if embs is not None:
+            # Arm C maintains and logs the same archive as T for descriptive symmetry, but never
+            # selects on it (v2 §5). Same advance, same vectors, both arms.
             self._advance_archive(chosen_texts, [embs[j] for j in chosen_slots])
         else:
-            # Arm C maintains and logs the same archive for descriptive symmetry, but never selects
-            # on it (v2 §5). Embeddings only computed if an embedder was supplied.
-            if self.embedder is not None:
-                sel_embs = encode(self.embedder, chosen_texts)
-                self._advance_archive(chosen_texts, list(sel_embs))
-            else:
-                self.archive_texts.extend(chosen_texts)
+            self.archive_texts.extend(chosen_texts)  # no embedder supplied (mocked audits only)
 
         self.event_log.append(
             {
@@ -430,11 +433,18 @@ class SubsetSelectingProposer(ReflectiveMutationProposer):
                 "drawn_ids": list(subsample_ids),
                 "drawn_scores": list(eval_curr.scores),
                 "chosen_ids": chosen_ids,
+                "chosen_slots": list(chosen_slots),
                 "chosen_scores": list(eval_sel.scores),
                 "child_scores": list(new_scores),
                 "archive_size_at_scoring": n_arch,
                 "rule": rule,
                 "selection": rationale,
+                # v2 §12: all M novelty scores and the reflection objects verbatim, not just the
+                # aggregate the selector used. V6's second path recomputes novelty from these bytes
+                # plus the archive membership, so the bytes have to be here.
+                "novelties": list(novelties) if novelties is not None else None,
+                "reflective_items": rd_all[comp],
+                "component": comp,
                 "novelty_min_chosen": batch_min([novelties[j] for j in chosen_slots]) if novelties else None,
                 "parent_evals_counted": len(subsample_ids),
                 "child_evals_counted": actual_evals_count,

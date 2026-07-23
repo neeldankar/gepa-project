@@ -44,6 +44,13 @@ sys.path.insert(0, SCREEN)
 CONTROL_SEED = 20260709  # §11-0, verbatim
 N_CONTROL = 30
 
+# The control samples from all 243 pair dirs, NOT from the dose's 235-event set (v2.1 §20-2). Those
+# are different questions: the control asks "does the temp-0 task LM reproduce in-run bytes", which
+# is true or false of every persisted event including the ordinal-0 ones; the dose asks "how much
+# selection room is there", which is undefined without a k=3 archive. Do not "fix" this to 235 --
+# the expected side was frozen over 243 on 2026-07-09, before any re-execution existed, and
+# re-drawing the sample now is exactly the tampering the control is designed to preclude.
+
 
 def freeze_expected() -> int:
     from screen_part0 import parse_si  # import-clean

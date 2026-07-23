@@ -1,24 +1,34 @@
-"""§8a Stage-1 backfill: evaluate the 8 Stage-1 final candidates on the test split.
+"""§8a/§8b Stage-1 backfill: re-select each Stage-1 run's endpoint on the selection split, then
+evaluate the 8 winners on the test split.
 
-GATED: APPROVED-backfill (~$5.45 at N=150). Also requires the split to exist
-(APPROVED-testsplit -> build_test_split.py).
+GATED: APPROVED-backfill (~$27.48). Also requires BOTH splits to exist (APPROVED-testsplit ->
+build_test_split.py).
 
-Produces the empirical endpoint distribution that §11-2's MDE simulation draws from. Without it
-there is no MDE, and plan.md carries a placeholder.
+Produces the empirical endpoint distribution that §11-2's MDE simulation draws from. Under v2.1 the
+endpoint is the **selection-split argmax**, so the backfill must use that estimator too: backfilling
+the old val-argmax winners would draw the MDE's margins from a different estimator, whose spread is
+inflated by exactly the tie-break lottery §8b removes (v2.1 §11-2).
 
-The "final candidate" per seed is defined by the §8 selection convention, which is gepa's own
-(V5, verified):
+    §8b endpoint, per seed:
+        means[i] = mean over the 50 selection claims of candidate i's title recall
+        best     = max(range(len(means)), key=lambda i: means[i])    # ties -> LOWEST index
+        endpoint = test-split score of program_candidates[best]
 
-    best_idx = max(range(len(agg)), key=lambda i: agg[i])     # core/result.py:82-88
-    agg[i]   = mean(prog_candidate_val_subscores[i].values())
+    every candidate is scored, INCLUDING index 0 (the seed candidate)
 
-Python's `max` returns the FIRST maximal element and `range` ascends, so ties go to the LOWEST
-index = the earliest-accepted candidate. Note the persisted `gepa_result.json` is a custom
-state_dump WITHOUT `val_aggregate_scores`/`best_idx` (v2 §12 note, B8): the endpoint is recomputed
-from `prog_candidate_val_subscores`.
+COST. The 8 Stage-1 runs hold 97 candidates (11, 11, 13, 11, 14, 10, 13, 14) -- a realized count,
+not an estimate:
 
-  --resolve   ($0, runs tonight)  identify the 8 final candidates and print their val scores
-  --run       (gated)             evaluate them on the test split
+    selection  97 x 50 x $0.004543  =  $22.03
+    test        8 x 150 x $0.004543 =  $ 5.45
+                                       -------
+                                       $27.48
+
+RESUME. Per-seed selection results are checkpointed to backfill/seed{N}_selection.json and skipped
+if present, so a crash costs at most one seed's selection pass (~$2.75), never the whole $22.
+
+  --resolve   ($0)      identify the val-argmax candidates and print the pool sizes
+  --run       (gated)   the full §8b re-selection + test evaluation
 """
 from __future__ import annotations
 
@@ -30,44 +40,56 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
 STAGE1 = os.path.join(REPO, "scratch", "hover_stage1")
-SPLIT = os.path.join(HERE, "test_split.json")
+SELECTION = os.path.join(HERE, "selection_split.json")
+TEST = os.path.join(HERE, "test_split.json")
+CKPT = os.path.join(HERE, "backfill")
 OUT = os.path.join(HERE, "stage1_backfill_endpoints.json")
 
 sys.path.insert(0, HERE)
 
+M = 0.004543
+SPEND_CAP = 32.00  # hard tripwire; the estimate is $27.48
+N_SEEDS = 8
 
-def final_candidate(seed: int) -> dict:
-    g = json.load(open(os.path.join(STAGE1, f"stage1_seed{seed}", "gepa_result.json")))
+
+def _result(seed: int) -> dict:
+    return json.load(open(os.path.join(STAGE1, f"stage1_seed{seed}", "gepa_result.json")))
+
+
+def val_argmax(seed: int) -> dict:
+    """The OLD (v2 §8) endpoint convention, kept for the B10 comparison, not for the endpoint."""
+    g = _result(seed)
     subs = g["prog_candidate_val_subscores"]
     agg = [sum(d.values()) / len(d) if d else float("-inf") for d in subs]
     best = max(range(len(agg)), key=lambda i: agg[i])  # ties -> lowest index (V5)
-    ties = [i for i, v in enumerate(agg) if v == agg[best]]
     return {
         "seed": seed,
         "n_candidates": len(subs),
-        "best_idx": best,
-        "best_val_agg": agg[best],
-        "tied_indices": ties,
-        "tie_broken": len(ties) > 1,
-        "coverage": [len(d) for d in subs],
-        "instruction": g["program_candidates"][best],
+        "val_best_idx": best,
+        "val_best_agg": agg[best],
+        "val_tied_indices": [i for i, v in enumerate(agg) if v == agg[best]],
+        "val_tie_broken": sum(1 for v in agg if v == agg[best]) > 1,
+        "val_returned_seed_prompt": best == 0,
     }
 
 
 def resolve() -> int:
-    print("=== Stage-1 final candidates (v2 §8 convention: val-argmax, ties -> lowest index) ===")
-    print(f"{'seed':>5} {'ncand':>6} {'best_idx':>9} {'val_agg':>9} {'tied':>18}")
-    rows = []
-    for s in range(8):
-        r = final_candidate(s)
-        rows.append(r)
-        print(f"{s:>5} {r['n_candidates']:>6} {r['best_idx']:>9} {r['best_val_agg']:>9.4f} "
-              f"{str(r['tied_indices']):>18}{'  <- TIE' if r['tie_broken'] else ''}")
-    n_tie = sum(r["tie_broken"] for r in rows)
-    print(f"\n  seeds where the tie-break actually fired: {n_tie}/8")
-    print("  (a tie means two candidates share the top mean val score; the earliest-accepted wins)")
-    print("\n  These 8 candidates are what APPROVED-backfill evaluates on the §8a test split.")
-    print(f"  Estimated cost: 8 x N x $0.004543  =>  N=150: $5.45   N=100: $3.63")
+    print("=== Stage-1 candidate pools, and the OLD val-argmax convention (B10's table) ===")
+    print(f"{'seed':>5} {'ncand':>6} {'val_best':>9} {'val_agg':>9} {'tied':>18}")
+    rows = [val_argmax(s) for s in range(N_SEEDS)]
+    for r in rows:
+        print(f"{r['seed']:>5} {r['n_candidates']:>6} {r['val_best_idx']:>9} {r['val_best_agg']:>9.4f} "
+              f"{str(r['val_tied_indices']):>18}"
+              f"{'  <- TIE' if r['val_tie_broken'] else ''}"
+              f"{'  <- SEED PROMPT' if r['val_returned_seed_prompt'] else ''}")
+    n_cand = sum(r["n_candidates"] for r in rows)
+    print(f"\n  candidates across the 8 runs : {n_cand}")
+    print(f"  val tie-break fired          : {sum(r['val_tie_broken'] for r in rows)}/8 seeds")
+    print(f"  val returned the seed prompt : {sum(r['val_returned_seed_prompt'] for r in rows)}/8 seeds")
+    print("\n  Under v2.1 §8b these are NOT the endpoints. Every candidate is re-scored on the")
+    print("  50-claim selection split and the argmax there is the endpoint.")
+    print(f"  Cost: {n_cand} x 50 x ${M} = ${n_cand * 50 * M:.2f} selection "
+          f"+ 8 x 150 x ${M} = ${8 * 150 * M:.2f} test  =>  ${(n_cand * 50 + 8 * 150) * M:.2f}")
     return 0
 
 
@@ -75,16 +97,106 @@ def run_live() -> int:
     from gates import require
 
     gate = require("APPROVED-backfill")
-    if not os.path.exists(SPLIT):
-        print(f"missing {SPLIT}: run build_test_split.py behind APPROVED-testsplit first")
-        return 1
-    raise SystemExit(
-        "\nNOT IMPLEMENTED BEYOND THE GATE.\n"
-        "Evaluate each of the 8 resolved candidates on the committed test split with the SAME\n"
-        "program/retrieval/metric as Stage 1 (probe venv), post-hoc and outside any budget, then\n"
-        f"write the 8 endpoint scores to {os.path.basename(OUT)} for mde_sim.py --endpoints.\n"
-        f"Gate verified: {gate['sha256'][:16]}...\n"
-    )
+    for p, why in ((SELECTION, "APPROVED-testsplit -> build_test_split.py"),
+                   (TEST, "APPROVED-testsplit -> build_test_split.py")):
+        if not os.path.exists(p):
+            print(f"missing {p}: run {why} first")
+            return 1
+
+    import eval_split as ev
+
+    sel = ev.load_split(SELECTION)
+    test = ev.load_split(TEST)
+    sel_sha, test_sha = ev.sha256_file(SELECTION), ev.sha256_file(TEST)
+    os.makedirs(CKPT, exist_ok=True)
+
+    dspy, probe = ev.bootstrap()
+    lm = ev.open_task_lm(dspy)
+    meter = ev.Meter(lm, probe, SPEND_CAP)
+    base = ev.build_program(dspy, probe)
+
+    print(f"[gate ok] {gate['gate']}  selection N={len(sel)}  test N={len(test)}  cap ${SPEND_CAP}")
+
+    rows = []
+    for seed in range(N_SEEDS):
+        g = _result(seed)
+        cands = g["program_candidates"]
+        ck = os.path.join(CKPT, f"seed{seed}_selection.json")
+        if os.path.exists(ck):
+            per_cand = json.load(open(ck))
+            print(f"  seed {seed}: resumed {len(per_cand)} candidate scores from checkpoint ($0)")
+        else:
+            per_cand = []
+            for i, c in enumerate(cands):
+                r = ev.score_candidate(dspy, probe, base, c, sel, lm, meter)
+                per_cand.append(r)
+                print(f"  seed {seed} cand {i:>2}/{len(cands) - 1}  sel_mean={r['mean']:.4f}  "
+                      f"${meter.spend():.3f}  {r['elapsed_s']}s", flush=True)
+            json.dump(per_cand, open(ck, "w"), indent=2)
+
+        means = [r["mean"] for r in per_cand]
+        best, ties = ev.argmax_lowest_index(means)
+        row = val_argmax(seed)
+        row.update({
+            "sel_best_idx": best,
+            "sel_best_mean": means[best],
+            "sel_tied_indices": ties,
+            "sel_tie_broken": len(ties) > 1,
+            "sel_returned_seed_prompt": best == 0,
+            "agrees_with_val_argmax": best == row["val_best_idx"],
+            "selection_means": means,
+        })
+        rows.append(row)
+        print(f"  seed {seed}: §8b winner = candidate {best} (sel_mean {means[best]:.4f}), "
+              f"val-argmax was {row['val_best_idx']} -> "
+              f"{'AGREE' if row['agrees_with_val_argmax'] else 'DIFFER'}", flush=True)
+
+    print("\n=== test evaluation of the 8 §8b winners ===")
+    for row in rows:
+        seed = row["seed"]
+        ck = os.path.join(CKPT, f"seed{seed}_test.json")
+        if os.path.exists(ck):
+            t = json.load(open(ck))
+            print(f"  seed {seed}: resumed test score from checkpoint ($0)")
+        else:
+            cand = _result(seed)["program_candidates"][row["sel_best_idx"]]
+            t = ev.score_candidate(dspy, probe, base, cand, test, lm, meter)
+            json.dump(t, open(ck, "w"), indent=2)
+        row["endpoint_test_mean"] = t["mean"]
+        row["endpoint_test_scores"] = t["scores"]
+        print(f"  seed {seed}: endpoint test score = {t['mean']:.4f}", flush=True)
+
+    endpoints = [r["endpoint_test_mean"] for r in rows]
+    out = {
+        "design": "state-dependent-design-v2.1-frozen §8b (selection-split argmax) -> §8a test split",
+        "gate": gate,
+        "selection_split": {"path": os.path.basename(SELECTION), "n": len(sel), "sha256": sel_sha},
+        "test_split": {"path": os.path.basename(TEST), "n": len(test), "sha256": test_sha},
+        "endpoints": endpoints,
+        "n_selection_evals": sum(r["n_candidates"] for r in rows) * len(sel),
+        "n_test_evals": N_SEEDS * len(test),
+        "spend_usd": round(meter.spend(), 4),
+        "b10_agreement": {
+            "seeds_where_8b_differs_from_val_argmax": [r["seed"] for r in rows if not r["agrees_with_val_argmax"]],
+            "val_tie_broken_seeds": [r["seed"] for r in rows if r["val_tie_broken"]],
+            "val_seed_prompt_seeds": [r["seed"] for r in rows if r["val_returned_seed_prompt"]],
+            "sel_seed_prompt_seeds": [r["seed"] for r in rows if r["sel_returned_seed_prompt"]],
+            "sel_tie_broken_seeds": [r["seed"] for r in rows if r["sel_tie_broken"]],
+        },
+        "rows": rows,
+    }
+    json.dump(out, open(OUT, "w"), indent=2)
+
+    n_diff = len(out["b10_agreement"]["seeds_where_8b_differs_from_val_argmax"])
+    print(f"\n=== BACKFILL COMPLETE ===")
+    print(f"  endpoints        : {[round(e, 4) for e in endpoints]}")
+    print(f"  mean / sd        : {sum(endpoints) / len(endpoints):.4f} / "
+          f"{(sum((e - sum(endpoints) / len(endpoints)) ** 2 for e in endpoints) / len(endpoints)) ** 0.5:.4f}")
+    print(f"  §8b differs from val-argmax on {n_diff}/8 seeds  (the direct measure of B10's cost)")
+    print(f"  spend            : ${meter.spend():.4f} (cap ${SPEND_CAP})")
+    print(f"  wrote            : {os.path.basename(OUT)}")
+    print(f"  next             : mde_sim.py --endpoints {os.path.basename(OUT)} --dose D")
+    return 0
 
 
 if __name__ == "__main__":

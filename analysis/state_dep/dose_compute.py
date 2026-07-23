@@ -50,6 +50,12 @@ sys.path.insert(0, HERE)
 BETA = 0.0379395028680125  # screen_stats_cells.csv:434, knn_emb_fb_min / spec_i / read 4.1
 M, B = 6, 3
 
+# v2.1 §20-2, ratified 2026-07-22: the dose is defined on 235 events, not 243. The 8 ordinal-0
+# events have no k=3 archive and no defined novelty, and 235 is the frame BETA above was estimated
+# on (verify_novelty.py byte-verified 235/235 against features.csv). Defining D on 243 would put D
+# and BETA on different event sets inside the product D x BETA/2 that §11-1 and §11-2 consume.
+EVENT_SET = 235
+
 # Per-seed within-run SDs of knn_emb_fb_min (ddof=0), recomputed from features.csv.
 SD_PER_SEED = {
     0: 0.02186988, 1: 0.02443303, 2: 0.02946035, 3: 0.02319585,
@@ -170,7 +176,11 @@ def live() -> int:
         "  3. parse the 3 matched B_e texts out of reflect_in_SWAP.txt.\n"
         "  4. score all 6 against the screen's archive state for that event (novelty.py).\n"
         "  5. gap_e per event; D_s per seed; D = mean(D_s).\n"
-        "Event set (235 vs 243) is v2 §20 open decision 2 and must be settled first.\n"
+        f"Event set: {EVENT_SET} events (v2.1 §20-2, ratified 2026-07-22 -- ordinal-0 excluded, the\n"
+        f"frame beta was estimated on). Re-derivation {3 * EVENT_SET} calls + 90 control calls\n"
+        f"= {3 * EVENT_SET + 90} x $0.004543 = ${(3 * EVENT_SET + 90) * 0.004543:.2f}.\n"
+        "This path is OFF the launch critical path under v2.1 §11-2's amended gate timing: it must\n"
+        "clear before results.md is read, not before APPROVED-liverun.\n"
         f"Gate verified: {gate['sha256'][:16]}...\n"
     )
 
