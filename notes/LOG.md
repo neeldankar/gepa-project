@@ -1,0 +1,14 @@
+# LOG
+
+Append-only. Newest entry at the bottom. Older project history lives in `notes/FREEZE.md`,
+`notes/MORNING-REPORT.md`, `notes/HANDOFF.md` and the `SESSION_*.md` files; this log starts at the
+v2.1 amendment.
+
+## 2026-07-22
+
+- Decided: amended the frozen design v2 → v2.1 on four ratified points — `skip_perfect_scope = chosen3`, dose event set = 235, the new §8b selection split replacing val-argmax as the endpoint's selection step (driver: B10), and MDE gate timing moved to "before `results.md` is read" rather than before `APPROVED-liverun`. Three sub-decisions taken in session: full §8b re-selection for the Stage-1 backfill, the midpoint endpoint becomes a midpoint-restricted selection-split argmax, and both splits are drawn uniform (§20-3 resolved by default).
+- Tried: committed and tagged `state-dep-design-v2.1-frozen` (`04b5512`), then built out the gated spend path (`9476c1e`) — `build_test_split.py` and `backfill_stage1.py` implemented past their stubs, plus new `eval_split.py`, `run_state_dep.py` (GEPAEngine wired directly for all three arms), `score_candidates.py`, `supervisor.py` and a 24-run mixed-arm wave manifest. Verified at $0: all eight live entry points exit 2 with no gate file on disk; the split draw self-test passes 8/8; `--dry` on all three arms dumps the wiring and writes nothing; trainset/valset ids identical to Stage 1; counter audit AUDIT PASS and byte-identical to its baseline; MDE simulator self-test passes.
+- Tried: rebuilt `.venv-armT` from an explicit lockfile after finding it could not run the experiment at all — missing `bm25s` and `PyStemmer`, which `probe.py` imports at module load, and drifted from the Stage-1 LM client. Both $0 acceptance gates re-passed against the rebuilt venv: bitwise-identical embeddings and 235/235 byte-exact novelty.
+- Tried: closed a §12 gap — the proposer scored novelty only in arm T, but §12 requires arm C to log it descriptively and §8/§15-5's saturation curve is a T-vs-C comparison. Both arms now score all M novelties and persist all 6 plus the reflection objects; counter audit output unchanged, so selection is provably unmoved.
+- Next: Neel reads `analysis/state_dep/plan.md` and decides which gates to open. The launch path is `APPROVED-testsplit` (~$3.13) → `build_test_split.py` → `APPROVED-liverun` (~$130–180) → `supervisor.py --smoke` (arm T seed 0, alone, fills the plan's cost placeholders) → `supervisor.py --waves` → `score_candidates.py --all`. `APPROVED-backfill` (~$27.49) and `APPROVED-dose` (~$3.61) are off the critical path but must clear before `results.md` is read.
+- Open Q: whether the ~2.5× cost increase (~$60–80 → ~$165–215, all of it §8b's selection evaluations) is acceptable, or whether to drop the conditional midpoint endpoint (−$16) and/or defer the backfill. Also unresolved: `dose_compute.py --live` is still a stub past its gate — it was left unchanged per the brief, but it has to be written before `results.md` is read.
