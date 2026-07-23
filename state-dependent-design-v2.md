@@ -1,4 +1,4 @@
-# State-Dependent Novelty Selection — Live Experiment Design (v2, frozen pre-registration)
+# State-Dependent Novelty Selection — Live Experiment Design (v2.1, frozen pre-registration)
 
 *Direction A of the GEPA SI-curriculum project. Repo: `gepa-si-curriculum`. Supersedes
 `state-dependent-design-v1.md` (sha256 `8079c52c…d936`) after the external adversarial review
@@ -30,7 +30,35 @@ item (V1–V6) has a landing site in this document; the coverage table is §19.*
 
 **Two questions this document deliberately leaves open**, because they are design decisions no
 prior document specifies and CC must not improvise them. Both must be resolved before
-`APPROVED-liverun`. See §20.
+`APPROVED-liverun`. See §20. *(Both are now ratified — see the amendment log immediately below.)*
+
+---
+
+## Amendment log
+
+**2026-07-22 — v2 → v2.1, tag `state-dep-design-v2.1-frozen`.** Amends the frozen v2
+(sha256 `66e49e4c36d72219c5bb768869028652a0e681bbf465c44dbb6c1c143943afb1`) in four places, ratified
+by Neel:
+
+1. **§20 open decisions closed.** §20-1 `skip_perfect_scope = chosen3`; §20-2 dose event set = **235**
+   (ordinal-0 excluded). §20-3, which building the splits forces, resolves by default to **uniform**,
+   the procedure §8a already froze.
+2. **New §8b — the selection split**, replacing val-argmax as the endpoint's selection step. Driver:
+   B10 (`notes/MORNING-REPORT.md`) — on the 8 Stage-1 runs the val-score lattice makes the tie-break
+   decide the endpoint on 4/8 seeds and return the seed prompt on 2/8. §8's primary and midpoint
+   endpoints and §12's persistence list are updated to match.
+3. **MDE gate timing (§11-2, §13).** The MDE and its framing label (confirmatory vs estimation-only)
+   are computed and assigned **before `results.md` is read**, rather than before `APPROVED-liverun`.
+   Launch proceeds at 8 paired seeds regardless of the MDE; seed scaling under external compute
+   remains the upgrade path.
+4. **§8a — one grading pass serves both splits.** ~700 fresh claims graded once, then seeded sampling
+   assigns test (150) and selection (50) disjointly.
+
+**Amended before any live spend; no outcome data existed at amendment time.** At the moment of this
+amendment no `APPROVED-*` gate file existed on disk, every live-spend script exited 2, and
+`analysis/state_dep/plan.md` carried an unfilled MDE placeholder. §14's cost table is re-derived from
+the same fitted rate — §8b's post-run selection evaluations are new spend that no prior cost model
+carried, and the program projection rises from ~$60–80 to ~$165–215.
 
 ---
 
@@ -388,29 +416,39 @@ Consequences, pre-registered:
 
 ## 8. Endpoints and measurements
 
-- **Primary endpoint (pre-registered):** final test-set score at budget exhaustion — the candidate
-  with the highest `D_pareto` (valset) aggregate score when the budget counter exhausts (§6b),
-  evaluated once on the held-out test split (§8a), identical protocol across arms, outside the
-  budget.
+- **Primary endpoint (pre-registered; amended 2026-07-22, see §8b):** final test-set score at budget
+  exhaustion — the candidate with the highest **selection-split** aggregate score (§8b) when the
+  budget counter exhausts (§6b), evaluated once on the held-out test split (§8a), identical protocol
+  across arms, outside the budget. *v2 read "highest `D_pareto` (valset) aggregate score"; §8b
+  replaces the valset with the 50-claim selection split at this step, and only at this step.*
 - **Tie-break (R13-b, V5, verified).** gepa 0.0.27 returns
   `max(range(len(scores)), key=lambda i: scores[i])` over per-candidate mean val subscores
   (`core/result.py:82-88`). Python's `max` returns the first maximal element and `range` ascends, so
   **ties go to the lowest index = the earliest-accepted candidate.** This is adopted verbatim as the
-  endpoint's tie-break. (It is a val-argmax, not a Pareto pick and not the last-accepted candidate.
+  endpoint's tie-break, and **§8b carries the same rule over to the selection-split argmax** — the
+  scores it ranks change, the tie-break does not. (It is an argmax over a held-out split, not a
+  Pareto pick and not the last-accepted candidate.
   `eval_policy.get_best_program` uses a different tie-break but is used only for the end-of-run log
   event, and agrees here because `FullEvaluationPolicy` gives every candidate identical coverage.)
 - **Zero-accept runs (R13-a).** At this budget a run can end with the seed candidate as the only
   valset-evaluated candidate. The endpoint is then the **seed prompt's test score**. This is valid
-  and is not an excluded run.
-- **Midpoint endpoint (R13-c).** Computed **post hoc**: identify the midpoint val-argmax from logs
-  after the run, and evaluate it on test in the same post-run pass as the primary. Mid-flight
-  processes never touch the test set. It is evaluated **only if a map cell's ambiguity rule demands
-  it** (§9).
+  and is not an excluded run. Under §8b the seed candidate can also win the selection-split argmax in
+  a run that accepted many candidates; that outcome is a **measurement** (the run genuinely found
+  nothing better on 50 held-out claims), not the lattice artifact B10 documented.
+- **Midpoint endpoint (R13-c; amended 2026-07-22).** Computed **post hoc**: the **selection-split
+  argmax restricted to candidates whose `num_metric_calls_by_discovery` is at or below the midpoint
+  budget**, evaluated on test in the same post-run pass as the primary. Costs nothing extra — every
+  candidate is selection-scored in that pass regardless — and keeps one selection rule across both
+  endpoints. Mid-flight processes never touch the test set or the selection split. It is evaluated
+  **only if a map cell's ambiguity rule demands it** (§9). *v2 read "the midpoint val-argmax".*
 - **Secondary endpoints (reported with CIs, labeled non-confirmatory):** best valset score at
   budget exhaustion; the midpoint test score above.
 - **Monitored descriptives (no tests):** reflection events/run; accept rate/arm (§15-4);
-  number of valset evals triggered; **candidate count per arm** (R9 — the val-argmax is taken over
-  arm-dependent candidate counts); chosen-batch min-novelty trajectory over events in T vs C (the
+  number of valset evals triggered; **candidate count per arm** (R9 — the argmax is taken over
+  arm-dependent candidate counts, and §8b's selection evals scale with that count);
+  **selection-split vs val-split argmax agreement per run** (how often the two rules pick the same
+  candidate — the direct measurement of what B10 was costing);
+  chosen-batch min-novelty trajectory over events in T vs C (the
   saturation curve, §15-5); overlap between T's chosen sets and what C's random rule would have
   chosen (realized selection pressure); **per-event count of chosen examples whose missed-title set
   already appears in the archive, T vs C** (the coverage-starvation descriptive, §15-14);
@@ -450,9 +488,71 @@ Resolution, pre-registered here:
   the natural imperfect mix (~14.6% at recall 0), whereas Stage-1's train split carries ~4.5%. The
   test split will therefore be somewhat harder than train. This is the honest choice and is
   preferred to sort-order continuation, which would be *much* harder. Whether to instead
-  recall-stratify the test split to match train's mix is **not** decided here (§20).
+  recall-stratify the test split to match train's mix is **not** decided here (§20). *(Resolved
+  2026-07-22: uniform — §20-3, and the second amendment below.)*
 - **Cascade:** no test split → no Stage-1 backfill → no MDE. `plan.md` carries an MDE placeholder
-  until `APPROVED-testsplit` and `APPROVED-backfill` clear.
+  until `APPROVED-testsplit` and `APPROVED-backfill` clear. *(Amended 2026-07-22: the MDE no longer
+  blocks launch — §11-2, §13.)*
+
+**Second amendment (2026-07-22, ratified). One grading pass serves both splits.** §8b adds a
+50-claim selection split drawn from the same pool, so the grading pass is sized once, for both:
+
+- **Frame:** `threehop_idx` **295–994**, a **fixed 700-claim frame** — deliberately *not* a
+  stop-once-N-imperfect rule. A stopping rule on the imperfect count would make the sampling frame
+  endogenous to the grades; a fixed frame is exogenous and is what the seeded draws sample from.
+- **Cost:** 700 claims × $0.00447/claim ≈ **$3.13** (was ~$1.33 for ~299 claims). At the observed
+  imperfect rate 123/245 = 0.502 the frame is expected to yield ~351 imperfect claims, against the
+  200 the two splits consume — headroom, not a second stopping rule.
+- **Draw order, pre-registered:** the **test split first** — uniform `random.Random(20260709)`,
+  N=150, from the frame's imperfect claims — then the **selection split** — uniform
+  `random.Random(20260710)`, N=50, from what remains after the test split is removed. This order is
+  binding; reversing it would produce different splits from the same seeds.
+- **STOP rules:** fewer than 150 imperfect ⇒ test split takes all remaining and **N<100 is a
+  STOP-and-flag** (§8a as frozen); fewer than 50 imperfect remaining after the test draw ⇒
+  **STOP-and-flag**, do not shrink the selection split silently.
+- Both splits are committed as JSON artifacts with their sha256s **before any test or selection
+  evaluation exists**, keyed on `threehop_idx`.
+- **§20-3 resolves to uniform** for both splits, with §8a's recorded distributional consequence
+  (~14.6% at recall 0 vs train's ~4.5%) applying to both.
+
+### 8b. The selection split (new, 2026-07-22), verbatim parameters
+
+> Selection split: ~50 claims, seeded uniform sample (`random.Random(20260710)`) from freshly graded
+> imperfect claims, disjoint from train (100), val (10), and the test split. Post-run, every
+> candidate in a run's pool is evaluated once on the selection split (outside budget, identical
+> across arms); the final candidate is the selection-split argmax (ties: lowest index); the primary
+> endpoint is that candidate's test-split score. This replaces val-argmax as the selection step;
+> `|val|=10` in-run behavior is unchanged.
+
+Mechanics, pinned because the runner needs them unambiguous:
+
+- **Disjointness.** From the test split, by construction (§8a's draw order). From Stage-1's train
+  (100) and val (10), automatically: those come from `threehop_idx` 50–294 and the new frame starts
+  at 295. Both are asserted in code, not assumed.
+- **"Every candidate in a run's pool"** means every entry of `program_candidates`, **including index
+  0, the seed candidate**. A run's selection cost is therefore `n_candidates × 50` metric calls.
+- **Outside the budget.** These evaluations run in a post-run pass, after the budget counter has
+  exhausted; they never touch the §6a counter and no mid-flight process ever sees the selection
+  split. Identical protocol and identical split across all three arms.
+- **Unchanged in-run:** `|D_pareto| = 10`. The valset still drives Pareto candidate selection and the
+  acceptance decision at `engine.py:490-493`. Only the *endpoint selection step* moves off it.
+- **Persisted** per candidate as a per-example score vector, not a mean (§12), so the endpoint chain
+  is recomputable from raw artifacts (V6).
+
+**Rationale (B10).** Recomputing v2 §8's val-argmax convention on the 8 Stage-1 runs: the tie-break
+fires at the top on **4 of 8 seeds**, and on **2 of 8** the returned program is the seed prompt
+despite 12 and 13 accepted candidates (seed 7: all 13 accepted candidates are strictly worse on the
+valset than the prompt GEPA started from). The cause is a lattice, not a modelling subtlety —
+`|D_pareto| = 10` and per-example scores lie on `{0, ⅓, ⅔, 1}`, so 10–14 candidates collapse onto
+4–7 distinct val means. R13-a anticipated only zero-accept runs ending on the seed prompt; the real
+situation is more common and worse. A paired difference `T − C` of exactly 0 on such a seed does not
+add noise — it removes that seed's contribution from the exact sign-flip test, directly attacking the
+n=8 power the design rests on. A 50-claim split with the same per-example lattice admits 151 distinct
+means and breaks the collision structure.
+
+**Cost, recorded here because it is new spend no prior version carried:** ~50 calls per candidate per
+run, at ~10–14 candidates per run ⇒ ~$2.3–3.2 per run, ~$55–66 across the 24 runs, plus $22.03 for
+the Stage-1 backfill's 97 candidates (§14).
 
 ## 9. Pre-registered interpretation map (read `results.md` against this, nothing else)
 
@@ -517,10 +617,12 @@ and never upgrade a cell.
 - **Multiplicity:** H1 is the single confirmatory test. H2 and everything else are reported
   with CIs and explicitly labeled non-confirmatory.
 - **Second path (binding):** all headline numbers recomputed by an independent code path from
-  the raw per-run artifacts (per-draw score vectors → val-argmax → endpoint → differences), matching
-  to reported precision. *Note (V6/B8): the persisted `gepa_result.json` is a custom `state_dump`,
-  not gepa's `GEPAResult` schema — it carries no `val_aggregate_scores` and no `best_idx`. The
-  endpoint must be recomputed from `prog_candidate_val_subscores`.*
+  the raw per-run artifacts (per-candidate selection-split score vectors → selection-split argmax →
+  endpoint → differences), matching to reported precision. *Note (V6/B8): the persisted
+  `gepa_result.json` is a custom `state_dump`, not gepa's `GEPAResult` schema — it carries no
+  `val_aggregate_scores` and no `best_idx`. The candidate pool and its val subscores must be
+  recomputed from `prog_candidate_val_subscores`; the endpoint itself comes from the §8b selection
+  pass.*
 - **No interim analyses.** `results.md` is numbers-only; interpretation happens only against §9
   after all 24 runs complete (or a wave-failure contingency is invoked, §13).
 - **Outlier/failure handling, pre-registered:** a run that crashes and cleanly resumes (§6c) is a
@@ -595,9 +697,9 @@ the parent's score profile on `A_e` and is not a uniform 3-subset of the 6.
 
 **Cost.** Control: 30 events × 3 matched = 90 metric calls. Re-derivation: 3 unmatched × the event
 set. At `m ≈ $0.004543/metric call` (§14): **819 calls ≈ $3.72** if the event set is all 243;
-**795 calls ≈ $3.61** if ordinal-0 events are excluded as this section specifies. The discrepancy is
-flagged in §20; it does not change the order of magnitude. Superseded by the 5-event smoke.
-Gated behind **`APPROVED-dose`**.
+**795 calls ≈ $3.61** if ordinal-0 events are excluded as this section specifies. **Ratified
+2026-07-22 (§20-2): 235 events, 795 calls, ≈ $3.61** — the frame β was estimated on. Superseded by
+the 5-event smoke. Gated behind **`APPROVED-dose`**.
 
 ### 11-1. Planning effect
 
@@ -617,7 +719,12 @@ more likely than not to bite.**
 
 ### 11-2. MDE, computed not assumed (pre-APPROVED)
 
-MDE is computed **in endpoint units** from the backfilled Stage-1 test scores (§8a). DGP, verbatim:
+MDE is computed **in endpoint units** from the backfilled Stage-1 test scores (§8a). Under §8b the
+backfill's endpoints are produced by the **same estimator the live runs use** — each Stage-1 run's
+full candidate pool is scored on the selection split, the argmax is taken (ties → lowest index), and
+that candidate is evaluated on the test split. Backfilling the old val-argmax winners instead would
+draw the MDE's margins from a different estimator, whose spread is inflated by exactly the tie-break
+lottery §8b removes. DGP, verbatim:
 
 > Per synthetic replicate, draw 8 paired differences as X_T − X_C with both margins drawn
 > independently from the backfilled Stage-1 empirical endpoint distribution (independence encodes
@@ -632,6 +739,20 @@ Gate criterion, verbatim:
 > decided at the gate. This juxtaposes endpoint units against one-step specificity units and is a
 > **heuristic screen, not a power calculation**. The seed-increase branch is live: the design scales
 > to 16–24 paired seeds under external compute, shrinking MDE by ~√2 at 2× seeds.
+
+**Gate timing (amended 2026-07-22).** The MDE and the framing label the criterion above assigns —
+confirmatory vs estimation-only — are computed and **recorded in `plan.md`, with the simulator's
+sha256, BEFORE `results.md` is read**. v2 required this before `APPROVED-liverun`; it does not
+anymore. The label must be fixed before anyone sees an outcome, which is what protects it; requiring
+it before launch additionally chained the launch to `APPROVED-testsplit` → `APPROVED-backfill` →
+`APPROVED-dose`, which buys nothing the read-order rule does not already buy.
+
+**Launch is not conditional on the MDE.** The 24 runs proceed at 8 paired seeds whatever the number
+says. If the gate bites, the consequence is the framing of the *analysis* (estimation-only) or a seed
+increase to 16–24 under external compute — never a decision taken after reading the grid, and never a
+retroactive re-labelling. `APPROVED-backfill` and `APPROVED-dose` may therefore clear before, during,
+or after the waves, but both must clear, and the MDE must be computed and labelled, before
+`results.md` is read (§13-9).
 
 ### 11-3. Caveats on the bound
 
@@ -656,14 +777,20 @@ triggered and its per-example vector (`capture_traces=True`); budget counter bef
 model name+revision+file hash, seeds and derived RNG streams, wall-clock, cost. Manifest: raw facts
 only, no interpretive prose. All of this applies to the smoke as well.
 
+**Post-run, per candidate (added 2026-07-22 for §8b):** the **selection-split score vector** — per
+example, not just the mean — keyed by `threehop_idx`, plus the split's sha256, the resulting argmax,
+the tie set if any, and the same for the midpoint-restricted argmax. The endpoint chain is not
+recomputable from a mean alone.
+
 **Trace-field contract.** `subsample_ids`, `subsample_scores`, `new_subsample_scores` carry the
 **chosen 3**; the full 6 are stashed under separate keys. Existing tooling asserts batch size 3
 (`screen_part0.py:167-168`).
 
 **V6 (second-path sufficiency), verified.** This set suffices to recompute, from raw artifacts
 alone: (a) all 6 novelty scores per event — feedback bytes, archive membership at scoring time, and
-the embedding model file hash are all persisted; (b) the endpoint chain — per-draw score vectors →
-val-argmax (§8 tie-break) → test score. One gap closed at freeze: because `gepa_result.json` is a
+the embedding model file hash are all persisted; (b) the endpoint chain — per-candidate
+selection-split score vectors → selection-split argmax (§8b, §8 tie-break) → test score. One gap
+closed at freeze: because `gepa_result.json` is a
 custom `state_dump` without `val_aggregate_scores`/`best_idx` (B8), the runner must persist
 `prog_candidate_val_subscores` per candidate, which it does.
 
@@ -690,15 +817,22 @@ custom `state_dump` without `val_aggregate_scores`/`best_idx` (B8), the runner m
    detect. The live smoke (arm T, seed 0, real LM) remains post-APPROVED.
 5. **The smoke run is excluded from analysis unconditionally**, and seed-0 arm T is rerun inside the
    mixed waves like every other cell.
-6. `plan.md`: smoke-measured per-run cost and time × 24, MDE from §11-2, wave plan at the width the
-   RSS measurement supports (≤ measured-safe; width 8 is the proven floor). Mixed-arm waves.
+6. `plan.md`: smoke-measured per-run cost and time × 24, wave plan at the width the RSS measurement
+   supports (≤ measured-safe; width 8 is the proven floor). Mixed-arm waves. **The MDE stays a
+   placeholder here (amended 2026-07-22)** — it is filled in at step 9, before `results.md` is read,
+   and does not gate the launch.
 7. **APPROVED files: created by Neel only**, after reading `plan.md`. CC byte-verifies each on disk
    before the corresponding spend. Gates: `APPROVED-testsplit`, `APPROVED-dose`,
    `APPROVED-backfill`, `APPROVED-liverun`. No APPROVED, no launch — no exceptions.
 8. Launch waves; supervisor with resume logic (§6c); `caffeinate`; no mid-flight analysis.
-9. On completion: manifest sanity check, commit, tag pre-analysis snapshot, THEN `results.md`
-   (numbers only), THEN Neel reads against §9, THEN interpretation, THEN second-path recompute
-   before anything goes external.
+9. On completion: manifest sanity check, commit, tag pre-analysis snapshot; THEN the post-run
+   selection pass (§8b: every candidate on the selection split → argmax → test evals);
+   **THEN — amended 2026-07-22 — clear `APPROVED-backfill` and `APPROVED-dose` if they have not
+   already cleared, compute `D` and the MDE, and write both plus the assigned framing label
+   (confirmatory vs estimation-only, §11-2) into `plan.md` with the simulator's sha256**; THEN
+   `results.md` (numbers only), THEN Neel reads against §9, THEN interpretation, THEN second-path
+   recompute before anything goes external. The label must be on disk before the first read of
+   `results.md`; if it is not, the run is estimation-only by default.
 
 Contingency: if a wave dies partway, resume before rerunning; a seed unrecoverable in any arm
 drops that seed from all arms (§10), subject to the seed floor.
@@ -717,14 +851,30 @@ Swap, per pair:  45 metric calls +  6 reflection calls = $0.3049   (mean pair_co
 Independently corroborated: `grade_threehop.py` graded 245 claims (1 metric call each) for $1.0942 ⇒
 $0.00447/claim, within 2% of `m`.
 
+**Re-derived 2026-07-22 for v2.1.** §8b's post-run selection evaluations are new spend that no prior
+version of this table carried, and they are the dominant new line: ~50 calls per candidate per run at
+~10–14 candidates per run. The program projection rises from ~$60–80 to **~$165–215**.
+
 | line item | quantity | est. cost | gate |
 |---|---|---|---|
-| Test-split grading | ~299 claims × m | **~$1.33** | `APPROVED-testsplit` |
-| Dose determinism control | 30 events × 3 | ~$0.41 | `APPROVED-dose` |
-| Dose re-derivation | 705–729 calls | **~$3.20–3.31** | `APPROVED-dose` |
-| Stage-1 backfill | 8 candidates × N × m | **~$5.45** at N=150 | `APPROVED-backfill` |
-| Per-run test evals (**2 per run**: primary + midpoint, M4) | 2 × N × m | ~$1.36/run | `APPROVED-liverun` |
+| Grading pass, both splits (§8a 2nd amendment) | 700 claims × m | **~$3.13** | `APPROVED-testsplit` |
+| Dose determinism control | 30 events × 3 = 90 calls | ~$0.41 | `APPROVED-dose` |
+| Dose re-derivation (**235 events**, §20-2 ratified) | 705 calls | **~$3.20** | `APPROVED-dose` |
+| Stage-1 backfill — **selection evals** (§8b) | 97 candidates × 50 × m | **~$22.03** | `APPROVED-backfill` |
+| Stage-1 backfill — test evals | 8 winners × 150 × m | **~$5.45** | `APPROVED-backfill` |
+| Per-run **selection evals** (§8b) | ~10–14 cand × 50 × m | ~$2.3–3.2/run | `APPROVED-liverun` |
+| Per-run test evals (**≤2 per run**: primary + midpoint, M4) | ≤2 × N × m | ≤$1.36/run | `APPROVED-liverun` |
 | 24 runs, optimization | B ≈ Stage-1 cost; T/C add ~50% minibatch-side calls | **$50–70** envelope | `APPROVED-liverun` |
+| Live smoke (arm T seed 0, excluded from analysis) | one full run + its post-run pass | ~$7 | `APPROVED-liverun` |
+
+Gate totals: `APPROVED-testsplit` **~$3.13**; `APPROVED-dose` **~$3.61**; `APPROVED-backfill`
+**~$27.48**; `APPROVED-liverun` **~$130–180** (optimization $50–70 + selection $55–66 + test $16–33,
+the midpoint endpoint being conditional on §9 + smoke ~$7).
+
+The backfill's 97 is not an estimate: it is the realized candidate count of the 8 Stage-1 runs
+(11, 11, 13, 11, 14, 10, 13, 14). The per-run figure is, and moves with the arms — T and C complete
+~0.63–0.69× B's events at equal budget (mocked), so they should produce fewer candidates and cost
+less to select over.
 
 Wall-clock: runs parallelize; at width 8 → 3 waves ≈ 3× single-run time; if smoke RSS shows width
 16–24 fits and no rate-limit backoffs, 1–2 waves. Expected overall: an overnight-to-one-day
@@ -753,9 +903,11 @@ execution once APPROVED. **The calibration rule governs: only smoke-measured num
    consequences: (a) **budget composition** — fewer accepts means fewer valset evals, which at fixed
    total budget means **more** reflection events, partially self-compensating in event count while
    starving the candidate pool; (b) **endpoint machinery** — the primary endpoint is the test score
-   of the val-argmax, and the argmax is taken over however many candidates got full valset evals.
-   Arms with more candidates take a max over more draws, changing the endpoint's selection-noise
-   properties (higher expected val max, regression-to-the-mean penalty on its test score). For H2
+   of the **selection-split argmax** (§8b), and the argmax is taken over however many candidates the
+   run produced. Arms with more candidates take a max over more draws, changing the endpoint's
+   selection-noise properties (higher expected selection-split max, regression-to-the-mean penalty on
+   its test score — smaller than under val-argmax, since 50 claims estimate a candidate far better
+   than 10, but not zero). For H2
    this is baked into "deployment honest". For H1 it arises only through accept-rate divergence,
    i.e. it is *downstream of the intervention, not a confound* — but it does mean H1 as stated is a
    **policy contrast**, not a mechanism contrast. Mechanism attribution leans on the monitored
@@ -869,11 +1021,37 @@ text only after all of the above.
 | V4 (epoch-boundary semantics) | §7a |
 | V5 (endpoint tie-break) | §8 |
 | V6 (second-path sufficiency) | §12 |
+| **B10 (val lattice decides the endpoint by tie-break)** | **§8b (new), §8 primary + midpoint, §12, §14** |
 
-## 20. Open decisions — MUST be resolved before `APPROVED-liverun`
+## 20. Open decisions — RESOLVED 2026-07-22 (were: MUST be resolved before `APPROVED-liverun`)
 
 CC flagged these rather than improvising them. Neither is specified by v1, the review, or the
-overnight brief.
+overnight brief. **All three are now ratified by Neel; the rulings are recorded first, the original
+analysis follows unchanged.**
+
+> **§20-1 ratified: `skip_perfect_scope = "chosen3"`.** Rationale: **semantic parity with B's
+> reflection input.** Under `chosen3` the skip gate reads the same 3 examples that become the
+> reflection minibatch, so B and T/C decide "is there anything to learn from this batch?" about the
+> same object; under `all6` T/C would skip on a batch half of which is discarded before reflection.
+> The cost is that gepa's ordering changes — the gate sits after selection rather than before — and
+> the §6a counter model is unaffected either way (the parent evaluation, and its counter increment at
+> `reflective_mutation.py:164`, precede the gate under both settings). `count_audit.py` ran all three
+> arms under both settings and passed the five-site model on every row. Quantitatively the choice is
+> small: from Stage-1's 729 real parent per-example scores, P(score=1) = 0.1866, so the gate fires on
+> ~0.65% of events with 3 scores and ~0.004% with 6.
+>
+> **§20-2 ratified: the dose is defined on 235 events** (ordinal-0 excluded). Rationale: **235 is the
+> event set β was estimated on** — `verify_novelty.py` byte-verified 235/235 novelty values against
+> the screen's `features.csv`, and β = +0.03794 comes from that same frame. Defining the dose on 243
+> would put `D` and `β` on different event sets in a product `D × β/2` that §11-1 and §11-2 both
+> consume. Cost: 705 re-derivation calls ≈ $3.20, against $3.31 for 243.
+>
+> **§20-3 resolved by default: uniform, both splits.** Building the splits forces the choice, and the
+> procedure §8a froze is uniform sampling of imperfect claims. The recorded consequence stands —
+> ~14.6% of the splits at recall 0 against train's ~4.5%, i.e. both held-out splits are somewhat
+> harder than train — and it now applies to the selection split as well as the test split. Uniform is
+> still strictly preferable to sort-order continuation, which would be much harder; recall-
+> stratification is not adopted.
 
 1. **`skip_perfect_score` asymmetry.** `reflective_mutation.py:204` skips the event when
    `all(s >= perfect_score for s in eval_curr.scores)`. That is **6 scores in T/C and 3 in B**, so
