@@ -38,6 +38,9 @@ REPO = os.path.dirname(os.path.dirname(HERE))
 PYBIN = os.path.join(HERE, ".venv-armT", "bin", "python")
 HARNESS = os.path.join(HERE, "run_state_dep.py")
 MANIFEST = os.path.join(HERE, "wave_manifest.json")
+SCORER = os.path.join(HERE, "score_candidates.py")
+SELECTION = os.path.join(HERE, "selection_split.json")
+TEST = os.path.join(HERE, "test_split.json")
 RUNS = os.path.join(HERE, "runs")
 MARKERS = os.path.join(HERE, "markers")
 LOGS = os.path.join(HERE, "logs")
@@ -132,10 +135,20 @@ def reap(running: dict, state: dict) -> list[str]:
     return fin
 
 
-def require_gate() -> None:
+def require_gate(name: str) -> None:
     from gates import require
-    g = require("APPROVED-liverun")
-    log(f"APPROVED-liverun present: {g['bytes']} bytes sha256={g['sha256'][:16]}...")
+    g = require(name)
+    log(f"{name} present: {g['bytes']} bytes sha256={g['sha256'][:16]}...")
+
+
+def require_splits() -> bool:
+    """The smoke evaluates its own endpoint, so both splits must already exist (v2.1 §8a/§8b)."""
+    missing = [os.path.basename(p) for p in (SELECTION, TEST) if not os.path.exists(p)]
+    if missing:
+        log(f"REFUSING: missing {', '.join(missing)} — run build_test_split.py behind "
+            f"APPROVED-testsplit first. The smoke's endpoint evaluation has nothing to score on.")
+        return False
+    return True
 
 
 def smoke_measurements() -> dict | None:
@@ -144,40 +157,92 @@ def smoke_measurements() -> dict | None:
 
 
 def do_smoke() -> int:
-    require_gate()
+    """The live smoke: one arm-T seed-0 run AND its own §8b post-run pass, under APPROVED-smoke.
+
+    Both halves are the smoke's cost, so both sit behind the smoke's own gate (v2.1.1 §13-7). The
+    post-run pass is included deliberately: a smoke that measures only the optimization half would
+    leave the §8b selection evaluations -- the single largest new line in the budget -- projected
+    rather than measured, which is the thing the smoke exists to prevent.
+    """
+    require_gate("APPROVED-smoke")
+    if not require_splits():
+        return 2
     name = run_name("T", 0, smoke=True)
-    if completed(name):
-        log(f"smoke already complete ({name}) — nothing to do")
-        return 0
-    log(f"LIVE SMOKE: {name}, alone, full budget. Excluded from analysis (v2.1 §13-5).")
-    n, p, lf = spawn("T", 0, smoke=True)
-    running = {n: (p, lf, time.time())}
     state = {"cost": 0.0, "done": [], "failed": []}
-    while running:
-        if not reap(running, state):
-            time.sleep(POLL)
+
+    if completed(name):
+        log(f"smoke optimization already complete ({name}) — skipping to the post-run pass")
+    else:
+        log(f"LIVE SMOKE: {name}, alone, full budget. Excluded from analysis (v2.1 §13-5).")
+        n, p, lf = spawn("T", 0, smoke=True)
+        running = {n: (p, lf, time.time())}
+        while running:
+            if not reap(running, state):
+                time.sleep(POLL)
+
     s = smoke_measurements()
     if not s:
         log("SMOKE FAILED — no run_summary.json. STOP; do not launch waves.")
         return 1
-    os.makedirs(MARKERS, exist_ok=True)
-    open(os.path.join(MARKERS, "SMOKE.DONE"), "w").write(json.dumps(s, indent=2))
-    log(f"SMOKE DONE cost=${s['spend_usd']} wall={s['wall_clock_s']}s rss={s['peak_rss_mb']}MB "
-        f"backoffs={s['backoffs']} counter_ok={s['counter_matches_model']} "
-        f"events={s['child_bearing_events']} candidates={s['candidates_incl_seed']}")
-    log(f"PROJECTION x24 (optimization only): ${s['spend_usd'] * 24:.2f}, "
-        f"{s['wall_clock_s'] * 24 / WIDTH / 3600:.1f}h at width {WIDTH}")
     if not s["counter_matches_model"]:
-        log("SMOKE COUNTER MISMATCH vs the §6a five-site model — STOP, Neel decides.")
+        log(f"SMOKE COUNTER MISMATCH: total_num_evals={s['total_num_evals']} vs five-site model "
+            f"{s['predicted_total_five_site']} — STOP, Neel decides. No post-run pass, no waves.")
         return 1
-    log("Next: update plan.md with these measurements, THEN --waves.")
+
+    log(f"smoke optimization: cost=${s['spend_usd']} wall={s['wall_clock_s']}s "
+        f"rss={s['peak_rss_mb']}MB backoffs={s['backoffs']} counter_ok=True "
+        f"events={s['child_bearing_events']} candidates={s['candidates_incl_seed']}")
+
+    log("smoke §8b post-run pass (selection split, then test) — same gate")
+    rc = subprocess.call([PYBIN, "-u", SCORER, "--run", name], cwd=REPO)
+    if rc != 0:
+        log(f"post-run pass FAILED rc={rc} — STOP; the endpoint half of the smoke is unmeasured.")
+        return 1
+    ep = json.load(open(os.path.join(RUNS, name, "endpoints.json")))
+
+    total = s["spend_usd"] + ep["post_run_spend_usd"]
+    marker = {
+        "run": name,
+        "optimization": {k: s[k] for k in (
+            "spend_usd", "wall_clock_s", "peak_rss_mb", "backoffs", "total_num_evals",
+            "predicted_total_five_site", "counter_matches_model", "child_bearing_events",
+            "candidates_incl_seed", "accepts", "task_calls", "reflection_calls")},
+        "post_run": {"selection_evals": ep["n_candidates"] * ep["selection_split"]["n"],
+                     "test_evals": ep["test_split"]["n"],
+                     "spend_usd": ep["post_run_spend_usd"],
+                     "sel_best_idx": ep["sel_best_idx"],
+                     "agrees_with_val_argmax": ep["agrees_with_val_argmax"],
+                     "endpoint_test_mean": ep["endpoint_test_mean"]},
+        "total_spend_usd": round(total, 4),
+        "projection_24": {
+            "spend_usd": round(total * 24, 2),
+            "wall_clock_h_at_width": round(s["wall_clock_s"] * 24 / WIDTH / 3600, 2),
+            "width": WIDTH,
+            "caveat": "arm T only; B is cheaper per run and C sits between them",
+        },
+    }
+    os.makedirs(MARKERS, exist_ok=True)
+    open(os.path.join(MARKERS, "SMOKE.DONE"), "w").write(json.dumps(marker, indent=2))
+
+    log(f"SMOKE DONE total=${total:.4f} (opt ${s['spend_usd']} + post-run "
+        f"${ep['post_run_spend_usd']})  endpoint={ep['endpoint_test_mean']:.4f} "
+        f"cand={ep['sel_best_idx']} agrees_with_val_argmax={ep['agrees_with_val_argmax']}")
+    log(f"PROJECTION x24: ${total * 24:.2f}, "
+        f"{s['wall_clock_s'] * 24 / WIDTH / 3600:.1f}h at width {WIDTH} "
+        f"(arm T only — B is cheaper, C between)")
+    log(f"RSS {s['peak_rss_mb']} MB/process, backoffs {s['backoffs']} — width stays {WIDTH} unless "
+        f"BOTH say otherwise")
+    log("Next: update plan.md §4 with these measurements, THEN APPROVED-liverun, THEN --waves.")
     return 0
 
 
 def do_waves() -> int:
-    require_gate()
+    require_gate("APPROVED-liverun")
+    if not require_splits():
+        return 2
     if not os.path.exists(os.path.join(MARKERS, "SMOKE.DONE")):
-        log("REFUSING: markers/SMOKE.DONE absent. The live smoke runs first (v2.1 §13-5).")
+        log("REFUSING: markers/SMOKE.DONE absent. The live smoke runs first, under its own gate "
+            "APPROVED-smoke (v2.1.1 §13-7).")
         return 2
     man = json.load(open(MANIFEST))
     state = {"cost": 0.0, "done": [], "failed": []}
@@ -237,9 +302,13 @@ def do_plan() -> int:
     print(f"  interpreter: {os.path.relpath(PYBIN, REPO)}")
     print(f"  width      : {WIDTH}   mem hold < {MEM_MIN_GB} GB   avail now {avail_gb():.2f} GB")
     print(f"  tripwire   : ${TRIPWIRE}   hard cap ${HARDCAP}   est/run ${EST_PER_RUN}")
-    print(f"  smoke      : {run_name('T', 0, True)} — runs alone, first, excluded from analysis")
+    print(f"  smoke      : {run_name('T', 0, True)} — alone, first, own gate APPROVED-smoke, "
+          f"excluded from analysis")
     smoke_done = os.path.exists(os.path.join(MARKERS, 'SMOKE.DONE'))
     print(f"  SMOKE.DONE : {'present' if smoke_done else 'ABSENT — --waves will refuse'}")
+    splits = [os.path.basename(p) for p in (SELECTION, TEST) if os.path.exists(p)]
+    print(f"  splits     : {', '.join(splits) if splits else 'ABSENT — both --smoke and --waves '
+          'will refuse'}")
     for w in man["waves"]:
         cells = []
         for r in w["runs"]:

@@ -1,8 +1,18 @@
 # plan.md — state-dependent novelty selection
 
-Design frozen at `state-dependent-design-v2.md`, tag **`state-dep-design-v2.1-frozen`** (amended
-2026-07-22; the four amendments are logged at the top of the design doc). This file rewritten
-2026-07-22 for v2.1. **$0 spent producing it — no `APPROVED-*` file exists on disk.**
+Design frozen at `state-dependent-design-v2.md`, tag **`state-dep-design-v2.1.1-frozen`** (amended
+2026-07-22 and 2026-07-23; both amendments are logged at the top of the design doc). This file
+rewritten 2026-07-23. **$0 spent producing it — no `APPROVED-*` file exists on disk.**
+
+**Decisions taken 2026-07-23 (Neel):**
+1. **The midpoint endpoint's test evaluation is not pre-paid** across the 24 runs (−$16.35). It stays
+   the §8/§9 conditional it always was; the midpoint *candidate* is still identified for free on
+   every run, so the option costs $0.68 on whichever runs §9 later demands.
+2. **`APPROVED-backfill` is deferred off the launch path.** It must clear before `results.md` is
+   read, not before launch — which is what §11-2's amended timing already permits.
+3. **`APPROVED-smoke` is a new gate** (v2.1.1 §13-7), split out of `APPROVED-liverun`. The smoke is
+   the measurement the launch is decided *on*, so approving it is no longer the same act as
+   approving the launch.
 
 **The calibration rule governs: only smoke-measured numbers enter this file as final.** Every number
 marked *(est.)* is a projection from the fitted rate and is superseded on contact with a smoke.
@@ -17,13 +27,14 @@ Stage-1 runs the val lattice decided the endpoint by tie-break on 4/8 seeds and 
 prompt on 2/8 (B10). Scoring every candidate on a 50-claim split is new spend that no earlier cost
 model carried:
 
-| | pre-amendment | v2.1 |
+| | pre-amendment | v2.1.1 |
 |---|---|---|
 | `APPROVED-testsplit` | ~$1.33 (299 claims, one split) | **~$3.13** (700-claim frame, two splits) |
-| `APPROVED-backfill` | ~$5.45 (8 candidates × test) | **~$27.49** (97 candidates × 50, then 8 × 150) |
 | `APPROVED-dose` | ~$3.61 | ~$3.61 (unchanged; 235 ratified) |
-| `APPROVED-liverun` | ~$50–70 | **~$130–180** |
-| **program** | **~$60–80** | **~$165–215** |
+| `APPROVED-smoke` | *(inside liverun)* | **~$6–8** (one arm-T run + its own §8b pass) |
+| `APPROVED-backfill` | ~$5.45 (8 candidates × test) | **~$27.49** (97 candidates × 50, then 8 × 150) |
+| `APPROVED-liverun` | ~$50–70 | **~$120–150** (24 runs + their §8b pass) |
+| **program** | **~$60–80** | **~$160–195** |
 
 The backfill's 97 is a **realized count, not an estimate** (`backfill_stage1.py --resolve`,
 measured): the 8 Stage-1 runs hold 11, 11, 13, 11, 14, 10, 13, 14 candidates.
@@ -32,17 +43,21 @@ measured): the 8 Stage-1 runs hold 11, 11, 13, 11, 14, 10, 13, 14 candidates.
 
 ## 1. Gated spends — the exact list awaiting Neel
 
-| # | Gate file | What it buys | Cost | Blocks |
-|---|---|---|---|---|
-| 1 | `APPROVED-testsplit` | grade a fixed 700-claim frame → test (150) + selection (50) | **~$3.13** *(est.)* | everything downstream |
-| 2 | `APPROVED-liverun` | live smoke, then 24 runs, then the §8b post-run pass | **~$130–180** *(est.)* | the experiment |
-| 3 | `APPROVED-backfill` | 97 candidates × 50 selection, then 8 winners × 150 test | **~$27.49** *(est.)* | the MDE only |
-| 4 | `APPROVED-dose` | 30-event determinism control + 235-event re-derivation | **~$3.61** *(est.)* | the §11-2 gate only |
+| # | Gate file | What it buys | Cost | Blocks | Tonight? |
+|---|---|---|---|---|---|
+| 1 | `APPROVED-testsplit` | grade a fixed 700-claim frame → test (150) + selection (50) | **~$3.13** *(est.)* | everything downstream | **authorized** |
+| 2 | `APPROVED-dose` | 30-event determinism control + 235-event re-derivation | **~$3.61** *(est.)* | the §11-2 gate only | **authorized — but see §9** |
+| 3 | `APPROVED-smoke` | one arm-T seed-0 run + its own §8b post-run pass | **~$6–8** *(est.)* | the launch decision | **authorized** |
+| 4 | `APPROVED-liverun` | the 24 runs + their §8b post-run pass | **~$120–150** *(est.)* | the experiment | **NOT tonight** |
+| 5 | `APPROVED-backfill` | 97 candidates × 50 selection, then 8 winners × 150 test | **~$27.49** *(est.)* | the MDE only | **NOT tonight** |
 
 **Gate files are created by Neel only.** Every live script byte-verifies its gate (`gates.py:require`)
-and exits 2 without it. **Verified 2026-07-22 (measured): all six live scripts exit 2** —
+and exits 2 without it. **Verified 2026-07-23 (measured): every live entry point exits 2** —
 `build_test_split.py`, `backfill_stage1.py --run`, `dose_control.py --run`, `dose_compute.py --live`,
-`score_candidates.py`, `supervisor.py --waves`.
+`score_candidates.py`, `run_state_dep.py` (both `--smoke` and not), `supervisor.py --smoke`, and
+`supervisor.py --waves`. The smoke paths demand `APPROVED-smoke`; the wave paths demand
+`APPROVED-liverun`; `score_candidates.py` picks per run directory from its `config.json`, and a
+mixed invocation requires **both**.
 
 ### Dependency order — redrawn for v2.1
 
@@ -52,9 +67,11 @@ framing label before `results.md` is read, not before `APPROVED-liverun`:
 ```
 APPROVED-testsplit → build_test_split.py → test_split.json + selection_split.json (+sha256)
                                               ↓
-                          APPROVED-liverun → supervisor.py --smoke   (arm T seed 0, alone)
-                                              ↓  measurements land in plan.md §4
-                                             supervisor.py --waves   (24 runs, width 8)
+                            APPROVED-smoke → supervisor.py --smoke   (arm T seed 0, alone,
+                                              ↓                       run + its own §8b pass)
+                                             measurements land in markers/SMOKE.DONE → plan.md §4
+                                              ↓
+                          APPROVED-liverun → supervisor.py --waves   (24 runs, width 8)
                                               ↓
                                              score_candidates.py --all   (§8b post-run pass)
                                               ↓
@@ -74,7 +91,13 @@ APPROVED-testsplit → build_test_split.py → test_split.json + selection_split
 ```
 
 The two backfill/dose branches may clear before, during, or after the waves. They may **not** clear
-after `results.md` is read; if they have not, the run is estimation-only by default.
+after `results.md` is read; if they have not, the run is estimation-only by default. **`APPROVED-
+backfill` is explicitly deferred** (Neel, 2026-07-23): it is off the launch path and gets decided
+after the waves, subject to that one hard constraint.
+
+`supervisor.py --smoke` refuses without `APPROVED-smoke` **and** without both split artifacts on
+disk — the smoke evaluates its own endpoint, so it has nothing to score against until
+`build_test_split.py` has run. `--waves` additionally refuses without `markers/SMOKE.DONE`.
 
 ---
 
@@ -159,10 +182,29 @@ Cross-checked against a third independent source: `grade_threehop.py` graded 245
 | per-run optimization, arm B | ≈ Stage-1 | ~$2.14 |
 | per-run optimization, arms T/C | +~50% minibatch-side calls | ~$2.4–2.9 |
 | per-run **selection evals (§8b, new)** | ~10–14 cand × 50 × m | ~$2.3–3.2 |
-| per-run test evals | 1 × 150 × m (primary), 2× if §9 demands the midpoint | $0.68–1.36 |
-| 24 runs, all in | | **~$130–180** |
+| per-run test evals | **1** × 150 × m — primary only | $0.68 |
+| *(midpoint test eval, if §9 demands it on a given run)* | *+1 × 150 × m* | *+$0.68, unbudgeted* |
+| 24 runs, all in (`APPROVED-liverun`) | | **~$120–150** |
+| live smoke, all in (`APPROVED-smoke`) | one arm-T run + ~11 cand × 50 + 150 | **~$6–8** |
 
-**Smoke × 24 projection: _(unfilled — the smoke writes it here)_.**
+**Smoke measurements: _(unfilled — `supervisor.py --smoke` writes `markers/SMOKE.DONE` and these
+lines get copied here)_.**
+
+| measurement | value |
+|---|---|
+| optimization spend | _(unfilled)_ |
+| post-run §8b pass spend | _(unfilled)_ |
+| **total smoke spend** | _(unfilled)_ |
+| wall clock | _(unfilled)_ |
+| peak RSS per process | _(unfilled)_ |
+| rate-limit backoffs | _(unfilled)_ |
+| counter vs §6a five-site model | _(unfilled)_ |
+| events / candidates / accepts | _(unfilled)_ |
+| **smoke × 24 projection** | _(unfilled)_ |
+
+The ×24 projection carries one caveat the smoke cannot remove: it is an **arm-T** measurement. Arm B
+is cheaper per run (3-wide minibatches, more events) and arm C sits between them, so a flat ×24 of a
+T run is an upper bound on the optimization half, not a point estimate.
 
 Wave plan: **width 8**, the proven floor (the swap ran width 8 at ~0.93 GB/process after the mmap
 fix). Mixed-arm waves (`wave_manifest.json`, measured deterministic):
@@ -265,16 +307,16 @@ on disk at every run start and recorded in each run's `config.json`.
 | `sampler.py` | `30387c3f443dd5d4037954752b33e551587851a597270403be9e0360b94ec737` | imported |
 | `proposer.py` | `65fb415e7edb83645e731d6dca6a9ada5ec6fe5d9536529845ac1e5a41d3cd80` | imported (§12 logging extended) |
 | `count_audit.py` | `b827c2cd019ab7df5b17d19a0f02f587c72ea50e1ec228ccb48da4ea5728ee2c` | ✅ $0, AUDIT PASS |
-| `gates.py` | `01527de9c5709b0760cd411f7039076a1130a2286d25429555e068a04f525628` | imported |
+| `gates.py` | `49881c12815be0d316b7b4ebec69eb9b7d71226b0193e6fbac9e0a5ec7612f4f` | imported; 5 gates |
 | `dose_control.py` | `b91e02812428073a77b3eb3521829f1faaf4edfc6d9aef313e80fe38a4f9e89e` | ✅ expected side frozen |
 | `dose_compute.py` | `dded73a54943963c9803eca3ecf9740f6a5757c9a41d8fe6ae7a1be7faa51651` | ✅ selftest + pre-estimate |
 | `mde_sim.py` | `300f7cd96d4fc7c615f8e8e74a7ea82bbb236a7b069de9ed972f0fc495cff626` | ✅ selftest |
 | `eval_split.py` | `39edf54c8d19349c10aa981c100b87d4eeae796285c4445258f246f97c5b92fc` | shared evaluator, gated by callers |
 | `build_test_split.py` | `453a70e99f0ece0c969fabfb566b7594a88648fa78b1bfb2a3662f8820a0686d` | ❌ gated; `--selftest` PASS |
 | `backfill_stage1.py` | `cf0efa17a9ef0d0c9e75da25fdbc7fc7716b2bd2efd1c771c4b39b6a1bc1045e` | ❌ gated; `--resolve` PASS ($0) |
-| `run_state_dep.py` | `b50aa495a085015ed67d5db33b354d3e8499140cffe87a82280e3ba084253bde` | ❌ gated; `--dry` PASS, 3 arms, writes nothing |
-| `score_candidates.py` | `49b98f8c314fcc8b991cf33e78cae9c653212453ae565a85f235f04e2aaeb570` | ❌ gated |
-| `supervisor.py` | `62f768dda387967ce3e3d02598d2b36f4174d0efc1fb6bd79cf2711d601cb2d7` | ❌ gated; `--plan` PASS ($0) |
+| `run_state_dep.py` | `70d314e4dc521c0f4f6c36cc7c8a2f70b083cf51aede4973215d763f77eca8c5` | ❌ gated (smoke/liverun); `--dry` PASS, 3 arms, writes nothing |
+| `score_candidates.py` | `a662f4581a9eb29d14877cca41a7d36c7a00c62e549af3120179059fdd6f6483` | ❌ gated per run dir |
+| `supervisor.py` | `62f33b7d2ee455acd3e9562b7bf70d828a05e61c0ff3928513d73c157cc07d48` | ❌ gated; `--plan` PASS ($0) |
 | `make_wave_manifest.py` | `ba4679205bac7193e3256c2faea0069a5e325c35d9cb628da28df93157231711` | ✅ $0, manifest written |
 
 ---
@@ -288,11 +330,39 @@ on disk at every run start and recorded in each run's `config.json`.
 5. ~~`.venv-armT` cannot run the task program~~ — **rebuilt from `armT-lock.txt`; both $0 gates
    re-passed**.
 
-**Nothing non-spend now blocks `APPROVED-liverun`.** What remains is Neel reading this file and
-deciding which gates to open. Two things are worth deciding explicitly before opening gate 2:
+6. ~~midpoint test evals pre-paid across 24 runs~~ — **decided 2026-07-23: not pre-paid.** Stays the
+   §9 conditional; the midpoint candidate is still identified free on every run.
+7. ~~backfill on the launch path~~ — **decided 2026-07-23: deferred.** Clears before `results.md` is
+   read, or the run is estimation-only by default.
+8. **`dose_compute.py --live` and `dose_control.py --run` are still stubs past their gate.** See §9.
 
-- **The midpoint endpoint is conditional** (§9 ambiguity rules). Running `score_candidates.py`
-  without `--midpoint` saves ~$16 across 24 runs and forfeits the instrument §9 sometimes calls for.
-- **`APPROVED-backfill` at $27.49 buys only the MDE**, which is a heuristic screen and is expected to
-  bite. It is off the launch path now, so it can be deferred and decided after the waves — but it
-  must clear before `results.md` is read, or the run is estimation-only by default.
+**Nothing non-spend blocks `APPROVED-testsplit`, `APPROVED-smoke` or `APPROVED-liverun`.**
+
+---
+
+## 9. The one thing `APPROVED-dose` cannot buy tonight
+
+**Both halves of the dose live path exit with `NOT IMPLEMENTED BEYOND THE GATE`.** This was flagged
+at the v2.1 commit and is unchanged, because the brief that produced it said "2c. `APPROVED-dose`
+unchanged":
+
+| script | state |
+|---|---|
+| `dose_control.py --freeze-expected` | ✅ done 2026-07-09; expected side frozen and committed |
+| `dose_control.py --run` | ❌ **stub** — verifies the gate, then exits with the spec |
+| `dose_compute.py --selftest` / `--pre-estimate` | ✅ both PASS at $0 |
+| `dose_compute.py --live` | ❌ **stub** — verifies the gate, then exits with the spec |
+
+Creating `APPROVED-dose` is therefore **harmless but non-productive**: the scripts verify the gate,
+print what remains to be built, and exit without an API call. No money moves, and the gate file stays
+valid for whenever the path is implemented.
+
+What remains is real work, not glue: rebuild each sampled event's parent candidate from Stage-1's
+`program_candidates`, re-execute it through the adapter with `capture_traces=True`, render feedback
+through the identical `make_reflective_dataset` path as `hover_swap_run.py:201`, sha256 each block
+against the frozen expected side, and only then re-derive the 3 unmatched candidates across 235
+events. Getting it subtly wrong yields a *bogus determinism verdict*, which is worse than not having
+one — being unfudgeable is the control's entire purpose.
+
+**Recommendation: leave `APPROVED-dose` for a session where that path is implemented and read.** It
+is off the launch critical path under §11-2's amended timing and blocks nothing tonight.

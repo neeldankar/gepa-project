@@ -54,11 +54,22 @@ by Neel:
 4. **§8a — one grading pass serves both splits.** ~700 fresh claims graded once, then seeded sampling
    assigns test (150) and selection (50) disjointly.
 
-**Amended before any live spend; no outcome data existed at amendment time.** At the moment of this
-amendment no `APPROVED-*` gate file existed on disk, every live-spend script exited 2, and
+**2026-07-23 — v2.1 → v2.1.1, tag `state-dep-design-v2.1.1-frozen`.** One operational amendment,
+§13-7 only: the live smoke is split out of `APPROVED-liverun` into its own gate, **`APPROVED-smoke`**
+(~$6–8, one arm-T seed-0 run plus its own §8b post-run pass). Rationale in §13-7. No scientific
+content changes — no endpoint, hypothesis, arm, statistic, split or budget definition is touched, and
+§13-5's smoke disposition is unchanged. Made before any live spend, with no gate file yet created.
+*(Budget decisions taken the same day, which change no design text: the midpoint endpoint's test
+evaluation is not pre-paid across the 24 runs — it stays the §8/§9 conditional it always was, and
+the midpoint candidate is still identified for free on every run; and `APPROVED-backfill` is
+explicitly deferred off the launch path under §11-2's amended timing, to clear before `results.md`
+is read.)*
+
+**Both amendments were made before any live spend; no outcome data existed at either amendment
+time.** At each, no `APPROVED-*` gate file existed on disk, every live-spend script exited 2, and
 `analysis/state_dep/plan.md` carried an unfilled MDE placeholder. §14's cost table is re-derived from
 the same fitted rate — §8b's post-run selection evaluations are new spend that no prior cost model
-carried, and the program projection rises from ~$60–80 to ~$165–215.
+carried, and the program projection rises from ~$60–80 to ~$160–195.
 
 ---
 
@@ -822,8 +833,16 @@ custom `state_dump` without `val_aggregate_scores`/`best_idx` (B8), the runner m
    placeholder here (amended 2026-07-22)** — it is filled in at step 9, before `results.md` is read,
    and does not gate the launch.
 7. **APPROVED files: created by Neel only**, after reading `plan.md`. CC byte-verifies each on disk
-   before the corresponding spend. Gates: `APPROVED-testsplit`, `APPROVED-dose`,
+   before the corresponding spend. Gates: `APPROVED-testsplit`, `APPROVED-dose`, **`APPROVED-smoke`**,
    `APPROVED-backfill`, `APPROVED-liverun`. No APPROVED, no launch — no exceptions.
+   **`APPROVED-smoke` added 2026-07-23 (v2.1.1)**, splitting the live smoke out of
+   `APPROVED-liverun`. The smoke is the measurement the 24-run launch is decided *on* — cost, wall
+   clock, RSS, backoff count, and the counter audit against §6a on real scores — so approving it
+   cannot be the same act as approving the launch. It covers one arm-T seed-0 run *and its own §8b
+   post-run pass*, because a smoke that measured only the optimization half would leave the
+   selection evaluations, the largest new line in §14, projected rather than measured. Strictly more
+   conservative: it adds an approval, it removes none. §13-5's disposition is unchanged — the smoke
+   is excluded from analysis unconditionally and seed-0 arm T is rerun inside the waves.
 8. Launch waves; supervisor with resume logic (§6c); `caffeinate`; no mid-flight analysis.
 9. On completion: manifest sanity check, commit, tag pre-analysis snapshot; THEN the post-run
    selection pass (§8b: every candidate on the selection split → argmax → test evals);
@@ -867,9 +886,16 @@ version of this table carried, and they are the dominant new line: ~50 calls per
 | 24 runs, optimization | B ≈ Stage-1 cost; T/C add ~50% minibatch-side calls | **$50–70** envelope | `APPROVED-liverun` |
 | Live smoke (arm T seed 0, excluded from analysis) | one full run + its post-run pass | ~$7 | `APPROVED-liverun` |
 
-Gate totals: `APPROVED-testsplit` **~$3.13**; `APPROVED-dose` **~$3.61**; `APPROVED-backfill`
-**~$27.48**; `APPROVED-liverun` **~$130–180** (optimization $50–70 + selection $55–66 + test $16–33,
-the midpoint endpoint being conditional on §9 + smoke ~$7).
+Gate totals (restated 2026-07-23 for v2.1.1's five gates): `APPROVED-testsplit` **~$3.13**;
+`APPROVED-dose` **~$3.61**; `APPROVED-smoke` **~$6–8** (one arm-T run ~$2.4–2.9 + its ~11 candidates
+× 50 selection ~$2.5 + 150 test ~$0.68); `APPROVED-backfill` **~$27.49**; `APPROVED-liverun`
+**~$120–150** (optimization $50–70 + selection $55–66 + test $16.35). Program **~$160–195**.
+
+The per-run test line is **one** evaluation, not two: the midpoint endpoint's test score is not
+pre-paid across the 24 runs (Neel, 2026-07-23). This is not a design change — §8 and §9 always made
+it conditional on a map cell demanding it — it is the decision not to buy it in advance. The midpoint
+candidate is still *identified* on every run at $0, since the selection scores it ranks are computed
+anyway, so the option costs $0.68 on whichever specific runs §9 later calls for.
 
 The backfill's 97 is not an estimate: it is the realized candidate count of the 8 Stage-1 runs
 (11, 11, 13, 11, 14, 10, 13, 14). The per-run figure is, and moves with the arms — T and C complete

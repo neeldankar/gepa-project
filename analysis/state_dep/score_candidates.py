@@ -11,12 +11,18 @@ has exhausted and is outside it (v2.1 §8a, §8b).
 
     midpoint endpoint (v2.1 §8, R13-c; only when a §9 ambiguity rule demands it):
         the same argmax restricted to candidates with
-        num_metric_calls_by_discovery <= max_metric_calls / 2, evaluated on test.
-        The selection scores it needs are already computed here, so --midpoint costs one extra
-        test evaluation and nothing else.
+        num_metric_calls_by_discovery <= max_metric_calls / 2.
 
-COST per run: n_candidates x 50 selection calls (~$2.3-3.2), plus 150 (or 300 with --midpoint)
-test calls (~$0.68 / $1.36).
+        WHICH CANDIDATE the midpoint rule picks is identified and recorded on EVERY run, always,
+        because the selection scores it needs are already computed here and it therefore costs
+        nothing. Its TEST EVALUATION is not budgeted (Neel, 2026-07-23: dropped, -$16 across 24
+        runs) and happens only under --midpoint. That is exactly the conditional §8/§9 already
+        describe -- "evaluated only if a map cell's ambiguity rule demands it" -- so the option
+        stays open on the specific runs a §9 cell calls for, at $0.68 each, rather than being
+        prepaid on all 24.
+
+COST per run: n_candidates x 50 selection calls (~$2.3-3.2), plus 150 test calls (~$0.68).
+--midpoint adds 150 more (~$0.68) on the runs it is passed for.
 
 RESUME: selection scores are checkpointed per run dir; re-running skips what exists.
 
@@ -41,6 +47,21 @@ sys.path.insert(0, HERE)
 M = 0.004543
 SPEND_CAP = 6.00  # per run dir; a run's post-pass is ~$3-4.5
 MAX_METRIC_CALLS = 300  # must match run_state_dep.MAX_METRIC_CALLS; asserted against config.json
+
+
+def gates_for(dirs: list[str]) -> list[str]:
+    """Which APPROVED file each run dir's post-run pass belongs to.
+
+    The smoke's own selection and test evaluations are part of the smoke's cost and therefore sit
+    behind APPROVED-smoke, not APPROVED-liverun (v2.1.1 §13-7). A mixed --all invocation needs BOTH,
+    and requires both -- it never proceeds on the strength of whichever it happens to find.
+    """
+    need = set()
+    for d in dirs:
+        cfg = os.path.join(d, "config.json")
+        smoke = json.load(open(cfg)).get("smoke", False) if os.path.exists(cfg) else False
+        need.add("APPROVED-smoke" if smoke else "APPROVED-liverun")
+    return sorted(need)
 
 
 def run_dirs(one: str | None) -> list[str]:
@@ -99,26 +120,28 @@ def process(d: str, ev, dspy, probe, base, lm, sel, test, want_midpoint: bool) -
         "agrees_with_val_argmax": best == vbest,
         "endpoint_test_mean": endpoint["mean"],
         "endpoint_test_scores": endpoint["scores"],
-        "midpoint": None,
         "post_run_spend_usd": None,
     }
 
+    # Identifying the midpoint candidate is free — always done. Evaluating it on test is not.
+    cutoff = MAX_METRIC_CALLS / 2
+    eligible = [i for i, n in enumerate(discovery) if n <= cutoff]
+    assert eligible, f"{d}: no candidate discovered by the midpoint — impossible, the seed is 0"
+    local, _ = ev.argmax_lowest_index([means[i] for i in eligible])
+    mid_idx = eligible[local]
+    out["midpoint"] = {
+        "budget_cutoff": cutoff,
+        "eligible_candidates": eligible,
+        "best_idx": mid_idx,
+        "same_as_primary": mid_idx == best,
+        "test_mean": None,      # unbudgeted (Neel 2026-07-23); fill by re-running with --midpoint
+        "test_scores": None,
+        "test_evaluated": False,
+    }
     if want_midpoint:
-        cutoff = MAX_METRIC_CALLS / 2
-        eligible = [i for i, n in enumerate(discovery) if n <= cutoff]
-        assert eligible, f"{d}: no candidate discovered by the midpoint — impossible, the seed is 0"
-        sub_means = [means[i] for i in eligible]
-        local, _ = ev.argmax_lowest_index(sub_means)
-        mid_idx = eligible[local]
         mid = ev.score_candidate(dspy, probe, base, cands[mid_idx], test, lm, meter)
-        out["midpoint"] = {
-            "budget_cutoff": cutoff,
-            "eligible_candidates": eligible,
-            "best_idx": mid_idx,
-            "test_mean": mid["mean"],
-            "test_scores": mid["scores"],
-            "same_as_primary": mid_idx == best,
-        }
+        out["midpoint"].update(test_mean=mid["mean"], test_scores=mid["scores"],
+                               test_evaluated=True)
 
     out["post_run_spend_usd"] = round(meter.spend(), 4)
     json.dump(out, open(os.path.join(d, "endpoints.json"), "w"), indent=2)
@@ -149,9 +172,11 @@ def main() -> int:
 
     print(f"=== §8b post-run selection pass ===")
     print(f"  run dirs        : {len(dirs)}")
+    print(f"  gates required  : {', '.join(gates_for(dirs)) or 'APPROVED-liverun'}")
     print(f"  candidates      : {total_cands}")
     print(f"  selection evals : {total_cands} x 50 = {total_cands * 50}")
-    print(f"  test evals      : {len(dirs)} x {n_test} x 150 = {len(dirs) * n_test * 150}")
+    print(f"  test evals      : {len(dirs)} x {n_test} x 150 = {len(dirs) * n_test * 150}"
+          f"{'  (primary + midpoint)' if a.midpoint else '  (primary only; midpoint unbudgeted)'}")
     print(f"  estimated spend : ~${est:.2f}")
 
     if a.dry_run:
@@ -160,9 +185,10 @@ def main() -> int:
 
     # The gate is checked before anything else on the live path, even when there is nothing to do:
     # "no APPROVED, no launch" is a property of the script, not of whether the work happens to be
-    # empty today.
+    # empty today. With no run dirs at all we still demand APPROVED-liverun, the broader gate.
     from gates import require
-    require("APPROVED-liverun")
+    for g in (gates_for(dirs) or ["APPROVED-liverun"]):
+        require(g)
     if not dirs:
         print("no completed run directories found")
         return 1

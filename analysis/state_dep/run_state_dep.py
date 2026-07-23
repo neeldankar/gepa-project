@@ -113,9 +113,12 @@ def main() -> int:  # noqa: C901
     if not args.dry and os.path.exists(os.path.join(out, "run_summary.json")):
         raise SystemExit(f"REFUSE: {out}/run_summary.json exists — not clobbering {name}")
 
+    # The smoke holds its own gate (v2.1.1 §13-7). It is the measurement the 24-run launch is
+    # decided on, so approving it must not be the same act as approving the launch.
+    gate_name = "APPROVED-smoke" if args.smoke else "APPROVED-liverun"
     if not args.dry:
         from gates import require
-        require("APPROVED-liverun")
+        require(gate_name)
 
     # ---- imports that need the pinned venv -----------------------------------------------
     sys.path.insert(0, HOVER_PROBE)
@@ -302,7 +305,8 @@ def main() -> int:  # noqa: C901
 
     wiring = {
         "run": name, "arm": arm, "seed": seed, "smoke": args.smoke,
-        "design": "state-dependent-design-v2.1-frozen",
+        "gate": gate_name,
+        "design": "state-dependent-design-v2.1.1-frozen",
         "git_commit": git_commit(),
         "engine": "GEPAEngine (direct wiring, v2.1 §13-3)",
         "minibatch_size": MINIBATCH[arm],
