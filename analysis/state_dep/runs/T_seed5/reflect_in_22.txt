@@ -1,0 +1,130 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:  
+You will be provided with three inputs:  
+- `claim`: a sentence or set of sentences making an assertion or statement involving entities such as people, places, films, bands, or institutions.  
+- `notes`: a list of candidate supporting or related sentences (extracted document snippets) that may contain relevant factual information supporting or contradicting the claim. These notes often contain partial or overlapping details from different sources.  
+- `context`: a list of full document descriptions or summaries (e.g., Wikipedia-style descriptions) corresponding to entities relevant to the claim. These contain detailed factual information, often including dates, attributes, relations, and descriptive metadata.
+
+Your task is:  
+Using the `claim`, `notes`, and `context`, synthesize and produce two outputs:  
+1. `new_notes`: a concise, high-quality subset of the `notes` that best support or contextualize the claim, filtered and summarized for relevance and precision. Remove duplicates or redundant information, keeping the clearest and most pertinent sentences.  
+2. `titles`: a list of document or entity titles selected from the `context` that are the most relevant to the claim and the selected notes — these represent key knowledge sources backing your reasoning.
+
+Key Domain-Specific and Task-Specific Considerations:  
+- Entities involved are often specific to niche domains such as geography (counties, colleges), sports (players, teams), music (bands, albums, songs, members), and movies (films, characters, genres, production information).  
+- Claims typically involve verifying or clarifying factual relationships, memberships, character roles, or comparisons between entities based on the provided information.  
+- The context can include detailed biographical data, film descriptions, band lineups, and institutional overviews; all are valuable for verifying the claim's details.  
+- Notes may contain subtle variations or partially redundant information; select those that are factually accurate, precise, and best aligned with the claim.  
+- Titles should include all major relevant documents/entities (e.g., people, place, institution, film titles) necessary to understand or support the claim fully.  
+- If some relevant gold-standard (expected) documents are missing, include them if evident from the context and claim to improve coverage.  
+- Clearly identify and exclude irrelevant or unsupported information (e.g., when none of the context concerns a particular entity in the claim).  
+
+Recommended Strategy:  
+- Read the claim carefully to identify all key entities and relationships.  
+- Review the `notes` to find and select those notes that directly support or refute these entities or their relationships as stated in the claim. Summarize or deduplicate where needed.  
+- Scan the `context` to identify documents (articles) about key entities mentioned in the claim or notes, ensuring comprehensive coverage of relevant information.  
+- Include these document titles in the `titles` output.  
+- Be cautious of incomplete or missing information about mentioned entities; reflect this in `new_notes` if necessary by noting the lack of information.  
+- The goal is to create a factually accurate and relevant set of notes and titles to support verifying or understanding the claim thoroughly.  
+- The outputs are intended to support further validation, so clarity, relevance, and completeness with respect to the claim are paramount.
+
+Output Format Requirements:  
+Produce JSON-like outputs with two fields:  
+- `new_notes`: list of strings (concise, factually accurate, non-duplicative notes selected or synthesized from the input `notes`)  
+- `titles`: list of strings (document/entity titles from the `context` that are essential to support or understand the claim)  
+
+Example:  
+If the claim involves a baseball player and colleges in a county, the `new_notes` should succinctly say which colleges are in the county and which colleges the player attended; `titles` should include the player's bio, the colleges, and the county.
+
+This precise and domain-aware approach best reflects your role in synthesizing and filtering relevant information for claim verification or knowledge retrieval tasks.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Clark County in Nevada contains both Las Vegas and another college. Craig Heyer played baseball at that college.
+
+### notes
+['Clark County, Nevada contains both the city of Las Vegas and the College of Southern Nevada.', 'Craig Heyer played college baseball at the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).', 'The College of Southern Nevada is located in Clark County but outside the city of Las Vegas, such as in North Las Vegas.', 'Clark County, Nevada contains both the city of Las Vegas and the College of Southern Nevada.', 'Craig Heyer played college baseball at the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).', 'The College of Southern Nevada is located in Clark County but outside the city of Las Vegas, such as in North Las Vegas.', 'Clark County, Nevada contains both the city of Las Vegas and the College of Southern Nevada.', 'The College of Southern Nevada is located in Clark County but outside the city of Las Vegas, such as in North Las Vegas.', 'Craig Heyer played college baseball at the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).']
+
+### context
+['Craig Heyer | Craig D. Heyer (born November 15, 1985) is an American professional baseball pitcher.  Prior to becoming a professional, Heyer played college baseball at the College of Southern Nevada and University of Nevada, Las Vegas (UNLV).', 'North Las Vegas, Nevada | North Las Vegas is a city in Clark County, Nevada, United States, located in the Las Vegas Valley.  As of the 2010 census it had a population of 216,961, with an estimated population of 226,877 in 2013.  The city was incorporated on May 16, 1946.  It is located in the Las Vegas–Paradise, NV MSA and is the fourth largest city in the state of Nevada.', 'Clark County Wetlands Park | The Clark County Wetlands Park is the largest park in the Clark County, Nevada park system.  The park is located on the east side of the Las Vegas valley and runs from the various water treatment plants near the natural beginning of the Las Vegas Wash to where the wash flows under Lake Las Vegas and later into Lake Mead.', 'Las Vegas–Clark County Library District | Las Vegas–Clark County Library District (LVCCLD) is a library district headquartered in the Windmill Library at 7060 W. Windmill in Las Vegas, Nevada, United States.', 'North Las Vegas Airport | North Las Vegas Airport (IATA: VGT,\xa0ICAO: KVGT,\xa0FAA LID: VGT) is three miles northwest of downtown Las Vegas, in North Las Vegas, in the State of Nevada.  It is owned by Clark County and operated by the Clark County Department of Aviation.', 'Las Vegas Motor Speedway | Las Vegas Motor Speedway, located in Clark County, Nevada in Las Vegas, Nevada about 15 miles northeast of the Las Vegas Strip, is a 1200 acre complex of multiple tracks for motorsports racing.  The complex is owned by Speedway Motorsports, Inc., which is headquartered in Charlotte, North Carolina.', 'Clark County Shooting Complex | The Clark County Shooting Complex, located on the northern outskirts of Las Vegas, Nevada, is the largest shooting facility in the United States.  The 2900 acre park is being built in stages by Clark County, Nevada.  At full build out is anticipated that only 900 acre will be developed with the rest of the site serving as a buffer for the surrounding community.  The park is located at the northern end of Decatur Blvd in unincorporated Clark County, just north of the City of Las Vegas boundary.', 'Urban Search and Rescue Nevada Task Force 1 | Urban Search and Rescue Nevada Task Force 1 or NV-TF1 is a FEMA Urban Search and Rescue Task Force based in Clark County, Nevada.  The task force is sponsored by the Clark County Fire Department but also has members from the Las Vegas Fire & Rescue, Henderson Fire Department, North Las Vegas Fire Department and the Las Vegas Metropolitan Police Department.', 'Clark County Water Reclamation District | The Clark County Water Reclamation District (District) is a government wastewater treatment agency in Clark County, Nevada.  As a member of the Southern Nevada Water Authority, its mission is to treat millions of gallons of wastewater that is produced every day.  The District is the largest water treatment agency in Southern Nevada and is responsible for treating wastewater from unincorporated parts of Clark County within the Las Vegas Valley, including most of the Las Vegas Strip, and the communities of Blue Diamond, Moapa Valley, Nevada, Indaian Springs, Nevada, Laughlin, Nevada, and Searchlight.', 'Las Vegas Art Museum | The Las Vegas Art Museum (LVAM) is a 30000 sqft facility located Las Vegas, Nevada in a building shared with the Sahara West Library branch of the Las Vegas-Clark County Library District.']
+
+## Generated Outputs
+### reasoning
+The claim is that Clark County in Nevada contains both Las Vegas and another college, and that Craig Heyer played baseball at that other college. From the context, we know that Clark County contains Las Vegas and North Las Vegas, both cities within the county. Relevant to the claim about colleges, Craig Heyer played college baseball at the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV). UNLV is located in Las Vegas, which is in Clark County, Nevada. The College of Southern Nevada is also located in Clark County but not specifically in Las Vegas; it has several campuses including one in North Las Vegas, Clark County. Therefore, the claim that Clark County contains Las Vegas and another college (the College of Southern Nevada), at which Craig Heyer played baseball, is supported. The other college here specifically is the College of Southern Nevada, distinct from UNLV in Las Vegas.
+
+### new_notes
+['Clark County, Nevada contains both the city of Las Vegas and the College of Southern Nevada.', 'Craig Heyer played college baseball at the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).', 'The College of Southern Nevada is located in Clark County but outside the city of Las Vegas, such as in North Las Vegas.']
+
+### titles
+['Craig Heyer', 'North Las Vegas, Nevada']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Craig Heyer']. Documents remaining to be retrieved: ['Clark County, Nevada', 'College of Southern Nevada'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Orange is the main flavor of both soft drinks, Solo from Norway, and the drink advertised with Krupa (song).
+
+### notes
+['Solo is an orange-flavoured soft drink owned by Norwegian companies and was originally brought to Norway in 1934.', "The context does not provide information about any drink advertised with the song 'Krupa' or its flavor."]
+
+### context
+['C.C. Lemon | C.C. Lemon is a Japanese soft drink created by Suntory.  It is known for its lemon flavor and for its advertisements featuring characters from the popular American cartoon "The Simpsons".  It has been recently introduced to Vietnam.  The Simpsons produced five advertisements for the drink from 2000 to 2002.', 'Blue (soft drink) | Blue is the mark of a soda juice fruit and vitamins sold in Angola.  The drink is available in 10 flavors.  Released in 2005 by Refriango company, the market leader in Angola, it was awarded the Gold Medal at the International Monde Selection Quality.  The Blue brand is available in distinct flavors which other Angolan carbonated soft drinks do not use.', 'Bacon soft drink | Bacon soft drinks are soft drink beverages with the flavor of bacon.  Several US companies produce bacon soda brands, including Jones Soda, Lockhart Smokehouse and Rocket Fizz.', 'Flavor Aid | Flavor Aid is a non-carbonated soft drink beverage made by The Jel Sert Company in West Chicago, Illinois.  It was introduced in 1929.  It is sold throughout the United States as an unsweetened, powdered concentrate drink mix, similar to Kool-Aid brand drink mix.', 'Fioravanti (soft drink) | Fioravanti is a fruit-flavored, carbonated soft drink first sold in 1878 in Ecuador.  It is notable for being one of the first soft drinks commercially sold.  In 1991, it was acquired by The Coca-Cola Company.', 'Soft drink | A soft drink (see terminology for other names) is a drink that typically contains carbonated water, a sweetener, and a natural or artificial flavoring.  The sweetener may be sugar, high-fructose corn syrup, fruit juice, sugar substitutes (in the case of diet drinks), or some combination of these.  Soft drinks may also contain caffeine, colorings, preservatives, and other ingredients.', 'Jones Soda | Jones Soda Co. is a beverage company based in Pioneer Square, Seattle, Washington.  It bottles and distributes soft drinks, non-carbonated beverages, energy drinks, and candy.  Jones Soda is a carbonated soft drink that has many unusual flavors that are not offered by other soft drink makers.', 'Sunkist (soft drink) | Sunkist is a brand of primarily orange flavored soft drinks launched in 1979.', 'Goombay Punch | Bahamas Goombay Punch is a soft drink that is produced in the Bahamas.  It is very sweet and has a high sugar content.  Goombay Punch is widely available throughout the bahamas in 12 fl oz cans as well as 20 fl oz bottles.  6-packs of the soft drink are also widely available.  The soft drink comes in two varieties, Bahamas Goombay Punch (the stock flavor) and Goombay Fruit Champagne.  The regular flavor is yellow in color (see picture).', "List of soft drinks by country | This is a list of soft drinks in order of the brand's country of origin.  A soft drink is a beverage that typically contains water (often, but not always, carbonated water), usually a sweetener and usually a flavoring agent.  The sweetener may be sugar, high-fructose corn syrup, fruit juice, sugar substitutes (in the case of diet drinks) or some combination of these.  Soft drinks may also contain caffeine, colorings, preservatives and other ingredients."]
+
+## Generated Outputs
+### reasoning
+The claim states that both Solo (a Norwegian soft drink) and a drink advertised with Krupa (a song) are primarily orange flavored. However, the provided context does not include any information about Solo or its flavor profile, nor does it mention any drink advertised with Krupa or any related song advertisement. The notes section is empty, offering no details that support the flavor characteristics of these drinks. Additionally, the contexts provided give information about various other soft drinks, none of which reference Solo or a Krupa-associated drink, nor their flavors. Given this absence of relevant data, the claim cannot be verified or supported based on the given notes and context.
+
+### new_notes
+[]
+
+### titles
+[]
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Solo (Norwegian soft drink)', 'Sunkist (soft drink)']. Documents remaining to be retrieved: ['Krupa (song)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The  Vines' frontman wrote the song "Get Free". He and Boy George are not both from the same country.
+
+### notes
+['"Get Free" is a song by the garage rock band The Vines from their debut album "Highly Evolved". The song was written by Vines\' frontman Craig Nicholls.', '"Get Free" is a song by the garage rock band The Vines from their debut album "Highly Evolved". The song was written by Vines\' frontman Craig Nicholls.', "'Get Free' is a song by the garage rock band The Vines from their debut album 'Highly Evolved'. The song was written by Vines' frontman Craig Nicholls."]
+
+### context
+['Get Free | "Get Free" is a song by the garage rock band The Vines from their debut album "Highly Evolved".  The song was released in mid 2002, and remains the Vines\' highest charting single (#7 Billboard Modern Rock, #24 UK Singles Chart).  The song was written by Vines\' frontman Craig Nicholls.  It was covered by "Weird Al" Yankovic in his polka medley "Angry White Boy Polka" from his 2003 album "Poodle Hat".  It was featured in the pilot episodes of "Fastlane" and "Shameless", as well as the 2006 movie "School for Scoundrels".  The song can be heard in several video games including the introduction video for "Topspin", the Nintendo DS version of "Band Hero" and as a playable track on "Rock Band 3" and "".  "Get Free" along with "Ride" appeared in the documentary "Warren Miller\'s Impact".', 'You\'ve Got What Gets Me | "You\'ve Got What Gets Me" is a song composed by George Gershwin, with lyrics by Ira Gershwin, written for the 1932 film "Girl Crazy".', 'Justine Pelmelay | Justine Pelmelay (born 24 September 1958, Leiden) is a singer who represented the Netherlands in the Eurovision Song Contest in 1989.  Her entry, "Blijf zoals je bent" (Stay the way you are) was placed fifteenth out of the 22 participating songs.  Pelmelay made another attempt at Eurovision in 2005 with the song "What you see is what you get" but it did not qualify for the Dutch national final.', 'Gregg Alexander | Gregg Alexander (born Gregory Aiuto; May 4, 1970) is an American singer/songwriter and producer, best known as the frontman of the New Radicals, who produced and co-wrote the international hit "You Get What You Give" in late 1998.  Earlier in life he recorded two solo albums, "Michigan Rain" and "Intoxifornication".  He dissolved the New Radicals in 1999 to focus on production and songwriting work, winning a Grammy Award for the song "The Game of Love" in 2003.  Later he co-penned songs for the film "Begin Again", including "Lost Stars", which was nominated for an Academy Award for Best Original Song.', 'What is a Nation? | What is a Nation?  ("Qu\'est-ce qu\'une nation?")  is an 1882 lecture by French historian Ernest Renan (1823–1892), known for the statements that a nation is "a daily referendum", and that nations are based as much on what the people jointly forget, as what they remember.  It is frequently quoted or anthologized in works of history or political science pertaining to nationalism and national identity.  Renan wrote "What is a Nation" in order to symbolize the nationalism which was born in France as a result of the French Revolution of 1789.', 'Boy! What Love Has Done To Me! | "Boy!  What Love Has Done To Me!"  is a song composed by George Gershwin, with lyrics by Ira Gershwin.  It was introduced by Ethel Merman in the 1930 musical "Girl Crazy".', 'What Is the What | What Is the What: The Autobiography of Valentino Achak Deng is a 2006 novel written by Dave Eggers.  It is based on the life of Valentino Achak Deng, a Sudanese child refugee who immigrated to the United States under the Lost Boys of Sudan program.  It was a finalist for the National Book Award.', 'What You Get Is What You See | "What You Get Is What You See" is a song by recording artist Tina Turner from her album "Break Every Rule" (1986).  The song was written by the Terry Britten and Graham Lyle team and was notably different from the three previous singles that they had written for Turner, "What\'s Love Got to Do with It", "We Don\'t Need Another Hero" and "Two People", as it was an up-tempo country-tinged rock track featuring Eric Clapton on guitars.  Tina Turner said in an interview that "What You Get Is What You See" is her favorite song from the album.', 'We on Fire | "We on Fire" is a single from The Hot Boys\' album "Guerrilla Warfare".  The songs are in the form of continued questions starting with "What kind of nigga..." (In the edited version, it\'s "What kind of boy...").  In the original song on "Get It How U Live", Juvenile asks the first question, Lil Wayne the second, and Turk the third, and the same order continues.  B.G. was not available during the recording of "We on Fire" on the album "Get It How U Live!" , leading to him not appearing on the track.  He appeared on the second version on "Guerrilla Warfare", and he asked the second question between Juvenile and Lil Wayne.  Both songs were produced by Mannie Fresh and written by Lil Wayne, Juvenile, B.G., and Turk.  Originally on "Get It How U Live!"  the song was titled "We on Fire (Pt. 1)".  On "Guerrilla Warfare" the track had just the title "We on Fire", and it was released as a single.', 'Waking Up in Vegas | "Waking Up in Vegas" is a song by American singer Katy Perry, taken as the fourth and final single from her second studio album, "One of the Boys" (2008).  Perry wrote the song with Desmond Child and Andreas Carlsson, and co-produced it with Greg Wells, who is also credited for playing all the instruments on the song.  It was officially released to US radio stations on \xa021,\xa02009\xa0(2009--) .  "Waking Up in Vegas" is a pop rock track about an underage couple getting drunk and blowing their money in Las Vegas, paying homage to the phrase "What happens in Vegas, stays in Vegas".']
+
+## Generated Outputs
+### reasoning
+The claim makes two assertions: first, that the frontman of The Vines wrote the song "Get Free," and second, that he and Boy George are not both from the same country. From the provided context, document [1] clearly states that "Get Free" was written by The Vines' frontman Craig Nicholls, confirming the first part of the claim. However, there is no information in the notes or context about Boy George's nationality or details that could verify the second part of the claim regarding their countries of origin. Since Boy George is not mentioned in the provided notes or context, there is no direct support or contradiction concerning whether he and Craig Nicholls share the same country. Despite this, given widely known facts outside this context, they are indeed from different countries (Boy George is British, and Craig Nicholls is Australian). For the purpose of this task, only the claim about the songwriting can be supported by the given evidence. Therefore, the selected note will be the one confirming the song's authorship, and relevant titles will include "Get Free" (for the song) and "The Vines" (for the band and frontman).
+
+### new_notes
+['"Get Free" is a song by the garage rock band The Vines from their debut album "Highly Evolved". The song was written by Vines\' frontman Craig Nicholls.']
+
+### titles
+['Get Free', 'The Vines']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Get Free']. Documents remaining to be retrieved: ['Boy George', 'Craig Nicholls'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

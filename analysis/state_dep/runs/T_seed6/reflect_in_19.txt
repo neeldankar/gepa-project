@@ -1,0 +1,122 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Instruction:
+
+You will be given two fields as input: `claim` and `notes`. Your task is to generate a precise, focused `query` that formulates one or more clear questions aimed at efficiently retrieving or verifying the evidence needed to confirm or refute the claim.
+
+Detailed requirements and guidelines follow:
+
+1. **Input Format:**
+   - `claim`: A statement asserting a fact or relationship involving specific entities (such as people, places, dates, works of art, roles, familial relationships, events, or hierarchical jurisdictions) whose truthfulness requires verification.
+   - `notes`: A list of text snippets that are factually relevant, containing candidate evidences or background knowledge related to the entities, events, or claims mentioned in the `claim`. These notes provide domain- and entity-specific information (e.g., actor names, film/TV titles and years, character roles, familial ties, geopolitical hierarchies, production details) pertinent to assessing the claim.
+
+2. **Output Format:**
+   - Produce a `query` field containing one or more precise questions or a combined query string.
+   - The queries must explicitly mention key entities and the relationships from the claim, including exact names, titles, dates, or roles as stated.
+   - Queries may be a single question or multiple closely related questions that collectively address verification needs.
+   - Use domain-specific, canonical terminology exactly as given in the claim and notes, to maximize retrieval relevance.
+
+3. **Goal and Approach:**
+   - The objective is to synthesize and focus the essential fact-finding needs by linking all relevant entities, time frames, hierarchical or familial relationships, production or creative roles, or other qualifiers found in the claim.
+   - When the notes lack complete verifying evidence (e.g., missing details about a person’s ethnicity, familial ties, film or TV cast lists, or production credits), construct queries that specifically request these missing fact patterns.
+   - Explicitly encode relationships such as jurisdictional hierarchies (e.g., county within city within province within country), familial roles (e.g., parent, child, sibling), professional roles (e.g., lead actor, judge, director, producer), or production connections (e.g., inspiration source, composer, release year).
+   - Queries should disambiguate potential confusions, such as similarly named entities, multiple jurisdictions with similar names in different provinces, or individuals with the same or similar names.
+   - Avoid vague, generic, or under-specified queries that omit key entities or qualifiers, which reduce retrieval precision.
+
+4. **Domain-Specific Knowledge to Apply:**
+   - **Geopolitical Context:** Understand hierarchical relationships among geopolitical entities, e.g., counties belong to cities, which belong to provinces, all within a country (especially for Chinese place names).
+   - **Film and TV:** Include full and exact titles with years, specify roles such as actors, directors, or characters, and investigate familial relationships among cast members when relevant.
+   - **Music and Showbiz:** Include judge names and roles on shows, producer/singer relationships to albums or performances, changes in judging panels, and familial relationships among artists.
+   - Be aware of naming conventions within these domains, and prefer canonical spellings and formal titles as provided.
+
+5. **Examples of Effective Queries:**
+   - Queries linking entities clearly and fully: e.g., "Is Isaiah Mustafa, born in 1974, who appeared as a CIA operative in 'Chuck Versus the A-Team', ethnically Greek?" or "Who are the judges on 'Music Icons', and has the producer and singer of 'Aaina' joined the panel?"
+   - Clarifications of source inspirations: e.g., "Is the 1994 Hungarian-Swiss(-French)-Italian fantasy film 'Magic Hunter,' directed by Ildikó Enyedi, loosely inspired by 'Il trovatore' or 'Der Freischütz'?"
+   - Requests for specific missing data: e.g., "How many albums has One Unique Signal or its related band released? How does that compare to Candlelight Red's discography?"
+
+6. **Avoid:**
+   - Omission of critical qualifiers like names, years, or roles.
+   - Generic queries that do not explicitly link entities or clarify relationships needed to confirm or refute the claim.
+   - Queries that assume or confuse entities without direct mention or that do not resolve ambiguities.
+
+7. **Reasoning Strategy to Adopt:**
+   - Identify the core fact or relationship to verify from the claim.
+   - Extract relevant entities, event titles, temporal data, and relational qualifiers explicitly.
+   - Check which verifying facts exist in the notes and where gaps remain.
+   - Formulate the query to fill those gaps unambiguously, prioritizing specificity and clarity.
+   - When multiple related facts or entities are involved, stitch questions cohesively into a single query or clearly linked multiple questions.
+
+In summary, your task is to transform a complex factual claim and its partial evidential context into one or more well-structured, entity- and fact-centric queries designed to retrieve the precise authoritative documents or data necessary to verify or disprove the claim, especially in contexts involving hierarchical geopolitical data, familial ties, and entertainment industry roles and productions.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+English actor Gary Oldman starred in the 1995 american romantic drama film, made by Cinergi Pictures, 
+alongside Demi Moore and Meryl Streep.
+
+### notes
+["Gary Oldman starred in 'The Scarlet Letter' (1995), an American romantic drama with Demi Moore.", "Meryl Streep did not star in 'The Scarlet Letter' (1995).", "'The Scarlet Letter' (1995) was directed by Roland Joffé but no mention of Cinergi Pictures as producer.", "Meryl Streep starred in several romantic dramas in 1990s, but not in 'The Scarlet Letter'.", "Gary Oldman starred in 'The Scarlet Letter' (1995), an American romantic drama with Demi Moore.", "Meryl Streep did not star in 'The Scarlet Letter' (1995) and is not listed in its cast.", 'The Scarlet Letter (1995) was directed by Roland Joffé, and Cinergi Pictures is not mentioned as the production company.', "Meryl Streep starred in other American romantic dramas in the 1990s, such as 'The Bridges of Madison County' (1995).", "Gary Oldman and Demi Moore starred together in the 1995 American romantic drama 'The Scarlet Letter'.", "Meryl Streep did not star in 'The Scarlet Letter' (1995) and is not listed in its cast.", "'The Scarlet Letter' (1995) was directed by Roland Joffé and was not produced by Cinergi Pictures.", "Meryl Streep starred in other 1990s American romantic dramas, such as 'The Bridges of Madison County' and 'Falling in Love'."]
+
+## Generated Outputs
+### reasoning
+The claim states that English actor Gary Oldman starred in a 1995 American romantic drama film made by Cinergi Pictures alongside Demi Moore and Meryl Streep. The notes confirm that Gary Oldman and Demi Moore starred together in "The Scarlet Letter" (1995), an American romantic drama, but Meryl Streep did not star in this film. Furthermore, Cinergi Pictures is not mentioned as the production company of this film. Meryl Streep appeared in other 1990s American romantic dramas, but not "The Scarlet Letter." Thus, the key aspects to verify are the involvement of Gary Oldman, Demi Moore, and Meryl Streep in the same 1995 American romantic drama film, and whether Cinergi Pictures produced that film.
+
+### query
+Did Gary Oldman, Demi Moore, and Meryl Streep star together in any American romantic drama film released in 1995? What was the production company of "The Scarlet Letter" (1995), and was Cinergi Pictures involved in its production? If not, which American romantic dramas did Meryl Streep star in during 1995, and who were the co-stars and producers of those films?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['The Scarlet Letter (1995 film)']. Documents remaining to be retrieved: ['Cinergi Pictures', 'Gary Oldman'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The Scottish punk band that worked 3 years with Young American Recordings and Sleeper, are both from Britain.
+
+### notes
+['Young American Recordings was an American record label based in New York City.', 'Young American Recordings worked with the Scottish punk band APB.', 'Sleeper is a British rock band.', 'Young American Recordings is not British, but American.', 'There is no evidence that a Scottish punk band worked for 3 years with both Young American Recordings and Sleeper.', 'Young American Recordings was an American record label that worked with the Scottish punk band APB.', 'Sleeper is a British rock band, but there is no record of them working with Young American Recordings or a Scottish punk band for three years.', 'Young American Recordings and Sleeper are not both British; Young American Recordings is American.', 'No evidence supports a three-year collaboration between a Scottish punk band, Young American Recordings, and Sleeper.', 'Young American Recordings is an American record label based in New York City, not British.', 'The Scottish punk band APB worked with Young American Recordings.', 'Sleeper is a British rock band but has no known collaboration with Young American Recordings or APB.', 'There is no evidence of a three-year collaboration between a Scottish punk band, Young American Recordings, and Sleeper.', 'Young American Recordings and Sleeper are not both from Britain.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that both Young American Recordings and Sleeper are British entities and that a Scottish punk band worked three years with them. However, the notes clarify that Young American Recordings is an American record label, not British, and they worked with the Scottish punk band APB. Sleeper is indeed British, but there is no evidence of collaboration involving Young American Recordings, Sleeper, and a Scottish punk band collectively for three years. To verify or refute the claim, it is necessary to ascertain the national identity of Young American Recordings and Sleeper, if any Scottish punk band collaborated with both, and whether this collaboration lasted three years.
+
+### query
+What is the nationality of Young American Recordings and Sleeper? Did any Scottish punk band collaborate with both Young American Recordings and Sleeper? If so, did this collaboration span three years?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Young American Recordings']. Documents remaining to be retrieved: ['APB (band)', 'Sleeper (band)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+An actor that was in the Wonder Woman (2017 film) of the action adventure genre, performed in Anomalisa after the premier of Fargo.
+
+### notes
+['David Thewlis acted in Wonder Woman (2017).', 'David Thewlis did voice work in Anomalisa (2015).', 'David Thewlis appeared in Fargo season 3 (2017).', 'Anomalisa (2015) released before the Fargo third season premiere (2017).', 'David Thewlis acted in Wonder Woman (2017) and did voice work in Anomalisa (2015).', 'David Thewlis appeared in Fargo season 3, which premiered in 2017.', 'Anomalisa was released in December 2015, before the Fargo season 3 premiere in 2017.', 'Therefore, David Thewlis performed in Anomalisa before the premiere of Fargo season 3, not after.', 'David Thewlis acted in Wonder Woman (2017) and did voice work in Anomalisa (2015).', 'Anomalisa was released in December 2015, before the Fargo season 3 premiere in 2017.', 'David Thewlis appeared in Fargo season 3, which premiered in 2017.', 'David Thewlis performed in Anomalisa before the premiere of Fargo season 3, not after.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that an actor from the 2017 action-adventure film "Wonder Woman" performed in the movie "Anomalisa" after the premiere of the TV show "Fargo." The notes indicate that David Thewlis appeared in "Wonder Woman" (2017) and performed voice work in "Anomalisa" (2015), and he also appeared in season 3 of "Fargo," which premiered in 2017. Importantly, "Anomalisa" was released in 2015, well before the 2017 premiere of "Fargo" season 3. Therefore, based on these details, the claim that the actor performed in "Anomalisa" after "Fargo" premiered is incorrect for David Thewlis. To fully verify the claim, it is necessary to check if there is any other actor who was in the 2017 "Wonder Woman" film and also performed in "Anomalisa" after the 2017 "Fargo" premiere.
+
+### query
+Which actors appeared both in the 2017 action-adventure film "Wonder Woman" and performed in the movie "Anomalisa"? For these actors, did any of their performances in "Anomalisa" occur after the premiere of the third season of "Fargo" in 2017?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['David Thewlis']. Documents remaining to be retrieved: ['Fargo (TV series)', 'Wonder Woman (2017 film)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

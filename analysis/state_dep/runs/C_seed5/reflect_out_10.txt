@@ -1,0 +1,66 @@
+``` 
+Task Description:
+
+You will be given three inputs:
+
+1. `claim` — A declarative, factual assertion referencing specific entities, events, dates, professions, genres, or other precise attributes primarily related to cultural, historical, or biographical domains. Examples include statements about musical bands and artists (formation years, discography, collaborations), films and TV shows (release years, casting, characters, genre), songs and co-writers (authorship, affiliations), or historical/political figures and events.
+
+2. `notes` — A collection of extracted sentences or factoids from various sources that include supporting, contradictory, or contextual information relevant to the claim. These notes often contain overlapping, redundant, or partially relevant details. They serve as raw evidence to assess the claim’s truthfulness.
+
+3. `context` — A set of document summaries or content snippets that provide broader background information on the entities, events, or themes in the claim. This may include biographical entries, historical overviews, discographies, filmographies, or topic summaries.
+
+Your task is to process these inputs and produce two outputs:
+
+1. `new_notes` — A distilled, concise list of the most crucial factual statements extracted or synthesized from both the `notes` and `context` that directly relate to assessing the claim. `new_notes` must:
+
+   - Include key, domain-specific facts such as:
+     * For musical acts: formation years, genres, album titles, number of albums, band name ambiguities, aliases.
+     * For films/TV shows: release or air dates, principal actors, character roles, casting connections.
+     * For songs: songwriting credits, authorship, professional affiliations.
+     * For historical/political assertions: office terms, public claims, factual events, opposing viewpoints.
+   - Resolve entity disambiguation clearly and avoid conflating similarly named or related entities.
+   - Eliminate redundancies and less relevant or vague information.
+   - Explicitly state when crucial information needed to verify the claim is missing or unavailable.
+   - Provide clarifications or specify contradictions where the evidence diverges.
+   - Present facts factually and precisely to enable reliable verification of the claim.
+
+2. `titles` — A list of the document or entity names corresponding to the main sources from which the key factual evidence in `new_notes` was derived. These titles represent the pivotal references used to assess the claim.
+
+Domain-Specific Considerations:
+
+- The task often involves nuanced factual reasoning about specialized topics:
+  * Bands/artists may have multiple names, aliases, or associated acts that must be correctly identified.
+  * Films and TV shows require accurate mapping of actors to roles and knowledge of release timelines.
+  * Political or historical claims often rely on sets of interconnected events, public statements, and opposing coverage from contemporaneous reporters or figures.
+  
+- The assistant must carefully separate entities that have similar names but differ in attributes (e.g., different bands with related names, actors appearing in the same shows but distinct roles).
+
+- When claims rely on comparisons (such as number of albums, starring roles, or historical dates), the assistant must determine if evidence for both sides of the comparison is present; if not, state the inability to verify the claim.
+
+Generalizable Strategy:
+
+1. Identify all entities and topics referenced in the `claim`.
+
+2. Extract all relevant factual data from `notes` and `context` about these entities focusing on details directly bearing on the claim’s core assertions.
+
+3. Cross-validate facts for consistency and flag or clarify contradictions.
+
+4. Produce concise, non-redundant, and factually accurate `new_notes` that summarize the evidence relevant to the claim’s verification.
+
+5. Collect the corresponding source titles from which these key facts originate.
+
+6. If key evidence is missing or incomplete, clearly note that the claim cannot be confirmed or refuted fully.
+
+Output Format:
+
+- Only output the two fields: `new_notes` (list of short factual snippets) and `titles` (list of source document/entity names).
+
+- Avoid speculative or unsupported information.
+
+- Use clear, precise, domain-appropriate terminology and date formats.
+
+Purpose:
+
+These outputs are intended to support fact-checking and facilitate rapid evidence retrieval and reasoning about claims by downstream systems or human verifiers. The clarity, precision, and relevance of the summarized facts and source titles are paramount.
+
+```

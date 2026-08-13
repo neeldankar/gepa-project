@@ -1,0 +1,115 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Instruction:
+
+You will be given two fields as input: `claim` and `notes`. Your task is to produce a `query` field that formulates a precise, focused question or set of questions that would efficiently retrieve or verify the evidence needed to validate or refute the `claim`. 
+
+Details and guidelines to follow:
+
+1. **Input format:**
+   - `claim`: A factual or verification statement involving entities (people, places, dates, works, relationships, roles, events, etc.) whose truth needs to be verified.
+   - `notes`: A list of factually relevant pieces of information or candidate evidences (called sources or documents) that relate to entities, events, or claims mentioned in the `claim`. The notes contain domain and entity-specific information such as names of people, locations, productions, roles, dates, familial relationships, jurisdictional hierarchies, or other specialized knowledge that is pertinent to the claim verification.
+
+2. **Output format:**
+   - Produce a `query` field, which is a concise but comprehensive question or query string that is designed to retrieve documents or evidence most relevant to confirming or disconfirming the claim.
+   - The query should explicitly mention key entities and relationships from the claim.
+   - The query can be a single question or multiple related questions formulated clearly and unambiguously.
+   - Use domain-specific terms or entity names as precisely as they appear to maximize the relevance of search or retrieval results.
+
+3. **Goal and strategy:**
+   - The primary goal is to synthesize the essential verification needs by linking relevant entities, events, roles, timeframes, or relationships indicated by the claim.
+   - The goal is to generate a query that retrieves the exact gold standard documents needed for verifying the claim.
+   - If the claim involves multiple entities with implied relationships (e.g., jurisdiction, familial ties, membership, roles in productions), encode these relationships explicitly in the query.
+   - If the existing notes lack complete evidence, construct queries that attempt to fill these gaps by requesting specific missing details (such as full cast lists, parental relationships, or location hierarchies).
+   - Queries should be designed to disambiguate potential confusions and confirm or exclude specific fact patterns.
+
+4. **Domain-specific knowledge to consider:**
+   - Geopolitical entities: County-to-city hierarchical jurisdiction within provinces and countries (e.g., Fàn County is under Puyang City in Henan Province, both cities within China).
+   - Film and TV entities: Films (by name and year), cast and crew members, familial relationships between actors (e.g., father of star), production companies, and roles (e.g., lead actor, judge).
+   - Music and showbiz domain: Names of judges, roles, replacements on shows, producer/singer relationships to musical albums or shows.
+   - Use well-known naming conventions and canonical spellings as given.
+   - Awareness of context-specific ambiguities (e.g., different people named similarly, cities in same country but different provinces).
+
+5. **Examples of good query characteristics:**
+   - Explicit mention of both entities whose relationship or co-location is addressed (e.g., Are Puyang City and Pu'er City both located in China?).
+   - Inclusion of necessary roles or relational qualifiers when verifying family ties (e.g., Who starred in "Bombay Talkie" (1970), and is any actor the father of a "Sultanat" star?).
+   - Querying for presence or absence of particular roles or people when claim status is unclear (e.g., Are Meesha Shafi, Strings, Ali Azmat, and Junaid Khan judges on "Music Icons", and has the producer and singer of "Aaina" joined the panel?).
+
+6. **Avoid:**
+   - Generic or vague queries that do not link key entities explicitly.
+   - Omitting important qualifiers like titles, years, or roles that would reduce retrieval accuracy.
+   - Queries relying solely on partial information without connecting to the claim’s main verification point.
+
+In summary, your task is to transform claims and their partial evidential notes into focused, entity- and relationship-centric queries that enable retrieving the precise evidence required to verify those claims, especially in complex, domain-rich contexts involving hierarchical geopolitical information, familial connections, and role assignments in entertainment media.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The Manchester United Football Club is known as "the Red Devils". The goalie who led the strike force for the 1928–29 Leicester City F.C. season played for them.
+
+### notes
+["Manchester United is commonly known as 'the Red Devils'.", 'The 1928–29 Leicester City strike force was led by Ernie Hine, Arthur Chandler, Arthur Lochhead, and Johnny Duncan, all attacking players.', 'Goalkeepers such as James Mitchell and Ian Andrews played for Leicester City but not necessarily during the 1928–29 season or for Manchester United.', 'Walter Smith played as a goalkeeper for Leicester Fosse and Manchester City but not Manchester United.', 'No goalkeeper leading the 1928-29 Leicester City strike force played for Manchester United according to available context.', 'It is unusual for a goalkeeper to lead a strike force.', 'Thus, the claim about the goalie leading the strike force and playing for Manchester United is unsupported.', "Manchester United is commonly known as 'the Red Devils'.", 'The 1928-29 Leicester City strike force was led by Ernie Hine, Arthur Chandler, Arthur Lochhead, and Johnny Duncan, all attackers.', 'No goalkeeper led the 1928-29 Leicester City strike force.', 'Goalkeepers known to have played for Leicester City at various times include James Mitchell and Ian Andrews, but they did not lead the strike force and did not play for Manchester United.', 'Walter Smith was a goalkeeper for Leicester Fosse and Manchester City but not Manchester United.', 'It is highly unusual for a goalkeeper to lead a strike force.', 'Therefore, no goalkeeper leading the 1928-29 Leicester City strike force played for Manchester United.', "Manchester United is commonly known as 'the Red Devils'.", 'The 1928–29 Leicester City strike force was led by Ernie Hine, Arthur Chandler, Arthur Lochhead, and Johnny Duncan, all attacking players.', 'No goalkeeper led the 1928–29 Leicester City strike force.', 'It is highly unusual for a goalkeeper to lead a strike force.', 'No goalkeeper leading the 1928–29 Leicester City strike force played for Manchester United.', 'Known Leicester City goalkeepers at the time did not play for Manchester United.', 'The claim about the goalie leading the strike force and playing for Manchester United is unsupported.']
+
+## Generated Outputs
+### reasoning
+The claim has two parts: first, that Manchester United Football Club is known as "the Red Devils," which is confirmed by note [1]. Second, it claims that the goalie who led the strike force for the 1928–29 Leicester City F.C. season played for Manchester United. However, notes [2] and [5] indicate that the strike force leaders were attacking players, not goalies; goalkeepers from Leicester City listed in note [3] did not necessarily play during that season or for Manchester United; note [4] names a goalkeeper who played for Leicester Fosse and Manchester City but not Manchester United; and note [6] highlights that it is unusual for a goalie to lead a strike force. Therefore, there is no evidence that a goalie leading the Leicester City strike force in 1928–29 played for Manchester United. To verify this fully, a query should check the identities of Leicester City strike force leaders in 1928–29, who their goalkeepers were, and if any of these goalkeepers played for Manchester United.
+
+### query
+Who were the players in the 1928–29 Leicester City F.C. strike force, and were any of them goalkeepers? Who was the goalkeeper for Leicester City in the 1928–29 season? Did any goalkeeper from Leicester City during that season play for Manchester United? Is Manchester United Football Club known as "the Red Devils"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['1928–29 Leicester City F.C. season']. Documents remaining to be retrieved: ['Ernie Hine', 'Manchester United F.C.'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Reverend Lyttleton Morgan was the first chairman of the board of trustees at a university. That university and the University of Idaho are public types of universities.
+
+### notes
+['Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, which was originally named Centenary Biblical Institute and later renamed in his honor.', "Morgan State University is Maryland's designated public urban university and the largest historically black college in Maryland.", 'Morgan State University became a university in 1975 and is a public institution.', 'The University of Idaho is a public university, recognized as such outside the current provided context.', 'Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, originally called Centenary Biblical Institute, renamed in his honor.', "Morgan State University is Maryland's designated public urban university and the largest historically black college in Maryland.", 'Morgan State University became a university in 1975 and is a public institution.', 'The University of Idaho is a public university.', 'Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, originally named Centenary Biblical Institute, later renamed in his honor.', "Morgan State University became a university in 1975 and is Maryland's designated public urban university, classified as a public institution.", 'The University of Idaho is also recognized as a public university.']
+
+## Generated Outputs
+### reasoning
+The claim states that Reverend Lyttleton Morgan was the first chairman of the board of trustees at a university, and that this university and the University of Idaho are both public universities. The notes confirm that Reverend Lyttleton Morgan was the first chairman of the board of trustees at Morgan State University, which was originally named Centenary Biblical Institute, later renamed in his honor. Additionally, the notes establish that Morgan State University is a public institution, Maryland’s designated public urban university, and that the University of Idaho is also a public university. Therefore, the key points to verify are Reverend Lyttleton Morgan's role at Morgan State University and the public status of both Morgan State University and the University of Idaho.
+
+### query
+Was Reverend Lyttleton Morgan the first chairman of the board of trustees at Morgan State University, and is Morgan State University a public university? Is the University of Idaho also classified as a public university?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Lyttleton Morgan', 'Morgan State University']. Documents remaining to be retrieved: ['University of Idaho'].
+
+
+
+# Example 3
+## Inputs
+### claim
+His screenplay of the film The Night Hunter was based on a novel. the writer and Nelly Sachs have not both won a Nobel Prize in Literature.
+
+### notes
+["The screenplay of the 1955 film 'The Night of the Hunter' by James Agee was based on the 1953 novel by Davis Grubb.", 'Nelly Sachs won the Nobel Prize in Literature in 1966.', "Davis Grubb, the author of 'The Night of the Hunter' novel, did not win a Nobel Prize in Literature.", "James Agee wrote the screenplay for the 1955 film The Night of the Hunter, which was based on Davis Grubb's 1953 novel of the same name.", 'Davis Grubb, author of the novel The Night of the Hunter, did not win the Nobel Prize in Literature.', 'Nelly Sachs won the Nobel Prize in Literature in 1966.', 'Since Davis Grubb did not win the Nobel Prize, he and Nelly Sachs have not both won the Nobel Prize in Literature.', "James Agee wrote the screenplay for the 1955 film 'The Night of the Hunter', which was based on Davis Grubb's 1953 novel of the same name.", 'Nelly Sachs won the Nobel Prize in Literature in 1966.', "Davis Grubb, author of the novel 'The Night of the Hunter', did not win the Nobel Prize in Literature.", 'Since Davis Grubb did not win the Nobel Prize, he and Nelly Sachs have not both won the Nobel Prize in Literature.']
+
+## Generated Outputs
+### reasoning
+The claim asserts two points: first, that the screenplay of the film "The Night Hunter" was based on a novel; second, that the writer of that novel and Nelly Sachs have not both won the Nobel Prize in Literature. The notes clarify that the screenplay in question is for the 1955 film "The Night of the Hunter," written by James Agee, and that it was based on the 1953 novel by Davis Grubb. Nelly Sachs won the Nobel Prize in Literature in 1966, whereas Davis Grubb, author of the novel, did not win the Nobel Prize. Therefore, the claim hinges on verifying that the writer of the source novel for the screenplay and Nelly Sachs have not both been Nobel laureates. To verify this, the query should confirm the relationship between the film, the novel, their authorship, and the Nobel Prize status of Davis Grubb and Nelly Sachs.
+
+### query
+Was the screenplay of the 1955 film "The Night of the Hunter" written by James Agee based on the 1953 novel by Davis Grubb? Did Davis Grubb ever win the Nobel Prize in Literature? Did Nelly Sachs win the Nobel Prize in Literature?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['The Night of the Hunter (film)']. Documents remaining to be retrieved: ['James Agee', 'Nelly Sachs'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

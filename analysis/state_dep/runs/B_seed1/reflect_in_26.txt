@@ -1,0 +1,174 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Overview:  
+You will be given three input fields—`claim`, `notes`, and `context`—and your goal is to produce two output fields: `new_notes` and `titles`. Your outputs must form a concise, accurate, and evidence-focused synthesis that verifies or explains the claim using the provided information.
+
+Inputs:
+
+- `claim`: A factual or verification statement involving real-world entities, events, or concepts (e.g., historical figures, operas, albums, sports teams, geographical locations). The claim may combine multiple assertions and require coordinated verification of relationships, timelines, or attributions.
+
+- `notes`: A collection of sentences or facts potentially relevant to the claim. Notes often contain overlapping, redundant, or extraneous details. They typically include dates, relationships between entities, biographical data, geographic hierarchies, or specifics about events, productions, or organizations.
+
+- `context`: Background knowledge excerpts linked to entities or topics in the claim and notes. Context excerpts provide detailed entity descriptions, timelines, biographies, definitions, hierarchical geographic data, or event histories. Context may be drawn from domain-specific documents (e.g., sports seasons, album releases, opera productions).
+
+Outputs:
+
+- `new_notes`: A distilled, rephrased subset of the input notes, filtered to include only key, non-redundant facts that are critical to supporting or refuting the claim. These notes should:  
+    - Be concise yet sufficiently comprehensive to cover the claim’s essential facts.  
+    - Remove duplicates and near-duplicates within the notes.  
+    - Clarify temporal, geographic, and relational details (dates, lifespan overlaps, hierarchical place relations).  
+    - Accurately attribute roles or contributions (e.g., composer vs. director, player positions, sponsorship relations).  
+    - Disambiguate entities with similar names by referring to relevant dates or roles (e.g., different operas titled similarly but by different composers).  
+    - Incorporate relevant clarifications or context-derived enhancements to improve factual precision and clarity.
+
+- `titles`: A list of document or entity titles that correspond to the evidence sources underlying the `new_notes`. Titles are references identifying critical documents or context excerpts that support key facts. Select titles that:  
+    - Precisely correspond to the domain-relevant entities, events, or documents in `new_notes`.  
+    - Include all crucial sources to comprehensively cover the claim’s verification, balancing breadth and focus.  
+    - Avoid unrelated or tangential titles to maintain precision.
+
+Core Reasoning & Strategy:
+
+1. **Understand the claim’s factual core:**  
+   Identify the main factual assertions to verify, such as the timing of an event relative to an entity’s involvement, hierarchical relationships (e.g., city within state within country), or roles of individuals/entities in productions or organizations.
+
+2. **Filter relevant notes:**  
+   From the input `notes`, extract facts directly regarding the claim’s core entities, events, timelines, or relationships. Discard extraneous, duplicated, or off-topic information.
+
+3. **Use context for disambiguation and clarification:**  
+   Leverage `context` information to:  
+   - Disambiguate entities with similar or identical names by comparing dates, roles, or other attributes.  
+   - Confirm hierarchical geographic information (e.g., Memphis is a city in Tennessee, USA).  
+   - Validate timelines or overlapping lifespans to establish co-existence or sequential order.  
+   - Accurately identify roles (e.g., who composed which opera, who played in specific sports seasons or positions).  
+   - Clarify sponsorship or affiliation relationships (e.g., a company based in a city sponsoring an event).
+
+4. **Synthesize a precise, non-redundant summary (`new_notes`):**  
+   Combine the filtered facts into clear, precise, single statements that directly support or refute the claim, avoiding redundancy and verbose wording. Where possible, integrate contextual clarifications to improve clarity and precision.
+
+5. **Select relevant titles:**  
+   Choose document or entity titles from the context or notes that provide direct support or detailed background for the facts in `new_notes`. Include all necessary titles to cover all aspects of the claim’s factual verification.
+
+Domain-Specific Knowledge & Considerations:
+
+- **Entities may include:**  
+  - Historical persons (including birth and death years to verify overlap).  
+  - Creative works (operas, films, albums) with release years, composer/director/producer credits.  
+  - Sports teams, seasons, players, and positions (e.g., identifying forward vs. goalie, team nicknames).  
+  - Companies, with headquarters and operating locations.  
+  - Geographical locations, structured hierarchically (city > state > country).
+
+- **Temporal verification:**  
+  Use dates of birth, death, releases, or event occurrences to confirm order of events or existence overlaps.
+
+- **Role and attribution precision:**  
+  Distinguish among contributors to creative works (composer vs. director vs. editor), team players (positions), or company affiliations to avoid wrongful attribution.
+
+- **Disambiguation of similarly named entities:**  
+  When multiple operas, albums, or teams have similar titles/names, differentiate them using date and creator information.
+
+- **Avoid logical inconsistencies:**  
+  For example, recognize when claims about roles contradict known facts (e.g., a goalie leading a strike force in football is implausible).
+
+- **Examples**:  
+  - If a band member’s last album is dated before a DVD release, and the DVD references a tour during that period, infer departure timing accordingly.  
+  - If a company sponsoring a bowl is based in the same city where the event is held, explicitly note that connection.  
+  - If a sports team is known by a nickname, confirm and document this using authoritative sources.
+
+Summary:  
+Your output should deliver a sharply focused, logically coherent, and factually accurate set of notes alongside clear citations via titles. This enables precise verification or explanation of the claim. Filtering, synthesis, disambiguation, and domain-aware reasoning are fundamental to successfully completing this task.
+
+Formatting Requirements:  
+- Output `new_notes` as a list of concise, factual statements.  
+- Output `titles` as a list of exact document/entity titles corresponding to the evidence sources used.
+
+Follow these guidelines carefully to maximize precision, clarity, and relevance in verifying complex factual claims across diverse domains.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The  Vines' frontman wrote the song "Get Free". He and Boy George are not both from the same country.
+
+### notes
+['The song "Get Free" was written by Craig Nicholls, frontman of Australian garage rock band The Vines.', 'Craig Nicholls is Australian as he fronts the Australian band The Vines.', "Boy George, born George Alan O'Dowd, is a British singer from England.", 'Craig Nicholls and Boy George are from different countries; Nicholls is Australian and Boy George is British.', "Craig Nicholls, the Australian frontman of The Vines, wrote the song 'Get Free'.", "Boy George (George Alan O'Dowd) is a British singer from England.", 'Craig Nicholls and Boy George are from different countries; Nicholls is Australian and Boy George is British.', 'Craig Nicholls, the Australian frontman of The Vines, wrote the song "Get Free".', 'Craig Nicholls is Australian as he leads the Australian band The Vines.', "Boy George (George Alan O'Dowd) is a British singer from England.", 'Craig Nicholls and Boy George are from different countries; Nicholls is Australian and Boy George is British.']
+
+### context
+['Get Free | "Get Free" is a song by the garage rock band The Vines from their debut album "Highly Evolved".  The song was released in mid 2002, and remains the Vines\' highest charting single (#7 Billboard Modern Rock, #24 UK Singles Chart).  The song was written by Vines\' frontman Craig Nicholls.  It was covered by "Weird Al" Yankovic in his polka medley "Angry White Boy Polka" from his 2003 album "Poodle Hat".  It was featured in the pilot episodes of "Fastlane" and "Shameless", as well as the 2006 movie "School for Scoundrels".  The song can be heard in several video games including the introduction video for "Topspin", the Nintendo DS version of "Band Hero" and as a playable track on "Rock Band 3" and "".  "Get Free" along with "Ride" appeared in the documentary "Warren Miller\'s Impact".', 'I Get Up | "I Get Up" was a single that was released in 2003 by Australian band INXS.  The song was written by Andrew Farriss and Jon Stevens.  It was the first new material by INXS since their former frontman Michael Hutchence died by suicide on 22 November 1997.  The lead singer on "I Get Up" is former Noiseworks frontman Jon Stevens.  It is the only studio recorded material by INXS with Stevens singing.  Stevens resigned from INXS by the end of 2003 because of "differing views" about the bands\' future.', "Wicked Nature | Wicked Nature is the sixth studio album by Australian alternative rock band The Vines.  It was released on 2 September 2014.  The double album is the band's first release under their own label Wicked Nature Music.  The release marks a few milestones for The Vines, with frontman Craig Nicholls taking on the role of producer for the first time, as well as introducing a completely new rhythm section with drummer Lachlan West and bassist Tim John.  Much of the funding for the album came from music funding website PledgeMusic.", 'Evie (song) | "Evie" is an Australian rock song released as a single in 1974 by Australian singer and former frontman of The Easybeats, Stevie Wright.  It was written by Harry Vanda and George Young.  It has been suggested that it is the first 11-minute song to chart at #1 anywhere in the world.', 'Everything Is Alright | "Everything Is Alright" is a song by American rock band Motion City Soundtrack, released in 2005 as the lead single from the group\'s second studio album, "Commit This to Memory" (2005).  The song concerns neurotic, obsessive problems and social anxiety, and was written by frontman Justin Pierre.  The song also contains backing vocals from Fall Out Boy frontman Patrick Stump.', 'Grey Will Fade | Grey Will Fade is the debut album from British singer/songwriter Charlotte Hatherley, released in 2004 whilst still playing guitar in British rock band Ash.  She was encouraged to write the album by Ash frontman Tim Wheeler due to the popularity of the song, "Grey Will Fade," originally released as a B-side on Ash\'s 2001 single "There\'s a Star."  The album reached number 51 in the UK Albums Chart. </small>', 'Lights Out (Royal Blood song) | "Lights Out" is a song by English hard rock band Royal Blood.  Written by band members Mike Kerr and Ben Thatcher with Bass Drum of Death frontman John Barrett, it was produced by Jolyon Thomas with Kerr and Thatcher and featured on the band\'s 2017 second studio album "How Did We Get So Dark? ".  The song was released as the first single from the album on 14 April 2017, reaching number 96 on the UK Singles Chart and topping the UK Rock & Metal Singles Chart.', 'George Bellamy (musician) | George Bellamy (born 8 October 1941) is an English musician, singer and former rhythm guitarist for The Tornados.  He is the father of Matthew Bellamy, frontman of British rock band Muse.', 'Lifeline (Jamiroquai song) | "Lifeline" is the third single from British funk/acid jazz band Jamiroquai\'s studio album, "Rock Dust Light Star".  The single was released via Digital Download on 24 January 2011.  The song was written by band frontman Jay Kay and Matt Johnson.  It is the band\'s third single to be released under Mercury Records.  The single did not receive an official physical release.  It appears that the Jamiroquai logo typeface has been stretched vertically for this release.  The video for the single was made available on the group\'s YouTube account on 7 January 2011.  All three singles from Rock Dust Light Star have identical cover artwork, with the exception of the song title, which is printed in a different colour each time.', 'The Best of The Vines | The Best of The Vines is a compilation album by The Vines and contains a selection of singles and album tracks from their first three albums released under Capitol Records.  The band did not have a say in the release having been dropped by Capitol Records in 2007, however they picked the songs.']
+
+## Generated Outputs
+### reasoning
+The Vines' frontman Craig Nicholls is credited with writing the song "Get Free", which verifies the first part of the claim. Craig Nicholls is Australian, as The Vines are an Australian band. Boy George, whose birth name is George Alan O'Dowd, is a British singer from England. Therefore, they are not both from the same country, with Nicholls being Australian and Boy George being British. This confirms the second part of the claim.
+
+### new_notes
+['The song "Get Free" was written by Craig Nicholls, frontman of Australian garage rock band The Vines.', 'Craig Nicholls is Australian as he fronts the Australian band The Vines.', "Boy George, born George Alan O'Dowd, is a British singer from England.", 'Craig Nicholls and Boy George are from different countries; Nicholls is Australian and Boy George is British.']
+
+### titles
+['Get Free', 'The Best of The Vines']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Craig Nicholls', 'Get Free']. Documents remaining to be retrieved: ['Boy George'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The TV series where the actor played the character Gaius Baltar joined in 2010. premiered on July 18, 2006. The serie was premiered on July 18, 2006.
+
+### notes
+["Dr. Gaius Baltar is a primary character in the reimagined 'Battlestar Galactica' TV series and is played by James Callis.", "The reimagined 'Battlestar Galactica' series premiered before 2010; the actor James Callis played Gaius Baltar from the beginning of the series.", "None of the series in the provided context that premiered on July 18, 2006, are related to 'Battlestar Galactica' or feature Gaius Baltar.", "The series 'Encantadia' premiered on July 18, 2016, unrelated to Gaius Baltar or 'Battlestar Galactica'.", 'Dr. Gaius Baltar is a primary character in the reimagined Battlestar Galactica TV series, played by James Callis from the start of the series.', 'James Callis joined the cast of the TV series Eureka in 2010, not Battlestar Galactica.', 'Battlestar Galactica (reimagined) premiered before 2010, but not on July 18, 2006.', 'No series featuring Gaius Baltar premiered on July 18, 2006.', 'The date July 18, 2006, does not correspond to the premiere of Battlestar Galactica or any series involving Gaius Baltar.', "The reimagined 'Battlestar Galactica' TV series features the character Dr. Gaius Baltar, played by James Callis from the start of the series.", "'Battlestar Galactica' premiered before 2010 and did not premiere on July 18, 2006.", "James Callis joined the cast of the TV series 'Eureka' in 2010, not 'Battlestar Galactica'.", "No series involving Gaius Baltar or 'Battlestar Galactica' premiered on July 18, 2006.", "The third season of 'Battlestar Galactica' premiered on October 6, 2006."]
+
+### context
+['Gaius Baltar | Dr. Gaius Baltar is a fictional character in the TV series "Battlestar Galactica" played by James Callis, a reimagining of Count Baltar from the 1978 "Battlestar Galactica" series.  He is one of the show\'s primary characters.', 'James Callis | James Nicholas Callis (born 4 June 1971) is an English actor.  He is best known for playing Dr. Gaius Baltar in the re-imagined "Battlestar Galactica" miniseries and television series, and Bridget Jones\' best friend in "Bridget Jones\'s Diary" and "".  He later reprised the role in 2016, in "Bridget Jones\'s Baby."  He joined the cast of the TV Series "Eureka", on Syfy, in 2010.  In 2017 he voiced the character Alucard on the Netflix series "Castlevania", based on the video game of the same name.', 'Cally Henderson Tyrol | Callandra "Cally" Tyrol ("née" Callandra Henderson) (also known as Cally or Crewman Cally, Deckhand Cally, or Specialist Cally) is a fictional character from the re-imagined "Battlestar Galactica" series.  She is played by actress Nicki Clyne.', 'William Adama | William "Bill" Adama (callsign "Husker") is a fictional character portrayed by Edward James Olmos in the re-imagined "Battlestar Galactica" television series produced and aired by the SyFy cable network.  He is one of the main characters, a reimagining of Commander Adama from the 1978 "Battlestar Galactica" series played by Lorne Greene.', 'Baltar (Battlestar Galactica) | Baltar is a fictional character in the "Battlestar Galactica" universe who betrays the human race, through willing treachery in the original 1978 series, and as the inadvertent result of arrogance and self-interest in the 2003 miniseries and following TV series.', 'Hera (Battlestar Galactica) | Hera is the name of a character in the reimagined TV series of Battlestar Galactica.', 'Kara Thrace | Kara Thrace (callsign "Starbuck") is a fictional character in the reimagined "Battlestar Galactica" series.  Played by Katee Sackhoff, she is a revised version of Lieutenant Starbuck from the 1978 "Battlestar Galactica" series.  She is one of the show\'s main characters.', 'Aaron Kelly (Battlestar Galactica) | Captain Aaron Kelly is a fictional character, played by Ty Olsson, in the reimagined "Battlestar Galactica" TV program.  The character has been part of the show since the 2003 Miniseries.  Captain Kelly is the landing signal officer (LSO) aboard the Battlestar "Galactica".  At the beginning of the second season, Captain Kelly was third in line of command, after then-Commander Adama and then-Colonel Tigh.  The character of Aaron Kelly has no direct analog in the original "Battlestar Galactica".', 'Sherman Cottle | Major Sherman Cottle is a fictional character in the reimagined "Battlestar Galactica" series.  He is the battlestar "Galactica"\'s Chief Medical Officer.  The character is played by Donnelly Rhodes.', 'Battlestar (reimagining) | A battlestar is a battleship/carrier hybrid starship in the reimagined science fiction television series "Battlestar Galactica".  The reimagined series\' battlestars and the series\' other visual effects were designed and created by Zoic Studios for "Battlestar Galactica".']
+
+## Generated Outputs
+### reasoning
+The claim states that the TV series featuring the character Gaius Baltar, played by James Callis, joined in 2010 and premiered on July 18, 2006, with the premiere date repeated twice. From the notes and context, Gaius Baltar is a primary character in the reimagined Battlestar Galactica series, played by James Callis from the beginning of that series. The Battlestar Galactica reimagined series did not premiere on July 18, 2006; no series involving Gaius Baltar premiered on that date. Also, James Callis joined the cast of a different series, Eureka, in 2010, which is unrelated to Battlestar Galactica. The date July 18, 2006, does not match the premiere date of Battlestar Galactica or any series involving Gaius Baltar but is associated with a different series, Encantadia (which premiered in 2016, per notes, but the 2006 date does not correspond to Battlestar Galactica). Therefore, the claim is incorrect in associating the July 18, 2006 premiere date with the Battlestar Galactica series. The actor joined a different series in 2010, not Battlestar Galactica. Battlestar Galactica premiered before 2010, but not on July 18, 2006.
+
+### new_notes
+['Dr. Gaius Baltar is a primary character in the reimagined Battlestar Galactica TV series, played by James Callis from the start of the series.', 'James Callis joined the cast of the TV series Eureka in 2010, not Battlestar Galactica.', 'Battlestar Galactica (reimagined) premiered before 2010, but not on July 18, 2006.', 'No series featuring Gaius Baltar premiered on July 18, 2006.', 'The date July 18, 2006, does not correspond to the premiere of Battlestar Galactica or any series involving Gaius Baltar.']
+
+### titles
+['Gaius Baltar', 'James Callis', 'Battlestar (reimagining)']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Gaius Baltar', 'James Callis']. Documents remaining to be retrieved: ['Eureka (U.S. TV series)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Cast is considered a rock band. The band Jacob Gentry collaborated with is also considered a rock band.
+
+### notes
+['Cast is a Mexican rock band formed in the 1970s, specializing in progressive rock and organizing the Baja Prog festival in Mexicali, Mexico.', 'Eagle Twin is an American band formed by Gentry Densley that is generally classified as a metal band but also includes elements of progressive rock, blues rock, and psychedelic rock.', 'Jacob Gentry is associated with Eagle Twin, a band considered to have rock elements in its music.', 'Cast is a Mexican progressive rock band formed in the 1970s, known for hosting the Baja Prog festival in Mexicali, Mexico.', 'Jacob Gentry is associated with Eagle Twin, an American band classified mainly as doom and sludge metal but incorporating significant elements of progressive rock, blues rock, and psychedelic rock.', 'Cast is a Mexican progressive rock band formed in the 1970s, known for hosting the Baja Prog festival in Mexicali, Mexico.', 'Jacob Gentry is associated with Eagle Twin, an American band primarily classified as doom and sludge metal but incorporating significant elements of progressive rock, blues rock, and psychedelic rock.']
+
+### context
+['The Gentry (band) | The Gentry is an American band from Portland, Oregon, formed in 2003 by DJ/producer Gino Mari.  The band is most commonly classified in the electronic, alternative rock and rock music genres.', 'Introduction (rock band) | Introduction is a Swedish rock band based in Stockholm.  Often classified as psychedelic rock, Introduction is also influenced by classic rock, progressive rock and indie rock.', 'The Bees (band) | The Bees (known in the United States as A Band of Bees) are an English band from Ventnor on the Isle of Wight.  Although their sound is generally classified as indie rock or psychedelic rock, the band have a colourful range of styles and influences, such as 1960s garage rock, country, reggae and jazz.', 'Love Kills (band) | Love Kills was a Canadian alternative rock band from Toronto, Canada, which formed in 2005, with lead guitarist, vocalist, and chief songwriter Pat Rijd, lead vocalist Heather Flood, brother and guitarist Tom Flood, bassist Mark Bergshoeff, and drummer Jay Talsma.  The band have been variously classified as shoegaze, surf rock, and garage rock.', "Eagle Twin | Eagle Twin is an American metal band formed in Salt Lake City, Utah by singer/guitarist Gentry Densley and drummer Tyler Smith.  Eagle Twin's music could be broadly classified as doom metal or sludge metal, but also touches on progressive rock, blues rock, jazz fusion and psychedelic rock, featuring lengthy instrumental passages and Densley's gruff, half-chanted vocals, which occasionally veer into overtone singing.", 'The Defectors | The Defectors are a Danish rock band originating from Aarhus, Denmark, formed in 1997.  Originally consisting of members Mort Harder, Mik Stegger, Jonas Jørgensen, Martin Budde and Torben Skovgaard, the band cites the sixties garage rock and early formation of punk as its main influences.  The band maintains this through its work, typically being classified as either a Garage Rock or Punk revival band.', 'Lo Presher | Lo Presher is an American rock band formed in 1992 in Brevard County, Florida.  The band released three studio albums and toured extensively, including performances on the Vans Warped Tour.  The band is usually classified under Surf Rock, but fans are credited with labeling their style as "Tribal Alternative", a musical movement popular in the U.S. underground independent scene of the late nineties, of which the band is credited for influencing.  They are best known for their work on musical soundtracks for extreme sports videos and for their live, theatrical percussion performances in which they play homemade instruments.  "The band\'s name is sometimes credited as Lo Pressure or Low Pressure"', 'Shadowy Men on a Shadowy Planet | Shadowy Men on a Shadowy Planet are a Juno Award-winning Canadian instrumental rock band, formed in 1984.  They remain best known for the track "Having an Average Weekend", which was used as the theme to the Canadian sketch comedy TV show "The Kids in the Hall".  Although commonly classified as a surf rock band they rejected the label, going so far as to release a track called "We\'re Not a Fucking Surf Band", although they also later released a compilation box set titled "Oh, I Guess We Were a Fucking Surf Band After All".', "Press Play On Tape | Press Play On Tape (PPOT) is a Danish band that uses Commodore 64 tunes.  The band formed in 1999 and has six members.  The band classifies itself as a rock and bitpop band.  The band's name originates from the message that the Commodore 64 computer outputs as a response to the LOAD command.", 'Cast (Mexican band) | Cast is a rock band from Mexico.  Formed in the 1970s, they specialize in progressive rock, similar in style to early Genesis.  Their music focuses strongly on keyboards, guitars and vocals.  The band host an annual progressive rock festival called Baja Prog in Mexicali, Baja California, Mexico, which features bands from around the world.']
+
+## Generated Outputs
+### reasoning
+The claim states that Cast is considered a rock band, and the band Jacob Gentry collaborated with is also considered a rock band. From the context provided, Cast (Mexican band) is explicitly described as a rock band specializing in progressive rock. Regarding the band Jacob Gentry collaborated with, Eagle Twin is identified as an American metal band formed by Gentry Densley, which includes rock elements such as progressive rock, blues rock, and psychedelic rock. Since Eagle Twin incorporates rock genres even though metal is the primary categorization, it is valid to consider it a rock band in the broad sense. Therefore, both Cast and Eagle Twin meet the claim's criteria of being rock bands, with the latter linked to Jacob Gentry.
+
+### new_notes
+['Cast is a Mexican rock band formed in the 1970s, specializing in progressive rock and organizing the Baja Prog festival in Mexicali, Mexico.', 'Eagle Twin is an American band formed by Gentry Densley that is generally classified as a metal band but also includes elements of progressive rock, blues rock, and psychedelic rock.', 'Jacob Gentry is associated with Eagle Twin, a band considered to have rock elements in its music.']
+
+### titles
+['Cast (Mexican band)', 'Eagle Twin']
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Broken Bells', 'Cast (band)', 'Jacob Gentry'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

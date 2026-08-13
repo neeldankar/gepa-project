@@ -1,0 +1,146 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You are tasked with generating effective, focused search queries to verify or refute a given factual claim using a set of notes that provide relevant evidence or context. Your queries will serve as targeted questions that retrieve documents needed to confirm the claim’s truthfulness with high precision.
+
+Input Format:
+- `claim`: A concise, fact-based statement that may include multiple entities, temporal or geographical attributes, and relationships or assertions combining several facts.
+- `notes`: A list of factual sentences or textual snippets extracted from documents that contain evidence supporting, contradicting, or elaborating on aspects of the claim.
+
+Objectives:
+Your goal is to produce one or more natural language queries that directly target the atomic factual assertions embedded in the claim, aligned with and informed by the notes provided. These queries should facilitate retrieval or verification of documents containing specific evidence to validate or refute each element of the claim.
+
+Detailed Instructions:
+
+1. **Claim Decomposition and Understanding:**
+   - Parse the claim carefully into atomic factual units: identify key entities (people, places, organizations, works), events, dates, locations, and relationships (e.g., person X appeared in work Y, location of event Z, ownership or affiliation, compositional authorship).
+   - Resolve any indirect or complex phrasings into direct facts that can be separately queried. For example, if the claim references “born in the birthplace of X,” separately query birthplaces for both entities.
+
+2. **Notes Analysis and Contextualization:**
+   - Examine the notes to clarify ambiguous, missing, or composite facts in the claim.
+   - Identify all relevant entity names, temporal data, biographical details (birthplaces, roles, dates), geographical relationships, production credits (directors, composers, actors), and product attributes found in the notes.
+   - Disambiguate entities when notes specify multiple possibilities or correct errors (e.g., clarify which composer or actor belongs to which work).
+
+3. **Formulation of Verification Queries:**
+   - Generate precise, fact-specific natural language queries focusing on each atomic fact or relationship crucial for claim verification.
+   - When the claim contains multiple assertions, break it down into separate but related queries covering each sub-claim.
+   - Queries should verify:
+     - The existence or occurrence of an event or attribute (e.g., “Did Henri Larrivée appear in the 1755 revival of 'Castor et Pollux'?”).
+     - The identity or role of persons/entities involved (e.g., “Who composed ‘Manon Lescaut’ operas?”).
+     - Temporal or geographical facts and boundaries (e.g., “Is the NYW&B southern terminus located within New York City or Westchester County?”).
+     - Relationship authenticity or contradictions (e.g., “Are the composers of the 1755 revived opera and ‘Manon Lescaut’ the same person?”).
+   - If notes reveal contradictions or absence of information, include queries that explicitly test these points to surface clarifying evidence.
+
+4. **Precision and Contextual Specificity:**
+   - Use exact names, dates, locations, and terms as stated in the notes to avoid ambiguity.
+   - Include qualifiers (e.g., time periods, nationalities, versions) relevant to the entities or events to refine the queries.
+   - Avoid vague or broad queries that do not directly address the claim’s assertions.
+
+5. **Domain-Specific Knowledge and Common Factual Patterns:**
+   - Biographical details are often key, such as birthplaces, dates, occupations, and roles.
+   - Filmography facts: linked to actors appearing in films, director credits, release years.
+   - Literary and musical works often have multiple versions or adaptations by different creators; verify composer/author attribution carefully.
+   - Geopolitical jurisdiction matters, especially for place-related claims (e.g., administrative boundaries between cities and counties).
+   - Product attributes may involve flavors, advertising associations, or versions.
+
+6. **Generalizable Strategy for Query Generation:**
+   - Treat the claim as a set of atomic fact-checkable assertions derived from entities and relationships.
+   - Cross-reference each assertion with the note contents to identify supported, contradicted, or absent facts.
+   - Formulate focused natural language questions that explicitly seek confirmation or refutation of those facts.
+   - This approach ensures comprehensive retrieval of documents covering all relevant verification points.
+
+Example Query Types:
+- “Who composed [Work]?”
+- “Did [Person] appear in [Production] in [Year/version]?”
+- “Where is [Place/Facility] located? Is it in [Jurisdiction]?”
+- “Does [Entity] currently belong to or use [Facility/Organization]?”
+- “Are [Person A] and [Person B] the same individual or distinct?”
+
+Summary:
+Given a factual claim and supporting notes, produce clear, precise, and context-rich verification queries that isolate each fact or relationship in the claim for targeted document retrieval. Your queries should enable effective cross-checking of the claim’s truthfulness by focusing on key entities, temporal and spatial data, roles, and relationships as informed by the notes, ensuring that the entire claim space is well-covered.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Both Elisabeth Vrba's colleague, who she coined the word exaptation with, and Ann Beattie have a profession in common.
+
+### notes
+["Elisabeth Vrba is a paleontologist who coined the word 'exaptation' with her colleague Stephen Jay Gould, who was also a paleontologist.", 'Ann Beattie is known as a writer and novelist, not related to paleontology.', 'There is no evidence that Stephen Jay Gould and Ann Beattie share a profession.', "Elisabeth Vrba co-coined the term 'exaptation' with her colleague Stephen Jay Gould, who was a paleontologist.", 'Stephen Jay Gould was also a writer of popular science essays, but his main profession was paleontology.', 'Ann Beattie is a writer and novelist with no evidence linking her professionally to paleontology or science.', 'There is no shared profession between Stephen Jay Gould and Ann Beattie; they differ fundamentally in fields (science versus literary writing).', "Stephen Jay Gould, colleague of Elisabeth Vrba in coining 'exaptation', was primarily a paleontologist and also a popular science writer.", 'Ann Beattie is a literary writer and novelist with no professional ties to paleontology or science writing.', 'Stephen Jay Gould and Ann Beattie do not share a profession; one is a scientist and science writer, the other a literary novelist.', "The claim that Elisabeth Vrba's colleague who coined 'exaptation' with her and Ann Beattie share a profession is false."]
+
+## Generated Outputs
+### reasoning
+The claim states that Elisabeth Vrba's colleague with whom she coined the term "exaptation" and Ann Beattie share a profession. According to the notes, Elisabeth Vrba and her colleague Stephen Jay Gould, a paleontologist, co-coined the term "exaptation." Ann Beattie, on the other hand, is described solely as a writer and novelist with no professional ties to paleontology or science. Multiple notes explicitly state there is no shared profession between Stephen Jay Gould and Ann Beattie. Since Elisabeth Vrba’s colleague is Stephen Jay Gould, who is a paleontologist, and Ann Beattie is a writer/novelist, they do not share a profession. Therefore, the claim is likely false.
+
+### query
+Do Elisabeth Vrba and Stephen Jay Gould share the profession of paleontology?  
+What is Ann Beattie's profession?  
+Do Stephen Jay Gould and Ann Beattie share a profession?  
+Is there any evidence that Ann Beattie has a professional connection to paleontology or science?  
+Did Elisabeth Vrba coin the term "exaptation" with Stephen Jay Gould, and what is his professional field?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Elisabeth Vrba', 'Stephen Jay Gould']. Documents remaining to be retrieved: ['Ann Beattie'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Singers Kim Tae-yeon and the Irish artist who released the EP "The First Collage", have both appeared in group bands.
+
+### notes
+["Kim Tae-yeon is a member of the girl group Girls' Generation.", 'Sam Cohen, an American musician, released albums with the band Apollo Sunshine.', "No Irish artist named in the context is linked to an EP called 'The First Collage'.", 'Brian Dunphy is an Irish folk singer and member of The High Kings band.', "Hazel Kaneswaran is an Irish singer but no mention of 'The First Collage' or band participation.", "No evidence found that the Irish artist who released 'The First Collage' appeared in a group band.", "Kim Tae-yeon is a member of the girl group Girls' Generation.", "There is no identified Irish artist in the context with an EP titled 'The First Collage'.", "No evidence was found that the Irish artist who released 'The First Collage' has appeared in any group band.", "Kim Tae-yeon is a confirmed member of the girl group Girls' Generation.", "No Irish artist associated with an EP titled 'The First Collage' is identified in the context.", "There is no evidence that any Irish artist who has released an EP titled 'The First Collage' has appeared in a group band."]
+
+## Generated Outputs
+### reasoning
+The claim involves two key factual assertions:
+1. Kim Tae-yeon is a singer who has appeared in a group band.
+2. An Irish artist, who released the EP "The First Collage," has also appeared in a group band.
+Because no supporting notes are provided, verification will require queries that identify the group association of both artists. For Kim Tae-yeon, it must be confirmed if she has been a member of any group band. For the Irish artist, the focus is on identifying who released the EP "The First Collage" and verifying if that artist was involved in a group band. The queries should separate these two assertions for clarity and precision.
+
+### query
+- Has Kim Tae-yeon ever been a member of a group band?
+- Who is the Irish artist that released the EP "The First Collage"?
+- Has the Irish artist who released "The First Collage" ever been a member of a group band?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Kim Tae-yeon']. Documents remaining to be retrieved: ['The First Collage', 'Yang Yo-seob'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Scottish punk band that worked 3 years with Young American Recordings and Sleeper, are both from Britain.
+
+### notes
+['Young American Recordings is an American record label based in New York City, not British.', 'Scottish punk band APB worked with Young American Recordings.', 'No evidence that either Young American Recordings or Sleeper bands are British.', 'No reference to a 3-year collaboration between APB and Young American Recordings or Sleeper.', 'Sleeper-related bands mentioned come from various countries, none confirmed British and working with APB.', 'Claim that both Young American Recordings and Sleeper are British is false.', 'Young American Recordings is an American record label based in New York City and is not British.', 'Scottish punk band APB worked with Young American Recordings but there is no evidence of a 3-year collaboration.', 'Sleeper is a British rock band with no confirmed collaboration with APB or Young American Recordings.', 'No evidence supports that Young American Recordings and Sleeper are both British or worked in tandem with the Scottish punk band for 3 years.', 'The claim about the 3-year joint collaboration and both entities being British is false.', 'Young American Recordings is American, based in New York City, and not British.', 'Scottish punk band APB worked with Young American Recordings, but no evidence of a 3-year collaboration exists.', 'Sleeper is a British rock band, but no confirmed collaboration with APB or Young American Recordings.', 'Indolent Records was a British label that had Sleeper on its roster but no link to APB or Young American Recordings.', 'No evidence supports a 3-year joint collaboration between APB, Young American Recordings, and Sleeper.', 'Both Young American Recordings and Sleeper are not both British as claimed; only Sleeper is British.']
+
+## Generated Outputs
+### reasoning
+The claim makes two primary assertions: (1) There is a Scottish punk band that worked for three years with Young American Recordings and Sleeper, and (2) both Young American Recordings and Sleeper are British. The notes clarify that Young American Recordings is an American record label based in New York City, not British, and although the Scottish band APB worked with Young American Recordings, there is no evidence of a 3-year collaboration or of collaboration involving Sleeper. Additionally, Sleeper is a British rock band, but there is no evidence that Sleeper and APB or Sleeper and Young American Recordings collaborated for three years. The notes explicitly state that the claim about both entities being British and the 3-year collaboration is false. To verify this, queries should focus on identifying the nationality of Young American Recordings and Sleeper, the nature and duration of collaborations between APB and these entities, and the existence of any 3-year collaboration involving all three parties.
+
+### query
+- Is Young American Recordings a British record label or an American record label based in New York City?
+- Is Sleeper a British band, and has Sleeper collaborated with the Scottish punk band APB?
+- Did the Scottish punk band APB work with Young American Recordings for a duration of three years?
+- Did APB have any collaboration with both Young American Recordings and Sleeper simultaneously or during overlapping time periods?
+- Are there any records or evidence of a three-year joint collaboration involving APB, Young American Recordings, and Sleeper?
+- What are the nationalities of Young American Recordings and Sleeper?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Young American Recordings']. Documents remaining to be retrieved: ['APB (band)', 'Sleeper (band)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

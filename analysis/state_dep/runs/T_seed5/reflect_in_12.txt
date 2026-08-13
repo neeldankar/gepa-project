@@ -1,0 +1,98 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given the fields `claim`, `notes`, produce the fields `query`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Director Robert Stevenson was from a geographically smaller country than another director. That director directed his final film Romance of Astree and Celadon.
+
+### notes
+["No information available about Robert Stevenson’s country of origin or the director of 'Romance of Astree and Celadon' in the provided notes or context.", 'No data to confirm which director’s country is geographically smaller.', 'Romance of Astree and Celadon is the final film directed by Éric Rohmer, released September 5, 2007.', 'Romance of Astree and Celadon is the final film directed by Éric Rohmer, released September 5, 2007.', "No information available about Robert Stevenson’s country of origin or the director of 'Romance of Astree and Celadon' in the provided notes or context.", 'No data to confirm which director’s country is geographically smaller.']
+
+## Generated Outputs
+### reasoning
+The claim states that Director Robert Stevenson was from a geographically smaller country than another director, who directed his final film titled "Romance of Astree and Celadon." To assess this claim, we need to:
+1. Identify the country of origin for Robert Stevenson and its geographic size.
+2. Identify the director of "Romance of Astree and Celadon."
+3. Find this second director’s country of origin and its geographic size.
+4. Compare the geographic sizes of the two countries to determine if Robert Stevenson's country is indeed smaller.
+
+Therefore, the query should aim to retrieve:
+- Robert Stevenson’s country of origin.
+- The director of "Romance of Astree and Celadon."
+- The country of origin of this director.
+- The geographic size of both countries.
+
+### query
+{
+  "Robert Stevenson": {
+    "country_of_origin": true,
+    "country_geographic_area": true
+  },
+  "Romance of Astree and Celadon": {
+    "director": {
+      "name": true,
+      "country_of_origin": true,
+      "country_geographic_area": true
+    },
+    "final_film_of_director": true
+  }
+}
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Romance of Astree and Celadon']. Documents remaining to be retrieved: ['Robert Stevenson (director)', 'Éric Rohmer'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The platform, for which the fixed shooter Proof of Destruction was developed, and Prológica CP-400 were not from the same country.
+
+### notes
+['Proof of Destruction is a 1987 fixed shooter for the Commodore 64 and Commodore 16, which are American-made home computers.', 'Prológica CP-400 was developed by Prológica, a Brazilian company known for making versions of 8-bit US computers.', 'Proof of Destruction is a 1987 fixed shooter developed for the Commodore 64 and Commodore 16, which are American-made home computers.', 'Prológica CP-400 was developed by Prológica, a Brazilian company known for making versions of 8-bit US computers.', 'Proof of Destruction is a 1987 fixed shooter for the Commodore 64 and Commodore 16, which are American-made home computers.', 'Prológica CP-400 was developed by Prológica, a Brazilian company known for making versions of 8-bit US computers.']
+
+## Generated Outputs
+### reasoning
+The claim states that the platform for which Proof of Destruction, a fixed shooter game, was developed, and the Prológica CP-400 were not from the same country. According to the notes, Proof of Destruction was developed for the Commodore 64 and Commodore 16, which are American-made home computers. On the other hand, the Prológica CP-400 was developed by Prológica, a Brazilian company. Therefore, the platform for Proof of Destruction is from the United States, while Prológica CP-400 is from Brazil, confirming that they are not from the same country.
+
+### query
+Are the Commodore 64 and Commodore 16 home computers, for which Proof of Destruction was developed, made in the United States, and is the Prológica CP-400 developed in Brazil by the company Prológica?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Prológica CP-400', 'Proof of Destruction']. Documents remaining to be retrieved: ['Commodore 16'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Both Elisabeth Vrba's colleague, who she coined the word exaptation with, and Ann Beattie have a profession in common.
+
+### notes
+['Elisabeth S. Vrba is a paleontologist at Yale University and coined the word exaptation with her colleague Stephen Jay Gould.', 'Elisabeth S. Vrba is a paleontologist at Yale University and coined the word exaptation with her colleague Stephen Jay Gould.', 'Stephen Jay Gould was an American paleontologist, evolutionary biologist, and historian of science.', 'Elisabeth S. Vrba is a paleontologist at Yale University and coined the word exaptation with her colleague Stephen Jay Gould.', 'Stephen Jay Gould was an American paleontologist, evolutionary biologist, and historian of science.']
+
+## Generated Outputs
+### reasoning
+Elisabeth Vrba's colleague with whom she coined the term "exaptation" is Stephen Jay Gould. To determine if both Gould and Ann Beattie share a profession, we need to identify the professions of Stephen Jay Gould and Ann Beattie. Stephen Jay Gould was a paleontologist, evolutionary biologist, and historian of science. Ann Beattie is known as a writer and novelist. Since one is primarily a scientist and the other a writer, it is unlikely they share the same profession. The query should retrieve the professions of both individuals to verify this.
+
+### query
+What are the professions of Stephen Jay Gould and Ann Beattie?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Elisabeth Vrba', 'Stephen Jay Gould']. Documents remaining to be retrieved: ['Ann Beattie'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,70 @@
+``` 
+Task Description:
+
+You will be given three input fields:
+
+- `claim`: A factual assertion involving one or more entities (such as people, organizations, events, publications) and their relationships or characteristics.
+- `notes`: A list of extracted factual statements or snippets that relate to the claim, possibly supporting or refuting it. These may contain redundancies or partial information.
+- `context`: A collection of documents or document excerpts (including titles and associated text) that provide detailed, authoritative background information on the entities, events, or concepts mentioned in the claim.
+
+Your objective is to produce two output fields:
+
+- `new_notes`: A precise, concise, and verified subset of the `notes` that directly support or dispute the claim based strictly on the provided `context`. The `new_notes` should:
+  - Include only facts fully supported by the context.
+  - Exclude duplicates, irrelevant, inaccurate, or unsupported information.
+  - If the claim is compound (involving multiple discrete facts), address each component comprehensively.
+  - Represent any contradictions found by excluding unsupported notes and selecting the most accurate and relevant.
+
+- `titles`: A list of exact document titles from the `context` that contain the information essential to verify or refute the facts included in `new_notes`.
+  - This list must comprehensively cover all evidence underlying the selected notes.
+  - Titles must match context entries exactly.
+  - The set of titles should exclude unrelated or unnecessary documents.
+
+Detailed Requirements and Domain-Specific Knowledge:
+
+1. **Entity and Relationship Disambiguation**  
+   - Claims frequently involve multiple entities (people, organizations, events, publications) and complex relationships (e.g., authorship, professional affiliations, event results).  
+   - Entities may share identical or similar names (e.g., multiple persons named "Gould"). Disambiguate identities through contextual biographical or career information.
+
+2. **Cross-Verification of Notes Against Context**  
+   - All notes must be cross-checked with the context for factual accuracy and relevance before inclusion.  
+   - Unsupported or contradictory notes must be excluded.  
+   - Avoid including redundant statements; select the most concise, direct note supported by context.
+
+3. **Precision and Completeness in Document Retrieval**  
+   - Extract exact document titles from the context that fully support the facts reflected in `new_notes`.  
+   - Partial or incomplete source retrieval impairs verification accuracy.  
+   - Include all key documents, especially when claims involve multiple components or topics spanning different sources.
+
+4. **Handling Redundancies, Ambiguities, and Contradictions in Notes**  
+   - When multiple notes express the same fact, keep only the best-supported, clearest version.  
+   - Discard any note contradicted by the context even if repeated multiple times.
+
+5. **Compound Claims Decomposition**  
+   - Break down claims into separate factual components.  
+   - Verify each factual element independently.  
+   - Ensure that the `new_notes` and `titles` collectively cover all parts of the claim.
+
+6. **Domain-Specific Contextual Knowledge**  
+   Your reasoning will benefit from understanding domain-specific nuances as found in the context, including:  
+   - **Professional fields:** Paleontology, tennis, music residencies, academia (universities, administrators), horse breeding, hospitality, and other specialized domains.  
+   - **Publications:** Distinguish between books, academic journals, magazine articles, and other media types. Confirm authorship, publication venue, and nature of periodicals.  
+   - **Events:** Sports tournaments, residencies, organizational boards, historical timelines—validate event participation and outcomes carefully.  
+   - **Identities and Titles:** Recognize correct affiliations and titles, for instance, knowing that "Morgan State University" was originally "Centenary Biblical Institute," or that "The AXIS" auditorium is located inside Planet Hollywood Resort & Casino in Las Vegas.  
+   - **Geographical and Organizational Details:** Pay attention to location details, ownership (e.g., Caesars Entertainment owning a specific hotel and casino), and historically accurate facts.
+
+7. **Generalizable Reasoning and Fact-Checking Strategy**  
+   - Map all referenced entities and relations from the claim into the notes and then into the context.  
+   - Verify each note’s accuracy by aligning with contextual evidence.  
+   - Evaluate the completeness and trustworthiness of the notes relative to the context before inclusion.  
+   - Exclude any note not fully supported by the context or contradicted within it.  
+   - Identify and list all context documents providing evidence for all accepted notes.  
+   - Strive for clarity, conciseness, and traceability of facts to sources.
+
+Output Format:  
+- `new_notes`: A list of concise, accurate, verified notes supporting or disputing the claim.  
+- `titles`: A list of exact document titles from the `context` providing evidence for these notes.
+
+Your final response must be factually accurate, clear, and fully traceable to the supporting documents provided in the `context`.
+
+```

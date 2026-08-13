@@ -1,0 +1,124 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given two fields as input: `claim` and `notes`. The `claim` is a factual statement requiring verification or fact-checking. The `notes` contain extracted or summarized information related to the claim, including potential evidence that supports, contradicts, or is neutral toward the claim. The goal is to generate an effective *search query* (output field `query`) that can be used to retrieve authoritative documents or data to verify the truthfulness of the claim.
+
+Your task is to carefully analyze both the claim and the notes, then compose a concise, targeted search query designed to maximize relevant retrieval and minimize irrelevant results. This search query will guide downstream document retrieval systems to find evidence that confirms or refutes the claim.
+
+Detailed instructions for generating the query:
+
+1. **Analyze the Claim:**
+   - Identify the key entities (people, organizations, events, places, championships, films, songs).
+   - Pinpoint the main factual assertions (dates, awards, titles, roles, competition results, historical facts).
+   - Understand the relationships between entities (e.g., who acted in which movie, who won which championship, founding dates of sports teams).
+   - Note any temporal bounds (e.g., specific seasons, years, decades).
+   - Include nicknames, alternate names, or common epithets if relevant (e.g., "The King of Cocaine" = Pablo Escobar).
+
+2. **Review the Notes:**
+   - Extract domain-specific context from the notes that refine or clarify the claim.
+   - Identify corrections, contradictions, or confirmations embedded within the notes.
+   - Identify relevant domain-specific facts that may help narrow or specify the search query. For example:
+     - Baseball franchises: founding years, franchise relocations, managers, player tenure.
+     - Film domain: actors’ filmographies, familial relations, awards received.
+     - Motorsports: seasons, driver participation years, winners, nationality.
+     - Geographic details: place names, administrative divisions, jurisdictions.
+   - Recognize when some elements in the claim might be false or partially true from the notes, and incorporate key terms to check those facts explicitly.
+
+3. **Formulating the Query:**
+   - The query should be a natural language question or a targeted keyword phrase (or combination) that directly asks about the core elements necessary to verify the claim.
+   - Include all critical named entities, dates, and unique identifiers that anchor the claim in a factual context.
+   - Avoid vague or overly broad search terms; prefer specificity to guide retrieval towards authoritative sources.
+   - When applicable, combine search terms with logical connectors (e.g., AND, OR) or phrase them as concise fact-check questions (e.g., “Who won X in year Y?”, “Did person A receive award B for role C?”, “Which songs by artist D reached number one and who originally recorded them?”).
+   - Include alternative names or aliases if mentioned or deducible (e.g., “Pablo Escobar” and “The King of Cocaine”).
+
+4. **Domain-Specific Nuances:**
+   - **Music domain:** Focus on chart positions such as "Billboard Hot Country Singles & Tracks," original recording artists, and genre classifications.
+   - **Film and TV domain:** Confirm main cast members’ roles and their awards (e.g., Golden Globe nominations), also note familial or biographical relationships when relevant.
+   - **Sports (especially motorsports and baseball):** Check start and end years of participation, season numbering equivalences (e.g., "28th season = 2000"), nationality of competitors, and record of winners.
+   - **Geography:** Clarify administrative divisions and their hierarchical relationships where claims involve location-based facts.
+
+5. **Implementation Strategies:**
+   - Use the notes to rule out impossibilities or prior refutations in the query construction by explicitly including key facts the claim contradicts.
+   - Construct factual verification queries rather than open-ended broad questions.
+   - Prioritize queries that can retrieve multiple relevant documents (e.g., one query that simultaneously addresses claim aspects and related entities).
+   - When the notes identify misalignments (e.g., claimed facts are false), incorporate those exact elements for checking.
+
+6. **Desired Output:**
+   - Output only the field `query` with a single refined search query string.
+   - The query should be concise yet comprehensive enough to yield authoritative evidence for or against the claim.
+   - Avoid extraneous explanation or analysis in the final output.
+
+By following these instructions, you will generate effective search queries tailored to domain-specific factual claims across varied topics such as music chart history, filmographies and awards, sports seasons and participants, and geographic or political facts. The query will enable precise and productive evidence retrieval for accurate claim verification.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The sport of tennis is played by both Texas native Angelique Kerber and the player who was the defending champion, who competed, for the 2005 China Open – Men's Doubles.
+
+### notes
+['Angelique Kerber is a German professional tennis player, born on 18 January 1988.', 'There is no information that Angelique Kerber is a Texas native.', "The defending champions of the 2005 China Open – Men's Doubles were Justin Gimelstob and Graydon Oliver.", "Graydon Oliver did not participate in the 2005 China Open – Men's Doubles, but Justin Gimelstob partnered with Nathan Healey and successfully defended his title.", 'No information is given linking either Justin Gimelstob or Nathan Healey to Texas or to Angelique Kerber.', "Both Angelique Kerber and the players involved in the 2005 China Open – Men's Doubles are tennis players.", 'Angelique Kerber is a German professional tennis player born on 18 January 1988.', 'There is no information supporting that Angelique Kerber is a Texas native.', "The defending champions of the 2005 China Open – Men's Doubles were Justin Gimelstob and Graydon Oliver.", "Graydon Oliver did not participate in the 2005 China Open – Men's Doubles; Justin Gimelstob partnered with Nathan Healey to defend the title.", "Both Angelique Kerber and the players at the 2005 China Open – Men's Doubles are tennis players.", 'No data links Justin Gimelstob or Nathan Healey to Texas or to Angelique Kerber.', 'Angelique Kerber is a German professional tennis player, born on 18 January 1988.', 'There is no evidence that Angelique Kerber is a Texas native.', "The 2005 China Open – Men's Doubles defending champions were Justin Gimelstob and Graydon Oliver.", "Graydon Oliver did not participate in the 2005 China Open – Men's Doubles; Justin Gimelstob partnered with Nathan Healey and successfully defended the title.", "Both Angelique Kerber and the players involved in the 2005 China Open – Men's Doubles (Justin Gimelstob and Nathan Healey) are tennis players.", 'No information links Justin Gimelstob or Nathan Healey to Texas or to Angelique Kerber.']
+
+## Generated Outputs
+### reasoning
+The claim links Angelique Kerber, a Texas native tennis player, with the 2005 China Open – Men's Doubles competition, specifically mentioning the defending champion competing in that event. To verify this, it is necessary to check three key points: whether Angelique Kerber is indeed a Texas native and plays tennis, whether she participated in the 2005 China Open (or in any capacity related to the Men's Doubles event), and who the defending champion was for the 2005 China Open Men's Doubles and if they competed that year. Given the focus on Angelique Kerber and 2005 China Open Men's Doubles defending champion involvement, the search query should precisely address these points.
+
+### query
+Is Angelique Kerber a Texas native tennis player? Who was the defending champion of the 2005 China Open Men's Doubles and did they compete that year?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ["2005 China Open – Men's Doubles", 'Angelique Kerber']. Documents remaining to be retrieved: ['Justin Gimelstob'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The Costa Rican star of Crimes of Fashion debuted in the 2004 American teen musical comedy film Confessions of a Teenage Drama Queen. She went on to co-star in the 2007 blockbuster action film Transformers.
+
+### notes
+['Megan Fox is an American actress who made her film debut in the 2004 teen comedy Confessions of a Teenage Drama Queen.', 'In 2007, Megan Fox co-starred as Mikaela Banes in the blockbuster action film Transformers, which was her breakout role.', 'Confessions of a Teenage Drama Queen (2004) starred Lindsay Lohan as the lead actress and did not feature a Costa Rican star.', 'There is no information linking a Costa Rican star to the films Confessions of a Teenage Drama Queen, Crimes of Fashion, or Transformers in the provided notes or context.', 'There is no mention of the film Crimes of Fashion in the given context or notes.', 'Megan Fox is an American actress who made her film debut in the 2004 teen comedy Confessions of a Teenage Drama Queen.', 'In 2007, Megan Fox co-starred as Mikaela Banes in the blockbuster action film Transformers, which was her breakout role.', 'Crimes of Fashion is a 2004 telefilm starring Kaley Cuoco and Megan Fox.', 'There is no information linking a Costa Rican star to Confessions of a Teenage Drama Queen, Crimes of Fashion, or Transformers.', 'The lead actress of Confessions of a Teenage Drama Queen was Lindsay Lohan, an American.', 'Megan Fox is an American actress who made her film debut in the 2004 teen comedy Confessions of a Teenage Drama Queen.', 'In 2007, Megan Fox co-starred as Mikaela Banes in the blockbuster action film Transformers, which became her breakout role.', 'Crimes of Fashion is a 2004 telefilm starring Kaley Cuoco and Megan Fox.', 'There is no information in the context or notes linking any Costa Rican star to the films Confessions of a Teenage Drama Queen, Crimes of Fashion, or Transformers.', 'Confessions of a Teenage Drama Queen starred Lindsay Lohan, an American, in the lead role.', 'Megan Fox is not Costa Rican; she is American.']
+
+## Generated Outputs
+### reasoning
+The claim states that a Costa Rican star appeared in Crimes of Fashion and debuted in the 2004 teen musical comedy film Confessions of a Teenage Drama Queen, then co-starred in Transformers (2007). From the notes, Megan Fox is identified as the actress who debuted in Confessions of a Teenage Drama Queen (2004) and co-starred in Transformers (2007). However, Megan Fox is American, not Costa Rican. There is no evidence of a Costa Rican star linked to Confessions of a Teenage Drama Queen, Crimes of Fashion, or Transformers, and no information about the film Crimes of Fashion in the notes. The claim mixes an incorrect nationality with the correct film credits. Therefore, the core factual elements to verify are the nationality of the lead or co-starring actress in these films and the existence or casting of Crimes of Fashion. The query should focus on the nationality and filmography of Megan Fox and any Costa Rican actress’s involvement in these films or Crimes of Fashion.
+
+### query
+Megan Fox nationality and filmography; Costa Rican actress in Confessions of a Teenage Drama Queen, Crimes of Fashion, Transformers cast and roles
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Confessions of a Teenage Drama Queen', 'Crimes of Fashion', 'Megan Fox']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+Orange is the main flavor of both soft drinks, Solo from Norway, and the drink advertised with Krupa (song).
+
+### notes
+['Solo is an orange-flavoured soft drink owned by Norwegian companies and was originally a Spanish recipe brought to Norway in 1934.', 'There is no information in the provided data about any drink advertised with Krupa (song) or its flavor.', 'Solo is an orange-flavored soft drink owned by Norwegian companies, originally based on a Spanish recipe introduced in Norway in 1934.', "There is no information provided about any drink advertised with the song 'Krupa' or its flavor.", 'Solo is an orange-flavored soft drink owned by Norwegian companies and was originally based on a Spanish recipe brought to Norway in 1934.', "There is no information provided about any drink advertised with the song 'Krupa' or its flavor."]
+
+## Generated Outputs
+### reasoning
+The claim states that Solo, a Norwegian soft drink, and another drink advertised with the song "Krupa" both have orange as their main flavor. According to the notes, Solo is confirmed to be an orange-flavored soft drink from Norway. However, there is no information about any drink advertised with the song "Krupa" or its flavor. Therefore, to verify this claim, it is necessary to confirm the flavor of Solo and investigate whether there exists a drink that was advertised using the song "Krupa" and if that drink's main flavor is orange.
+
+### query
+"What flavor is the Norwegian soft drink Solo and is there any soft drink advertised with the song 'Krupa', and if so, what is its main flavor?"
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Solo (Norwegian soft drink)', 'Sunkist (soft drink)']. Documents remaining to be retrieved: ['Krupa (song)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,119 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+Given two inputs, `claim` and `notes`, your goal is to produce a precise and focused `query` that can be used to verify or explore the claim based on the information provided in the notes.
+
+Input Format:
+- `claim`: A factual claim or statement that involves named entities, their relationships, events, timelines, or attributes.
+- `notes`: A list of factual sentences or fragments containing supporting, contradicting, or background information relevant to the entities and relationships in the claim.
+
+Output:
+- `query`: A concise, well-formed question or information request that explicitly references the key elements and relationships from both the claim and the supporting information in the notes. The query should be designed to retrieve additional evidence or documents that address the core factual points needed to verify the claim.
+
+Detailed Instructions and Domain-Specific Information:
+
+1. Entity and Relationship Identification:
+   - Identify all key entities in the claim such as people, institutions, films, events, dates.
+   - Identify their relationships as expressed in the claim (e.g., "X completed postdoctoral training at Y," "Actor A performed in Movie B," "Movie B was directed by Person C," "Event D happened before Event E").
+
+2. Use Notes to Guide Query Construction:
+   - Extract definitive facts from the notes that support or provide context to parts of the claim, such as exact names of institutions, founding dates, actor names, film release years, and relationship status (e.g., whether actor X appeared in movie Y).
+   - Capture temporal or causal relationships explicitly stated or implied in the notes (e.g., timelines of events, sequence of performances).
+
+3. Query Formulation:
+   - Formulate queries that explicitly incorporate dates, entities, and relationships critical to verifying the claim.
+   - Queries should generally focus on:
+     * Confirmation of entity attributes (e.g., founding years, release dates).
+     * Overlaps or intersections between entities (e.g., actors common to two films).
+     * Temporal order or sequence of events (e.g., did event A occur before event B?).
+     * Roles or capacities in which entities participated (e.g., director vs. actor).
+   - If certain elements mentioned in the claim are lacking in notes (such as no info about a director or film), still incorporate these elements into the query to prompt further evidence retrieval.
+
+4. Coverage & Completeness:
+   - Aim for a query that covers all main aspects of the claim as supported by notes or flagged as missing from them.
+   - The query should attempt to target retrieval of all critical documents or facts necessary to adjudicate the truth of the claim (e.g., documents related to all key entities, films, dates, directors).
+
+5. Clarity and Specificity:
+   - Make queries clear, unambiguous, and as specific as possible to aid precise document retrieval.
+   - Avoid vague or overly broad questions.
+   - Use proper names with disambiguation where necessary (e.g., "Wonder Woman (2017 film)" rather than just "Wonder Woman").
+
+6. Examples of Typical Query Types:
+   - Confirm temporal facts: "Was the University of Washington founded before Texas Christian University?"
+   - Verify career overlap and timing: "Which actors appeared in Wonder Woman (2017) and also performed in Anomalisa after the premiere of Fargo (TV series)?"
+   - Confirm roles and participants: "Did the actor starring alongside Go Ah-sung in Office also appear in The Deal, and was The Deal directed by Choi Woo-shik?"
+
+Summary:
+Your task is to produce focused, fact-driven queries that explicitly extract and integrate all relevant entities, relationships, and temporal sequences from the claim and notes to enable comprehensive evidence retrieval. The queries should explicitly address verification points raised by the claim, informed by the facts and gaps found in the notes.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+An actor in a musical film was also a United States Navy Combat veteran in World War II. This film was awarded The Golden Bear at the 50th Berlin International Film Festival.
+
+### notes
+["The 50th Berlin International Film Festival's Golden Bear was awarded to 'Magnolia,' an American film directed by Paul Thomas Anderson, which is not a musical.", "At the 54th Berlin International Film Festival, the musical film 'Chicago' was screened out of competition; it did not win the Golden Bear.", 'No information provided on actors in the winning films being U.S. Navy WWII combat veterans.', 'No musical film won the Golden Bear at the 50th Berlin International Film Festival based on provided context.', "No musical film won the Golden Bear at the 50th Berlin International Film Festival; the award went to 'Magnolia', a non-musical film.", "The musical film 'Chicago' was screened out of competition at the 54th Berlin International Film Festival and did not win the Golden Bear.", 'There is no available information confirming any actor in the Golden Bear-winning films was a U.S. Navy Combat veteran from World War II.', 'No evidence from the Berlin International Film Festival history supports the claim of an actor in a musical film who was also a U.S. Navy WWII combat veteran starring in a Golden Bear-winning film at the 50th festival.', "The 50th Berlin International Film Festival awarded the Golden Bear to 'Magnolia', a non-musical film directed by Paul Thomas Anderson.", 'No musical film won the Golden Bear at the 50th Berlin International Film Festival.', 'There is no documented evidence of an actor in a Golden Bear-winning musical film being a U.S. Navy Combat veteran from World War II.', "Musical films like 'Chicago' were screened at the Berlin International Film Festival but did not win the Golden Bear.", 'The claim that a musical film with a U.S. Navy Combat veteran actor won the Golden Bear at the 50th Berlin International Film Festival is unsupported.']
+
+## Generated Outputs
+### reasoning
+The claim states that an actor in a musical film who was also a U.S. Navy WWII combat veteran appeared in a film that won the Golden Bear at the 50th Berlin International Film Festival. The notes clarify that the film winning the Golden Bear at the 50th festival was "Magnolia," which is not a musical. Additionally, "Chicago," a musical film, was screened at the 54th festival but did not win the golden bear. There is also no information confirming any actor in the winning films was a U.S. Navy WWII combat veteran, nor any support for a musical film winning at the 50th festival. Therefore, to verify the claim, we should query about any musical film that won the Golden Bear at the 50th Berlin International Film Festival, details about its actors (specifically checking for U.S. Navy WWII combat veterans), and confirm the winning status and genre of "Magnolia" and other relevant films.
+
+### query
+Did any musical film win the Golden Bear award at the 50th Berlin International Film Festival? Which actors starred in the Golden Bear-winning film "Magnolia" (1999), and is there any evidence that any of these actors were United States Navy combat veterans in World War II? Are there records of any actor in a Golden Bear-winning musical film being a U.S. Navy WWII combat veteran?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['50th Berlin International Film Festival']. Documents remaining to be retrieved: ['Jason Robards', 'Magnolia (film)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The Manchester United Football Club is known as "the Red Devils". The goalie who led the strike force for the 1928–29 Leicester City F.C. season played for them.
+
+### notes
+['The strike force for the 1928–29 Leicester City F.C. season was led by forwards Ernie Hine, Arthur Chandler, and Arthur Lochhead, not the goalie.', 'No goalie for Leicester City in 1928–29 is mentioned as leading the strike force or playing for Manchester United.', 'Goalkeepers typically do not lead the strike force; strike force refers to attacking forwards.', "Manchester United is indeed known as 'the Red Devils'.", "The forwards Ernie Hine, Arthur Chandler, and Arthur Lochhead led Leicester City's strike force in 1928-29, not any goalie.", "No evidence shows a goalie led Leicester City's strike force that season.", 'Goalkeepers do not typically lead strike forces; this role is for forwards.', "Manchester United is accurately known as 'the Red Devils'.", "No goalie from Leicester City's 1928-29 season is documented to have played for Manchester United.", "The Manchester United Football Club is correctly known as 'the Red Devils'.", 'The strike force for the 1928-29 Leicester City F.C. season was led by forwards Ernie Hine, Arthur Chandler, and Arthur Lochhead, not by any goalie.', 'Goalkeepers do not typically lead strike forces; strike forces are made up of attacking forwards.', "There is no evidence that a goalie who played in Leicester City's 1928-29 season played for Manchester United.", 'The claim that a goalie from the 1928-29 Leicester City strike force led the attack and later played for Manchester United is not supported by available records.']
+
+## Generated Outputs
+### reasoning
+The claim consists of two parts: first, that Manchester United Football Club is known as "the Red Devils," and second, that the goalie who led the strike force for the 1928–29 Leicester City F.C. season played for Manchester United. From the notes, it is confirmed that Manchester United is indeed known as "the Red Devils" (note [4]). However, the strike force for the 1928–29 Leicester City team was led by forwards Ernie Hine, Arthur Chandler, and Arthur Lochhead, not a goalie (note [1]). Furthermore, no goalie is mentioned as leading the strike force or as having played for Manchester United during that period (note [2]), and it is noted that goalies typically do not lead the strike force (note [3]). Given that the claim about the goalie leading the strike force and playing for Manchester United contradicts the notes, the focal point of verification should be whether any goalie from Leicester City in the 1928–29 season who led or was involved in the strike force played for Manchester United. Also, confirmation of Manchester United’s nickname should be included for completeness.
+
+### query
+Did any goalkeeper who played for Leicester City during the 1928–29 season lead or was part of the strike force and subsequently play for Manchester United, also known as "the Red Devils"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['1928–29 Leicester City F.C. season']. Documents remaining to be retrieved: ['Ernie Hine', 'Manchester United F.C.'].
+
+
+
+# Example 3
+## Inputs
+### claim
+A college football game was sponsored by a company based in Memphis. The 2015 Kansas State Wildcats football team was invited to this bowl.
+
+### notes
+['The 2016 Liberty Bowl was played in Memphis, Tennessee and sponsored by AutoZone, a company headquartered in Memphis.', 'The 2015 Kansas State Wildcats were invited to and played in the Liberty Bowl.', 'AutoZone is an automobile parts and accessories company based in Memphis, Tennessee.', 'The Liberty Bowl is an annual college football bowl game held in Memphis, Tennessee, sponsored by AutoZone, a Memphis-based company, since 2004.', 'The 2016 Liberty Bowl (January 2, 2016) was played as the postseason game for the 2015 FBS football season and featured the Kansas State Wildcats.', 'AutoZone, headquartered in Memphis, Tennessee, is the sponsor of the Liberty Bowl, officially named the AutoZone Liberty Bowl.', 'The 2015 Kansas State Wildcats football team was invited to and played in the 2016 Liberty Bowl concluding the 2015 season.', 'The 2016 Liberty Bowl was played in Memphis, Tennessee, sponsored by AutoZone, a company headquartered in Memphis.', 'The 2015 Kansas State Wildcats football team was invited to and played in the 2016 Liberty Bowl.', 'AutoZone is an automobile parts and accessories company based in Memphis, Tennessee.', 'The Liberty Bowl is an annual college football bowl game played in Memphis, Tennessee, sponsored by AutoZone since 2004.', 'The 2016 Liberty Bowl was a postseason game for the 2015 football season featuring the Kansas State Wildcats.']
+
+## Generated Outputs
+### reasoning
+The claim states that a college football game was sponsored by a company based in Memphis and that the 2015 Kansas State Wildcats football team was invited to this bowl. The notes clearly indicate that the Liberty Bowl is a college football bowl game held in Memphis and sponsored by AutoZone, which is headquartered in Memphis. The 2016 Liberty Bowl, played on January 2, 2016, is associated with the 2015 football season and featured the Kansas State Wildcats. Additionally, all notes reaffirm that the 2015 Kansas State Wildcats football team was invited to and played in the 2016 Liberty Bowl sponsored by AutoZone. Therefore, the critical components to confirm involve the sponsorship of the Liberty Bowl by a Memphis-based company (AutoZone) and whether the 2015 Kansas State Wildcats participated in this particular bowl game.
+
+### query
+Was the Liberty Bowl, a college football game held in Memphis, Tennessee, sponsored by AutoZone, a company headquartered in Memphis, and was the 2015 Kansas State Wildcats football team invited to and did they play in the 2016 Liberty Bowl, which served as the postseason game for the 2015 football season?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['2015 Kansas State Wildcats football team', '2016 Liberty Bowl (January)']. Documents remaining to be retrieved: ['AutoZone'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

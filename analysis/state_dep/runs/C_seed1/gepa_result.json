@@ -1,0 +1,1871 @@
+{
+  "prog_candidate_val_subscores": [
+    {
+      "0": 0.6666666666666666,
+      "1": 0.6666666666666666,
+      "2": 0.6666666666666666,
+      "3": 0.6666666666666666,
+      "4": 1.0,
+      "5": 0.3333333333333333,
+      "6": 0.3333333333333333,
+      "7": 1.0,
+      "8": 0.0,
+      "9": 0.0
+    },
+    {
+      "0": 0.6666666666666666,
+      "1": 0.6666666666666666,
+      "2": 0.3333333333333333,
+      "3": 0.3333333333333333,
+      "4": 0.6666666666666666,
+      "5": 0.0,
+      "6": 0.6666666666666666,
+      "7": 1.0,
+      "8": 0.3333333333333333,
+      "9": 0.6666666666666666
+    },
+    {
+      "0": 0.6666666666666666,
+      "1": 0.6666666666666666,
+      "2": 0.3333333333333333,
+      "3": 0.3333333333333333,
+      "4": 0.6666666666666666,
+      "5": 0.3333333333333333,
+      "6": 0.3333333333333333,
+      "7": 1.0,
+      "8": 0.3333333333333333,
+      "9": 0.6666666666666666
+    },
+    {
+      "0": 0.0,
+      "1": 0.6666666666666666,
+      "2": 0.3333333333333333,
+      "3": 0.3333333333333333,
+      "4": 0.6666666666666666,
+      "5": 0.3333333333333333,
+      "6": 0.3333333333333333,
+      "7": 1.0,
+      "8": 0.3333333333333333,
+      "9": 0.3333333333333333
+    }
+  ],
+  "parent_program_for_candidate": [
+    [
+      null
+    ],
+    [
+      0
+    ],
+    [
+      0
+    ],
+    [
+      0
+    ]
+  ],
+  "num_metric_calls_by_discovery": [
+    0,
+    100,
+    155,
+    300
+  ],
+  "program_candidates": [
+    {
+      "gen_query.predict": "Given the fields `claim`, `notes`, produce the fields `query`.",
+      "append_notes.predict": "Given the fields `claim`, `notes`, `context`, produce the fields `new_notes`, `titles`."
+    },
+    {
+      "gen_query.predict": "Given the fields `claim`, `notes`, produce the fields `query`.",
+      "append_notes.predict": "Task Description:\n\nYou will be provided with three input fields: `claim`, `notes`, and `context`.\n\n- The `claim` field contains a factual assertion or statement.\n- The `notes` field is a list of distilled, often contradictory or clarifying sentences related to the claim, summarizing evidence from various sources, highlighting confirmations or rebuttals of the claim.\n- The `context` field is a list of document excerpts relevant to the claim, providing background information and details that may support or refute the claim.\n\nYour objective is to produce two output fields:\n1. `new_notes` — a concise, refined, and coherent summary of factually verified information about the claim, based on synthesis and critical evaluation of the given notes and context. This summary should:\n   - Correct inaccuracies or contradictions found in the claim.\n   - Include relevant domain-specific factual information that clarifies or rejects the claim.\n   - Remove redundancy and distill the key findings from the notes.\n   - Explicitly note the absence of evidence where applicable.\n   - Reflect a neutral, authoritative tone appropriate for knowledge verification or fact-checking.\n\n2. `titles` — a prioritized list of document or topic titles drawn from or inspired by the context documents that are most relevant for understanding the claim and verifying its accuracy. The titles should:\n   - Identify key source documents referenced in the context.\n   - Include related entities, persons, organizations, events, or concepts critical to evaluating the claim’s validity.\n   - Assist in retrieval of further evidence if needed.\n   - Be a mix of broad and specific topics that reflect the information used in the reasoning.\n\nGeneral Strategy and Domain-Specific Details:\n\n- The claims frequently relate to specialized domains such as entertainment (film casting and voice acting), sports teams and personnel histories, or football (soccer) clubs and league memberships.\n- The task requires understanding of domain-specific facts such as:\n   - Voice actors and their casting roles in films, along with distinctions between speaking and singing voices.\n   - Founding dates and histories of sports teams, their affiliations, and managerial careers.\n   - Naming conventions and sponsorships of football leagues and clubs, including distinctions between leagues and their sponsors.\n- When handling contradictory information, the assistant must weigh evidence presented in notes and context, dismiss inaccurate claims, and support conclusions with explicit references to authoritative data.\n- The assistant should explicitly highlight when no supporting evidence exists for a claim or when the claim contradicts verified data.\n- Titles should reflect relevant entities or documents to aid transparency and further reference.\n- Redundancies should be removed from `new_notes` to produce a coherent summary rather than a raw aggregation of facts.\n\nUse this approach to consistently produce high-quality, fact-checked summaries and context titles that could aid in fact verification, research, or knowledge enrichment."
+    },
+    {
+      "gen_query.predict": "Given two input fields, `claim` and `notes`, your task is to produce a `query` field that can be used to verify or fact-check the claim based on the provided notes and relevant historical or domain-specific knowledge. \n\n**Input format:**  \n- `claim`: A factual statement or assertion involving potentially complex or nuanced domain knowledge (e.g., historical events, sports records, biographical information).  \n- `notes`: A list of extracted facts, evidence, or verifications relevant to the claim, often containing corrections, clarifications, and counter-evidence.\n\n**Task objective:**  \n- Generate a concise and focused `query` that can be used to validate the key factual points or contradictions within the claim.  \n- The query should explicitly target the main entities, events, or facts involved in the claim, aiming to resolve ambiguity and verify truthfulness.\n\n**Domain-specific considerations:**  \n- Claims often reference specific persons (e.g., historical figures, athletes), specific events (e.g., sports seasons, historical milestones), and relationships between them (e.g., roles, achievements, timelines).  \n- Notes may provide authoritative historical records, outcomes, or corrections (e.g., actual commandants, winner names, dates, records).  \n- The query should incorporate these elements, focusing on established facts to confirm or refute the claim.\n\n**Generalizable reasoning strategy:**  \n- Identify key factual elements in the claim: who, what, when, where, and how they relate.  \n- Contrast these elements with evidence or contradictions found in the notes.  \n- Formulate a question that:  \n   - Asks directly about the critical facts underlying the claim (e.g., identity, achievements, roles)  \n   - Seeks verification of disputed or unclear points highlighted in the notes  \n   - Uses precise historical or domain terms and names as they appear in notes  \n   - Avoids ambiguity by referencing specific events, timeframes, or persons mentioned in inputs\n\n**Query structure tips:**  \n- Start with a clear question word (Who, Did, Was, When, Is) suitable for verification.  \n- Mention key named entities to disambiguate claims (e.g., names of persons, teams, events).  \n- Include time references or context if relevant to resolving the claim’s claim.  \n- Where the claim bundles multiple assertions (often mixing facts), your query should address each key assertion distinctly if possible, or combine them to highlight their connection.\n\nBy following this approach, the produced `query` should enable precise, document-based fact-checking and help retrieve or confirm authoritative sources.",
+      "append_notes.predict": "Given the fields `claim`, `notes`, `context`, produce the fields `new_notes`, `titles`."
+    },
+    {
+      "gen_query.predict": "Task Description:\nYou will be given two input fields: `claim` and `notes`. Your task is to produce a `query` field that formulates one or more precise, fact-checking questions. These questions will be used to retrieve relevant documents or evidence to verify all aspects of the claim based on the information found in the `notes`.\n\nInput Format:\n- `claim`: A complex factual or compound statement that may contain multiple sub-claims or assertions involving named entities, dates, professions, and relationships.\n- `notes`: A list of textual snippets or facts that provide background information, evidence, or context related to the entities and assertions in the claim.\n\nOutput Requirements:\n- Generate a concise, clear, and fact-focused `query` (a question or a set of questions) aimed at verifying the truthfulness of the claim.\n- The `query` should explicitly focus on the key factual components of the claim that need further verification or deeper evidence retrieval.\n- Queries should be designed to retrieve documents or evidence related to all critical entities mentioned in the claim, including people, films, publications, professions, dates, or relations.\n- Queries should aim to resolve ambiguities or fill gaps of knowledge noted in the `notes`, such as uncertain dates, unclear relationships, or classification statuses.\n\nGuidelines and Domain-Specific Details:\n- Extract named entities (persons, films, magazines, terms, organizations) from the claim and cross-reference them with the `notes`.\n- Identify temporal and relational conditions (e.g., sequence of film releases, authorship dates, profession overlaps) and formulate queries targeting those aspects.\n- When claims are composed of multiple parts, each part requiring verification, questions should be structured to cover all parts thoroughly, preferably in a single, compound question if possible.\n- Queries should target clear factual verification rather than vague or overly broad searches.\n- For professions or classification claims, compare occupations or categories directly, formulating queries that test whether two individuals or entities share a characteristic.\n- For temporal claims (events occurring before or after others), formulate queries that verify the timeline or existence of earlier instances.\n- The ultimate goal of the queries is to support effective retrieval of evidence confirming or refuting the claim by precisely pinpointing what is missing or uncertain from the notes.\n\nGeneralizable Strategy:\n- Analyze the claim’s assertions and identify the key factual elements for verification.\n- Use the notes to detect what is known, what is uncertain, and what is needed to confirm the claim.\n- Transform the verification needs into one or few precise, fact-oriented questions that cover all critical aspects of the claim.\n- Ensure that the queries are framed to retrieve documents or data relevant to all major named entities and claim components.\n- Avoid ambiguity and overly complex questions; keep them direct, specific, and comprehensive.\n\nExample Application:\n- If the claim involves whether a film was released before another, and notes provide release years, query whether there exists any film featuring a specific actor released prior to a known date.\n- If the claim involves whether two publications are periodicals, query about the classification of both named publications.\n- If the claim involves whether two people share a profession, query directly whether those individuals share the same profession.\n\nBy following these detailed instructions, the assistant will generate queries that enable efficient document retrieval and thorough fact-checking of the provided claims.",
+      "append_notes.predict": "Given the fields `claim`, `notes`, `context`, produce the fields `new_notes`, `titles`."
+    }
+  ],
+  "list_of_named_predictors": [
+    "gen_query.predict",
+    "append_notes.predict"
+  ],
+  "full_program_trace": [
+    {
+      "i": 0,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        84,
+        52,
+        20
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        1.0,
+        1.0
+      ],
+      "statedep_drawn_ids": [
+        84,
+        38,
+        66,
+        52,
+        4,
+        20
+      ],
+      "statedep_drawn_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.3333333333333333,
+        1.0,
+        0.6666666666666666,
+        1.0
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 0,
+      "statedep_rule": "coldstart_random3",
+      "statedep_novelties": [
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          3,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        1.0,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 1,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        39,
+        10,
+        82
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        39,
+        9,
+        10,
+        82,
+        45,
+        36
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 3,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.24486839771270752,
+        0.22329461574554443,
+        0.2427021712064743,
+        0.2630878984928131,
+        0.24351955950260162,
+        0.24433428049087524
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          2,
+          3
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 2,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        42,
+        98,
+        67
+      ],
+      "subsample_scores": [
+        1.0,
+        1.0,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        50,
+        42,
+        98,
+        81,
+        67,
+        16
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        1.0,
+        1.0,
+        0.3333333333333333,
+        0.6666666666666666,
+        1.0
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 6,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.2433003932237625,
+        0.15296995639801025,
+        0.2830744981765747,
+        0.20412547886371613,
+        0.2629491090774536,
+        0.188745379447937
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          1,
+          2,
+          4
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 3,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        59,
+        33,
+        68
+      ],
+      "subsample_scores": [
+        1.0,
+        1.0,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        59,
+        33,
+        24,
+        68,
+        87,
+        17
+      ],
+      "statedep_drawn_scores": [
+        1.0,
+        1.0,
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 9,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.17652581632137299,
+        0.13227146863937378,
+        0.2134690135717392,
+        0.1912481188774109,
+        0.18169260025024414,
+        0.21237413585186005
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          1,
+          3
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        1.0,
+        1.0,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 4,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        85,
+        5,
+        44
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        85,
+        5,
+        44,
+        91,
+        58,
+        80
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 12,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.1677177995443344,
+        0.1779666692018509,
+        0.19414423406124115,
+        0.2956986129283905,
+        0.223276749253273,
+        0.22892583906650543
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          1,
+          2
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 5,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        23,
+        30,
+        51
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        1.0,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        23,
+        95,
+        30,
+        74,
+        25,
+        51
+      ],
+      "statedep_drawn_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        1.0,
+        0.3333333333333333,
+        1.0,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 15,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.16888032853603363,
+        0.16645677387714386,
+        0.1812770813703537,
+        0.23808032274246216,
+        0.1609872728586197,
+        0.2955675423145294
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          2,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        1.0,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 6,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        37,
+        47,
+        92
+      ],
+      "subsample_scores": [
+        1.0,
+        1.0,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        31,
+        37,
+        47,
+        19,
+        88,
+        92
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        1.0,
+        1.0,
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 18,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.21851849555969238,
+        0.18460236489772797,
+        0.16211281716823578,
+        0.1907750815153122,
+        0.1583888679742813,
+        0.1772587150335312
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          1,
+          2,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        1.0,
+        0.6666666666666666,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 7,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        99,
+        7,
+        65
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        1.0
+      ],
+      "statedep_drawn_ids": [
+        99,
+        96,
+        21,
+        7,
+        65,
+        46
+      ],
+      "statedep_drawn_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 21,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.1777210384607315,
+        0.2175966501235962,
+        0.13363002240657806,
+        0.14091414213180542,
+        0.17393739521503448,
+        0.27927547693252563
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          3,
+          4
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        1.0
+      ]
+    },
+    {
+      "i": 8,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        11,
+        41,
+        53
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        76,
+        11,
+        6,
+        41,
+        35,
+        53
+      ],
+      "statedep_drawn_scores": [
+        1.0,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 24,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.21452467143535614,
+        0.17029444873332977,
+        0.18359749019145966,
+        0.1885792762041092,
+        0.1628798246383667,
+        0.14411456882953644
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          1,
+          3,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        1.0,
+        0.3333333333333333,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 9,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        89,
+        71,
+        18
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        89,
+        71,
+        18,
+        64,
+        70,
+        61
+      ],
+      "statedep_drawn_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 27,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.1537424474954605,
+        0.27702510356903076,
+        0.30143603682518005,
+        0.11889169365167618,
+        0.1331683248281479,
+        0.22010809183120728
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          1,
+          2
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "new_program_idx": 1,
+      "evaluated_val_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "i": 10,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        14,
+        79,
+        56
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        43,
+        14,
+        22,
+        79,
+        94,
+        56
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.0,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 30,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.16559140384197235,
+        0.12841714918613434,
+        0.15448133647441864,
+        0.1290380358695984,
+        0.1369258314371109,
+        0.22853906452655792
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          1,
+          3,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 11,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        73,
+        54,
+        90
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        28,
+        73,
+        54,
+        27,
+        90,
+        1
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 33,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.15436752140522003,
+        0.15761172771453857,
+        0.11187126487493515,
+        0.13834261894226074,
+        0.21512894332408905,
+        0.2858770191669464
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          1,
+          2,
+          4
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 12,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        69,
+        2,
+        86
+      ],
+      "subsample_scores": [
+        1.0,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        69,
+        78,
+        2,
+        86,
+        40,
+        13
+      ],
+      "statedep_drawn_scores": [
+        1.0,
+        0.0,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 36,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.10059521347284317,
+        0.11666274070739746,
+        0.3171736001968384,
+        0.14716677367687225,
+        0.19583584368228912,
+        0.14130420982837677
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          2,
+          3
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        1.0,
+        0.6666666666666666,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 13,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        75,
+        34,
+        77
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        1.0,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        75,
+        29,
+        34,
+        93,
+        0,
+        77
+      ],
+      "statedep_drawn_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 39,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.13367386162281036,
+        0.1176777258515358,
+        0.18538962304592133,
+        0.12813933193683624,
+        0.10663803666830063,
+        0.1547841876745224
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          2,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        1.0,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 14,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        49,
+        62,
+        26
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        55,
+        49,
+        3,
+        62,
+        12,
+        26
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 42,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.1322231888771057,
+        0.15078897774219513,
+        0.1541593223810196,
+        0.16085384786128998,
+        0.254093199968338,
+        0.18078820407390594
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          1,
+          3,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666
+      ],
+      "new_program_idx": 2,
+      "evaluated_val_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "i": 15,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        48,
+        60,
+        57
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        1.0
+      ],
+      "statedep_drawn_ids": [
+        48,
+        83,
+        60,
+        57,
+        63,
+        15
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.0,
+        0.3333333333333333,
+        1.0,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 45,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.11897295713424683,
+        0.12375976890325546,
+        0.1454431563615799,
+        0.2165030688047409,
+        0.14830023050308228,
+        0.3694820702075958
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          2,
+          3
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.0,
+        1.0,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 16,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        32,
+        8,
+        72
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        1.0
+      ],
+      "statedep_drawn_ids": [
+        32,
+        8,
+        97,
+        72,
+        72,
+        97
+      ],
+      "statedep_drawn_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.3333333333333333,
+        1.0,
+        0.6666666666666666,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 48,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.17976416647434235,
+        0.15307064354419708,
+        0.13505633175373077,
+        0.15827661752700806,
+        0.18141281604766846,
+        0.13505633175373077
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          1,
+          3
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 17,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        29,
+        0,
+        47
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        95,
+        29,
+        19,
+        0,
+        40,
+        47
+      ],
+      "statedep_drawn_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 51,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.1449257880449295,
+        0.1271352767944336,
+        0.16105343401432037,
+        0.10649087280035019,
+        0.19583584368228912,
+        0.11029807478189468
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          1,
+          3,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 18,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        33,
+        76,
+        61
+      ],
+      "subsample_scores": [
+        1.0,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        51,
+        34,
+        33,
+        76,
+        23,
+        61
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        1.0,
+        1.0,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 54,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.14204873144626617,
+        0.12100294977426529,
+        0.08046021312475204,
+        0.23016028106212616,
+        0.09569879621267319,
+        0.17351436614990234
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          2,
+          3,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 19,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        55,
+        14,
+        70
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        91,
+        55,
+        14,
+        70,
+        5,
+        64
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 57,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.22456462681293488,
+        0.1294751912355423,
+        0.0764559730887413,
+        0.13510383665561676,
+        0.07321128994226456,
+        0.11053832620382309
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          1,
+          2,
+          3
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 20,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        74,
+        2,
+        15
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        74,
+        87,
+        2,
+        92,
+        90,
+        15
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 60,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.16307367384433746,
+        0.15227438509464264,
+        0.20087678730487823,
+        0.1100844144821167,
+        0.13852936029434204,
+        0.3331056833267212
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          2,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 21,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        35,
+        11,
+        63
+      ],
+      "subsample_scores": [
+        1.0,
+        1.0,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        94,
+        35,
+        30,
+        11,
+        63,
+        44
+      ],
+      "statedep_drawn_scores": [
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 63,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.10845150798559189,
+        0.13550429046154022,
+        0.10246545076370239,
+        0.09946618229150772,
+        0.13413508236408234,
+        0.09985808283090591
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          1,
+          3,
+          4
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 22,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        26,
+        17,
+        59
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0
+      ],
+      "statedep_drawn_ids": [
+        26,
+        52,
+        17,
+        59,
+        56,
+        65
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666,
+        1.0
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 66,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.11455311626195908,
+        0.10089346021413803,
+        0.13523299992084503,
+        0.07026094198226929,
+        0.1466282457113266,
+        0.1065826416015625
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          2,
+          3
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0
+      ]
+    },
+    {
+      "i": 23,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        89,
+        10,
+        46
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        8,
+        96,
+        45,
+        89,
+        10,
+        46
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 69,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.09710347652435303,
+        0.24411271512508392,
+        0.16332094371318817,
+        0.08029887825250626,
+        0.08177419751882553,
+        0.2700382173061371
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          3,
+          4,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 24,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        49,
+        25,
+        69
+      ],
+      "subsample_scores": [
+        1.0,
+        0.6666666666666666,
+        1.0
+      ],
+      "statedep_drawn_ids": [
+        49,
+        25,
+        75,
+        97,
+        69,
+        72
+      ],
+      "statedep_drawn_scores": [
+        1.0,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333,
+        1.0,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 72,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.10295623540878296,
+        0.1376318484544754,
+        0.07665014266967773,
+        0.13505633175373077,
+        0.06558414548635483,
+        0.13069523870944977
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          1,
+          4
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "i": 25,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        24,
+        42,
+        60
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        71,
+        18,
+        24,
+        42,
+        60,
+        31
+      ],
+      "statedep_drawn_scores": [
+        0.3333333333333333,
+        1.0,
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 75,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.16610895097255707,
+        0.12991483509540558,
+        0.14192812144756317,
+        0.07359436899423599,
+        0.09603047370910645,
+        0.19727294147014618
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          2,
+          3,
+          4
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 26,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        62,
+        43,
+        36
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        62,
+        37,
+        93,
+        43,
+        36,
+        13
+      ],
+      "statedep_drawn_scores": [
+        0.3333333333333333,
+        1.0,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.0
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 78,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.09725836664438248,
+        0.10525897890329361,
+        0.12813933193683624,
+        0.16559140384197235,
+        0.12823843955993652,
+        0.12338980287313461
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          3,
+          4
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 27,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        79,
+        12,
+        68
+      ],
+      "subsample_scores": [
+        1.0,
+        0.3333333333333333,
+        1.0
+      ],
+      "statedep_drawn_ids": [
+        79,
+        22,
+        12,
+        48,
+        68,
+        21
+      ],
+      "statedep_drawn_scores": [
+        1.0,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333,
+        1.0,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 81,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.07584907859563828,
+        0.1458573341369629,
+        0.2779809534549713,
+        0.07793738692998886,
+        0.06769367307424545,
+        0.12415967136621475
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          2,
+          4
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        1.0
+      ]
+    },
+    {
+      "i": 28,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        58,
+        85,
+        4
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        1.0
+      ],
+      "statedep_drawn_ids": [
+        58,
+        85,
+        4,
+        1,
+        81,
+        32
+      ],
+      "statedep_drawn_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        1.0,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 84,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.2126883715391159,
+        0.091408871114254,
+        0.11054539680480957,
+        0.20568044483661652,
+        0.16789261996746063,
+        0.1170622706413269
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          1,
+          2
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 29,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        53,
+        82,
+        9
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        53,
+        20,
+        82,
+        78,
+        77,
+        9
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333,
+        0.0,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 87,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.08280521631240845,
+        0.11778992414474487,
+        0.10398324579000473,
+        0.09735891968011856,
+        0.10124204307794571,
+        0.11095311492681503
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          2,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "new_program_idx": 3,
+      "evaluated_val_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    }
+  ],
+  "n_val": 10,
+  "trainset_threehop_ids": [
+    134,
+    118,
+    54,
+    116,
+    290,
+    133,
+    103,
+    115,
+    175,
+    141,
+    66,
+    193,
+    228,
+    269,
+    97,
+    155,
+    215,
+    69,
+    152,
+    130,
+    156,
+    216,
+    104,
+    181,
+    244,
+    254,
+    146,
+    140,
+    230,
+    294,
+    102,
+    86,
+    235,
+    191,
+    63,
+    268,
+    194,
+    123,
+    239,
+    231,
+    73,
+    221,
+    225,
+    137,
+    272,
+    95,
+    220,
+    224,
+    121,
+    85,
+    173,
+    213,
+    142,
+    99,
+    84,
+    117,
+    60,
+    67,
+    276,
+    256,
+    77,
+    270,
+    74,
+    126,
+    248,
+    211,
+    262,
+    209,
+    136,
+    64,
+    185,
+    292,
+    284,
+    114,
+    271,
+    283,
+    169,
+    234,
+    252,
+    222,
+    75,
+    124,
+    139,
+    166,
+    250,
+    174,
+    125,
+    52,
+    59,
+    120,
+    237,
+    79,
+    55,
+    101,
+    76,
+    214,
+    227,
+    150,
+    58,
+    163
+  ],
+  "valset_threehop_ids": [
+    257,
+    282,
+    62,
+    92,
+    198,
+    275,
+    182,
+    251,
+    289,
+    280
+  ],
+  "total_num_evals": 310
+}

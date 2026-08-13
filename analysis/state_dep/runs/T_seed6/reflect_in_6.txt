@@ -1,0 +1,115 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Instruction:
+
+You will be given two fields as input: `claim` and `notes`. Your task is to produce a `query` field that formulates a precise, focused question or set of questions that would efficiently retrieve or verify the evidence needed to validate or refute the `claim`. 
+
+Details and guidelines to follow:
+
+1. **Input format:**
+   - `claim`: A factual or verification statement involving entities (people, places, dates, works, relationships, roles, events, etc.) whose truth needs to be verified.
+   - `notes`: A list of factually relevant pieces of information or candidate evidences (called sources or documents) that relate to entities, events, or claims mentioned in the `claim`. The notes contain domain and entity-specific information such as names of people, locations, productions, roles, dates, familial relationships, jurisdictional hierarchies, or other specialized knowledge that is pertinent to the claim verification.
+
+2. **Output format:**
+   - Produce a `query` field, which is a concise but comprehensive question or query string that is designed to retrieve documents or evidence most relevant to confirming or disconfirming the claim.
+   - The query should explicitly mention key entities and relationships from the claim.
+   - The query can be a single question or multiple related questions formulated clearly and unambiguously.
+   - Use domain-specific terms or entity names as precisely as they appear to maximize the relevance of search or retrieval results.
+
+3. **Goal and strategy:**
+   - The primary goal is to synthesize the essential verification needs by linking relevant entities, events, roles, timeframes, or relationships indicated by the claim.
+   - The goal is to generate a query that retrieves the exact gold standard documents needed for verifying the claim.
+   - If the claim involves multiple entities with implied relationships (e.g., jurisdiction, familial ties, membership, roles in productions), encode these relationships explicitly in the query.
+   - If the existing notes lack complete evidence, construct queries that attempt to fill these gaps by requesting specific missing details (such as full cast lists, parental relationships, or location hierarchies).
+   - Queries should be designed to disambiguate potential confusions and confirm or exclude specific fact patterns.
+
+4. **Domain-specific knowledge to consider:**
+   - Geopolitical entities: County-to-city hierarchical jurisdiction within provinces and countries (e.g., Fàn County is under Puyang City in Henan Province, both cities within China).
+   - Film and TV entities: Films (by name and year), cast and crew members, familial relationships between actors (e.g., father of star), production companies, and roles (e.g., lead actor, judge).
+   - Music and showbiz domain: Names of judges, roles, replacements on shows, producer/singer relationships to musical albums or shows.
+   - Use well-known naming conventions and canonical spellings as given.
+   - Awareness of context-specific ambiguities (e.g., different people named similarly, cities in same country but different provinces).
+
+5. **Examples of good query characteristics:**
+   - Explicit mention of both entities whose relationship or co-location is addressed (e.g., Are Puyang City and Pu'er City both located in China?).
+   - Inclusion of necessary roles or relational qualifiers when verifying family ties (e.g., Who starred in "Bombay Talkie" (1970), and is any actor the father of a "Sultanat" star?).
+   - Querying for presence or absence of particular roles or people when claim status is unclear (e.g., Are Meesha Shafi, Strings, Ali Azmat, and Junaid Khan judges on "Music Icons", and has the producer and singer of "Aaina" joined the panel?).
+
+6. **Avoid:**
+   - Generic or vague queries that do not link key entities explicitly.
+   - Omitting important qualifiers like titles, years, or roles that would reduce retrieval accuracy.
+   - Queries relying solely on partial information without connecting to the claim’s main verification point.
+
+In summary, your task is to transform claims and their partial evidential notes into focused, entity- and relationship-centric queries that enable retrieving the precise evidence required to verify those claims, especially in complex, domain-rich contexts involving hierarchical geopolitical information, familial connections, and role assignments in entertainment media.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Paul Shaw wrote a book on the history of the design of the New York subway system in 2014 for a magazine. That magazine and National Journal are not both periodicals.
+
+### notes
+["Paul Shaw wrote a book titled 'Helvetica and the New York Subway System: The True (Maybe) Story' about the New York subway design history.", "'Print' magazine is a periodical, as it is a magazine published regularly.", 'National Journal is also a magazine and thus a periodical.', 'Magazines are considered periodical literature since they are published regularly on a schedule.', "The claim that 'That magazine and National Journal are not both periodicals' is false because both are magazines, and magazines are periodicals.", "Paul Shaw authored the book 'Helvetica and the New York Subway System: The True (Maybe) Story' detailing the design history of the New York subway.", "Paul Shaw has contributed to 'Print' magazine, which is a regularly published magazine and thus a periodical.", "'National Journal' is also a magazine and considered a periodical due to its regular publication schedule.", 'Magazines, by definition, are periodicals since they are published regularly on a set schedule.', "The claim that 'that magazine and National Journal are not both periodicals' is refuted by the facts that both are magazines and therefore both periodicals.", "Paul Shaw wrote a book titled 'Helvetica and the New York Subway System: The True (Maybe) Story' in 2014 about the history of the subway's design, but this book was not published as a magazine article.", "'Print' magazine is a periodical and Paul Shaw has contributed to it.", 'National Journal is a magazine and thus also a periodical.', "Magazines, including 'Print' and 'National Journal', are published regularly and are considered periodicals.", 'The claim that the book was written for a magazine is incorrect; the book is separate from periodical magazine contributions.', "The assertion that 'that magazine and National Journal are not both periodicals' is false because both are magazines and therefore both periodicals."]
+
+## Generated Outputs
+### reasoning
+Paul Shaw wrote a book about the New York subway design history which is associated with a magazine. The claim includes the statement that the magazine Paul Shaw wrote for and National Journal are not both periodicals. However, the notes indicate that both Print magazine and National Journal are magazines, and magazines are periodicals. Therefore, the claim about them not both being periodicals is factually incorrect. To verify this fully, the query should confirm that the specific magazine for which Paul Shaw wrote his book is a magazine and a periodical, and confirm the periodical status of National Journal.
+
+### query
+Did Paul Shaw's book "Helvetica and the New York Subway System: The True (Maybe) Story" appear in a magazine that is classified as a periodical? Is National Journal also classified as a periodical magazine?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Paul Shaw (design historian)']. Documents remaining to be retrieved: ['National Journal', 'Print (magazine)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+An actor in a musical film was also a United States Navy Combat veteran in World War II. This film was awarded The Golden Bear at the 50th Berlin International Film Festival.
+
+### notes
+["The 50th Berlin International Film Festival's Golden Bear was awarded to the American film 'Magnolia' in 2000, directed by Paul Thomas Anderson.", "'Magnolia' is not a musical film.", "No evidence found that any actor in 'Magnolia' was a US Navy Combat veteran in World War II.", "'Oh! What a Lovely War' is a World War I musical film featuring Christian Doermer but did not win the Golden Bear.", 'No record found of a musical film with a US Navy Combat veteran actor winning the Golden Bear at the 50th Berlin International Film Festival.', "The Golden Bear at the 50th Berlin International Film Festival in 2000 was awarded to 'Magnolia', which is not a musical film.", "No evidence found that any actor in 'Magnolia' was a United States Navy Combat veteran in World War II.", 'No record exists of a musical film starring a US Navy Combat veteran actor winning the Golden Bear at the 50th Berlin International Film Festival.', 'The first Berlin International Film Festival had a category for musical films with Golden Bear awards, but this system was discontinued after the first year.', "'Oh! What a Lovely War', a WWI musical film, did not win the Golden Bear at any Berlin International Film Festival.", "The Golden Bear at the 50th Berlin International Film Festival was awarded to 'Magnolia', a non-musical film.", "No evidence exists of any actors in 'Magnolia' being United States Navy Combat veterans in World War II.", 'No records indicate that a musical film won the Golden Bear at the 50th Berlin International Film Festival.', 'Musical films have generally not been awarded the Golden Bear at this festival, especially not the 50th edition.', 'The claim of a US Navy Combat veteran actor starring in a musical film winning the Golden Bear at the 50th festival is not supported.']
+
+## Generated Outputs
+### reasoning
+The claim states that a musical film won the Golden Bear at the 50th Berlin International Film Festival and that an actor in that film was a United States Navy Combat veteran in World War II. The notes clarify that the 50th Berlin International Film Festival's Golden Bear was awarded to "Magnolia," an American film from 2000, but "Magnolia" is not a musical film, and none of its actors were US Navy Combat veterans in World War II. Other known musical films such as "Oh! What a Lovely War" did not win the Golden Bear at that festival. Furthermore, no evidence was found of any musical film that fits both criteria (winning the Golden Bear at the 50th festival and featuring a US Navy Combat veteran actor). This suggests potential inaccuracy or missing information about any musical film winning the Golden Bear at that event and about the veteran actor claim. Therefore, the query needs to verify: Which musical films, if any, won the Golden Bear at the 50th Berlin International Film Festival; details on the cast of such films; and biographical military service details about those actors, focusing on US Navy Combat veterans of World War II.
+
+### query
+Which musical film won the Golden Bear award at the 50th Berlin International Film Festival in 2000? What is the full cast list of this film? Were any actors in that film United States Navy Combat veterans who served in World War II?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['50th Berlin International Film Festival']. Documents remaining to be retrieved: ['Jason Robards', 'Magnolia (film)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Basil Dean and a creator of Godfather Part II were both alive at some point in time.
+
+### notes
+["Basil Dean (1888–1978) was alive during the release of 'The Godfather Part II' in 1974.", "Francis Ford Coppola, a creator and director of 'The Godfather Part II,' was born in 1939 and is still living.", "Therefore, both Basil Dean and a creator of 'Godfather Part II' were alive at the same time from 1939 to 1978.", 'Basil Dean (1888–1978) and Francis Ford Coppola (born 1939) were alive simultaneously from 1939 to 1978, confirming that both were alive at some point.', 'Basil Dean lived from 1888 to 1978.', "Francis Ford Coppola, a creator of 'The Godfather Part II', was born in 1939 and is still living.", 'The lifespans of Basil Dean and Francis Ford Coppola overlapped from 1939 to 1978.', "Francis Ford Coppola was a central figure in the creation of 'The Godfather Part II'."]
+
+## Generated Outputs
+### reasoning
+The claim states that Basil Dean and a creator of The Godfather Part II were both alive at some point in time. The notes indicate that Basil Dean lived from 1888 to 1978 and that Francis Ford Coppola, a creator of The Godfather Part II, was born in 1939 and is still living. Therefore, they overlapped in lifespan from 1939 to 1978, confirming that both were alive simultaneously. To verify this claim, the key points are the lifespan of Basil Dean, confirmation that Francis Ford Coppola was a creator of The Godfather Part II, and his lifespan to establish the overlapping period.
+
+### query
+What are the birth and death years of Basil Dean? Was Francis Ford Coppola a creator (director or producer) of The Godfather Part II? What are the birth and (if applicable) death years of Francis Ford Coppola? Did the lifespan of Basil Dean and Francis Ford Coppola overlap between 1939 and 1978?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Basil Dean', 'Francis Ford Coppola']. Documents remaining to be retrieved: ['The Godfather Part II'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

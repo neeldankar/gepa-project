@@ -1,0 +1,47 @@
+``` 
+You will be given three input fields: `claim`, `notes`, and `context`. Your task is to produce two output fields: `new_notes` and `titles`.
+
+Detailed task description:
+
+1. **Purpose:**  
+   You are verifying or analyzing a factual claim using pieces of evidence contained in `notes` and `context`. Both `notes` and `context` contain multiple snippets or documents that may support, contradict, or provide background relevant to the `claim`.
+
+2. **Inputs:**  
+   - `claim`: A statement that makes a factual assertion about subjects, events, or relationships. It often involves named entities (people, species, films, terms, etc.).  
+   - `notes`: A list of extracted facts or statements directly related or partially related to the claim. These are typically more concise and may contain some redundancy.  
+   - `context`: A list of broader textual passages or document summaries that provide additional background or confirm precise factual details. Context documents often include named entity descriptions, dates, or provenance that may not be explicit in the notes.
+
+3. **Outputs:**  
+   - `new_notes`:  
+     A distilled, non-redundant subset of the `notes` which are directly relevant and informative for verifying or examining the `claim`. These `new_notes`:  
+       - Must clearly represent factual information related to the claim topics or entities.  
+       - Should exclude redundant or unrelated notes.  
+       - Should collectively provide the key evidence available from the original `notes`.  
+       - Should be phrased or selected so that if later used for claim verification, they enable a clear conclusion or reveal gaps in evidence.
+
+   - `titles`:  
+     A list of unique document titles or named entity identifiers corresponding to the most relevant source documents from which the evidence and background supporting the claim originate.  
+       - These titles should be directly linked to the `new_notes` (and to some degree the claim).  
+       - They represent the core knowledge sources (e.g., Wikipedia page titles or entity names) that are necessary to support or refute the claim.  
+       - Include all relevant entities or documents even if the evidence is partial or uncertain, reflecting completeness in coverage.
+
+4. **Guidance / Strategy:**  
+   - Carefully read the `claim` and identify key entities and factual assertions.  
+   - Use the `context` documents to understand the broader setting, verify entity facts, and clarify ambiguities found in `notes`.  
+   - From `notes`, select or rewrite only those pieces that are relevant, non-duplicative, and factually informative.  
+   - When entities or documents are clearly linked to pieces of evidence, ensure their titles appear in `titles`.  
+   - In cases where information is missing or ambiguous (e.g., no date available for a film mentioned), document that clearly in `new_notes`.  
+   - Avoid inventing unsupported facts; if evidence is insufficient, the outputs should reflect uncertainty or lack of information.  
+   - Ensure the final `new_notes` and `titles` would allow a human fact-checker to grasp the evidence landscape and the claim’s verifiability.
+
+5. **Domain-specific considerations:**  
+   - Claims often relate to factual details about people, species, films, scientific terms, or other named entities.  
+   - Names of organisms (like plant or animal species) should be connected to their native habitats if relevant.  
+   - Professional relationships or shared professions require cross-referencing named persons and their occupations.  
+   - Dates of production or collaboration in creative works should be extracted from authoritative documents.  
+   - Pay attention to nuanced negations or partial truths in claims (e.g., "not both made in the same year") and reflect these nuances in the evidence selected.  
+   - Document titles may refer to individuals, species, films, or concepts, and must be correctly identified.
+
+In summary, your role is to synthesize relevant evidence from notes and context to create a concise, focused summary (`new_notes`) and list the authoritative sources (`titles`) that directly support or relate to the `claim`. Your output should be factual, comprehensive in coverage, and suitable for downstream fact verification tasks.
+
+```

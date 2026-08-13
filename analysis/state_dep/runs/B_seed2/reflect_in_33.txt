@@ -1,0 +1,128 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields: `claim` and `notes`. The `claim` is a factual statement or assertion that often contains multiple entities, dates, events, or relationships. The `notes` contain a list of evidence excerpts or contextual facts relevant to the claim, including some contradictory or incomplete information. Your goal is to produce a single output field called `query`.
+
+The `query` should be a clear, focused set of one or more factual questions that, if answered correctly, would verify or refute the `claim`. These questions should precisely target the key factual components or entities involved in the claim, based on the information and inconsistencies highlighted in the `notes`.
+
+Detailed Guidelines:
+1. **Identify Core Factual Components**  
+   Break down the claim into its main factual elements. This usually involves people, events, dates, relationships, or entities. For example, formation dates of bands, ownership of an album, participation of an actor in specific works, or winners of a championship season.
+
+2. **Leverage the Notes for Context and Contradictions**  
+   Use the `notes` to identify which parts of the claim are supported, contradicted, or lack sufficient information. The notes may include multiple sources with conflicting data. Your queries should aim to resolve these conflicts or fill the gaps.
+
+3. **Formulate Precise Verification Questions**  
+   Generate questions that directly probe the factual assertions made in the claim. For example:  
+   - “When was [entity] formed?”  
+   - “Did [person] star in [work]?”  
+   - “Who won [event] in [year/season]?”  
+   - “Did [person] compete in [series] during [timeframe]?”  
+   
+   Avoid vague or overly broad questions; instead, focus on specific, answerable queries that target verification of the claim’s assertions.
+
+4. **Include All Relevant Entities or Concepts**  
+   If the claim integrates multiple entities or concepts (e.g., band formation date and album release), create queries that cover all these angles, unless some components are irrelevant or unsupported according to the notes.
+
+5. **Be Concise and Clear**  
+   The generated queries should be understandable and concise while capturing the essence of what needs to be fact-checked.
+
+6. **Domain-Specific Awareness**  
+   Claims often relate to niche knowledge about:  
+   - Music bands and albums (formation years, album release dates, distinctions between similarly named bands)  
+   - Actors and their roles in films or TV shows (cross-referencing actors appearing in multiple works)  
+   - Sports seasons and championships (drivers, winners, participation dates)  
+   
+   Your queries should reflect an understanding of these domain-specific details and be tailored accordingly.
+
+7. **Generalizable Strategy**  
+   Your approach involves: dissecting the claim → analyzing supporting and contradictory notes → identifying missing information → and finally converting these insights into targeted fact-checking queries.
+
+Example format of output:
+
+### query  
+[Question 1] [Question 2] [...]
+
+----
+
+Summary:  
+You synthesize the claim and notes to generate focused, factual questions that would enable verification of the claim’s truthfulness by addressing contested or unclear factual points through retrieval or checking of authoritative documents.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+German Frank Sinatra has won more awards than this Skinny Puppy band member, for whom the Rx (band) was a one-off side project.
+
+### notes
+['Rx (band) was a one-off side project by Skinny Puppy band member Nivek Ogre, in collaboration with Martin Atkins.', 'Nivek Ogre, born Kevin Graham Ogilvie on December 5, 1962, is a founding member and vocalist of the Canadian industrial music group Skinny Puppy.', 'Rx (band) was a one-off side project by Skinny Puppy band member Nivek Ogre, in collaboration with Martin Atkins.', 'Nivek Ogre, born Kevin Graham Ogilvie on December 5, 1962, is a founding member and vocalist of the Canadian industrial music group Skinny Puppy.', 'Frank Sinatra was an American singer and actor who won numerous awards including the 1967 Grammy Award for Album of the Year, an Academy Award, and Golden Globe Awards.', "The miniseries 'Sinatra' won two Emmy Awards and one Golden Globe Award, reflecting Sinatra’s broad recognition.", "Frank Sinatra’s song 'It Was a Very Good Year' won the Grammy Award for Best Vocal Performance, Male in 1966, and an additional Grammy for arrangement.", 'Rx (band) was a one-off side project by Skinny Puppy band member Nivek Ogre, in collaboration with Martin Atkins.', 'Nivek Ogre, born Kevin Graham Ogilvie on December 5, 1962, is a founding member and vocalist of the Canadian industrial music group Skinny Puppy.', 'Frank Sinatra was an American singer and actor who won numerous awards including the 1967 Grammy Award for Album of the Year, an Academy Award, and Golden Globe Awards.', "The miniseries 'Sinatra' won two Emmy Awards and one Golden Globe Award, reflecting Sinatra’s broad recognition.", "Frank Sinatra’s song 'It Was a Very Good Year' won the Grammy Award for Best Vocal Performance, Male in 1966, and an additional Grammy for arrangement."]
+
+## Generated Outputs
+### reasoning
+The claim states that "German Frank Sinatra" has won more awards than Nivek Ogre, a Skinny Puppy band member who was involved in the one-off side project Rx (band). The notes confirm that Nivek Ogre was part of Skinny Puppy and involved in Rx (notes [1], [2], [3], [4]). However, there is no information about "German Frank Sinatra" or any awards he might have won. The notes mainly focus on Frank Sinatra (the American singer and actor) and his numerous awards (notes [5], [6], [7]), but there is no mention of a German counterpart or a "German Frank Sinatra." 
+
+To verify the claim, we need to clarify:  
+1. Who is "German Frank Sinatra"? Is this a real individual or a nickname for someone else? Are there any notable awards associated with this person?  
+2. What awards has Nivek Ogre won, if any?  
+3. Given these, can we determine whether "German Frank Sinatra" has won more awards than Nivek Ogre?
+
+Since the notes do not mention German Frank Sinatra or Nivek Ogre’s awards explicitly, these questions need to be asked to fact-check the claim.
+
+### query
+Who is referred to as "German Frank Sinatra"? What awards has this person won? What awards, if any, has Nivek Ogre (Skinny Puppy band member and Rx collaborator) won? Has "German Frank Sinatra" won more awards than Nivek Ogre?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Frank Sinatra', 'Nivek Ogre', 'Rx (band)']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+The company owning Quaker Ridge (NYW&B station) has a terminus at the New York city in the county of Westchester.
+
+### notes
+['Quaker Ridge is a former railroad station on the White Plains branch of the New York, Westchester and Boston Railway in the city of New Rochelle in Westchester County, New York.', 'The New York, Westchester and Boston Railway ran from the southernmost part of the South Bronx, near the Harlem River (part of New York City), to Mount Vernon with branches north to White Plains and east to Port Chester in Westchester County.', 'The NYW&B Railway linked Manhattan and the Bronx section of New York City with the primarily undeveloped countryside of Westchester County.', 'New York City and Westchester County are separate entities; the South Bronx is part of New York City, while New Rochelle and other towns where the station and other branches are located are in Westchester County.', 'Quaker Ridge is a former station on the White Plains branch of the New York, Westchester and Boston Railway located in the city of New Rochelle in Westchester County, New York.', 'The New York, Westchester and Boston Railway ran from the southernmost part of the South Bronx, near the Harlem River (which is part of New York City), to Mount Vernon, with branches north to White Plains and east to Port Chester in Westchester County.', 'New York City and Westchester County are separate entities; the South Bronx is part of New York City, while New Rochelle and other towns with the station are in Westchester County.', 'The NYW&B Railway linked Manhattan and the Bronx sections of New York City with the primarily undeveloped countryside of Westchester County.', 'Quaker Ridge is a former railroad station on the White Plains branch of the New York, Westchester and Boston Railway located in the city of New Rochelle in Westchester County, New York.', 'The New York, Westchester and Boston Railway ran from the southernmost part of the South Bronx, near the Harlem River, which is part of New York City, to Mount Vernon with branches north to White Plains and east to Port Chester in Westchester County.', 'The NYW&B Railway linked Manhattan and the Bronx sections of New York City with the primarily undeveloped countryside of Westchester County.', 'New York City and Westchester County are separate entities; the South Bronx is part of New York City, while New Rochelle and other towns where the stations are located are in Westchester County.']
+
+## Generated Outputs
+### reasoning
+The claim states that the company owning Quaker Ridge (a NYW&B station) has a terminus at New York City, located in the county of Westchester. The notes indicate that Quaker Ridge station is in New Rochelle, which is in Westchester County, but New York City and Westchester County are distinct political entities. The NYW&B Railway ran from the South Bronx (part of NYC) to Mount Vernon and branches to White Plains and Port Chester in Westchester County. Importantly, New York City proper is in multiple boroughs that are not in Westchester County; the Bronx is part of NYC but Westchester County is outside NYC boundaries. Therefore, the claim’s implication that a terminus at New York City lies in Westchester County conflicts with the separation of these geographic entities described in the notes. The key factual points to verify are the location of the company’s terminus and whether it is indeed at New York City within Westchester County.
+
+### query
+Does the New York, Westchester and Boston Railway have a terminus located in New York City? If yes, in which county is that terminus located? Is there any terminus of the NYW&B Railway within Westchester County that is also considered part of New York City? Where is the Quaker Ridge station located with respect to New York City and Westchester County boundaries?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['New York, Westchester and Boston Railway', 'Quaker Ridge (NYW&amp;B station)']. Documents remaining to be retrieved: ['Mount Vernon, New York'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Bruce Guthro  and another rock musician are not both members of the alternative rock band Radiohead. The other rock musician sins on the Radiohead song "All I need".
+
+### notes
+["Radiohead is an English alternative rock band consisting of Thom Yorke (vocals and guitar), Jonny Greenwood (guitar), Ed O'Brien (guitar), Colin Greenwood (bass guitar), and Phil Selway (drums).", '"All I Need" is a song by Radiohead from their album "In Rainbows" (2007), with Thom Yorke as the vocalist.', 'Bruce Guthro is not mentioned as a member of Radiohead or associated with the band.', 'Thom Yorke is the lead singer of Radiohead and sings on "All I Need".', "Radiohead is an English alternative rock band consisting of Thom Yorke (vocals and guitar), Jonny Greenwood (guitar), Ed O'Brien (guitar), Colin Greenwood (bass guitar), and Phil Selway (drums).", '"All I Need" is a song by Radiohead from their album "In Rainbows" (2007), with Thom Yorke as the vocalist.', 'Bruce Guthro is not mentioned as a member of Radiohead or associated with the band.', 'Thom Yorke is the lead singer of Radiohead and sings on "All I Need".', "Radiohead is an English alternative rock band consisting of Thom Yorke (vocals and guitar), Jonny Greenwood (guitar), Ed O'Brien (guitar), Colin Greenwood (bass guitar), and Phil Selway (drums).", '"All I Need" is a song by Radiohead from their album "In Rainbows" (2007), with Thom Yorke as the vocalist.', 'Thom Yorke is the lead singer of Radiohead and sings on "All I Need".', 'Bruce Guthro is not mentioned as a member of Radiohead or associated with the band.']
+
+## Generated Outputs
+### reasoning
+The claim states that Bruce Guthro and another rock musician are not both members of Radiohead, and that the other musician sings on the Radiohead song "All I Need." The notes clarify that Radiohead consists of Thom Yorke, Jonny Greenwood, Ed O'Brien, Colin Greenwood, and Phil Selway. Bruce Guthro is explicitly noted as not being a member or associated with Radiohead. The song "All I Need" is performed by Radiohead with Thom Yorke as the vocalist. This suggests that the "other rock musician" who sings on "All I Need" is Thom Yorke. To verify the claim, it is important to confirm that Bruce Guthro is not a member of Radiohead, identify who sings on "All I Need," and establish that the "other rock musician" mentioned is indeed Thom Yorke and no other member sings lead vocals on the song.
+
+### query
+Is Bruce Guthro a member or associated with the band Radiohead? Who is the lead vocalist on the Radiohead song "All I Need"? Is Thom Yorke the sole lead singer on "All I Need"? Are there any other members of Radiohead who sing on "All I Need"?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['All I Need (Radiohead song)', 'Thom Yorke']. Documents remaining to be retrieved: ['Bruce Guthro'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

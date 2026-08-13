@@ -1,0 +1,109 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields:
+- `claim`: a factual statement or assertion that may require verification or further factual support.
+- `notes`: a list of textual snippets containing partial information relevant to verifying the claim. These notes might include facts, contradictions, or missing information about entities or topics in the claim.
+
+Your goal is to produce the output field `query` — a precise and focused question (or set of questions) aimed at retrieving the key missing or uncertain factual information needed to verify the claim. The `query` should target specific entities, attributes, relationships, or facts that have not been confirmed or sufficiently covered in the provided notes.
+
+Key Points and Domain-Specific Knowledge:
+- The claim involves named entities such as people, films, bands, roles (e.g., director, bassist), birthdates, nationalities, professions, and works (e.g., films, songs).
+- Notes often contain partial or confirmatory information about these entities, but sometimes lack critical data required to verify the claim fully.
+- Your query should be designed to retrieve authoritative documents or data specifically covering the missing or ambiguous elements mentioned or implied by the claim.
+- The query should reflect recognition of domain-specific facts, such as:
+   * Individuals’ roles and contributions (e.g., “bass player and lead vocalist who created Cobra Starship” refers to Gabe Saporta).
+   * Nationality or origin of persons associated with cultural works (e.g., nationality of film directors related to 'Cannibal Holocaust').
+   * Dates of birth or ages when claims relate to relative age.
+   * Professional associations or occupations that confirm or refute the claim.
+   * Connections between named works and their creators or contributors.
+
+Generalizable Strategy:
+1. Analyze the claim and identify the factual assertions that require verification.
+2. Review the notes to establish which parts of the claim are already supported and which parts are missing, contradictory, or uncertain.
+3. Formulate concise, targeted queries that seek the minimal yet sufficient data required to resolve remaining ambiguities.
+4. When multiple pieces of missing information exist, combine them efficiently in the query, balancing completeness and precision.
+5. Focus on retrieving documents or facts about:
+   - Specific named entities not covered or unclear in the notes.
+   - Attributes or relationships critical to verifying the claim.
+6. Avoid overly broad or generic questions; tailor queries to close specific knowledge gaps evident from the notes.
+
+Example:
+If the claim is about the relative age of two persons, and only one birthdate is known, the query should be:  
+   "What is the birthdate or age of [Person with missing info]?"
+
+If the claim involves multiple nationalities or roles, and only partial info is available, the query should ask specifically about the identities, nationalities, or professions of the key persons involved.
+
+By following this approach, you will help retrieve the essential documents needed to verify complex claims effectively.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The sport of tennis is played by both Texas native Angelique Kerber and the player who was the defending champion, who competed, for the 2005 China Open – Men's Doubles.
+
+### notes
+['Angelique Kerber is a professional tennis player who has defended multiple tennis titles across various tournaments from 2011 to 2017.', 'There is no evidence in the provided context that Angelique Kerber is a Texas native.', "No information is available about the 2005 China Open – Men's Doubles defending champion or their identity.", "There is no link in the context between Angelique Kerber and the 2005 China Open – Men's Doubles defending champion.", "Angelique Kerber competes in women's singles tennis events, whereas the 2005 China Open – Men's Doubles is a men's event.", "Angelique Kerber is a professional tennis player competing in women's singles events.", 'There is no evidence that Angelique Kerber is a Texas native.', "Justin Gimelstob and Graydon Oliver were the defending champions for the 2005 China Open – Men's Doubles.", "Graydon Oliver did not participate in the 2005 China Open – Men's Doubles; Justin Gimelstob partnered with Nathan Healey and successfully defended the title.", "Both Angelique Kerber and the 2005 China Open – Men's Doubles defending champion played tennis, but in different categories (women's singles vs. men's doubles).", "Angelique Kerber is a German professional tennis player specializing in women's singles events.", 'There is no evidence that Angelique Kerber is a Texas native.', "Justin Gimelstob and Graydon Oliver were the defending champions for the 2005 China Open – Men's Doubles.", "Graydon Oliver did not participate in the 2005 China Open – Men's Doubles; Justin Gimelstob partnered with Nathan Healey to successfully defend the title.", "Angelique Kerber and the 2005 China Open – Men's Doubles defending champion both play tennis but in different categories (women's singles vs. men's doubles)."]
+
+## Generated Outputs
+### reasoning
+The claim states that the sport of tennis is played by both Angelique Kerber, described as a Texas native, and the defending champion of the 2005 China Open – Men's Doubles. From the notes, it is confirmed that Angelique Kerber is a professional tennis player, but there is no evidence supporting that she is a Texas native. Furthermore, the identity and background of the defending champion in the 2005 China Open – Men's Doubles is unknown, and no direct connection between Kerber and the defending champion is established. Additionally, Kerber competes in women's singles events, while the 2005 China Open – Men's Doubles is a men's event, suggesting different categories. To verify the claim, it is necessary to confirm whether Angelique Kerber is indeed a Texas native and to identify the defending champion of the 2005 China Open – Men's Doubles, including confirmation that this player competed in the tournament.
+
+### query
+What is the birthplace or native state of Angelique Kerber? Who was the defending champion of the 2005 China Open – Men's Doubles, and did this player compete in the 2005 tournament?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ["2005 China Open – Men's Doubles", 'Angelique Kerber']. Documents remaining to be retrieved: ['Justin Gimelstob'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The writer Norman Alfred Norman Lindsay enjoyed boxing, but the author of The Hundred Secret Senses did not.
+
+### notes
+['Norman Alfred William Lindsay (1879–1969) was an Australian artist and also an accomplished amateur boxer.', 'Amy Tan is the author of the bestselling 1995 novel The Hundred Secret Senses.', "There is no available information in the provided context about Amy Tan's interest or disinterest in boxing.", 'Norman Alfred William Lindsay (1879–1969) was an Australian artist and accomplished amateur boxer.', 'Amy Tan is the author of the bestselling 1995 novel The Hundred Secret Senses.', "There is no available information about Amy Tan's interest or disinterest in boxing in the provided context."]
+
+## Generated Outputs
+### reasoning
+The claim involves two separate individuals: Norman Alfred Lindsay, who is described as a writer who enjoyed boxing, and the author of The Hundred Secret Senses, who is claimed not to have enjoyed boxing. To verify this claim, I need to confirm two key facts: whether Norman Alfred Lindsay did indeed enjoy boxing and whether the author of The Hundred Secret Senses did not enjoy boxing. Since the notes provide no information, I lack any data on these individuals' interests or hobbies. Additionally, I need to identify the author of The Hundred Secret Senses to correctly associate the claim. Therefore, the query must specifically seek information about Norman Alfred Lindsay's enjoyment of boxing and about the author of The Hundred Secret Senses regarding whether they enjoyed boxing or not.
+
+### query
+What information is available about Norman Alfred Lindsay's hobbies or interests, specifically whether he enjoyed boxing? Additionally, who is the author of The Hundred Secret Senses, and is there any information about whether this author enjoyed or did not enjoy boxing?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Amy Tan', 'Norman Lindsay', 'The Hundred Secret Senses']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+Chess is more popular around the world than a game designed by Leo Colovini.
+
+### notes
+["Leo Colovini is an Italian designer of German-style board games, with popular games including 'Cartagena', 'Clans', and 'Familienbande'.", 'Chess has been a widely popular game worldwide since the Middle Ages with significant cultural, historical, and artistic influence.', 'Chess inspired literature and art across the Arab World and Europe from medieval times onward and has evolved through various historical eras of play.', 'The Elo rating system, originally designed for chess, underscores its importance in competitive skill ranking.', 'There is no evidence that any game designed by Leo Colovini has achieved worldwide popularity comparable to chess.', 'Chess has been a widely popular game worldwide since the Middle Ages, influencing culture and art across many regions.', 'The Elo rating system was originally developed for chess, highlighting its prominence in competitive play.', "Leo Colovini is an Italian designer known for German-style board games like 'Cartagena,' 'Clans,' and 'Familienbande'.", 'No game designed by Leo Colovini has achieved worldwide popularity comparable to chess.', 'Leo Colovini is an Italian designer known for German-style board games including Cartagena, Clans, and Familienbande.', "None of Leo Colovini's games have achieved worldwide popularity comparable to chess.", 'Chess has been widely popular globally since the Middle Ages with significant cultural, historical, and artistic influence.', "The Elo rating system, originally designed for chess, highlights chess's global prominence in competitive skill ranking."]
+
+## Generated Outputs
+### reasoning
+The claim compares the global popularity of chess with that of a game designed by Leo Colovini. The notes confirm that chess is widely popular worldwide with significant cultural impact, and that no game designed by Leo Colovini has achieved worldwide popularity comparable to chess. However, the claim generically states "a game designed by Leo Colovini," which is vague since Leo Colovini has designed multiple games. To precisely verify the claim, we need to understand the popularity levels of chess compared to the most popular individual game designed by Leo Colovini. This would help confirm the relative popularity stated in the claim. Since the notes indicate no Colovini game rivals chess’s global popularity, the key missing information is whether any of Colovini’s games come close or exceed chess’s global reach or influence.
+
+### query
+What is the global popularity and reach of the most popular game designed by Leo Colovini compared to chess?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Leo Colovini']. Documents remaining to be retrieved: ['Cartagena (board game)', 'Chess'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

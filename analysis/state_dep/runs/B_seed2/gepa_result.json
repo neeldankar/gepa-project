@@ -1,0 +1,1081 @@
+{
+  "prog_candidate_val_subscores": [
+    {
+      "0": 0.6666666666666666,
+      "1": 1.0,
+      "2": 0.3333333333333333,
+      "3": 0.6666666666666666,
+      "4": 0.3333333333333333,
+      "5": 0.3333333333333333,
+      "6": 0.3333333333333333,
+      "7": 1.0,
+      "8": 0.0,
+      "9": 0.0
+    },
+    {
+      "0": 0.6666666666666666,
+      "1": 0.6666666666666666,
+      "2": 0.3333333333333333,
+      "3": 0.6666666666666666,
+      "4": 0.3333333333333333,
+      "5": 0.6666666666666666,
+      "6": 0.3333333333333333,
+      "7": 1.0,
+      "8": 0.6666666666666666,
+      "9": 0.3333333333333333
+    },
+    {
+      "0": 0.0,
+      "1": 1.0,
+      "2": 0.3333333333333333,
+      "3": 0.6666666666666666,
+      "4": 1.0,
+      "5": 0.0,
+      "6": 0.3333333333333333,
+      "7": 1.0,
+      "8": 0.3333333333333333,
+      "9": 0.0
+    },
+    {
+      "0": 0.6666666666666666,
+      "1": 0.6666666666666666,
+      "2": 0.3333333333333333,
+      "3": 0.6666666666666666,
+      "4": 0.3333333333333333,
+      "5": 0.0,
+      "6": 0.3333333333333333,
+      "7": 1.0,
+      "8": 0.0,
+      "9": 0.0
+    },
+    {
+      "0": 0.6666666666666666,
+      "1": 1.0,
+      "2": 0.3333333333333333,
+      "3": 0.6666666666666666,
+      "4": 0.3333333333333333,
+      "5": 0.3333333333333333,
+      "6": 0.6666666666666666,
+      "7": 1.0,
+      "8": 0.3333333333333333,
+      "9": 0.3333333333333333
+    },
+    {
+      "0": 0.6666666666666666,
+      "1": 1.0,
+      "2": 0.3333333333333333,
+      "3": 0.6666666666666666,
+      "4": 1.0,
+      "5": 0.0,
+      "6": 0.6666666666666666,
+      "7": 1.0,
+      "8": 0.3333333333333333,
+      "9": 0.0
+    },
+    {
+      "0": 0.6666666666666666,
+      "1": 0.6666666666666666,
+      "2": 0.6666666666666666,
+      "3": 0.6666666666666666,
+      "4": 0.3333333333333333,
+      "5": 0.0,
+      "6": 0.3333333333333333,
+      "7": 1.0,
+      "8": 0.3333333333333333,
+      "9": 0.3333333333333333
+    },
+    {
+      "0": 0.6666666666666666,
+      "1": 0.6666666666666666,
+      "2": 0.3333333333333333,
+      "3": 0.3333333333333333,
+      "4": 0.6666666666666666,
+      "5": 0.0,
+      "6": 0.3333333333333333,
+      "7": 1.0,
+      "8": 0.3333333333333333,
+      "9": 0.0
+    },
+    {
+      "0": 0.3333333333333333,
+      "1": 1.0,
+      "2": 0.3333333333333333,
+      "3": 0.6666666666666666,
+      "4": 0.3333333333333333,
+      "5": 0.0,
+      "6": 0.6666666666666666,
+      "7": 1.0,
+      "8": 0.3333333333333333,
+      "9": 0.6666666666666666
+    }
+  ],
+  "parent_program_for_candidate": [
+    [
+      null
+    ],
+    [
+      0
+    ],
+    [
+      0
+    ],
+    [
+      1
+    ],
+    [
+      1
+    ],
+    [
+      1
+    ],
+    [
+      1
+    ],
+    [
+      1
+    ],
+    [
+      1
+    ]
+  ],
+  "num_metric_calls_by_discovery": [
+    0,
+    22,
+    38,
+    102,
+    130,
+    152,
+    174,
+    202,
+    248
+  ],
+  "program_candidates": [
+    {
+      "gen_query.predict": "Given the fields `claim`, `notes`, produce the fields `query`.",
+      "append_notes.predict": "Given the fields `claim`, `notes`, `context`, produce the fields `new_notes`, `titles`."
+    },
+    {
+      "gen_query.predict": "Given the fields `claim`, `notes`, produce the fields `query`.",
+      "append_notes.predict": "You will be given three input fields: \n- `claim`: a factual statement or assertion whose truthfulness needs to be evaluated.\n- `notes`: a list of textual snippets extracted from various documents that are relevant to the claim. These notes may contain overlapping information and varying levels of detail.\n- `context`: a list of concise summaries or descriptions of source documents that may provide additional information related to the claim.\n\nYour task is to produce two output fields: \n- `new_notes`: a refined, concise, and non-redundant subset or synthesis of the input `notes` that directly address key facts needed to evaluate the claim. These should focus on relevant factual information supporting verification or falsification of the claim, removing repetition and irrelevant details.\n- `titles`: a list of the most relevant document titles (from the given `context`) whose content contains essential information that supports verification of the claim. Titles should be directly tied to entities or facts critical to assessing the claim’s truth.\n\nDetailed task description and guidelines:\n\n1. **Understand the claim carefully:** Identify what factual relationships or attributes the claim asserts. Common relationships involve dates (e.g., birthdates), locations, sponsorships, team participation in events, or organizational affiliations.\n\n2. **Analyze the `notes`:** \n   - Identify the core facts within the notes that relate to the claim components.\n   - Remove duplicate or near-duplicate statements.\n   - Remove notes that do not contribute meaningful information for verifying the claim.\n   - Combine closely related facts into a single coherent note if appropriate.\n\n3. **Use the `context` documents to identify relevant titles:**\n   - Match core entities or specific facts mentioned in new_notes to the titles in the context.\n   - Select document titles that contain background, biographical, event-related, or organizational information directly related to the claim or the facts used in new_notes.\n   - Include all titles necessary to cover the key factual points supporting or refuting the claim.\n   \n4. **Focus on comprehensive and precise fact coverage:**\n   - For claims involving dates or comparisons (e.g., birth dates before/after), emphasize the presence or absence of those dates in the new_notes.\n   - For claims involving events and participants (e.g., bowl games, sponsorships), include notes identifying the event, sponsor, location, and participating entities.\n   - For claims about geographical relations (e.g., entities located in the same country), use notes emphasizing the locations and their geopolitical hierarchy.\n\n5. **Avoid fabricating information or adding facts not supported by the notes or context.** Work only with provided inputs.\n\n6. **The reasoning behind new_notes should be implicitly reflected in the selection and refinement of notes and titles.** While no explicit reasoning output is required, your outputs should facilitate straightforward verification or rebuttal of the claim.\n\n7. **Maintain clarity and specificity:**\n   - Notes should stand alone as clear, factual statements extracted from the input.\n   - Titles should be the exact document titles from context, indicating the sources of key facts.\n\nThe goal is to distill, from possibly redundant and partially overlapping information, the most relevant and precise facts and corresponding source titles that directly support verification or falsification of the claim."
+    },
+    {
+      "gen_query.predict": "You will be given two input fields: \n\n- `claim`: a statement that makes one or more factual assertions involving named entities, events, or relationships. \n- `notes`: a list of textual snippets (facts, partial evidences, or contextual details) relevant to the claim, often including information about people, places, dates, titles of works, or other related entities.\n\nYour task is to produce a single output field: \n\n- `query`: a natural-language question (or set of questions) designed to retrieve or verify the factual correctness of the `claim`.  \n\nThe `query` must:  \n1. Target the key factual elements necessary to verify or refute the claim, often by referencing named entities, specific dates or time frames, titles, roles, geographic comparisons, or event orderings as they appear in the claim and notes.  \n2. Reflect precise relationships and temporal sequencing implied or stated in the claim (e.g., \"Did actor X perform in work A after event B?\", or \"Is director Y from a country geographically smaller than director Z's country and did Z direct film W?\").  \n3. Combine multiple parts of the claim into a concise yet complete question or set of related questions that if answered would confirm or deny all claim elements.  \n4. Use information extracted from `notes` to ground the query terms in known entities and to ensure the query focuses on relevant concepts (e.g., specific versions of film titles, exact roles or positions held, named seasons or events, and geographic comparisons).  \n5. Exclude unnecessary or extraneous information to maintain clarity and specificity in the questioning.\n\nGeneral reasoning approach:  \n- Identify the main entities and assertions in the claim (persons, events, time frames, roles, geographies, works of art, etc.).  \n- Use the notes to clarify potential ambiguities in entity names, temporal orderings, or contexts.  \n- Formulate queries that link these elements logically to confirm key properties (e.g., \"Who coached team X in year Y?\", \"Did actor A appear in film B after event C?\", \"Did director D originate from country E smaller than country F?\").  \n- When the claim contains compound assertions, reflect them in the query as multiple coordinated or sequential questions.\n\nRemember, the `query` is intended as an evidence-seeking question to validate the claim through targeted information retrieval or fact-checking.",
+      "append_notes.predict": "Given the fields `claim`, `notes`, `context`, produce the fields `new_notes`, `titles`."
+    },
+    {
+      "gen_query.predict": "Given the fields `claim`, `notes`, produce the fields `query`.",
+      "append_notes.predict": "You will be presented with three inputs:\n\n- `claim`: A factual assertion or statement whose truthfulness you must evaluate.\n- `notes`: A list of textual snippets taken from various documents that are potentially relevant to the claim. These notes may include overlapping, redundant, or partially conflicting information, and vary in their specificity and relevance.\n- `context`: A list of concise summaries or metadata descriptions of source documents from which the notes were drawn, including their exact titles.\n\nYour task is to generate two outputs:\n\n1. `new_notes`: A refined, concise, and non-redundant synthesis or subset of the input `notes` that distills the essential facts relevant to verifying or falsifying the `claim`.  \n2. `titles`: A list of the exact document titles (from `context`) that contain the critical information needed to assess the claim's truthfulness.\n\n---\n\n### Detailed Task Instructions and Guidelines\n\n**1. Understand the claim precisely:**  \nIdentify all key factual components or relationships within the claim. Typical claim elements might include:\n\n- Dates (e.g., birthdates, event years) and their ordering or equivalence  \n- Named individuals or entities and their roles or affiliations  \n- Participation or association with events, productions, or organizations  \n- Geographic or jurisdictional relationships  \n- Specific named works (films, TV shows, documentaries) or characters  \n- Other specific factual attributes (e.g., voice actors, co-writers)\n\n**2. Analyze and distill the `notes`:**  \n- Extract core facts from each note that directly bear on the claim's truth.  \n- Remove exact or near-exact duplicates to avoid repetition.  \n- Exclude notes that do not contribute meaningful or directly relevant information for verification.  \n- Merge or synthesize closely related facts into single coherent notes if it improves clarity and conciseness.  \n- Include supporting details such as names, dates, titles, and roles only when they clarify or confirm relevant claim aspects.  \n- Avoid introducing any unsupported or speculative information; only use what is provided in the notes or context.\n\n**3. Use `context` to select relevant `titles`:**  \n- Identify document titles that correspond directly to any entities, events, dates, or works mentioned in your refined notes.  \n- Choose titles whose descriptions indicate they contain the authoritative or corroborative information essential for assessing the claim.  \n- Avoid titles unrelated to the essential components needed for verification, even if they appear in context.  \n- Include multiple titles if necessary to cover all relevant facts addressed in `new_notes`.\n\n**4. Emphasize accuracy and coverage in `new_notes`:**  \n- For claims involving comparisons (dates, events), explicitly include the date or ordering information from the notes.  \n- For claims involving named persons or roles (e.g., voice actors, directors), include the full relevant fact (e.g., \"Adult Nala was voiced by American actress Moira Kelly\").  \n- For claims involving event participation or production details, include the event name, involved persons/entities, and key attributes to make the fact self-contained and evaluable.  \n- For claims about geopolitical or locational assertions, carefully include corresponding place hierarchies or relations if given.  \n\n**5. Avoid fabrication or assumption:**  \n- Do not add facts beyond what is available in the input notes or context summaries.  \n- If the information is missing or inconclusive, reflect that in your notes by including relevant facts (e.g., \"There is no mention of X doing Y\").\n\n**6. Clarity, specificity, and standalone value:**  \n- Each note in `new_notes` should be a clear, factual statement that a verifier can understand by itself without needing to refer back to other notes.  \n- Avoid vague or ambiguous statements.  \n- Ensure that the combination of `new_notes` fully supports or disproves the claim logically.\n\n---\n\n### Additional Domain-Specific and Task-Specific Details Gathered from Examples\n\n- Many claims pertain to films, TV shows, or cultural works, including voice acting roles, directorial roles, co-writing, and documentary subjects. Make sure you identify these roles precisely.  \n- Names and titles may be provided in multiple languages or formats (e.g., original titles, English translations). Be mindful of this to align notes and titles correctly.  \n- Dates often serve as pivotal verification points (e.g., was a film made in a certain year, or did two events happen in the same year?). Clearly extract and highlight such date information.  \n- Some entities may be commonly confused—such as actors, writers, or directors with similar or overlapping domains (e.g., Jonathan Lynn vs. Ettore Scola). Avoid conflating these by carefully matching facts from notes and contextual document metadata.  \n- The `context` input includes document titles with concise descriptions; use these to confirm that your selected titles directly relate to the factual elements in your new_notes.  \n- The goal is to enable straightforward verification or falsification of the claim by a human or system relying on your outputs, so the distilled notes and selected titles should provide an evidentiary basis without irrelevant clutter.\n\n---\n\n### Summary of the Strategy for the Assistant\n\n- Read and parse the claim carefully to identify fact-check targets.  \n- Parse notes to isolate relevant facts, removing noise and redundancy.  \n- Synthesize relevant fact statements concisely and precisely.  \n- Choose document titles that map exactly to these facts from the context metadata.  \n- Avoid speculation, unsupported facts, or missing facts.  \n- Deliver clear, self-contained facts and precise titles to enable transparent truth evaluation of the claim.\n\nFollowing this approach will maximize accuracy, relevance, and clarity in verifying or falsifying factual claims using multi-document evidence."
+    },
+    {
+      "gen_query.predict": "Given the input fields:\n- `claim`: a factual statement or assertion that may be complex and potentially contains inaccuracies or conflated information,\n- `notes`: a list of relevant factual snippets or document excerpts which may contain supporting, contradicting, or clarifying information related to the claim,\n\nyour task is to produce the output field:\n- `query`: a clear, precise, and focused natural language question (or set of questions) that would guide retrieval or verification efforts to fact-check the claim using the information in the notes.\n\nYour approach should follow these domain-specific guidelines and reasoning strategies:\n\n1. **Understand the Claim Context and Details:**\n   - Analyze the `claim` to identify key entities, relationships, temporal or location contexts, and implicit assumptions.\n   - Note any possible conflations or errors in the claim (e.g., mixing locations, dates, or roles).\n   \n2. **Leverage the Notes to Identify Key Verification Points:**\n   - Use the `notes` to detect factual details already known or contradicted.\n   - Identify which aspects of the claim are supported by the notes, which are contradicted, and which remain uncertain or unstated.\n   - Extract factual nuggets such as dates, persons’ roles, locations, event outcomes, or relationships needed to validate the claim.\n\n3. **Formulate Queries that Facilitate Complete and Specific Verification:**\n   - Frame queries that explicitly target verification of the main factual components of the claim.\n   - When the claim contains multiple key facts or sub-claims, include multiple related questions for comprehensive coverage.\n   - Include queries that resolve ambiguities or test conflicting information found in notes (e.g., who did a particular role, where an event took place, correct dates).\n   - Ensure queries are self-contained and unambiguous, clearly referencing the entities and relationships involved.\n\n4. **Domain-Specific Examples to Guide Query Creation:**\n   - For geographical or historical claims, queries should determine event locations, dates, and involved parties.\n   - For film-related claims, queries must establish release dates, relationships between works (e.g., sequels), and composer roles.\n   - For historical and biographical claims, queries should clarify familial relationships, roles held, actions performed by individuals, and links between events and persons.\n\n5. **Generalization and Practical Use:**\n   - The goal of the generated `query` is to serve as an effective retrieval and disambiguation tool, facilitating the acquisition of additional documents or evidence necessary to confirm or refute the claim.\n   - Avoid vague or overly broad queries; aim for specificity and relevance to the critical factual claims.\n\nSummary: Your task is to transform the claim and the supporting notes into targeted, multi-part factual questions designed to verify or falsify key components of the claim, taking into account contradictions or gaps present in the notes. These queries should be clear, focused, and reflect the nuanced reasoning necessary for complex fact-checking scenarios.",
+      "append_notes.predict": "You will be given three input fields: \n- `claim`: a factual statement or assertion whose truthfulness needs to be evaluated.\n- `notes`: a list of textual snippets extracted from various documents that are relevant to the claim. These notes may contain overlapping information and varying levels of detail.\n- `context`: a list of concise summaries or descriptions of source documents that may provide additional information related to the claim.\n\nYour task is to produce two output fields: \n- `new_notes`: a refined, concise, and non-redundant subset or synthesis of the input `notes` that directly address key facts needed to evaluate the claim. These should focus on relevant factual information supporting verification or falsification of the claim, removing repetition and irrelevant details.\n- `titles`: a list of the most relevant document titles (from the given `context`) whose content contains essential information that supports verification of the claim. Titles should be directly tied to entities or facts critical to assessing the claim’s truth.\n\nDetailed task description and guidelines:\n\n1. **Understand the claim carefully:** Identify what factual relationships or attributes the claim asserts. Common relationships involve dates (e.g., birthdates), locations, sponsorships, team participation in events, or organizational affiliations.\n\n2. **Analyze the `notes`:** \n   - Identify the core facts within the notes that relate to the claim components.\n   - Remove duplicate or near-duplicate statements.\n   - Remove notes that do not contribute meaningful information for verifying the claim.\n   - Combine closely related facts into a single coherent note if appropriate.\n\n3. **Use the `context` documents to identify relevant titles:**\n   - Match core entities or specific facts mentioned in new_notes to the titles in the context.\n   - Select document titles that contain background, biographical, event-related, or organizational information directly related to the claim or the facts used in new_notes.\n   - Include all titles necessary to cover the key factual points supporting or refuting the claim.\n   \n4. **Focus on comprehensive and precise fact coverage:**\n   - For claims involving dates or comparisons (e.g., birth dates before/after), emphasize the presence or absence of those dates in the new_notes.\n   - For claims involving events and participants (e.g., bowl games, sponsorships), include notes identifying the event, sponsor, location, and participating entities.\n   - For claims about geographical relations (e.g., entities located in the same country), use notes emphasizing the locations and their geopolitical hierarchy.\n\n5. **Avoid fabricating information or adding facts not supported by the notes or context.** Work only with provided inputs.\n\n6. **The reasoning behind new_notes should be implicitly reflected in the selection and refinement of notes and titles.** While no explicit reasoning output is required, your outputs should facilitate straightforward verification or rebuttal of the claim.\n\n7. **Maintain clarity and specificity:**\n   - Notes should stand alone as clear, factual statements extracted from the input.\n   - Titles should be the exact document titles from context, indicating the sources of key facts.\n\nThe goal is to distill, from possibly redundant and partially overlapping information, the most relevant and precise facts and corresponding source titles that directly support verification or falsification of the claim."
+    },
+    {
+      "gen_query.predict": "Task Description:\nYou will be given two input fields: `claim` and `notes`. The `claim` is a factual statement or assertion that often contains multiple entities, dates, events, or relationships. The `notes` contain a list of evidence excerpts or contextual facts relevant to the claim, including some contradictory or incomplete information. Your goal is to produce a single output field called `query`.\n\nThe `query` should be a clear, focused set of one or more factual questions that, if answered correctly, would verify or refute the `claim`. These questions should precisely target the key factual components or entities involved in the claim, based on the information and inconsistencies highlighted in the `notes`.\n\nDetailed Guidelines:\n1. **Identify Core Factual Components**  \n   Break down the claim into its main factual elements. This usually involves people, events, dates, relationships, or entities. For example, formation dates of bands, ownership of an album, participation of an actor in specific works, or winners of a championship season.\n\n2. **Leverage the Notes for Context and Contradictions**  \n   Use the `notes` to identify which parts of the claim are supported, contradicted, or lack sufficient information. The notes may include multiple sources with conflicting data. Your queries should aim to resolve these conflicts or fill the gaps.\n\n3. **Formulate Precise Verification Questions**  \n   Generate questions that directly probe the factual assertions made in the claim. For example:  \n   - “When was [entity] formed?”  \n   - “Did [person] star in [work]?”  \n   - “Who won [event] in [year/season]?”  \n   - “Did [person] compete in [series] during [timeframe]?”  \n   \n   Avoid vague or overly broad questions; instead, focus on specific, answerable queries that target verification of the claim’s assertions.\n\n4. **Include All Relevant Entities or Concepts**  \n   If the claim integrates multiple entities or concepts (e.g., band formation date and album release), create queries that cover all these angles, unless some components are irrelevant or unsupported according to the notes.\n\n5. **Be Concise and Clear**  \n   The generated queries should be understandable and concise while capturing the essence of what needs to be fact-checked.\n\n6. **Domain-Specific Awareness**  \n   Claims often relate to niche knowledge about:  \n   - Music bands and albums (formation years, album release dates, distinctions between similarly named bands)  \n   - Actors and their roles in films or TV shows (cross-referencing actors appearing in multiple works)  \n   - Sports seasons and championships (drivers, winners, participation dates)  \n   \n   Your queries should reflect an understanding of these domain-specific details and be tailored accordingly.\n\n7. **Generalizable Strategy**  \n   Your approach involves: dissecting the claim → analyzing supporting and contradictory notes → identifying missing information → and finally converting these insights into targeted fact-checking queries.\n\nExample format of output:\n\n### query  \n[Question 1] [Question 2] [...]\n\n----\n\nSummary:  \nYou synthesize the claim and notes to generate focused, factual questions that would enable verification of the claim’s truthfulness by addressing contested or unclear factual points through retrieval or checking of authoritative documents.",
+      "append_notes.predict": "You will be given three input fields: \n- `claim`: a factual statement or assertion whose truthfulness needs to be evaluated.\n- `notes`: a list of textual snippets extracted from various documents that are relevant to the claim. These notes may contain overlapping information and varying levels of detail.\n- `context`: a list of concise summaries or descriptions of source documents that may provide additional information related to the claim.\n\nYour task is to produce two output fields: \n- `new_notes`: a refined, concise, and non-redundant subset or synthesis of the input `notes` that directly address key facts needed to evaluate the claim. These should focus on relevant factual information supporting verification or falsification of the claim, removing repetition and irrelevant details.\n- `titles`: a list of the most relevant document titles (from the given `context`) whose content contains essential information that supports verification of the claim. Titles should be directly tied to entities or facts critical to assessing the claim’s truth.\n\nDetailed task description and guidelines:\n\n1. **Understand the claim carefully:** Identify what factual relationships or attributes the claim asserts. Common relationships involve dates (e.g., birthdates), locations, sponsorships, team participation in events, or organizational affiliations.\n\n2. **Analyze the `notes`:** \n   - Identify the core facts within the notes that relate to the claim components.\n   - Remove duplicate or near-duplicate statements.\n   - Remove notes that do not contribute meaningful information for verifying the claim.\n   - Combine closely related facts into a single coherent note if appropriate.\n\n3. **Use the `context` documents to identify relevant titles:**\n   - Match core entities or specific facts mentioned in new_notes to the titles in the context.\n   - Select document titles that contain background, biographical, event-related, or organizational information directly related to the claim or the facts used in new_notes.\n   - Include all titles necessary to cover the key factual points supporting or refuting the claim.\n   \n4. **Focus on comprehensive and precise fact coverage:**\n   - For claims involving dates or comparisons (e.g., birth dates before/after), emphasize the presence or absence of those dates in the new_notes.\n   - For claims involving events and participants (e.g., bowl games, sponsorships), include notes identifying the event, sponsor, location, and participating entities.\n   - For claims about geographical relations (e.g., entities located in the same country), use notes emphasizing the locations and their geopolitical hierarchy.\n\n5. **Avoid fabricating information or adding facts not supported by the notes or context.** Work only with provided inputs.\n\n6. **The reasoning behind new_notes should be implicitly reflected in the selection and refinement of notes and titles.** While no explicit reasoning output is required, your outputs should facilitate straightforward verification or rebuttal of the claim.\n\n7. **Maintain clarity and specificity:**\n   - Notes should stand alone as clear, factual statements extracted from the input.\n   - Titles should be the exact document titles from context, indicating the sources of key facts.\n\nThe goal is to distill, from possibly redundant and partially overlapping information, the most relevant and precise facts and corresponding source titles that directly support verification or falsification of the claim."
+    },
+    {
+      "gen_query.predict": "Given the fields `claim`, `notes`, produce the fields `query`.",
+      "append_notes.predict": "You will be given three input fields:\n\n- `claim`: A factual statement or assertion that needs to be evaluated as true or false based on the provided evidence.\n- `notes`: A list of textual snippets extracted from various documents, containing facts related to the claim. These may be overlapping, redundant, or vary in detail.\n- `context`: A list of concise summaries or descriptions of source documents potentially relevant to the claim. Each context entry includes a document title and a brief description or snippet.\n\nYour task is to generate two output fields:\n\n- `new_notes`: A carefully distilled, concise, and non-redundant subset or synthesis of the input `notes`. This selection should isolate the most relevant factual information that directly supports or refutes the claim, eliminating duplicates and unrelated details. When appropriate, merge closely related facts into unified statements for clarity and precision.\n- `titles`: A list of the exact document titles from the `context` that contain essential background, biographical, event-related, or organizational information directly tied to the key facts in `new_notes`. Select all titles necessary to cover the critical facts relevant to verifying the claim.\n\n---\n\nDetailed guidelines and domain-specific considerations:\n\n1. **Precise Claim Comprehension:**\n   - Identify the core factual relationships or attributes asserted in the claim. These often involve:\n     - Dates (e.g., birthdates, event dates)\n     - Locations or geopolitical hierarchies (e.g., whether a venue is in a city, a city in a state, etc.)\n     - Organizational ownership or affiliations (e.g., a venue owned by a company)\n     - Event participants (e.g., players, teams, shows)\n     - Taxonomic ranks and relationships (e.g., genus, subfamily, species counts)\n   - Distinguish nuanced terms such as \"generic name\" versus \"taxonomic rank\" and confirm entities’ identities precisely.\n\n2. **Thorough Analysis and Synthesis of Notes:**\n   - Extract and highlight only the core factual statements essential for verifying or falsifying the claim.\n   - Remove redundant notes containing near-duplicate information.\n   - Exclude notes irrelevant to the claim’s components.\n   - When facts overlap (e.g., multiple genera under a subfamily with species counts), consider summarizing them strategically to clarify comparisons.\n   - Avoid adding any information not explicitly present in the `notes` or context.\n\n3. **Accurate Matching to Context Documents:**\n   - Select document titles whose content includes crucial facts or context that validate or invalidate the claim.\n   - Titles should correspond to core entities or facts identified in `new_notes` (e.g., key individuals, events, venues, organizations).\n   - Include all necessary documents—partial inclusion can hinder comprehensive verification.\n   - Exclude context documents irrelevant to verifying any aspect of the claim.\n\n4. **Fact Coverage and Verification Focus:**\n   - For claims concerning quantitative comparisons (like number of species), ensure notes include explicit counts or summons as per evidence.\n   - For claims involving locations or ownership, prioritize notes detailing exact geographical hierarchy and ownership relations.\n   - For events and participants, include notes specifying where, when, and by whom events took place.\n   - In taxonomy-related claims, note the exact taxonomic rank and clarifications about name origins or classifications.\n\n5. **Maintain Clarity, Specificity, and Factual Integrity:**\n   - Each note in `new_notes` should stand alone as a clear, verifiable factual statement linked to the claim.\n   - Do not fabricate or speculate beyond the given data.\n   - Your outputs should implicitly reflect reasoning by supporting straightforward verification or rebuttal.\n\n---\n\n**Generalizable Strategy:**\n\n- Begin by identifying all claim-relevant entities and attributes.\n- Filter and refine `notes` by removing redundancy and unrelated information while synthesizing overlapping facts into crisp, concrete statements.\n- Cross-reference the refined notes with `context` titles to ensure relevant, supporting sources are included.\n- Check for any gaps in fact coverage and confirm all necessary facets of the claim are addressed in `new_notes` and covered by `titles`.\n- Prioritize document titles and notes that confirm or contradict the claim directly.\n\n---\n\n**Additional Domain Niche Information Derived from Examples:**\n\n- For taxonomic claims: understand that a \"generic name\" may relate to genus or subfamily level names, and that species counts are often associated with genus-level entities within those.\n- For entertainment/events claims: venues may have multiple names (e.g. The AXIS auditorium at Planet Hollywood Resort & Casino), and venue ownership by parent corporations may be relevant.\n- For sports claims: player nationality or origin claims must be supported by exact biographical info; defending champions in sports events are identified by event and year; ensure players and events are linked.\n- Precision about geographical descriptions is important—e.g., whether a location in a claim is named as 'Las Vegas' but the actual venue lies in a census-designated place like 'Paradise, Nevada' matters.\n- Multiple repeated notes should be collapsed into single definitive statements.\n- When a claim mixes multiple entities or events, verify each component distinctly and include evidence accordingly.\n\n---\n\nFollow these instructions to produce output that is coherent, focused, and sufficient to verify or refute the claim based solely on the provided notes and context."
+    },
+    {
+      "gen_query.predict": "Given the fields `claim`, `notes`, produce the fields `query`.",
+      "append_notes.predict": "You will be given three inputs for each task:\n\n- **claim**: A factual assertion regarding entities, events, or relationships (e.g., people involved in films or sports, dates, teams, participation in events, organizational affiliations, roles, or titles). The claim needs to be evaluated for its truthfulness based on provided evidence.\n\n- **notes**: A set (list) of textual snippets extracted from various documents relevant to the claim. These notes may contain overlapping information, varying levels of detail, exact repetitions, partial duplicates, or some irrelevant details.\n\n- **context**: A list of document summaries or descriptions, each including exact official titles of source documents. These documents may contain additional evidence or background information relevant to the claim.\n\n---\n\n### Your output must be twofold:\n\n1. **new_notes**: A distilled, concise, non-redundant synthesis or subset of the input notes focused strictly on factual information required to verify or falsify the claim.\n\n    - Remove duplicate or near-duplicate facts from the notes.\n    - Remove notes irrelevant or not directly contributing to verification of the claim.\n    - Combine closely related facts into a single clear, factual statement if it improves clarity or efficiency.\n    - Prioritize precision and relevance: include dates, entities, roles, event details, or concrete facts that directly support or refute the claim.\n    - The new_notes should be self-explanatory and stand alone without needing additional context to understand their relevance to the claim.\n\n2. **titles**: A list of one or more exact document titles from the provided context that contain essential, verifiable information regarding the core facts summarized in new_notes.\n\n    - Select titles that correspond directly to key entities or topics critical to assessing the claim.\n    - Include all necessary titles to cover all key facts in new_notes — for example, if birth dates and event information are both necessary, include titles covering both.\n    - Do not include titles unrelated to the claim’s core facts.\n\n---\n\n### Detailed guidelines and domain-specific considerations:\n\n- **Claim understanding**: Carefully analyze the claim to identify the central factual components — e.g., relationships between people, dates, event participation, affiliations, roles, or other key attributes.\n\n- **Notes analysis**:\n\n  - Detect and eliminate repetitive notes, even if paraphrased.\n  - Extract only those notes that provide direct, concrete evidence about elements of the claim (e.g., names linked to events, roles, dates).\n  - When multiple notes describe the same fact with varying detail or wording, synthesize these into a single clear statement.\n\n- **Context utilization**:\n\n  - Match key entities or facts mentioned in new_notes to the titles in context.\n  - Choose titles that, by their descriptions, are most likely sources of authoritative or comprehensive information to verify these facts.\n  - Avoid including unrelated or partially related titles that do not contribute substantively to fact-checking.\n\n- **Types of claims often include**:\n  \n  - Identification or disambiguation of individuals or entities (e.g., distinguishing between players with similar names, confirming whether a name refers to a person or an organization).\n  - Temporal claims involving dates of birth, event dates, or career timelines.\n  - Role or occupational claims (e.g., whether someone worked in a particular industry such as film or music).\n  - Participation claims linking people to teams, films, or events.\n  - Geographic claims about location or nationality.\n  - Output should focus strictly on factual verification; do not infer or add any unsupported information.\n\n- **Avoid fabrications or unverifiable speculation**: Only use information explicitly provided in notes or context.\n\n- **Clarity and precision**:\n\n  - Each note in new_notes must be a precise factual statement relevant to the claim.\n  - Notes should facilitate straightforward verification or rebuttal of the claim.\n  - Titles should exactly match the document titles given in context inputs.\n\n- **Output format**:\n\n```json\n{\n  \"new_notes\": [ list of concise, relevant, factual notes ],\n  \"titles\": [ list of exact document titles aligned with new_notes ]\n}\n```\n\nNo explanations or reasoning steps are required in output, but your selection and synthesis should implicitly reflect logical verification.\n\n---\n\n### Examples of best practices inferred from prior tasks and feedback:\n\n- When multiple notes repeat similar facts (e.g., about a person’s profession or event details), keep the one with the clearest and most relevant fact and merge details if helpful.\n\n- When a claim references participation of multiple individuals in an event or show, explicitly list only those confirmed by notes; omit unverified names.\n\n- Always include document titles that fully cover both entities and events mentioned in refined notes to ensure comprehensive supporting evidence.\n\n- For claims about roles in media or sports, clarify industry association (e.g., American football vs. association football) to prevent confusion.\n\nUse these detailed instructions to produce tightly focused, fact-driven outputs enabling clear and accurate assessment of claims without extraneous or redundant information."
+    },
+    {
+      "gen_query.predict": "Given the input fields:\n\n- `claim`: a factual statement or assertion that combines entities, events, dates, roles, or relationships.\n- `notes`: a list of textual evidence snippets (often repeated) containing relevant factual information derived from external sources or documents.\n\nProduce the output field:\n\n- `query`: a precise, focused, and clear question (or set of questions) formulated to verify or refute the claim by retrieving specific missing or supporting information from trusted source documents.\n\nDetailed task description and guidance:\n\n1. **Purpose:**  \n   Your goal is to transform the given claim and evidence notes into an effective search or verification query that can be used to retrieve all necessary documents that support or refute the claim. The query should target the key entities, relations, dates, or roles involved in the claim and focus on any gaps identified in the notes.\n\n2. **Context and domain specifics:**  \n   - Claims often involve named entities (e.g., people, films, military units), roles or titles (e.g., director, actor, infantry regiment), dates (e.g., years movies were released or regiments were founded), and relationships between these elements.  \n   - Notes are often duplicated snippets referencing various supporting facts, some directly relevant and some indirectly, about the claim's entities.  \n   - Ground-truth documents (referred to as \"gold documents\" in the feedback) include detailed authoritative information likely needed to verify the claim, e.g.:  \n     - For movie-related claims: director, co-director, actor names, release years, film titles, and sequels.  \n     - For military or historical claims: the name and establishment date of regiments featured in films.  \n   - Pay attention to aliases, sequels, or related works (e.g., \"28 Weeks Later\" is a sequel to \"28 Days Later\").\n\n3. **Strategy to form the query:**  \n   - Identify the core fact(s) the claim asserts (e.g., a person’s role in multiple films, the founding year of a regiment due to a specific film).  \n   - Compare the information in the notes to the claim to find which key detail or document is not yet retrieved or remains unconfirmed.  \n   - Frame the query specifically to target that missing piece, often in the form of a direct question about:  \n     - The roles and involvement of named individuals in certain movies or events.  \n     - The relationship or timeline between films, actors, or units mentioned.  \n     - Founding dates, identities, or attributes of named entities.  \n   - Use precise and unambiguous wording in the query to improve retrieval accuracy, including titles, years, and proper names.\n\n4. **Additional considerations:**  \n   - Avoid vague or overly broad queries; focus on what is essential to confirm or deny the claim.  \n   - When multiple entities or data points are involved, ensure the query captures their connection as expressed in the claim.  \n   - Reflect the complexity of claims involving multiple related facts by combining them in a single query when appropriate.\n\nBy following this approach, the assistant ensures that the generated query will efficiently lead to retrieval of all necessary factual evidence needed to verify or refute the claim.",
+      "append_notes.predict": "You will be given three input fields: \n- `claim`: a factual statement or assertion whose truthfulness needs to be evaluated.\n- `notes`: a list of textual snippets extracted from various documents that are relevant to the claim. These notes may contain overlapping information and varying levels of detail.\n- `context`: a list of concise summaries or descriptions of source documents that may provide additional information related to the claim.\n\nYour task is to produce two output fields: \n- `new_notes`: a refined, concise, and non-redundant subset or synthesis of the input `notes` that directly address key facts needed to evaluate the claim. These should focus on relevant factual information supporting verification or falsification of the claim, removing repetition and irrelevant details.\n- `titles`: a list of the most relevant document titles (from the given `context`) whose content contains essential information that supports verification of the claim. Titles should be directly tied to entities or facts critical to assessing the claim’s truth.\n\nDetailed task description and guidelines:\n\n1. **Understand the claim carefully:** Identify what factual relationships or attributes the claim asserts. Common relationships involve dates (e.g., birthdates), locations, sponsorships, team participation in events, or organizational affiliations.\n\n2. **Analyze the `notes`:** \n   - Identify the core facts within the notes that relate to the claim components.\n   - Remove duplicate or near-duplicate statements.\n   - Remove notes that do not contribute meaningful information for verifying the claim.\n   - Combine closely related facts into a single coherent note if appropriate.\n\n3. **Use the `context` documents to identify relevant titles:**\n   - Match core entities or specific facts mentioned in new_notes to the titles in the context.\n   - Select document titles that contain background, biographical, event-related, or organizational information directly related to the claim or the facts used in new_notes.\n   - Include all titles necessary to cover the key factual points supporting or refuting the claim.\n   \n4. **Focus on comprehensive and precise fact coverage:**\n   - For claims involving dates or comparisons (e.g., birth dates before/after), emphasize the presence or absence of those dates in the new_notes.\n   - For claims involving events and participants (e.g., bowl games, sponsorships), include notes identifying the event, sponsor, location, and participating entities.\n   - For claims about geographical relations (e.g., entities located in the same country), use notes emphasizing the locations and their geopolitical hierarchy.\n\n5. **Avoid fabricating information or adding facts not supported by the notes or context.** Work only with provided inputs.\n\n6. **The reasoning behind new_notes should be implicitly reflected in the selection and refinement of notes and titles.** While no explicit reasoning output is required, your outputs should facilitate straightforward verification or rebuttal of the claim.\n\n7. **Maintain clarity and specificity:**\n   - Notes should stand alone as clear, factual statements extracted from the input.\n   - Titles should be the exact document titles from context, indicating the sources of key facts.\n\nThe goal is to distill, from possibly redundant and partially overlapping information, the most relevant and precise facts and corresponding source titles that directly support verification or falsification of the claim."
+    }
+  ],
+  "list_of_named_predictors": [
+    "gen_query.predict",
+    "append_notes.predict"
+  ],
+  "full_program_trace": [
+    {
+      "i": 0,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        0,
+        93,
+        62
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 1,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        78,
+        1,
+        51
+      ],
+      "subsample_scores": [
+        0.0,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "new_program_idx": 1,
+      "evaluated_val_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "i": 2,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        2,
+        6,
+        16
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666
+      ],
+      "new_program_idx": 2,
+      "evaluated_val_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "i": 3,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        19,
+        13,
+        24
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.0,
+        1.0
+      ]
+    },
+    {
+      "i": 4,
+      "selected_program_candidate": 2,
+      "subsample_ids": [
+        90,
+        12,
+        76
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 5,
+      "selected_program_candidate": 2,
+      "subsample_ids": [
+        9,
+        68,
+        60
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 6,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        5,
+        42,
+        7
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 7,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        38,
+        70,
+        41
+      ],
+      "subsample_scores": [
+        1.0,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.0
+      ]
+    },
+    {
+      "i": 8,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        36,
+        44,
+        18
+      ],
+      "subsample_scores": [
+        1.0,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 9,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        53,
+        14,
+        66
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0
+      ],
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.0
+      ]
+    },
+    {
+      "i": 10,
+      "selected_program_candidate": 2,
+      "subsample_ids": [
+        95,
+        72,
+        45
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        1.0,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        0.3333333333333333,
+        1.0,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 11,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        89,
+        79,
+        87
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.3333333333333333
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333
+      ],
+      "new_program_idx": 3,
+      "evaluated_val_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "i": 12,
+      "selected_program_candidate": 2,
+      "subsample_ids": [
+        17,
+        31,
+        15
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 13,
+      "selected_program_candidate": 2,
+      "subsample_ids": [
+        71,
+        82,
+        25
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        1.0
+      ],
+      "new_subsample_scores": [
+        0.0,
+        0.3333333333333333,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 14,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        98,
+        52,
+        49
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        1.0
+      ],
+      "new_subsample_scores": [
+        1.0,
+        0.6666666666666666,
+        1.0
+      ],
+      "new_program_idx": 4,
+      "evaluated_val_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "i": 15,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        63,
+        37,
+        57
+      ],
+      "subsample_scores": [
+        1.0,
+        1.0,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0
+      ]
+    },
+    {
+      "i": 16,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        33,
+        84,
+        26
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        1.0,
+        0.6666666666666666,
+        0.3333333333333333
+      ],
+      "new_program_idx": 5,
+      "evaluated_val_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "i": 17,
+      "selected_program_candidate": 5,
+      "subsample_ids": [
+        83,
+        28,
+        61
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 18,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        35,
+        43,
+        58
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.3333333333333333
+      ],
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "new_program_idx": 6,
+      "evaluated_val_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "i": 19,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        23,
+        73,
+        92
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "new_subsample_scores": [
+        0.0,
+        0.3333333333333333,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 20,
+      "selected_program_candidate": 5,
+      "subsample_ids": [
+        8,
+        99,
+        86
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 21,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        80,
+        75,
+        29
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "new_program_idx": 7,
+      "evaluated_val_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "i": 22,
+      "selected_program_candidate": 6,
+      "subsample_ids": [
+        30,
+        22,
+        96
+      ],
+      "subsample_scores": [
+        1.0,
+        0.6666666666666666,
+        1.0
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0
+      ]
+    },
+    {
+      "i": 23,
+      "selected_program_candidate": 5,
+      "subsample_ids": [
+        67,
+        54,
+        48
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 24,
+      "selected_program_candidate": 6,
+      "subsample_ids": [
+        40,
+        59,
+        97
+      ],
+      "subsample_scores": [
+        1.0,
+        1.0,
+        0.3333333333333333
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 25,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        3,
+        88,
+        34
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        0.0,
+        0.6666666666666666,
+        1.0
+      ]
+    },
+    {
+      "i": 26,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        64,
+        56,
+        69
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0
+      ]
+    },
+    {
+      "i": 27,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        47,
+        65,
+        50
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        1.0
+      ],
+      "new_subsample_scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "new_program_idx": 8,
+      "evaluated_val_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "i": 28,
+      "selected_program_candidate": 8,
+      "subsample_ids": [
+        81,
+        55,
+        20
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        1.0
+      ]
+    },
+    {
+      "i": 29,
+      "selected_program_candidate": 5,
+      "subsample_ids": [
+        74,
+        4,
+        91
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        1.0,
+        0.3333333333333333
+      ],
+      "new_subsample_scores": [
+        0.3333333333333333,
+        1.0,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 30,
+      "selected_program_candidate": 5,
+      "subsample_ids": [
+        27,
+        77,
+        32
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 31,
+      "selected_program_candidate": 8,
+      "subsample_ids": [
+        39,
+        85,
+        94
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.0
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.0
+      ]
+    },
+    {
+      "i": 32,
+      "selected_program_candidate": 5,
+      "subsample_ids": [
+        21,
+        46,
+        10
+      ],
+      "subsample_scores": [
+        1.0,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 33,
+      "selected_program_candidate": 8,
+      "subsample_ids": [
+        11,
+        11,
+        10
+      ],
+      "subsample_scores": [
+        1.0,
+        1.0,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        1.0,
+        1.0,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 34,
+      "selected_program_candidate": 6,
+      "subsample_ids": [
+        98,
+        17,
+        74
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333
+      ]
+    }
+  ],
+  "n_val": 10,
+  "trainset_threehop_ids": [
+    134,
+    118,
+    54,
+    116,
+    290,
+    133,
+    103,
+    115,
+    175,
+    141,
+    66,
+    193,
+    228,
+    269,
+    97,
+    155,
+    215,
+    69,
+    152,
+    130,
+    156,
+    216,
+    104,
+    181,
+    244,
+    254,
+    146,
+    140,
+    230,
+    294,
+    102,
+    86,
+    235,
+    191,
+    63,
+    268,
+    194,
+    123,
+    239,
+    231,
+    73,
+    221,
+    225,
+    137,
+    272,
+    95,
+    220,
+    224,
+    121,
+    85,
+    173,
+    213,
+    142,
+    99,
+    84,
+    117,
+    60,
+    67,
+    276,
+    256,
+    77,
+    270,
+    74,
+    126,
+    248,
+    211,
+    262,
+    209,
+    136,
+    64,
+    185,
+    292,
+    284,
+    114,
+    271,
+    283,
+    169,
+    234,
+    252,
+    222,
+    75,
+    124,
+    139,
+    166,
+    250,
+    174,
+    125,
+    52,
+    59,
+    120,
+    237,
+    79,
+    55,
+    101,
+    76,
+    214,
+    227,
+    150,
+    58,
+    163
+  ],
+  "valset_threehop_ids": [
+    257,
+    282,
+    62,
+    92,
+    198,
+    275,
+    182,
+    251,
+    289,
+    280
+  ],
+  "total_num_evals": 300
+}

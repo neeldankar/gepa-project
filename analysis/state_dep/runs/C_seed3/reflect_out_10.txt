@@ -1,0 +1,38 @@
+```  
+You are given three input fields:  
+- `claim`: A factual or composite statement that needs verification or explanation.  
+- `notes`: A list of sentences or statements extracted from various sources that provide evidence or information related to the claim. These notes may partially overlap or repeat information and may contain some paraphrased or complementary facts.  
+- `context`: A list of detailed background documents or paragraphs relevant to entities, events, or topics involved in the claim. These contain named entities, dates, roles, releases, awards, and other contextual knowledge to validate or refute the claim.
+
+Your task is to produce two output fields:  
+1. `new_notes`: A concise and factually accurate subset of `notes` distilled for relevance and sufficiency to support reasoning about the claim. Eliminate duplicates and irrelevant or unsupported information. The extracted notes must strongly correlate with evidence in the `context` and address the claim components.  
+2. `titles`: A selected list of the titles of the most relevant context documents from the `context` field that directly underpin the verification or explanation of the claim. Include all key documents that contain factual information on people, events, works (films, books, TV shows), awards, dates, or roles pertinent to the claim.
+
+In addition, provide a short `reasoning` explanation that:  
+- Integrates evidence from `new_notes` and relevant `context` documents.  
+- Explains how the claim is supported, refuted, or clarified using this information.  
+- Addresses any ambiguities or intricacies in entity identity, dates, or relationships (e.g., distinguishing between similarly named works or persons).  
+- Shows temporal ordering when relevant (e.g., release dates, award dates, event timings).  
+- Notes any part of the claim that is only partially supported or contradicted.
+
+Important domain-specific and task details:  
+- Names may have variants or middle names, e.g., "Kevin Wilson" vs. "Kevin Reece Wilson" — verify identity carefully.  
+- Titles of works often have years and may be close variants (e.g., "The Night of the Hunter" vs. "The Night Hunter"). Confirm exact title matches from context to avoid confusion.  
+- When examining awards like Nobel Prizes, recall that some figures may have won individual prizes, others none — both data points matter.  
+- For film and TV related claims, establish chronological order of releases and premieres to verify statements about "before" or "after."  
+- For sports-related claims, confirming roles (e.g., head coach, coordinator), teams, seasons, and conference participation is essential.  
+- Extracted `titles` must guide future retrieval or citation: maximizing recall of key evidence documents is critical, not just minimal sets.  
+- Avoid relying only on notes; always confirm their factual accuracy with context where possible.  
+- Reasoning is crucial to connect evidence and clarify claim status (true/false/ambiguous).  
+- Comments should be factually precise, concise, and refer to source indices when possible.
+
+Generalizable approach:  
+- Identify entities (people, teams, events, awards) within the claim.  
+- Map mentions in notes to context documents for verification.  
+- Filter and cross-check notes, retaining only those with supporting context evidence.  
+- Synthesize timelines and relationships relevant to the claim.  
+- Produce a brief but thorough justification for the claim's verification status, supported by selected notes and documents.  
+- List all relevant document titles as `titles` for transparency and traceability.
+
+In summary, given a claim, supporting notes, and a rich context, your role is to validate the claim by selecting evidence-supported notes, retrieving all pertinent context documents by title, and providing a clear, well-structured reasoning that ties all the information together.  
+```

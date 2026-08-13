@@ -1,0 +1,61 @@
+``` 
+Task Description:
+
+Given two inputs:
+- `claim`: a natural language statement that may involve one or more named entities (persons, plants, animals, organizations, events, etc.), and assert relationships, comparisons, or classifications involving those entities.
+- `notes`: a list of statements or evidential/contextual facts providing analysis, clarifications, or background related to the claim, including any contradictions or gaps in information relevant to validating or refuting the claim.
+
+Produce an output field `query` that contains a set of carefully constructed, precise, and targeted information retrieval queries or questions. The `query` is intended to drive the retrieval of authoritative factual evidence or documents needed to verify or falsify the claim.
+
+Key Requirements and Domain-Specific Details:
+
+1. **Identify and Disambiguate Entities:**
+   - Extract all named entities referenced in the claim, including persons, organizations, species, places, events, or informal references (nicknames, colloquial names).
+   - Where entities are ambiguous, unknown, or possibly conflated (e.g., a personal name vs. a team nickname), the query must explicitly request clarification on entity identity and nature.
+
+2. **Extract and Query Relevant Attributes:**
+   - For persons: birthdates, roles, professions, affiliations (teams, companies), participation in events.
+   - For species or biological taxa: genus/species names, common names (including foreign language terms like French names), total number of species, geographic distribution.
+   - For organizations or groups: official and colloquial names, location of headquarters, membership or role of specific individuals, association with events or outputs (e.g., album contributions).
+   - For events or competitions: participants, results, goal scorers, roster lists, dates.
+
+3. **Focus on Key Relationships in the Claim:**
+   - If the claim involves comparative counts (e.g., number of species between two genera), queries should retrieve authoritative taxonomic or statistical data from botanical or biological knowledge bases.
+   - For claims involving membership or roles (e.g., band members linked to a song), queries should target recognized role assignments.
+   - For claims about geography (e.g., company and airport co-location), queries should request geographic or jurisdictional data.
+
+4. **Address Ambiguity, Missing Data, and Contradictions Highlighted in Notes:**
+   - Identify gaps or unresolved points flagged in the `notes`.
+   - Formulate queries to explicitly request information to resolve these gaps.
+   - For example, if it is unclear if an entity name refers to a breed or an individual, query that distinction directly.
+   - If sources disagree or no data exist for certain aspects (e.g., a person's connection to an event or team is unverified), the queries must attempt to confirm or deny with authoritative references.
+
+5. **Use Domain-Specific Knowledge:**
+   - Use knowledge of taxonomic naming conventions, organization of sports teams, breed classifications, and event rosters.
+   - Recognize common contextual clues that differentiate entities (e.g., "Saule" in French corresponds to genus Salix).
+   - For sports-related claims, distinguish between American football and soccer, confirm player identities and roles in specific matches.
+
+6. **Query Format:**
+   - Formulate queries as clear, concise natural language questions or as structured queries that fit knowledge base retrieval systems (e.g., SPARQL-like).
+   - When appropriate, break down complex claims into multiple focused questions targeting one fact per query.
+   - Queries should ask for authoritative, fact-based data sources: official breed registries, botanical databases, sports federations, or event records.
+
+7. **Aim of Queries:**
+   - Queries must enable retrieval of key documents or data points (e.g., authoritative biographies, official team rosters, botanical databases) necessary to assess the claim’s truthfulness.
+   - The queries should prioritize precision and relevance to maximally reduce ambiguity and target critical verification points.
+
+Generalizable Strategy:
+
+- Analyze the claim to detect all entities and factual assertions.
+- Cross-reference the entities and assertions with the `notes` to detect discrepancies, missing evidence, or ambiguities.
+- For each critical fact necessary to prove or disprove the claim, generate targeted questions or queries addressing:
+  - Verification of entity existence and identity.
+  - Confirmation of key attributes or statistics.
+  - Validation of relationships or roles asserted.
+- Incorporate explicit queries to fill knowledge gaps flagged by the `notes`.
+- Formulate queries suitable for querying structured knowledge bases or unstructured document retrieval.
+- Use a series of focused, fact-seeking questions rather than overly broad or vague queries.
+
+This approach ensures that when the output queries are executed, they will return relevant factual records needed for comprehensive verification or refutation of the original claim.
+
+```

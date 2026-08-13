@@ -1,0 +1,150 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be provided with three types of input fields related to a factual claim about people, places, institutions, films, songs, or other entertainment or academic topics:
+
+1. `claim`: A factual statement that may include multiple subclaims or assertions.
+2. `notes`: A list of extracted sentences or statements relating to the claim. These may be overlapping, redundant, contain minor inaccuracies, or offer different levels of detail.
+3. `context`: A list of encyclopedic-style paragraphs or document snippets providing authoritative background information pertaining to entities or topics mentioned in the claim and notes. These provide the evidence needed to verify, correct, or refine the claim and notes.
+
+Your goal is to produce two outputs:
+- `new_notes`: A cleaned, concise, and factually accurate subset of notes that directly support, refine, correct, or clarify the claim. This requires:
+  - Integrating information from both `notes` and authoritative `context`.
+  - Removing redundancies, inaccuracies, or outdated facts found in the original notes.
+  - Correcting any factual errors detected in the claim or notes based on the context.
+  - Emphasizing distinct, verified facts relevant to the core assertions of the claim.
+  - Explicitly identifying and rectifying any inaccuracies or errors in the claim's subclaims.
+  - Summarizing evidence precisely and clearly, avoiding superfluous or unrelated content.
+
+- `titles`: A list containing exact titles or names of the documents or entities from the provided context that substantiate or provide essential background for the claim and your chosen new_notes. The list should be:
+  - Precise in naming, mirroring titles or entity names in the context exactly.
+  - Comprehensive enough to cover all validated elements of the claim.
+  - Reflective of gold standard references expected for thorough claim validation.
+  - Excluding any unrelated or unsubstantiated titles.
+
+General Strategy:
+
+- Break down the claim into discrete factual subclaims for granular verification.
+- Cross-check each subclaim with both the extracted notes and the richer, authoritative contextual documents.
+- Identify inconsistencies, outdated information, or outright factual errors; then correct or clarify them as needed.
+- Consolidate supported facts into a definitive, non-redundant `new_notes` list.
+- Select all relevant authoritative titles that cover the core validated facts comprehensively.
+- Be mindful of domain-specific nuances such as:
+  - Correct names and precise spelling of persons, institutions, films, etc.
+  - Accurate dates (release years, founding or renaming years, role tenures).
+  - Proper attribution of roles, credits, or positions (e.g., first chairmen, starring roles, lead actors).
+  - Institutional types (public/private universities), relationships, or renaming history.
+  - Geographic distinctions when plants, locations, or entities are confined to specific islands or regions.
+  - Correct identification of species subspecies or variant distributions.
+  - Avoid assuming unsubstantiated connections or conflating unrelated individuals or entities.
+
+Additional Domain-Specific Considerations:
+
+- Claims often involve entertainment industry elements (films, TV shows, actors), academic institutions, plants, and geographic entities. Verifying credits, timelines, affiliations, and terminologies is critical.
+- If multiple sources conflict (e.g., different documented premiere years or place names), prioritize authoritative context.
+- Notes may contain duplicates or slightly varying statements; synthesize carefully to produce a precise factual summary.
+- Clarify when evidence is lacking to substantiate a claim fully; avoid unsupported assumptions.
+- Explicitly note when a subclaim in the original claim is incorrect or cannot be verified from the evidence.
+- Where possible, interpret and reflect the claim’s meaning faithfully but correct errors without altering the intended meaning unjustifiably.
+
+Formatting Requirements:
+
+- Output fields must be named exactly `new_notes` and `titles`.
+- Both `new_notes` and `titles` should be lists (array format) of strings.
+- Each new_note should be a concise, standalone, factually accurate statement suitable for independent validation.
+- Titles should exactly match context entries and be concise entity/document names.
+- Maintain clarity, factual accuracy, and conciseness in all outputs.
+- Avoid including irrelevant, speculative, or unsupported notes or titles.
+
+By following these instructions, the assistant should deliver a refined, accurate, non-redundant factual summary of the claim and its evidence base, along with precise references ensuring easy verification.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The platform, for which the fixed shooter Proof of Destruction was developed, and Prológica CP-400 were not from the same country.
+
+### notes
+['Prológica CP-400 was developed by the Brazilian company Prológica and introduced in 1984.', 'Prológica CP-400 was developed by the Brazilian company Prológica and introduced in 1984.', 'Proof of Destruction is a 1987 fixed shooter game developed for the Commodore 64 and Commodore 16, platforms designed by the American company Commodore International.', 'Prológica CP-400 was developed and introduced in 1984 by the Brazilian company Prológica.']
+
+### context
+['Prológica CP-400 | In the middle of 1984 a Brazilian company called Prológica, which made its own versions of 8 bits US computers, brought to the Brazilian market a new equipment for its personal computer series called "CP" (shorten of Personal Computer in Portuguese).', "Melesta Games | Melesta Games is a casual games developer.  The company was founded in 2008.  Nowadays it develops games across multiple platforms like PC, iOS, Android, Windows phone, Mac, social, video game consoles, etc.  Company's product portfolio includes more than 20 games,that have been localized into 20+ languages and are available in 60 countries worldwide.", "DU Ad Platform | DU Ad Platform is a mobile advertising platform developed by the Chinese web services company and search engine operator Baidu, Inc.  Whereas the majority of Baidu's products and services are targeted at the domestic China market, DU Ad Platform's stated goal is to help developers in China and elsewhere increase their mobile profits in overseas countries.", 'HyperDevbox Japan | HyperDevbox Japan (previously known as Hyper-Devbox) is a French Japanese video game company created by Carlo Perconti, one of the founders of Toka and Arcade Zone.  HyperDevbox Japan is developing original games and also porting external titles from one platform to another.  The Company is now based exclusively in Tokyo Japan.  HyperDevbox Japan is known for its breaking Technology developed for the Android Platform with games like ExZeus arcade and the upcoming "Spectral Souls - Resurrection of the Ethereal Empires" (from Idea factory) the first Tactical RPG to be announced for the Android Platform.', "Captain Commando | Captain Commando (Japanese: キャプテンコマンドー , Hepburn: Kyaputen Komandō ) is a 1991 futuristic side-scrolling beat 'em up game originally developed and published by Capcom as a coin-operated video game, and later ported to several other platforms.  It was the seventeenth title produced for the company's CP System hardware.  The game stars the titular superhero who was originally conceived as a fictional spokesman used by Capcom USA in the company's console games during the late 1980s.", 'Donkey Kong Country (series) | The Donkey Kong Country ("DKC") video game series is a series of platform video games originally developed by Rare and later Retro Studios, and published by Nintendo.  It is a spin-off from the original "Donkey Kong" series.  In it, players control Donkey Kong and his friends and must complete a series of sidescrolling levels and defeat numerous enemies and bosses to reach the games\' main goal.', 'Kony: Enterprise Mobile | Kony is a privately held mobile technology company based in Austin, Texas.  The company operates out of 11 offices in the US, the UK, Germany, The Netherlands, Brazil, Mexico, India, Hong Kong, and Australia.  Its main products are Kony AppVantage®, Kony Visualizer®, Kony MobileFabric® and the Kony Mobility Platform.  Kony AppVantage are customed apps built on the top-rated Kony Mobility platform and hosted and managed for a fixed price.  Kony Mobile Fabric is an open-source software development kit for cross-platform mobile development .', 'Rive (video game) | RIVE is a platforming shoot-em-up game created by the Dutch video game company Two Tribes for PlayStation 4, Xbox One, Microsoft Windows, OS X, Linux, with an upcoming release for Nintendo Switch, and is the first major release by the company after the company\'s downsizing and closure of their primary development team in late 2013, instead now culminating everything under a new much smaller company, while the founders still remain with the company.  The game was unveiled on July 29, 2014, after a long time of quiet development of the game that originated as a 3D shooter for the Nintendo DS in 2005.  The game uses the same engine as "Toki Tori 2+" and with a three-man team.  The PC and PS4 versions are developed by Two Tribes themselves.  "RIVE" is the final video game title from Two Tribes as a game developer.', 'Kaikki | Kaikki - a company specializing in publishing and developing applications for mobile platforms, founded in Kiev, Ukraine in 2012.  The company has offices in 3 countries with its main software development office located in Ukraine and representatives in Switzerland and United States.  Kaikki is a young and ambitious company.', 'Mass Media Games | Mass Media Games, Inc. is an American video game developer based in Moorpark, California.  The current focus of the company is to develop original material for Sony platforms.']
+
+## Generated Outputs
+### reasoning
+The claim states that the platform for which the fixed shooter "Proof of Destruction" was developed and the Prológica CP-400 were not from the same country. The notes confirm that Prológica CP-400 was developed by Prológica, a Brazilian company. The context provides detailed information about Prológica CP-400, confirming it was introduced in 1984 by a Brazilian company. However, there is no specific information provided in the notes or the context about "Proof of Destruction" or the platform it was developed for, nor about its country of origin. Because the claim involves a comparison of countries of origin between the platform for "Proof of Destruction" and Prológica CP-400, and only the Brazilian origin of Prológica CP-400 is established, the claim cannot be fully verified without additional information about the platform for "Proof of Destruction." However, since the claim inherently asserts a difference, and it's confirmed Prológica CP-400 is Brazilian, the only way for the claim to be true is if the platform for "Proof of Destruction" is not Brazilian. Given lack of contrary evidence, we treat the claim as plausible but unverified. The notes should focus on the confirmed fact that Prológica CP-400 was developed in Brazil by Prológica. Any claim about the platform for "Proof of Destruction" cannot be confirmed from provided evidence.
+
+### new_notes
+['Prológica CP-400 was developed by the Brazilian company Prológica and introduced in 1984.']
+
+### titles
+['Prológica CP-400']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Prológica CP-400', 'Proof of Destruction']. Documents remaining to be retrieved: ['Commodore 16'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The 1935 propaganda documentary, on which Karl Attenberger worked with Leni Riefenstahl, and The End of America were not both made in the same year.
+
+### notes
+['Karl Attenberger worked with Leni Riefenstahl on the 1935 propaganda documentary Triumph of the Will.', 'Triumph of the Will is a Nazi propaganda film directed by Leni Riefenstahl and released in 1935.', 'There is no contextual evidence provided regarding the production year of The End of America.', "Karl Attenberger worked with Leni Riefenstahl on the 1935 Nazi propaganda documentary 'Triumph of the Will'.", '"Triumph of the Will" was directed, produced, and edited by Leni Riefenstahl and released in 1935.', 'No contextual evidence is available to verify the production year of the film "The End of America."', 'Karl Attenberger worked with Leni Riefenstahl on the 1935 propaganda documentary Triumph of the Will.', 'Triumph of the Will is a Nazi propaganda film directed by Leni Riefenstahl and released in 1935.', 'There is no contextual evidence provided regarding the production year of The End of America.']
+
+### context
+['Karl Attenberger | Karl Attenberger (28 October 1885 – 19 November 1951) was a German cinematographer.  He worked with Leni Riefenstahl on the 1935 propaganda documenatary "Triumph of the Will".', 'Leni Riefenstahl\'s Memoiren | Leni Riefenstahl\'s Memoiren is the 1987 autobiography of German film director, Leni Riefenstahl.  The book received a 1993 American release and coincided with the release of the acclaimed documentary; "The Wonderful, Horrible Life of Leni Riefenstahl" as well as Riefenstahl\'s ninetieth birthday.  It was featured on the 1993 "New York Times" list of notable books of the year.', "Triumph of the Will | Triumph of the Will (German: Triumph des Willens ) is a 1935 German propaganda film directed, produced, edited, and co-written by Leni Riefenstahl.  It chronicles the 1934 Nazi Party Congress in Nuremberg, which was attended by more than 700,000 Nazi supporters.  The film contains excerpts from speeches given by Nazi leaders at the Congress, including Adolf Hitler, Rudolf Hess and Julius Streicher, interspersed with footage of massed Sturmabteilung (SA) and Schutzstaffel (SS) troops and public reaction.  Hitler commissioned the film and served as an unofficial executive producer; his name appears in the opening titles.  The film's overriding theme is the return of Germany as a great power, with Hitler as the leader who will bring glory to the nation.  Because the film was made after the 1934 Night of the Long Knives (on 30 June) many prominent Sturmabteilung (SA) members are absent—they were murdered in that Party purge, organised and orchestrated by Hitler to replace the SA with the Schutzstaffel (SS) as his main paramilitary force.", 'The Wonderful Horrible Life of Leni Riefenstahl | The Wonderful, Horrible Life of Leni Riefenstahl (German: "Die Macht der Bilder: Leni Riefenstahl" ) is a 1993 German documentary film about the life of German film director Leni Riefenstahl, directed by Ray Müller.', 'Leni Riefenstahl: Her Dream of Africa | Leni Riefenstahl: Her Dream of Africa ("Leni Riefenstahl: Ihr Traum von Afrika") is a 2000 documentary-film by Ray Müller.  The film follows Leni Riefenstahl\'s return to Sudan to visit the Nuba tribe whom she published photographs of in best-sellers such as "The Last of the Nuba" and "The People of Kau".  It is the second collaboration between Riefenstahl and Müller.  She was the subject of his acclaimed 1993 documentary "The Wonderful, Horrible Life of Leni Riefenstahl", which followed her life and reflected on her Nuba activities.', 'Tag der Freiheit: Unsere Wehrmacht | Tag der Freiheit: Unsere Wehrmacht (English: "Day of Freedom: Our Armed Forces" ) is the third documentary directed by Leni Riefenstahl, following "Victory of Faith" and "Triumph of the Will".  Her third film recounts the Seventh Party Rally of the Nazi Party, which occurred in Nuremberg in 1935, and focuses on the German army.', 'Leni Riefenstahl | Helene Bertha Amalie "Leni" Riefenstahl (] ; 22 August 1902 – 8 September 2003) was a German film director, producer, screenwriter, editor, photographer, actress and dancer.', 'Yuri Sazonoff | Yuri Sazonoff is a contemporary Canadian composer and music producer with over than 120 credits up today.  Yuri writes music for film, television, concert and theatre and he has been involved over years in a wide range of productions.  His specialty is high end orchestral and cutting-edge hybrid music score, ethnic and all forms of electronic and ambient genres.  In addition to scoring for film and television, Sazonoff is often involved in production of various rock, pop and classical crossover projects and called upon to write songs and collaborate with various artists.  Yuri’s name has appeared on numerous record releases with EMI, Universal Music, Sony Music, Solitudes and Avalon and other record labels.', 'Sepp Allgeier | Josef “Sepp” Allgeier (6 February 1895 – 11 March 1968) was a German cinematographer who worked on around fifty features, documentaries and short films.  He began his career as a cameraman in 1911 for the Expreß Film Co. of Freiburg.  In 1913 he filmed newsreels in the Balkans.  He then became an assistant to Arnold Fanck, a leading director of Mountain films.  He worked frequently with Luis Trenker and Leni Riefenstahl, both closely associated with the genre.  He was Riefenstahl\'s lead cameraman on her 1935 propaganda film "Triumph of the Will".  During the Second World War, Allgeier filmed material for newsreels.  He later worked in West German television.  His son is the cinematographer Hans-Jörg Allgeier.', 'The White Hell of Pitz Palu | The White Hell of Pitz Palu (German: "Die weisse Hölle vom Piz Palü" ) is a 1929 German silent mountain film co-directed by Arnold Fanck and Georg Wilhelm Pabst and starring Leni Riefenstahl, Gustav Diessl, Ernst Petersen, and World War I flying ace Ernst Udet.  Written by Arnold Fanck and Ladislaus Vajda, the film is about a man who loses his wife in an avalanche while climbing the Piz Palü mountain, and spends the next few years searching the mountain alone for her body.  Four years later he meets a young couple who agree to accompany him on his next climb.  "The White Hell of Pitz Palu" was filmed on location in the Bernina Range in Graubünden, Switzerland.  The 1929 theatrical release starred Kurt Gerron, who was Jewish, as a night club guest.  The film was edited to remove scenes featuring Gerron, and it was rereleased as a 90-minute German-language sound film in 1935.  It was remade in 1950.']
+
+## Generated Outputs
+### reasoning
+The claim states that the 1935 propaganda documentary, worked on by Karl Attenberger with Leni Riefenstahl, and "The End of America" were not both made in the same year. From the notes and context, it is verified that Karl Attenberger worked with Leni Riefenstahl on the 1935 propaganda documentary "Triumph of the Will." The film "Triumph of the Will" is confirmed by multiple sources to have been released in 1935. There is no provided contextual evidence about the production year of "The End of America," nor any mention of it in the context. Therefore, the claim that these two films were not made in the same year stands, but since there is no production year provided for "The End of America," the claim cannot be fully verified by direct evidence. However, the implication is that "The End of America" was not produced in 1935 like "Triumph of the Will." The key correctness is that "Triumph of the Will" is from 1935 and Karl Attenberger worked on it with Riefenstahl; the production year of "The End of America" is unverified but assumed to differ. Hence, the first half of the claim about the propaganda documentary and Karl Attenberger is factual; the second half about "The End of America" being from a different year is unverified but logically plausible given the lack of evidence.
+
+### new_notes
+["Karl Attenberger worked with Leni Riefenstahl on the 1935 Nazi propaganda documentary 'Triumph of the Will'.", '"Triumph of the Will" was directed, produced, and edited by Leni Riefenstahl and released in 1935.', 'No contextual evidence is available to verify the production year of the film "The End of America."']
+
+### titles
+['Karl Attenberger', 'Triumph of the Will']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Karl Attenberger', 'Triumph of the Will']. Documents remaining to be retrieved: ['The End of America (film)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The building that Dennis Huntley provided sculptures for, and St Paul's Cathedral, are both located in England.
+
+### notes
+['Dennis Huntley provided sculptures for Guildford Cathedral in England.', 'Guildford Cathedral is located in England.', "St Paul's Cathedral is located in England.", 'Dennis Huntley provided sculptures for Guildford Cathedral, located in Guildford, Surrey, England.', 'Guildford Cathedral is an Anglican cathedral in England.', "St Paul's Cathedral is located in London, England.", "St Paul's Cathedral School is associated with St Paul's Cathedral in London, England.", 'Dennis Huntley provided sculptures for Guildford Cathedral in Guildford, Surrey, England.', 'Guildford Cathedral is an Anglican cathedral located in England.', "St Paul's Cathedral is located in London, England."]
+
+### context
+['Exterior sculpture of Guildford Cathedral | The Exterior sculpture of Guildford Cathedral provides many artistic features, including sculptures, engravings and more by some of England’s finest sculptors and craftsmen of the 1950s and 1960s.  The people who worked on the cathedral include: Edward Maufe, Alan Collins, Vernon Hill, Eric Gill, John Hutton, Dennis Huntley and others.', 'Dennis Huntley | Dennis Huntley, born in Weybridge in Surrey, England, is a British sculptor, furniture designer and author.  A Fellow of the Royal British Society of Sculptors, he has completed works for cathedrals, individual collectors and other organisations.  Among his most notable works are his sculptures for Guildford Cathedral.', 'St. Peter and St. Paul Cathedral, Abeokuta | The St. Peter and St. Paul Cathedral is the name given to a religious building belonging to the Catholic Church and serves as the cathedral of Abeokuta, a city in the southwest African country of Nigeria, Ogun State capital, located on the river of the same name.', 'Sts. Peter and Paul Cathedral, Lubumbashi | The Sts.  Peter and Paul Cathedral (French: "Cathédrale Saints Pierre et Paul de Lubumbashi" ) or simply Cathedral of Lubumbashi, is the name given to a religious building belonging to the Catholic Church and is located between the Kapenda and Kasa Vubu avenues of the city of Lubumbashi in southern part of African country of the Democratic Republic of the Congo, specifically in High Katanga province.  Nearby is the Convent of St. Peter and St. Paul and several provincial government buildings.', "St. Joseph's Cathedral, Khulna | The St. Joseph's Cathedral also called Khulna Cathedral is the name given to a religious building affiliated with the Catholic Church which is located in Babu Khan Road, in the city of Khulna, third-largest in the Asian country of Bangladesh.", "St. Paul's Church, Abu Dhabi | The St. Paul's Church is a religious building affiliated with the Catholic Church which is located in the area of Mussafah in Abu Dhabi, the United Arab Emirates.  Its importance is that it is the second Catholic church to be built in the emirate since 1965 when the St. Joseph Cathedral was built.", 'St. Martin of Tours Cathedral, Mukacheve | The St. Martin of Tours Cathedral (Ukrainian: Кафедральний собор св.  Мартина з Туру ) also called Mukacheve Cathedral is the name given to a religious building affiliated with the Catholic Church which is located in the city of Mukacheve in the west part of European country of Ukraine.', 'Co-Cathedral of St. Joseph (Tadó) | The Co-Cathedral of St. Joseph (Spanish: "Concatedral de San José de Tadó" ) Also Tadó Cathedral Is a temple of the Catholic Church under the invocation of St. Joseph.  The building is located in the municipality of Tadó in the department of Chocó in the South American country of Colombia and is one of the episcopal headquarters of the Diocese of Istmina-Tadó along with the St. Paul Cathedral in Istmina.', 'St. Joseph\'s Cathedral, Pontianak | The St. Joseph\'s Cathedral (Indonesian: "Katedral Santo Yosef" ) also called Pontianak Cathedral Is the name given to a religious building affiliated with the Catholic Church which is located in the city of Pontianak capital of West Kalimantan province west of the island of Borneo in the Asian country of Indonesia.', 'Co-Cathedral of St. Anthony of Padua, Békéscsaba | The Co-Cathedral of St. Anthony of Padua (Hungarian: "Páduai Szent Antal-társszékesegyház" ) also called Békéscsaba Cathedral is the name given to a religious building located in the city of Békéscsaba, in the European country of Hungary, which was built in 1910 with a neo-Gothic style.']
+
+## Generated Outputs
+### reasoning
+The claim states that both the building for which Dennis Huntley provided sculptures and St Paul's Cathedral are located in England. From the context, Dennis Huntley worked on the exterior sculptures of Guildford Cathedral, which is located in England. Additionally, St Paul's Cathedral is a famous landmark in London, England. The context does not explicitly mention St Paul's Cathedral, but it is common knowledge that St Paul's Cathedral is in England, and none of the conflicting references to St. Paul cathedrals in other countries apply here, as these refer to different cathedrals with similar names in Africa, Asia, and elsewhere. Therefore, the claim that both the building featuring Dennis Huntley’s sculptures (Guildford Cathedral) and St Paul's Cathedral are located in England is accurate.
+
+### new_notes
+['Dennis Huntley provided sculptures for Guildford Cathedral in England.', 'Guildford Cathedral is located in England.', "St Paul's Cathedral is located in England."]
+
+### titles
+['Exterior sculpture of Guildford Cathedral', 'Dennis Huntley']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Dennis Huntley', 'Guildford Cathedral']. Documents remaining to be retrieved: ["St Paul's Cathedral"].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

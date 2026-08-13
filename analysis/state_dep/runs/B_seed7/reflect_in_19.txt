@@ -1,0 +1,167 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be provided with three types of input fields related to a factual claim about people, places, institutions, films, songs, or other entertainment or academic topics:
+
+1. `claim`: A factual statement that may include multiple subclaims or assertions.
+2. `notes`: A list of extracted sentences or statements relating to the claim. These may be overlapping, redundant, contain minor inaccuracies, or offer different levels of detail.
+3. `context`: A list of encyclopedic-style paragraphs or document snippets providing authoritative background information pertaining to entities or topics mentioned in the claim and notes. These provide the evidence needed to verify, correct, or refine the claim and notes.
+
+Your goal is to produce two outputs:
+- `new_notes`: A cleaned, concise, and factually accurate subset of notes that directly support, refine, correct, or clarify the claim. This requires:
+  - Integrating information from both `notes` and authoritative `context`.
+  - Removing redundancies, inaccuracies, or outdated facts found in the original notes.
+  - Correcting any factual errors detected in the claim or notes based on the context.
+  - Emphasizing distinct, verified facts relevant to the core assertions of the claim.
+  - Explicitly identifying and rectifying any inaccuracies or errors in the claim's subclaims.
+  - Summarizing evidence precisely and clearly, avoiding superfluous or unrelated content.
+
+- `titles`: A list containing exact titles or names of the documents or entities from the provided context that substantiate or provide essential background for the claim and your chosen new_notes. The list should be:
+  - Precise in naming, mirroring titles or entity names in the context exactly.
+  - Comprehensive enough to cover all validated elements of the claim.
+  - Reflective of gold standard references expected for thorough claim validation.
+  - Excluding any unrelated or unsubstantiated titles.
+
+General Strategy:
+
+- Break down the claim into discrete factual subclaims for granular verification.
+- Cross-check each subclaim with both the extracted notes and the richer, authoritative contextual documents.
+- Identify inconsistencies, outdated information, or outright factual errors; then correct or clarify them as needed.
+- Consolidate supported facts into a definitive, non-redundant `new_notes` list.
+- Select all relevant authoritative titles that cover the core validated facts comprehensively.
+- Be mindful of domain-specific nuances such as:
+  - Correct names and precise spelling of persons, institutions, films, etc.
+  - Accurate dates (release years, founding or renaming years, role tenures).
+  - Proper attribution of roles, credits, or positions (e.g., first chairmen, starring roles, lead actors).
+  - Institutional types (public/private universities), relationships, or renaming history.
+  - Geographic distinctions when plants, locations, or entities are confined to specific islands or regions.
+  - Correct identification of species subspecies or variant distributions.
+  - Avoid assuming unsubstantiated connections or conflating unrelated individuals or entities.
+
+Additional Domain-Specific Considerations:
+
+- Claims often involve entertainment industry elements (films, TV shows, actors), academic institutions, plants, and geographic entities. Verifying credits, timelines, affiliations, and terminologies is critical.
+- If multiple sources conflict (e.g., different documented premiere years or place names), prioritize authoritative context.
+- Notes may contain duplicates or slightly varying statements; synthesize carefully to produce a precise factual summary.
+- Clarify when evidence is lacking to substantiate a claim fully; avoid unsupported assumptions.
+- Explicitly note when a subclaim in the original claim is incorrect or cannot be verified from the evidence.
+- Where possible, interpret and reflect the claim’s meaning faithfully but correct errors without altering the intended meaning unjustifiably.
+
+Formatting Requirements:
+
+- Output fields must be named exactly `new_notes` and `titles`.
+- Both `new_notes` and `titles` should be lists (array format) of strings.
+- Each new_note should be a concise, standalone, factually accurate statement suitable for independent validation.
+- Titles should exactly match context entries and be concise entity/document names.
+- Maintain clarity, factual accuracy, and conciseness in all outputs.
+- Avoid including irrelevant, speculative, or unsupported notes or titles.
+
+By following these instructions, the assistant should deliver a refined, accurate, non-redundant factual summary of the claim and its evidence base, along with precise references ensuring easy verification.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Travis Oates voiced Piglet in the 2011 movie. The Jungle Book was released before this movie.
+
+### notes
+['Travis Oates provided the voice of Piglet in the 2011 Disney animated film "Winnie the Pooh."', 'Travis Oates took over the role of Piglet following the death of John Fiedler in 2005 and was one of the original voice actors returning for the 2011 movie.', '"Winnie the Pooh" (2011) is a Disney animated feature film released in that year, featuring characters from A. A. Milne\'s stories.', 'The original Disney animated film "The Jungle Book" was released in 1967, long before the release of "Winnie the Pooh" (2011).', "Travis Oates provided the voice of Piglet in the 2011 Disney animated feature film 'Winnie the Pooh'.", 'Travis Oates took over the role of Piglet after the death of John Fiedler in 2005 and was one of the original voice actors returning for the 2011 movie.', "'Winnie the Pooh' (2011) is a Disney animated musical comedy film based on A. A. Milne's stories.", "The original Disney animated film 'The Jungle Book' was released in 1967, well before the release of 'Winnie the Pooh' (2011).", "Travis Oates provided the voice of Piglet in the 2011 Disney animated feature film 'Winnie the Pooh'.", 'Travis Oates took over the role of Piglet after the death of John Fiedler in 2005 and returned as Piglet in the 2011 film.', "'Winnie the Pooh' (2011) is a Disney animated musical comedy film based on A. A. Milne's stories.", "The original Disney animated film 'The Jungle Book' was released in 1967, well before the 2011 release of 'Winnie the Pooh'."]
+
+### context
+['Winnie the Pooh (2011 film) | Winnie the Pooh is a 2011 American animated buddy musical comedy film produced by Walt Disney Animation Studios and released by Walt Disney Pictures.  It is the 51st Disney animated feature film.  Inspired by A. A. Milne\'s stories of the same name, the film is part of Disney\'s "Winnie the Pooh" franchise, the fifth theatrical "Winnie the Pooh" film released, and Walt Disney Animation Studios\' second adaptation of "Winnie-the-Pooh" stories.  Jim Cummings reprises his vocal roles as Winnie the Pooh and Tigger, while series newcomers Travis Oates, Tom Kenny, Craig Ferguson, Bud Luckey, and Kristen Anderson-Lopez provide the voices of Piglet, Rabbit, Owl, Eeyore, and Kanga, respectively.  In the film, the aforementioned residents of the Hundred Acre Wood embark on a quest to save Christopher Robin from an imaginary culprit while Pooh deals with a hunger for honey.  The film is directed by Stephen Anderson and Don Hall, adapted from Milne\'s books by a story team led by Burny Mattinson, produced by Peter Del Vecho, Clark Spencer, John Lasseter, and Craig Sost, and narrated by John Cleese.', 'Piglet\'s Big Movie | Piglet\'s Big Movie is a 2003 American animated musical comedy-drama adventure film produced by Walt Disney Feature Animation and animated by Walt Disney Animation (Japan).  It was released by Walt Disney Pictures on March 21, 2003.  The film is based upon the characters in the "Winnie-the-Pooh" books written by A. A. Milne.  It is the second in a recent series of theatrically released "Winnie the Pooh" films, preceded by "The Tigger Movie" (2000) and followed by "Pooh\'s Heffalump Movie" (2005).  In the film, Piglet is ashamed of being small and wanders off into the Hundred Acre Woods, leading his friends to form a search party to find him.', 'Travis Oates | Travis Oates is an American actor, voice actor and director.  He continued the role of Piglet in "My Friends Tigger & Pooh" and other "Winnie the Pooh"-related media after the death of John Fiedler on June 25, 2005.  He and Jim Cummings were the only two original voice actors to return for the 2011 movie.  He also was one of the original co-hosts of the G4TV original program "Arena", a competitive gaming show with Wil Wheaton in 2002.  Oates owns and manages the ACME Comedy Theatre in Costa Mesa, California.', 'Pooh\'s Heffalump Halloween Movie | Pooh\'s Heffalump Halloween Movie is an 2005 American animated direct-to-video film produced by DisneyToon Studios, featuring the characters from Winnie the Pooh franchise.  This is the first Pooh movie since the death of Paul Winchell and the last in which John Fiedler provides Piglet\'s voice, as Fiedler died in 2005.  Nikita Hopkins the voice of Roo was replaced by Jimmy Bennett.  It followed by a television film produced by Walt Disney Television Animation, "Pooh\'s Super Sleuth Christmas Movie", released on November 20, 2007, an animated feature served as the episodes of television series "My Friends Tigger & Pooh".', 'Piglet (Winnie-the-Pooh) | Piglet is a fictional character from A. A. Milne\'s "Winnie‑the‑Pooh" books.  Piglet is Winnie‑the‑Pooh\'s closest friend amongst all the toys/animals featured in the stories.  Despite the fact that he is a "Very Small Animal" of a generally timid disposition, he tries to be brave and on occasion conquers his fears.', 'Winnie the Pooh and a Day for Eeyore | Winnie the Pooh and a Day for Eeyore is a 1983 Disney Winnie the Pooh animated featurette, based on two chapters from the books "Winnie-the-Pooh" and "The House at Pooh Corner", originally released theatrically on March 25, 1983, with the 1983 re-issue of "The Sword in the Stone".  It is the fourth and final of Disney\'s original theatrical featurettes adapted from the Pooh books by A. A. Milne.', 'Winnie-the-Pooh (book) | Winnie-the-Pooh (1926) is the first volume of stories about Winnie-the-Pooh, by A. A. Milne.  It is followed by "The House at Pooh Corner".  The book focuses on the adventures of a teddy bear called Winnie-the-Pooh and his friends Piglet, a small toy pig; Eeyore, a toy donkey; Owl, a live owl; and Rabbit, a live rabbit.  The characters of Kanga, a toy kangaroo, and her son Roo are introduced later in the book, in the chapter entitled "In Which Kanga and Baby Roo Come to the Forest and Piglet has a Bath".  The bouncy toy-tiger character of Tigger is not introduced until the sequel, "The House at Pooh Corner".', 'Gopher (Winnie-the-Pooh) | Gopher is a fictional grey anthropomorphic gopher, character who first appeared in the 1966 Disney animated film "Winnie the Pooh and the Honey Tree", introducing himself as Samuel J. Gopher.  He has a habit of whistling out his sibilant consonants, one of various traits he has in common with the beaver in "Lady and the Tramp", by whom he may have been inspired.  While he never made appearances in any episodes of "Welcome to Pooh Corner", Gopher was fleshed out a bit further in the television series "The New Adventures of Winnie the Pooh".  He is portrayed as generally hard-working, especially in his tunnels (which he inevitably falls into at least once).  He does not appear in the original books Winnie the Pooh and The House at Pooh Corner by A. A. Milne until 1966 (a fact that is regularly pointed out in "Winnie the Pooh and the Honey Tree", when he breaks the fourth wall by saying he\'s "not in the book, y\'know", also trying to say that he would not be in a phone book).  Gopher\'s voice was originally done by Howard Morris, who retired from the role and was replaced by Michael Gough.', 'Tigger | Tigger is a fictional tiger character originally introduced in A. A. Milne\'s book "The House at Pooh Corner."  Like other Pooh characters, Tigger is based on one of Christopher Robin Milne\'s stuffed toy animals.  Tigger appears in the Disney cartoon versions of Winnie the Pooh and has also appeared in his own film.', 'The Book of Pooh | The Book of Pooh is an American children\'s television series that aired on Disney Channel.  It is the third television series to feature the characters from the Disney franchise based on A. A. Milne\'s works; the other two were the live-action "Welcome to Pooh Corner" (to which this series bears resemblance) and the animated "The New Adventures of Winnie the Pooh" which ran from 1988–1991.  It premiered on January 22, 2001, and completed its run on July 8, 2003.  The show is produced by Shadow Projects and Playhouse Disney.  Walt Disney Pictures released the first of two films, a direct-to-video spin-off film based on the animated television series, "", 2001.']
+
+## Generated Outputs
+### reasoning
+The claim states that Travis Oates voiced Piglet in the 2011 movie and that The Jungle Book was released before this movie. 
+
+From the notes and the context:
+- Travis Oates indeed provided the voice of Piglet in the 2011 Disney animated film "Winnie the Pooh."
+- He took over the role after John Fiedler's death in 2005 and was one of the original voice actors returning for the 2011 movie.
+- The Disney animated film "The Jungle Book" was released in 1967, which is long before the 2011 "Winnie the Pooh" movie.
+
+The claim is accurate as stated: Travis Oates voiced Piglet in the 2011 "Winnie the Pooh" movie, and "The Jungle Book" came out almost 44 years earlier.
+
+### new_notes
+["Travis Oates provided the voice of Piglet in the 2011 Disney animated feature film 'Winnie the Pooh'.", 'Travis Oates took over the role of Piglet after the death of John Fiedler in 2005 and was one of the original voice actors returning for the 2011 movie.', "'Winnie the Pooh' (2011) is a Disney animated musical comedy film based on A. A. Milne's stories.", "The original Disney animated film 'The Jungle Book' was released in 1967, well before the release of 'Winnie the Pooh' (2011)."]
+
+### titles
+['Winnie the Pooh (2011 film)', 'Travis Oates', 'The Jungle Book']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Travis Oates', 'Winnie the Pooh (2011 film)']. Documents remaining to be retrieved: ['The Jungle Book (1994 film)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+1969 saw the founding of the Canadian baseball team where the future manager played from 1973-87. He managed the Tampa Bay Devil Rays season.
+
+### notes
+['The Tampa Bay Devil Rays Major League Baseball franchise was awarded in 1995 and began play in 1998 as an expansion team.', 'There is no record in the given context of a Canadian baseball team founded in 1969 connected to the Tampa Bay Devil Rays or any of their managers.', 'Several managers of the Tampa Bay Devil Rays include Lou Piniella (managed through 2005), Hal McRae (2002), Joe Maddon (starting in 2006), and Larry Rothschild (starting in 1998), but none are noted to have played for a Canadian team from 1973 to 1987.', 'The Tampa Bay Devil Rays were renamed to Tampa Bay Rays in 2008.', 'The Tampa Bay Devil Rays Major League Baseball franchise was awarded in 1995 and began play in 1998 as an expansion team.', 'There is no record of a Canadian baseball team founded in 1969 connected to the Tampa Bay Devil Rays or any of their managers.', 'Managers of the Tampa Bay Devil Rays include Lou Piniella, Hal McRae, Joe Maddon, and Larry Rothschild, but none played for a Canadian team from 1973 to 1987.', 'The Tampa Bay Devil Rays were renamed the Tampa Bay Rays in 2008.', 'The Tampa Bay Devil Rays Major League Baseball franchise was awarded in 1995 and began play in 1998 as an expansion team.', 'There is no record of a Canadian baseball team founded in 1969 connected to the Tampa Bay Devil Rays or any of their managers.', 'Managers of the Tampa Bay Devil Rays have included Lou Piniella, Hal McRae, Joe Maddon, and Larry Rothschild, but none played for a Canadian team from 1973 to 1987.', 'The Tampa Bay Devil Rays were renamed the Tampa Bay Rays in 2008.']
+
+### context
+['List of Tampa Bay Rays managers | The Tampa Bay Rays are a professional baseball franchise based in St. Petersburg, Florida.  They are a member of the American League (AL) East in Major League Baseball (MLB).  The team joined MLB in 1998 as an expansion team with the Arizona Diamondbacks.  In November 2007, Rays owner Stuart Sternberg renamed his team from the "Tampa Bay Devil Rays" to the "Tampa Bay Rays", which he described as "A beacon that radiates throughout Tampa Bay and across the entire state of Florida."  The Rays won their first AL championship in 2008.  The Rays have played their home games at Tropicana Field since their inaugural season.  Andrew Friedman is the Vice President of Baseball operations, in essence the general manager.', 'List of Tampa Bay Rays seasons | The Tampa Bay Rays are a professional baseball team based in St. Petersburg, Florida.  The Rays are a member of both the Major League Baseball\'s (MLB) American League Eastern Division and the American League (AL) itself.  Since their inaugural season in 1998, the Rays have played their home games at Tropicana Field.  The team was originally known as the "Tampa Bay Devil Rays", which was inspired by a common nickname of the manta ray, but after the 2007 season, they changed their official name to the "Tampa Bay Rays."', 'List of Tampa Bay Rays team records | The Tampa Bay Rays are a professional baseball team based in St. Petersburg, Florida.  They compete in the Eastern Division of Major League Baseball\'s (MLB) American League (AL).  Tampa Bay first competed in Major League Baseball during the 1998 baseball season as the "Tampa Bay Devil Rays", an expansion team.  Prior to the 2008 season, the team\'s name was officially shortened to "Rays".  The list below documents players and teams that hold particular club records.', 'Citrus Series | The Citrus Series is the name given to the interleague series between the Miami Marlins and Tampa Bay Rays in Major League Baseball.  The Marlins broke into the league in as the "Florida Marlins", while the Rays had their first season in as the "Tampa Bay Devil Rays".  The first meeting between the two teams took place on June 22, 1998 at Tropicana Field in St. Petersburg, Florida during the Rays\' inaugural season.  Beginning with the season, when the Marlins are the home team, games are played at Marlins Park.  From to , the games were played at Hard Rock Stadium (as it is currently named), though it has been known by several names in its existence.', 'List of Tampa Bay Rays no-hitters | The Tampa Bay Rays (formerly "Tampa Bay Devil Rays" (1998–2007)) are a Major League Baseball franchise based in St. Petersburg, Florida.  Formed in 1998, they play in the American League East division.  Pitchers for the Rays have thrown one no-hitter in franchise history, which was accomplished by Matt Garza on July 26, 2010.  A no-hitter is officially recognized by Major League Baseball only “when a pitcher (or pitchers) retires each batter on the opposing team during the entire course of a game, which consists of at least nine innings”.  No-hitters of less than nine complete innings were previously recognized by the league as official; however, several rule alterations in 1991 changed the rule to its current form.  A no-hitter is rare enough that one team in Major League Baseball has never had a pitcher accomplish the feat.', '2008 Tampa Bay Rays season | The Tampa Bay Rays\' 2008 season, the 11th season in franchise history, marked the change of the team\'s name from the "Tampa Bay Devil Rays" to the "Tampa Bay Rays", as revealed on November 8, 2007.  The change in name also came with a change in logo and uniforms, with new team colors of Columbia blue, Navy blue and gold.  The new logo, colors and name were leaked on September 20, 2007, and were confirmed officially on November 8, 2007, when an official announcement was made in downtown St. Petersburg.  Prior to the decision to rename the team the Rays, other options considered included the "Aces", "Bandits", "Cannons", "Dukes", "Stripes", and Stuart Sternberg\'s personal favorite, the "Nine."', 'List of Tampa Bay Rays first-round draft picks | The Tampa Bay Rays are a Major League Baseball franchise based in St. Petersburg, Florida.  The Rays (formerly the Tampa Bay Devil Rays) compete in the American League East division.  Since the franchise was established in 1995, the Rays have selected 33 players in the first round.  Officially known as the "First-Year Player Draft", the Rule 4 Draft is Major League Baseball\'s primary mechanism for assigning amateur baseball players from high schools, colleges, and other amateur baseball clubs to its teams.  The draft order is determined based on the previous season\'s standings, with the team possessing the worst record receiving the first pick.  In addition, teams which lost free agents in the previous off-season may be awarded compensatory or supplementary picks.  The First-Year Player Draft is unrelated to the 1997 expansion draft in which the Rays filled their roster.', "1998 Major League Baseball expansion | The 1998 Major League Baseball expansion resulted in the establishment of MLB's 29th and 30th teams beginning play for the 1998 season.  After initiating an expansion committee in March 1994, 27 groups representing nine cities submitted bids for the proposed expansion teams.  After a yearlong process, on March 9, 1995, the league awarded the National League franchise to Phoenix and the American League franchise to Tampa.  The Arizona Diamondbacks and the Tampa Bay Devil Rays (currently the Tampa Bay Rays), would subsequently begin play for the 1998 season.", "History of the Tampa Bay Rays | The Devil Rays began to build their organization shortly after the franchise was awarded in 1995 by naming former Atlanta Braves assistant general manager Chuck LaMar the senior vice president of baseball operations and general manager.  The franchise's first minor league games took place in the 1996 season.  On November 7, 1997, Larry Rothschild was named the team's first manager.  The team acquired 35 players in the Expansion Draft on November 18, 1997.  Tony Saunders from the Florida Marlins was the first player drafted by the Devil Rays.  The team also drafted future star Bobby Abreu but traded him to the Philadelphia Phillies for Kevin Stocker, who had very little success for the Rays.  Before the 1998 season, veteran stars Wade Boggs, Fred McGriff, and Wilson Álvarez were acquired.", "2005 Tampa Bay Devil Rays season | The 2005 Tampa Bay Devil Rays season was the team's eighth since the franchise was created.  This season, they finished last in the AL East division, and managed to finish the season with the AL's third-worst record of 67-95.  Their manager was Lou Piniella who entered his 3rd and last season with the Devil Rays."]
+
+## Generated Outputs
+### reasoning
+The claim states that a Canadian baseball team was founded in 1969, from which a future manager of the Tampa Bay Devil Rays played between 1973 and 1987, and that this individual later managed the Tampa Bay Devil Rays. The notes and context provide detailed information about the Tampa Bay Devil Rays franchise and its managers, but do not mention any Canadian baseball team founded in 1969 linked to the Tampa Bay Devil Rays or any of their managers. The Tampa Bay Devil Rays were awarded as a franchise in 1995 and began play in 1998. The listed managers (Lou Piniella, Hal McRae, Joe Maddon, Larry Rothschild) have no documented connection to a Canadian team founded in 1969, nor did they play on such a team in the claimed period. The claim cannot be verified from the available authoritative sources and appears to be factually inaccurate. Therefore, the claim's subclaims about the founding year of the Canadian team, the player's tenure on it, and the managerial connection to the Devil Rays are not supported. The new notes will reflect these clarifications and corrections.
+
+### new_notes
+['The Tampa Bay Devil Rays Major League Baseball franchise was awarded in 1995 and began play in 1998 as an expansion team.', 'There is no record of a Canadian baseball team founded in 1969 connected to the Tampa Bay Devil Rays or any of their managers.', 'Managers of the Tampa Bay Devil Rays have included Lou Piniella, Hal McRae, Joe Maddon, and Larry Rothschild, but none played for a Canadian team from 1973 to 1987.', 'The Tampa Bay Devil Rays were renamed the Tampa Bay Rays in 2008.']
+
+### titles
+['List of Tampa Bay Rays managers', '1998 Major League Baseball expansion', 'History of the Tampa Bay Rays']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['2002 Tampa Bay Devil Rays season']. Documents remaining to be retrieved: ['Hal McRae', 'Kansas City Royals'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Orange is the main flavor of both soft drinks, Solo from Norway, and the drink advertised with Krupa (song).
+
+### notes
+['Solo is an orange-flavored soft drink from Norway, originally with a Spanish recipe introduced in 1934.', "Solo was once Norway's most popular soft drink, surpassing Coca-Cola until the 1960s.", 'Solo is an orange-flavored soft drink from Norway, originally with a Spanish recipe introduced in 1934.', "Solo became Norway's most popular soft drink and surpassed Coca-Cola in popularity until the 1960s.", 'Solo is an orange-flavored soft drink from Norway, introduced in 1934 based on a Spanish recipe.', "Solo was once Norway's most popular soft drink, surpassing Coca-Cola in popularity until the 1960s.", 'There is no evidence in the provided information that the drink advertised with Krupa is orange-flavored or linked to Krupa.']
+
+### context
+["Saint Clement's (cocktail) | The Saint Clement's is a non-alcoholic cocktail.  Though the ingredients may vary, it always consists of orange juice mixed with a lemon-flavored drink, usually in equal proportions; the name of the drink refers to the English nursery rhyme Oranges and Lemons.  The drink is therefore named (indirectly) after either St Clement Eastcheap or St Clement Danes, both churches in London.  The traditional recipe calls for equal parts orange juice and lemon juice served over ice in a highball glass.  There are many variations, in which the lemon juice is replaced with a sweeter drink (like lemonade), or even a carbonated citrus-flavored soft drink (like Sprite, 7-Up, or Fanta Lemon).", 'Sunkist (soft drink) | Sunkist is a brand of primarily orange flavored soft drinks launched in 1979.', 'Shasta (soft drink) | Shasta Beverages is an American soft drink manufacturer which markets a value priced soft drink line with a wide variety of soda flavors under the brand name Shasta Soda.  The company name is derived from Mount Shasta and an associated spring.', 'Soft drink | A soft drink (see terminology for other names) is a drink that typically contains carbonated water, a sweetener, and a natural or artificial flavoring.  The sweetener may be sugar, high-fructose corn syrup, fruit juice, sugar substitutes (in the case of diet drinks), or some combination of these.  Soft drinks may also contain caffeine, colorings, preservatives, and other ingredients.', 'C.C. Lemon | C.C. Lemon is a Japanese soft drink created by Suntory.  It is known for its lemon flavor and for its advertisements featuring characters from the popular American cartoon "The Simpsons".  It has been recently introduced to Vietnam.  The Simpsons produced five advertisements for the drink from 2000 to 2002.', 'Orange Crush (disambiguation) | Orange Crush is a carbonated soft drink brand, originally marketed as an orange soda, now with various flavors of Crush.', 'Club (soft drink) | Club is the brand name for a series of Irish carbonated soft drinks produced in Ireland by Britvic Ireland and previously by Cantrell & Cochrane (C&C).  It is bottled by the Britvic plant in Dublin.  The series includes Club Orange, Club Lemon, Club Rock Shandy (a mixture of the orange and lemon flavours) and Club Apple soft drinks.', "Fanta Citrus | Citra was a grapefruit-flavored soft drink released into the U.S. market in 1996 by The Coca-Cola Company around the same time as Surge, another citrus-flavored soft drink marketed by Coca-Cola (although Surge contained caffeine while Citra was caffeine-free).  Citra had a very similar flavor to Fresca, especially the version of Fresca sold in Latin America, which is sweetened with sucrose (table sugar) rather than aspartame as in the American version of Fresca.  It also had a flavor similar flavor to Squirt, except that Squirt contains a trace of orange or tangerine flavoring.  Citra also had a very similar flavor to that of Canfield's 50/50.", "Sun Drop | Sun Drop, also marketed as Sundrop, is a citrus-flavored soda produced by Dr Pepper Snapple Group.  It has a yellowish-green color imparted by Yellow 5.  Among soft drinks, it is known for its high caffeine content (63 mg per 12 oz can, 9 mg higher than a 12 oz can of Mountain Dew, but not as much as Vault with 70.5 mg per 12 oz can).  Orange juice is an ingredient in the drink, and remaining pulp matter from the orange juice provides some of the soft drink's taste and appearance.", 'Orange soft drink | Orange soft drinks (called orange soda or orange pop in certain regions of the United States and Canada, orangeade in the UK, aranciata in Italy, or the genericised trademark orangina in France) are carbonated orange drinks.']
+
+## Generated Outputs
+### reasoning
+The claim consists of two parts: first, that Solo from Norway is an orange-flavored soft drink, and second, that the drink advertised with Krupa (song) is also orange-flavored.
+
+From the notes and context:
+
+- The notes clearly state that Solo is an orange-flavored soft drink from Norway originally introduced in 1934, based on a Spanish recipe. This is supported and uncontested by the context, even though the context does not mention Solo directly. The notes are consistent and reliable for this claim.
+
+- Regarding the "drink advertised with Krupa (song)," there is no mention either in the notes or in the context about any drink related to Krupa (a song or person). The context includes orange-flavored soft drinks generally (e.g., Sunkist, Orange Crush, Club Orange, and others), but there is no link to Krupa or any advertisement connected with that name.
+
+Thus, the second part of the claim about the drink advertised with Krupa being orange-flavored cannot be verified based on the given information. It should be flagged as unverifiable or lacking evidence.
+
+Therefore, the refined notes will confirm Solo's orange flavor and Norwegian origin, and clarify that there is no evidence to support the claim about the Krupa-linked advertisement.
+
+### new_notes
+['Solo is an orange-flavored soft drink from Norway, introduced in 1934 based on a Spanish recipe.', "Solo was once Norway's most popular soft drink, surpassing Coca-Cola in popularity until the 1960s.", 'There is no evidence in the provided information that the drink advertised with Krupa is orange-flavored or linked to Krupa.']
+
+### titles
+['Solo (soft drink)', 'Soft drink', 'Orange soft drink']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Solo (Norwegian soft drink)', 'Sunkist (soft drink)']. Documents remaining to be retrieved: ['Krupa (song)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

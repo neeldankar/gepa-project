@@ -1,0 +1,80 @@
+``` 
+You will be presented with three inputs:
+
+- `claim`: A factual assertion or statement whose truthfulness you must evaluate.
+- `notes`: A list of textual snippets taken from various documents that are potentially relevant to the claim. These notes may include overlapping, redundant, or partially conflicting information, and vary in their specificity and relevance.
+- `context`: A list of concise summaries or metadata descriptions of source documents from which the notes were drawn, including their exact titles.
+
+Your task is to generate two outputs:
+
+1. `new_notes`: A refined, concise, and non-redundant synthesis or subset of the input `notes` that distills the essential facts relevant to verifying or falsifying the `claim`.  
+2. `titles`: A list of the exact document titles (from `context`) that contain the critical information needed to assess the claim's truthfulness.
+
+---
+
+### Detailed Task Instructions and Guidelines
+
+**1. Understand the claim precisely:**  
+Identify all key factual components or relationships within the claim. Typical claim elements might include:
+
+- Dates (e.g., birthdates, event years) and their ordering or equivalence  
+- Named individuals or entities and their roles or affiliations  
+- Participation or association with events, productions, or organizations  
+- Geographic or jurisdictional relationships  
+- Specific named works (films, TV shows, documentaries) or characters  
+- Other specific factual attributes (e.g., voice actors, co-writers)
+
+**2. Analyze and distill the `notes`:**  
+- Extract core facts from each note that directly bear on the claim's truth.  
+- Remove exact or near-exact duplicates to avoid repetition.  
+- Exclude notes that do not contribute meaningful or directly relevant information for verification.  
+- Merge or synthesize closely related facts into single coherent notes if it improves clarity and conciseness.  
+- Include supporting details such as names, dates, titles, and roles only when they clarify or confirm relevant claim aspects.  
+- Avoid introducing any unsupported or speculative information; only use what is provided in the notes or context.
+
+**3. Use `context` to select relevant `titles`:**  
+- Identify document titles that correspond directly to any entities, events, dates, or works mentioned in your refined notes.  
+- Choose titles whose descriptions indicate they contain the authoritative or corroborative information essential for assessing the claim.  
+- Avoid titles unrelated to the essential components needed for verification, even if they appear in context.  
+- Include multiple titles if necessary to cover all relevant facts addressed in `new_notes`.
+
+**4. Emphasize accuracy and coverage in `new_notes`:**  
+- For claims involving comparisons (dates, events), explicitly include the date or ordering information from the notes.  
+- For claims involving named persons or roles (e.g., voice actors, directors), include the full relevant fact (e.g., "Adult Nala was voiced by American actress Moira Kelly").  
+- For claims involving event participation or production details, include the event name, involved persons/entities, and key attributes to make the fact self-contained and evaluable.  
+- For claims about geopolitical or locational assertions, carefully include corresponding place hierarchies or relations if given.  
+
+**5. Avoid fabrication or assumption:**  
+- Do not add facts beyond what is available in the input notes or context summaries.  
+- If the information is missing or inconclusive, reflect that in your notes by including relevant facts (e.g., "There is no mention of X doing Y").
+
+**6. Clarity, specificity, and standalone value:**  
+- Each note in `new_notes` should be a clear, factual statement that a verifier can understand by itself without needing to refer back to other notes.  
+- Avoid vague or ambiguous statements.  
+- Ensure that the combination of `new_notes` fully supports or disproves the claim logically.
+
+---
+
+### Additional Domain-Specific and Task-Specific Details Gathered from Examples
+
+- Many claims pertain to films, TV shows, or cultural works, including voice acting roles, directorial roles, co-writing, and documentary subjects. Make sure you identify these roles precisely.  
+- Names and titles may be provided in multiple languages or formats (e.g., original titles, English translations). Be mindful of this to align notes and titles correctly.  
+- Dates often serve as pivotal verification points (e.g., was a film made in a certain year, or did two events happen in the same year?). Clearly extract and highlight such date information.  
+- Some entities may be commonly confused—such as actors, writers, or directors with similar or overlapping domains (e.g., Jonathan Lynn vs. Ettore Scola). Avoid conflating these by carefully matching facts from notes and contextual document metadata.  
+- The `context` input includes document titles with concise descriptions; use these to confirm that your selected titles directly relate to the factual elements in your new_notes.  
+- The goal is to enable straightforward verification or falsification of the claim by a human or system relying on your outputs, so the distilled notes and selected titles should provide an evidentiary basis without irrelevant clutter.
+
+---
+
+### Summary of the Strategy for the Assistant
+
+- Read and parse the claim carefully to identify fact-check targets.  
+- Parse notes to isolate relevant facts, removing noise and redundancy.  
+- Synthesize relevant fact statements concisely and precisely.  
+- Choose document titles that map exactly to these facts from the context metadata.  
+- Avoid speculation, unsupported facts, or missing facts.  
+- Deliver clear, self-contained facts and precise titles to enable transparent truth evaluation of the claim.
+
+Following this approach will maximize accuracy, relevance, and clarity in verifying or falsifying factual claims using multi-document evidence.
+
+```

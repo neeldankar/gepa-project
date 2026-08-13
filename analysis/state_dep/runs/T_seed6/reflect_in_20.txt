@@ -1,0 +1,115 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Instruction:
+
+You will be given two fields as input: `claim` and `notes`. Your task is to produce a `query` field that formulates a precise, focused question or set of questions that would efficiently retrieve or verify the evidence needed to validate or refute the `claim`. 
+
+Details and guidelines to follow:
+
+1. **Input format:**
+   - `claim`: A factual or verification statement involving entities (people, places, dates, works, relationships, roles, events, etc.) whose truth needs to be verified.
+   - `notes`: A list of factually relevant pieces of information or candidate evidences (called sources or documents) that relate to entities, events, or claims mentioned in the `claim`. The notes contain domain and entity-specific information such as names of people, locations, productions, roles, dates, familial relationships, jurisdictional hierarchies, or other specialized knowledge that is pertinent to the claim verification.
+
+2. **Output format:**
+   - Produce a `query` field, which is a concise but comprehensive question or query string that is designed to retrieve documents or evidence most relevant to confirming or disconfirming the claim.
+   - The query should explicitly mention key entities and relationships from the claim.
+   - The query can be a single question or multiple related questions formulated clearly and unambiguously.
+   - Use domain-specific terms or entity names as precisely as they appear to maximize the relevance of search or retrieval results.
+
+3. **Goal and strategy:**
+   - The primary goal is to synthesize the essential verification needs by linking relevant entities, events, roles, timeframes, or relationships indicated by the claim.
+   - The goal is to generate a query that retrieves the exact gold standard documents needed for verifying the claim.
+   - If the claim involves multiple entities with implied relationships (e.g., jurisdiction, familial ties, membership, roles in productions), encode these relationships explicitly in the query.
+   - If the existing notes lack complete evidence, construct queries that attempt to fill these gaps by requesting specific missing details (such as full cast lists, parental relationships, or location hierarchies).
+   - Queries should be designed to disambiguate potential confusions and confirm or exclude specific fact patterns.
+
+4. **Domain-specific knowledge to consider:**
+   - Geopolitical entities: County-to-city hierarchical jurisdiction within provinces and countries (e.g., Fàn County is under Puyang City in Henan Province, both cities within China).
+   - Film and TV entities: Films (by name and year), cast and crew members, familial relationships between actors (e.g., father of star), production companies, and roles (e.g., lead actor, judge).
+   - Music and showbiz domain: Names of judges, roles, replacements on shows, producer/singer relationships to musical albums or shows.
+   - Use well-known naming conventions and canonical spellings as given.
+   - Awareness of context-specific ambiguities (e.g., different people named similarly, cities in same country but different provinces).
+
+5. **Examples of good query characteristics:**
+   - Explicit mention of both entities whose relationship or co-location is addressed (e.g., Are Puyang City and Pu'er City both located in China?).
+   - Inclusion of necessary roles or relational qualifiers when verifying family ties (e.g., Who starred in "Bombay Talkie" (1970), and is any actor the father of a "Sultanat" star?).
+   - Querying for presence or absence of particular roles or people when claim status is unclear (e.g., Are Meesha Shafi, Strings, Ali Azmat, and Junaid Khan judges on "Music Icons", and has the producer and singer of "Aaina" joined the panel?).
+
+6. **Avoid:**
+   - Generic or vague queries that do not link key entities explicitly.
+   - Omitting important qualifiers like titles, years, or roles that would reduce retrieval accuracy.
+   - Queries relying solely on partial information without connecting to the claim’s main verification point.
+
+In summary, your task is to transform claims and their partial evidential notes into focused, entity- and relationship-centric queries that enable retrieving the precise evidence required to verify those claims, especially in complex, domain-rich contexts involving hierarchical geopolitical information, familial connections, and role assignments in entertainment media.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The TV show aired on KidsClick's programming block on a Sunday. A song from La La Land, a Wax Fung album, contained a song featured on an American Dad episode of the same name as the show.
+
+### notes
+["Wax Fang's 'La La Land' album songs 'Majestic' and 'At Sea' featured on American Dad! episode 'Lost In Space' (season 7, episode 151) in 2013.", "No song titled 'La La Land' from Wax Fang is mentioned as featured in any American Dad! episode.", "No data available about the TV show's airing on KidsClick or its Sunday programming.", "No evidence found that any TV show aired on KidsClick's programming block on Sunday.", "Wax Fang's album 'La La Land' has songs 'Majestic' and 'At Sea' featured on the 'American Dad!' episode 'Lost In Space', but no song titled 'La La Land' is featured on any 'American Dad!' episode.", "No 'American Dad!' episode titled 'La La Land' exists that could align with the TV show or its songs.", "Wax Fang's 'La La Land' album songs 'Majestic' and 'At Sea' were featured on the American Dad! episode 'Lost In Space' (season 7, episode 151) in 2013, but no song titled 'La La Land' is featured in any American Dad! episode.", "No American Dad! episode titled 'La La Land' exists.", "There is no evidence or data that any TV show named 'La La Land' aired on KidsClick or was part of its Sunday programming block.", "The TV series 'La La Land' aired on Showtime, BBC Three, and SBS One, not KidsClick.", "Therefore, the claim linking a KidsClick-aired TV show with a Wax Fang song titled 'La La Land' featured on an American Dad episode of the same name is unsupported."]
+
+## Generated Outputs
+### reasoning
+The claim states that the TV show aired on KidsClick's programming block on a Sunday and that a song from Wax Fang's album "La La Land," sharing its name with the show, was featured on an American Dad episode with the same name. According to the notes, Wax Fang's "La La Land" album includes songs "Majestic" and "At Sea" featured on the American Dad episode "Lost In Space," not an episode titled "La La Land." Additionally, there is no information confirming the show's airing specifics on KidsClick or a Sunday slot, nor is there any "American Dad" episode titled "La La Land." Thus, to verify the claim, it is crucial to check the airing schedule of the TV show on KidsClick specifically on Sundays, whether any episode or song from Wax Fang's album titled "La La Land" appeared on American Dad, and if the show and any "American Dad" episode share the same name as claimed.
+
+### query
+Did the TV show named "La La Land" (or any TV show associated with Wax Fang's album "La La Land") air on KidsClick's programming block on a Sunday? Is there any episode of American Dad! titled "La La Land" or featuring a song named "La La Land" from Wax Fang's "La La Land" album? Which songs from Wax Fang's "La La Land" album were featured on American Dad!, and do any share the same title as the TV show? What is the exact airing schedule of the TV show related to KidsClick?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['La La Land (Wax Fang album)']. Documents remaining to be retrieved: ['Animation Domination', 'Lost in Space (American Dad!)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The star of Institute Benjamenta portrayed a character in "Double Bass". The real name of that character is Vilyam "Willie" Genrikhovich Fisher.
+
+### notes
+["Mark Rylance starred in Institute Benjamenta and portrayed Vilyam 'Willie' Genrikhovich Fisher (Rudolf Abel) in Bridge of Spies, not Double Bass.", 'Double Bass is mentioned only as an instrument played by a musician unrelated to the film Institute Benjamenta or the character Vilyam Fisher.', "Vilyam 'Willie' Genrikhovich Fisher is the real name of the Soviet spy Rudolf Abel, who was portrayed by Mark Rylance in Bridge of Spies.", "Mark Rylance starred in Institute Benjamenta and portrayed Vilyam 'Willie' Genrikhovich Fisher (Rudolf Abel) in Bridge of Spies, not Double Bass.", 'Double Bass is mentioned only as an instrument played by a musician unrelated to the film Institute Benjamenta or the character Vilyam Fisher.', "Vilyam 'Willie' Genrikhovich Fisher is the real name of the Soviet spy Rudolf Abel, who was portrayed by Mark Rylance in Bridge of Spies.", "Mark Rylance starred in Institute Benjamenta and portrayed Vilyam 'Willie' Genrikhovich Fisher in Bridge of Spies, not Double Bass.", "Vilyam 'Willie' Genrikhovich Fisher is the real name of the Soviet spy Rudolf Abel, portrayed by Mark Rylance in Bridge of Spies.", 'Double Bass is an instrument mentioned unrelated to Institute Benjamenta or the character Vilyam Fisher.', "The character Vilyam 'Willie' Genrikhovich Fisher does not appear in any film titled Double Bass."]
+
+## Generated Outputs
+### reasoning
+To verify the claim, it is necessary to confirm two main points: First, identify the star (lead actor) of the film "Institute Benjamenta." Second, determine the cast of the production titled "Double Bass" and verify if the same actor portrayed a character named Vilyam "Willie" Genrikhovich Fisher. The key elements to focus on are the star of "Institute Benjamenta," the cast of "Double Bass," and the character name Vilyam "Willie" Genrikhovich Fisher. Since these are film/character data points, the query should retrieve detailed casting and character information for both titles.
+
+### query
+Who was the lead actor (star) of the film "Institute Benjamenta"? In the production titled "Double Bass," which actor portrayed the character named Vilyam "Willie" Genrikhovich Fisher? Is the actor who starred in "Institute Benjamenta" the same person who played Vilyam "Willie" Genrikhovich Fisher in "Double Bass"?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Institute Benjamenta', 'Mark Rylance', 'Rudolf Abel']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+Candlelight Red the musical group has released twice as many albums as the band who also performs as One Unique Signal.
+
+### notes
+["No information found about Candlelight Red's or One Unique Signal's discographies or album counts in the provided context.", 'No link or confirmation found that Candlelight Red and One Unique Signal are related or that one performs as the other.', 'Candlelight Red has produced two studio albums and one EP according to the context.', 'No information provided about the album count of One Unique Signal.', 'One Unique Signal is noted to perform live and record as The Telescopes since 2010, but no album count is mentioned.', 'No evidence to confirm that the band performing as One Unique Signal is the same or different from Candlelight Red.', "Without data on One Unique Signal's album count, the claim cannot be confirmed or refuted.", 'Candlelight Red has released two studio albums and one EP.', 'One Unique Signal performs live and records as The Telescopes but no album counts are given.', 'No evidence that One Unique Signal and Candlelight Red are related or the same band.', 'The claim that Candlelight Red has twice as many albums as One Unique Signal cannot be verified or disproved with available information.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that Candlelight Red has released twice as many albums as the band who also performs as One Unique Signal. The notes provide partial data: Candlelight Red has released two studio albums and one EP (total three recordings), but there is no information on the album count for One Unique Signal. Additionally, it is unclear whether One Unique Signal performs under another name, as the notes mention One Unique Signal records and performs live as The Telescopes since 2010, but do not specify the relationship between these bands or their album counts. Without precise album numbers for One Unique Signal and confirmation of the relationship between the two bands, it is impossible to verify the claim. Therefore, the query needs to retrieve detailed discographies of Candlelight Red, One Unique Signal, and clarify any performance aliases or band identities.
+
+### query
+What are the complete discographies of Candlelight Red and One Unique Signal, including the total number of albums each band has released? Is One Unique Signal known to perform or record under any other band name, such as The Telescopes, and if so, what is the album count for that entity? Are Candlelight Red and One Unique Signal connected in any way by shared band members, aliases, or performance identities that could clarify the claim that Candlelight Red has released twice as many albums as the band performing as One Unique Signal?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Candlelight Red', 'One Unique Signal']. Documents remaining to be retrieved: ['The Telescopes'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

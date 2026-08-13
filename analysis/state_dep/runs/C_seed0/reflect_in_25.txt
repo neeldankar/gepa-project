@@ -1,0 +1,108 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two fields as input: `claim` and `notes`. Your task is to produce a new field called `query`.
+
+- The `claim` is a statement that makes one or more factual assertions involving people, films, awards, professions, or other related domain-specific entities.
+- The `notes` contain a collection of relevant factual information, corrections, contradictions, confirmations, or clarifications related to the claim, often extracted from various documents or knowledge sources.
+  
+Your goal is to generate one or more concise, precise, and well-formulated questions in the `query` field that break down the claim into atomic factual verification sub-questions. These queries should:
+1. Identify the core fact(s) being asserted in the claim that need verification.
+2. Reflect all critical parts of the claim that require evidence from external sources or the knowledge base.
+3. Address any ambiguity, contradictory details, or multiple entities involved in the claim as surfaced by the `notes`.
+4. Be designed to retrieve the necessary documents or pieces of evidence that can confirm or refute the claim.
+5. Use domain-specific terminology and relevant entity names exactly as presented or alluded to in the input data.
+
+Guidelines and Key Points:
+- Focus on decomposing complex claims involving multiple entities or nested relations (e.g., who starred with whom, who directed which film).
+- Incorporate correction or contradiction information from `notes` to guide the construction of queries that explicitly cover those aspects (e.g., when a director’s name is disputed, ask about the director’s identity).
+- Ensure your queries cover all parts of the claim, especially when multiple factual assertions are made (e.g., listing all relevant persons involved, cross-referencing their roles).
+- Use precise and natural language questions that are answerable by retrieving factual documents or authoritative sources.
+- Consider queries that will retrieve missing documents not yet obtained if feedback is provided.
+- When entities are mentioned both positively and negatively in the notes (confirmed or denied roles), reflect these distinctions in the queries to disambiguate.
+- Avoid broad vague questions; focus on retrieval of documents or facts that directly address the truthfulness or falsehood of the claim's components.
+- If a claim involves multiple parts (e.g., two different people’s statuses or achievements), produce queries that can verify each part independently.
+
+Example of reasoning behind queries:
+- A claim about an actor appearing in two films and one film’s director is challenged by notes showing different directors and no evidence the actor appeared in the second film -> queries should ask precisely "Who starred in film X alongside [actor]?" and "Who directed film Y?" and "Did [actor] appear in film Y?"
+- A claim about co-direction between two films referencing specific directors, where notes provide details confirming or denying involvement, should produce queries about "Did [director] co-direct film A?" and "Did [director] co-direct film B?" to clarify overlaps.
+- A claim involving multiple people’s professions or awards (e.g., an Austrian poet-diplomat Nobel laureate and a noted writer) requires queries checking "Are there any Austrian poet-diplomats who won Nobel Prize in Literature?" and "Is [person] a writer?" separately to verify each fact.
+
+In summary, your output `query` must be a well-crafted set of fact-checking questions grounded in the claim’s assertions and the contradictions, confirmations, or omissions presented in the notes. This will maximize document retrieval effectiveness and enable thorough claim verification.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Chess is more popular around the world than a game designed by Leo Colovini.
+
+### notes
+["Leo Colovini is an Italian board game designer known for creating 'Cartagena', which is popular but not globally mainstream.", 'Chess is one of the most widely recognized and played strategy board games worldwide, with numerous global variants like Xiangqi and Shogi.', 'Chess has a formalized system of ratings and competitions, reflecting its global reach and popularity.', 'No evidence suggests games by Leo Colovini have a popularity comparable to the global influence of chess.', 'Leo Colovini is known for several well-regarded board games like Cartagena and Inkognito, but these games have niche, not global, popularity.', 'Chess is recognized internationally with widespread playing communities across continents.', 'Chess variants such as Xiangqi and Shogi extend the global reach of chess-family games.', 'Chess benefits from formal rating systems and worldwide tournaments, underscoring its global popularity.', "No available data indicate that Leo Colovini's games have achieved a popularity level comparable to chess.", 'Chess has numerous variants worldwide and is deeply embedded in many cultures, contributing to its global popularity.', "Leo Colovini's games, while respected within niche board game communities, lack mainstream global recognition akin to chess.", "Chess's formal rating systems, international competitions, and cultural significance surpass the recognition of Colovini's games.", 'No available metrics or studies show that any Leo Colovini game has matched the global player base or cultural impact of chess.']
+
+## Generated Outputs
+### reasoning
+The claim states that chess is more popular worldwide than any game designed by Leo Colovini. The notes confirm that chess is globally recognized, widely played, and supported by formal competition systems, establishing its global popularity. Leo Colovini is identified as a designer of "Cartagena," which is noted as popular but not mainstream globally. There is no evidence suggesting that Colovini’s games match the global reach or popularity of chess. To verify this claim comprehensively, queries need to explicitly address the worldwide popularity and recognition of chess compared to Colovini’s games, focusing on the global scale and formal competitive presence to support or refute the assertion.
+
+### query
+1. What is the global popularity and recognition of chess as a board game, including the existence of formal competitive systems and international player ratings?  
+2. Which board games has Leo Colovini designed, and what is their level of popularity on a global scale?  
+3. Are any of Leo Colovini’s games considered to have a worldwide influence or competitive presence comparable to chess?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Leo Colovini']. Documents remaining to be retrieved: ['Cartagena (board game)', 'Chess'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The French star of The Cutting Edge voiced a character in an animated 1994 film. She voiced the character named Nala.
+
+### notes
+["Moira Kelly, an American actress known for The Cutting Edge, voiced Nala in Disney's 1994 animated film The Lion King.", 'Moira Kelly is not French; she is American, so the claim about her nationality is incorrect.', 'The character Nala was voiced by Moira Kelly in the 1994 film, confirming the role but not the French nationality.', "Moira Kelly, an American actress, starred in The Cutting Edge and voiced the character Nala in Disney's 1994 animated film The Lion King.", 'Moira Kelly is not French but American, disproving the nationality aspect of the claim.', 'The claim correctly identifies the actress who voiced Nala but incorrectly states the actress’s French nationality.', "Moira Kelly, an American actress known for The Cutting Edge, voiced Nala in Disney's 1994 animated film The Lion King.", 'Moira Kelly is American, not French, contradicting the claim about her nationality.', 'The claim correctly links Moira Kelly to the character Nala but erroneously claims she is French.']
+
+## Generated Outputs
+### reasoning
+The claim makes two primary assertions that require verification: first, that the star of The Cutting Edge who voiced the character Nala in an animated 1994 film is French; second, that she voiced Nala in that film. The notes consistently show that Moira Kelly, who starred in The Cutting Edge and voiced Nala in the Disney 1994 film The Lion King, is American, not French. While Moira Kelly is indeed the voice of Nala, the French nationality stated in the claim is incorrect. Therefore, the key facts to verify are the identity of the actor from The Cutting Edge who voiced Nala in the 1994 animated film and her nationality.
+
+### query
+Who is the actress that starred in The Cutting Edge and voiced the character Nala in the 1994 animated film The Lion King? What is the nationality of the actress who voiced Nala in The Lion King? Did any French actress star in The Cutting Edge and voice Nala in the 1994 animated film?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Moira Kelly', 'The Cutting Edge', 'The Lion King']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+In the 1755 revived opera that Henri Larrivée appeared in and mezzo soprano Manon Lescaut are not composed by the same people.
+
+### notes
+['Henri Larrivée performed in a 1755 revival of Rameau\'s "Castor et Pollux".', '"Manon Lescaut" is an opera with multiple versions by different composers: Daniel Auber, Giacomo Puccini, and Jules Massenet.', 'Rameau, who composed "Castor et Pollux", is not connected to the composers of "Manon Lescaut" operas.', 'The composers of "Manon Lescaut" are from much later periods than Rameau.', "Henri Larrivée performed in a 1755 revival of Rameau's 'Castor et Pollux'.", "'Manon Lescaut' is an opera title used by multiple composers including Daniel Auber, Giacomo Puccini, and Jules Massenet.", "Jean-Philippe Rameau, the composer of 'Castor et Pollux', lived in the 18th century and was active decades before Puccini, Auber, and Massenet.", "The composers of 'Manon Lescaut' operas are from the 19th century, significantly later than Rameau.", "'Castor et Pollux' and 'Manon Lescaut' operas are unrelated in terms of composers.", "Henri Larrivée's association is only with Rameau's work, not with the 'Manon Lescaut' operas.", "Henri Larrivée made his first solo appearance in a 1755 revival of Jean-Philippe Rameau's opera 'Castor et Pollux'.", "'Manon Lescaut' operas have been composed by Daniel Auber, Giacomo Puccini, and Jules Massenet among others, all from the 19th century.", "Jean-Philippe Rameau was an 18th-century composer, decades earlier than the 19th-century composers of the 'Manon Lescaut' operas.", "The operas 'Castor et Pollux' and 'Manon Lescaut' are unrelated in terms of their composers."]
+
+## Generated Outputs
+### reasoning
+The claim asserts two main points: first, that Henri Larrivée appeared in a 1755 revival of an opera, and second, that the opera "Manon Lescaut" associated with a mezzo soprano is composed by different people than that 1755 revived opera. The notes confirm that Henri Larrivée did perform in a 1755 revival of Rameau's "Castor et Pollux." They also establish that "Manon Lescaut" is a distinct opera with multiple versions composed by Auber, Puccini, and Massenet, none of whom are related to Rameau or the 1755 work. Additionally, the composers of "Manon Lescaut" come from much later periods than Rameau. Therefore, to fully verify the claim, it is necessary to ask whether Henri Larrivée was part of the 1755 revival of "Castor et Pollux," what operas "Manon Lescaut" refers to and who composed them, and whether those composers are indeed different from Rameau.
+
+### query
+Did Henri Larrivée perform in the 1755 revival of Rameau's "Castor et Pollux"?  
+What are the composers of the various versions of the opera "Manon Lescaut"?  
+Are the composers of "Manon Lescaut" (such as Daniel Auber, Giacomo Puccini, and Jules Massenet) different from Jean-Philippe Rameau who composed "Castor et Pollux"?  
+Is the "Manon Lescaut" mentioned associated with a mezzo soprano, and if so, what is known about that production or version?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Castor et Pollux', 'Henri Larrivée', 'Manon Lescaut (Puccini)']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

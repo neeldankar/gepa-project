@@ -1,0 +1,60 @@
+```
+Task Description:
+
+You will be given two fields as input: `claim` and `notes`. The `claim` is a factual statement that requires verification or fact-checking. The `notes` provide extracted or summarized contextual information related to the claim, including evidence that may support, contradict, or remain neutral toward the claim.
+
+Your task is to generate a single, concise, and targeted *search query* string (output field `query`) designed to retrieve authoritative and relevant documents or data that can verify the truthfulness of the `claim`. The query should be carefully crafted based on analysis of both the claim and the notes, ensuring it guides downstream retrieval systems efficiently toward comprehensive and accurate factual verification.
+
+---
+
+Detailed Instructions for Generating the Query:
+
+1. **Analyze the Claim:**
+   - Identify key entities: people (with correct names and aliases), organizations, events, places, artworks (films, songs, albums), sports teams, championships, or other relevant named concepts.
+   - Extract the main factual assertions: dates (years, seasons), titles (movie name, song title, awards), roles or relationships (actor roles, band membership), performance results (wins, chart positions), or scientific classification (genus names, species count).
+   - Recognize relationships and comparisons (e.g., "X won more awards than Y", "this plant genus has more species than another", "actor starred in TV series that premiered on a certain year").
+   - Note temporal bounds or specific time periods that anchor the claim.
+
+2. **Use the Notes to Refine Understanding:**
+   - Extract key domain facts that clarify or correct the claim’s assertions.
+   - Identify contradictions or confirmations in the notes to anticipate what needs explicit checking.
+   - Note domain-specific details that help specify the query:
+     - **Film/TV:** Cast members, accurate premiere or release years, awards nominations or wins, exact character names, correct spellings of names.
+     - **Music:** Chart names (e.g., Billboard Hot Country Singles & Tracks), original recording artists, chart rankings, side projects, aliases, genre, award counts.
+     - **Sports (Motorsports, Baseball):** Season numbering equivalences (e.g., "28th season = 2000"), participation years, nationality, winner names, team founding dates.
+     - **Botany/Biology:** Scientific names, number of species in genera, native ranges, common names in different languages.
+     - **Geography/Administrative:** Accurate place names, hierarchical relationships between administrative regions (e.g., city, county, state).
+
+3. **Formulate a Precise Query:**
+   - The query must directly target the key facts necessary to validate or refute the claim.
+   - Include all relevant critical entities and factual details (correct names, dates, titles, roles, etc.).
+   - Incorporate alternative names or common epithets explicitly when mentioned or deducible (e.g., "Pablo Escobar" and "The King of Cocaine").
+   - When the notes indicate errors or contradictions, explicitly include those aspects in the query to test those claims (e.g., correct premiere year vs. claimed year).
+   - Use natural language fact-check style questions or specific keyword phrases combining relevant terms, e.g.:
+     - "Which 2007 movie written by Christopher Landon starred Shia LaBeouf?"
+     - "Did 'Even Stevens' premiere in 2001 or 2004 and did Shia LaBeouf star in it?"
+     - "Number of species in genus Salix vs. Darwinia; does 'Saule' refer to Salix?"
+     - "Awards won by German Frank Sinatra and Nivek Ogre; involvement of Nivek Ogre in Rx project."
+
+4. **Avoid Vagueness and Overly Broad Terms:**
+   - Do not produce broad or generic search queries that will retrieve irrelevant information.
+   - Use domain-specific keywords and constraints derived from the notes for precision.
+   - If multiple core facts appear in the claim and notes, attempt to include these in a single query that can retrieve multiple relevant documents simultaneously.
+
+5. **Leverage Domain-Specific Nuances:**
+   - In music, focus on chart names, genre classifications, and original recording details.
+   - In film/TV, emphasize accurate casting, role naming, and award nominations or wins.
+   - For sports, use known domain equivalences (e.g., season vs. year), participation years, and correct identification of competitors or awardees.
+   - In botany or biology, verify genus-species counts, language-to-scientific name mappings.
+   - In geography, emphasize administrative divisions and correct place names.
+
+6. **No Extraneous Output:**
+   - Only output the field `query` containing the search query string.
+   - Do not include reasoning, explanations, or examples.
+   - The query should be concise but comprehensive enough to facilitate retrieval of authoritative and relevant evidence for or against the claim.
+
+---
+
+By following these instructions and integrating domain-specific facts, contradictions, and clarifications from the notes, your generated query will maximize the retrieval of relevant documents to support accurate and efficient fact-checking of the claim.
+
+```

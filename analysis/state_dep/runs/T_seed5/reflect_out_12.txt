@@ -1,0 +1,45 @@
+```
+You are given two fields: `claim` (a factual statement involving one or more entities, events, or concepts) and `notes` (a list of textual snippets or known facts relevant to the claim). Your task is to generate a `query` that retrieves the necessary factual information to verify or assess the claim.
+
+The goal is to capture all entity-level properties, relationships, and contextual details needed for fact-checking or validation of the claim by querying relevant knowledge documents or knowledge base entries. The query should be specific enough to retrieve all missing or potentially missing pieces of information indicated by the claim and any gaps revealed in the notes.
+
+Key points and domain-specific nuances to incorporate into the instruction:
+
+1. **Input format:**
+   - `claim`: A natural language sentence expressing a fact or comparison involving multiple entities (people, works, items, places, events) and often comparative or relational facts (e.g., “the platform for which X was developed and Y were not from the same country”).
+   - `notes`: A list of supporting or partial evidence snippets extracted from various sources about entities or facts related to the claim. These notes often identify relevant entities and aspects known or unknown.
+
+2. **Task objective:**
+   - Formulate a structured or semi-structured `query` that can facilitate retrieval of all underlying evidence needed to check the claim.
+   - Extract from the claim the key entities/concepts (e.g., people, works, devices), their relevant attributes (e.g., country of origin, profession, relationship to other entities), and properties (e.g., “final film directed,” “platform made in country X”).
+   - Include in the query requests for attributes or entities mentioned by the claim but missing or ambiguous in the notes (e.g., if the notes do not specify a director’s country, explicitly query for it).
+   - When multiple entities are related (e.g., two directors compared), ensure the query includes both sides and the properties needed for comparison (e.g., geographic area sizes, professions, dates related).
+
+3. **Reasoning & query formulation process:**
+   - Carefully analyze the claim to identify:
+     a. All involved entities (people, titles, devices, companies, countries, works).
+     b. The relational or comparative fact being asserted.
+     c. The implicit or explicit attributes required to verify the claim.
+   - Cross-check the notes to identify which entities or attributes are already available or explicitly stated, and which are missing.
+   - The query should focus on retrieving missing factual information or clarifying ambiguous points to fully evaluate the claim.
+   - The query may be structured as JSON-like nested objects requesting specific attributes per entity (e.g., `"director": {"country_of_origin": true}`) or formulated as a natural language question that clearly asks for missing relations or attributes.
+   - Queries should include:
+     - Key entities by their canonical names or clear identifiers.
+     - Their required properties (e.g., country_of_origin, profession, geographic_area).
+     - Relationships that verify the claim (e.g., whether two platforms share a country, or if a film is the final directed work).
+
+4. **Examples of domain entities and their attributes:**
+   - Persons: profession, country_of_origin, relations (colleagues, authorship)
+   - Films, books, games: director/author, platform, release date, work order (e.g., final film)
+   - Devices/platforms: manufacturer country, company origin
+   - Geographic entities: geographic area (size), country name
+   - Relationships: collation of attributes for comparative claims (e.g., country size comparison)
+
+5. **When uncertain or lacking explicit notes, treat the query as a request for the missing but needed fact to reach a conclusion.**
+
+6. **The query should be precise, eventual retrieval of gold documents should cover all named entities and their critical attributes needed.**
+
+In summary:  
+From a claim and partial relevant facts (notes), construct a minimal but complete query that explicitly seeks all necessary information (entities, properties, relationships) to confirm or refute the claim, ensuring that all relevant documents or facts can be retrieved with the query.
+
+```

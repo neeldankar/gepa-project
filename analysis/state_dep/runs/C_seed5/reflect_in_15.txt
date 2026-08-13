@@ -1,0 +1,109 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields:
+- `claim`: a factual statement or assertion that may require verification or further factual support.
+- `notes`: a list of textual snippets containing partial information relevant to verifying the claim. These notes might include facts, contradictions, or missing information about entities or topics in the claim.
+
+Your goal is to produce the output field `query` — a precise and focused question (or set of questions) aimed at retrieving the key missing or uncertain factual information needed to verify the claim. The `query` should target specific entities, attributes, relationships, or facts that have not been confirmed or sufficiently covered in the provided notes.
+
+Key Points and Domain-Specific Knowledge:
+- The claim involves named entities such as people, films, bands, roles (e.g., director, bassist), birthdates, nationalities, professions, and works (e.g., films, songs).
+- Notes often contain partial or confirmatory information about these entities, but sometimes lack critical data required to verify the claim fully.
+- Your query should be designed to retrieve authoritative documents or data specifically covering the missing or ambiguous elements mentioned or implied by the claim.
+- The query should reflect recognition of domain-specific facts, such as:
+   * Individuals’ roles and contributions (e.g., “bass player and lead vocalist who created Cobra Starship” refers to Gabe Saporta).
+   * Nationality or origin of persons associated with cultural works (e.g., nationality of film directors related to 'Cannibal Holocaust').
+   * Dates of birth or ages when claims relate to relative age.
+   * Professional associations or occupations that confirm or refute the claim.
+   * Connections between named works and their creators or contributors.
+
+Generalizable Strategy:
+1. Analyze the claim and identify the factual assertions that require verification.
+2. Review the notes to establish which parts of the claim are already supported and which parts are missing, contradictory, or uncertain.
+3. Formulate concise, targeted queries that seek the minimal yet sufficient data required to resolve remaining ambiguities.
+4. When multiple pieces of missing information exist, combine them efficiently in the query, balancing completeness and precision.
+5. Focus on retrieving documents or facts about:
+   - Specific named entities not covered or unclear in the notes.
+   - Attributes or relationships critical to verifying the claim.
+6. Avoid overly broad or generic questions; tailor queries to close specific knowledge gaps evident from the notes.
+
+Example:
+If the claim is about the relative age of two persons, and only one birthdate is known, the query should be:  
+   "What is the birthdate or age of [Person with missing info]?"
+
+If the claim involves multiple nationalities or roles, and only partial info is available, the query should ask specifically about the identities, nationalities, or professions of the key persons involved.
+
+By following this approach, you will help retrieve the essential documents needed to verify complex claims effectively.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The star of the 2012 film  Fairhaven, appeared in Studio 60 on the Sunset Strip in 2007 and American Horror Story in 2014.
+
+### notes
+["There is no information about the cast or star of the 2012 film 'Fairhaven' in the given context.", "Sarah Paulson starred in 'Studio 60 on the Sunset Strip' during 2006-2007 but no mention of her involvement in 'Fairhaven' or 'American Horror Story'.", "Richard Short appeared in 'American Horror Story' but the context does not connect him to 'Fairhaven' or 'Studio 60'.", "No single actor is identified as the star of 'Fairhaven' who also appeared in both 'Studio 60 on the Sunset Strip' (2007) and 'American Horror Story' (2014).", 'Thus, the claim cannot be verified with the available information.', "The star of the 2012 film 'Fairhaven' is not identified in the provided context.", "Sarah Paulson appeared in 'Studio 60 on the Sunset Strip' (2006-2007) but no evidence links her to 'Fairhaven' or 'American Horror Story'.", "'American Horror Story' features Richard Short, but he has no known connection to 'Fairhaven' or 'Studio 60 on the Sunset Strip'.", "No single actor is confirmed to star in 'Fairhaven' and appear in both 'Studio 60 on the Sunset Strip' (2007) and 'American Horror Story' (2014).", 'The claim cannot be verified with the available information.', "The star of the 2012 film 'Fairhaven' is not identified in the provided context.", "Sarah Paulson starred in 'Studio 60 on the Sunset Strip' during 2006-2007 but there is no evidence linking her to 'Fairhaven' or 'American Horror Story'.", "Richard Short appeared in 'American Horror Story' but is not connected to 'Fairhaven' or 'Studio 60 on the Sunset Strip' in the context.", "John Cabrera appeared in 'Studio 60 on the Sunset Strip' but with no evidence linking him to 'Fairhaven' or 'American Horror Story'.", "No single actor is confirmed to have starred in 'Fairhaven' and appeared in both 'Studio 60 on the Sunset Strip' and 'American Horror Story'.", 'Thus, the claim cannot be verified with the available information.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that the star of the 2012 film Fairhaven appeared in both Studio 60 on the Sunset Strip (2007) and American Horror Story (2014). The notes confirm Sarah Paulson appeared in Studio 60 on the Sunset Strip in 2006-2007 and Richard Short appeared in American Horror Story, but neither is connected to Fairhaven. The star of Fairhaven is not identified in the notes, and no actor is confirmed to have appeared in all three productions. Therefore, to verify the claim, it is essential to identify the star of Fairhaven (2012) and gather information about that actor’s roles or appearances in Studio 60 on the Sunset Strip and American Horror Story.
+
+### query
+Who is the lead actor or star of the 2012 film Fairhaven? Did this actor appear in both Studio 60 on the Sunset Strip in 2007 and American Horror Story in 2014?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Sarah Paulson']. Documents remaining to be retrieved: ['Blood Bath (American Horror Story)', 'Fairhaven (film)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+An actor that was in the Wonder Woman (2017 film) of the action adventure genre, performed in Anomalisa after the premier of Fargo.
+
+### notes
+['David Thewlis acted in the 2017 Wonder Woman film.', 'David Thewlis provided voice work in the film Anomalisa, released December 30, 2015.', 'David Thewlis appeared in Fargo season 3, which aired in 2017.', "Anomalisa was released before Fargo season 3 premiered, so Thewlis's performance in Anomalisa was prior to his role in Fargo.", "No evidence is provided of any actor from Wonder Woman performing in Anomalisa after Fargo's premiere.", 'David Thewlis acted in the Wonder Woman (2017) film and provided voice work in Anomalisa (2015).', "Fargo season 3, featuring David Thewlis, premiered in 2017 after Anomalisa's release.", "Therefore, Thewlis's performance in Anomalisa occurred before his role in Fargo, contradicting the claim's order.", "No evidence exists of any actor in Wonder Woman performing in Anomalisa after Fargo's premiere.", 'David Thewlis acted in the 2017 Wonder Woman film, which is an action-adventure superhero movie.', 'David Thewlis provided voice work in Anomalisa, released in 2015.', "Fargo season 3, featuring David Thewlis, premiered in 2017 after Anomalisa's release.", "Thewlis’s performance in Anomalisa occurred before his role in Fargo, contradicting the claim's timeline.", 'There is no evidence that any actor from Wonder Woman performed in Anomalisa after the Fargo premiere.']
+
+## Generated Outputs
+### reasoning
+The claim involves identifying an actor who appeared in the 2017 action-adventure film Wonder Woman, and this same actor also performed in the film Anomalisa after the premiere of Fargo. To verify this, we need to confirm the cast of Wonder Woman (2017), the cast of Anomalisa, the premiere date of Fargo, and whether any actor appears in both Wonder Woman and Anomalisa post-Fargo's premiere. Since no notes provide this information, the key missing pieces are the actor lists and timelines of these three productions.
+
+### query
+Which actors appeared in the 2017 film Wonder Woman? Who were the cast members of Anomalisa, and when was it released? What is the premiere date of the TV show Fargo? Did any actor appear in Wonder Woman and subsequently perform in Anomalisa after Fargo's premiere?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['David Thewlis', 'Wonder Woman (2017 film)']. Documents remaining to be retrieved: ['Fargo (TV series)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The actress made her debut in the film by the director who was American. She also starred in The Death and Life of John F. Donovan.
+
+### notes
+['The Death and Life of John F. Donovan is directed by Canadian filmmaker Xavier Dolan, not an American director.', 'Information about the specific actress in the claim is missing, so linking her debut film with an American director cannot be confirmed.', "Some actresses' debuts in American-directed films are noted (e.g., Holly Marie Combs in Simple Men directed by Hal Hartley), but no connection to The Death and Life of John F. Donovan is provided.", 'No evidence from the context supports that the actress who starred in The Death and Life of John F. Donovan made her debut in a film by an American director.', 'The Death and Life of John F. Donovan is directed by Canadian filmmaker Xavier Dolan, not an American.', 'No evidence links the actress who starred in The Death and Life of John F. Donovan to having made her acting debut in a film directed by an American director.', "The actress's identity and debut film details are unknown, preventing confirmation of her debut being under an American director.", "Examples of American directors' debut films with actresses (e.g., Holly Marie Combs in Simple Men directed by Hal Hartley) exist but are unrelated to The Death and Life of John F. Donovan.", 'The Death and Life of John F. Donovan is directed by Canadian filmmaker Xavier Dolan, not an American director.', 'The actress who starred in The Death and Life of John F. Donovan is not identified, and no evidence links her debut to a film by an American director.', 'No contextual or factual information confirms that the actress made her debut under an American director.', 'Due to lack of actress identification and debut film details, the claim cannot be verified and is likely inaccurate regarding the American director association.']
+
+## Generated Outputs
+### reasoning
+The claim makes two assertions: first, that a certain actress made her debut in a film directed by an American director, and second, that she starred in "The Death and Life of John F. Donovan." The notes confirm that "The Death and Life of John F. Donovan" was directed by Canadian filmmaker Xavier Dolan and not an American director. However, the identity of the actress is not given, and there is no information connecting her to an American director for her debut film. To verify the claim, we need to first identify the actress who starred in "The Death and Life of John F. Donovan" and then determine whether her debut film was directed by an American director.
+
+### query
+Who are the actresses who starred in "The Death and Life of John F. Donovan," and for each, what was their debut film and who directed it? Specifically, was the director of their debut film American?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['The Death and Life of John F. Donovan']. Documents remaining to be retrieved: ['Amara Karan', 'Wes Anderson'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

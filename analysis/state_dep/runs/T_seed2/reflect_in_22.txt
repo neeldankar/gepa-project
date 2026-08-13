@@ -1,0 +1,212 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be provided with three inputs concerning a factual claim:
+
+- `claim`: A specific factual assertion involving one or more named entities (people, organizations, events, works, places), often including details such as dates, roles, nationalities, associations, or relationships.
+- `notes`: A collection of extracted fact snippets from various documents or resources. These snippets may contain partial overlap, redundancy, or peripheral information, but collectively may provide evidence supporting or contradicting the claim.
+- `context`: A set of documents or document extracts containing more extensive background, authoritative details, or structured knowledge regarding the entities and topics mentioned in the claim.
+
+Your overall goal is to analyze the claim using the evidence from `notes` and `context`, then produce two outputs: a refined subset of evidence (`new_notes`) and a concise, targeted set of source document titles (`titles`) that collectively verify or contextualize the claim.
+
+Detailed Instructions:
+
+1. Reasoning and Analysis of the Claim:
+   - Identify the key entities, dates, roles, relationships, or events embedded in the claim.
+   - Cross-reference these components against the information in the `notes` and the broader `context`.
+   - Determine whether the claim is fully supported, contradicted, or cannot be conclusively verified based on the available evidence.
+   - Pay special attention to nuanced details such as:
+     - Political domain: political parties, leadership elections, politician affiliations, and career timelines.
+     - Biographical details: birth dates, career milestones, identity attributes (gender, nationality).
+     - Geographical relationships: hierarchical place relations (e.g., cemetery located inside a park inside a larger area).
+     - Film/media: correct matching of actors, roles, and media release dates or sequences.
+     - Timing/sequence of events: earliest accurate dates of release or occurrence.
+   - Distinguish between direct contradictions, weak or missing evidence, and peripheral facts.
+
+2. Generation of `new_notes` (Refined Evidence):
+   - Select a minimal yet high-value subset of fact snippets from the original `notes`.
+   - These should be snippets that either directly support, refute, or provide essential context for the claim.
+   - Consolidate duplicates and remove near-duplicates to avoid redundancy.
+   - Include important precise factual elements like dates, specific names, affiliations, or event details if they pertain clearly to the claim.
+   - Exclude information that is irrelevant or only tangentially related to the claim.
+   - Ensure clarity and factual precision; avoid assuming facts not supported by the `notes` or `context`.
+
+3. Generation of `titles` (Document Sources):
+   - Identify the titles or identifiers of the documents within the `context` which correspond best to the chosen `new_notes`.
+   - The chosen documents should be those providing authoritative or direct verification or background relevant to the claim’s key elements.
+   - Prioritize documents that mention the major entities or events central to the claim.
+   - Aim to retrieve all gold-standard or key documents known to be relevant to the claim (e.g., specific biographies, official event pages, named works or productions).
+   - Avoid including irrelevant or loosely related documents in the titles list.
+
+Additional Domain-Specific and Best-Practice Details:
+
+- Political Claims:
+  - Reference documents related to politicians, political parties, leadership contests, and verified affiliations.
+  - Use consistent career timeline data to verify leadership or role claims.
+
+- Biographical Verification:
+  - Reinforce identity claims with date of birth, nationality, gender, and career events.
+  - Verify timelines coherently.
+
+- Geographical and Location Claims:
+  - Capture precise hierarchical relationships, e.g., cemetery inside a park inside a national recreation area.
+  - Focus on specificity to reflect accurate geo-political or locational structures.
+
+- Film and Media Claims:
+  - Associate actor names with correct character roles and specify movie or media titles with verified release years.
+  - Ensure event or release sequence correctness where timing or order is involved.
+
+- Event and Temporal Claims:
+  - Confirm event timing or sequence claims with earliest accurate and authoritative dates.
+  - Avoid assuming chronology if not supported by evidence.
+
+- Evidence Selection:
+  - Carefully prune duplicates or near-duplicates.
+  - Avoid extraneous or general knowledge that does not support the claim directly.
+  - Produce succinct but information-rich evidence notes.
+
+- Document Title Selection:
+  - Extract exact or near-exact matches to core claim entities or events.
+  - Do not guess missing documents; if relevant gold documents are missing, strive to include them if known from the context.
+  - Titles should be clear and correctly identify the source of the evidence.
+
+Summary:
+
+Your output must concisely and precisely verify or contextualize the claim by delivering:
+
+- A carefully curated, minimal set of `new_notes` that provides factual support or contradiction for the claim.
+- A focused list of `titles` referencing the authoritative and relevant documents that underpin these notes.
+
+Maintain accuracy, domain awareness, and factual precision throughout reasoning and output generation.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+German Frank Sinatra has won more awards than this Skinny Puppy band member, for whom the Rx (band) was a one-off side project.
+
+### notes
+['Rx (band) was a one-off side project by Skinny Puppy band member Nivek Ogre.', 'Nivek Ogre is a Canadian musician and founding member of Skinny Puppy.', 'Skinny Puppy is a Canadian industrial music group formed in Vancouver, British Columbia in 1982.', 'Rx (band) was a one-off side project by Skinny Puppy band member Nivek Ogre.', 'Nivek Ogre is a Canadian musician and founding member of Skinny Puppy.', 'Frank Sinatra was an American singer and actor who won numerous awards including an Academy Award, Golden Globe, and Grammy Awards.', 'The Rx project was originally called Ritalin, changed for legal reasons, and involved Nivek Ogre.', 'Frank Sinatra released critically acclaimed albums and had a significant influence on 20th century music.', 'Rx (band) was a one-off side project by Skinny Puppy band member Nivek Ogre.', 'Nivek Ogre is a Canadian musician and founding member of Skinny Puppy.', 'Frank Sinatra was an American singer and actor who won numerous awards including an Academy Award, Golden Globe, and Grammy Awards.']
+
+### context
+["Nivek Ogre | Nivek Ogre (born Kevin Graham Ogilvie December 5, 1962) is a Canadian musician, performance artist and actor best known as a founding member of the industrial music group Skinny Puppy.  Since that band featured another Kevin (Crompton, a.k.a. cEvin Key) and was produced by another Ogilvie (Dave, a.k.a. Rave), Ogre's alias was practical as well as theatrical.  Since 1982, he has served as Skinny Puppy's primary lyricist and vocalist, occasionally providing instrumentation and samples.  Ogre's guttural singing style and use of costumes, props, and fake blood on stage helped to bring Skinny Puppy extensive publicity and has inspired numerous other musicians.", 'Rx (band) | ℞ or Rx was a one-off side project by Skinny Puppy band member Nivek Ogre, in collaboration with Invisible Records founder Martin Atkins.  The project was originally called Ritalin, but the name was changed for legal reasons.', 'List of Skinny Puppy side projects | This is a list of side projects of the prominent industrial band Skinny Puppy, who have released twelve albums and toured extensively since 1982.  This list includes other projects begun by cEvin Key and Nivek Ogre—the only constant members of Skinny Puppy—since its inception.  Other members have included Dwayne Goettel, Mark Walk, Dave "Rave" Ogilvie, and many other guests/session musicians; this list does not include other projects of those musicians.', 'OhGr | ohGr is a industrial band formed by Nivek Ogre and Mark Walk of Skinny Puppy.  Early ohGr releases incorporated hip hop and synthpop influences, and in contrast to Skinny Puppy, utilized conventional structures and a lighter tone.  Ogre noted that this direction was inspired by the pop bands he enjoyed as a child, such as The Archies.  However, from "Devils in my Details" onwards, ohGr has taken to a more abrasive, non-linear flavour of electro-industrial.', 'Skinny Puppy | Skinny Puppy is a Canadian industrial music group formed in Vancouver, British Columbia in 1982.  The group is widely considered to be one of the founders of the electro-industrial genre.  Initially envisioned as an experimental side project by cEvin Key (Kevin Crompton) while he was in the new wave band Images in Vogue, Skinny Puppy evolved into a full-time project with the addition of vocalist Nivek Ogre (Kevin Ogilvie).  Over the course of a dozen studio albums and many live tours, Key and Ogre have been the only constant members.  Other members have included Dwayne Goettel (1986–1995), Dave "Rave" Ogilvie (long-time associate, producer, and "unofficial" fourth member until 1995), Mark Walk (2003–present), and a number of guests, including Bill Leeb (1985–1986, under the pseudonym Wilhelm Schroeder), Al Jourgensen (1989), and many others.', 'W.E.L.T. | W.E.L.T. was a briefly extant side-project between members of industrial bands Skinny Puppy (Nivek Ogre) and Ministry (Al Jourgensen and Michael Balch).  The project was active for a short while in 1989.', "A Man and His Music | A Man and His Music is a 1965 double album by Frank Sinatra.  It provides a brief retrospective of Sinatra's musical career.  The album won the 1967 Grammy Award for Album of the Year.", 'Frank Sinatra | Francis Albert Sinatra ( ; ] ; December 12, 1915 – May 14, 1998) was an American singer, actor, and producer who was one of the most popular and influential musical artists of the 20th century.  He is one of the best-selling music artists of all time, having sold more than 150 million records worldwide.  Born in Hoboken, New Jersey, to Italian immigrants, Sinatra began his musical career in the swing era with bandleaders Harry James and Tommy Dorsey.  Sinatra found success as a solo artist after he signed with Columbia Records in 1943, becoming the idol of the "bobby soxers".  He released his debut album, "The Voice of Frank Sinatra", in 1946.  Sinatra\'s professional career had stalled by the early 1950s, and he turned to Las Vegas, where he became one of its best known performers as part of the Rat Pack.  His career was reborn in 1953 with the success of "From Here to Eternity", with his performance subsequently winning an Academy Award and Golden Globe Award for Best Supporting Actor.  Sinatra released several critically lauded albums, including "In the Wee Small Hours" (1955), "Songs for Swingin\' Lovers! " (1956), "Come Fly with Me" (1958), "Only the Lonely" (1958) and "Nice \'n\' Easy" (1960).', "Sinatra (miniseries) | Sinatra is a 1992 CBS biographical drama miniseries about singer Frank Sinatra, developed and executive produced by Frank's youngest daughter Tina Sinatra and approved by Frank himself.  Directed by James Steven Sadwith, produced by Richard M. Rosenbloom, and written by William Mastrosimone and Abby Mann.  It stars Philip Casnoff, Olympia Dukakis, Joe Santos, Gina Gershon, Nina Siemaszko, and Marcia Gay Harden, with some of Sinatra's vocals recreated by Tom Burlinson.  It won two and was nominated for seven Emmy Awards, along with a win and two nominations for a Golden Globe Award.  Released on November 8, 1992, it was re-released on a two-disc DVD Warner Home Video on May 13, 2008.", 'High Hopes (Frank Sinatra song) | "High Hopes" is a popular song first popularized by Frank Sinatra, with music written by James Van Heusen and lyrics by Sammy Cahn.  It was introduced by Sinatra and child actor Eddie Hodges in the 1959 film "A Hole in the Head", nominated for a Grammy and won an Oscar for Best Original Song at the 32nd Academy Awards.']
+
+## Generated Outputs
+### reasoning
+The claim involves comparing the number of awards won by "German Frank Sinatra" and a Skinny Puppy band member who had the Rx project as a one-off side project. The claim states that German Frank Sinatra has won more awards than this Skinny Puppy band member.
+
+First, we clarify the Skinny Puppy band member involved in the Rx side project. Notes [1], [4], and context [2] confirm that Rx was a one-off side project by Skinny Puppy member Nivek Ogre. Context [1], [2], and [5] confirm Nivek Ogre's identity as a Canadian musician and founding member of Skinny Puppy.
+
+Regarding awards, notes [6] state Frank Sinatra won numerous awards including an Academy Award, Golden Globe, and Grammys. Context [8] also supports that Frank Sinatra was a highly decorated American singer and actor with major awards including an Academy Award, Golden Globes, and Grammys. However, there is no information on awards won by Nivek Ogre provided in notes or context. It is not indicated that Nivek Ogre has won awards comparable to Frank Sinatra.
+
+The phrase "German Frank Sinatra" likely is a confusion or misnomer. The famous Frank Sinatra is American, not German, and the context and notes wholly refer to the American Frank Sinatra. There is no mention of a German Frank Sinatra in the notes or context.
+
+Despite this, given that "German Frank Sinatra" seems to refer to Frank Sinatra the singer (though incorrectly labeled as German), the comparison is between Sinatra and Nivek Ogre. Frank Sinatra won numerous major awards while no awards are noted for Nivek Ogre. Given this, the claim that German Frank Sinatra won more awards than the member of Skinny Puppy who had the Rx side project is supported in essence, albeit the "German" attribute appears incorrect.
+
+Therefore, the claim is factually supported in the award comparison portion, and the identification of the Skinny Puppy member linked to Rx as Nivek Ogre is correct. The "German" adjective in Frank Sinatra's name is not supported by any evidence and appears to be an error.
+
+Summary:
+- Rx (band) was a one-off side project by Skinny Puppy member Nivek Ogre.
+- Frank Sinatra (American) won numerous major awards.
+- No awards for Nivek Ogre are described.
+- Claim that "German Frank Sinatra" won more awards than that Skinny Puppy member is supported if "German" is disregarded as incorrect.
+
+Thus, the claim is supported with a qualification that Frank Sinatra is American, not German.
+
+### new_notes
+['Rx (band) was a one-off side project by Skinny Puppy band member Nivek Ogre.', 'Nivek Ogre is a Canadian musician and founding member of Skinny Puppy.', 'Frank Sinatra was an American singer and actor who won numerous awards including an Academy Award, Golden Globe, and Grammy Awards.']
+
+### titles
+['Nivek Ogre', 'Rx (band)', 'Frank Sinatra']
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Frank Sinatra', 'Nivek Ogre', 'Rx (band)']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+The star of the 2012 film  Fairhaven, appeared in Studio 60 on the Sunset Strip in 2007 and American Horror Story in 2014.
+
+### notes
+["Fairhaven is a 2012 American comedy film written and directed by Tom O'Brien. The film stars Sarah Paulson, Chris Messina, Rich Sommer, Alexie Gilmore, Natalie Gold and Maryann Plunkett.", 'The film was released on January 11, 2013, by Starz Digital.', "Fairhaven is a 2012 American comedy film written and directed by Tom O'Brien. The film stars Sarah Paulson, Chris Messina, Rich Sommer, Alexie Gilmore, Natalie Gold and Maryann Plunkett.", "Matt Bomer made a guest appearance on FX's horror anthology series American Horror Story and was later upgraded to main cast during the series.", 'The film was released on January 11, 2013, by Starz Digital.', "Fairhaven is a 2012 American comedy film written and directed by Tom O'Brien. The film stars Sarah Paulson, Chris Messina, Rich Sommer, Alexie Gilmore, Natalie Gold and Maryann Plunkett.", 'From 2006 to 2007, Sarah Paulson played the role of Harriet Hayes in the NBC comedy-drama series Studio 60 on the Sunset Strip, for which she received her first Golden Globe Award nomination.', 'Sarah Paulson appeared in multiple seasons of the FX horror anthology television series American Horror Story, including the period around 2014.']
+
+### context
+['List of Studio 60 on the Sunset Strip characters | This article contains summaries of characters appearing on the TV series "Studio 60 on the Sunset Strip".', 'Richard Carmen | Richard Carmen (born July 1968, Colorado Springs, Colorado) is an American character actor.  He is known for his leading role in the 2007 Sundance film Zoo where he played the main character\'s brother.  Richard also appeared in two short films featured on the Fox reality series On The Lot and a role in the 2009 horror movie which played at SIFF.  Richard also starred as Vance in the horror movie "The Taken" (2010).  .  In addition, he was an actor and assistant director in "Bound to be Different" (2011) and "Eden" (2012).', "List of Everwood characters | This list of Everwood characters follows the credits order.  The seasons during which each actor has been included in the main cast are marked in black.  Note that the actors don't necessarily appear in every episode during their time as a main star.  In fact, Treat Williams is the only actor to appear in every episode of the series.", 'Billy Burke (actor) | William Albert Burke (born November 25, 1966) is an American actor.  He is known for his role as Charlie Swan in "Twilight" and its sequels.  In 2011, he played Cesaire in "Red Riding Hood".  In 2012, he was cast as the lead character, Miles Matheson, in the NBC science-fiction series "Revolution".  He currently stars in "Zoo".  He has also appeared in the supernatural horror film "Lights Out" (2016).', 'List of Maverick episodes | The following is an episode list for ABC\'s 1957 comedy-western television series, "Maverick", created by Roy Huggins and starring James Garner, Jack Kelly, Roger Moore, and Robert Colbert as Bret, Bart, Beau, and Brent Maverick respectively.  Unusually for an American television program, "Maverick"<nowiki>\'s</nowiki> main cast varied episodically between Garner, Kelly, Moore or Colbert.  As such, the starring cast for each episode is listed below alongside other details.  Most episodes feature only one of the lead characters named Maverick and never more than two.', 'Anthology series | An anthology series is a radio or television series that presents a different story and a different set of characters in each episode or season/series.  These usually have a different cast each week, but several series in the past, such as "Four Star Playhouse", employed a permanent troupe of character actors who would appear in a different drama each week.  Some anthology series, such as "Studio One", began on radio and then expanded to television.', 'List of Dallas (1978 TV series) cast members | This is a list of actors appearing on the 1978–1991 US television series "Dallas".  During its 14 seasons on air, the show featured 21 regular cast members.  Further more, 32 actors were billed as "also starring" during the first scene of the episodes, and 24 were billed as "special guest star" during in the closing credits.  Additionally, hundreds more were billed as either guest stars or co-stars, this list include those with at least eight appearances.', "Beijing Love Story (film) | Beijing Love Story is a 2014 Chinese romance film written and directed by Chen Sicheng adapted from the 2012 Chinese TV series of the same name which was also written and directed by Chen.  The film is Chen's film directorial debut and stars returning cast members Chen and Tong Liya from the TV series alongside new cast members Tony Leung Ka-fai, Carina Lau, Wang Xuebing, Yu Nan, Wang Qingxiang, Siqin Gaowa, Liu Haoran and Nana Ouyang.  Despite the same title and sharing the same writer, director and some stars as the TV series, the film is not a continuation of the series and features a new story and characters.  It was released on 13 February 2014.", 'The Evil Touch | The Evil Touch is an Australian-produced television series, originally broadcast in Australia in 1973 and produced by Amalgamated Pictures Australasia in association with Olola Productions Australia.  An anthology series, each episode had a self-contained story usually in a thriller or horror style, and often with a twist ending.  Subjects explored included the occult, science fiction, murder schemes, and whodunits. Each episode had a new cast of guest actors playing new characters, although several guest stars appeared in more than one episode.', 'Matt Bomer | Matthew Staton Bomer (born October 11, 1977) is an American actor.  He made his television debut with "Guiding Light" in 2001, and gained recognition with his recurring role in the NBC television series "Chuck".  He played the lead role of con-artist and thief Neal Caffrey in the USA Network series "White Collar" from 2009 to 2014.  Bomer won a Golden Globe Award and received a Primetime Emmy Award nomination for his supporting role as Felix Turner, opposite Mark Ruffalo, in the HBO television film "The Normal Heart" (2014).  Bomer made a guest appearance on of FX\'s horror anthology series "American Horror Story".  He was later upgraded to main cast during the .']
+
+## Generated Outputs
+### reasoning
+The claim states that the star of the 2012 film Fairhaven appeared in Studio 60 on the Sunset Strip in 2007 and American Horror Story in 2014. 
+
+From note [1], we know Fairhaven (2012) starred Sarah Paulson among others. The film was released in early 2013 (note [2]), but is identified as a 2012 film.
+
+To verify the appearances in Studio 60 on the Sunset Strip (2007) and American Horror Story (2014):
+- The context contains a list of Studio 60 characters, but no specific actors are named in the snippet.
+- Note [10] states Matt Bomer made a guest appearance on American Horror Story and was later a main cast member.
+- However, Matt Bomer is not listed as starring in Fairhaven.
+- Sarah Paulson, from note [1], is a known star of American Horror Story in reality, but the notes do not explicitly link her to Studio 60 or American Horror Story.
+- The documents do not confirm any direct link between the star(s) of Fairhaven and Studio 60.
+
+Since Sarah Paulson is a main known star of Fairhaven (2012), and she is known in general to have appeared in American Horror Story (based on wider knowledge), but the notes do not show clear evidence for the Studio 60 participation or explicitly link Sarah Paulson to those shows in the notes/context.
+
+Therefore, based on the provided notes and context alone, the claim is partially verifiable: the star of Fairhaven is Sarah Paulson; she appeared in American Horror Story (supported by note [1] and general cross-check with note [10] but involving Matt Bomer). The participation in Studio 60 on the Sunset Strip is not confirmed by the given notes or context.
+
+Hence, the claim is mostly supported for the American Horror Story part if the star is Sarah Paulson (assuming general knowledge aligned with the notes), but the Studio 60 appearance is not verifiable from the given information.
+
+### new_notes
+["Fairhaven is a 2012 American comedy film written and directed by Tom O'Brien. The film stars Sarah Paulson, Chris Messina, Rich Sommer, Alexie Gilmore, Natalie Gold and Maryann Plunkett.", "Matt Bomer made a guest appearance on FX's horror anthology series American Horror Story and was later upgraded to main cast during the series.", 'The film was released on January 11, 2013, by Starz Digital.']
+
+### titles
+['Fairhaven (film)', 'Matt Bomer']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Fairhaven (film)', 'Sarah Paulson']. Documents remaining to be retrieved: ['Blood Bath (American Horror Story)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The actress made her debut in the film by the director who was American. She also starred in The Death and Life of John F. Donovan.
+
+### notes
+['Simple Men is a 1992 American film written and directed by Hal Hartley, starring Robert John Burke, Bill Sage, Karen Sillas and Martin Donovan. It was the debut film of actress Holly Marie Combs in a supporting role.', 'The Death and Life of John F. Donovan is an upcoming Canadian drama film, directed by Xavier Dolan, starring Kit Harington, Natalie Portman, Jessica Chastain, Susan Sarandon, Kathy Bates, Jacob Tremblay, Ben Schnetzer, Thandie Newton, Amara Karan, Chris Zylka, Jared Keeso, Emily Hampshire and Michael Gambon.', 'Simple Men is a 1992 American film written and directed by Hal Hartley, who is American. It was the debut film of actress Holly Marie Combs in a supporting role.', 'The Death and Life of John F. Donovan is a Canadian drama film directed by Xavier Dolan. The cast includes Kit Harington, Natalie Portman, Jessica Chastain, Susan Sarandon, Kathy Bates, Jacob Tremblay, Ben Schnetzer, Thandie Newton, Amara Karan, Chris Zylka, Jared Keeso, Emily Hampshire and Michael Gambon but does not list Holly Marie Combs.', 'Simple Men is a 1992 American film written and directed by Hal Hartley, who is American. It was the debut film of actress Holly Marie Combs in a supporting role.', 'The Death and Life of John F. Donovan is a Canadian drama film directed by Xavier Dolan. The cast includes Kit Harington, Natalie Portman, Jessica Chastain, Susan Sarandon, Kathy Bates, Jacob Tremblay, Ben Schnetzer, Thandie Newton, Amara Karan, Chris Zylka, Jared Keeso, Emily Hampshire and Michael Gambon but does not list Holly Marie Combs.']
+
+### context
+['Simple Men | Simple Men is a 1992 American film written and directed by Hal Hartley, starring Robert John Burke, Bill Sage, Karen Sillas and Martin Donovan.  It was the debut film of actress Holly Marie Combs in a supporting role.  It was entered into the 1992 Cannes Film Festival.', 'Martin Donovan | Martin Donovan (born August 19, 1957) is an American film, stage and television actor.  He has had a long collaboration with director Hal Hartley and appeared in many of Hartley\'s films, such as "Trust" (1990), "Surviving Desire" (1991), "Simple Men" (1992), "Flirt" (1993), "Amateur" (1994), and "The Book of Life" (1998; in which he played Jesus).  Donovan also played Peter Scottson on Showtime\'s cable series "Weeds".  He made his writing/directorial debut with the film "Collaborator" (2011).', 'The Book of Life (1998 film) | The Book of Life is a 1998 film by Hal Hartley.  In the film, Jesus returns to earth on the eve of the new millennium planning to bring about the apocalypse, but finds himself surprisingly enamored of humanity.  It stars Martin Donovan as Jesus, and PJ Harvey as Mary Magdalene.  Yo La Tengo appear as a Salvation Army band.', 'The Death and Life of John F. Donovan | The Death and Life of John F. Donovan is an upcoming Canadian drama film, co-written, co-produced and directed by Xavier Dolan in his English-language debut.  It stars Kit Harington, Natalie Portman, Jessica Chastain, Susan Sarandon, Kathy Bates, Jacob Tremblay, Ben Schnetzer, Thandie Newton, Amara Karan, Chris Zylka, Jared Keeso, Emily Hampshire and Michael Gambon.', "Daughters (film) | Daughters, also known as Our Mother's Murder is a 1997 made-for-TV drama film directed by Bill L. Norton, and stars Holly Marie Combs and Sarah Chalke who play Alex and Annie, the two eldest daughters of the main character Anne.", 'Dr. Giggles | Dr. Giggles is a 1992 horror film directed by Manny Coto, starring Larry Drake as the titular antagonist and Holly Marie Combs as the protagonist.  The film co-stars Cliff DeYoung and Glenn Quinn.  It was released on October 23, 1992.', 'Surviving Desire | Surviving Desire is a 1991 American comedy-drama film written and directed by Hal Hartley.  It stars Martin Donovan, Julie Kessler, Matt Malloy, Merritt Nelson, and Mary B. Ward.', 'Sins of Silence | Sins of Silence, is an American 1996 drama TV film directed by Sam Pillsbury, and starring Holly Marie Combs and Lindsay Wagner.  Though set in San Diego, California it was made in Toronto.  The movie was broadcast on February 20, 1996 in the United States by CBS and in Canada by CHCH.', 'Love\'s Deadly Triangle: The Texas Cadet Murder | Love\'s Deadly Triangle: The Texas Cadet Murder (DVD title: Swearing Allegiance) is a 1997 American drama television film based on real life murder of Adrianne Jones by Diane Zamora in Texas.  The film stars Holly Marie Combs (as Zamora), David Lipper, Cassidy Rae (as Jones), Dee Wallace, Gary Grubbs, Kurt Fuller, and Joanna Garcia.  The film was adapted from "The Killer Cadets", an article in "Texas Monthly" by Skip Hollandsworth, and aired on NBC.', "Who Killed Mary What's 'Er Name? | Who Killed Mary What's 'Er Name?  (also known as Death of a Hooker) is a 1971 film starring comedian and actor Red Buttons and featuring Sylvia Miles, Conrad Bain, Alice Playten and Sam Waterston.  Ernest Pintoff was the director, and Gary McFarland wrote the soundtrack music."]
+
+## Generated Outputs
+### reasoning
+The claim involves two main parts: 
+1. An actress made her debut in a film directed by an American director. 
+2. She also starred in "The Death and Life of John F. Donovan."
+
+From the notes and context, Holly Marie Combs made her debut in the film "Simple Men," which is an American film written and directed by Hal Hartley (who is American). Thus, this confirms the first part about the actress's debut under an American director.
+
+Regarding the second part, "The Death and Life of John F. Donovan" is an upcoming Canadian drama directed by Xavier Dolan. The cast listed in notes does not include Holly Marie Combs, which contradicts the claim that she starred in this film.
+
+Therefore, the claim is partially correct (about debut film and director being American) but incorrect or unsupported on the second part (her starring in "The Death and Life of John F. Donovan").
+
+### new_notes
+['Simple Men is a 1992 American film written and directed by Hal Hartley, who is American. It was the debut film of actress Holly Marie Combs in a supporting role.', 'The Death and Life of John F. Donovan is a Canadian drama film directed by Xavier Dolan. The cast includes Kit Harington, Natalie Portman, Jessica Chastain, Susan Sarandon, Kathy Bates, Jacob Tremblay, Ben Schnetzer, Thandie Newton, Amara Karan, Chris Zylka, Jared Keeso, Emily Hampshire and Michael Gambon but does not list Holly Marie Combs.']
+
+### titles
+['Simple Men', 'The Death and Life of John F. Donovan']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['The Death and Life of John F. Donovan']. Documents remaining to be retrieved: ['Amara Karan', 'Wes Anderson'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

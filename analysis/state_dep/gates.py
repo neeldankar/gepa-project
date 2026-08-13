@@ -5,10 +5,16 @@ live spend. No APPROVED, no launch -- no exceptions, including 'just one more ru
 
 Gates (design v2.1.1 §13-7, §14 -- re-derived 2026-07-22/23):
     APPROVED-testsplit   ~$3.13    grade a fixed 700-claim frame -> test (150) + selection (50)
-    APPROVED-dose        ~$3.61    30-event determinism control, then 235-event re-derivation
+    APPROVED-dose        ~$8.6     30-event reproducibility control, then 235-event x 6 re-derivation
     APPROVED-smoke       ~$6-8     ONE arm-T seed-0 run, real LM, plus its own §8b post-run pass
     APPROVED-backfill    ~$27.49   97 Stage-1 candidates x 50 selection + 8 winners x 150 test
-    APPROVED-liverun     ~$120-150 the 24 runs + their §8b post-run selection pass
+    APPROVED-liverun     ~$135.83  the 24 runs + their §8b post-run selection pass; cap $160
+
+The dose line moved $3.61 -> ~$8.6 at v2.2 (2026-08-03). Two reasons, neither of them drift: the
+dose now re-derives ALL SIX candidates per event rather than 3 (235 x 6, not 705 calls), and the
+old line was priced at the $0.004543/call fit that the smoke superseded by measuring §8b at
+$0.006121. v2.1's 90/90 byte-exact determinism control is retired -- it could only ever have
+returned STOP -- and is replaced by a within-session reproducibility bar. See plan.md §3.
 
 APPROVED-smoke was split out of APPROVED-liverun on 2026-07-23 (v2.1.1). The smoke is the thing
 that turns every projection in plan.md into a measurement, and it is a decision point: its cost,

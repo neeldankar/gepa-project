@@ -24,6 +24,13 @@ not an estimate:
                                        -------
                                        $27.48
 
+REPRICED 2026-08-11 (the numbers above are the M fit, kept because the gate was signed on them).
+The completed §8b pass measured $0.005681/call across 15,150 calls -- 25% above the fit -- so the
+realized cost of these same 6,050 calls is ~$34.37 ($37.03 at the conservative $0.006121 smoke
+rate). SPEND_CAP moved 32.00 -> 44.00 accordingly; see the note there. M itself is deliberately NOT
+re-fitted: it feeds the pre-spend estimate resolve() prints, where over-estimating is the silent
+failure and under-estimating is the loud one -- the same call made in score_candidates.py:47.
+
 RESUME. Per-seed selection results are checkpointed to backfill/seed{N}_selection.json and skipped
 if present, so a crash costs at most one seed's selection pass (~$2.75), never the whole $22.
 
@@ -48,7 +55,18 @@ OUT = os.path.join(HERE, "stage1_backfill_endpoints.json")
 sys.path.insert(0, HERE)
 
 M = 0.004543
-SPEND_CAP = 32.00  # hard tripwire; the estimate is $27.48
+# Hard tripwire. Raised 32.00 -> 44.00 on 2026-08-11: the $27.48 estimate below uses M, the stale
+# $0.004543 fit. The completed §8b pass measured $0.005681/call over a 15,150-call sample, at which
+# this job's 6,050 calls are $34.37 -- so the old cap would have raised during test eval ~6 of 8,
+# about 7 h in, after all the selection work was done. $44.00 is 28% over that and 19% over the
+# conservative $0.006121 smoke rate ($37.03); it is a runaway tripwire, not a budget, and still
+# catches a >30% overrun. Margin is not tighter because B_seed7 came in 20% above its per-dir
+# estimate, and the Stage-1 candidate prompts are not the same population as the state_dep ones.
+# PER SEED (and per test eval), because the LM -- and therefore Meter's history window -- is now
+# per seed. The largest seed is 14 candidates x 50 claims ~= $5.3; 8.00 mirrors the per-run-dir cap
+# in score_candidates.py:48 and its margin.
+SPEND_CAP = 8.00
+JOB_CAP = 44.00    # the whole-job total, accumulated across those per-seed windows in `spent`
 N_SEEDS = 8
 
 
@@ -93,7 +111,7 @@ def resolve() -> int:
     return 0
 
 
-def run_live() -> int:
+def run_live(workers: int | None = None) -> int:
     from gates import require
 
     gate = require("APPROVED-backfill")
@@ -111,11 +129,26 @@ def run_live() -> int:
     os.makedirs(CKPT, exist_ok=True)
 
     dspy, probe = ev.bootstrap()
-    lm = ev.open_task_lm(dspy)
-    meter = ev.Meter(lm, probe, SPEND_CAP)
     base = ev.build_program(dspy, probe)
+    workers = workers or ev.WORKERS
 
-    print(f"[gate ok] {gate['gate']}  selection N={len(sel)}  test N={len(test)}  cap ${SPEND_CAP}")
+    # A FRESH LM PER SEED AND PER TEST EVAL, NOT ONE SHARED ACROSS THE JOB (score_candidates.py:88-93).
+    # Meter.spend() sums the whole of lm.history (eval_split.py:121-127), and dspy bounds that history
+    # at settings.max_history_size = 10000 entries. This job is 6050 metric calls x 6 LM calls =
+    # 36,300 entries -- 3.6x the window. With one shared LM the window rolls at LM call 10,000, i.e.
+    # candidate ~33 of 97, and from there spend() SILENTLY UNDERCOUNTS: the cap stops protecting
+    # anything for two thirds of the run, and the spend_usd recorded below would be ~$10 against a
+    # true ~$35. Per-seed keeps the largest window at 14 x 50 x 6 = 4200, and per-test-eval at 900.
+    # `spent` accumulates the real total across those windows, and JOB_CAP guards it.
+    spent = 0.0
+
+    def job_guard() -> None:
+        if spent > JOB_CAP:
+            raise RuntimeError(f"JOB CAP: ${spent:.4f} > ${JOB_CAP:.2f} — aborting")
+
+    print(f"[gate ok] {gate['gate']}  selection N={len(sel)}  test N={len(test)}  "
+          f"cap ${SPEND_CAP}/seed, ${JOB_CAP} job, workers {workers}"
+          f"{'' if workers == ev.WORKERS else f' (NOT the {ev.WORKERS} default)'}")
 
     rows = []
     for seed in range(N_SEEDS):
@@ -126,13 +159,18 @@ def run_live() -> int:
             per_cand = json.load(open(ck))
             print(f"  seed {seed}: resumed {len(per_cand)} candidate scores from checkpoint ($0)")
         else:
+            lm = ev.open_task_lm(dspy)              # fresh window per seed -- see the note above
+            meter = ev.Meter(lm, probe, SPEND_CAP)
             per_cand = []
             for i, c in enumerate(cands):
-                r = ev.score_candidate(dspy, probe, base, c, sel, lm, meter)
+                r = ev.score_candidate(dspy, probe, base, c, sel, lm, meter, workers)
                 per_cand.append(r)
                 print(f"  seed {seed} cand {i:>2}/{len(cands) - 1}  sel_mean={r['mean']:.4f}  "
-                      f"${meter.spend():.3f}  {r['elapsed_s']}s", flush=True)
+                      f"${meter.spend():.3f} seed / ${spent + meter.spend():.3f} job  "
+                      f"{r['elapsed_s']}s", flush=True)
             json.dump(per_cand, open(ck, "w"), indent=2)
+            spent += meter.spend()
+            job_guard()
 
         means = [r["mean"] for r in per_cand]
         best, ties = ev.argmax_lowest_index(means)
@@ -159,9 +197,13 @@ def run_live() -> int:
             t = json.load(open(ck))
             print(f"  seed {seed}: resumed test score from checkpoint ($0)")
         else:
+            lm = ev.open_task_lm(dspy)              # fresh window per test eval, same reason
+            meter = ev.Meter(lm, probe, SPEND_CAP)
             cand = _result(seed)["program_candidates"][row["sel_best_idx"]]
-            t = ev.score_candidate(dspy, probe, base, cand, test, lm, meter)
+            t = ev.score_candidate(dspy, probe, base, cand, test, lm, meter, workers)
             json.dump(t, open(ck, "w"), indent=2)
+            spent += meter.spend()
+            job_guard()
         row["endpoint_test_mean"] = t["mean"]
         row["endpoint_test_scores"] = t["scores"]
         print(f"  seed {seed}: endpoint test score = {t['mean']:.4f}", flush=True)
@@ -175,7 +217,7 @@ def run_live() -> int:
         "endpoints": endpoints,
         "n_selection_evals": sum(r["n_candidates"] for r in rows) * len(sel),
         "n_test_evals": N_SEEDS * len(test),
-        "spend_usd": round(meter.spend(), 4),
+        "spend_usd": round(spent, 4),   # the accumulated job total, NOT one window's meter
         "b10_agreement": {
             "seeds_where_8b_differs_from_val_argmax": [r["seed"] for r in rows if not r["agrees_with_val_argmax"]],
             "val_tie_broken_seeds": [r["seed"] for r in rows if r["val_tie_broken"]],
@@ -193,7 +235,8 @@ def run_live() -> int:
     print(f"  mean / sd        : {sum(endpoints) / len(endpoints):.4f} / "
           f"{(sum((e - sum(endpoints) / len(endpoints)) ** 2 for e in endpoints) / len(endpoints)) ** 0.5:.4f}")
     print(f"  §8b differs from val-argmax on {n_diff}/8 seeds  (the direct measure of B10's cost)")
-    print(f"  spend            : ${meter.spend():.4f} (cap ${SPEND_CAP})")
+    print(f"  spend            : ${spent:.4f} (job cap ${JOB_CAP}; ${SPEND_CAP}/seed)"
+          f"{'   [resumed seeds cost $0 and are not in this figure]' if spent == 0 else ''}")
     print(f"  wrote            : {os.path.basename(OUT)}")
     print(f"  next             : mde_sim.py --endpoints {os.path.basename(OUT)} --dose D")
     return 0
@@ -203,9 +246,14 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--resolve", action="store_true")
     ap.add_argument("--run", action="store_true")
+    ap.add_argument("--workers", type=int, default=None,
+                    help="per-candidate evaluation threads (default eval_split.WORKERS = 8). This "
+                         "script is ONE process with serial seed/candidate/test loops, so workers "
+                         "is its only concurrency knob -- unlike supervisor.py --score, which buys "
+                         "concurrency with processes at SCORE_WIDTH.")
     a = ap.parse_args()
     if a.resolve:
         raise SystemExit(resolve())
     if a.run:
-        raise SystemExit(run_live())
+        raise SystemExit(run_live(a.workers))
     ap.error("pick --resolve ($0) or --run (gated)")

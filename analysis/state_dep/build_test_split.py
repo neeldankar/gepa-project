@@ -57,6 +57,7 @@ OUT_POOL = os.path.join(HERE, "test_pool_graded.jsonl")
 OUT_POOL_SUMMARY = os.path.join(HERE, "test_pool_summary.json")
 OUT_TEST = os.path.join(HERE, "test_split.json")
 OUT_SELECTION = os.path.join(HERE, "selection_split.json")
+OUT_MANIFEST = os.path.join(HERE, "splits_manifest.json")
 
 # ---- pre-registered constants (v2.1 §8a, §8b). Do not tune. -------------------------------------
 START_IDX = 295         # first ungraded threehop index (graded file spans 50..294 contiguous)
@@ -290,10 +291,33 @@ def main() -> int:
     ap.add_argument("--selftest", action="store_true", help="$0 determinism/disjointness check")
     ap.add_argument("--splits-only", action="store_true",
                     help="re-draw both splits from an existing test_pool_graded.jsonl ($0)")
+    ap.add_argument("--force", action="store_true",
+                    help="re-grade and OVERWRITE splits that are already committed. Almost never "
+                         "right: see the guard below.")
     args = ap.parse_args()
 
     if args.selftest:
         return selftest()
+
+    # IDEMPOTENCE GUARD. APPROVED-testsplit stays on disk after the spend as the record of it, so
+    # the gate alone no longer stops a second run -- this does. A re-grade would re-spend ~$3.23 and
+    # then OVERWRITE both splits via commit_split(). The draws are seeded and the frame is fixed, so
+    # they would PROBABLY come back identical -- but grading is an LM call, and temp-0 re-execution
+    # is measurably not byte-stable here (2026-08-03: 15/24 rendered feedback blocks reproduced
+    # across three same-venv re-runs). If any one of the 700 claims graded differently, the
+    # imperfect pool shifts, both splits move, and every sha256 already recorded downstream --
+    # starting with the smoke's endpoints.json -- silently stops matching.
+    if os.path.exists(OUT_MANIFEST) and not args.force and not args.dry_run:
+        man = json.load(open(OUT_MANIFEST))
+        print("REFUSING: both splits are already committed.")
+        for k in ("test", "selection"):
+            print(f"  {k:9} n={man[k]['n']:>3}  seed={man[k]['seed']}  sha256={man[k]['sha256']}")
+        print(f"\n{os.path.basename(OUT_MANIFEST)} exists, so this would re-grade the 700-claim "
+              f"frame (~$3.23) and overwrite both splits.")
+        print("  --splits-only  re-draw from the existing graded pool ($0, no re-grade)")
+        print("  --dry-run      print the plan and spend nothing")
+        print("  --force        re-grade and overwrite anyway (invalidates downstream sha256s)")
+        return 1
 
     consumed = stage1_consumed()
     est = N_GRADE * USD_PER_CLAIM

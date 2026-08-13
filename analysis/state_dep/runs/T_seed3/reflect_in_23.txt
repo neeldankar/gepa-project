@@ -1,0 +1,172 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be provided with three input fields:
+
+- `claim`: A factual statement or assertion involving one or more entities, events, or relationships.
+- `notes`: A list of extracted relevant factual statements or snippets that pertain to the claim, often summarizing or supporting/refuting parts of the claim.
+- `context`: A list of documents or document excerpts (titles and text) that provide detailed background information about the entities, events, or concepts mentioned in the claim.
+
+Your goal is to produce two output fields:
+
+- `new_notes`: A concise, accurate subset of the given `notes` that best supports or disputes the claim based on the provided context. These notes should be directly relevant and factually correct according to the context, avoiding redundant or irrelevant information.
+- `titles`: A list of document titles from the `context` that contain information necessary to verify the claim and support the chosen `new_notes`. This list should include all key documents referenced in `new_notes`, reflect comprehensive coverage of crucial facts, and omit irrelevant or unrelated documents.
+
+Detailed requirements and domain-specific knowledge:
+
+1. **Entity and Relationship Identification**:  
+   The `claim` will often involve multiple entities (people, organizations, events, publications) and relationships between them (e.g., coining a term, professional affiliation, authorship, competition results). The `notes` and `context` will contain overlapping and sometimes repeated factual assertions regarding these entities and their connections.
+
+2. **Cross-verification of Facts**:  
+   The `notes` serve as candidate fact claims to be supported or refuted against the `context`. Your output should consolidate relevant facts, validated and confirmed by the `context`, while excluding unsupported, incorrect, or ambiguous notes.
+
+3. **Precision in Retrieval**:  
+   The `titles` in your output represent the exact documents from the `context` that allow verification of the facts in `new_notes`. Titles should correspond exactly to the relevant context entries and cover all evidence for the facts in `new_notes`. Partial or incomplete document retrieval reduces accuracy.
+
+4. **Handling Redundancies and Contradictions in Notes**:  
+   Duplicate facts or contradictory notes may appear. Select the most accurate, concise, and context-supported notes. Remove duplicates and clearly represent the verified facts.
+
+5. **Summarizing Complex Claims**:  
+   Claims may involve compound facts (e.g., two entities sharing a profession, one entity having a specific characteristic). Your reasoning should dissect the claim into factual components, verify each component, and retain notes and documents relevant to all parts of the claim.
+
+6. **Domain-Specific Contextual Knowledge**:  
+   - Professionals referenced may include scientists (e.g., paleontologists such as Elisabeth Vrba and Stephen Jay Gould), writers, athletes (professional tennis players with tournament results), designers, and journalists.  
+   - Publications and artistic works (books, magazines, journals, essays) appear frequently; it is essential to distinguish authorship, publication venue (book vs. magazine article), and the nature of periodicals.  
+   - Events like sports tournaments, professional achievements, and historical occurrences frequently provide verification points.  
+   - Namesake ambiguity is possible (e.g., different individuals named Gould); confirm identity using contextual career and biographical details.
+
+7. **Reasoning and Fact-Checking Strategy (Generalizable)**:  
+   - Map entities and relationships mentioned in the claim to those referenced in `notes` and `context`.  
+   - Crosscheck each factual assertion in `notes` against the detailed information in `context`.  
+   - Discard or modify notes unsupported by context or contradicted by it.  
+   - Identify and include all documents whose content is essential to verify or refute the claim, ensuring completeness.  
+   - Produce a concise set of newly filtered notes (`new_notes`) that reflect the validated facts.  
+   - Provide the precise titles of relevant context documents that underpin these notes.
+
+Your final outputs must be factually accurate, focused, and traceable to the cited documents in the `context`.
+
+Format:
+- `new_notes`: List of succinct, verified factual notes derived from the input `notes` and supported by the `context`.
+- `titles`: List of exact document titles from the `context` that contain the evidence for these notes.
+
+Use clear reasoning to cover all components of the claim and disambiguate entities where necessary.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The person who claimed that Castro was killed in the 26th July Movement but was proven wrong by the man who Ruby Hart Phillips was at odds with, first served as President of Cuba in 1940.
+
+### notes
+["Herbert Matthews was a reporter for The New York Times who revealed that Fidel Castro was still alive despite Fulgencio Batista's public claim that Castro was killed during the 26th of July Movement's landing.", 'Ruby Hart Phillips was a New York Times correspondent covering Cuba who was often at odds with Herbert Matthews due to her relatively favorable coverage of Batista and his anti-Castro temperament.', 'Fulgencio Batista publicly claimed that Fidel Castro was killed during the landing of the 26th of July Movement.', 'Fulgencio Batista served as President of Cuba prior to the Cuban Revolution, with his first term starting in 1940.', 'Fulgencio Batista publicly claimed that Fidel Castro was killed during the landing of the 26th of July Movement.', "Herbert Matthews was a reporter for The New York Times who revealed that Fidel Castro was still alive despite Fulgencio Batista's public claim that Castro was killed during the 26th of July Movement's landing.", 'Ruby Hart Phillips was a New York Times correspondent covering Cuba who was often at odds with Herbert Matthews due to her relatively favorable coverage of Batista and his anti-Castro temperament.', 'Fulgencio Batista served as President of Cuba prior to the Cuban Revolution, with his first term starting in 1940.', 'Fulgencio Batista publicly claimed that Fidel Castro was killed during the landing of the 26th of July Movement.', "Herbert Matthews was a reporter for The New York Times who revealed that Fidel Castro was still alive despite Fulgencio Batista's public claim that Castro was killed during the 26th of July Movement's landing.", 'Ruby Hart Phillips was a New York Times correspondent covering Cuba who was often at odds with Herbert Matthews due to her relatively favorable coverage of Batista and his anti-Castro temperament.', 'Fulgencio Batista served as President of Cuba prior to the Cuban Revolution, with his first term starting in 1940.']
+
+### context
+['Herbert Matthews | Herbert Lionel Matthews (January 10, 1900 – July 30, 1977) was a reporter and editorialist for "The New York Times" who grew to notoriety after revealing that Fidel Castro was still alive and living in the Sierra Maestra mountains, though Fulgencio Batista had claimed publicly that he was killed during the 26th of July Movement\'s landing.', 'Ruby Hart Phillips | Ruby Hart Phillips (December 12, 1898 – October 28, 1985) was a "New York Times" correspondent in Cuba who covered the Batista regime and the rise of Fidel Castro.  She reported from the island for 24 years, from 1937 to 1961.  Her coverage, relatively favorable toward Batista, was often at odds with that of Herbert Matthews, the noted "Times" foreign correspondent who favored Castro.  Personal animosity grew between them, and their contradictory coverage of the same events drew criticism from readers and media critics.  Life became increasingly difficult for Phillips after the Cuban Revolution because of her anti-Castro temperament.  She left Cuba for good in 1961, shortly after her home and office were raided and her Cuban colleagues were arrested.  She died in Cocoa Beach, Florida at the age of 82.', '26th of July Movement | The 26th of July Movement (Spanish: "Movimiento 26 de Julio" ; M-26-7) was a vanguard revolutionary organization then a party led by Fidel Castro that in 1959 overthrew the Fulgencio Batista dictatorship in Cuba.  The Movement fought the Batista regime on both rural and urban fronts.  The movement’s main objectives were distribution of land to peasants, nationalization of public services, industrialization, honest elections, and large scale education reform.', "Timeline of the Cuban Revolution | The Cuban Revolution was the overthrow of Fulgencio Batista’s regime by the 26th of July Movement and the establishment of a new Cuban government led by Fidel Castro in 1959.  It began with the assault on the Moncada Barracks on 26 July 1953 and ended on 1 January 1959, when Batista was driven from the country and the cities Santa Clara and Santiago de Cuba were seized by rebels, led by Che Guevara and Fidel Castro's surrogates Raúl Castro and Huber Matos, respectively .", "Cuba under Fidel Castro | The nation of Cuba under Fidel Castro underwent significant changes that have received much attention.  Fidel Castro and his associated group of revolutionaries toppled the ruling government of Fulgencio Batista, forcing Batista out of power on 1 January 1959.  Having already been an important figure in Cuban culture and society, he went on to serve as 'Prime Minister of Cuba' from 1959 to 1976.  In 1976, Castro officially became 'President of Cuba'.  Castro retained the title of president until 2008, when his brother Raúl Castro became president.  He also served as the First Secretary of the Communist Party of Cuba (1961-2011).  However, his opinions continued to serve as the foundation of Cuban governance.", "Eulogio Cantillo | Eulogio Cantillo (September 13, 1911, Cuba - September 9, 1978, Miami, Florida, U.S.) was a general in the pre-revolutionary Cuban army.  General Cantillo served as Chief of the Joint Staff during the dictatorship of Fulgencio Batista.  Cantillo did not participate in the military coup that brought Batista to power.  During the Cuban Revolution, he led Cuban soldiers in the fight against Fidel Castro's 26th of July Movement.  After the Cuban Revolution, He was tried by the revolutionary tribunals and sentenced to 15 years in prison.  He was released before serving his entire sentence sometime in the sixties, and went into exile in Miami where he died in 1978.", 'Cuban Revolution | The Cuban Revolution (Spanish: "Revolución cubana" ) was an armed revolt conducted by Fidel Castro\'s 26th of July Movement and its allies against the right-wing authoritarian government of Cuban President Fulgencio Batista.  The revolution began in July 1953, and continued sporadically until the rebels finally ousted Batista on 1 January 1959, replacing his government with a revolutionary socialist state.  The 26th of July Movement later reformed along communist lines, becoming the Communist Party in October 1965.  Castro’s organized attack set up on the eastern end of Santiago de Cuba against the military barracks ended in despair and failure due to government.', 'Marta Fernandez Miranda de Batista | Marta Fernández Miranda de Batista (November 11, 1923 – October 2, 2006) was First Lady of Cuba from 1952 until 1959.  She was the second wife of Cuban President Fulgencio Batista, who was overthrown by Fidel Castro in the 1959 Cuban Revolution, which forced the couple to flee permanently into exile.', "Frank País | Frank País Pesqueira (December 7, 1934 – July 30, 1957) was a Cuban revolutionary who campaigned for the overthrow of General Fulgencio Batista's government in Cuba.  País was the urban coordinator of the 26th of July Movement, and was a key organizer within the urban underground movement, collaborating with Fidel Castro's guerrilla forces which were conducting activities in the Sierra Maestra mountains.  País was killed in the streets of Santiago de Cuba by the Santiago police on July 30, 1957.", 'Ramón Barquín | Ramón M. Barquín (May 12, 1914 – March 3, 2008) was a Cuban military colonel and opponent of former President Fulgencio Batista.  Barquín was jailed by the Batista government for leading a failed coup attempt in 1956.  He later fled Cuba in 1960 following the 1959 takeover by Fidel Castro.']
+
+## Generated Outputs
+### reasoning
+The claim involves several factual components that must be verified:
+
+1. Someone publicly claimed that Fidel Castro was killed during the 26th July Movement landing.
+2. This claim was proven wrong by a man who was at odds with Ruby Hart Phillips.
+3. The person who made the false claim first served as President of Cuba in 1940.
+
+Breaking down these points:
+
+- The claimant that Castro was killed was Fulgencio Batista, who publicly claimed that Castro was killed during the 26th July Movement's landing. This is confirmed by multiple notes in both the notes and the context.
+- Herbert Matthews, a New York Times reporter, revealed that Castro was still alive despite Batista's claim. This Matthews was at odds with Ruby Hart Phillips, also a New York Times Cuba correspondent who favored Batista and had an anti-Castro temperament.
+- Fulgencio Batista served as President of Cuba, with his first term starting in 1940.
+
+Thus, the claim that the person who falsely claimed Castro was killed (Batista) first served as President of Cuba in 1940 is supported by the context. Also, the man who proved that claim wrong by revealing Castro was alive was Herbert Matthews, who was at odds with Ruby Hart Phillips.
+
+Therefore, the new notes should include:
+
+- Batista publicly claimed Castro was killed during the 26th July Movement landing.
+- Herbert Matthews revealed Castro was alive, contradicting Batista's claim.
+- Matthews was at odds with Ruby Hart Phillips, who covered Cuba favorably toward Batista.
+- Batista first served as President starting in 1940.
+
+These notes are directly supported by the context documents: biographies of Herbert Matthews, Ruby Hart Phillips, and historical records about Batista's presidency.
+
+### new_notes
+['Fulgencio Batista publicly claimed that Fidel Castro was killed during the landing of the 26th of July Movement.', "Herbert Matthews was a reporter for The New York Times who revealed that Fidel Castro was still alive despite Fulgencio Batista's public claim that Castro was killed during the 26th of July Movement's landing.", 'Ruby Hart Phillips was a New York Times correspondent covering Cuba who was often at odds with Herbert Matthews due to her relatively favorable coverage of Batista and his anti-Castro temperament.', 'Fulgencio Batista served as President of Cuba prior to the Cuban Revolution, with his first term starting in 1940.']
+
+### titles
+['Herbert Matthews', 'Ruby Hart Phillips', '26th of July Movement', 'Timeline of the Cuban Revolution', 'Cuban Revolution']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Herbert Matthews', 'Ruby Hart Phillips']. Documents remaining to be retrieved: ['Fulgencio Batista'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The cemetery that professional golf player George W. Wallace is buried at, is located at a park that is part of Golden Gate National Recreation Area.
+
+### notes
+['George W. Wallace was a Second Lieutenant in the United States Army and a Medal of Honor recipient for actions in the Philippine-American War.', 'George W. Wallace is buried at San Francisco National Cemetery.', 'The Golden Gate National Recreation Area is a U.S. National Recreation Area protecting ecologically and historically significant landscapes around San Francisco Bay Area, including land formerly used by the United States Army.', 'San Francisco National Cemetery is located within the Presidio, which is part of the Golden Gate National Recreation Area.', 'George W. Wallace is buried at San Francisco National Cemetery.', 'San Francisco National Cemetery is located within the Presidio, which is part of the Golden Gate National Recreation Area.', 'The Golden Gate National Recreation Area is a U.S. National Recreation Area protecting ecologically and historically significant landscapes around San Francisco Bay Area, including land formerly used by the United States Army.']
+
+### context
+['Golden Gate National Parks Conservancy | Founded in 1981, the Golden Gate National Parks Conservancy is a nonprofit membership organization that supports park stewardship and conservation in the Golden Gate National Recreation Area—the most visited national park in the U.S.', 'NatureBridge | NatureBridge is a nonprofit organization that provides environmental education programs in six national park locations: Yosemite National Park, Golden Gate National Recreation Area, Olympic National Park, Santa Monica Mountains National Recreation Area, Channel Islands, Prince William Forest and Shenandoah National Parks.', 'Golden Gate National Recreation Area | The Golden Gate National Recreation Area (GGNRA) is a U.S. National Recreation Area protecting 82,027 acre of ecologically and historically significant landscapes surrounding the San Francisco Bay Area.  Much of the park is land formerly used by the United States Army.  GGNRA is managed by the National Park Service and is one of the most visited units of the National Park system in the United States, with more than 15 million visitors a year.  It is also one of the largest urban parks in the world, with a size two-and-a-half times that of the consolidated city and county of San Francisco.', 'Golden Gate National Cemetery | Golden Gate National Cemetery is a United States national cemetery in California, located in the city of San Bruno, 12 mi south of San Francisco.  Because of the name and location, it is frequently confused with San Francisco National Cemetery, which dates to the 19th century and is in the Presidio of San Francisco, in view of the Golden Gate.  Around 1937, San Francisco residents voted to bar the opening of new cemeteries within the city proper and, as a result, the site for the new national cemetery was selected south of the city limits in adjacent San Mateo County.', 'Phleger Estate | The Phleger Estate is a park in San Mateo County, California.  The park is located outside the town of Woodside and adjacent to Huddart County Park.  The park was acquired in 1991 by the Peninsula Open Space Trust (POST) for $25\xa0million and is now part of the Golden Gate National Recreation Area (GGNRA).', 'Sutro District | The Sutro Historic District is a National Park Service historic district in the Lands End area of the Outer Richmond District in western San Francisco, California.  It is within the Golden Gate National Recreation Area, since being acquired by the National Park Service in 1977.', 'Sutro Heights Park | Sutro Heights Park is historic public park in the Outer Richmond District of western San Francisco, California.  It is within the Golden Gate National Recreation Area and the Sutro Historic District.', 'Marin Headlands | The Marin Headlands is a hilly peninsula at the southernmost end of Marin County, California, United States, located just north of San Francisco across the Golden Gate Bridge, which connects the two counties and peninsulas.  The entire area is part of the Golden Gate National Recreation Area.  The Headlands are famous for their views of the Bay Area, especially of the Golden Gate Bridge.', 'Lands End (San Francisco) | Lands End is a park in San Francisco within the Golden Gate National Recreation Area.  It is a rocky and windswept shoreline at the mouth of the Golden Gate, situated between the Sutro District and Lincoln Park and abutting Fort Miley Military Reservation.  A memorial to the "USS San Francisco" stands in the park.  Numerous hiking trails follow the former railbeds of the Ferries and Cliff House Railway along the cliffs and also down to the shore.', 'Ocean Beach, San Francisco | Ocean Beach is a beach on the west coast of San Francisco, California, United States, bordering the Pacific Ocean.  It is adjacent to Golden Gate Park, the Richmond District, and the Sunset District.  The Great Highway runs alongside the beach, and the Cliff House and the site of the former Sutro Baths sit at the northern end.  The beach is a part of the Golden Gate National Recreation Area, which is administered by the National Park Service.']
+
+## Generated Outputs
+### reasoning
+The claim states that George W. Wallace, a professional golf player, is buried at a cemetery located within a park that is part of the Golden Gate National Recreation Area (GGNRA). To verify this, we need proof of two key facts: (1) the location of George W. Wallace's burial site, specifically the cemetery, and (2) whether that cemetery is situated in a park that belongs to the GGNRA.
+
+Reviewing the provided context, there is detailed information about the Golden Gate National Recreation Area and its constituent parks and sites. Golden Gate National Cemetery is mentioned as a national cemetery near San Bruno, California, but the context does not explicitly state if it is part of the GGNRA. According to the context, the cemetery is in San Mateo County, 12 miles south of San Francisco, and it was selected outside San Francisco city limits due to a ban on opening new cemeteries within city limits. However, there is no direct statement linking Golden Gate National Cemetery as part of the Golden Gate National Recreation Area.
+
+Other parks such as the Phleger Estate, Sutro District, Sutro Heights Park, Marin Headlands, Lands End, and Ocean Beach are clearly within the GGNRA, but none of these are cemeteries or reference any cemetery.
+
+Importantly, no information in the provided notes or context mentions George W. Wallace or confirms his burial location. Without any note or contextual information confirming that George W. Wallace is buried in a specific cemetery or that this cemetery is within the GGNRA, the claim cannot be verified nor adequately supported.
+
+Therefore, due to lack of any notes or contextual sources identifying George W. Wallace’s burial place or linking a specific cemetery to the GGNRA, the claim cannot be confirmed and no notes are relevant to support it.
+
+### new_notes
+[]
+
+### titles
+[]
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['George W. Wallace', 'Presidio of San Francisco', 'San Francisco National Cemetery']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+The company owning Quaker Ridge (NYW&B station) has a terminus at the New York city in the county of Westchester.
+
+### notes
+['Quaker Ridge is a former railroad station on the White Plains branch of the New York, Westchester and Boston Railway located in New Rochelle in Westchester County, New York.', 'The New York, Westchester and Boston Railway operated from the southernmost part of the South Bronx in New York City to Mount Vernon and branches into Westchester County, including White Plains.', 'The southern terminus of the New York, Westchester and Boston Railway was in the South Bronx, which is within New York City.', 'Westchester County is a separate county north of New York City; the terminus was in New York City (the Bronx), not in Westchester County.', 'Quaker Ridge is a former railroad station on the White Plains branch of the New York, Westchester and Boston Railway located in New Rochelle in Westchester County, New York.', 'The New York, Westchester and Boston Railway operated from the southernmost part of the South Bronx in New York City to Mount Vernon and branches into Westchester County, including White Plains.', 'The southern terminus of the New York, Westchester and Boston Railway was in the South Bronx, which is within New York City.', 'Westchester County is a separate county north of New York City; the terminus was in New York City (the Bronx), not in Westchester County.', 'Quaker Ridge is a former railroad station on the White Plains branch of the New York, Westchester and Boston Railway located in New Rochelle in Westchester County, New York.', 'The New York, Westchester and Boston Railway operated from the southernmost part of the South Bronx in New York City to Mount Vernon and branches into Westchester County, including White Plains.', 'The southern terminus of the New York, Westchester and Boston Railway was in the South Bronx, which is within New York City.', 'Westchester County is a separate county north of New York City; the terminus was in New York City (the Bronx), not in Westchester County.']
+
+### context
+['Quaker Ridge (NYW&amp;B station) | Quaker Ridge is a former railroad station on the White Plains branch of the New York, Westchester and Boston Railway in the city of New Rochelle in Westchester County, New York.  The station is named for the Quaker Ridge section of northern New Rochelle along the Scarsdale Town border.  It was constructed by the New York, Westchester & Boston commuter railroad which linked Manhattan with the less populous northern Bronx section of New York City and the primarily undeveloped countryside of Westchester County.', 'New York, Westchester and Boston Railway | The New York, Westchester and Boston Railway Company (NYW&B, also known to its riders as "the Westchester" and colloquially as the "Boston-Westchester"), was an electric commuter railroad in the Bronx and Westchester County, New York from 1912 to 1937.  It ran from the southernmost part of the South Bronx, near the Harlem River, to Mount Vernon with branches north to White Plains and east to Port Chester.  From 1906, construction and operation was under the control of the New York, New Haven & Hartford Railroad (NH) until its bankruptcy in 1935.', 'New York State Route 125 | New York State Route\xa0125 (NY\xa0125) is a 7.50 mi north–south state highway located within Westchester County, New York, in the United States.  The route begins at an intersection with U.S. Route\xa01 (US\xa01) in the town of Mamaroneck and ends at a junction with NY\xa022 in the city of White Plains.  A section of the route in the city of White Plains is maintained by Westchester County and co-designated as County Route\xa026 (CR\xa026).  A second county-owned segment exists along the New Rochelle–Scarsdale line as County Route\xa0129.  Both numbers are unsigned.  NY\xa0125 was assigned as part of the 1930 renumbering of state highways in New York, initially extending from US\xa01 to Mamaroneck Avenue in White Plains.  It was extended north to NY\xa022 in the mid-1930s.', "Willson's Woods Park | Willson's Woods Park is a park located in Mount Vernon, New York.  The Park is owned by Westchester County and operated by its Department of Parks, Recreation and Conservation.  Acquired in 1924, Willson's Woods is one of the oldest parks in the County's parks system.  The Park was named for the former owner of the land, Charles Hill Willson of the Willson & Adams Lumber Company.  The park is flanked to the east by the Hutchinson River Parkway and by Pelham Lake.  It was built with the northern entrance passing under the now defunct New York, Westchester and Boston Railway line, and the southern under the still working New Haven Line.", 'New York and Stamford Railway | The New York and Stamford Railway was a streetcar line that connected the Westchester County suburbs of New Rochelle, Larchmont, Mamaroneck, Harrison, Rye, and Port Chester, with the Connecticut suburbs of Greenwich and Stamford.  The company was formed in 1901 when the New York, New Haven and Hartford Railroad combined the Larchmont Horse Railway Company with the Port Chester Street Railroad Company.  The Larchmont Horse Railway Company was founded in 1888 by the Larchmont Manor Company to construct a line from the New York, New Haven and Hartford Railroad Larchmont train station to its development 1.2 miles from town.  The line was rebuilt for electric operation and extended to Harrison in 1901.  The Port Chester Street Railroad opened in 1898 serving Port Chester, New York.  The trolley line was soon extended west through Rye to Harrison in 1901.  The two companies were merged that summer to form the New York and Stamford Railway.  Trackage rights over the Westchester Electric Railroad were obtained for access to New Rochelle.', 'New Rochelle Trust Building | New Rochelle Trust Company Building is a historic building located in the city of New Rochelle in Westchester County, New York.  The building is significant in its association with banking, as the work of architect F. C. Merry, and as an important part of the overall streetscape of the Main Street business district.', 'Northern Westchester | Northern Westchester refers to the upper portion of Westchester County, New York, a suburban area north of New York City.  Lying north of Interstate 287/Cross Westchester Expressway, these communities are distinguished by distance from New York City and their more rural character from those of Southern Westchester.  The area is notable for its general affluence and high degree of watershed for New York City, being home to two major collection reservoirs supplying drinking water to it, the New Croton Reservoir and the Kensico Reservoir.', 'Southern Westchester | Southern Westchester refers to the southern portion of Westchester County, New York (USA), a dense inner-ring suburban area north of New York City.', "Liberty Lines Transit | Liberty Lines Transit, Inc. is a contract operator of the Bee-Line Bus System of Westchester County, New York and a former operator of contract service to the New York City Department of Transportation.  The company's headquarters are located in Yonkers, New York.  It currently operates around 320 vehicles, all owned by Westchester County.", "The Westchester | The Westchester is a 890000 sqft , shopping mall in downtown White Plains, New York.  It is operated by Simon Property Group, which owns 40% of the mall, and is home to some of today's most fashionable and well-known retailers, many with their only location in affluent Westchester County, New York.  It is anchored by Neiman Marcus, Crate&Barrel, and New York state's first Nordstrom, the fourth in the New York City metropolitan area to open after locations in Short Hills, Menlo Park, and Paramus, New Jersey."]
+
+## Generated Outputs
+### reasoning
+The claim states that the company owning Quaker Ridge (a New York, Westchester and Boston Railway (NYW&B) station) has a terminus in New York City in Westchester County. The notes confirm that Quaker Ridge is a former station on the White Plains branch of the NYW&B Railway, located in New Rochelle, Westchester County (Note 1). The NYW&B Railway operated from the southernmost part of the South Bronx (within New York City) into Westchester County (Note 2). The southern terminus of this railway was in the South Bronx, part of New York City (Note 3). Note 4 clarifies that Westchester County is north of New York City and that the terminus was in the Bronx (NYC), not Westchester County. Thus, the terminus is in New York City (South Bronx), and not within Westchester County. The company owning Quaker Ridge (the NYW&B Railway Company) therefore has a terminus in New York City but not in Westchester County. Hence, the part of the claim stating "terminus at the New York city in the county of Westchester" is incorrect—a terminus is in New York City but not in Westchester County. The notes from 1 to 4 are directly relevant and supported by the context data, namely the details about the Quaker Ridge station, the NYW&B Railway route, and geographical delineations between NYC and Westchester County.
+
+### new_notes
+['Quaker Ridge is a former railroad station on the White Plains branch of the New York, Westchester and Boston Railway located in New Rochelle in Westchester County, New York.', 'The New York, Westchester and Boston Railway operated from the southernmost part of the South Bronx in New York City to Mount Vernon and branches into Westchester County, including White Plains.', 'The southern terminus of the New York, Westchester and Boston Railway was in the South Bronx, which is within New York City.', 'Westchester County is a separate county north of New York City; the terminus was in New York City (the Bronx), not in Westchester County.']
+
+### titles
+['Quaker Ridge (NYW&B station)', 'New York, Westchester and Boston Railway']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['New York, Westchester and Boston Railway', 'Quaker Ridge (NYW&amp;B station)']. Documents remaining to be retrieved: ['Mount Vernon, New York'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,130 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:  
+
+You will be given three input fields: `claim`, `notes`, and `context`. Your goal is to produce two output fields: `new_notes` and `titles`.
+
+Input Details:
+- `claim`: A factual or knowledge-based statement or assertion that requires verification or clarification.
+- `notes`: A list of textual snippets, facts, or statements relevant to the claim, containing supporting or contradicting evidence.
+- `context`: A list of background documents or passages with detailed, factual, encyclopedic, or biographical information related to entities, events, or concepts mentioned in the claim and notes.
+
+Your Task:
+1. Carefully analyze the `claim` to understand the exact factual assertion being made.
+2. Examine the `notes` for relevant evidence related to the claim. These notes may contain repetition, paraphrases, or clarifications that help support or refute the claim.
+3. Review the `context` documents for detailed, reliable information that can confirm or contradict the claim, or clarify ambiguities in the notes.
+4. Using all input information, generate:
+   - `new_notes`: A concise, accurate summary or refined set of notes that combine the key verified facts from the input notes and context. Remove redundant, irrelevant, or incorrect information. The new notes should support correct understanding related to the claim.
+   - `titles`: A list of the most relevant document titles or named entities from the context that are crucial to understanding the claim and have been referenced in your reasoning. These titles will typically correspond to Wikipedia-style article titles or recognized entity names.
+
+Important Domain-Specific Guidelines:
+- The entities mentioned (such as actors, composers, institutions) may have complex or overlapping associations (e.g., actors with multiple films, musical compositions with variants by different composers). Identify and clearly separate these references.
+- Pay attention to dates, biographical details, composition catalog numbers, institutional founding years, and other domain-specific facts that help to validate chronological or identity-based claims.
+- When clarifying factual conflicts (e.g., a person appearing in one film but not another, a composition authored by one composer versus another), explicitly disambiguate and summarize such distinctions in the new notes.
+- The task involves verifying correctness of claims through synthesis of notes and context, not just copying text.
+- Signals for inclusion in `titles` include entities explicitly relevant to the claim’s topic and supported by the finalized reasoning (e.g., a person’s Wikipedia page, a film’s article, a musical piece’s entry, or an institution’s page).
+  
+Suggested Solution Approach:
+- Parse the claim carefully for key entities and assertions.
+- Cross-validate facts from notes with richer context.
+- Discard or flag contradictory or irrelevant notes.
+- Summarize the facts supporting or refuting the claim into `new_notes` clearly and factually.
+- Collect the key Wikipedia-style document titles from context that were central to your reasoning.
+- Be precise, concise, and unambiguous in new_notes to ensure clarity.
+- Avoid extraneous or repeated facts; focus on those that resolve or illuminate the claim.
+
+This detailed, evidence-based synthesis supports downstream fact verification, entity linking, or claim validation tasks which rely on tightly curated factual summaries and accurate identification of relevant knowledge sources.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Director Robert Stevenson was from a geographically smaller country than another director. That director directed his final film Romance of Astree and Celadon.
+
+### notes
+['Romance of Astree and Celadon was the final film directed by Éric Rohmer, released in 2007.', 'Éric Rohmer was a French film director.', 'Robert Stevenson was a British-American film director from the United Kingdom.', 'The United Kingdom is geographically smaller than France.', "Therefore, Robert Stevenson was from a geographically smaller country than Éric Rohmer, who directed 'Romance of Astree and Celadon'.", 'Romance of Astree and Celadon was the final film directed by Éric Rohmer, released in 2007.', 'Éric Rohmer was a French film director.', 'Robert Stevenson was a British-American film director from the United Kingdom.', 'The United Kingdom is geographically smaller than France.', 'Therefore, Robert Stevenson was from a geographically smaller country than Éric Rohmer, who directed Romance of Astree and Celadon.', "Éric Rohmer was a French film director who directed 'Romance of Astree and Celadon' as his final film, released in 2007.", 'Robert Stevenson was a British-American film director from the United Kingdom.', 'France is geographically smaller in land area than the United Kingdom.', "Therefore, Robert Stevenson was from a geographically larger country than Éric Rohmer, who directed 'Romance of Astree and Celadon'."]
+
+### context
+['Megastructures | Megastructures is a documentary television series appearing on the National Geographic Channel in the United States and the United Kingdom, Channel 5 in the United Kingdom, France 5 in France, and 7mate in Australia.', 'Bioregion | A bioregion is an ecologically and geographically defined area that is smaller than an ecozone, but larger than an ecoregion or an ecosystem, in WWF classification scheme.  There is also an attempt to use the term in a rank-less generalist sense, similar to the terms "biogeographic area" or "biogeographic unit".', 'Yemenis in the United Kingdom | Yemenis in the United Kingdom include citizens and non-citizen immigrants in the United Kingdom of Yemeni ancestry, as well as their descendants.  Yemenis have been present in the UK since the 1860s, and are probably the longest-established Muslim group in the country, although currently much smaller than some other British Muslim groups.', "List of ecoregions in Costa Rica | The following is a list of ecoregions in Costa Rica.  An ecoregion is an ecologically and geographically defined area that is smaller than a bioregion, which in turn is smaller than an ecozone.  All three of these are larger than an ecosystem.  Ecoregions cover relatively large areas of land or water, and contain characteristic, geographically distinct assemblages of natural communities and species.  The biodiversity of flora, fauna and ecosystems that characterise an ecoregion tends to be distinct from that of other ecoregions.  Costa Rica is a country in Central America, bordered by Nicaragua to the north, Panama to the southeast, the Pacific Ocean to the west, and the Caribbean Sea to the east.  It contains 5% of the world's biodiversity.", 'Ecoregion | An ecoregion (ecological region) is an ecologically and geographically defined area that is smaller than a bioregion, which in turn is smaller than an ecozone.  All three of these are either less or greater than an ecosystem.  Ecoregions cover relatively large areas of land or water, and contain characteristic, geographically distinct assemblages of natural communities and species.  The biodiversity of flora, fauna and ecosystems that characterise an ecoregion tends to be distinct from that of other ecoregions.  In theory, biodiversity or conservation ecoregions are relatively large areas of land or water where the probability of encountering different species and communities at any given point remains relatively constant, within an acceptable range of variation (largely undefined at this point).', 'Officer commanding | The officer commanding (OC) is the commander of a sub-unit or minor unit (smaller than battalion size), principally used in the United Kingdom and Commonwealth.  In other countries, the term commanding officer is applied to commanders of minor as well as major units.', 'Communes of France | The commune (] ) is a level of administrative division in the French Republic.  French communes are roughly equivalent to civil townships and incorporated municipalities in the United States or "Gemeinden" in Germany.  The United Kingdom has no exact equivalent, as communes resemble districts in urban areas, but are closer to parishes in rural areas where districts are much larger.  Communes are based on historical geographic communities or villages and have received significant powers of governance to manage the populations and land of the geographic area covered.  The communes are the fourth-level administrative divisions of France.', 'Geographically indicated foods of the United Kingdom | Geographically indicated foods of the United Kingdom', 'Non-geographic telephone numbers in the United Kingdom | Non-geographic telephone numbers in the United Kingdom', 'History of rail transport in the United Kingdom | The United Kingdom consists of Great Britain and Northern Ireland, and previously consisted of Great Britain and the whole of Ireland.  Rail transport systems developed independently on the two islands of Great Britain and Ireland, and most of the railway construction in the Republic of Ireland was undertaken before independence in 1922.  Thus, the logical division to discuss the history of railways in these areas is by geographical division, rather than the political division of nation states.']
+
+## Generated Outputs
+### reasoning
+The claim says Robert Stevenson was from a geographically smaller country than another director, who directed their final film "Romance of Astree and Celadon." From the notes, Éric Rohmer is identified as the director of this film, and he was French. Robert Stevenson was British-American from the United Kingdom. One note says the United Kingdom is geographically smaller than France, but this is factually incorrect — France is geographically smaller than the UK, not larger. The UK comprises Great Britain and Northern Ireland, and France is smaller in land area compared to the UK. Therefore, the claim that Robert Stevenson was from a geographically smaller country than Éric Rohmer is false. The director who directed "Romance of Astree and Celadon" is indeed Éric Rohmer, but the country size comparison is reversed. Hence, Robert Stevenson was from a geographically larger or at least not smaller country than Éric Rohmer.
+
+### new_notes
+["Éric Rohmer was a French film director who directed 'Romance of Astree and Celadon' as his final film, released in 2007.", 'Robert Stevenson was a British-American film director from the United Kingdom.', 'France is geographically smaller in land area than the United Kingdom.', "Therefore, Robert Stevenson was from a geographically larger country than Éric Rohmer, who directed 'Romance of Astree and Celadon'."]
+
+### titles
+['Éric Rohmer', 'Robert Stevenson', 'Romance of Astree and Celadon', 'United Kingdom', 'France']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Romance of Astree and Celadon', 'Éric Rohmer']. Documents remaining to be retrieved: ['Robert Stevenson (director)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Both the director of the 2006 film Little Children, and Zoltan Korda work in the media industry.
+
+### notes
+['Zoltan Korda was a Hungarian-born motion picture screenwriter, director, and producer who worked in the film industry.', "Zoltan Korda directed multiple British films such as 'Cash' (1933), 'The Drum' (1938), and 'The Four Feathers' (1939).", "The director of the 2006 film 'Little Children' is a film director, a profession within the media industry.", "Film directors like Zoltan Korda and the director of 'Little Children' both work in the media industry.", 'Zoltan Korda was a Hungarian-born film director, screenwriter, and producer who worked extensively in the film industry across Hungary, London, and Hollywood.', "Zoltan Korda directed several British films including 'Cash' (1933), 'The Drum' (1938), and 'The Four Feathers' (1939).", "The director of the 2006 film 'Little Children' is a film director, which is a profession within the media industry.", "Both Zoltan Korda and the director of the 2006 film 'Little Children' have careers in the media industry as film directors.", 'Zoltan Korda was a Hungarian-born film director, screenwriter, and producer who worked extensively in the film industry in Hungary, London, and Hollywood.', "Zoltan Korda directed multiple notable British films in the 1930s such as 'Cash', 'The Drum', and 'The Four Feathers'.", "The director of the 2006 film 'Little Children' is a film director, a profession within the media industry.", "Both Zoltan Korda and the director of 'Little Children' have careers as film directors in the media industry."]
+
+### context
+["Cash (1933 film) | Cash is a 1933 British comedy film directed by Zoltan Korda and starring Edmund Gwenn, Wendy Barrie and Robert Donat.  It was made by Alexander Korda's London Film Productions.", 'Zoltan Korda | Zoltan Korda (June 3, 1895 – October 13, 1961) was a Hungarian-born motion picture screenwriter, director and producer.  He made his first film in Hungary in 1918, and worked with his brother Alexander Korda on film-making there and in London.  They both moved to the United States in 1940 to Hollywood and the American film industry.', 'The Drum (1938 film) | The Drum (released in the U.S. as Drums) is a 1938 British Technicolor film from the book "The Drum" by A. E. W. Mason.  The film is directed by Zoltan Korda and produced by Alexander Korda.  It stars Sabu Dastagir, Raymond Massey, Roger Livesey and Valerie Hobson.', "Men of Tomorrow | Men of Tomorrow is a 1932 British drama film, directed by Zoltan Korda and Leontine Sagan, produced by Alexander Korda and written by Anthony Gibbs and Arthur Wimperis.  It stars Maurice Braddell, Joan Gardner and Emlyn Williams and features Robert Donat's movie debut.", 'The Eleven Devils | The Eleven Devils (German: Die elf Teufel) is a 1927 German silent film directed by Zoltan Korda and Carl Boese and starring Gustav Fröhlich, Evelyn Holt and Lissy Arna.', 'Storm Over the Nile | Storm Over the Nile is a 1955 film adaptation of the novel "The Four Feathers", directed by Terence Young and Zoltan Korda.  The film not only extensively used footage of the action scenes from the 1939 film version stretched into CinemaScope, but is a shot-for-shot, almost line-for-line remake of the earlier film, which was also directed by Korda.  Several pieces of music by the original composer Miklos Rozsa were also utilised.  It featured Anthony Steel, Laurence Harvey, James Robertson Justice, Mary Ure, Ian Carmichael, Michael Hordern and Christopher Lee.  The film was shot on location in the Sudan.', 'The Macomber Affair | The Macomber Affair is a 1947 movie set in British East Africa concerning a fatal triangle involving a frustrated wife, a weak husband, and the professional hunter who comes between them.  The film was distributed by United Artists and directed by Zoltan Korda, and features Gregory Peck, Joan Bennett, and Robert Preston.', 'The Four Feathers (1939 film) | The Four Feathers is a 1939 British Technicolor adventure film directed by Zoltan Korda, starring John Clements, Ralph Richardson, June Duprez, and C. Aubrey Smith.  Set during the reign of Queen Victoria, it tells the story of a man accused of cowardice.  It is widely regarded as the best of the numerous film adaptations of the 1902 novel of the same name by A.E.W. Mason.', "Forget Me Not (1936 film) | Forget Me Not is a 1936 British musical drama film directed by Zoltan Korda and starring Beniamino Gigli, Joan Gardner and Ivan Brandt.  In the United States it was released under the alternative title Forever Yours.  The film was made at Isleworth Studios.  It was a remake of a 1935 German film of the same title.  It was one of four remakes of foreign-language films made by London Films.  The film was not generally well received by critics, although they praised Gigli's singing.", 'Elephant Boy (film) | Elephant Boy is a 1937 British adventure film starring Sabu in his film debut.  Documentary filmmaker Robert J. Flaherty, who produced some of the Indian footage, and supervising director Zoltan Korda, who completed the film, won the Best Director Award at the Venice Film Festival.  The film was made at the London Films studios at Denham, and in Mysore, India, and is based on the story "Toomai of the Elephants" from Rudyard Kipling\'s "The Jungle Book" (1894).']
+
+## Generated Outputs
+### reasoning
+The claim states that both the director of the 2006 film "Little Children" and Zoltan Korda work in the media industry. The context provides detailed information about Zoltan Korda, confirming he was a film director, screenwriter, and producer active in the film industry, which is part of the media industry. Therefore, Zoltan Korda clearly worked in the media industry. 
+
+Although the context does not contain explicit information about the director of the 2006 film "Little Children," it is widely known that Todd Field directed that film, and as a film director, he also works in the media industry. Given this general knowledge and that the claim involves two directors from films, one modern and one historical, the statement that both work in the media industry is true.
+
+Hence, the claim is supported by the fact that Zoltan Korda was a well-known film director and related to media, and the director of the 2006 film "Little Children" is also a film director, a role situated firmly within the media industry.
+
+### new_notes
+['Zoltan Korda was a Hungarian-born motion picture screenwriter, director, and producer who worked in the film industry.', "Zoltan Korda directed multiple British films such as 'Cash' (1933), 'The Drum' (1938), and 'The Four Feathers' (1939).", "The director of the 2006 film 'Little Children' is a film director, a profession within the media industry.", "Film directors like Zoltan Korda and the director of 'Little Children' both work in the media industry."]
+
+### titles
+['Zoltan Korda', 'Cash (1933 film)', 'The Drum (1938 film)', 'The Four Feathers (1939 film)']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Zoltan Korda']. Documents remaining to be retrieved: ['Little Children (film)', 'Todd Field'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Werner Gunter Jaffé Fellner was born in birthplace of Daniel Gunkel. Daniels birthplace in the German state of Hesse is the fifth-largest city in Germany.
+
+### notes
+['Daniel Gunkel was born in Frankfurt, a city in the German state of Hesse.', 'Frankfurt is the fifth-largest city in Germany.', 'There is no information available regarding the birthplace of Werner Gunter Jaffé Fellner.', 'Daniel Gunkel was born in Frankfurt, a city in the German state of Hesse.', 'Frankfurt is the fifth-largest city in Germany.', 'Werner Gunter Jaffé Fellner was born in Frankfurt, Hesse.', "Frankfurt is both Daniel Gunkel's and Werner Gunter Jaffé Fellner's birthplace.", 'Daniel Gunkel was born in Frankfurt, located in the German state of Hesse.', 'Frankfurt is the fifth-largest city in Germany.', 'Werner Gunter Jaffé Fellner was born in Frankfurt, Hesse.', 'Both Daniel Gunkel and Werner Gunter Jaffé Fellner share Frankfurt as their birthplace.', 'Frankfurt is the largest city in Hesse and ranks fifth in population size in Germany.']
+
+### context
+['Werner Jaffé | Werner Gunter Jaffé Fellner (October 27, 1914 - May 3, 2009) was a chemist and university professor.  Jaffé was born in Frankfurt.  He received his doctoral degree at the University of Zurich under the supervision of the Nobel Prize winner Paul Karrer.  After graduating, Jaffé arrived in Venezuela in 1940 and became a professor at the Central University of Venezuela.  He started the teaching of Biochemistry at the Central University and founded the "Instituto Nacional de Nutrición".  He was cofounder of the Venezuelan Association for the Advancement of Science.  in 1946 he received a grant from the Rockefeller Foundation and, among several science prizes, he was awarded the "Premio Nacional de Ciencia , CONICIT" in 1978.  During the fifty years that he taught at the college level, he also published over 200 academic publications and was named honorary professor at the Simón Bolívar University.  He died in Caracas in 2009.', 'Daniel Joseph Jaffé | Daniel Joseph Jaffé (born on 2 November 1876 in London and died 11 June 1921 in Croydon, England) was a civil engineer and the younger son of Martin Jaffé and grandson of Sir Otto Jaffé.  Jaffe Road, a street in Wan Chai and Causeway Bay, Hong Kong was named after him.', 'Archiv für Sozialwissenschaft und Sozialpolitik | The Archiv für Sozialwissenschaft und Sozialpolitik (ISSN\xa00174-819X  , English: Archives for Social Science and Social Welfare) was an academic journal for the social sciences in Germany between 1888 and 1933.  Its first editors were Edgar Jaffé, Werner Sombart, and Max Weber.  The latter published his seminal essay "The Protestant Ethic and the Spirit of Capitalism" in the journal in two parts in 1904 and 1905.', 'James Gunter | James Gunter (25 July 1731 – 19 September 1819) was an English confectioner, market gardener and property developer who laid the foundations for what became one of the great residential estates in West London, developed by his descendants, the "Redcliffe Estate" and The Boltons in Little Chelsea and West Brompton.', 'Theodor Julius Jaffé | Theodor Julius Jaffé (August 17, 1823 – April 11, 1898) was a German actor.', 'Jakab Fellner | Jakab Fellner (Fellenthali Fellner Jakab; Nikolsburg, 25 July 1722 – Tata, 12 December 1780) was the most important Baroque architect of his generation in Hungary.', 'Rosie Fellner | Rosie Fellner is an English/Irish actress and film producer.  Fellner’s first foray into the spotlight was on the cult TV show "The Fast Show", which featured celebrity guest stars, such as Johnny Depp.  Fellner also received attention for the popular British series, "The Alan Clarke Diaries", for her portrayal of Joei Harkness, whose love affair with John Hurt\'s character causes a scandal.  In addition, she notably appeared with Steve Coogan and Rob Brydon in the series, "The Trip To Italy", as well as the movie version.  Fellner has worked as an actress on TV, film, radio and on the stage, starring with Kate Beckinsale, Sean Bean, Robert De Niro, Geoffrey Rush, Heather Graham, and Jacqueline Bisset.  Fellner co-founded the production company, Rosebud Pictures, with her husband, Adrian Vitoria.', 'Rudolf Jaffé | Rudolf Jaffé (born 14 October 1885 in Berlin, died 13 March 1975 in Caracas) was a German physician and pathologist.', 'Peter Jaffé | Peter Jaffé (19 April 1914 - 14 August 2005) was an Australian philatelist who was added to the Roll of Distinguished Philatelists in 1992.', 'Fellner &amp; Helmer | Fellner & Helmer was an architecture studio founded in 1873 by Austrian architects Ferdinand Fellner (April 19, 1847 – March 22, 1916) and Hermann Helmer (July 13, 1849 – April 2, 1919).']
+
+## Generated Outputs
+### reasoning
+The claim states that Werner Gunter Jaffé Fellner was born in the birthplace of Daniel Gunkel, and that Daniel Gunkel's birthplace in Hesse is the fifth-largest city in Germany. According to note [1], Daniel Gunkel was born in Frankfurt, which is a city in the German state of Hesse. Note [2] confirms that Frankfurt is the fifth-largest city in Germany. So Daniel Gunkel’s birthplace is indeed Frankfurt, Hesse, the fifth-largest city in Germany. Regarding Werner Gunter Jaffé Fellner, note [3] says there is no information about his birthplace. However, the context states clearly in [1] that Werner Gunter Jaffé Fellner was born in Frankfurt. This directly aligns his birthplace with that of Daniel Gunkel. Therefore, the claim is accurate and supported by the context and notes.
+
+### new_notes
+['Daniel Gunkel was born in Frankfurt, a city in the German state of Hesse.', 'Frankfurt is the fifth-largest city in Germany.', 'Werner Gunter Jaffé Fellner was born in Frankfurt, Hesse.', "Frankfurt is both Daniel Gunkel's and Werner Gunter Jaffé Fellner's birthplace."]
+
+### titles
+['Werner Jaffé', 'Daniel Gunkel', 'Frankfurt']
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Daniel Gunkel', 'Frankfurt', 'Werner Jaffé']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

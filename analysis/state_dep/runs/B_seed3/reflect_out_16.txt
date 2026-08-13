@@ -1,0 +1,56 @@
+```
+Task Overview:  
+You will be given three inputs — `claim`, `notes`, and `context` — related to factual assertions within specialized domains such as film, politics, music, and sports. Your goal is to produce two output fields, `new_notes` and `titles`, that provide a precise, factually accurate, and disambiguated summary of verified information regarding the `claim`. Your outputs will support clear validation or refutation of the claim based on the authoritative information given in the `context`.
+
+Input Definitions:  
+- `claim`: A statement containing detailed or nuanced factual assertions about entities and their relationships, roles, timelines, or involvement in specific events. These claims often combine multiple entities over complex relationships and may contain ambiguities or inaccuracies. The domains mainly include cinema (films, actors, directors, composers), politics (persons, parties, leadership timelines), music (bands, musicians, song or album credits), and sports (teams, players, managers, historical events).  
+- `notes`: A raw, unfiltered set of facts extracted from various preliminary sources relevant to the claim. These may include redundancies, contradictions, partial truths, or inaccuracies.  
+- `context`: Authoritative, disambiguated factual source excerpts that clarify identities, roles, timelines, event participation, hierarchical relationships (e.g., youth wing parties to federal parties), and disambiguate similarly named entities (e.g., films with identical titles by year/country, persons with similar names but different roles or dates).
+
+Outputs:  
+- `new_notes`: A curated, concise, and factually rigorous subset of `notes` that:  
+  - Summarizes verified facts about the claim’s elements, including validated roles, timelines, relationships, and specific details from `context`.  
+  - Explicitly calls out and corrects inaccuracies or misconceptions present in the claim according to the evidence.  
+  - Avoids overlap and redundancy by consolidating equivalent or near-duplicate facts.  
+  - Includes only statements directly relevant and unambiguously supported by the `context`.  
+- `titles`: A list of source document or named entity titles extracted from `context` that underpin the `new_notes`. These should:  
+  - Include all referenced persons (actors, musicians, politicians, athletes), films with full disambiguation (year, country where applicable), organizations, or events explicitly cited to support or refute the claim.  
+  - Exclude unrelated or unsupported sources.  
+  - Provide clear, unambiguous identifiers facilitating future verification or retrieval.
+
+Domain-Specific Nuances and Considerations:  
+- Film domain:  
+  - Many films share identical or similar titles; always disambiguate by release year, country, or production studio to prevent confusion.  
+  - Confirm which actors starred or directed films referenced and verify composers or involved personnel.  
+- Music domain:  
+  - Distinguish band members from collaborators or producers.  
+  - Verify roles such as lead singer or song performer attributions on specific albums or songs.  
+- Political domain:  
+  - Clearly differentiate distinct political entities, such as provincial vs. federal parties, and their youth wings.  
+  - Verify leadership timelines, birthdates, and any succession changes carefully.  
+- Sports domain:  
+  - Confirm team founding dates, player careers, and management tenure precisely.  
+  - Validate if linked player-manager roles are factual within specified teams.
+
+Recommended Reasoning Approach:  
+1. Parse the `claim` fully to identify all factual assertions, entities, and relationships.  
+2. Cross-reference each claim component against the `context`:  
+   - Identify accurate identities, roles, event participation, timelines, and relationships using explicit contextual clues.  
+   - Resolve ambiguities by leveraging disambiguations such as dates, locations, or role descriptions included in the context.  
+3. Review each `note` to assess factual accuracy, relevance, and consistency with verified context.  
+   - Select only those notes that are fully supported and directly pertinent to assessing the claim’s components.  
+   - Discard contradictory, unsupported, or irrelevant notes.  
+4. Compose the `new_notes` with a focus on clarity, correction of claim errors, and avoidance of redundancy.  
+5. Compile the `titles` list only from sources explicitly underpinning the `new_notes`, ensuring domain-appropriate disambiguations.
+
+Output Expectations:  
+- The `new_notes` should provide a definitive, unambiguous summary validating or refuting the claim, including clarifications of any factual inaccuracies identified.  
+- The `titles` list must clearly and specifically enable subsequent verification, including all relevant entities mentioned in `new_notes` with appropriate disambiguations (e.g., film title + release year + country).
+
+General Task Constraints:  
+- Maintain a high granularity of fact-checking tailored to the domain’s nuances.  
+- Prioritize factual precision and disambiguation over including every minor fact.  
+- Avoid speculative conclusions beyond what the `context` and `notes` substantiate.
+
+This task requires careful critical reasoning and attention to detailed entity relationships, timeline verification, and domain-specific fact disambiguation to ensure your outputs reliably support accurate assessment of complex, multi-domain claims.
+```

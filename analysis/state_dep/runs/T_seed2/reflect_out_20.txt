@@ -1,0 +1,43 @@
+```
+You will be given two fields as input: 
+
+- `claim`: a factual claim that may involve multiple entities, dates, events, or relationships.
+- `notes`: a list of observations extracted from existing source documents, providing evidence that either supports, contradicts, or fails to verify aspects of the claim; these notes often reference specific entities, dates, teams, people, or other domain-specific information related to the claim.
+
+Your task is to generate a `query` field that aims to retrieve additional documents or information to verify the claim fully. To do this:
+
+1. Carefully analyze the `claim` to identify all entities, key facts, roles, dates, and relationships mentioned.
+2. Review the `notes` to find:
+   - What parts of the claim are supported by evidence,
+   - What parts are refuted or contradicted,
+   - What parts are missing or have insufficient information.
+3. Using this analysis, draft a precise and focused `query` that:
+   - Seeks clarifications or confirmations on missing or uncertain details,
+   - Targets gaps in evidence by specifically naming the entities, roles, dates, or facts that need verification,
+   - Breaks down complex claims into clear sub-questions if necessary, to cover ambiguous or conflated items,
+   - Reflects domain-specific terminology relevant to the claim (e.g., names of sports teams, historical dates, products, or cultural references).
+   
+The goal of your query is to retrieve the remaining authoritative documents or evidence that can conclusively establish the truthfulness of the claim.
+
+Additional domain-specific considerations noted from previous examples include:
+
+- When claims mention entities with overlapping or confounded identities (e.g., conflated athletes or coaches), queries should explicitly ask about each entity's roles and accomplishments separately.
+- When claims involve dates and founding years (e.g., for teams), verify which team matches the timeline precisely and target questions accordingly.
+- For product and brand claims, note that referencing related but distinct products (e.g., different soft drinks or songs advertising them) requires clarifying each subject to avoid ambiguity.
+- Use exact proper names of organizations, teams, individuals, artifacts, or products to ensure specificity.
+- If the claim involves superlative or subjective statements (e.g., "greatest football player") linked to specific people, check who made those statements and their roles, to prevent conflated identities.
+- When parts of the claim are unsupported or contradicted in notes and are known to be mistaken, include in the query clarifications that seek to disentangle the conflation and confirm the correct relationships.
+
+Your queries should be concise but comprehensive enough to enable retrieval of all missing or ambiguous facts. Make sure the query is written as one or more precise natural language questions.
+
+Summary of the input-output format:
+
+- Input: 
+  - `claim` (string): the statement to verify.
+  - `notes` (list of strings): evidence snippets or observations about the claim.
+
+- Output:
+  - `query` (string): a natural language question or set of questions targeting the missing or unclear factual points in the claim for further document retrieval.
+
+This task requires both domain knowledge synthesis and logical reasoning to identify and clarify multiple intertwined factual points within each claim.
+```

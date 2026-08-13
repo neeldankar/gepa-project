@@ -1,0 +1,65 @@
+```  
+Task Description:  
+You are given a concise, fact-based claim and a set of notes containing factual information that relate to the claim. Your objective is to generate highly effective, precise, and verification-oriented search queries. These queries should be designed to retrieve documents or facts that can verify or refute the truthfulness of the claim by focusing on the key entities, relationships, events, attributes, and temporal information involved.
+
+Input Format:  
+- `claim`: a single text string making one or more factual assertions, often involving relationships between entities (people, places, items, events), attributes (birthplaces, roles, nominations), or comparisons (species counts, participation). The claim may include indirect or compound facts that need decomposing.  
+- `notes`: a list of factual sentences or snippets extracted from one or more documents that provide evidence, context, clarifications, corrections, or refutations related to the claim.
+
+Output:  
+- `query`: one or more natural language questions crafted as precise search queries that directly target the atomic factual assertions in the claim. The queries should:  
+  - Focus on verifying key facts and relationships essential to confirming or denying the claim.  
+  - Disambiguate entities and clarify indirect or complex references in the claim.  
+  - Address multiple factual units in the claim with separate but related questions.  
+  - Leverage specific names, dates, roles, and qualifiers as they appear in the notes to maintain maximum precision and retrieval specificity.  
+  - Explicitly test contradictions or uncertainties exposed by the notes to ensure all relevant documents can be retrieved.
+
+Detailed Instructions:  
+1. **Parse and decompose the claim into atomic factual elements**:  
+   - Identify all key entities (persons, places, works, taxa, teams, products).  
+   - Extract attributes and relationships (e.g., birthplace, profession, role in a film, award nominations, species count, participation in events).  
+   - Resolve indirect references where one fact depends on another (e.g., "born in birthplace of X" → identify and cross-check birthplace of both persons).  
+   - Break compound claims into multiple verification questions where appropriate.
+
+2. **Analyze the notes carefully to inform query construction**:  
+   - Use the notes to spot corrections, contradictions, or clarifications that can guide which queries are needed.  
+   - Incorporate domain-specific nuances such as:  
+     - Taxonomic levels (e.g., genus vs. subfamily distinctions and species counts).  
+     - Filmography details (actors' main roles, awards linked to specific roles, director credits).  
+     - Biographical specifics (nationality, birthplace, participation in specific tournaments/events).  
+     - Product attributes (flavors, marketing claims).  
+   - Handle discrepancies explicitly by querying both the claim’s assertions and the contradicting note(s).
+
+3. **Formulate natural language verification queries**:  
+   - Ask questions that can confirm or deny each fact or relationship mentioned in the claim, e.g.:  
+     - "Is [Entity A] a [correct classification] or does it belong to [other taxonomic level]?"  
+     - "How many species are in genus X compared to genus Y?"  
+     - "Did [Actor] star in [Film/Show] in a main role?"  
+     - "Did [Actor] receive a [Award] nomination for playing [Role]?"  
+     - "Is [Person] a native of [Place]?"  
+     - "Did [Player] participate in [Event] in year [Y]?"  
+   - Include entity disambiguation questions to avoid confusion caused by similar names or indirect references.  
+   - If notes reveal lack of evidence or no linkage, include queries explicitly testing those relationships to ensure retrieval of relevant evidence or refuting facts.
+
+4. **Ensure query precision and context specificity**:  
+   - Use exact names, terms, and qualifiers from the notes and claim (e.g., full film titles, exact award names, full event names and dates).  
+   - Avoid vague or generic queries which may retrieve irrelevant documents.  
+   - If the claim combines unrelated or loosely connected facts, create separate queries to cover each atomic fact clearly and completely.
+
+5. **Generalizable approach**:  
+   - Break the claim into atomic verifiable units.  
+   - Use notes to detect error, ambiguity, or support for each unit.  
+   - Generate one or more tightly scoped natural language queries targeting these units, ensuring maximum coverage of potentially relevant evidence documents.  
+   - Explicitly query contradictory or absent links exposed by the notes to foster retrieval of all necessary evidence for judgment of claim validity.
+
+Domain-Specific Insights:  
+- Claims in this domain commonly involve:  
+  - Botanical taxonomy distinctions (subfamily vs. genus, species counts) requiring understanding of taxonomic hierarchy and accurate classification.  
+  - Biographical details such as birthplace, nationality, and participation in specific events or competitions (sports or entertainment).  
+  - Filmography elements: actor names, main roles, directors, award nominations tied to particular roles or productions, and release years.  
+  - Product or brand attributes including flavors, ingredients, advertising campaigns, and associated persons.  
+  - The presence of contradictions and clarifications in the notes often lead to the need to explicitly test such contradictions via queries.
+
+Summary:  
+Given a `claim` and `notes`, your task is to generate natural-language queries that explicitly target the atomic facts within the claim, cross-referenced with clarifications or contradictions found in the notes. These queries should maximize the recall of relevant documents and provide precise fact-checking anchors, covering all aspects of the claim to enable comprehensive verification or refutation. Use the domain-specific knowledge and disambiguations from the notes to craft queries that are succinct, precise, and focused on resolving the truthfulness of each component of the claim.  
+```

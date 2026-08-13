@@ -1,0 +1,109 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields:
+- `claim`: a factual statement or assertion that may require verification or further factual support.
+- `notes`: a list of textual snippets containing partial information relevant to verifying the claim. These notes might include facts, contradictions, or missing information about entities or topics in the claim.
+
+Your goal is to produce the output field `query` — a precise and focused question (or set of questions) aimed at retrieving the key missing or uncertain factual information needed to verify the claim. The `query` should target specific entities, attributes, relationships, or facts that have not been confirmed or sufficiently covered in the provided notes.
+
+Key Points and Domain-Specific Knowledge:
+- The claim involves named entities such as people, films, bands, roles (e.g., director, bassist), birthdates, nationalities, professions, and works (e.g., films, songs).
+- Notes often contain partial or confirmatory information about these entities, but sometimes lack critical data required to verify the claim fully.
+- Your query should be designed to retrieve authoritative documents or data specifically covering the missing or ambiguous elements mentioned or implied by the claim.
+- The query should reflect recognition of domain-specific facts, such as:
+   * Individuals’ roles and contributions (e.g., “bass player and lead vocalist who created Cobra Starship” refers to Gabe Saporta).
+   * Nationality or origin of persons associated with cultural works (e.g., nationality of film directors related to 'Cannibal Holocaust').
+   * Dates of birth or ages when claims relate to relative age.
+   * Professional associations or occupations that confirm or refute the claim.
+   * Connections between named works and their creators or contributors.
+
+Generalizable Strategy:
+1. Analyze the claim and identify the factual assertions that require verification.
+2. Review the notes to establish which parts of the claim are already supported and which parts are missing, contradictory, or uncertain.
+3. Formulate concise, targeted queries that seek the minimal yet sufficient data required to resolve remaining ambiguities.
+4. When multiple pieces of missing information exist, combine them efficiently in the query, balancing completeness and precision.
+5. Focus on retrieving documents or facts about:
+   - Specific named entities not covered or unclear in the notes.
+   - Attributes or relationships critical to verifying the claim.
+6. Avoid overly broad or generic questions; tailor queries to close specific knowledge gaps evident from the notes.
+
+Example:
+If the claim is about the relative age of two persons, and only one birthdate is known, the query should be:  
+   "What is the birthdate or age of [Person with missing info]?"
+
+If the claim involves multiple nationalities or roles, and only partial info is available, the query should ask specifically about the identities, nationalities, or professions of the key persons involved.
+
+By following this approach, you will help retrieve the essential documents needed to verify complex claims effectively.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The actor who starred in a main role on A Lua Me Disse received the Golden Globe nomination for playing the lead role of "The King of Cocaine".
+
+### notes
+['"A Lua Me Disse" is a 2005 Brazilian telenovela starring Adriana Esteves and Wagner Moura in the main roles.', "No information found linking Adriana Esteves or Wagner Moura to a Golden Globe nomination for playing 'The King of Cocaine.'", 'No other actors listed with Golden Globe nominations have documented involvement in "A Lua Me Disse."', 'Insufficient evidence in the provided context to verify if the main actor of "A Lua Me Disse" received a Golden Globe nomination for a role as "The King of Cocaine."', '"A Lua Me Disse" is a 2005 Brazilian telenovela starring Adriana Esteves and Wagner Moura in main roles.', 'Wagner Moura received a Golden Globe nomination for playing Pablo Escobar in Netflix series "Narcos" from 2015 to 2016.', 'Pablo Escobar is a drug lord associated with cocaine trafficking, but the role is not officially titled "The King of Cocaine."', 'There is no evidence that any actor from "A Lua Me Disse" was nominated for a Golden Globe for a role called "The King of Cocaine."', 'Adriana Esteves and Wagner Moura have no Golden Globe nominations for roles related to "The King of Cocaine."', 'The claim that the actor starred in "A Lua Me Disse" and received a Golden Globe nomination for playing the lead role of "The King of Cocaine" is not fully substantiated.', 'A Lua Me Disse is a 2005 Brazilian telenovela starring Adriana Esteves and Wagner Moura in the main roles.', 'Wagner Moura received a Golden Globe nomination for playing Pablo Escobar in the Netflix series Narcos from 2015 to 2016.', "Pablo Escobar was a drug lord often called 'The King of Cocaine,' but the role in Narcos is officially titled 'Pablo Escobar,' not 'The King of Cocaine.'", "No evidence exists that any actor from A Lua Me Disse was nominated for a Golden Globe for a role explicitly called 'The King of Cocaine.'", "There is no evidence that Adriana Esteves or Wagner Moura received Golden Globe nominations for roles titled 'The King of Cocaine.'"]
+
+## Generated Outputs
+### reasoning
+The claim asserts that an actor who starred in a main role on "A Lua Me Disse" was nominated for a Golden Globe for playing the lead role of "The King of Cocaine." The notes identify the main actors of "A Lua Me Disse" as Adriana Esteves and Wagner Moura. However, there is no information confirming that either received a Golden Globe nomination, nor that either played a character titled "The King of Cocaine." Additionally, no other actors connected to "A Lua Me Disse" have been noted with such nominations. To verify this claim, it is necessary to confirm whether either Adriana Esteves or Wagner Moura received a Golden Globe nomination for playing "The King of Cocaine" or if another main actor from the show fits this description.
+
+### query
+Did Adriana Esteves or Wagner Moura receive a Golden Globe nomination for playing "The King of Cocaine"? If not, did any actor with a main role in "A Lua Me Disse" receive a Golden Globe nomination for portraying that character?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['A Lua Me Disse', 'Pablo Escobar', 'Wagner Moura']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+Both Elisabeth Vrba's colleague, who she coined the word exaptation with, and Ann Beattie have a profession in common.
+
+### notes
+['Elisabeth Vrba is a paleontologist at Yale University and coined the term exaptation with her colleague Stephen Jay Gould.', 'Stephen Jay Gould was a paleontologist and evolutionary biologist.', "The profession of Ann Beattie is not provided in the given context, so it is unknown whether she shares the same profession as Elisabeth Vrba's colleague.", 'Elisabeth Vrba is a paleontologist at Yale University and coined the term exaptation with her colleague Stephen Jay Gould.', 'Stephen Jay Gould was a paleontologist and evolutionary biologist.', 'Ann Beattie is an American novelist and short story writer.', "Stephen Jay Gould's and Ann Beattie's professions are in different fields: science versus literature.", "Elisabeth Vrba coined the term 'exaptation' with her colleague Stephen Jay Gould.", 'Stephen Jay Gould was a paleontologist and evolutionary biologist, thus a scientist.', 'Ann Beattie is an American novelist and short story writer, a profession in literature.', "Stephen Jay Gould's and Ann Beattie's professions belong to different fields: science versus literature.", 'No evidence shows that Stephen Jay Gould and Ann Beattie share a profession.']
+
+## Generated Outputs
+### reasoning
+The claim states that Elisabeth Vrba's colleague, with whom she coined the word exaptation, and Ann Beattie share a profession. From the notes, it is clear that Vrba's colleague is Stephen Jay Gould, who was a paleontologist and evolutionary biologist. However, the notes do not provide any information about Ann Beattie's profession. To verify the claim, we need to determine Ann Beattie's profession and see if it matches that of Stephen Jay Gould (paleontologist/evolutionary biologist) or not.
+
+### query
+What is the profession of Ann Beattie?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Ann Beattie', 'Elisabeth Vrba']. Documents remaining to be retrieved: ['Stephen Jay Gould'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The 1935 propaganda documentary, on which Karl Attenberger worked with Leni Riefenstahl, and The End of America were not both made in the same year.
+
+### notes
+["Karl Attenberger worked with Leni Riefenstahl on the 1935 propaganda documentary 'Triumph of the Will'.", "'The End of America' is not mentioned in the provided information, and its production year is unknown.", "The 1935 date for the propaganda documentary is confirmed, but the year for 'The End of America' cannot be verified from the available data.", "Karl Attenberger worked with Leni Riefenstahl on the 1935 propaganda documentary 'Triumph of the Will'.", "'The End of America' documentary's production year is not mentioned in the available information and remains unknown.", "There is no evidence to confirm if 'The End of America' was made in 1935 or any other year.", "Karl Attenberger worked with Leni Riefenstahl on the 1935 propaganda documentary 'Triumph of the Will'.", "'The End of America' documentary's production year is unknown and not mentioned in the provided information.", "It cannot be confirmed whether 'The End of America' was made in 1935 or any other year due to lack of available data."]
+
+## Generated Outputs
+### reasoning
+The claim compares the production years of two films: the 1935 propaganda documentary involving Karl Attenberger and Leni Riefenstahl, and "The End of America." According to the notes, the first film is confirmed to be from 1935, but there is no information about the production year of "The End of America." To verify if these two films were not made in the same year, we need the production year of "The End of America."
+
+### query
+What is the production or release year of the film or documentary titled "The End of America"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Karl Attenberger']. Documents remaining to be retrieved: ['The End of America (film)', 'Triumph of the Will'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,124 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given two fields as input: `claim` and `notes`. The `claim` is a factual statement requiring verification or fact-checking. The `notes` contain extracted or summarized information related to the claim, including potential evidence that supports, contradicts, or is neutral toward the claim. The goal is to generate an effective *search query* (output field `query`) that can be used to retrieve authoritative documents or data to verify the truthfulness of the claim.
+
+Your task is to carefully analyze both the claim and the notes, then compose a concise, targeted search query designed to maximize relevant retrieval and minimize irrelevant results. This search query will guide downstream document retrieval systems to find evidence that confirms or refutes the claim.
+
+Detailed instructions for generating the query:
+
+1. **Analyze the Claim:**
+   - Identify the key entities (people, organizations, events, places, championships, films, songs).
+   - Pinpoint the main factual assertions (dates, awards, titles, roles, competition results, historical facts).
+   - Understand the relationships between entities (e.g., who acted in which movie, who won which championship, founding dates of sports teams).
+   - Note any temporal bounds (e.g., specific seasons, years, decades).
+   - Include nicknames, alternate names, or common epithets if relevant (e.g., "The King of Cocaine" = Pablo Escobar).
+
+2. **Review the Notes:**
+   - Extract domain-specific context from the notes that refine or clarify the claim.
+   - Identify corrections, contradictions, or confirmations embedded within the notes.
+   - Identify relevant domain-specific facts that may help narrow or specify the search query. For example:
+     - Baseball franchises: founding years, franchise relocations, managers, player tenure.
+     - Film domain: actors’ filmographies, familial relations, awards received.
+     - Motorsports: seasons, driver participation years, winners, nationality.
+     - Geographic details: place names, administrative divisions, jurisdictions.
+   - Recognize when some elements in the claim might be false or partially true from the notes, and incorporate key terms to check those facts explicitly.
+
+3. **Formulating the Query:**
+   - The query should be a natural language question or a targeted keyword phrase (or combination) that directly asks about the core elements necessary to verify the claim.
+   - Include all critical named entities, dates, and unique identifiers that anchor the claim in a factual context.
+   - Avoid vague or overly broad search terms; prefer specificity to guide retrieval towards authoritative sources.
+   - When applicable, combine search terms with logical connectors (e.g., AND, OR) or phrase them as concise fact-check questions (e.g., “Who won X in year Y?”, “Did person A receive award B for role C?”, “Which songs by artist D reached number one and who originally recorded them?”).
+   - Include alternative names or aliases if mentioned or deducible (e.g., “Pablo Escobar” and “The King of Cocaine”).
+
+4. **Domain-Specific Nuances:**
+   - **Music domain:** Focus on chart positions such as "Billboard Hot Country Singles & Tracks," original recording artists, and genre classifications.
+   - **Film and TV domain:** Confirm main cast members’ roles and their awards (e.g., Golden Globe nominations), also note familial or biographical relationships when relevant.
+   - **Sports (especially motorsports and baseball):** Check start and end years of participation, season numbering equivalences (e.g., "28th season = 2000"), nationality of competitors, and record of winners.
+   - **Geography:** Clarify administrative divisions and their hierarchical relationships where claims involve location-based facts.
+
+5. **Implementation Strategies:**
+   - Use the notes to rule out impossibilities or prior refutations in the query construction by explicitly including key facts the claim contradicts.
+   - Construct factual verification queries rather than open-ended broad questions.
+   - Prioritize queries that can retrieve multiple relevant documents (e.g., one query that simultaneously addresses claim aspects and related entities).
+   - When the notes identify misalignments (e.g., claimed facts are false), incorporate those exact elements for checking.
+
+6. **Desired Output:**
+   - Output only the field `query` with a single refined search query string.
+   - The query should be concise yet comprehensive enough to yield authoritative evidence for or against the claim.
+   - Avoid extraneous explanation or analysis in the final output.
+
+By following these instructions, you will generate effective search queries tailored to domain-specific factual claims across varied topics such as music chart history, filmographies and awards, sports seasons and participants, and geographic or political facts. The query will enable precise and productive evidence retrieval for accurate claim verification.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Clark County in Nevada contains both Las Vegas and another college. Craig Heyer played baseball at that college.
+
+### notes
+['Craig Heyer played college baseball at both the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV), both located in Clark County, Nevada.', 'Craig Heyer played college baseball at both the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV), both located in Clark County, Nevada.', 'The College of Southern Nevada is located in Clark County, Nevada, which also contains Las Vegas and the University of Nevada, Las Vegas (UNLV).', 'Craig Heyer played college baseball at both the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV), both located in Clark County, Nevada.', 'Clark County, Nevada contains the city of Las Vegas as well as multiple higher education institutions including the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).', 'Craig Heyer is confirmed to have played baseball at colleges situated within Clark County, Nevada.']
+
+## Generated Outputs
+### reasoning
+The claim states that Clark County in Nevada contains both Las Vegas and another college, and that Craig Heyer played baseball at that college. The notes confirm that Craig Heyer played college baseball at the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV). Both colleges, as well as Las Vegas, are located in Clark County, Nevada. Therefore, the claim that Clark County contains Las Vegas and another college (College of Southern Nevada), where Craig Heyer played baseball, is accurate according to the notes.
+
+### query
+Craig Heyer college baseball College of Southern Nevada University of Nevada Las Vegas Clark County Nevada location and teams
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['College of Southern Nevada', 'Craig Heyer']. Documents remaining to be retrieved: ['Clark County, Nevada'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The town is administered by the Eurobodalla Shire council. It is located near Higgin's Creek and Deua National Park.
+
+### notes
+['Several towns like Batemans Bay, Moruya, Mogo, Bodalla, and Rosedale are administered by the Eurobodalla Shire council.', 'Deua National Park is near coastal towns such as Batemans Bay, Moruya, and Narooma within the Eurobodalla Shire region.', "Higgin's Creek is not mentioned in the context in connection with any town or the Eurobodalla Shire council.", 'Several towns including Moruya, Mogo, Batemans Bay, Bodalla, and South Durras are administered by the Eurobodalla Shire council.', 'Deua National Park is situated near coastal towns within the Eurobodalla Shire region such as Batemans Bay, Moruya, and Narooma.', "Higgin's Creek is not referenced in available information related to towns or the Eurobodalla Shire council.", 'The town is administered by the Eurobodalla Shire council if it is one of the towns such as Moruya, Mogo, Batemans Bay, Bodalla, or South Durras.', 'Deua National Park is near the coastal towns Batemans Bay, Moruya, and Narooma in the Eurobodalla Shire region.', "Higgin's Creek is not mentioned in the available context in connection with any town near Eurobodalla or the council."]
+
+## Generated Outputs
+### reasoning
+The claim states that the town is administered by the Eurobodalla Shire council and located near Higgin's Creek and Deua National Park. The notes confirm that multiple towns like Batemans Bay, Moruya, Mogo, Bodalla, and others are administered by the Eurobodalla Shire council. Deua National Park is indeed near certain coastal towns within Eurobodalla Shire such as Batemans Bay, Moruya, and Narooma. However, there is no mention or connection of Higgin's Creek with any town or the Eurobodalla Shire in the notes. To verify the claim, we need to check specifically if there is any town administered by Eurobodalla Shire council near Higgin's Creek and near Deua National Park, and also verify the existence and location of Higgin's Creek in relation to the Eurobodalla Shire.
+
+### query
+Is Higgin's Creek located near any town administered by Eurobodalla Shire council, and is it near Deua National Park? Towns administered by Eurobodalla Shire council near Higgin's Creek and Deua National Park location
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Batemans Bay', 'Deua National Park']. Documents remaining to be retrieved: ['Cortinarius kioloensis'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Austrian Poet-Dliplomat who also won the Nobel Prize in Literature, and Alan Sillitoe were both writers.
+
+### notes
+['Alan Sillitoe is a known British writer.', 'The Austrian poet-diplomat who won the Nobel Prize in Literature is not named explicitly, but notable Austrian laureate includes Elias Canetti.', 'Poet-diplomats who won the Nobel Prize include Pablo Neruda and others, but no Austrian was explicitly mentioned in the provided context.', 'Alan Sillitoe is a British writer known for his literary works.', 'There is no definitive evidence in the provided context identifying an Austrian poet-diplomat who won the Nobel Prize in Literature.', 'Elias Canetti, an Austrian Nobel laureate in Literature, was not a diplomat.', 'Nobel laureates listed as poet-diplomats do not include any Austrian national in the context provided.', 'The claim that both the Austrian poet-diplomat Nobel laureate and Alan Sillitoe were writers holds true since both are literary figures.', 'Alan Sillitoe is confirmed as a British writer.', 'No Austrian poet-diplomat who won the Nobel Prize in Literature is identified in the context.', 'Elias Canetti was an Austrian Nobel laureate but not a diplomat.', 'Notable poet-diplomat Nobel laureates like Pablo Neruda and Saint-John Perse are not Austrian.', 'Carolina Schutti is an Austrian writer but not a Nobel laureate or diplomat.', 'The claim that both the Austrian poet-diplomat Nobel laureate and Alan Sillitoe were writers is partially true: both are writers, but the Austrian poet-diplomat Nobel laureate identification is inaccurate.']
+
+## Generated Outputs
+### reasoning
+The claim states that an Austrian poet-diplomat who won the Nobel Prize in Literature and Alan Sillitoe were both writers. The notes confirm Alan Sillitoe as a British writer but do not explicitly identify the Austrian poet-diplomat Nobel laureate. Elias Canetti is noted as an Austrian Nobel laureate but not necessarily a poet-diplomat. Since the claim requires verification that such an Austrian poet-diplomat Nobel laureate exists and that both he and Sillitoe are writers, the query should specifically seek information on Austrian Nobel laureates in Literature who were poet-diplomats and confirm Alan Sillitoe’s status as a writer.
+
+### query
+Who was the Austrian poet-diplomat who won the Nobel Prize in Literature, and is Alan Sillitoe confirmed as a writer?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Poet-diplomat']. Documents remaining to be retrieved: ['Alan Sillitoe', 'Gabriela Mistral'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

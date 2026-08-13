@@ -1,0 +1,58 @@
+```
+You will be provided with two input fields:
+
+- `claim`: a statement containing one or more factual assertions involving named entities, events, dates or time frames, roles/professions/relationships, geographic or comparative properties, or works such as films or TV shows.
+- `notes`: a list of textual snippets that serve as background, partial evidence, or contextual details relevant to verifying or refuting the `claim`. These notes often include clarifications on names, dates, roles, related works, or other specifics linked to the entities in the claim.
+
+Your task is to produce a single output field:
+
+- `query`: a natural-language question or set of related questions designed explicitly to verify or refute the factual elements of the claim by retrieving targeted evidence.
+
+**Key requirements and strategies for formulating the `query`:**
+
+1. **Identify and isolate key factual components:**  
+   Extract from the claim the critical elements necessary for verification, such as:
+   - Named persons, their roles or professions
+   - Titles of works (films, TV shows, events)
+   - Temporal markers (specific years, sequences of events)
+   - Geographic or comparative assertions (e.g., size comparisons between countries)
+   - Relationships between entities (co-workers, co-creators, actor-to-film links)
+
+2. **Leverage the notes to clarify, disambiguate, and ground your query:**  
+   Use the information in `notes` to:
+   - Confirm or clarify the exact form of entity names, roles, or work titles (e.g., including release years or alternate titles)  
+   - Resolve potential ambiguities in temporal ordering or overlapping roles  
+   - Identify any relevant additional facts or standardize terminology that appeared in the claim to ensure the query is precise and contextually grounded
+
+3. **Formulate comprehensive yet concise questions that:**
+   - Combine multiple linked parts of the claim into coordinated questions that cover all necessary points in one query or closely connected set of questions  
+   - Reflect the temporal or logical sequence implied in the claim (e.g., "Did Event A occur before Actor X appeared in Work B?")  
+   - Address comparative or relational statements explicitly  
+   - Avoid extraneous or irrelevant details that do not bear on verifying the claim
+
+4. **Domain-specific knowledge to incorporate:**
+   - For claims involving coining of terms or scholarly collaboration, confirm who coined what with whom and their professions  
+   - For claims involving film or TV credits, specify the composer, actor, or director’s association with particular titled works along with relevant release or airing years  
+   - For verifying actor appearances across works, clarify the identity of the actor linked to one work and whether they appeared in others in the stated years  
+   - For music composition claims, isolate the first work scored by a composer and verify their involvement in other works where relevant actors also appeared  
+   - Include precise role descriptors (e.g., “lead role,” “star,” “composer”) when available to aid specificity
+
+5. **General reasoning approach:**
+   - Parse the claim to identify all factual assertions needing confirmation  
+   - Extract from the notes any supporting or clarifying evidence on these assertions  
+   - Link these pieces logically into questions that, if answered, can collectively confirm or deny the entire claim  
+   - When multiple entities or events are involved, ensure the query addresses their relationships or sequences clearly and explicitly
+
+**Example of the type of query expected:**
+
+- For a claim about two people sharing a profession linked to coining a term:  
+  "Who co-coined the term 'exaptation' with Elisabeth Vrba, and what is that person's profession? What is Ann Beattie's profession, and does it match the co-coiner's profession?"
+
+- For a claim about composer credits and actor appearances:  
+  "Who composed the soundtrack for 'Veyyil,' and was it their first film as composer? Did this composer also score the film(s) featuring Ashrita Shetty?"
+
+- For verifying an actor's work history across multiple shows and a film:  
+  "Who starred in the 2012 film 'Fairhaven'? Did that actor appear in 'Studio 60 on the Sunset Strip' in 2007 and in 'American Horror Story' in 2014?"
+
+By following these guidelines, your queries will be well targeted to retrieve facts that verify or refute the provided claim, ensuring clarity, completeness, and precision grounded in the relevant contextual details from the notes.
+```

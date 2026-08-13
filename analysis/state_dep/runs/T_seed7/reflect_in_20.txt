@@ -1,0 +1,110 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You are given two input fields: `claim` (a complex factual or comparative statement involving entities, events, or attributes) and `notes` (a list of factual, contextual, or background information relevant to the claim).
+
+Your task is to produce a single output field, `query`, which is a well-formed, concise, and factually targeted set of questions designed to retrieve or verify the core pieces of factual information necessary to assess the truthfulness of the `claim`. The questions should be:
+
+1. Directly derived from the logical structure of the `claim`, addressing each component or relationship expressed in it.
+2. Fact-oriented, aiming to identify relevant entities, properties, relationships, or events that need to be verified.
+3. Specific enough to pinpoint relevant authoritative documents or data sources that can confirm or refute the `claim`.
+4. Inclusive of all key elements from the claim that require evidence, such as names of people, films, songs, bands, dates, geography, or attributes referenced.
+5. Clear, unambiguous, and suitable for querying a factual knowledge base or search engine.
+6. Where comparative or relational claims are made (e.g., "is X from a smaller country than Y?"), questions should explicitly reflect those comparisons.
+
+Use the `notes` to understand domain context and to identify authoritative names, works, titles, or facts that appear repeatedly and are relevant to formulating the query. The `notes` may contain background or clarifications about entities, dates, memberships, or any relevant fact.
+
+General approach:
+- First, identify all key entities mentioned in the claim (e.g., individuals, bands, films, songs, places).
+- Identify the relationships or properties attributed to those entities in the claim.
+- For claims involving sequences or time (e.g., "final film", "acted in 1970"), ask about relevant chronological facts.
+- For contradictory or negative claims (e.g., "is not a member", "no evidence exists"), design questions to verify membership or involvement.
+- Formulate the query as one or more simple, factual questions aimed at retrieving data needed to prove or disprove the claim in full.
+
+Finally, your output should only contain the single field `query` with these constructed questions.
+
+Example (based on understanding from given examples):
+
+Claim: "Director Robert Stevenson was from a geographically smaller country than another director. That director directed his final film Romance of Astree and Celadon."
+
+Generated query:  
+"Was Robert Stevenson from a geographically smaller country than Éric Rohmer, who directed the final film Romance of Astree and Celadon?"
+
+This reflects the two-step fact verification needed: country size comparison and film direction.
+
+Remember: The goal is to craft a question or set of questions that, when answered, directly enable verifying the entire claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The Manchester United Football Club is known as "the Red Devils". The goalie who led the strike force for the 1928–29 Leicester City F.C. season played for them.
+
+### notes
+['Manchester United Football Club is nicknamed "the Red Devils".', 'The 1928–29 Leicester City F.C. strike force consisted of forwards Ernie Hine, Arthur Chandler, Arthur Lochhead, and captain Johnny Duncan.', "No information indicates that a goalkeeper led Leicester City's strike force in 1928–29 or that such a goalkeeper later played for Manchester United.", "Manchester United Football Club is nicknamed 'the Red Devils'.", 'The 1928–29 Leicester City F.C. strike force consisted of forwards Ernie Hine, Arthur Chandler, Arthur Lochhead, and captain Johnny Duncan.', "There is no information indicating that a goalkeeper led Leicester City's strike force in 1928–29 or that such a goalkeeper later played for Manchester United.", "Manchester United Football Club is nicknamed 'the Red Devils'.", 'The 1928–29 Leicester City F.C. strike force consisted of forwards Ernie Hine, Arthur Chandler, Arthur Lochhead, and captain Johnny Duncan; no goalkeeper led this strike force.', "There is no information indicating that a goalkeeper who led Leicester City's strike force in 1928–29 played for Manchester United."]
+
+## Generated Outputs
+### reasoning
+The claim makes two statements: first, that Manchester United Football Club is known as "the Red Devils," and second, that the goalie who led the strike force for Leicester City F.C. in the 1928–29 season also played for Manchester United. To assess the entire claim's truthfulness, it is necessary to verify: (1) whether Manchester United is indeed known as "the Red Devils," and (2) identify the goalie who led the strike force for Leicester City during the 1928–29 season and check if that player ever played for Manchester United.
+
+### query
+Is Manchester United Football Club commonly known as "the Red Devils"? Who was the goalie for Leicester City F.C. during the 1928–29 season described as leading the strike force? Did that goalie ever play for Manchester United Football Club?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['1928–29 Leicester City F.C. season', 'Manchester United F.C.']. Documents remaining to be retrieved: ['Ernie Hine'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Jay Park left the South Korean music group that Jay Park is a part of, before the release of the group's DVD called "Take Off".
+
+### notes
+['"Ultra Lover" is the third Japanese single by South Korean boy band 2PM, released along with the group\'s second live DVD \'1st Japan Tour 2011 "Take Off"\'.', "The DVD 'Take Off' by 2PM was released after Jay Park left the group.", 'Jay Park was a member of the South Korean boy band 2PM before his departure.', 'Jay Park was a member and former leader of the South Korean boy band 2PM who officially left the group in early 2010.', 'The live DVD \'1st Japan Tour 2011 "Take Off"\' by 2PM was released in 2011, after Jay Park\'s departure.', "The DVD 'Take Off' is associated with 2PM and was released post Jay Park's exit from the group.", 'Jay Park was a member and former leader of the South Korean boy band 2PM who officially left the group in early 2010.', 'The live DVD \'1st Japan Tour 2011 "Take Off"\' by 2PM was released in 2011, after Jay Park\'s departure.', '\'Take Off\' is a debut Japanese single by 2PM released in May 2011, associated with the DVD \'1st Japan Tour 2011 "Take Off"\'.']
+
+## Generated Outputs
+### reasoning
+The claim states that Jay Park left the South Korean music group he was part of before the release of the group's DVD titled "Take Off." Notes show that the group is 2PM, that "Take Off" is a DVD released after Jay Park left, and that Jay Park was a member of 2PM before his departure. This confirms that Jay Park left 2PM prior to the release of "Take Off." To fully verify the claim, the focus should be on the timing of Jay Park’s departure relative to the DVD's release and his membership in 2PM.
+
+### query
+Did Jay Park leave the South Korean boy band 2PM before the release of the group's DVD titled "Take Off"?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['2PM', 'Ultra Lover']. Documents remaining to be retrieved: ['Go Crazy (album)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The actor who starred in a main role on A Lua Me Disse received the Golden Globe nomination for playing the lead role of "The King of Cocaine".
+
+### notes
+["'A Lua Me Disse' is a 2005 Brazilian telenovela starring Adriana Esteves and Wagner Moura in the main roles.", "Adriana Esteves and Wagner Moura are the main actors of 'A Lua Me Disse'.", "None of the provided Golden Globe nominations mentioned relate to actors from 'A Lua Me Disse' nor to a lead role called 'The King of Cocaine'.", 'A Lua Me Disse is a 2005 Brazilian telenovela starring Adriana Esteves and Wagner Moura in the main roles.', 'None of the provided Golden Globe nominations mentioned relate to actors from A Lua Me Disse nor to a lead role called The King of Cocaine.', 'A Lua Me Disse is a 2005 Brazilian telenovela starring Adriana Esteves and Wagner Moura in the main roles.', 'Wagner Moura is a Brazilian actor known for playing the lead role of Pablo Escobar in the Netflix series Narcos, for which he received a Golden Globe nomination.', "Pablo Escobar is widely known as 'The King of Cocaine', linking Wagner Moura's role to this title.", "None of the Golden Globe nominations relate to actors from A Lua Me Disse except Wagner Moura's nomination for Narcos."]
+
+## Generated Outputs
+### reasoning
+The claim involves two main points that must be verified together: 
+1. Identification of the actor who starred in a main role on the show or movie titled "A Lua Me Disse".
+2. Verification that this same actor received a Golden Globe nomination for playing the lead role called "The King of Cocaine".
+
+To verify this claim, it is necessary to first find out who played a main role on "A Lua Me Disse". Then, it should be determined if this actor was nominated for a Golden Globe for portraying a lead role known as "The King of Cocaine". Both conditions must be satisfied by the same actor for the claim to be true.
+
+### query
+Who starred in a main role on "A Lua Me Disse"? Did this actor receive a Golden Globe nomination for playing the lead role of "The King of Cocaine"? If so, what is the name of the actor?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['A Lua Me Disse', 'Wagner Moura']. Documents remaining to be retrieved: ['Pablo Escobar'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,118 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Instruction:
+
+You will be given two fields as input: `claim` and `notes`. Your task is to produce a `query` field that formulates a precise, entity- and relationship-centric question or set of questions designed to retrieve or verify the specific evidence needed to validate or refute the claim.
+
+Input Format:
+- `claim`: A factual or verification statement involving one or more entities (such as people, places, dates, works, relationships, roles, events, teams, or hierarchical geopolitical locations) whose truthfulness must be verified.
+- `notes`: A collection of factually relevant information snippets ("sources" or "documents") related to the entities, events, or related claims in the `claim`. These notes provide partial or complete candidate evidence but may not be comprehensive.
+
+Goal:
+Your goal is to synthesize the essential verification needs by linking relevant entities, roles, events, timeframes, or relationships expressed or implied in the claim into a well-crafted, focused query or queries. The queries should direct retrieval efforts to the exact authoritative or “gold standard” documents needed to verify or disconfirm the claim in its entirety.
+
+Key Requirements and Guidelines:
+
+1. Entity and Relationship Explicitness:
+   - Explicitly mention all relevant entities from the claim (e.g., names of people, teams, movies, locations) using their canonical, domain-specific spellings.
+   - Explicitly encode relationships and qualifiers appearing or implied in the claim, such as family ties, professional roles (e.g., director, coach, judge), hierarchical jurisdiction (e.g., county within city within province within country), or event participation.
+   - When multiple entities appear with specific interconnections (e.g., family relationships between actors, co-directors, or a trainer-coach-player relationship), explicitly include these to disambiguate or clarify the fact patterns.
+
+2. Domain-Specific Knowledge to Integrate:
+   - Geopolitical entities often reflect hierarchical administrative geography (e.g., counties under cities within a province and country). Queries should clarify these hierarchies when relevant.
+   - Entertainment industry relations include cast/crew roles in films or shows, family relationships among actors, and relationships between producers, singers, and shows.
+   - Sports and biographical domains may require verifying titles, teams coached, quotes attributed, ethnicity or nationality (e.g., Native American status), and athletic achievements (e.g., medals by sport and event).
+   - Use official titles, production years, and other qualifiers in film/TV/music to ensure precise targeting of evidence (e.g., "Bombay Talkie (1970)" not just "Bombay Talkie").
+
+3. Query Construction Principles:
+   - Formulate queries as clear, focused, and unambiguous questions that explicitly seek to confirm or deny key claims.
+   - If the notes lack direct evidence, queries should be designed to retrieve missing key information such as official credits lists, verified quotes, identity of individuals (e.g., naming the co-director), role assignments (e.g., judges on a show), and familial or ethnic relationships.
+   - Queries may be composed of multiple related questions that collectively cover the claim’s verification needs.
+   - Avoid vague, overly broad, or generic queries that do not connect or disambiguate entities and relationships explicitly.
+   - Where potential for confusion exists (e.g., multiple persons with similar names or ambiguous place names), queries must include disambiguating qualifiers (like locations, dates, or roles).
+
+4. Examples of Query Quality:
+   - Correctly includes key entities and their relevant roles.
+   - Explicitly asks for relational or hierarchical facts when needed.
+   - Separates or links multiple verification angles in distinct, precise sub-questions when the claim is compound.
+   - Uses domain-specific terminology and canonical spellings as provided.
+
+5. Additional Task Context Observations:
+   - When verifying claims related to film/TV casts and crews, always ask for complete or official cast/crew lists for the named productions with roles identified.
+   - For familial relationship claims in entertainment, verify both individuals' identities and their claimed relationships explicitly.
+   - For sports-related claims involving awards/medals, specify the athlete, event, sport, nationality/ethnicity, and exact accolade to allow precise verification.
+   - For geopolitical claims, ask about the administrative hierarchy and whether two or more locations are in the same or different jurisdictions, specifying country and province/state.
+
+In summary, your output `query` must synthesize a focused, comprehensive information request embodying all essential elements—entities, roles, relationships, temporal or jurisdictional qualifiers—needed to retrieve the authoritative evidence to fully confirm or refute the claim. The queries you produce will be used to identify gold-standard documents, so precision, explicitness, and completeness are crucial.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The band who had King ov Hell as a member are based in the Norwegian county Hordaland.
+
+### notes
+['King ov Hell was a member of multiple Norwegian bands, including Sahg and God Seed, both of which are based in Bergen, the principal city in the county of Hordaland.', 'Sahg is explicitly stated to be formed in Bergen in 2004, confirming its base in Hordaland.', "God Seed is also described as a Norwegian black metal band based in Bergen, further supporting that King ov Hell's bands are based in Hordaland.", 'Although Ov Hell is a Norwegian band co-founded by King ov Hell, its exact base location is not specified in the context.', 'King ov Hell was a member of the Norwegian bands Sahg and God Seed, both of which are based in Bergen, the principal city of Hordaland county, confirming that these bands are based in Hordaland.', 'Although King ov Hell co-founded Ov Hell, the band’s exact base location is not specified in the given context and thus cannot be confirmed as based in Hordaland.', 'King ov Hell was a member of the Norwegian bands Sahg and God Seed, both of which are based in Bergen, the principal city of the Norwegian county Hordaland.', 'Sahg was formed in Bergen in 2004, confirming its base in Hordaland.', 'God Seed is described as a Norwegian black metal band based in Bergen, further supporting that bands King ov Hell was part of were based in Hordaland.', 'King ov Hell also co-founded the band Ov Hell, but the base location of Ov Hell is not specified in the available context and therefore cannot be confirmed as based in Hordaland.']
+
+## Generated Outputs
+### reasoning
+The claim involves identifying a band that included King ov Hell as a member and determining the geographical base of this band, specifically whether it is located in Hordaland, a county in Norway. To verify this claim, we need to ascertain two key pieces of information: 1) Which band or bands had King ov Hell as a member, and 2) the Norwegian county or location where this band is based or originated from, with particular focus on confirming if it is in Hordaland county. This requires clarifying King ov Hell's musical affiliations and the geographical base of those bands within Norway's administrative divisions.
+
+### query
+Which bands have King ov Hell as a member? For each band identified, what is the specific Norwegian county in which it is based or originated? Is any band with King ov Hell as a member based in the Norwegian county of Hordaland?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['King ov Hell']. Documents remaining to be retrieved: ['Bergen', 'Gorgoroth'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The  Vines' frontman wrote the song "Get Free". He and Boy George are not both from the same country.
+
+### notes
+['The song "Get Free" was written by Craig Nicholls, the frontman of Australian garage rock band The Vines.', 'Craig Nicholls of The Vines is Australian, while Boy George is British, confirming they are not from the same country.', 'The song "Get Free" was written by Craig Nicholls, the frontman of the Australian rock band The Vines.', 'Craig Nicholls is Australian, whereas Boy George is British, confirming that they are not from the same country.', 'The song "Get Free" was written by Craig Nicholls, the frontman of the Australian rock band The Vines.', 'Craig Nicholls is Australian, while Boy George is British, confirming that they are not from the same country.']
+
+## Generated Outputs
+### reasoning
+To verify this claim, we need to establish the identity of The Vines' frontman and confirm that he wrote the song "Get Free". Furthermore, to check the nationality relationship, we need to identify the countries of origin or nationality of both The Vines' frontman and Boy George. The claim states that they are not both from the same country, so we need to verify their respective countries of origin. This requires determining: 1) the full name of The Vines' frontman and songwriter of "Get Free", 2) the nationality or country of origin of The Vines' frontman, 3) the nationality or country of origin of Boy George, and 4) confirming whether these two nationalities are different.
+
+### query
+Who is the frontman of The Vines, and did he write the song "Get Free"? What is the country of origin or nationality of The Vines' frontman? What is the country of origin or nationality of Boy George? Are The Vines' frontman and Boy George from different countries?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Craig Nicholls', 'Get Free']. Documents remaining to be retrieved: ['Boy George'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Goodbye Mr. Mackenzie is a country band with more members than the band that recorded "Make Them Gold".
+
+### notes
+['Goodbye Mr. Mackenzie is a Scottish alternative rock band, not a country band.', 'The band had six members at its commercial peak.', '"Make Them Gold" is a song by Scottish synthpop band Chvrches, which typically has three members.', 'Goodbye Mr. Mackenzie has more members than Chvrches, the band that recorded "Make Them Gold".', 'Goodbye Mr. Mackenzie is a Scottish alternative rock band, not a country band.', 'At its commercial peak, Goodbye Mr. Mackenzie had six members.', '"Make Them Gold" is a song by Scottish synthpop band Chvrches, which has three members.', 'Goodbye Mr. Mackenzie has more members than Chvrches, the band that recorded "Make Them Gold".', 'Goodbye Mr. Mackenzie is a Scottish alternative rock band, not a country band.', 'At its commercial peak, Goodbye Mr. Mackenzie had six members.', '"Make Them Gold" is a song by Scottish synthpop band Chvrches, which has three members.', 'Goodbye Mr. Mackenzie has more members than Chvrches, the band that recorded "Make Them Gold".']
+
+## Generated Outputs
+### reasoning
+The claim states that Goodbye Mr. Mackenzie is a country band with more members than the band that recorded "Make Them Gold." However, the notes clarify that Goodbye Mr. Mackenzie is actually a Scottish alternative rock band, not a country band. The notes also state that Goodbye Mr. Mackenzie had six members and that "Make Them Gold" was recorded by Chvrches, a Scottish synthpop band with typically three members. The notes affirm that Goodbye Mr. Mackenzie has more members than Chvrches. Therefore, the inaccuracy in the claim pertains to the genre designation of Goodbye Mr. Mackenzie as a country band. To fully verify or refute the claim, it is necessary to confirm the genre classification of Goodbye Mr. Mackenzie, the number of members in Goodbye Mr. Mackenzie, the number of members in the band that recorded "Make Them Gold" (Chvrches), and whether Goodbye Mr. Mackenzie indeed has more members than Chvrches.
+
+### query
+Is Goodbye Mr. Mackenzie officially classified as a country band or as an alternative rock band? How many members does Goodbye Mr. Mackenzie have? What band recorded the song "Make Them Gold"? How many members are in that band? Does Goodbye Mr. Mackenzie have more members than the band that recorded "Make Them Gold"?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Goodbye Mr. Mackenzie', 'Make Them Gold']. Documents remaining to be retrieved: ['Chvrches'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

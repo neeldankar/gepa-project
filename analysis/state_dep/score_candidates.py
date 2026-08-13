@@ -45,7 +45,13 @@ TEST = os.path.join(HERE, "test_split.json")
 sys.path.insert(0, HERE)
 
 M = 0.004543
-SPEND_CAP = 6.00  # per run dir; a run's post-pass is ~$3-4.5
+# Per run dir. Raised 6.00 -> 8.00 on 2026-08-10: M below is the stale $0.004543 fit, but the 8
+# live §8b runs measure $0.005897/call (and the smoke measured $0.006121, plan.md:205). At that
+# rate the 14-candidate arm-B dirs (850 calls) project to $5.01-$5.20, leaving only 13-20% under a
+# $6.00 cap -- and tripping it raises RuntimeError and discards that dir's completed work. $8.00
+# gives 35-38%. M itself is NOT re-fitted here: it feeds the pre-spend projection printed at :183,
+# where under-estimating is the loud failure and over-estimating is the silent one.
+SPEND_CAP = 8.00
 MAX_METRIC_CALLS = 300  # must match run_state_dep.MAX_METRIC_CALLS; asserted against config.json
 
 
@@ -75,7 +81,8 @@ def run_dirs(one: str | None) -> list[str]:
     )
 
 
-def process(d: str, ev, dspy, probe, base, lm, sel, test, want_midpoint: bool) -> dict:
+def process(d: str, ev, dspy, probe, base, sel, test, want_midpoint: bool,
+            workers: int) -> dict:
     g = json.load(open(os.path.join(d, "gepa_result.json")))
     cands = g["program_candidates"]
     discovery = g["num_metric_calls_by_discovery"]
@@ -84,6 +91,13 @@ def process(d: str, ev, dspy, probe, base, lm, sel, test, want_midpoint: bool) -
         f"{d}: run used max_metric_calls={cfg['max_metric_calls']}, midpoint rule assumes "
         f"{MAX_METRIC_CALLS}")
 
+    # A FRESH LM PER RUN DIR, NOT ONE SHARED ACROSS THEM. Meter.spend() sums the whole of
+    # lm.history (eval_split.py:121-127), and a new Meter does not reset that history -- so a
+    # shared LM makes every dir after the first report its predecessors' spend as its own, trips
+    # SPEND_CAP (documented at :48 as PER RUN DIR) partway through dir 2, and past ~10k calls
+    # silently undercounts as dspy's max_history_size window rolls over. A per-dir LM makes all
+    # three correct by construction. Costs nothing: the LM object is a client handle, not a session.
+    lm = ev.open_task_lm(dspy)
     meter = ev.Meter(lm, probe, SPEND_CAP)
     ck = os.path.join(d, "selection_scores.json")
     if os.path.exists(ck):
@@ -92,7 +106,7 @@ def process(d: str, ev, dspy, probe, base, lm, sel, test, want_midpoint: bool) -
     else:
         per_cand = []
         for i, c in enumerate(cands):
-            r = ev.score_candidate(dspy, probe, base, c, sel, lm, meter)
+            r = ev.score_candidate(dspy, probe, base, c, sel, lm, meter, workers)
             per_cand.append(r)
             print(f"    cand {i:>2}/{len(cands) - 1}  sel_mean={r['mean']:.4f}  "
                   f"${meter.spend():.3f}  {r['elapsed_s']}s", flush=True)
@@ -106,7 +120,7 @@ def process(d: str, ev, dspy, probe, base, lm, sel, test, want_midpoint: bool) -
     vagg = [sum(x.values()) / len(x) if x else float("-inf") for x in subs]
     vbest, vties = ev.argmax_lowest_index(vagg)
 
-    endpoint = ev.score_candidate(dspy, probe, base, cands[best], test, lm, meter)
+    endpoint = ev.score_candidate(dspy, probe, base, cands[best], test, lm, meter, workers)
     out = {
         "run": os.path.basename(d),
         "arm": cfg["arm"], "seed": cfg["seed"], "smoke": cfg.get("smoke", False),
@@ -139,7 +153,7 @@ def process(d: str, ev, dspy, probe, base, lm, sel, test, want_midpoint: bool) -
         "test_evaluated": False,
     }
     if want_midpoint:
-        mid = ev.score_candidate(dspy, probe, base, cands[mid_idx], test, lm, meter)
+        mid = ev.score_candidate(dspy, probe, base, cands[mid_idx], test, lm, meter, workers)
         out["midpoint"].update(test_mean=mid["mean"], test_scores=mid["scores"],
                                test_evaluated=True)
 
@@ -158,6 +172,10 @@ def main() -> int:
     ap.add_argument("--all", action="store_true")
     ap.add_argument("--midpoint", action="store_true")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--workers", type=int, default=None,
+                    help="per-candidate evaluation threads (default eval_split.WORKERS = 8, the "
+                         "profile the smoke proved at 0 backoffs). Concurrency across runs is "
+                         "bought with processes instead -- see supervisor.py --score.")
     a = ap.parse_args()
     if not (a.run or a.all):
         ap.error("pick --run DIR or --all")
@@ -200,10 +218,15 @@ def main() -> int:
     import eval_split as ev
     sel, test = ev.load_split(SELECTION), ev.load_split(TEST)
     dspy, probe = ev.bootstrap()
-    lm = ev.open_task_lm(dspy)
     base = ev.build_program(dspy, probe)
 
-    rows = [process(d, ev, dspy, probe, base, lm, sel, test, a.midpoint) for d in dirs]
+    workers = a.workers if a.workers else ev.WORKERS
+    if workers != ev.WORKERS:
+        print(f"  workers         : {workers}  (NOT the proven {ev.WORKERS} — eval_split has no "
+              f"backoff counter; litellm retries invisibly)")
+
+    # No shared LM here on purpose -- process() opens its own per run dir. See the comment there.
+    rows = [process(d, ev, dspy, probe, base, sel, test, a.midpoint, workers) for d in dirs]
 
     n_diff = sum(1 for r in rows if not r["agrees_with_val_argmax"])
     n_seed = sum(1 for r in rows if r["sel_returned_seed_prompt"])

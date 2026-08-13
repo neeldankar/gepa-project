@@ -1,0 +1,134 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:  
+You will be provided with three inputs:  
+- `claim`: a sentence or set of sentences making an assertion or statement involving entities such as people, places, films, bands, or institutions.  
+- `notes`: a list of candidate supporting or related sentences (extracted document snippets) that may contain relevant factual information supporting or contradicting the claim. These notes often contain partial or overlapping details from different sources.  
+- `context`: a list of full document descriptions or summaries (e.g., Wikipedia-style descriptions) corresponding to entities relevant to the claim. These contain detailed factual information, often including dates, attributes, relations, and descriptive metadata.
+
+Your task is:  
+Using the `claim`, `notes`, and `context`, synthesize and produce two outputs:  
+1. `new_notes`: a concise, high-quality subset of the `notes` that best support or contextualize the claim, filtered and summarized for relevance and precision. Remove duplicates or redundant information, keeping the clearest and most pertinent sentences.  
+2. `titles`: a list of document or entity titles selected from the `context` that are the most relevant to the claim and the selected notes — these represent key knowledge sources backing your reasoning.
+
+Key Domain-Specific and Task-Specific Considerations:  
+- Entities involved are often specific to niche domains such as geography (counties, colleges), sports (players, teams), music (bands, albums, songs, members), and movies (films, characters, genres, production information).  
+- Claims typically involve verifying or clarifying factual relationships, memberships, character roles, or comparisons between entities based on the provided information.  
+- The context can include detailed biographical data, film descriptions, band lineups, and institutional overviews; all are valuable for verifying the claim's details.  
+- Notes may contain subtle variations or partially redundant information; select those that are factually accurate, precise, and best aligned with the claim.  
+- Titles should include all major relevant documents/entities (e.g., people, place, institution, film titles) necessary to understand or support the claim fully.  
+- If some relevant gold-standard (expected) documents are missing, include them if evident from the context and claim to improve coverage.  
+- Clearly identify and exclude irrelevant or unsupported information (e.g., when none of the context concerns a particular entity in the claim).  
+
+Recommended Strategy:  
+- Read the claim carefully to identify all key entities and relationships.  
+- Review the `notes` to find and select those notes that directly support or refute these entities or their relationships as stated in the claim. Summarize or deduplicate where needed.  
+- Scan the `context` to identify documents (articles) about key entities mentioned in the claim or notes, ensuring comprehensive coverage of relevant information.  
+- Include these document titles in the `titles` output.  
+- Be cautious of incomplete or missing information about mentioned entities; reflect this in `new_notes` if necessary by noting the lack of information.  
+- The goal is to create a factually accurate and relevant set of notes and titles to support verifying or understanding the claim thoroughly.  
+- The outputs are intended to support further validation, so clarity, relevance, and completeness with respect to the claim are paramount.
+
+Output Format Requirements:  
+Produce JSON-like outputs with two fields:  
+- `new_notes`: list of strings (concise, factually accurate, non-duplicative notes selected or synthesized from the input `notes`)  
+- `titles`: list of strings (document/entity titles from the `context` that are essential to support or understand the claim)  
+
+Example:  
+If the claim involves a baseball player and colleges in a county, the `new_notes` should succinctly say which colleges are in the county and which colleges the player attended; `titles` should include the player's bio, the colleges, and the county.
+
+This precise and domain-aware approach best reflects your role in synthesizing and filtering relevant information for claim verification or knowledge retrieval tasks.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The sport of tennis is played by both Texas native Angelique Kerber and the player who was the defending champion, who competed, for the 2005 China Open – Men's Doubles.
+
+### notes
+['Angelique Kerber is a German professional tennis player and former world No. 1 who has been a defending champion at multiple tennis tournaments.', 'Kerber began her professional career in 2003 and has won multiple WTA singles titles.', 'There is no information linking Angelique Kerber to Texas or indicating that she is a Texas native.', "There is no information available about the defending champion for the 2005 China Open – Men's Doubles or their connection to the sport of tennis.", 'Angelique Kerber is a German professional tennis player and former world No. 1 with no indication she is a Texas native.', "Justin Gimelstob was the defending champion in the 2005 China Open – Men's Doubles, where he successfully defended his title.", 'Both Angelique Kerber and Justin Gimelstob are professional tennis players who have competed in major tournaments.', 'Angelique Kerber is a German professional tennis player and former world No. 1 with no indication she is a Texas native.', "Justin Gimelstob was the defending champion in the 2005 China Open – Men's Doubles, where he successfully defended his title.", 'Both Angelique Kerber and Justin Gimelstob are professional tennis players who have competed in major tournaments.']
+
+### context
+['2016 Angelique Kerber tennis season | The 2016 Angelique Kerber tennis season officially began on 5 January with the start of the 2016 Brisbane International.  Kerber entered the season as the number 10 ranked player and the defending champion at four tournaments.', '2010 Copa BBVA-Colsanitas – Singles | María José Martínez Sánchez was the defending champion, but chose to compete in the 2010 Dubai Tennis Championships instead. Mariana Duque Mariño won in the final 6–4, 6–3, against Angelique Kerber.', '2016 Porsche Tennis Grand Prix – Singles | Angelique Kerber was the defending champion and successfully defended her title, defeating Laura Siegemund in the final, 6–4, 6–0.', "2013 Sony Open Tennis – Men's Doubles | Leander Paes and Radek Štěpánek were the defending champions, but did not compete as a team this year.", 'Angelique Kerber | Angelique Kerber (] ; born 18 January 1988) is a German professional tennis player and former world No. 1.  Having made her professional debut in 2003, Kerber rose to prominence upon reaching the semifinals of the 2011 US Open as the no. 92 ranked player in the world.  She ascended to the top of the rankings on 12 September 2016, thus becoming the twenty-second and oldest player to achieve the number one ranking for the first time and the first new number one player since Victoria Azarenka in 2012.', 'Angelique Kerber career statistics | This is a list of the main career statistics of German professional tennis player, Angelique Kerber.  To date, Kerber has won ten WTA singles titles including two grand slam singles titles at the 2016 Australian Open and 2016 US Open and at least one title on each playing surface (hard, clay and grass).  She was also the runner-up at the 2016 Wimbledon Championships and a Silver medalist at the 2016 Rio de Janeiro Olympics.  Kerber became the world No. 1 for the first time in her career on 12 September 2016.', "2005 China Open – Men's Doubles | Justin Gimelstob and Graydon Oliver were the defending champions, but Oliver did not participate this year.  Gimelstob partnered Nathan Healey and successfully defended his title.", '2012 e-Boks Open – Singles | Caroline Wozniacki was the defending champion, but lost to Angelique Kerber 6–4, 6–4 in the final.', '2011 HP Open – Singles | Tamarine Tanasugarn was the defending champion, but lost to Angelique Kerber in the quarterfinals.', '2017 Monterrey Open – Singles | Heather Watson was the defending champion, but lost in the quarterfinals to Angelique Kerber.']
+
+## Generated Outputs
+### reasoning
+The claim states that tennis is played by both Angelique Kerber, identified as a Texas native, and the defending champion who competed in the 2005 China Open – Men's Doubles. From the context, Angelique Kerber is a German professional tennis player with no evidence supporting a Texas native claim. The 2005 China Open – Men's Doubles defending champion was Justin Gimelstob (partnered with Nathan Healey that year). Both are tennis players, but there is no link between Kerber and Texas. Hence, the claim is partially incorrect regarding Kerber's Texan origin, but accurate in that both Kerber and the defending doubles champion are tennis players who played in notable tournaments. The notes also confirm the lack of Texas connection to Kerber and no detail about the defending champion from 2005 China Open other than in the context, which clarifies that Gimelstob was the defending champion.
+
+### new_notes
+['Angelique Kerber is a German professional tennis player and former world No. 1 with no indication she is a Texas native.', "Justin Gimelstob was the defending champion in the 2005 China Open – Men's Doubles, where he successfully defended his title.", 'Both Angelique Kerber and Justin Gimelstob are professional tennis players who have competed in major tournaments.']
+
+### titles
+['Angelique Kerber', "2005 China Open – Men's Doubles"]
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ["2005 China Open – Men's Doubles", 'Angelique Kerber']. Documents remaining to be retrieved: ['Justin Gimelstob'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Chess is more popular around the world than a game designed by Leo Colovini.
+
+### notes
+['Leo Colovini is an Italian designer of German-style board games born in Venice 1964, with his most popular game being "Cartagena".', 'Chess is a worldwide game with established rating systems used by organizations such as FIDE and the US Chess Federation, and it enjoys widespread popularity including on major online platforms like chess.com.', 'Games designed by Leo Colovini include Cartagena, Inkognito, Clans, and Familienbande, but they do not match the global recognition of chess.', "Leo Colovini is an Italian designer of German-style board games born in Venice 1964, with his most popular game being 'Cartagena'.", 'Games designed by Leo Colovini include Cartagena, Inkognito, Clans, and Familienbande, but they do not match the global recognition of chess.', 'Chess is a worldwide game with established rating systems used by organizations such as FIDE and the US Chess Federation, and it enjoys widespread popularity including on major online platforms like chess.com.', "Leo Colovini is an Italian designer of German-style board games born in Venice in 1964, with his most popular game being 'Cartagena'.", 'Games designed by Leo Colovini include Cartagena, Inkognito, Clans, and Familienbande, but they do not match the global recognition of chess.', 'Chess is a worldwide game with established rating systems used by organizations such as FIDE and the US Chess Federation, and it enjoys widespread popularity including on major online platforms like chess.com.']
+
+### context
+['Leo Colovini | Leo Colovini is an Italian designer of German-style board games born in Venice 1964.  His most popular game is "Cartagena".  He is one of the few top board game designers who has owned a game store.', 'Clans (board game) | Clans is a German-style board game designed by Leo Colovini.  The game centers on the creation of villages.', 'Familienbande | Familienbande (German for "Family Ties") is a card game designed by Leo Colovini.', "Alex Randolph | Alexander Randolph (4 May 1922 – 28 April 2004) was an American designer of board games and writer.  Randolph's game creations include TwixT, Breakthru, Inkognito (with Leo Colovini), Raj, Ricochet Robot, and Enchanted Forest (with Michael Matschoss).", 'Inkognito | Inkognito is a board game for 3 to 5 players designed by Alex Randolph and Leo Colovini first published in 1988 by Milton Bradley Company.  It has since been republished several times including by the company Venice Connection established by the designers and Dario De Toffoli.', 'AlphaGo versus Lee Sedol | AlphaGo versus Lee Sedol, or Google DeepMind Challenge Match, was a five-game Go match between 18-time world champion Lee Sedol and AlphaGo, a computer Go program developed by Google DeepMind, played in Seoul, South Korea between 9 and 15 March 2016.  AlphaGo won all but the fourth game; all games were won by resignation.  The match has been compared with the historic chess match between Deep Blue and Garry Kasparov in 1997.', 'Deep Blue versus Kasparov, 1996, Game 1 | Deep Blue–Kasparov, 1996, Game 1 is a famous chess game in which a computer played against a human being.  It was the first game played in the 1996 Deep Blue versus Garry Kasparov match, and the first time that a chess-playing computer defeated a reigning world champion under normal chess tournament conditions (in particular, standard time control; in this case 40 moves in two hours).', "Shane's Chess Information Database | Shane's Chess Information Database (Scid) is an open source UNIX, Windows, Linux, and Mac application for viewing and maintaining huge databases of chess games.  It has features comparable to popular commercial chess software.  Scid is written in Tcl/Tk and C++.", "Global strategy | Global strategy as defined in business terms is an organization's strategic guide to globalization.  With such a connected world, your business’s revenue does not have to be confined by borders.  You can employ a global business strategy to reap the rewards of trading in a worldwide market.  A sound global strategy should address these questions: what must be (versus what is) the extent of market presence in the world's major markets?  How to build the necessary global presence?  What must be AND (versus what is) the optimal locations around the world for the various value chain activities?  How to run global presence into a global competitive advantage?  The “International” classification of a global business strategy is employed by companies who may sell in foreign markets, but their primary focus is on their home market.  These companies may include international strategies in their business model to increase sales, but they know that their main target consumer is local.", 'Botvinnik versus Capablanca, AVRO 1938 | In Rotterdam on 22 November 1938, then future World Chess Champion Mikhail Botvinnik (as white) defeated former World Champion José Raúl Capablanca in round 11 of the AVRO tournament in one of the most famous games in chess history.  Garry Kasparov wrote: [...] Botvinnik played what was altogether the "game of his life" against Capablanca.  It was not just that it was judged the most brilliant in the tournament and to be worth two first prizes, but it was even suggested that, by analogy with the "immortal" and "evergreen" games, it should be called "peerless" or "classical"!']
+
+## Generated Outputs
+### reasoning
+The claim compares the global popularity of chess to a game designed by Leo Colovini. The notes reveal that Leo Colovini, an Italian designer of German-style board games, is known for games such as "Cartagena," "Inkognito," "Clans," and "Familienbande," none of which have the global recognition or worldwide popularity that chess enjoys. Chess is widely played worldwide, has established rating systems administered by organizations like FIDE and the US Chess Federation, and is popular on major online platforms such as chess.com. This wide global presence and institutional recognition strongly substantiates that chess is indeed more popular worldwide than any of the named games designed by Leo Colovini. 
+
+The selected notes clearly identify which games Colovini designed, and the context about chess's worldwide appeal and professional framework demonstrates the greater popularity of chess. Context about Leo Colovini focuses on his identity and games without suggesting global popularity comparable to chess. Including chess’s detailed institutional and online presence reinforces the claim.
+
+### new_notes
+["Leo Colovini is an Italian designer of German-style board games born in Venice 1964, with his most popular game being 'Cartagena'.", 'Games designed by Leo Colovini include Cartagena, Inkognito, Clans, and Familienbande, but they do not match the global recognition of chess.', 'Chess is a worldwide game with established rating systems used by organizations such as FIDE and the US Chess Federation, and it enjoys widespread popularity including on major online platforms like chess.com.']
+
+### titles
+['Leo Colovini', 'Chess']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Cartagena (board game)', 'Leo Colovini']. Documents remaining to be retrieved: ['Chess'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Il trovatore has more acts than the 1994 Hungarian-Swiss-Italian fantasy film which was loosely inspired by. This Hungarian-Swiss-Italian fantasy film was directed by Ildikó Enyedi and called Magic Hunter.
+
+### notes
+['Il trovatore is an opera in four acts by Giuseppe Verdi.', 'Magic Hunter is a 1994 Hungarian-Swiss-Italian fantasy film directed by Ildikó Enyedi and was loosely inspired by Il trovatore.', 'Il trovatore is an opera in four acts by Giuseppe Verdi.', 'Magic Hunter is a 1994 Hungarian-Swiss-Italian fantasy film directed by Ildikó Enyedi and was loosely inspired by Il trovatore.', 'Il trovatore is an opera in four acts by Giuseppe Verdi.', 'Magic Hunter is a 1994 Hungarian-Swiss-Italian fantasy film directed by Ildikó Enyedi and was loosely inspired by Il trovatore.']
+
+### context
+['Il trovatore | Il trovatore (] ; Italian for "The Troubadour") is an opera in four acts by Giuseppe Verdi to an Italian libretto largely written by Salvadore Cammarano, based on the play "El trovador" (1836) by Antonio García Gutiérrez.  It was Gutiérrez\'s most successful play, one which Verdi scholar Julian Budden describes as "a high flown, sprawling melodrama flamboyantly defiant of the Aristotelian unities, packed with all manner of fantastic and bizarre incident."', 'Di quella pira | "Di quella pira " is a short tenor aria (or more specifically, a cabaletta) sung by Manrico in act 3, scene 2, of Giuseppe Verdi\'s opera "Il trovatore".  It is the last number of the act.', 'Il trovatore discography | This is a partial discography of Giuseppe Verdi\'s opera "Il trovatore" ("The Troubadour") and "Le trouvère" (the revised version in French translation).  At least 83 recordings exist of the opera as a whole, made between 1912 and 2011, although not all of them are absolutely complete.  Of these, 45 are live audio recordings, 22 are studio audio recordings, and 16 are videos or movies.  "Il trovatore" was first performed at the Teatro Apollo, Rome on 19 January 1853.  "Le trouvère" was first presented on 12 January 1857.', 'Simon Boccanegra | Simon Boccanegra (] ) is an opera with a prologue and three acts by Giuseppe Verdi to an Italian libretto by Francesco Maria Piave, based on the play "Simón Bocanegra" (1843) by Antonio García Gutiérrez, whose play "El trovador" had been the basis for Verdi\'s 1853 opera, "Il trovatore".', 'Manitoba Opera | Manitoba Opera is an opera company in Winnipeg, Manitoba that was founded in 1969.  Its first production was a concert version of Giuseppe Verdi\'s "Il Trovatore" in 1972.  Manitoba Opera is one of several western Canadian opera companies that flourished under the so-called "father of opera in Western Canada," Irving Guttman.  He has been instrumental in the development of many young Canadian singers, including Winnipeg native Tracy Dahl (soprano) and Winkler\'s Phillip Ens (bass).  Both have gone on to international careers.', 'Elena da Feltre | Elena da Feltre is an opera in three acts by 19th-century Italian composer Saverio Mercadante from a libretto by Salvatore Cammarano, well known as librettist of Donizetti\'s "Lucia di Lammermoor" and Verdi\'s "Il trovatore".  The premiere took place at the Teatro San Carlo in Naples on 1 January 1839 as part of the Carnival Season.  While not successful at the time, the opera was revived at La Scala in 1843 with twenty performances.', 'Edward Primrose | Edward Primrose is an Australian composer, writer, and musical dramaturge.  He has conducted opera ("Il Trovatore", "The Magic Flute", "La Belle Héléne") and orchestral recordings (Sydney & Melbourne Symphony Orchestras).', 'Anvil Chorus | The Anvil Chorus is the English name for the Coro di Zingari (Italian for "Gypsy chorus"), a chorus from act 2, scene 1 of Giuseppe Verdi\'s 1853 opera "Il trovatore".  It depicts Spanish Gypsies striking their anvils at dawn – hence its English name – and singing the praises of hard work, good wine, and Gypsy women.  The piece is also commonly known by its opening words, "Vedi!  Le fosche ".', 'Cyril Gell | Cyril William Gell ARCO LRAM FGSM (1909-1994) was a musician, conductor of the BBC Singers and former Professor at the Guildhall School of Music.  Gell often acted as conductor on "Friday Night Is Music Night" and was chorus director on a number of BBC television movies including a production of the "The Saint of Bleecker Street" in 1956, a production of "Il trovatore" in 1957, a production of "Madam Butterfly" in 1957, and a production of "Rigoletto" in 1958.', 'Integer points in convex polyhedra | Study of integer points in convex polyhedra is motivated by the questions, such as "how many nonnegative integer-valued solutions does a system of linear equations with nonnegative coefficients have" or "how many solutions does an integer linear program have".  Counting integer points in polyhedra or other questions about them arise in representation theory, commutative algebra, algebraic geometry, statistics, and computer science.']
+
+## Generated Outputs
+### reasoning
+The claim states that "Il trovatore" has more acts than the 1994 Hungarian-Swiss-Italian fantasy film "Magic Hunter," which was loosely inspired by it. From the context, it is established that "Il trovatore" is an opera in four acts. However, there is no note or context information about the number of acts or scenes in "Magic Hunter," only that it is the 1994 Hungarian-Swiss-Italian fantasy film directed by Ildikó Enyedi which was loosely inspired by it. Since the claim compares the number of acts, and "Il trovatore" has four acts, without direct information about "Magic Hunter," the implicit assumption is that "Magic Hunter" has fewer acts (or effectively a shorter structure) than "Il trovatore." Given the absence of contradictory data about "Magic Hunter," the claim that "Il trovatore" has more acts than the film "Magic Hunter" is supported by the provided information.
+
+The relevant note is that "Il trovatore" has four acts; the number of acts in "Magic Hunter" is not provided, but is presumed to be fewer or not structured in acts as an opera is. The relevant title is "Il trovatore" since it gives the opera structure and details.
+
+### new_notes
+['Il trovatore is an opera in four acts by Giuseppe Verdi.', 'Magic Hunter is a 1994 Hungarian-Swiss-Italian fantasy film directed by Ildikó Enyedi and was loosely inspired by Il trovatore.']
+
+### titles
+['Il trovatore']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Il trovatore', 'Magic Hunter']. Documents remaining to be retrieved: ['Der Freischütz'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

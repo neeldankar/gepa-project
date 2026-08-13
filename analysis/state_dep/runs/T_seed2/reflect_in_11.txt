@@ -1,0 +1,105 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given input fields `claim` (a natural language statement potentially involving entities, relationships, or comparisons) and `notes` (a list of evidential or contextual statements analyzing or providing background relevant to the claim), produce an output field `query` that specifies an information retrieval query or a set of precise questions that will help verify or refute the claim.
+
+The goal of the `query` is to guide the retrieval of key factual documents or data points needed for assessing the claim’s truthfulness. These queries should focus on:
+
+1. Identifying and disambiguating entities mentioned in the claim.
+2. Extracting critical attributes—such as dates of birth, affiliations, locations, or roles—that are relevant for comparing or validating the claim.
+3. Formulating queries that retrieve specific documents or data records about these entities (e.g., biographies, filmographies, company headquarters, airports) or their relationships.
+4. Incorporating contextual nuances or contradictions noted in `notes` where applicable, especially dealing with ambiguous or missing data.
+5. Addressing gaps explicitly highlighted in `notes` by requesting the missing key information that would resolve the claim’s truthfulness.
+6. Producing queries that could map onto knowledge bases, document retrieval systems, or structured databases (e.g., SPARQL-like structured queries or natural language queries) designed to fetch relevant evidence.
+
+Key domain-specific knowledge and examples that should inform query construction include:
+- Comparison of birth dates between named individuals, including cases where one party might be unclear or incorrectly attributed (e.g., an unknown or non-existent director linked to a film).
+- Identification of leading band members or roles when linked to a particular musical work.
+- Geographical location checks to verify co-location by country or city, especially for companies and airports.
+- Recognition that some claims may involve entities that do not have corroborating evidence in common knowledge, requiring queries that clarify existence or nationality.
+- Explicitly querying about known and unknown aspects flagged in `notes` to complement available facts.
+
+Where applicable, queries should be expressed as follow-up questions if a natural language context is present (e.g., “Who is the lead guitarist…”), or as structured queries that can be run against a knowledge base or database.
+
+Overall, the assistant should infer what specific facts must be retrieved based on the claim and notes, and formulate queries precisely targeting those facts to complete the document retrieval and claim verification process.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Between this plant and Darwinia, the genus with more species is Darwinia. This plant is called Saule in French.
+
+### notes
+["The French word 'Saule' refers to species in the genus Salix, commonly known as willows, which have around 400 species.", 'The genus Salix, or willows, has more species (~400) than the genus Darwinia (~70-80).', 'Therefore, the claim that Darwinia has more species than Saule (willow) is false.', 'Willows (Salix) are widespread primarily in cold and temperate Northern Hemisphere regions.', 'Darwinia is largely restricted to Australia with fewer species than Salix.', 'Saule is the French word for willows, referring to the genus Salix.', 'The genus Salix contains about 400 species, widely distributed mainly in the Northern Hemisphere.', 'Darwinia is an Australian genus with roughly 70 to 80 species, fewer than Salix.', 'Therefore, Salix has more species than Darwinia.', "The French word 'Saule' corresponds to the genus Salix, which includes around 400 species of willows.", 'The genus Salix, associated with the term Saule, has many more species than the genus Darwinia, which contains about 70 species.', 'Darwinia is primarily endemic to Australia and has fewer species compared to the widespread genus Salix.', 'Thus, the species count in Darwinia is less than in the genus corresponding to Saule (Salix).']
+
+## Generated Outputs
+### reasoning
+The claim asserts that between the plant called Saule in French and Darwinia, Darwinia has more species. The notes clarify that "Saule" is the French word for willows, which belong to the genus Salix. Salix has approximately 400 species, predominantly in the Northern Hemisphere. In contrast, Darwinia, which is mostly found in Australia, has around 70 to 80 species. Multiple notes reinforce that Salix has more species than Darwinia, making the claim factually incorrect. Thus, verifying the number of species in Salix (Saule) versus Darwinia is critical to evaluating the claim.
+
+### query
+What are the total number of species in the genus Salix, commonly known as willows and referred to as "Saule" in French? How many species are currently classified in the genus Darwinia? Based on authoritative botanical databases or taxonomic references, can we confirm which genus—Salix or Darwinia—has a greater number of species?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Darwinia (plant)', 'Willow']. Documents remaining to be retrieved: ['Saule'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The kind of dog Banana Joe V Tani Kazari is and Villanuco de Las Encartaciones are not both breeds of dog.
+
+### notes
+['Banana Joe V Tani Kazari is a toy Affenpinscher, which is a recognized dog breed.', 'Villanuco de Las Encartaciones is a recognized Spanish breed of dog.', 'Banana Joe V Tani Kazari is a toy Affenpinscher, which is a recognized dog breed.', 'Villanuco de Las Encartaciones is a recognized Spanish breed of dog.', 'Banana Joe V Tani Kazari is a toy Affenpinscher, a recognized dog breed.', 'Villanuco de Las Encartaciones is a recognized Spanish breed of dog from the Las Encartaciones region.', "Both Banana Joe V Tani Kazari's breed (toy Affenpinscher) and Villanuco de Las Encartaciones are verified distinct and recognized dog breeds."]
+
+## Generated Outputs
+### reasoning
+The claim states that Banana Joe V Tani Kazari and Villanuco de Las Encartaciones are not both breeds of dog. According to the notes, Banana Joe V Tani Kazari is a toy Affenpinscher, which is a recognized dog breed, and Villanuco de Las Encartaciones is also a recognized Spanish breed of dog. Both notes confirm that they are recognized breeds of dog, though Banana Joe V Tani Kazari appears to be a specific dog of the toy Affenpinscher breed rather than a breed name itself. The claim is about whether both are breeds, not individual dogs. Therefore, to verify the claim, it is essential to clarify whether "Banana Joe V Tani Kazari" refers to a breed or an individual dog, and to confirm that Villanuco de Las Encartaciones is a breed.
+
+### query
+1. Is "Banana Joe V Tani Kazari" the name of a recognized breed of dog or an individual dog?  
+2. What is the breed classification of "Banana Joe V Tani Kazari"?  
+3. Is "Villanuco de Las Encartaciones" recognized as an official dog breed?  
+4. Provide definitions and breed status for "toy Affenpinscher" and "Villanuco de Las Encartaciones".
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Villanuco de Las Encartaciones']. Documents remaining to be retrieved: ['Affenpinscher', 'German Pinscher'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Nathaniel "Nate" Jacks is the colloquial name of the professional football team in which this striker, who scored in Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final, played.
+
+### notes
+["Nathaniel 'Nate' Jacks is a former American football player, not a professional soccer player.", 'The 2013 FIFA Confederations Cup Final was won by Brazil over Spain 3-0, with goals scored by Fred and Neymar, not Nate Jacks.', 'Nate Jacks is associated with American football teams like the Alaska Wild and Lincoln Capitols, not soccer teams.', "There is no evidence that 'Nathaniel Nate Jacks' is a colloquial name for any professional football (soccer) team.", "Nathaniel 'Nate' Jacks is a former American football player and has no connection with professional soccer teams.", "The goal scorers for Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final were Fred and Neymar, with no involvement of Nate Jacks.", "'Nathaniel Nate Jacks' is not a known or colloquial name for any professional football (soccer) team.", 'Nate Jacks played for American football teams like Alaska Wild and Lincoln Capitols, not for any soccer team.', 'There is no evidence linking Nate Jacks to the 2013 FIFA Confederations Cup or to any professional soccer team.', "Nathaniel 'Nate' Jacks is a former American football player, not a soccer player.", "The goal scorers in Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final were Fred and Neymar, not Nate Jacks.", "'Nathaniel Nate Jacks' is not a known or colloquial name for any professional soccer team.", 'Nate Jacks played for American football teams such as Alaska Wild and Lincoln Capitols, with no connection to soccer.', 'There is no evidence linking Nate Jacks to any professional soccer team or the 2013 FIFA Confederations Cup Final.']
+
+## Generated Outputs
+### reasoning
+The claim states that "Nathaniel 'Nate' Jacks" is the colloquial name of a professional football (soccer) team and that this striker scored in Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final. The notes clarify multiple issues: Nate Jacks is a former American football player, not a soccer player; the scorers in the 2013 Confederations Cup Final were Fred and Neymar, not Nate Jacks; Nate Jacks is connected to American football teams, not soccer teams; and there is no evidence that "Nathaniel Nate Jacks" is a nickname for any soccer team. Therefore, the claim is likely false because it conflates a person’s name with a team’s nickname, misidentifies the player who scored the goals, and confuses the sport.
+
+To verify this rigorously, it is necessary to query whether "Nathaniel Nate Jacks" is a known nickname or colloquial name of any professional soccer team, to confirm the identity and nationality of the scorers in the 2013 FIFA Confederations Cup Final, and to confirm the professional background of Nate Jacks. Additional relevance includes confirming the teams Nate Jacks played for, and verifying the roster of the Brazilian team during the 2013 Confederations Cup Final.
+
+### query
+1. Is "Nathaniel Nate Jacks" an official or colloquial name or nickname of any professional football (soccer) team? Retrieve any references linking this name to soccer teams globally.
+2. Who scored goals for Brazil in the 2013 FIFA Confederations Cup Final against Spain? Provide the full names and player profiles of the goal scorers in that match.
+3. What is the professional sports background and team affiliations of Nathaniel "Nate" Jacks? List the sports he played, teams he was part of, and differentiate between American football and soccer associations.
+4. Is there any record of Nate Jacks playing as a striker in association football (soccer) or any involvement in FIFA competitions?
+5. Retrieve official rosters of Brazil's national soccer team during the 2013 FIFA Confederations Cup Final and identify all strikers.
+6. Are there any soccer teams colloquially or officially known as "Nathaniel Nate Jacks" or a similar variation?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['2013 FIFA Confederations Cup Final']. Documents remaining to be retrieved: ['Clube Atlético Mineiro', 'Fred (footballer)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

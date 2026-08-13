@@ -1,0 +1,116 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will receive three inputs: `claim` (a factual statement or set of statements to verify or support), `notes` (a list of sentences that summarize relevant information extracted from documents), and `context` (a list of document summaries or excerpts possibly related to the claim).
+
+Your task is to analyze these inputs and produce two outputs:
+
+1. `new_notes`: a concise, focused subset or reformulation of the `notes` that directly relate to verifying or supporting the claim. These new notes should emphasize key facts or evidence from the provided notes and context that confirm, refute, or leave the claim unverified. Remove any redundant, irrelevant, or speculative information.
+
+2. `titles`: a list of document titles from the `context` that are most relevant and authoritative for verifying the claim. Titles should be carefully selected based on direct factual relevance to the entities, events, or topics mentioned in the claim. If some gold standard key documents known to be directly related to the claim are missing, prioritize their selection if present.
+
+Key considerations and domain-specific nuances to aid your reasoning and outputs:
+
+- Claims often refer to specific works (films, albums, novels), their attributes (e.g., screenplay source, track list), or individuals (writers, musicians, athletes) and their accolades (e.g., Nobel Prize winners).
+- Titles in context may be similar or overlapping (e.g., multiple films or albums), so precise titles that match the claim’s subject should be selected.
+- Notes may include missing information, conflicting facts, or clarifications (e.g., film title variants); focus on evidence that can confirm or refute the claim.
+- When a claim includes multiple assertions (e.g., two parts about a screenplay and Nobel laureates), address each part with relevant notes and ensure the titles cover all essential topics.
+- Recognize relationships between entities, such as an album being by a band formed by a named musician, or a sports team participating in a particular bowl game sponsored by a certain company.
+- Naming variations and temporal information (dates, events) can be crucial for confirming claims; pay attention to these in notes and context.
+- If evidence in context/notes is insufficient to fully verify the claim, indicate this clearly in `new_notes` but prioritize including accurate partial support or definitive negatives.
+- The task is designed to aid fact verification and document retrieval, hence your output should be precise, fact-focused, and clearly tied to the claim’s components.
+
+Your output format must be:
+- `new_notes`: a list of concise sentences directly relevant to the claim verification.
+- `titles`: a list of strings with document titles selected from `context` demonstrating best coverage and factual support for the claim.
+
+The goal is to assist accurate claim verification and retrieval of critical source documents.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Clark County in Nevada contains both Las Vegas and another college. Craig Heyer played baseball at that college.
+
+### notes
+['Clark County, Nevada includes Las Vegas and other cities such as Henderson and North Las Vegas.', 'Craig Heyer played college baseball at the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).', 'UNLV is located in Las Vegas, which is in Clark County, Nevada.', 'The College of Southern Nevada is a separate college in Clark County, distinct from UNLV.', 'Clark County, Nevada includes Las Vegas and other cities such as Henderson and North Las Vegas.', 'The College of Southern Nevada is a separate college in Clark County, distinct from UNLV.', 'UNLV is located in Las Vegas, which is in Clark County, Nevada.', 'Craig Heyer played college baseball at the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).', 'Clark County, Nevada includes Las Vegas and other cities such as Henderson and North Las Vegas.', 'UNLV is located in Las Vegas, which is in Clark County, Nevada.', 'The College of Southern Nevada is a separate college in Clark County, distinct from UNLV.', 'Craig Heyer played college baseball at the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).']
+
+### context
+['Craig Heyer | Craig D. Heyer (born November 15, 1985) is an American professional baseball pitcher.  Prior to becoming a professional, Heyer played college baseball at the College of Southern Nevada and University of Nevada, Las Vegas (UNLV).', 'Stan Stolte | Stan Stolte is an American baseball coach, currently serving as the head baseball coach at the University of Nevada, Las Vegas.  Stolte attended college at Muscatine Community College and St. Ambrose University, where he played college baseball.  Stolte served as an assistant baseball coach at the University of Nevada, Las Vegas, the University of Nevada, Reno, the University of the Pacific, Muscatine Community College, and Northwest Missouri State University.  Stolte served as interim head coach at the University of Nevada, Las Vegas for the 2016 season, before being named permanent head baseball coach at UNLV on June 1, 2016.', 'Las Vegas Motor Speedway | Las Vegas Motor Speedway, located in Clark County, Nevada in Las Vegas, Nevada about 15 miles northeast of the Las Vegas Strip, is a 1200 acre complex of multiple tracks for motorsports racing.  The complex is owned by Speedway Motorsports, Inc., which is headquartered in Charlotte, North Carolina.', 'North Las Vegas, Nevada | North Las Vegas is a city in Clark County, Nevada, United States, located in the Las Vegas Valley.  As of the 2010 census it had a population of 216,961, with an estimated population of 226,877 in 2013.  The city was incorporated on May 16, 1946.  It is located in the Las Vegas–Paradise, NV MSA and is the fourth largest city in the state of Nevada.', 'UNLV Graduate College | University of Nevada, Las Vegas (UNLV) Graduate College supports more than 4,000 graduate students in more than 145 graduate certificate, master’s, specialist and doctoral programs offered at the University of Nevada, Las Vegas (UNLV).', '2009 Maaco Bowl Las Vegas | The 2009 Maaco Bowl Las Vegas was an NCAA-sanctioned Division I FBS post-season college football bowl game, in which the Brigham Young Cougars defeated the Oregon State Beavers 44–20.  The game was played on Tuesday, December 22, 2009 at 5 p.m. PST at 40,000-seat Sam Boyd Stadium, University of Nevada, Las Vegas in Whitney, Nevada and was broadcast on ESPN.', 'Clark County Commission | The Clark County Board of County Commissioners is the governmental organization that runs the unincorporated areas of Clark County, Nevada which is located in Downtown Las Vegas.  The commission is considered by many to be the most powerful governmental body in the state of Nevada.', 'Clark County Water Reclamation District | The Clark County Water Reclamation District (District) is a government wastewater treatment agency in Clark County, Nevada.  As a member of the Southern Nevada Water Authority, its mission is to treat millions of gallons of wastewater that is produced every day.  The District is the largest water treatment agency in Southern Nevada and is responsible for treating wastewater from unincorporated parts of Clark County within the Las Vegas Valley, including most of the Las Vegas Strip, and the communities of Blue Diamond, Moapa Valley, Nevada, Indaian Springs, Nevada, Laughlin, Nevada, and Searchlight.', 'Rodney Mazion | Rodney K. Mazion (born February 4, 1971) is a former American football defensive back who played five seasons in the Arena Football League with the Las Vegas Sting/Anaheim Piranhas and Milwaukee Mustangs.  He played college football and baseball at the University of Nevada, Las Vegas.  He attended Hillsborough High School in Tampa, Florida.  Mazion was drafted by the Seattle Mariners in the 48th round of the 1990 MLB June Amateur Draft out of Hillsborough High School.  He was again drafted by the New York Mets in the 15th round of the 1993 MLB June Amateur Draft out of the University of Nevada, Las Vegas.  He played for the Pittsfield Mets of the New York Mets organization in 1993.', 'Henderson, Nevada | Henderson, officially the City of Henderson, is a city in Clark County, Nevada, United States, about 16 miles southeast of Las Vegas.  It is the second-largest city in Nevada, after Las Vegas, with an estimated population of 292,969 in 2016.  The city is part of the Las Vegas metropolitan area, which spans the entire Las Vegas Valley.  Henderson occupies the southeastern end of the valley, at an elevation of approximately 1330 ft .']
+
+## Generated Outputs
+### reasoning
+The claim is about Clark County in Nevada containing Las Vegas and another college, with Craig Heyer having played baseball at that college. From the context, Clark County does include Las Vegas. Craig Heyer played college baseball at the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV). Both colleges are located within Clark County; UNLV is in Las Vegas, and the College of Southern Nevada also serves the Clark County area. Therefore, the claim that Clark County contains Las Vegas and another college (likely the College of Southern Nevada) where Craig Heyer played baseball is supported, as he played at both UNLV (in Las Vegas) and the College of Southern Nevada (also in Clark County, but not Las Vegas city proper). The information about Letting Clark County contain Las Vegas and another college where Craig Heyer played is verified.
+
+### new_notes
+['Clark County, Nevada includes Las Vegas and other cities such as Henderson and North Las Vegas.', 'Craig Heyer played college baseball at the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).', 'UNLV is located in Las Vegas, which is in Clark County, Nevada.', 'The College of Southern Nevada is a separate college in Clark County, distinct from UNLV.']
+
+### titles
+['Craig Heyer', 'Las Vegas Motor Speedway', 'North Las Vegas, Nevada', 'Henderson, Nevada']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['College of Southern Nevada', 'Craig Heyer']. Documents remaining to be retrieved: ['Clark County, Nevada'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Fàn County falls under the jurisdiction of a city in  Henan Province. That city and Pu'er City are located in the same country.
+
+### notes
+['Fàn County or Fànxian falls under the jurisdiction of Puyang, Henan Province.', "Pu'er City is a prefecture-level city in Yunnan Province, China.", 'Fàn County (Fànxian) falls under the jurisdiction of Puyang City in Henan Province.', "Pu'er City is a prefecture-level city in Yunnan Province, China.", "Puyang City and Pu'er City are both located in China.", 'Fàn County (Fànxian) falls under the jurisdiction of Puyang City in Henan Province.', 'Puyang City is a prefecture-level city in Henan Province, China.', "Pu'er City is a prefecture-level city in Yunnan Province, China.", "Puyang City and Pu'er City are both located in China."]
+
+### context
+['Puyang County | Puyang County is a county of Henan, China.  It is under the administration of Puyang city.', "Puyang | Puyang is a prefecture-level city in northeastern Henan province, People's Republic of China.  Located on the northern shore of the Yellow River, it borders Anyang in the west, Xinxiang in the southwest, and the provinces of Shandong and Hebei in the east and north respectively.", 'Anyang | Anyang (; ] ) is a prefecture-level city in Henan province, China.  The northernmost city in Henan, Anyang borders Puyang to the east, Hebi and Xinxiang to the south, and the provinces of Shanxi and Hebei to its west and north respectively.', 'Nanle County | Nanle County is a county of Henan, China.  It is under the administration of Puyang city.', 'Hualong District | Hualong District is a district of Henan, China.  It is under the administration of Puyang city.', 'Taiqian County | Taiqian County is a county of Henan, China.  It is under the administration of Puyang city.', 'Shuangmiao Township, Qingfeng County | Shuangmiao Township () is a township of Qingfeng County in northeastern Henan province, China, located about 9 km northeast of Hualong District, Puyang.  , it has 29 villages under its administration.', 'Puyang River | The Puyang River (浦阳江) is one of the three main tributaries of the Qiantang River (钱塘江) in Zhejiang Province (浙江省), China.', 'Chan Prefecture | Chanzhou or Chan Prefecture (澶州) was a "zhou" (prefecture) in imperial China seated in modern Puyang, Henan, China.  It was established in 621 during the Tang dynasty.', 'Fan County | Fàn County or Fànxian falls under the jurisdiction of Puyang, Henan Province.']
+
+## Generated Outputs
+### reasoning
+The claim states that Fàn County falls under the jurisdiction of a city in Henan Province and that this city and Pu'er City are located in the same country. The notes confirm that Fàn County (Fànxian) is under the jurisdiction of Puyang City, which is in Henan Province. Additionally, Pu'er City is identified as a prefecture-level city in Yunnan Province, China. Since both Henan and Yunnan provinces are within China, it confirms that Puyang City and Pu'er City are in the same country (China). The provided context supports this relationship by detailing Puyang City's location within Henan Province.
+
+### new_notes
+['Fàn County (Fànxian) falls under the jurisdiction of Puyang City in Henan Province.', "Pu'er City is a prefecture-level city in Yunnan Province, China.", "Puyang City and Pu'er City are both located in China."]
+
+### titles
+['Fan County', 'Puyang', "Pu'er City"]
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Fan County', "Pu'er City", 'Puyang']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+The writer Norman Alfred Norman Lindsay enjoyed boxing, but the author of The Hundred Secret Senses did not.
+
+### notes
+['Norman Alfred William Lindsay was an accomplished amateur boxer.', 'The Hundred Secret Senses is a 1995 novel by Amy Tan.', 'There is no indication that Amy Tan, the author of The Hundred Secret Senses, enjoyed boxing.', 'Norman Alfred William Lindsay was an accomplished amateur boxer.', 'The Hundred Secret Senses is a 1995 novel by Amy Tan.', 'There is no indication that Amy Tan, the author of The Hundred Secret Senses, enjoyed boxing.', 'Norman Alfred William Lindsay was an accomplished amateur boxer.', 'The Hundred Secret Senses is a 1995 novel by Amy Tan.', 'There is no indication that Amy Tan, the author of The Hundred Secret Senses, enjoyed boxing.']
+
+### context
+['The Hundred Secret Senses | The Hundred Secret Senses is a bestselling 1995 novel by Chinese-American writer Amy Tan.  It was published by Putnam, and was shortlisted for the 1996 Orange Prize for Fiction.  While the story is fictional, it is based on the experiences of Tan and on stories told by her mother.', 'Norman Lindsay | Norman Alfred William Lindsay (22 February 1879 – 21 November 1969) was an Australian artist, etcher, sculptor, writer, editorial cartoonist, scale modeller, and an accomplished amateur boxer.', 'Life Beyond the Box: Norman Stanley Fletcher | Life Beyond the Box: Norman Stanley Fletcher is a BBC Television comedy docudrama, first shown in 2003, that depicts the later life of Norman Stanley Fletcher, the main character in two earlier television series, "Porridge" and "Going Straight".', 'Bogus (film) | Bogus is a 1996 American fantasy film directed by Norman Jewison, written by Alvin Sargent, and starring Whoopi Goldberg, Gérard Depardieu, and Haley Joel Osment.  It features magic tricks with magician Whit Haydn as consultant.  It did poorly at the box office and Goldberg was nominated for a Razzie Award for her performance.  It was filmed in Canada and New Jersey.', 'The Adorable Outcast | The Adorable Outcast is a 1928 Australian silent film directed by Norman Dawn about an adventurer who romances an island girl.  It was one of the most expensive films made in Australia until that time, and was Dawn\'s follow up to "For the Term of His Natural Life" (1927).  It did not perform as well at the box office and helped cause Australasian Films to abandon feature film production.', 'Tracey Norman | Tracey "Africa" Norman is an American model.  Norman was the first African-American transgender woman model to appear on a box of Clairol in the 1970s.', 'Rice v. Norman Williams Co. | Rice v. Norman Williams Co., 458 U.S. 654 (1982) , was a decision of the U.S. Supreme Court involving the preemption of state law by the Sherman Act.  The Supreme Court held, in a 9-0 decision, that the Sherman Act did not invalidate a California law prohibiting the importing of spirits not authorized by the brand owner.', 'Vegetable Man | "Vegetable Man" is a song written by Syd Barrett for the English rock band Pink Floyd in 1967.  It was considered for the band\'s third single or for inclusion on their second album "A Saucerful of Secrets".  Bootlegged for decades, the song did not have an official release until 2016, when it was included on the box set "The Early Years 1965–1972".', 'Trouble in Store | Trouble in Store is a 1953 British comedy film starring Norman Wisdom as a department store clerk in his cinema debut.  For his performance, Wisdom won a BAFTA Award for Most Promising Newcomer.  Although it was shown at a West End venue, the film broke box office records at 51 out of the 67 London cinemas in which it played.  The "Daily Mirror" reviewer wrote of the film: "If you don\'t laugh at Norman\'s antics as the downtrodden worker in a big store, trying to get promotion as a window dresser, there is something wrong with your sense of fun".', "Salute (2008 film) | Salute is a 2008 Australian documentary film written, directed and produced by Matt Norman.  It is about Norman's uncle, Australian track athlete Peter Norman, specifically the actions he did not take at the 1968 Summer Olympics in Mexico City."]
+
+## Generated Outputs
+### reasoning
+The claim compares the interests of two authors: Norman Alfred Norman Lindsay and the author of The Hundred Secret Senses. According to the provided context, Norman Lindsay was an accomplished amateur boxer, confirming the first half of the claim. The author of The Hundred Secret Senses, Amy Tan, has biographical information available, but there is no mention or indication of her enjoying boxing or being involved in it. The notes do not provide any contrary or supportive information about Amy Tan's interests, but the absence of any link to boxing alongside the explicit mention of Lindsay's boxing skill implies that only Lindsay enjoyed boxing. Thus, the claim that Norman Alfred Norman Lindsay enjoyed boxing but Amy Tan did not is supported by the context.
+
+### new_notes
+['Norman Alfred William Lindsay was an accomplished amateur boxer.', 'The Hundred Secret Senses is a 1995 novel by Amy Tan.', 'There is no indication that Amy Tan, the author of The Hundred Secret Senses, enjoyed boxing.']
+
+### titles
+['Norman Lindsay', 'The Hundred Secret Senses']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Norman Lindsay', 'The Hundred Secret Senses']. Documents remaining to be retrieved: ['Amy Tan'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

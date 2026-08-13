@@ -1,0 +1,111 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Your task is to generate a precise, focused, and factually relevant *verification query* based on a given factual or historical `claim` and a corresponding set of detailed `notes`. This query should be designed to confirm or refute the key elements of the claim by explicitly referencing the entities, dates, events, or relationships involved—maximizing the chance of retrieving accurate and relevant information from knowledge sources or human experts.
+
+Input format:  
+- `claim`: A factual or historical statement containing specific entities (people, organizations, teams, military units, film titles), temporal facts (years, release dates), events (matches, battles, film releases), or relationships (voice actor roles, team nicknames, school district composition). Claims often involve complex factual assertions that can be supported, contradicted, or clarified.  
+- `notes`: A list of factual sentences or excerpts summarizing key information related to the claim. These may confirm, contradict, or nuance parts of the claim, often providing domain-specific details such as exact formation dates, official names, geographic locations, event outcomes, or chronology.
+
+Goal:  
+Produce a single, well-structured, clear, and neutral question (`query`) that explicitly captures the factual elements under verification. The query should:  
+- Identify and reference *key entities* (full official names, correct terminology, disambiguated entities) from both the claim and notes (e.g., full school names, official regiment/unit names, exact movie titles with year and director, official tournament names).  
+- Include *temporal facts* (formation years, event dates, film release years) to clarify time-related precision or dispute.  
+- Address *relationships or roles* (e.g., who voiced a character in a given film edition, which players scored in a specific match, which schools belong to a district) with specificity.  
+- Reference *geographic particulars* (cities, census-designated places, countries) when relevant to resolve location-based ambiguity or claims.  
+- Highlight any *ambiguities or contradictions* found between claim and notes by posing the query to explicitly verify these points, including contrasting alternatives if appropriate (e.g., "Did X begin in year Y or earlier?", "Is school A part of district B or not?", "Which team did player C score for in event D?").  
+- Avoid making assumptions beyond what is supported by the claim and notes; keep the question open and neutral to both confirmation or refutation.
+
+Domain-specific considerations:  
+- **Education**: Confirm the accurate membership of schools in districts, verify school names, and clarify the geographic areas (like census-designated places) served by each school.  
+- **Sports**: Precisely identify players, teams, match events, championship status, player nationalities, and affiliations; verify event participants and outcomes.  
+- **Military Units**: Confirm unit names, formation dates, and historical engagements; clarify official designations.  
+- **Film and Media**: Verify voice actor roles, release years, directors, and connections between films and real-life subjects/names.  
+- **General**: Correctly name entities, events, and organizations with official titles; pay attention to potential homonyms or colloquial names and clarify their meaning.
+
+Methodology / Approach:  
+1. Parse the claim for core factual components (entities, relations, dates, locations).  
+2. Compare these components with details from the notes, paying attention to contradictions, missing information, or clarifications.  
+3. Construct an explicit fact-checking question that references the key elements, including any areas of ambiguity or contradiction to be investigated.  
+4. Phrase the query such that it can retrieve evidence confirming or denying the claim, without bias or presumption.
+
+Example query structures:  
+- "Which high schools are members of [District Name] in [Location]? Is [School Name] included?"  
+- "What are the census-designated places served by each school in [District Name], specifically for [School Name]?"  
+- "Is [Person] a native of [Location] or from [other Location]? Who was the defending champion of [Event] in [Year], and is there any connection to [Person] or [Location]?"  
+- "Who scored in [Match/Event] between [Team A] and [Team B] in [Year], and to which professional football team, colloquially called [Nickname], did the scorer belong?"  
+- "When was the [Military Unit Name] originally formed? Did it begin in [Year] or earlier?"  
+- "Did [Actor/Person] provide the voice of [Character] in the [Year] [Movie Title]? Was [Another Film or Version] released before that?"
+
+In summary, your instruction is: Given `claim` and domain-specific `notes`, produce a concise, neutral, and explicit fact-checking query that integrates the core factual points and any discrepancies or uncertainties, enabling accurate verification through further information retrieval or expert consultation.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Reverend Lyttleton Morgan was the first chairman of the board of trustees at a university. That university and the University of Idaho are public types of universities.
+
+### notes
+['Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, originally founded as the Centenary Biblical Institute and renamed in his honor.', "Morgan State University is Maryland's designated public urban university, confirming its status as a public university.", 'The University of Idaho is recognized as a public university in the U.S.', 'Together, this verifies that Reverend Morgan was the first chairman at a public university (Morgan State University), and both it and the University of Idaho are public universities.', 'Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, which was originally founded as the Centenary Biblical Institute and renamed in his honor.', "Morgan State University is designated as Maryland's public urban university, confirming it is a public university.", 'The University of Idaho is also recognized as a public university in the United States.', 'Therefore, Reverend Morgan chaired the board of trustees at a public university, and both Morgan State University and the University of Idaho are public institutions.', 'Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, originally founded as the Centenary Biblical Institute and later renamed in his honor.', "Morgan State University is designated as Maryland's public urban university, confirming it is a public institution.", 'The University of Idaho is also a recognized public university in the United States.', 'Thus, Reverend Morgan chaired the board of trustees at a public university, and both Morgan State University and the University of Idaho are public universities.']
+
+## Generated Outputs
+### reasoning
+The claim states that Reverend Lyttleton Morgan was the first chairman of the board of trustees at a university, specifically a public university, and that both this university and the University of Idaho are public universities. The notes indicate that Reverend Lyttleton Morgan was the first chairman of the board of trustees at Morgan State University, which was originally founded as the Centenary Biblical Institute and was later renamed in his honor. The notes further confirm that Morgan State University is Maryland's designated public urban university, establishing it as a public university. Additionally, the University of Idaho is also recognized as a public university in the United States. Thus, the notes support the claim that Reverend Morgan chaired the board at a public university (Morgan State University) and that both Morgan State University and the University of Idaho are public institutions. The inquiry is to verify the accuracy and confirm these points clearly.
+
+### query
+Was Reverend Lyttleton Morgan the first chairman of the board of trustees at Morgan State University, and is Morgan State University officially designated as a public university in Maryland? Additionally, is the University of Idaho also recognized as a public university in the United States?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Lyttleton Morgan', 'Morgan State University']. Documents remaining to be retrieved: ['University of Idaho'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The Disney animated film with the character Cruella de Vil and G-Force are American family comedy action  adventure type of movies.
+
+### notes
+["Cruella de Vil appears in Disney's 1961 American animated film 'One Hundred and One Dalmatians,' described primarily as an animated adventure film with family appeal.", "'One Hundred and One Dalmatians' has comedic elements but is mainly categorized as adventure; the live-action films with Cruella de Vil are described as American live-action comedy adventure films.", "'G-Force' (2009) is an American family comedy adventure film with notable action sequences, supporting its classification as a family comedy action-adventure movie.", "The claim is fully supported for 'G-Force' but only partially for the Disney animated 'One Hundred and One Dalmatians,' which lacks explicit confirmation as a comedy or action film in the context.", "Cruella de Vil appears as the main antagonist in Disney's 1961 animated film 'One Hundred and One Dalmatians,' which is primarily categorized as an animated family adventure film with comedic elements, but not explicitly classified as comedy or action.", "'G-Force' (2009) is an American family comedy adventure film with notable action elements, fully supporting its classification as a family comedy action-adventure movie.", "'One Hundred and One Dalmatians' live-action adaptations are explicitly described as American live-action comedy adventure films.", "The claim that both films are family comedy action-adventure movies is fully supported for 'G-Force' but only partially supported for the Disney animated 'One Hundred and One Dalmatians' due to the absence of explicit comedy or action classification.", 'G-Force (2009) is an American family comedy adventure film with significant action elements, supporting its classification as a family comedy action adventure movie.', "'One Hundred and One Dalmatians' (1961) is an American animated family adventure film featuring Cruella de Vil as the antagonist, with comedic elements but lacking explicit classification as a comedy or action film.", "Live-action films based on 'One Hundred and One Dalmatians' are characterized as American live-action comedy adventure films, but this does not apply to the original 1961 animated version.", "The claim that both films are American family comedy action adventure movies is fully supported for G-Force but only partially supported for the Disney animated 'One Hundred and One Dalmatians' due to the absence of explicit comedy or action genre designation."]
+
+## Generated Outputs
+### reasoning
+The claim asserts that the Disney animated film featuring Cruella de Vil and the film "G-Force" are both American family comedy action-adventure movies. The notes indicate that while "G-Force" (2009) is clearly categorized as an American family comedy adventure film with action elements, the Disney animated "One Hundred and One Dalmatians" (1961), which features Cruella de Vil as the antagonist, is primarily classified as an animated family adventure film with comedic elements but is not explicitly labeled as a comedy or action film. The live-action adaptations of "One Hundred and One Dalmatians" are described as live-action comedy adventure films, but that does not apply to the original animated version. Therefore, the key point to verify is the genre classification of the original animated "One Hundred and One Dalmatians": is it accurate to describe it as a comedy action-adventure film, or is it more precisely an adventure film with family appeal and some comedy elements?
+
+### query
+Is Disney's 1961 animated film "One Hundred and One Dalmatians," which features the character Cruella de Vil, officially classified as an American family comedy action-adventure movie or primarily as an animated family adventure film with comedic elements but not explicitly as a comedy or action film? Additionally, is the 2009 film "G-Force" categorized as an American family comedy action-adventure movie?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['101 Dalmatians (1996 film)', 'Cruella de Vil', 'G-Force (film)']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+The TV show aired on KidsClick's programming block on a Sunday. A song from La La Land, a Wax Fung album, contained a song featured on an American Dad episode of the same name as the show.
+
+### notes
+['La La Land is a Wax Fang album released in 2007, reissued in 2010.', "Songs 'Majestic' and 'At Sea' from 'La La Land' were featured in the 'American Dad!' episode titled 'Lost In Space' (151st episode) in 2013.", "There is no information confirming a TV show named 'La La Land' airing on KidsClick or specifically on a Sunday.", "The 'American Dad!' episode featuring songs from the album does not share the same name as the album or a show.", "No data connects KidsClick's programming block to the 'La La Land' album or the related songs featured in 'American Dad!'.", "Critical details about the 'La La Land' TV show on KidsClick and its Sunday broadcast are missing, making the claim unverifiable.", 'La La Land is a 2007 Wax Fang album reissued in 2010.', "Songs 'Majestic' and 'At Sea' from the album were featured on the 151st episode of American Dad!, titled 'Lost In Space' in 2013.", "No evidence that a TV show named 'La La Land' aired on KidsClick or specifically on a Sunday.", 'The American Dad episode featuring the songs does not share the same name as the album or a TV show.', 'No known connection between KidsClick programming block and the Wax Fang album or its songs.', "Key details about a 'La La Land' TV show on KidsClick or an episode of the same name as the show are missing, making full verification impossible.", 'La La Land is a Wax Fang album released in 2007 and reissued in 2010.', "Songs 'Majestic' and 'At Sea' from this album were featured in the 151st episode of 'American Dad!' titled 'Lost In Space' in 2013.", "There is no evidence of a TV show named 'La La Land' airing on KidsClick or specifically on Sundays.", "'American Dad!' episode featuring the songs does not share the same name as the album or any TV show 'La La Land'.", "No connection found between KidsClick's programming and the Wax Fang album or songs.", "Key details about a 'La La Land' TV show on KidsClick and a same-named 'American Dad!' episode are missing or contradicted, making the claim unverifiable or false in those parts."]
+
+## Generated Outputs
+### reasoning
+The claim involves two main assertions: first, that a TV show titled "La La Land" aired on KidsClick's programming block on a Sunday, and second, that a song from the Wax Fang album "La La Land" was featured in an episode of "American Dad!" sharing the same name as the show. However, the notes clearly show that "La La Land" is a Wax Fang album released in 2007 and reissued in 2010, and two songs from this album ("Majestic" and "At Sea") appeared in the "American Dad!" episode titled "Lost In Space", which does not match the album's or a show's name. Moreover, there is no evidence supporting the existence of a TV show named "La La Land" airing on KidsClick or specifically on Sunday, nor any connection between KidsClick's programming and the Wax Fang album or the featured songs. The notes indicate missing critical details and lack of data confirming the claim's key elements, making it unverifiable as stated.
+
+### query
+Did a television show named "La La Land" ever air on KidsClick's programming block on Sundays? Additionally, were any songs from the Wax Fang album "La La Land" featured in an "American Dad!" episode sharing the same name as the show, or is the "American Dad!" episode title different from both the album and any TV show named "La La Land"? Is there any documented connection between the KidsClick programming block and the Wax Fang album or its songs?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['La La Land (Wax Fang album)']. Documents remaining to be retrieved: ['Animation Domination', 'Lost in Space (American Dad!)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

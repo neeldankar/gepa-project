@@ -1,0 +1,109 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:  
+You will be given two input fields: `claim` and `notes`. Your goal is to produce a single output field called `query`.  
+
+- The `claim` is a factual statement that may involve multiple entities, events, or comparisons.  
+- The `notes` are observations and extracted information relevant to the claim. These notes often highlight missing data, ambiguities, or context needed to verify or assess the claim. They may also reference specific entities, works (e.g., films, books, bands), or people relevant to the claim.  
+
+Your primary job is to generate a clear, focused, and precise `query` that will retrieve the necessary evidence or sources to verify the claim. The query should:  
+
+1. Identify the key entities, roles, or relationships in the claim that require further information to confirm or refute.  
+2. Address ambiguities noted in the `notes` — for example, unclear identities, missing award counts, missing cast information, or unclear film adaptation connections.  
+3. Include comparative elements if the claim involves comparisons (e.g., number of awards won by two persons).  
+4. Target the retrieval of documents or information that will help establish the truthfulness of the claim by filling knowledge gaps noted in the `notes`.  
+5. Avoid redundant or overly broad questions; focus on the missing critical pieces of information needed for verification.  
+
+Niche or domain-specific information to consider:  
+- When the claim involves titles (films, books, bands), ensure these are explicitly mentioned in the query if relevant.  
+- When multiple persons could fit a role (e.g., "German Frank Sinatra" could refer to multiple people), the query should seek disambiguation.  
+- When claims involve connecting roles (e.g., an actor who starred in one film also portraying a character in another), the query should retrieve actor names, roles, and film adaptation connections.  
+- When verifying director roles or similar, queries should explicitly ask for a person's involvement and their professional recognition.  
+- Data such as award counts or comparisons require explicit delineation in the query to retrieve statistics or lists.  
+
+Generalizable Strategy:  
+- Use the `notes` to identify knowledge gaps or ambiguities critical to assessing the claim.  
+- Construct queries that directly request the missing key information, including names, roles, relationships, or data points needed for verification.  
+- Incorporate both entities and relationships or attributes mentioned in the claim to produce effective retrieval queries.  
+- Keep the query concise but sufficiently descriptive to retrieve documents that can fully support or challenge the claim.  
+- When multiple key entities appear, the query should connect them logically in the question (e.g., by comparison or by their joint involvement).  
+
+Example approach:  
+If the claim compares award wins between two ambiguous figures, the query should identify the figures clearly and seek award counts for each.  
+If the claim states an actor starred in a film and played a specific role in another film, the query should request actor names in the first film and any link to the specified role or film connected to the novel mentioned.  
+If the claim involves co-directors, the query should seek the identity of the co-director(s) and whether they have directorial recognition.  
+
+Summary:  
+Produce a targeted, fact-seeking query that retrieves key missing information needed to verify the factual claim, utilizing the insights and knowledge gaps identified in the notes, ensuring precise entity reference and relevant relationships or comparisons.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Chess is more popular around the world than a game designed by Leo Colovini.
+
+### notes
+['Leo Colovini is an Italian designer of German-style board games, including Cartagena, Clans, Inkognito, and Familienbande.', 'His games are recognized in board gaming circles but none are indicated as globally widespread or more popular than chess.', 'Chess is a globally popular game known worldwide, unlike the niche board games designed by Colovini.', 'Leo Colovini is an Italian designer known for games such as Cartagena, Clans, Inkognito, and Familienbande.', "Colovini's games are recognized within board gaming communities but do not have global widespread popularity.", 'Chess is a globally popular game, widely recognized and played around the world.', 'Chess has numerous variants and is supported by established rating systems and global organizations, indicating its wide popularity.', 'Leo Colovini is an Italian designer known for games such as Cartagena, Clans, Inkognito, and Familienbande.', "Colovini's games are recognized within board gaming communities but do not have global widespread popularity.", 'Chess is a globally popular game, widely recognized and played around the world.', 'Chess has numerous variants and is supported by established rating systems and global organizations, indicating its wide popularity.']
+
+## Generated Outputs
+### reasoning
+The claim states that chess is more popular worldwide than a game designed by Leo Colovini. The notes indicate that Colovini is known for designing German-style board games, but no evidence suggests that any of his games have a popularity comparable to chess, which is globally recognized. To verify the claim, it is necessary to identify which game designed by Leo Colovini is being compared and then compare its global popularity, player base, or recognition with that of chess.
+
+### query
+What are the most popular games designed by Leo Colovini, and how does their global popularity or player base compare to that of chess?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Chess', 'Leo Colovini']. Documents remaining to be retrieved: ['Cartagena (board game)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Nathaniel "Nate" Jacks is the colloquial name of the professional football team in which this striker, who scored in Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final, played.
+
+### notes
+['The 2013 FIFA Confederations Cup Final was won by Brazil 3-0 against Spain with goals from Fred and Neymar.', "Nathaniel 'Nate' Jacks is a former American professional football player who was a cornerback in American football leagues like the National Indoor Football League and Intense Football League.", "Nathaniel 'Nate' Jacks played American football, not association football (soccer).", 'There is no evidence that \'Nathaniel "Nate" Jacks\' is a colloquial name of any professional soccer team.', "Nathaniel 'Nate' Jacks is a former American professional football player, not associated with any soccer team.", 'The 2013 FIFA Confederations Cup Final was won by Brazil 3-0 against Spain, with goals by Fred and Neymar.', "Nathaniel 'Nate' Jacks is not the name or colloquial nickname of any professional soccer team.", "There is no evidence linking Nathaniel 'Nate' Jacks to the striker who scored in the 2013 FIFA Confederations Cup Final.", 'The 2013 FIFA Confederations Cup Final was won by Brazil 3-0 against Spain with goals from Fred and Neymar.', "Nathaniel 'Nate' Jacks is a former American professional football player (American football), not associated with any professional soccer team.", 'There is no evidence that \'Nathaniel "Nate" Jacks\' is the name or colloquial nickname of any professional soccer team.', "Nathaniel 'Nate' Jacks is not linked to the striker who scored in the 2013 FIFA Confederations Cup Final."]
+
+## Generated Outputs
+### reasoning
+The claim involves identifying the professional football team known colloquially as "Nathaniel 'Nate' Jacks" and connecting it to the striker who scored in Brazil's 3-0 win over Spain in the 2013 FIFA Confederations Cup Final. To verify this, we need to establish three key facts: the striker who scored in that match, the professional football team this striker played for, and whether "Nathaniel 'Nate' Jacks" is a common nickname for that team. Since the nickname seems unusual for a football club, it is crucial to check the accuracy and origin of this nickname and link it to the correct football club.
+
+### query
+Who was the striker that scored in Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final, which professional football team did he play for at the time, and is the team colloquially known as "Nathaniel 'Nate' Jacks"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['2013 FIFA Confederations Cup Final']. Documents remaining to be retrieved: ['Clube Atlético Mineiro', 'Fred (footballer)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The director of Finding Dory co-directed the film A Bug's Life.
+
+### notes
+['Andrew Stanton directed Finding Dory with co-direction by Angus MacLane.', "Andrew Stanton was co-director of Pixar's A Bug's Life (1998).", 'Andrew Stanton directed Finding Dory with co-direction by Angus MacLane.', "Andrew Stanton was co-director of Pixar's A Bug's Life (1998).", 'Andrew Stanton directed Finding Dory with co-direction by Angus MacLane.', "Andrew Stanton was co-director of Pixar's A Bug's Life (1998)."]
+
+## Generated Outputs
+### reasoning
+The claim states that the director of "Finding Dory" also co-directed "A Bug's Life". To verify this, we need to identify who directed "Finding Dory" and then determine if that same person was a co-director of "A Bug's Life". This involves checking the directorial credits for both films, specifically noting co-directors for "A Bug's Life". Since "Finding Dory" and "A Bug's Life" are Pixar films, information about their directors is well documented. The key missing information is the names of the director(s) of both films and whether the director of "Finding Dory" had a directorial role in "A Bug's Life".
+
+### query
+Who directed the film Finding Dory? Was this person also a co-director of the film A Bug's Life? List the directors and co-directors of both Finding Dory and A Bug's Life.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Andrew Stanton', 'Finding Dory']. Documents remaining to be retrieved: ["A Bug's Life"].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

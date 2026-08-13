@@ -1,0 +1,81 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given the fields `claim`, `notes`, produce the fields `query`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Ellesmere Port Town Football Club are currently members of the league, whose current principal sponsor is the Football Conference, that Ford Motors F.C. is a part of.
+
+### notes
+['Ellesmere Port Town F.C. currently plays in the West Cheshire League Division Two.', "The West Cheshire League's principal sponsor is Carlsberg, not the Football Conference.", 'No evidence that Ford Motors F.C. is part of the West Cheshire League or any league sponsored by the Football Conference.', 'Vauxhall Motors F.C. is a club in the West Cheshire League Division One, not related to Ford Motors F.C.', 'The Football Conference sponsors a different league and is not the principal sponsor of the West Cheshire League.', 'Ellesmere Port Town F.C. plays in the West Cheshire League Division Two, sponsored by Carlsberg.', 'Ford Motors F.C. competes in the West Cheshire Association Football League but there is no Football Conference sponsorship.', 'The Football Conference sponsors a different league from the West Cheshire League.', 'No evidence that Ford Motors F.C. is part of a league sponsored by the Football Conference.', 'Ellesmere Port Town F.C. currently plays in the West Cheshire League Division Two, which is sponsored by Carlsberg and not the Football Conference.', 'There is no evidence showing that Ford Motors F.C. is a member of the West Cheshire League or any league sponsored by the Football Conference.', 'The Football Conference sponsors a league different from the West Cheshire League.', 'The principal sponsor of the West Cheshire League is Carlsberg.', 'Ford Motors F.C. participates in the West Cheshire Association Football League but it is not sponsored by the Football Conference.']
+
+## Generated Outputs
+### reasoning
+The claim states that Ellesmere Port Town Football Club is a member of a league whose principal sponsor is the Football Conference and that Ford Motors F.C. is part of that same league. However, the notes clarify that Ellesmere Port Town F.C. plays in the West Cheshire League Division Two, which is sponsored by Carlsberg, not the Football Conference. Additionally, Ford Motors F.C. is mentioned as competing in the West Cheshire Association Football League, but there is no indication that this league is sponsored by the Football Conference. The Football Conference sponsors a different league entirely, and there is no evidence to suggest Ford Motors F.C. plays in a league sponsored by the Football Conference. Therefore, the claim that both clubs are currently members of a league sponsored by the Football Conference is not supported by the available information.
+
+### query
+Are Ellesmere Port Town Football Club and Ford Motors F.C. currently members of a football league sponsored by the Football Conference? If not, which leagues are they currently part of and who are their principal sponsors?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Ellesmere Port Town F.C.', 'Ford Motors F.C.', 'West Cheshire Association Football League']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+Rhapsody, Op. 1 was written by a male composer. This composer was Hungarian, not Johann Christoph Pepusch.
+
+### notes
+['Rhapsody, Op. 1 is a composition for piano by Hungarian composer Béla Bartók.', 'Béla Bartók was a male composer from Hungary.', 'Johann Christoph Pepusch is not mentioned in relation to Rhapsody, Op. 1.', 'Rhapsody, Op. 1 (BB 36a for piano and BB 36b for piano and orchestra) was composed in 1904 by Béla Bartók.', 'Béla Bartók was a Hungarian male composer and pianist, distinct from Johann Christoph Pepusch who is unrelated to this work.', 'No sources associate Johann Christoph Pepusch with Rhapsody, Op. 1.', 'Rhapsody, Op. 1 was composed by Béla Bartók, a Hungarian male composer, in 1904.', 'Johann Christoph Pepusch was a German-born composer who is not associated with Rhapsody, Op. 1.', 'Rhapsody, Op. 1 (BB 36a and BB 36b) includes versions for piano and for piano and orchestra by Béla Bartók.', 'No credible sources link Johann Christoph Pepusch to Rhapsody, Op. 1.']
+
+## Generated Outputs
+### reasoning
+The claim states that Rhapsody, Op. 1 was composed by a male Hungarian composer, not Johann Christoph Pepusch. The notes confirm that Rhapsody, Op. 1 is a piano composition by Béla Bartók, who is Hungarian and male. Johann Christoph Pepusch is not associated with this piece. Therefore, the claim aligns well with the information available.
+
+### query
+Who composed Rhapsody, Op. 1 and what is the composer's nationality and gender?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Johann Christoph Pepusch', 'Rhapsody, Op. 1 (Bartók)']. Documents remaining to be retrieved: ['Béla Bartók'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Candlelight Red the musical group has released twice as many albums as the band who also performs as One Unique Signal.
+
+### notes
+["No data found on Candlelight Red's discography in the provided context.", "No data found on One Unique Signal's discography or connection to another band in the provided context.", 'No information regarding album counts for either band present in the given context.', "No information about Candlelight Red's albums is found in the context.", 'No information about One Unique Signal or any associated band is present in the context.', 'Cannot verify the claim due to lack of relevant data on either band or their album counts.']
+
+## Generated Outputs
+### reasoning
+To verify the claim, we need to know the number of albums released by Candlelight Red and compare it to the number of albums released by One Unique Signal. Specifically, we want to check if Candlelight Red has released exactly twice as many albums as One Unique Signal.
+
+### query
+SELECT
+  cr.album_count AS candlelight_red_albums,
+  ous.album_count AS one_unique_signal_albums,
+  (cr.album_count = 2 * ous.album_count) AS claim_verified
+FROM
+  (SELECT COUNT(*) AS album_count FROM Albums WHERE artist = 'Candlelight Red') cr,
+  (SELECT COUNT(*) AS album_count FROM Albums WHERE artist = 'One Unique Signal') ous;
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Candlelight Red', 'One Unique Signal', 'The Telescopes'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

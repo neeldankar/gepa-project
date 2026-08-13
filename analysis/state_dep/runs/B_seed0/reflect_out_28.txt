@@ -1,0 +1,90 @@
+``` 
+You will be given three types of inputs in JSON-like format:
+
+- **claim**: A statement that makes one or more factual assertions, often involving named entities (people, works, organizations), dates, numbers, or domain-specific terminology, requiring verification or correction.
+- **notes**: A list of textual snippets that contain factual data related to the claim. These notes are often fragmentary, redundant, and may include contradictions or partially overlapping information.
+- **context**: A list of authoritative documents or article summaries providing comprehensive, verified information on topics relevant to the claim. These serve as the primary evidence base for fact-checking and clarification.
+
+---
+
+Your task is to produce exactly two outputs:
+
+1. **new_notes**:  
+   A concise, precise, and logically structured synthesis of the essential factual points extracted from both the notes and context that directly support, refute, clarify, or nuance the claim’s assertions. This synthesis should:
+
+   - Remove redundancies and irrelevant details.
+   - Explicitly address all key claim elements, such as people, dates, events, relationships, terminology, or numeric data mentioned.
+   - Identify and explain contradictions or ambiguity in the available data that bear on claim accuracy.
+   - Incorporate relevant background and domain-specific clarifications that prevent common misunderstandings (see domain-specific guidelines below).
+   - Include nuanced distinctions required to evaluate the claim correctly, e.g., distinguishing:
+     - composers’ identities and their works,
+     - director credits versus film titles,
+     - exact team affiliations and roster roles in sports,
+     - breed recognition status in animal classification,
+     - institutional histories and academic credentials,
+     - timeline sequences for historical or political events and roles.
+   - Be fully transparent about which parts of the claim are supported and which are contradicted or unverifiable.
+
+2. **titles**:  
+   A list of document titles from the context that provide the authoritative evidence justifying your new_notes. Follow these rules:
+   
+   - Match domain-specific terms, people, dates, and factual elements mentioned in the claim and notes to identify the most relevant documents.
+   - Use the exact titles as given in the context.
+   - Select as many as needed to cover all relevant evidence, but do not include tangentially related or irrelevant documents.
+   - Prioritize documents explicitly containing key facts that verify or refute components of the claim.
+
+---
+
+### Detailed Task Description and Approach
+
+1. **Claim Decomposition:**  
+   Break down multi-component claims into individual fact-checked elements. Identify the core assertions — who, what, when, where, how, and domain-specific key points.
+
+2. **Sourcing and Cross-Verification:**  
+   Use notes as preliminary pointers but rely on context documents for authoritative verification. Cross-check:
+   - Dates, places, numeric data.
+   - Roles/identities of people (e.g., film directors, composers, athletes, politicians).
+   - Relationships (e.g., co-writers vs. documentary titles, teams vs. nicknames).
+   - Domain-specific categorizations (e.g., breeds vs. crossbreeds, recognized institutions vs. informal associations).
+  
+3. **Domain-Specific Considerations:**  
+   Pay special attention to these nuances to avoid common errors:
+   - **Historical/Political:** Confirm roles, timelines, affiliations, official positions, and event sequences.
+   - **Sports:** Validate player positions, team nicknames, roster seasons, transfers, precise statistics.
+   - **Academic/Scientific:** Verify credentials, institutional founding dates, training and affiliation timelines.
+   - **Film/Media:** Confirm birthdates, nationalities, film credits, award histories, and differentiate titles from people.
+   - **Dog Breeds and Animal Classification:** Distinguish between officially recognized breeds, crossbreeds, or landrace types; check national kennel club recognition.
+   - **Organizational Claims:** Verify institution founding dates, award or induction criteria, and organizational links.
+   
+4. **Resolving Ambiguities and Contradictions:**  
+   When notes or context show conflicting information, explicitly highlight these contradictions or uncertainties and explain their impact on claim validity.
+
+5. **Response Quality:**  
+   Prioritize clarity, completeness, and factual accuracy in new_notes. Avoid unrelated facts or speculation. Maintain focus strictly on the claim’s scope.
+
+---
+
+### Output Format
+
+- **new_notes:**  
+  Provide a list of concise, factually accurate sentences or bullet points addressing the claim.
+
+- **titles:**  
+  Provide a list containing exact titles of one or more context documents used to justify your synthesis in new_notes.
+
+---
+
+### Summary of Best Practices (Learned from Examples)
+
+- Do not confuse names of works (films, compositions) with people (e.g., documentary titles vs. directors or co-writers).
+- Distinguish similarly named entities carefully using dates and domain-specific context.
+- When information about quantity (e.g., number of albums) is missing for one party, note inability to verify the comparative claim.
+- Align composition catalog numbers, opus numbers, or official titles precisely to avoid conflations.
+- Explicitly state when the claim’s logic conflates or misattributes facts.
+- Use multiple documents if the claim spans different topics or facts.
+- Do not add facts outside what the notes and context support.
+- Provide reasoning transparently as part of new_notes to justify acceptance, refutation, or partial validation.
+
+By following these instructions, your output will be accurate, comprehensive, domain-aware, and directly address the factual correctness of the claim using the provided evidence.
+
+```

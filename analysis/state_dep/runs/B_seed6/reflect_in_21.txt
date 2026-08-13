@@ -1,0 +1,124 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given two fields as input: `claim` and `notes`. The `claim` is a factual statement requiring verification or fact-checking. The `notes` contain extracted or summarized information related to the claim, including potential evidence that supports, contradicts, or is neutral toward the claim. The goal is to generate an effective *search query* (output field `query`) that can be used to retrieve authoritative documents or data to verify the truthfulness of the claim.
+
+Your task is to carefully analyze both the claim and the notes, then compose a concise, targeted search query designed to maximize relevant retrieval and minimize irrelevant results. This search query will guide downstream document retrieval systems to find evidence that confirms or refutes the claim.
+
+Detailed instructions for generating the query:
+
+1. **Analyze the Claim:**
+   - Identify the key entities (people, organizations, events, places, championships, films, songs).
+   - Pinpoint the main factual assertions (dates, awards, titles, roles, competition results, historical facts).
+   - Understand the relationships between entities (e.g., who acted in which movie, who won which championship, founding dates of sports teams).
+   - Note any temporal bounds (e.g., specific seasons, years, decades).
+   - Include nicknames, alternate names, or common epithets if relevant (e.g., "The King of Cocaine" = Pablo Escobar).
+
+2. **Review the Notes:**
+   - Extract domain-specific context from the notes that refine or clarify the claim.
+   - Identify corrections, contradictions, or confirmations embedded within the notes.
+   - Identify relevant domain-specific facts that may help narrow or specify the search query. For example:
+     - Baseball franchises: founding years, franchise relocations, managers, player tenure.
+     - Film domain: actors’ filmographies, familial relations, awards received.
+     - Motorsports: seasons, driver participation years, winners, nationality.
+     - Geographic details: place names, administrative divisions, jurisdictions.
+   - Recognize when some elements in the claim might be false or partially true from the notes, and incorporate key terms to check those facts explicitly.
+
+3. **Formulating the Query:**
+   - The query should be a natural language question or a targeted keyword phrase (or combination) that directly asks about the core elements necessary to verify the claim.
+   - Include all critical named entities, dates, and unique identifiers that anchor the claim in a factual context.
+   - Avoid vague or overly broad search terms; prefer specificity to guide retrieval towards authoritative sources.
+   - When applicable, combine search terms with logical connectors (e.g., AND, OR) or phrase them as concise fact-check questions (e.g., “Who won X in year Y?”, “Did person A receive award B for role C?”, “Which songs by artist D reached number one and who originally recorded them?”).
+   - Include alternative names or aliases if mentioned or deducible (e.g., “Pablo Escobar” and “The King of Cocaine”).
+
+4. **Domain-Specific Nuances:**
+   - **Music domain:** Focus on chart positions such as "Billboard Hot Country Singles & Tracks," original recording artists, and genre classifications.
+   - **Film and TV domain:** Confirm main cast members’ roles and their awards (e.g., Golden Globe nominations), also note familial or biographical relationships when relevant.
+   - **Sports (especially motorsports and baseball):** Check start and end years of participation, season numbering equivalences (e.g., "28th season = 2000"), nationality of competitors, and record of winners.
+   - **Geography:** Clarify administrative divisions and their hierarchical relationships where claims involve location-based facts.
+
+5. **Implementation Strategies:**
+   - Use the notes to rule out impossibilities or prior refutations in the query construction by explicitly including key facts the claim contradicts.
+   - Construct factual verification queries rather than open-ended broad questions.
+   - Prioritize queries that can retrieve multiple relevant documents (e.g., one query that simultaneously addresses claim aspects and related entities).
+   - When the notes identify misalignments (e.g., claimed facts are false), incorporate those exact elements for checking.
+
+6. **Desired Output:**
+   - Output only the field `query` with a single refined search query string.
+   - The query should be concise yet comprehensive enough to yield authoritative evidence for or against the claim.
+   - Avoid extraneous explanation or analysis in the final output.
+
+By following these instructions, you will generate effective search queries tailored to domain-specific factual claims across varied topics such as music chart history, filmographies and awards, sports seasons and participants, and geographic or political facts. The query will enable precise and productive evidence retrieval for accurate claim verification.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The writer of the metal song "Veteran of the Psychic Wars" is a lyricist, not Otep Shamaya.
+
+### notes
+["'Veteran of the Psychic Wars' is a song by Blue Öyster Cult written by Eric Bloom and Michael Moorcock.", "Otep Shamaya is the lead vocalist of the nu metal band Otep, with no credited involvement in writing 'Veteran of the Psychic Wars.'", "The song first appeared on the 1981 album 'Fire of Unknown Origin' by Blue Öyster Cult.", "'Veteran of the Psychic Wars' is a song by Blue Öyster Cult written by Eric Bloom and British author Michael Moorcock.", "The song first appeared on Blue Öyster Cult's 1981 album 'Fire of Unknown Origin'.", "Otep Shamaya is the lead vocalist of the nu metal band Otep and has no credited involvement in writing 'Veteran of the Psychic Wars'.", "'Veteran of the Psychic Wars' is a song by Blue Öyster Cult written by Eric Bloom and British author Michael Moorcock.", "The song first appeared on Blue Öyster Cult's 1981 album 'Fire of Unknown Origin'.", "Otep Shamaya is the lead vocalist of the nu metal band Otep and has no credited involvement in writing 'Veteran of the Psychic Wars'."]
+
+## Generated Outputs
+### reasoning
+The claim asserts that the writer of the metal song "Veteran of the Psychic Wars" is a lyricist, not Otep Shamaya. The notes consistently indicate that the song was written by Eric Bloom and Michael Moorcock and that Otep Shamaya, the lead vocalist of the nu metal band Otep, has no credited involvement in writing this song. This confirms that the songwriter is indeed the lyricist duo Bloom and Moorcock, not Shamaya.
+
+### query
+Who wrote the song "Veteran of the Psychic Wars"? Is Otep Shamaya credited as a writer or lyricist for "Veteran of the Psychic Wars"?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Otep Shamaya', 'Veteran of the Psychic Wars']. Documents remaining to be retrieved: ['Eric Bloom'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The player who was defeated by Johan Kriek in the 1982 Australian Open – Men's Singles and Albert Costa are both sportsmen, and one of them, Costa, began competing at the age of five.
+
+### notes
+["Johan Kriek defeated Steve Denton in the final of the 1982 Australian Open – Men's Singles.", 'Both Steve Denton and Albert Costa are professional tennis players, thus are sportsmen.', 'There is no available information confirming that Albert Costa started competing at the age of five.', "Johan Kriek defeated Steve Denton in the final of the 1982 Australian Open – Men's Singles.", 'Both Steve Denton and Albert Costa are professional tennis players and thus are sportsmen.', 'There is no available information confirming that Albert Costa started competing at the age of five.', "Johan Kriek defeated Steve Denton in the final of the 1982 Australian Open – Men's Singles.", 'Both Steve Denton and Albert Costa are professional tennis players and thus are sportsmen.', 'There is no information available confirming that Albert Costa started competing at the age of five.']
+
+## Generated Outputs
+### reasoning
+The claim involves two main factual assertions: (1) Johan Kriek defeated a certain player in the 1982 Australian Open Men's Singles final, and (2) Albert Costa began competing at the age of five. The notes confirm that Johan Kriek defeated Steve Denton in the 1982 Australian Open final, confirming the identity of the player defeated by Kriek. Both Steve Denton and Albert Costa are professional tennis players (and thus sportsmen), validating that part of the claim. However, there is no available information confirming that Albert Costa started competing at the age of five. To verify the entire claim, the key entities are Johan Kriek, Steve Denton, Albert Costa, the 1982 Australian Open Men's Singles final, and the fact about Albert Costa’s starting age in competition. The query must verify: the identity of the player defeated by Johan Kriek in the 1982 Australian Open and the age at which Albert Costa began competing.
+
+### query
+Who did Johan Kriek defeat in the 1982 Australian Open Men's Singles final and at what age did Albert Costa begin competing in professional tennis?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ["1982 Australian Open – Men's Singles"]. Documents remaining to be retrieved: ['Albert Costa', 'Steve Denton'].
+
+
+
+# Example 3
+## Inputs
+### claim
+This Welsh actor was in the 2007 movie that was a sequel to the successful 2002 film, 28 Days Later. He also starred in Avengers: Age of Ultron.
+
+### notes
+["28 Weeks Later (2007) is the sequel to the 2002 film '28 Days Later' directed by Juan Carlos Fresnadillo.", "'Avengers: Age of Ultron' (2015) is a Marvel superhero film featuring a large ensemble cast with notable actors but no explicitly identified Welsh actor in the provided context.", "No evidence from the notes or context confirms a Welsh actor appearing in both '28 Weeks Later' and 'Avengers: Age of Ultron'.", "Vuyo Dabula, a South African actor, appeared in 'Avengers: Age of Ultron' but has no noted connection to '28 Weeks Later' or to Wales.", '28 Weeks Later (2007) is the sequel to the 2002 film 28 Days Later.', 'Jeremy Renner, an American actor, appeared in both 28 Weeks Later (2007) and Avengers: Age of Ultron (2015).', 'No evidence indicates a Welsh actor appeared in both 28 Weeks Later and Avengers: Age of Ultron.', 'Vuyo Dabula, a South African actor, appeared in Avengers: Age of Ultron but not in 28 Weeks Later.', 'Welsh actors mentioned, such as Adrian Lewis Morgan and Michael Forrest, have no connection to these films.', '28 Weeks Later (2007) is the sequel to the 2002 film 28 Days Later.', 'Jeremy Renner, an American actor, appeared in both 28 Weeks Later (2007) and Avengers: Age of Ultron (2015).', 'No evidence supports a Welsh actor appearing in both 28 Weeks Later and Avengers: Age of Ultron.', 'Welsh actors mentioned, such as Adrian Lewis Morgan and Michael Forrest, have no connection to these films.', 'Vuyo Dabula, a South African actor, appeared in Avengers: Age of Ultron but not in 28 Weeks Later.']
+
+## Generated Outputs
+### reasoning
+The claim involves a Welsh actor who appeared in both "28 Weeks Later" (the 2007 sequel to "28 Days Later" from 2002) and "Avengers: Age of Ultron" (2015). The notes confirm that "28 Weeks Later" is indeed the 2007 sequel of "28 Days Later." However, there is no confirmed mention of a Welsh actor in the cast of "Avengers: Age of Ultron" in the notes. Additionally, there's no evidence linking a single Welsh actor to both films. To verify this claim, it is necessary to identify any Welsh actors in the cast lists of both "28 Weeks Later" and "Avengers: Age of Ultron," and see if any actor appears in both. This requires searching for the cast of these two films with attention to the nationality (Welsh) of the actors involved.
+
+### query
+Which Welsh actors appeared in both "28 Weeks Later" (2007) and "Avengers: Age of Ultron" (2015)? List Welsh cast members for each film and identify any actor common to both.
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['28 Weeks Later', 'Avengers: Age of Ultron', 'Jeremy Renner']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

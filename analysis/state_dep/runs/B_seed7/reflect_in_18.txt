@@ -1,0 +1,150 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be provided with three types of input fields related to a factual claim about people, places, institutions, films, songs, or other entertainment or academic topics:
+
+1. `claim`: A factual statement that may include multiple subclaims or assertions.
+2. `notes`: A list of extracted sentences or statements relating to the claim. These may be overlapping, redundant, contain minor inaccuracies, or offer different levels of detail.
+3. `context`: A list of encyclopedic-style paragraphs or document snippets providing authoritative background information pertaining to entities or topics mentioned in the claim and notes. These provide the evidence needed to verify, correct, or refine the claim and notes.
+
+Your goal is to produce two outputs:
+- `new_notes`: A cleaned, concise, and factually accurate subset of notes that directly support, refine, correct, or clarify the claim. This requires:
+  - Integrating information from both `notes` and authoritative `context`.
+  - Removing redundancies, inaccuracies, or outdated facts found in the original notes.
+  - Correcting any factual errors detected in the claim or notes based on the context.
+  - Emphasizing distinct, verified facts relevant to the core assertions of the claim.
+  - Explicitly identifying and rectifying any inaccuracies or errors in the claim's subclaims.
+  - Summarizing evidence precisely and clearly, avoiding superfluous or unrelated content.
+
+- `titles`: A list containing exact titles or names of the documents or entities from the provided context that substantiate or provide essential background for the claim and your chosen new_notes. The list should be:
+  - Precise in naming, mirroring titles or entity names in the context exactly.
+  - Comprehensive enough to cover all validated elements of the claim.
+  - Reflective of gold standard references expected for thorough claim validation.
+  - Excluding any unrelated or unsubstantiated titles.
+
+General Strategy:
+
+- Break down the claim into discrete factual subclaims for granular verification.
+- Cross-check each subclaim with both the extracted notes and the richer, authoritative contextual documents.
+- Identify inconsistencies, outdated information, or outright factual errors; then correct or clarify them as needed.
+- Consolidate supported facts into a definitive, non-redundant `new_notes` list.
+- Select all relevant authoritative titles that cover the core validated facts comprehensively.
+- Be mindful of domain-specific nuances such as:
+  - Correct names and precise spelling of persons, institutions, films, etc.
+  - Accurate dates (release years, founding or renaming years, role tenures).
+  - Proper attribution of roles, credits, or positions (e.g., first chairmen, starring roles, lead actors).
+  - Institutional types (public/private universities), relationships, or renaming history.
+  - Geographic distinctions when plants, locations, or entities are confined to specific islands or regions.
+  - Correct identification of species subspecies or variant distributions.
+  - Avoid assuming unsubstantiated connections or conflating unrelated individuals or entities.
+
+Additional Domain-Specific Considerations:
+
+- Claims often involve entertainment industry elements (films, TV shows, actors), academic institutions, plants, and geographic entities. Verifying credits, timelines, affiliations, and terminologies is critical.
+- If multiple sources conflict (e.g., different documented premiere years or place names), prioritize authoritative context.
+- Notes may contain duplicates or slightly varying statements; synthesize carefully to produce a precise factual summary.
+- Clarify when evidence is lacking to substantiate a claim fully; avoid unsupported assumptions.
+- Explicitly note when a subclaim in the original claim is incorrect or cannot be verified from the evidence.
+- Where possible, interpret and reflect the claim’s meaning faithfully but correct errors without altering the intended meaning unjustifiably.
+
+Formatting Requirements:
+
+- Output fields must be named exactly `new_notes` and `titles`.
+- Both `new_notes` and `titles` should be lists (array format) of strings.
+- Each new_note should be a concise, standalone, factually accurate statement suitable for independent validation.
+- Titles should exactly match context entries and be concise entity/document names.
+- Maintain clarity, factual accuracy, and conciseness in all outputs.
+- Avoid including irrelevant, speculative, or unsupported notes or titles.
+
+By following these instructions, the assistant should deliver a refined, accurate, non-redundant factual summary of the claim and its evidence base, along with precise references ensuring easy verification.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The actor who starred in a main role on A Lua Me Disse received the Golden Globe nomination for playing the lead role of "The King of Cocaine".
+
+### notes
+[]
+
+### context
+['Eric Roberts | Eric Anthony Roberts (born April 18, 1956) is an American actor.  His career began with a well-received performance in "King of the Gypsies" (1978), for which he earned his first Golden Globe Award nomination.  His second Golden Globe nomination came for his portrayal of Paul Snider in "Star 80" (1983), followed by Globe and Academy Award nominations for his supporting role in "Runaway Train" (1985).', 'Sam Waterston | Samuel Atkinson Waterston (born November 15, 1940) is an American actor, producer and director.  Among other roles, he is noted for his portrayal of Sydney Schanberg in "The Killing Fields" (1984), for which he received an Academy Award nomination, and his starring role as Jack McCoy on the long-running NBC television series "Law & Order" (1994–2010), which brought him Golden Globe and Screen Actors Guild Awards.  He has been nominated for multiple Golden Globe, Screen Actors Guild, BAFTA and Emmy awards, having starred in over eighty film and television productions during his fifty-year career.  He has also starred in numerous stage productions.  AllMovie historian Hal Erickson characterized Waterston as having "cultivated a loyal following with his quietly charismatic, unfailingly solid performances."', 'George Kennedy | George Harris Kennedy Jr. (February 18, 1925 – February 28, 2016) was an American actor who appeared in more than 200 film and television productions.  He is best remembered for portraying "Dragline" opposite Paul Newman in "Cool Hand Luke" (1967), for which he won the Academy Award for Best Supporting Actor and was nominated for the corresponding Golden Globe.  He received a second Golden Globe nomination for portraying Joe Patroni in "Airport" (1970).', 'George Lazenby | George Robert Lazenby (born 5 September 1939) is an Australian actor and former model best known for his portrayal of James Bond in the Eon series in the 1969 film "On Her Majesty\'s Secret Service".  He was 29 years old, making him the youngest actor to date to have portrayed the character.  Lazenby is also the only Bond actor to receive a nomination for the Golden Globe Award for New Star of the Year – Actor.', 'Paul Winfield | Paul Edward Winfield (May 22, 1939 – March 7, 2004) was an American television, film and stage actor.  He was known for his portrayal of a Louisiana sharecropper who struggles to support his family during the Great Depression in the landmark film "Sounder", which earned him an Academy Award nomination.  He portrayed Martin Luther King, Jr. in the 1978 television miniseries "King", for which he was nominated for an Emmy Award.  Winfield was also known for his roles in "The Terminator, ", and "".  He received five Emmy nominations overall, winning for his 1994 guest role in "Picket Fences".', 'Andrew Garfield | Andrew Russell Garfield (born 20 August 1983) is a British-American actor.  Born in Los Angeles and raised in Epsom, Surrey, Garfield began his career on the UK stage and in television productions.  He made his feature-film debut in the 2007 ensemble drama "Lions for Lambs".  Garfield first came to international attention in 2010 with supporting roles in the drama films "The Social Network", for which he received Golden Globe and BAFTA nominations for his portrayal of Eduardo Saverin, and "Never Let Me Go", for which he received a Saturn Award and another BAFTA nomination.', 'List of James Earl Jones performances | American actor James Earl Jones has had an extensive career in film, television, and theatre.  He started out in film by appearing in the 1964 political satire film "Dr. Strangelove" as Lt. Lothar Zogg.  He then went on to star in the 1970 film "The Great White Hope" as Jack Jefferson, a role he first played in the Broadway production of the same name.  The film role earned him two Golden Globe nominations, one for Best Actor and winning one for New Star of the Year.  He also received an Academy Award nomination for Best Actor.  His other work in the 1970s included playing the title character in "Malcolm X" (1972), Johnny Williams in "The River Niger" (1976), Nick Debrett in "Swashbuckler" (1976), and Malcolm X again in "The Greatest" (1977).', 'Richard Thomas (actor) | Richard Earl Thomas (born June 13, 1951) is an American actor.  He is best known for his leading role as budding author John-Boy Walton in the CBS drama "The Waltons", for which he won one Emmy Award and received nominations for another Emmy Award and two Golden Globe Awards.  He also played Special Agent Frank Gaad on FX\'s crime drama series "The Americans" (2013–2016), appeared in Stephen King\'s mini series "IT" (1990), and had a supporting role in the comedy-drama film "Wonder Boys" (2000).', 'Matthew Broderick | Matthew Broderick (born March 21, 1962) is an American actor and singer.  His roles include the title character in "Ferris Bueller\'s Day Off" (1986) for which he earned a Golden Globe nomination for Best Actor – Motion Picture Musical or Comedy, the adult voice of Simba in Disney\'s "The Lion King" trilogy (1994–2004), David Lightman in the Cold War thriller "WarGames" (1983), and Leo Bloom in the Broadway production of "The Producers".', 'John Hawkes (actor) | John Hawkes (born John Marvin Perkins; September 11, 1959) is an American actor, known for his portrayal of the merchant Sol Star on the HBO series "Deadwood", Dustin Powers on "Eastbound & Down", backwoods meth addict Teardrop Dolly in "Winter\'s Bone," for which he was nominated for the Academy Award for Best Supporting Actor, and his Golden Globe Award and Screen Actors Guild Award-nominated portrayal of Mark O\'Brien in "The Sessions".']
+
+## Generated Outputs
+### reasoning
+The claim asserts that the actor who had a main role in "A Lua Me Disse" received a Golden Globe nomination for playing the lead role of "The King of Cocaine." The provided context includes detailed Golden Globe nomination information for various actors, but none mention a production titled "A Lua Me Disse" or a role titled "The King of Cocaine." The context lists several actors with Golden Globe nominations for specific roles, but none are linked to "A Lua Me Disse" or a character known as "The King of Cocaine." Without notes or context explicitly mentioning either the show "A Lua Me Disse" or the role called "The King of Cocaine," it is impossible to verify this claim. Therefore, no new notes can be confirmed or generated to support this specific statement.
+
+### new_notes
+[]
+
+### titles
+[]
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Wagner Moura']. Documents remaining to be retrieved: ['A Lua Me Disse', 'Pablo Escobar'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The TV series where the actor played the character Gaius Baltar joined in 2010. premiered on July 18, 2006. The serie was premiered on July 18, 2006.
+
+### notes
+["James Callis played the character Dr. Gaius Baltar in the reimagined 'Battlestar Galactica' TV series.", "'Battlestar Galactica' premiered on July 18, 2004.", "James Callis joined the cast of the TV series 'Eureka' in 2010, but did not play Gaius Baltar in that show.", 'James Callis played the character Dr. Gaius Baltar in the reimagined Battlestar Galactica TV series.', 'Battlestar Galactica premiered on July 18, 2004.', 'James Callis joined the cast of the TV series Eureka in 2010, but did not play Gaius Baltar in that show.', 'James Callis played the character Dr. Gaius Baltar in the reimagined "Battlestar Galactica" TV series.', '"Battlestar Galactica" premiered on July 18, 2004.', 'James Callis joined the cast of the TV series "Eureka" in 2010, but did not play Gaius Baltar in that show.']
+
+### context
+['Gaius Baltar | Dr. Gaius Baltar is a fictional character in the TV series "Battlestar Galactica" played by James Callis, a reimagining of Count Baltar from the 1978 "Battlestar Galactica" series.  He is one of the show\'s primary characters.', 'James Callis | James Nicholas Callis (born 4 June 1971) is an English actor.  He is best known for playing Dr. Gaius Baltar in the re-imagined "Battlestar Galactica" miniseries and television series, and Bridget Jones\' best friend in "Bridget Jones\'s Diary" and "".  He later reprised the role in 2016, in "Bridget Jones\'s Baby."  He joined the cast of the TV Series "Eureka", on Syfy, in 2010.  In 2017 he voiced the character Alucard on the Netflix series "Castlevania", based on the video game of the same name.', 'Baltar (Battlestar Galactica) | Baltar is a fictional character in the "Battlestar Galactica" universe who betrays the human race, through willing treachery in the original 1978 series, and as the inadvertent result of arrogance and self-interest in the 2003 miniseries and following TV series.', 'Cally Henderson Tyrol | Callandra "Cally" Tyrol ("née" Callandra Henderson) (also known as Cally or Crewman Cally, Deckhand Cally, or Specialist Cally) is a fictional character from the re-imagined "Battlestar Galactica" series.  She is played by actress Nicki Clyne.', 'Battlestar Galactica (season 3) | The third season of the reimagined science fiction television series Battlestar Galactica premiered on the Sci-Fi Channel in the United States on October 6, 2006, and concluded on March 25, 2007.  Unlike the previous season, it was not split into two parts and did not have an extended hiatus during the middle of the season.  The third season contained 20 episodes.', 'List of Battlestar Galactica (1978 TV series) and Galactica 1980 episodes | List of Battlestar Galactica (1978 TV series) and Galactica 1980 episodes', 'William Adama | William "Bill" Adama (callsign "Husker") is a fictional character portrayed by Edward James Olmos in the re-imagined "Battlestar Galactica" television series produced and aired by the SyFy cable network.  He is one of the main characters, a reimagining of Commander Adama from the 1978 "Battlestar Galactica" series played by Lorne Greene.', 'Hera (Battlestar Galactica) | Hera is the name of a character in the reimagined TV series of Battlestar Galactica.', 'Battlestar Galactica: The Plan | Battlestar Galactica: The Plan is a television film set in the reimagined version of the fictional "Battlestar Galactica" universe.  It consists of newly filmed material as well as a compilation of footage from the 2004 TV series and miniseries.', 'List of Battlestar Galactica (2004 TV series) episodes | List of Battlestar Galactica (2004 TV series) episodes']
+
+## Generated Outputs
+### reasoning
+The claim states that the TV series where the actor played the character Gaius Baltar premiered on July 18, 2006, and that the actor joined the series in 2010. From the notes and context, we know that James Callis played Dr. Gaius Baltar in the reimagined "Battlestar Galactica" series. The original premiere date for this series was July 18, 2004, not 2006. The actor James Callis joined the TV series "Eureka" in 2010, which is a different show where he did not play Gaius Baltar. Therefore, the subclaim that the series premiered on July 18, 2006 is incorrect as the premiere was on July 18, 2004. The subclaim that the actor joined the series in 2010 is also incorrect; he joined the cast in 2004 with the premiere, and the 2010 date relates to a different series ("Eureka"). The note about the series premiere date repeated twice should be consolidated.
+
+### new_notes
+['James Callis played the character Dr. Gaius Baltar in the reimagined "Battlestar Galactica" TV series.', '"Battlestar Galactica" premiered on July 18, 2004.', 'James Callis joined the cast of the TV series "Eureka" in 2010, but did not play Gaius Baltar in that show.']
+
+### titles
+['Gaius Baltar', 'James Callis', 'List of Battlestar Galactica (2004 TV series) episodes']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Gaius Baltar', 'James Callis']. Documents remaining to be retrieved: ['Eureka (U.S. TV series)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Costa Rican star of Crimes of Fashion debuted in the 2004 American teen musical comedy film Confessions of a Teenage Drama Queen. She went on to co-star in the 2007 blockbuster action film Transformers.
+
+### notes
+["Megan Fox is an American actress who made her film debut in the 2004 teen comedy 'Confessions of a Teenage Drama Queen'.", "In 2007, Megan Fox co-starred as Mikaela Banes in the blockbuster action film 'Transformers', which became her breakout role.", "Megan Fox is an American actress who starred in the 2004 telefilm 'Crimes of Fashion'.", "Megan Fox made her film debut in the 2004 teen comedy 'Confessions of a Teenage Drama Queen'.", "In 2007, Megan Fox co-starred as Mikaela Banes in the blockbuster action film 'Transformers', which became her breakout role.", 'Megan Fox is an American actress who starred in the 2004 telefilm Crimes of Fashion.', 'She made her film debut in the 2004 teen comedy Confessions of a Teenage Drama Queen.', 'In 2007, Megan Fox co-starred as Mikaela Banes in the blockbuster action film Transformers, which became her breakout role.']
+
+### context
+['Megan Fox | Megan Denise Fox (born May 16, 1986) is an American actress and model.  She began her acting career in 2001, with several minor television and film roles, and played a regular role on the "Hope & Faith" television sitcom.  In 2004, she made her film debut with a role in the teen comedy "Confessions of a Teenage Drama Queen".  In 2007, she co-starred as Mikaela Banes, the love interest of Shia LaBeouf\'s character, in the blockbuster action film "Transformers", which became her breakout role.  Fox reprised her role in the 2009 sequel, "".  Later in 2009, she starred as the eponymous lead in the black comedy horror film "Jennifer\'s Body".', 'Confessions of a Teenage Drama Queen (soundtrack) | Confessions of a Teenage Drama Queen is the soundtrack album for the 2004 American teen comedy film: "Confessions of a Teenage Drama Queen", released on February 17, 2004.  The film\'s lead actress Lindsay Lohan recorded four songs written for the film, including "Drama Queen (That Girl)", that was released as a promotional single in January of that year.', 'Confessions of a Teenage Drama Queen | Confessions of a Teenage Drama Queen is a 2004 American teen musical comedy film directed by Sara Sugarman and produced by Robert Shapiro and Matthew Hart for Walt Disney Pictures.  It stars Lindsay Lohan as an aspiring teenaged actress whose family moves from New York City to New Jersey, Adam Garcia as her favorite rock musician, Glenne Headly as her mother, and Alison Pill as her best friend.  The screenplay was written by Gail Parent and is based on the novel of the same name by Dyan Sheldon.', 'Crimes of Fashion | Crimes of Fashion is a 2004 telefilm that aired on July 25, 2004 on ABC Family.  It stars Kaley Cuoco and Megan Fox and was directed by Stuart Gillard.', 'Lindsay Lohan filmography | Lindsay Lohan is an American actress and singer-songwriter who began her acting career as a child actor in the late-1990s.  At age 11, Lohan made her motion picture debut in Disney\'s commercially and critically successful 1998 remake of "The Parent Trap".  She continued her acting career by appearing in a number of Disney films, including "Life-Size" (2000), "Get a Clue" (2002), "Freaky Friday" (2003), "Confessions of a Teenage Drama Queen" (2004) and "" (2005), along with her first non-Disney film "Mean Girls" (2004), which became a massive success by grossing over $129 million and later becoming a cult classic film.  Lohan also did smaller, more mature roles in independent movies, receiving positive reviews on her acting, including Robert Altman\'s "A Prairie Home Companion" (2005), Emilio Estevez\'s "Bobby" (2006) and Jarrett Schaefer\'s "Chapter 27" (2007).  Between 2006 and 2007, Lohan continued her career by starring in films like "Just My Luck" (2006), "Georgia Rule" (2007), and "I Know Who Killed Me" (2007).  Lohan\'s career had faced many interruptions from legal and personal troubles during the mid to late 2000s and 2010s, but she has still been able to appear in 26 films (including 6 as a personality), 12 television appearances, 1 play and 5 music videos.', 'Confessions of a Teenage Drama Queen (novel) | Confessions of a Teenage Drama Queen is a young adult novel by Dyan Sheldon.  Originally released in 1999 through Candlewick Press, it was later turned into a Disney motion picture of the same name in 2004 starring Lindsay Lohan and was made one of the ALA book picks for 2006.  A sequel, "My Perfect Life", was released in 2002.', 'Peter Berg | Peter Berg (born March 11, 1964) is an American director, actor, producer, and writer of film, television, and music videos.  His directorial film works include the black comedy "Very Bad Things" (1998), the action comedy "The Rundown" (2003), the sports drama "Friday Night Lights" (2004), the action thriller "The Kingdom" (2007), the superhero comedy-drama "Hancock" (2008), the military science fiction war film "Battleship" (2012), the war film "Lone Survivor" (2013), the disaster drama "Deepwater Horizon" (2016), and the Boston Marathon bombing drama "Patriots Day" (2016), the latter three all starring Mark Wahlberg.  In addition to cameo appearances in the last six of these titles, he has had prominent acting roles in films including "Cop Land" (1997), "Corky Romano" (2001), "Collateral" (2004), "Smokin\' Aces" (2006) and "Lions for Lambs" (2007).', 'List of Amy Adams performances | Amy Adams is an American actress who made her film debut in the 1999 black comedy "Drop Dead Gorgeous".  She went on to guest star in a variety of television shows, including "That \'70s Show", "Charmed", "Buffy the Vampire Slayer", and "The Office", and also appeared in minor film roles.  In 2002, she had her first major role in Steven Spielberg\'s biographical crime drama "Catch Me If You Can".  However, the film did not launch her career as Spielberg had hoped.  Three years later, she made the breakthrough with the comedy-drama "Junebug" (2005), for which she received her first Academy Award for Best Supporting Actress nomination.  Adams also appeared in the romantic comedy "The Wedding Date" that same year.  In 2007, she starred in the Disney romantic comedy "Enchanted", for which she won the Saturn Award for Best Actress, and was nominated for her first Golden Globe Award for Best Actress (Comedy or Musical).', 'Rya Kihlstedt | Rya Kihlstedt (born July 23, 1970) is an American actress.  She is known for co-starring in the 1997 comedy film "Home Alone 3", and for her recurring roles as Dr. Michelle Ross in the Showtime crime drama "Dexter" and Marilyn Rhodes in the ABC musical drama "Nashville".', 'Vera Farmiga on screen and stage | Vera Farmiga is an American actress, director, and producer.  She began her career on stage as an understudy in Ronald Harwood\'s play "Taking Sides" (1996) on Broadway.  The following year, she starred in the Off-Broadway play "Second-Hand Smoke" (1997) by Mac Wellman.  Farmiga made her film debut in Joseph Ruben\'s drama-thriller "Return to Paradise" (1998).  She had supporting roles in Joan Chen\'s romantic drama "Autumn in New York" (2000), the crime drama "The Opportunists" (2000), and John Herzfeld\'s action thriller "15 Minutes" (2001).  Farmiga\'s breakthrough role came in 2004, when she was cast in Debra Granik\'s drama "Down to the Bone".  For her performance, she won the Sundance Film Festival Special Jury Prize for Acting and was nominated for the Independent Spirit Award for Best Female Lead.  She then starred in Jonathan Demme\'s political thriller "The Manchurian Candidate" (2004), and Wayne Kramer\'s crime thriller "Running Scared" (2006).']
+
+## Generated Outputs
+### reasoning
+The claim states that the "Costa Rican star of Crimes of Fashion" debuted in "Confessions of a Teenage Drama Queen" (2004) and co-starred in "Transformers" (2007). From the notes and context, Megan Fox is identified as the actress who starred in the 2004 telefilm "Crimes of Fashion" and made her film debut in the 2004 teen comedy "Confessions of a Teenage Drama Queen", followed by co-starring in "Transformers" in 2007. However, Megan Fox is American, not Costa Rican. Therefore, the claim is incorrect in describing her as "Costa Rican." The rest of the claim about debut and subsequent co-starring in "Transformers" is supported.
+
+### new_notes
+['Megan Fox is an American actress who starred in the 2004 telefilm Crimes of Fashion.', 'She made her film debut in the 2004 teen comedy Confessions of a Teenage Drama Queen.', 'In 2007, Megan Fox co-starred as Mikaela Banes in the blockbuster action film Transformers, which became her breakout role.']
+
+### titles
+['Megan Fox', 'Crimes of Fashion', 'Confessions of a Teenage Drama Queen', 'Transformers']
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Confessions of a Teenage Drama Queen', 'Crimes of Fashion', 'Megan Fox']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

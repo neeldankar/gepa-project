@@ -1,0 +1,85 @@
+```
+You will be given two input fields:
+
+- `claim`: a factual statement or assertion that posits certain relationships, attributes, or facts about one or more entities, events, works, or concepts.
+- `notes`: a collection (list) of factual sentences, observations, or knowledge snippets that may partially confirm, contradict, or leave ambiguous some parts of the claim.
+
+Your task is to produce the output field:
+
+- `query`: a precise, focused, and information-seeking question or a set of clearly formulated search queries designed for a fact-checking or retrieval system. These queries should target authoritative sources or structured data that can verify, refute, or clarify the truthfulness of the claim.
+
+---
+
+**Detailed task description and expectations:**
+
+1. **Goal:**  
+   Generate queries that facilitate retrieval of relevant evidence or documents specifically to verify discrete factual components of the claim. The queries must be sufficiently detailed and structured so that a retrieval system can find grounded evidence for checking the claim’s validity.
+
+2. **Identifying key elements in the claim:**  
+   - Extract pivotal **entities**: people, organizations, geographic locations, works (songs, films, stations), bands, universities, or companies.  
+   - Identify **relationships or roles** between entities: authorship, membership, ownership, geographic location, chronology (dates/time), classification (genre, type, public/private), and attributes (nationality, flavor, number of members).  
+   - Note any **comparisons or cross-entity assertions** presented (e.g., membership size comparison between bands, overlapping roles of an individual in multiple films, or geographic relationships involving place, counties, cities).  
+   - Capture relevant **temporal, categorical, or contextual qualifiers** that narrow or define the claim.
+
+3. **Analyzing the notes:**  
+   - Use the notes to find parts of the claim that are confirmed, contradicted, ambiguous, or missing information.  
+   - Identify **gaps** or **uncertainties** requiring explicit queries to resolve (e.g., if the claim names a genre but notes contradict it, or if an ownership or geographical boundary is ambiguous).  
+   - Detect domain-specific nuances, such as in:  
+     - **Music domain:** songwriter and lyricist credits, band membership counts and genre classifications, song–band associations, nationality of performers.  
+     - **Film/TV domain:** actor nationalities, roles and appearances across related works (sequels, originals), production details.  
+     - **Transportation/Geography domain:** railway ownership, location of stations, administrative boundaries, terminal points related to municipalities and counties.  
+     - **Academic/Institution domain:** historic roles of individuals in universities, university public/private status.  
+     - **Beverage/Commercial domain:** flavor profiles tied to origins or advertisements cited.
+
+4. **Formulating queries:**  
+   - Each query should be explicitly linked to a factual element or relationship in the claim.  
+   - Queries should either directly confirm key facts or fill gaps for ambiguous or contradictory notes.  
+   - When appropriate, formulate queries that facilitate **comparisons** across multiple entities or attributes, enabling holistic verification of composite claims.  
+   - Queries can be phrased as natural language questions or database-like structured queries (e.g., SPARQL) depending on clarity and precision.  
+   - Avoid vague or generic queries; focus on **specific searches** that would likely retrieve relevant official credits, authoritative descriptions, geographic mappings, or role/attribute listings.
+
+5. **Generalizable strategy:**  
+   - Parse the claim into atomic verifiable assertions.  
+   - Contrast each assertion against notes to detect confirmations, contradictions, or missing data.  
+   - For confirmed parts, validate with precise queries to corroborate sources (sometimes redundancy helps as final confirmation).  
+   - For contradictions or missing info, create targeted queries that retrieve foundational facts needed for resolution.  
+   - If claim spans multiple factual domains (e.g., combining actor nationality and film roles), generate queries that cross-validate these domains cohesively.
+
+6. **Examples of possible query foci based on domain-specific cues:**
+
+   - **Music-related claims:**  
+     - "Who are the credited writers and lyricists of [song]?"  
+     - "Is [person/band] credited as a writer or performer in [song/album]?"  
+     - "What is the genre of [band]?"  
+     - "How many members did [band] have during [time period or peak]?"  
+     - "Which band recorded [song] and what are its member counts?"
+
+   - **Film and TV-related claims:**  
+     - "What is the nationality of [actor]?"  
+     - "Did [actor] act in [film A] and [film B]?"  
+     - "Who are the main cast members of [film or series]?"  
+     - "Are there shared actors between [original film] and [sequel]?"
+
+   - **Transportation/Geography-related claims:**  
+     - "Who owns/operates [station or railway]?"  
+     - "Where is [station] geographically located (city, county)?"  
+     - "What are the termini of [railway company]?"  
+     - "Is [city] located within [county], or adjacent to it?"
+
+   - **Academic/Institution-related claims:**  
+     - "Who held the chairman position at [university] during [period]?"  
+     - "Is [university] classified as public or private?"  
+     - "What historic roles did [individual] have at [institution]?"
+
+   - **Commercial/Beverage claims:**  
+     - "What flavors are characteristic of [beverage name] associated with [region]?"  
+     - "What advertisements feature [song/celebrity] for [product]?"
+
+---
+
+**Summary:**  
+Given a `claim` and a set of `notes` containing partial or whole evidence, produce a set of precise, domain-aware, and evidence-targeted queries. These queries should systematically address each factual element of the claim to enable retrieval of authoritative information verifying or refuting it. Queries should be crafted to handle composite and nuanced facts by focusing on relationships, roles, attributes, and comparisons, paying special attention to domain-specific details as seen in musical credits, filmography, geography, institutional roles, or product attributes.
+
+Remember: The final queries must be clear, unambiguous, and sufficiently granular to aid a fact-checking or search system in returning the key evidence needed for verification.
+
+```

@@ -1,0 +1,80 @@
+```
+Task Description:
+
+You will be given three input fields:
+
+- `claim`: A factual statement or assertion involving one or more entities, events, or relationships. These claims typically involve complex relationships such as professional roles, historical events, authorship, publication details, sports achievements, geographic or administrative relationships, or organizational affiliations.
+- `notes`: A list of factual snippets or candidate facts extracted that pertain to the claim. These may include partial, overlapping, duplicated, or sometimes contradicting assertions relating to the entities or events in the claim. Your job is to evaluate and filter these notes carefully.
+- `context`: A list of document excerpts (with titles and text) providing detailed background information and authoritative evidence regarding the entities, events, or relationships mentioned in the claim and notes.
+
+Your task is to produce two outputs:
+
+1. `new_notes`: A concise, accurate, and non-redundant subset of the provided `notes` that best support or refute the claim based on the information in the `context`. These notes must be:
+
+   - Directly relevant and factually confirmed by the `context`.
+   - Free from unsupported, inaccurate, or irrelevant statements.
+   - Consolidated to avoid duplicates or contradictory statements.
+   - Comprehensive enough to cover all key factual components of the claim.
+
+2. `titles`: A list of exact document titles from the `context` whose content is necessary to verify the `new_notes`. Include **all** key documents referenced by your new_notes and omit unrelated or extraneous documents. Document titles must exactly match those from the `context`.
+
+---
+
+Detailed Requirements and Domain-Specific Knowledge:
+
+1. **Entity and Relationship Analysis:**
+
+   - Identify all entities (persons, organizations, events, locations, publications) named or implied in the claim.
+   - Understand the relationships (e.g., authorship, roles, rivalry, territorial location, event timelines) asserted between these entities.
+   - Disambiguate entities with identical or similar names by leveraging biographical, professional, or contextual clues.
+
+2. **Cross-Verification and Fact-Checking:**
+
+   - Each candidate `note` must be verified by direct or implicit support in the `context` documents.
+   - Notes without backing evidence or contradicted by the context must be excluded.
+   - When notes conflict, select the factually accurate note based on context support.
+
+3. **Precision and Completeness:**
+
+   - The `new_notes` should precisely represent verified facts while omitting redundancy.
+   - All components of compound claims (e.g., multiple entities or assertions) must be addressed and supported.
+   - The `titles` list must reflect all contextual sources required to confirm the output facts.
+
+4. **Handling Ambiguity and Redundancy:**
+
+   - Filter out repeated notes, keeping the one best supported and clearest.
+   - When notes vary in detail or interpretation, choose those most consistent with context.
+   - If a claim is partially supported, include only the supported notes and omit unsupported segments.
+
+5. **Domain-Specific Contextual Knowledge:**
+
+   - Recognize professional categories and relevant knowledge about entities such as:
+     - Scientists (e.g., paleontologists like Elisabeth Vrba, Stephen Jay Gould),
+     - Journalists and correspondents (authorial assignments and personal/professional conflicts),
+     - Sports players with tournament results or career milestones,
+     - Historical political figures and events (e.g., Cuban Revolution figures and timelines),
+     - Geographic and administrative divisions (e.g., NYC boroughs vs. counties like Westchester),
+     - Transportation systems (railway lines, stations, routes),
+     - National parks, cemeteries, and their jurisdictional relationships,
+     - Publications: carefully distinguish between books, magazine articles, essays, and periodicals, and verify authorship and publication venue.
+
+6. **Generalizable Reasoning Approach:**
+
+   - Parse the claim into distinct factual assertions.
+   - Map these assertions to the provided notes, tagging which parts correspond to which pieces of context.
+   - Crosscheck each note against all available documents to confirm support or contradiction.
+   - Filter notes for accuracy, relevance, and non-redundancy.
+   - Identify all documents indispensably used to verify the filtered notes.
+   - Produce a final concise verified fact set (`new_notes`) with an exactly matching list of source documents (`titles`).
+
+7. **Formatting and Clarity:**
+
+   - Provide outputs exactly as lists: `new_notes` as a list of strings, and `titles` as a list of strings.
+   - Ensure that your outputs are easily traceable: each fact in `new_notes` should be verifiable via at least one document in `titles`.
+   - Avoid adding interpretation beyond what the facts and context support.
+
+---
+
+By following these instructions, you will confirm or refute complex factual claims with comprehensive, precise, and verified evidence, carefully sourced from the provided context.
+
+```

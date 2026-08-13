@@ -1,0 +1,125 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two fields as input: `claim` and `notes`. Your goal is to produce a single `query` field that formulates a precise, focused natural language question or linked questions designed specifically to verify or investigate the claim by using the information contained in the notes. The query should be constructed to guide retrieval of relevant evidence that can support or refute the claim efficiently.
+
+Input Format:
+- `claim`: A concise factual or relational statement describing one or more entities, their attributes, or relationships that need verification.
+- `notes`: A list of text snippets, facts, or excerpts providing background knowledge, contextual details, or partial information about the entities or relationships mentioned in the claim.
+
+Output Format:
+- `query`: A targeted natural language question or set of logically connected questions that explicitly focus on the key entities and relationships present in the claim, refined and disambiguated using the information found in the notes. The query should be composed to maximize retrieval of relevant, authoritative documents or facts.
+
+Detailed Instructions and Domain-Specific Considerations:
+1. Entity and Relation Identification  
+   - Extract the key named entities from the claim (e.g., persons, locations, organizations, events, works such as books or films).  
+   - Identify the relationships or factual claims being made (e.g., authorship, native habitat, time-overlapping lifespans, membership, jurisdiction, participation in an event).  
+
+2. Use of the Notes for Context and Disambiguation  
+   - Analyze the notes to gather supplemental facts such as dates, places, definitions, or known associations that clarify or restrict the scope of verification.  
+   - Use notes to determine if any terms or entities require disambiguation (e.g., multiple entities with similar names, geographic subdivisions, temporal context).  
+   - Identify if the notes reveal confirmations, contradictions, or insufficient evidence regarding key aspects of the claim.
+
+3. Query Content and Scope  
+   - Formulate a query that explicitly targets verification of the claim’s core factual components focusing on:  
+     • Existence of relationships (e.g., was Person A a creator of Film B?)  
+     • Specific attributes or temporal facts (e.g., dates of authorship or lifespan overlap)  
+     • Jurisdiction or classification details (e.g., is a city within a given province, are two magazines both periodicals).  
+   - Where multiple entities or relationships are involved, structure the query to cover combined or comparative facts, for example:  
+     • Are both entities geographically related?  
+     • Did an individual and another related individual serve simultaneously in a role?  
+   - Incorporate any contradictions or ambiguous points noted, by phrasing the query so that it explicitly seeks resolution of those points.
+
+4. Query Quality and Precision  
+   - Keep queries concise, clear, and focused solely on retrieving the critical evidence necessary for claim verification. Avoid vague or overly broad questions.  
+   - Use natural-language phrasing that a search or retrieval system can effectively interpret to find relevant documents.  
+   - Ensure queries mention key entities with relevant attributes or temporal markers wherever applicable.  
+
+5. Generalizable Strategy  
+   - Extract and prioritize verification of key factual claims from the input claim.  
+   - Review the notes carefully for background and possible contradictions or confirmations.  
+   - Identify and disambiguate entities and relationships using the notes.  
+   - Formulate a minimal set of precise, clearly linked natural language questions covering all relevant aspects of the claim to aid retrieval of authoritative evidence.
+
+Niche and Domain-Specific Knowledge Captured from Examples:
+- For claims relating to book authorship, publication medium, and dates: verify authorship attribution, publication year, and the classification/type of publication (e.g., magazine versus periodical).  
+- For natural history or biology claims involving species and native habitats: verify native habitat specifically, focusing on whether it is arid, semi-desert, temperate, or otherwise.  
+- For temporal overlap claims concerning individuals (e.g., creators and historical figures), clarify exact lifespans or alive periods and cross-check with creation/release dates of works or events.  
+- For entertainment industry claims about film creators or judges on a show: identify exact persons associated with a work or role, their temporal involvement, and membership status if relevant.  
+- For geographic or political jurisdiction claims: verify administrative divisions and whether two or more entities lie within the same jurisdiction or country.  
+- Recognize periodicals as including magazines, so queries should clarify if entities classified as periodicals are indeed periodicals by definition.
+
+Summary:
+Generate a well-formed, fact-focused natural language query or set of linked queries explicitly tailored to verify the factual claims in the input by leveraging all relevant contextual and disambiguating details found in the notes. Structure queries to maximize the chance of retrieving the ‘gold’ or key documents essential for verifying or refuting the claim, according to the examples and feedback.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+A college football game was sponsored by a company based in Memphis. The 2015 Kansas State Wildcats football team was invited to this bowl.
+
+### notes
+['The 2016 Liberty Bowl, played on January 2, 2016, was sponsored by AutoZone, a Memphis-based company.', 'The Kansas State Wildcats football team from the 2015 season participated in the 2016 Liberty Bowl.', 'The Liberty Bowl is held at Liberty Bowl Memorial Stadium in Memphis, Tennessee.', 'The 2016 Liberty Bowl, played on January 2, 2016, was sponsored by AutoZone, a Memphis-based company.', 'The Kansas State Wildcats football team from the 2015 season participated in the 2016 Liberty Bowl.', 'The Liberty Bowl is held at Liberty Bowl Memorial Stadium in Memphis, Tennessee.', 'Since 2004, the Liberty Bowl has been sponsored by AutoZone, a Memphis-based auto parts retailer.', 'The 2016 Liberty Bowl, which featured the 2015 Kansas State Wildcats, was sponsored by AutoZone, a company based in Memphis.', 'AutoZone has sponsored the Liberty Bowl since 2004, and the game is held annually at Liberty Bowl Memorial Stadium in Memphis, Tennessee.', 'The 2016 Liberty Bowl took place on January 2, 2016, concluding the 2015 FBS football season.']
+
+## Generated Outputs
+### reasoning
+The claim mentions a college football game sponsored by a Memphis-based company and that the 2015 Kansas State Wildcats football team was invited to this bowl. The notes indicate that the 2016 Liberty Bowl was played on January 2, 2016, sponsored by AutoZone, which is a Memphis-based company. Additionally, the 2015 Kansas State Wildcats football team participated in this 2016 Liberty Bowl held at Liberty Bowl Memorial Stadium in Memphis, Tennessee. This suggests the claim refers to the 2016 Liberty Bowl sponsored by AutoZone with participation by the 2015 Kansas State team. To verify the claim, we need to confirm that AutoZone, a Memphis-based company, sponsored the Liberty Bowl in early 2016 and that the 2015 Kansas State Wildcats football team played in this bowl game.
+
+### query
+Did the Memphis-based company AutoZone sponsor the 2016 Liberty Bowl played on January 2, 2016? Did the 2015 Kansas State Wildcats football team participate in that 2016 Liberty Bowl held at Liberty Bowl Memorial Stadium in Memphis, Tennessee?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['2016 Liberty Bowl (January)']. Documents remaining to be retrieved: ['2015 Kansas State Wildcats football team', 'AutoZone'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The band who had King ov Hell as a member are based in the Norwegian county Hordaland.
+
+### notes
+['Sahg is a Norwegian band formed in Bergen, the largest city in the Hordaland county.', 'God Seed is a Norwegian black metal band based in Bergen, Norway, which is in Hordaland.', 'King ov Hell was a member of both Sahg and God Seed, linking him to bands based in Hordaland.', 'Gorgoroth, another band with King ov Hell, recorded significant material in Bergen, indicating a connection to Hordaland.', 'King ov Hell, also known as Tom Cato Visnes, is a member of multiple Norwegian bands including Sahg, God Seed, and Gorgoroth, which have strong ties to Bergen.', 'Bergen is the largest city in Hordaland county and is the base for bands Sahg and God Seed.', 'God Seed was a Norwegian black metal band based in Bergen, linked to King ov Hell.', 'Sahg, formed in Bergen, also included King ov Hell as a founding member.', 'Gorgoroth recorded significant material in Bergen, indicating a connection to Hordaland through King ov Hell.', 'Bergen is confirmed to be in Hordaland county, Norway.', 'King ov Hell was a member of Sahg and God Seed, both bands based in Bergen, Hordaland.', 'Bergen is the largest city in the Norwegian county of Hordaland.', "Gorgoroth recorded material in Bergen, linking King ov Hell's activities to Hordaland."]
+
+## Generated Outputs
+### reasoning
+The claim involves verifying two key facts: first, that King ov Hell was a member of a specific band; second, that this band is based in the Norwegian county of Hordaland. Since there are no notes given, we must directly inquire about the membership of King ov Hell in bands to identify which band(s) he belonged to. Then, we must determine the geographic base or origin of that band, specifically whether it is located in Hordaland county in Norway. This verification requires confirming the link between King ov Hell and the band, and then confirming the band's geographic base in Hordaland.
+
+### query
+Which bands has King ov Hell been a member of, and is the band he was part of based in the Norwegian county of Hordaland?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['King ov Hell']. Documents remaining to be retrieved: ['Bergen', 'Gorgoroth'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The sport of tennis is played by both Texas native Angelique Kerber and the player who was the defending champion, who competed, for the 2005 China Open – Men's Doubles.
+
+### notes
+['Angelique Kerber is a professional German tennis player and former world No. 1 with multiple titles including Grand Slams.', "The 2005 China Open – Men's Doubles is a tennis event involving male professional players competing in doubles tennis.", "The defending champion from the 2005 China Open – Men's Doubles would inherently be a tennis player as it is a professional tennis tournament.", 'Angelique Kerber is a German professional tennis player, not a Texas native.', "The 2005 China Open – Men's Doubles defending champion is a male tennis player competing in men's doubles.", "Angelique Kerber competes in women's professional tennis events (singles).", 'The claim incorrectly associates Angelique Kerber’s origin as Texas, which is not true.', 'Angelique Kerber is a German professional tennis player, not a Texas native.', "The 2005 China Open – Men's Doubles defending champion is a male professional tennis player.", "Both Angelique Kerber and the defending champion of the 2005 China Open – Men's Doubles are tennis players, but they compete in different categories (women's singles vs. men's doubles).", "The claim incorrectly associates Angelique Kerber's origin as Texas, which is not accurate."]
+
+## Generated Outputs
+### reasoning
+The claim states that both Angelique Kerber, described as a Texas native, and the defending champion of the 2005 China Open – Men's Doubles play tennis. The notes clarify that Angelique Kerber is a professional German tennis player, not from Texas, and she competes in women's singles tennis. The defending champion of the 2005 China Open – Men's Doubles is a male tennis player, as it is a men's doubles event. Both are tennis players, but the claim incorrectly states Kerber's origin. Additionally, the defending champion competes in men's doubles, while Kerber competes in women's singles. The core claim to verify is the accuracy of Kerber's origin as Texas native and the involvement of both as tennis players connected to the 2005 China Open – Men's Doubles defending champion.
+
+### query
+Is Angelique Kerber a Texas native or a German professional tennis player? Did Angelique Kerber and the defending champion of the 2005 China Open – Men's Doubles both play professional tennis? What event did Angelique Kerber participate in, and what event did the 2005 China Open – Men's Doubles defending champion participate in?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Angelique Kerber']. Documents remaining to be retrieved: ["2005 China Open – Men's Doubles", 'Justin Gimelstob'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

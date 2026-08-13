@@ -1,0 +1,124 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given two fields as input: `claim` and `notes`. The `claim` is a factual statement requiring verification or fact-checking. The `notes` contain extracted or summarized information related to the claim, including potential evidence that supports, contradicts, or is neutral toward the claim. The goal is to generate an effective *search query* (output field `query`) that can be used to retrieve authoritative documents or data to verify the truthfulness of the claim.
+
+Your task is to carefully analyze both the claim and the notes, then compose a concise, targeted search query designed to maximize relevant retrieval and minimize irrelevant results. This search query will guide downstream document retrieval systems to find evidence that confirms or refutes the claim.
+
+Detailed instructions for generating the query:
+
+1. **Analyze the Claim:**
+   - Identify the key entities (people, organizations, events, places, championships, films, songs).
+   - Pinpoint the main factual assertions (dates, awards, titles, roles, competition results, historical facts).
+   - Understand the relationships between entities (e.g., who acted in which movie, who won which championship, founding dates of sports teams).
+   - Note any temporal bounds (e.g., specific seasons, years, decades).
+   - Include nicknames, alternate names, or common epithets if relevant (e.g., "The King of Cocaine" = Pablo Escobar).
+
+2. **Review the Notes:**
+   - Extract domain-specific context from the notes that refine or clarify the claim.
+   - Identify corrections, contradictions, or confirmations embedded within the notes.
+   - Identify relevant domain-specific facts that may help narrow or specify the search query. For example:
+     - Baseball franchises: founding years, franchise relocations, managers, player tenure.
+     - Film domain: actors’ filmographies, familial relations, awards received.
+     - Motorsports: seasons, driver participation years, winners, nationality.
+     - Geographic details: place names, administrative divisions, jurisdictions.
+   - Recognize when some elements in the claim might be false or partially true from the notes, and incorporate key terms to check those facts explicitly.
+
+3. **Formulating the Query:**
+   - The query should be a natural language question or a targeted keyword phrase (or combination) that directly asks about the core elements necessary to verify the claim.
+   - Include all critical named entities, dates, and unique identifiers that anchor the claim in a factual context.
+   - Avoid vague or overly broad search terms; prefer specificity to guide retrieval towards authoritative sources.
+   - When applicable, combine search terms with logical connectors (e.g., AND, OR) or phrase them as concise fact-check questions (e.g., “Who won X in year Y?”, “Did person A receive award B for role C?”, “Which songs by artist D reached number one and who originally recorded them?”).
+   - Include alternative names or aliases if mentioned or deducible (e.g., “Pablo Escobar” and “The King of Cocaine”).
+
+4. **Domain-Specific Nuances:**
+   - **Music domain:** Focus on chart positions such as "Billboard Hot Country Singles & Tracks," original recording artists, and genre classifications.
+   - **Film and TV domain:** Confirm main cast members’ roles and their awards (e.g., Golden Globe nominations), also note familial or biographical relationships when relevant.
+   - **Sports (especially motorsports and baseball):** Check start and end years of participation, season numbering equivalences (e.g., "28th season = 2000"), nationality of competitors, and record of winners.
+   - **Geography:** Clarify administrative divisions and their hierarchical relationships where claims involve location-based facts.
+
+5. **Implementation Strategies:**
+   - Use the notes to rule out impossibilities or prior refutations in the query construction by explicitly including key facts the claim contradicts.
+   - Construct factual verification queries rather than open-ended broad questions.
+   - Prioritize queries that can retrieve multiple relevant documents (e.g., one query that simultaneously addresses claim aspects and related entities).
+   - When the notes identify misalignments (e.g., claimed facts are false), incorporate those exact elements for checking.
+
+6. **Desired Output:**
+   - Output only the field `query` with a single refined search query string.
+   - The query should be concise yet comprehensive enough to yield authoritative evidence for or against the claim.
+   - Avoid extraneous explanation or analysis in the final output.
+
+By following these instructions, you will generate effective search queries tailored to domain-specific factual claims across varied topics such as music chart history, filmographies and awards, sports seasons and participants, and geographic or political facts. The query will enable precise and productive evidence retrieval for accurate claim verification.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Christopher B. Landon wrote a 2007 movie that stars Shia Saide LaBeouf, an American actor who starred in the Disney Channel series Even Stevens that premiered in 2004.
+
+### notes
+["Shia LaBeouf starred as Louis Stevens in the Disney Channel series 'Even Stevens', which premiered in 2001, not 2004.", "Christopher Landon wrote the 2007 movie 'Disturbia', which stars Shia LaBeouf.", "'Disturbia' is a 2007 American horror thriller film written by Christopher Landon and Carl Ellsworth and starring Shia LaBeouf.", "Shia LaBeouf starred as Louis Stevens in the Disney Channel series 'Even Stevens', which premiered in 2001, not 2004.", "Christopher Landon wrote the 2007 movie 'Disturbia', which stars Shia LaBeouf.", "'Disturbia' is a 2007 American horror thriller film written by Christopher Landon and Carl Ellsworth and starring Shia LaBeouf.", "Christopher Landon wrote the 2007 movie 'Disturbia', which stars Shia LaBeouf.", "Shia LaBeouf starred as Louis Stevens in the Disney Channel series 'Even Stevens', which premiered in 2001, not 2004."]
+
+## Generated Outputs
+### reasoning
+The claim makes three main factual assertions: (1) Christopher B. Landon wrote a movie released in 2007; (2) the movie stars Shia Saide LaBeouf; (3) Shia LaBeouf is an American actor who starred in the Disney Channel series "Even Stevens," which premiered in 2004. To verify this, it is necessary to identify the 2007 movie written by Christopher B. Landon, confirm its lead actor as Shia LaBeouf, verify the correct spelling of the actor's name (not "Shia Saide LaBeouf" but Shia LaBeouf), and check that "Even Stevens" is indeed a Disney Channel show that premiered in 2004 starring Shia LaBeouf.
+
+### query
+Which 2007 movie was written by Christopher B. Landon and starred Shia LaBeouf, and did Shia LaBeouf star in the Disney Channel series Even Stevens that premiered in 2004?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Disturbia (film)', 'Shia LaBeouf']. Documents remaining to be retrieved: ['Christopher B. Landon'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Between this plant and Darwinia, the genus with more species is Darwinia. This plant is called Saule in French.
+
+### notes
+["'Saule' in French refers to the genus Salix (willows).", 'Salix genus contains approximately 400 species worldwide.', 'Darwinia genus contains about 70 species, mainly in Australia.', 'Therefore, Salix has significantly more species than Darwinia.', "'Saule' in French refers to the genus Salix (willows).", 'Salix genus contains approximately 400 species worldwide.', 'Darwinia genus contains about 70 species, mainly in Australia.', 'Salix has significantly more species than Darwinia.', "The French term 'Saule' refers to the genus Salix (willows), not Darwinia.", 'The Salix genus contains around 400 species, primarily deciduous trees and shrubs found in the Northern Hemisphere.', 'Darwinia is a genus of about 70 species of evergreen shrubs, mainly in Australia.', 'Salix has significantly more species than Darwinia, contradicting the claim.']
+
+## Generated Outputs
+### reasoning
+The claim states that "Between this plant and Darwinia, the genus with more species is Darwinia" and that "this plant is called Saule in French." The notes clarify that the French term "Saule" refers to the genus Salix, which contains around 400 species worldwide, whereas Darwinia contains about 70 species primarily in Australia. Therefore, Salix (Saule) has significantly more species than Darwinia, contradicting the claim. To verify this claim, the search query should focus on comparing the number of species in the Salix genus (referred to as "Saule" in French) and Darwinia genus, along with confirming the naming equivalence of "Saule" and Salix.
+
+### query
+Number of species in Salix genus and Darwinia genus; does "Saule" in French refer to Salix or Darwinia?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Darwinia (plant)', 'Willow']. Documents remaining to be retrieved: ['Saule'].
+
+
+
+# Example 3
+## Inputs
+### claim
+German Frank Sinatra has won more awards than this Skinny Puppy band member, for whom the Rx (band) was a one-off side project.
+
+### notes
+['Nivek Ogre is the Skinny Puppy band member involved in the Rx one-off side project.', 'No award information on Nivek Ogre or German Frank Sinatra is provided in the current context.', 'Nivek Ogre is confirmed as the Skinny Puppy band member involved in the Rx one-off side project.', 'No award information is available in the provided context for either German Frank Sinatra or Nivek Ogre.', 'The Rx project was a collaboration between Nivek Ogre and Martin Atkins but does not indicate any awards.', 'Nivek Ogre is confirmed as the Skinny Puppy band member involved in the Rx one-off side project.', 'No award information about Nivek Ogre or German Frank Sinatra is provided in the current context.', "The name 'German Frank Sinatra' does not appear in the context and may not refer to the American singer Frank Sinatra who is well-documented.", "Frank Sinatra (the American singer) has a documented list of awards, but this may not relate to 'German Frank Sinatra'."]
+
+## Generated Outputs
+### reasoning
+The claim compares the number of awards won by German Frank Sinatra and Nivek Ogre, a Skinny Puppy band member involved in the Rx one-off side project. From the notes, Nivek Ogre is indeed the Skinny Puppy member linked to Rx. However, there is no award information about either German Frank Sinatra or Nivek Ogre in the notes. Therefore, the search query needs to focus on verifying the award counts or recognitions for both individuals, with a focus on their music careers, collaborations such as Rx, and any notable awards won. This will help determine if German Frank Sinatra has won more awards than Nivek Ogre, specifically referencing the connection to Skinny Puppy and the Rx project.
+
+### query
+Awards won by German Frank Sinatra and Nivek Ogre; Nivek Ogre Skinny Puppy awards; Rx band project awards; German Frank Sinatra music awards; comparison of awards German Frank Sinatra and Nivek Ogre
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Nivek Ogre', 'Rx (band)']. Documents remaining to be retrieved: ['Frank Sinatra'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

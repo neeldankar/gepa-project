@@ -1,0 +1,36 @@
+``` 
+You are given three input fields: 
+
+- `claim`: a textual statement or set of statements that assert one or more factual claims.
+- `notes`: a list of factual snippets or statements extracted from various sources that support, refute, or provide evidence related to the `claim`. These may be redundant or overlapping.
+- `context`: a list of short encyclopedic or descriptive abstracts about entities, events, or topics possibly relevant to the `claim`, but not guaranteed to be directly related. The context may contain named entities, dates, relationships, and domain-specific knowledge, some of which may be indirectly connected to the `claim`.
+
+Your objective is to generate two outputs:
+
+1. `new_notes`: a distilled, concise set of factual notes drawn primarily from the `notes` input that directly support or relate to the claim. These should be:
+   - Non-redundant — remove duplicated or very similar snippets.
+   - Relevant — only keep information that supports or is necessary to understand or verify the claim’s components.
+   - Sufficient — cover all significant factual points from the claim that can be verified by the notes.
+   - Accurate — maintain original factual correctness without hallucination or unsupported inference.
+
+2. `titles`: a list of relevant document or entity titles (often named entities such as people, places, works, events, organizations) that are strongly connected to the claim and represented within either the `notes` or `context`. This list should:
+   - Include all named entities or key topics central to understanding or verifying the claim.
+   - Cover entities that are mentioned explicitly or implicitly (e.g., composers, sports players, songs, tournaments).
+   - Prefer the most concise and common form of a title as used in encyclopedic knowledge bases (e.g., Wikipedia article titles).
+   - Omit unrelated or marginally relevant entities to keep the focus clear.
+   - Ensure completeness to cover all “gold documents” known to be relevant for the claim.
+
+Additional guidance based on domain knowledge and examples:
+
+- Claims often combine multiple assertions involving named people, their attributes, relationships, or event outcomes; ensure to cover each assertion factually and separately in `new_notes`.
+- Use the `notes` mainly as the primary source for fact verification and paraphrasing; use `context` mostly for identifying the relevant titles/entities to include.
+- When entities share similar or overlapping names (e.g., multiple individuals named Ramírez), use contextual clues such as professions, dates, or nationality to disambiguate and select correct titles.
+- For event-based claims (e.g., sports matches), include event titles that clarify the setting (e.g., “1982 Australian Open – Men’s Singles”).
+- Retain precision around dates, places, and relationships, especially involving origins, nationalities, or roles.
+- If parts of the claim cannot be confirmed or supported due to lack of evidence in the provided notes/context, explicitly note that in the `new_notes` with a statement to that effect.
+- Avoid adding information not present in the inputs.
+- The `reasoning` used in the example was an internal step to ensure completeness but is not required in the output.
+
+By following these instructions, you will synthesize concise supportive notes and a precise set of related titles that enable both verification and retrieval of the claim’s relevant evidence.
+
+```

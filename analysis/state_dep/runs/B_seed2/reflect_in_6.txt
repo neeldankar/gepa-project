@@ -1,0 +1,97 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two input fields: 
+
+- `claim`: a statement that makes one or more factual assertions involving named entities, events, or relationships. 
+- `notes`: a list of textual snippets (facts, partial evidences, or contextual details) relevant to the claim, often including information about people, places, dates, titles of works, or other related entities.
+
+Your task is to produce a single output field: 
+
+- `query`: a natural-language question (or set of questions) designed to retrieve or verify the factual correctness of the `claim`.  
+
+The `query` must:  
+1. Target the key factual elements necessary to verify or refute the claim, often by referencing named entities, specific dates or time frames, titles, roles, geographic comparisons, or event orderings as they appear in the claim and notes.  
+2. Reflect precise relationships and temporal sequencing implied or stated in the claim (e.g., "Did actor X perform in work A after event B?", or "Is director Y from a country geographically smaller than director Z's country and did Z direct film W?").  
+3. Combine multiple parts of the claim into a concise yet complete question or set of related questions that if answered would confirm or deny all claim elements.  
+4. Use information extracted from `notes` to ground the query terms in known entities and to ensure the query focuses on relevant concepts (e.g., specific versions of film titles, exact roles or positions held, named seasons or events, and geographic comparisons).  
+5. Exclude unnecessary or extraneous information to maintain clarity and specificity in the questioning.
+
+General reasoning approach:  
+- Identify the main entities and assertions in the claim (persons, events, time frames, roles, geographies, works of art, etc.).  
+- Use the notes to clarify potential ambiguities in entity names, temporal orderings, or contexts.  
+- Formulate queries that link these elements logically to confirm key properties (e.g., "Who coached team X in year Y?", "Did actor A appear in film B after event C?", "Did director D originate from country E smaller than country F?").  
+- When the claim contains compound assertions, reflect them in the query as multiple coordinated or sequential questions.
+
+Remember, the `query` is intended as an evidence-seeking question to validate the claim through targeted information retrieval or fact-checking.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Both Elisabeth Vrba's colleague, who she coined the word exaptation with, and Ann Beattie have a profession in common.
+
+### notes
+["Elisabeth Vrba co-coined the term 'exaptation' with paleontologist Stephen Jay Gould, her colleague, both share the profession of paleontology.", "Ann Beattie is not mentioned in the context, but is known as a writer; therefore, they do not share a profession with Vrba's colleague.", "Elisabeth Vrba co-coined the term 'exaptation' with paleontologist Stephen Jay Gould, her colleague, both share the profession of paleontology.", "Ann Beattie is a writer, which is a different profession from paleontology, so she does not share a profession with Vrba's colleague.", "Elisabeth Vrba co-coined the term 'exaptation' with Stephen Jay Gould, who was a paleontologist.", 'Stephen Jay Gould and Elisabeth Vrba share the profession of paleontology.', "Ann Beattie is a writer and does not share the profession of paleontology with Vrba's colleague.", 'There is no professional overlap between Stephen Jay Gould and Ann Beattie.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that Elisabeth Vrba's colleague, with whom she coined the term "exaptation," and Ann Beattie share a profession. From the notes, Vrba's colleague is Stephen Jay Gould, a paleontologist; hence, this person’s profession is paleontology. Additionally, Ann Beattie is known as a writer, which is a different profession from paleontology. Therefore, to verify the claim, one must confirm the professions of both Vrba's colleague (Stephen Jay Gould) and Ann Beattie to determine if they indeed share the same profession.
+
+### query
+Is Stephen Jay Gould, Elisabeth Vrba's colleague and co-coiner of the term "exaptation," a paleontologist? What is the profession of Ann Beattie, and does it match that of Stephen Jay Gould?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Elisabeth Vrba', 'Stephen Jay Gould']. Documents remaining to be retrieved: ['Ann Beattie'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Veyyil was the first film scored by the man who composed the soundtrack for the film in which Ashrita Shetty had a part.
+
+### notes
+["G. V. Prakash Kumar scored the soundtrack for 'Udhayam NH4', a film featuring Ashrita Shetty.", "'Veyyil' (2006) was G. V. Prakash Kumar's first film as a music composer.", "G. V. Prakash Kumar composed the soundtrack for 'Udhayam NH4' (2013), which featured Ashrita Shetty in a lead role.", "'Veyyil' (2006) was the first film scored by G. V. Prakash Kumar as a music composer.", "Ashrita Shetty made her film debut in 2012 and acted in 'Udhayam NH4' alongside Siddharth.", "G. V. Prakash Kumar gained popularity in Tamil cinema by the early 2010s after starting his music career with 'Veyyil'.", "G. V. Prakash Kumar composed the soundtrack for 'Udhayam NH4' (2013), which featured Ashrita Shetty in a lead role.", "'Veyyil' (2006) was G. V. Prakash Kumar's first film as a music composer.", "'Veyyil' was the first film scored by G. V. Prakash Kumar.", "Ashrita Shetty made her film debut in 2012 and acted in 'Udhayam NH4' alongside Siddharth."]
+
+## Generated Outputs
+### reasoning
+The claim involves identifying the composer of the film "Veyyil" and then verifying that this composer also scored the film in which Ashrita Shetty appeared. Additionally, it asserts that "Veyyil" was the first film scored by this composer. Thus, confirmation requires three key pieces of information: who composed the soundtrack for "Veyyil," which films Ashrita Shetty acted in, and whether that composer also scored the film(s) where Ashrita Shetty appeared, with "Veyyil" being the first such film for that composer.
+
+### query
+Who composed the soundtrack for the film "Veyyil," and was "Veyyil" their first film as a composer? Which films has Ashrita Shetty acted in, and did the composer of "Veyyil" also compose the soundtrack for any of those films?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Ashrita Shetty', 'G. V. Prakash Kumar', 'Udhayam NH4']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+The star of the 2012 film  Fairhaven, appeared in Studio 60 on the Sunset Strip in 2007 and American Horror Story in 2014.
+
+### notes
+['Sarah Paulson appeared on Studio 60 on the Sunset Strip in 2006-2007 and starred in American Horror Story starting in 2011.', 'There is no information in the context linking Sarah Paulson or any other actor to the 2012 film Fairhaven.', 'The star of the 2012 film Fairhaven is not identified in the provided context.', 'The star of the 2012 film Fairhaven is not mentioned in the provided context or linked to Studio 60 or American Horror Story.', 'Sarah Paulson appeared on Studio 60 on the Sunset Strip (2006-2007) and American Horror Story (starting in 2011) but has no known association with Fairhaven (2012).', 'No other actor in the provided context is identified as starring in Fairhaven (2012).', 'The star of the 2012 film Fairhaven is not identified in the provided context.', 'No actors listed in the context appear to have a link to both Studio 60 on the Sunset Strip and American Horror Story as well as to Fairhaven (2012).', 'Sarah Paulson appeared in Studio 60 on the Sunset Strip (2006-2007) and American Horror Story (starting 2011), but no association with Fairhaven is noted.', 'The claim that the star of Fairhaven appeared in both Studio 60 in 2007 and American Horror Story in 2014 lacks verification from the provided context.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that the lead actor (the star) of the 2012 film "Fairhaven" also appeared in the television show "Studio 60 on the Sunset Strip" in 2007 and in "American Horror Story" in 2014. To verify this claim, we need to identify who the star of "Fairhaven" (2012) is, then determine if that person had roles in "Studio 60 on the Sunset Strip" during 2007 and "American Horror Story" in 2014. This requires cross-referencing the lead actor of the film with the cast lists and years of the two TV shows.
+
+### query
+Who was the star of the 2012 film "Fairhaven"? Did that actor appear in "Studio 60 on the Sunset Strip" in 2007, and did they also appear in "American Horror Story" in 2014?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Sarah Paulson']. Documents remaining to be retrieved: ['Blood Bath (American Horror Story)', 'Fairhaven (film)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

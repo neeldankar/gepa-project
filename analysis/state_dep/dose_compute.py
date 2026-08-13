@@ -38,6 +38,7 @@ import csv
 import itertools
 import json
 import os
+import subprocess
 import sys
 
 import numpy as np
@@ -46,6 +47,19 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
 SCREEN = os.path.join(REPO, "analysis", "hover_screen")
 sys.path.insert(0, HERE)
+
+# Written by dose_control.py ONLY when the within-session reproducibility control clears its
+# pre-registered bar; required by live(). Kept in sync with dose_control.PASS_MARKER by path, not
+# by import, so this module stays import-clean.
+PASS_MARKER = os.path.join(HERE, "markers", "DOSE_CONTROL.PASS")
+
+# Acquisition runs under the venv the swap itself ran on, so library drift is not a variable.
+PROBE_PY = os.path.join(REPO, "scratch", "hover_probe", ".venv", "bin", "python")
+ACQUIRE = os.path.join(HERE, "dose_acquire.py")
+TEXTS = os.path.join(HERE, "dose_texts")
+OUT_DOSE = os.path.join(HERE, "dose.json")
+SPEND_CAP = 11.00   # v2.2: 235 x 6 + control. NOT $3.61 -- that was v2.1's 705-call line, and it
+                    # was fitted at $0.004543/call when the smoke measured §8b at $0.006121.
 
 BETA = 0.0379395028680125  # screen_stats_cells.csv:434, knn_emb_fb_min / spec_i / read 4.1
 M, B = 6, 3
@@ -162,27 +176,136 @@ def pre_estimate() -> int:
     return 0
 
 
+# --------------------------------------------------------------------------- novelty scoring
+def score_texts(texts_dir: str, which_pass: int = 0) -> dict:
+    """Score acquired feedback texts against the screen's archive and return D. $0, no gate.
+
+    Runs under .venv-armT (sentence-transformers). Two deliberate properties:
+
+    ARCHIVE FIDELITY. The archive is the screen's own SAME-arm blocks, encoded in ONE call in the
+    screen's interleaved (fb, full) order -- verbatim `verify_novelty.py:68-77`. The 6 candidate
+    texts per event are encoded in a SECOND, SEPARATE call. sentence_transformers sorts by length
+    inside a batch, so folding the new texts into the archive call would change the archive's
+    batch composition and break the byte-verified 235/235 reproduction. Two calls keeps the
+    archive bitwise what the screen committed.
+
+    ARCHIVE TIMING. n_arch is snapshotted BEFORE the event's own members are added and the archive
+    advances strictly after scoring -- `verify_novelty.py:97-102`. The candidates are scored
+    against the archive AS OF that event and never enter it: they are counterfactual draws, not
+    reflection objects the run actually produced.
+    """
+    import numpy as np  # noqa: PLC0415
+
+    sys.path.insert(0, SCREEN)
+    from novelty import encode, feedback_text, full_text, knn_novelty, load_embedder  # noqa: PLC0415
+    from screen_part0 import parse_si  # noqa: PLC0415
+
+    pairs = os.path.join(REPO, "analysis", "ablation", "hover_swap", "pairs")
+    recs = {}
+    for fn in sorted(os.listdir(texts_dir)):
+        if fn.endswith(".json"):
+            r = json.load(open(os.path.join(texts_dir, fn)))
+            recs[r["pid"]] = r
+
+    blocks_by_pid = {}
+    for pid in sorted(os.listdir(pairs)):
+        txt = open(os.path.join(pairs, pid, "reflect_in_SAME.txt"), encoding="utf-8").read()
+        blocks_by_pid[pid] = parse_si(txt, pid)
+
+    model = load_embedder()
+    keys, texts = [], []
+    for pid, blks in blocks_by_pid.items():
+        for j, blk in enumerate(blks):
+            keys += [(pid, j, "fb"), (pid, j, "full")]
+            texts += [feedback_text(blk), full_text(blk)]
+    A = encode(model, texts)                      # call 1: the archive, screen-verbatim
+    arch = {k: A[i] for i, k in enumerate(keys)}
+
+    ckeys, ctexts = [], []
+    for pid, r in recs.items():
+        for pos, fb in sorted(r["passes"][which_pass].items(), key=lambda kv: int(kv[0])):
+            ckeys.append((pid, int(pos)))
+            ctexts.append(fb)
+    C = encode(model, ctexts)                     # call 2: the candidates, separately
+    cand = {k: C[i] for i, k in enumerate(ckeys)}
+
+    ev_index = json.load(open(os.path.join(SCREEN, "events_index.json")))
+    per_event, per_seed = {}, {}
+    for seed in range(8):
+        evs = sorted([e for e in ev_index.values() if e["seed"] == seed],
+                     key=lambda e: e["ordinal"])
+        arch_emb, gaps = [], []
+        for ev in evs:
+            pid = f"seed{seed}_i{ev['trace_i']}"
+            n_arch = len(arch_emb)
+            if pid in recs:
+                x6 = [knn_novelty(cand[(pid, p)], arch_emb if n_arch >= 3 else None)
+                      for p in recs[pid]["draw6_pos"]]
+                if not any(np.isnan(v) for v in x6):
+                    g = gap(x6)
+                    per_event[pid] = {"x6": x6, "gap": g, "n_arch": n_arch}
+                    gaps.append(g)
+            for slot in range(len(blocks_by_pid[pid])):
+                arch_emb.append(arch[(pid, slot, "fb")])
+        if gaps:
+            per_seed[seed] = float(np.mean(gaps)) / SD_PER_SEED[seed]
+
+    D = float(np.mean([per_seed[s] for s in sorted(per_seed)])) if per_seed else float("nan")
+    return {"pass": which_pass, "n_events": len(per_event), "D": D,
+            "D_per_seed": per_seed, "per_event": per_event}
+
+
 # --------------------------------------------------------------------------- the live path
 def live() -> int:
     from gates import require
 
     gate = require("APPROVED-dose")
-    raise SystemExit(
-        "\nNOT IMPLEMENTED BEYOND THE GATE.\n"
-        "Requires, per v2 §11-0, in order:\n"
-        "  1. dose_control.py: 30-event determinism control, 30/30 byte-exact, else STOP.\n"
-        "  2. re-derive the 3 unmatched candidates' feedback per event by re-executing the parent\n"
-        "     (temp-0 task LM, capture_traces=True, identical make_reflective_dataset path).\n"
-        "  3. parse the 3 matched B_e texts out of reflect_in_SWAP.txt.\n"
-        "  4. score all 6 against the screen's archive state for that event (novelty.py).\n"
-        "  5. gap_e per event; D_s per seed; D = mean(D_s).\n"
-        f"Event set: {EVENT_SET} events (v2.1 §20-2, ratified 2026-07-22 -- ordinal-0 excluded, the\n"
-        f"frame beta was estimated on). Re-derivation {3 * EVENT_SET} calls + 90 control calls\n"
-        f"= {3 * EVENT_SET + 90} x $0.004543 = ${(3 * EVENT_SET + 90) * 0.004543:.2f}.\n"
-        "This path is OFF the launch critical path under v2.1 §11-2's amended gate timing: it must\n"
-        "clear before results.md is read, not before APPROVED-liverun.\n"
-        f"Gate verified: {gate['sha256'][:16]}...\n"
-    )
+
+    # v2.2 §11-0 step 1 is an INTERLOCK, not advice. The within-session reproducibility control
+    # must have cleared its pre-registered bar before D is computed, because D is a difference of
+    # order statistics and is only meaningful if it exceeds this program's own re-execution noise.
+    # dose_control.py writes the marker only on a clear; a fail's pre-registered response is to
+    # DROP the dose, so a missing marker is a STOP, not something to work around.
+    if not os.path.exists(PASS_MARKER):
+        raise SystemExit(
+            f"\nREFUSING: {os.path.relpath(PASS_MARKER, HERE)} absent.\n"
+            "The within-session reproducibility control has not cleared. Run, under this gate:\n"
+            "  .venv-armT/bin/python analysis/state_dep/dose_control.py --run\n"
+            "It writes the marker only if |D_30(1) - D_30(2)| <= mean(D_30). A fail is a STOP:\n"
+            "the pre-registered fallback is to DROP the dose (§11-0), NEVER the biased\n"
+            "3-candidate shrink.\n"
+        )
+
+    from dose_acquire import event_rows  # noqa: PLC0415  (stdlib-only at import time)
+
+    pids = [r["pair_id"] for r in event_rows()]
+    print(f"=== dose live path (v2.2): {len(pids)} events x 6 candidates ===")
+    print(f"  acquisition venv : {os.path.relpath(PROBE_PY, REPO)}")
+    print(f"  texts            : {os.path.relpath(TEXTS, HERE)}")
+    print(f"  spend cap        : ${SPEND_CAP:.2f}")
+    print(f"  gate verified    : {gate['sha256'][:16]}...\n")
+
+    rc = subprocess.call([PROBE_PY, "-u", ACQUIRE, "--out", TEXTS, "--passes", "1",
+                          "--cap", str(SPEND_CAP)], cwd=REPO)
+    if rc != 0:
+        print(f"\nacquisition failed (rc={rc}); checkpoints kept, re-running resumes at $0")
+        return rc
+
+    print("\n=== scoring against the screen archive (.venv-armT, $0) ===")
+    res = score_texts(TEXTS, which_pass=0)
+    if res["n_events"] != EVENT_SET:
+        print(f"WARNING: scored {res['n_events']} events, expected {EVENT_SET}")
+    res["design"] = "state-dependent-design-v2.2-frozen §11-0"
+    res["event_set"] = EVENT_SET
+    json.dump(res, open(OUT_DOSE, "w"), indent=2)
+
+    print(f"  events scored : {res['n_events']}")
+    for s in sorted(res["D_per_seed"]):
+        print(f"    seed {s}: D_s = {res['D_per_seed'][s]:.4f}")
+    print(f"\n  D = {res['D']:.4f}  (within-run SD units)")
+    print(f"  wrote {os.path.basename(OUT_DOSE)}")
+    print(f"\n  next: mde_sim.py --endpoints stage1_backfill_endpoints.json --dose {res['D']:.4f}")
+    return 0
 
 
 if __name__ == "__main__":
@@ -190,7 +313,14 @@ if __name__ == "__main__":
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--pre-estimate", action="store_true")
     ap.add_argument("--live", action="store_true")
+    ap.add_argument("--score-texts", metavar="DIR",
+                    help="$0: score already-acquired texts in DIR and print D (no gate, no spend)")
+    ap.add_argument("--pass", dest="which_pass", type=int, default=0)
     a = ap.parse_args()
+    if a.score_texts:
+        r = score_texts(a.score_texts, a.which_pass)
+        print(json.dumps({k: v for k, v in r.items() if k != "per_event"}, indent=2))
+        raise SystemExit(0)
     if a.selftest:
         raise SystemExit(selftest())
     if a.pre_estimate:

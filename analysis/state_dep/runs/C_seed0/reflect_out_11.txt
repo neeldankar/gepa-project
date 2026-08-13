@@ -1,0 +1,71 @@
+``` 
+Task Description:
+You will be given two input fields: `claim` and `notes`. Your output is a new field named `query`. The goal is to formulate one or more precise, well-structured fact-checking queries derived from the claim and informed by the notes.
+
+Inputs:
+- `claim`: A statement containing one or more factual assertions about entities or relationships in a domain such as people, films, awards, professions, taxonomic classifications, technology platforms, or other domain-specific topics.
+- `notes`: A list of factual information pieces that provide relevant evidence, confirmations, contradictions, clarifications, or corrections regarding the claim. These notes may highlight taxonomy issues, role confusions, disputed identities, missing documentation, or cross-domain relationships.
+
+Output:
+- `query`: One or more concise, precise, and atomized questions designed explicitly for document retrieval or factual verification tasks. These queries should target specific factual claims in the input and guide retrieval of authoritative, relevant evidence.
+
+Key Requirements and Domain-Specific Considerations:
+
+1. **Decomposition of Complex Claims:**
+   - Break down multi-part claims into independent, atomic verification questions.
+   - For claims referencing multiple entities, roles, or attributes, generate separate queries for each fact.
+   - When a claim involves nested relationships (e.g., actor-film-role-award linkages), queries should address each relationship distinctly.
+
+2. **Taxonomy and Domain Precision:**
+   - In biological or taxonomic claims, carefully distinguish taxonomic ranks (e.g., genus vs. subfamily), ensuring queries precisely verify entity classification and existence.
+   - Queries must explicitly ask about the existence or non-existence of entities if the notes express confusion or corrections regarding their status.
+
+3. **Role and Identity Disambiguation:**
+   - When claims assign roles (e.g., lead actor, director, nominee) to individuals, generate queries to:
+      - Identify all key individuals in these roles.
+      - Confirm or refute nominations, awards, or associations with specific roles.
+   - If notes show contradictory or missing evidence on identity or awards, include queries that clarify these uncertainties.
+   - Cross-check if the same individual fulfills multiple roles or has multiple achievements as asserted.
+
+4. **Country and Origin Verification:**
+   - For technological or product claims (e.g., devices, platforms), queries must check manufacturer, development platform, and country of origin.
+   - When notes indicate conflicting origin data, query each entity's country of origin separately.
+
+5. **Handling Confirmations and Contradictions:**
+   - If notes confirm some parts of the claim but contradict or challenge others, generate queries explicitly addressing contradictions or problematic assertions.
+   - Avoid vague or overly broad queries. Instead, target the exact fact in dispute or confirmation.
+
+6. **Domain-Specific Terminology Preservation:**
+   - Use entity names, film titles, award names, technical terms, and other domain-specific identifiers exactly as they appear or are alluded to in the inputs.
+   - This precision helps in targeted document retrieval without ambiguity.
+
+7. **Example Query Formulation Approaches:**
+   - For a claim linking an actor, a film, and an award:  
+     *"Who starred in [film] in a main role?"*  
+     *"Did [actor] receive a Golden Globe nomination for playing [role]?"*  
+     *"Is the actor who starred in [film] the same as the one nominated for [award] for [role]?"*
+   
+   - For taxonomy-related claims:  
+     *"Is [entity] classified as a genus or a subfamily?"*  
+     *"Does any genus named [name] exist?"*  
+     *"How many species are in the genus [name]?"*  
+     *"Which genera belong to the subfamily [name], and how many species do they each contain?"*
+
+   - For technological platform or origin claims:  
+     *"On which platform was [game/product] developed, and what is its country of origin?"*  
+     *"From which country does [device/model] originate?"*
+
+8. **Coverage of Missing Documents or Evidence:**
+   - If notes indicate missing information or lack of evidence for particular components, generate queries explicitly to retrieve these missing facts or documents.
+
+9. **Multiple-Part Claims:**
+   - Ensure queries verify each factual element independently, allowing stepwise confirmation or refutation.
+   
+10. **Goal Context:**
+    - The queries you produce should maximize the retrieval of documents or knowledge base entries that can definitively confirm or refute each factual assertion in the claim.
+    - Your queries enable a downstream fact verification system to perform precise lookup or evidence gathering.
+
+Summary:
+Produce a well-structured, comprehensive set of fact-checking questions in `query`, carefully reflecting all core facts asserted by the `claim` and reactively incorporating all contradictions, confirmations, and clarifications found in the `notes`. Use domain precise terminology and focus on atomic, disambiguated sub-questions for effective retrieval and thorough verification.
+
+```

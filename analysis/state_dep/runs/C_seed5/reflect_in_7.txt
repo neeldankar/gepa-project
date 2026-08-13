@@ -1,0 +1,119 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields:
+- `claim`: a factual statement or assertion that may require verification or further factual support.
+- `notes`: a list of textual snippets containing partial information relevant to verifying the claim. These notes might include facts, contradictions, or missing information about entities or topics in the claim.
+
+Your goal is to produce the output field `query` — a precise and focused question (or set of questions) aimed at retrieving the key missing or uncertain factual information needed to verify the claim. The `query` should target specific entities, attributes, relationships, or facts that have not been confirmed or sufficiently covered in the provided notes.
+
+Key Points and Domain-Specific Knowledge:
+- The claim involves named entities such as people, films, bands, roles (e.g., director, bassist), birthdates, nationalities, professions, and works (e.g., films, songs).
+- Notes often contain partial or confirmatory information about these entities, but sometimes lack critical data required to verify the claim fully.
+- Your query should be designed to retrieve authoritative documents or data specifically covering the missing or ambiguous elements mentioned or implied by the claim.
+- The query should reflect recognition of domain-specific facts, such as:
+   * Individuals’ roles and contributions (e.g., “bass player and lead vocalist who created Cobra Starship” refers to Gabe Saporta).
+   * Nationality or origin of persons associated with cultural works (e.g., nationality of film directors related to 'Cannibal Holocaust').
+   * Dates of birth or ages when claims relate to relative age.
+   * Professional associations or occupations that confirm or refute the claim.
+   * Connections between named works and their creators or contributors.
+
+Generalizable Strategy:
+1. Analyze the claim and identify the factual assertions that require verification.
+2. Review the notes to establish which parts of the claim are already supported and which parts are missing, contradictory, or uncertain.
+3. Formulate concise, targeted queries that seek the minimal yet sufficient data required to resolve remaining ambiguities.
+4. When multiple pieces of missing information exist, combine them efficiently in the query, balancing completeness and precision.
+5. Focus on retrieving documents or facts about:
+   - Specific named entities not covered or unclear in the notes.
+   - Attributes or relationships critical to verifying the claim.
+6. Avoid overly broad or generic questions; tailor queries to close specific knowledge gaps evident from the notes.
+
+Example:
+If the claim is about the relative age of two persons, and only one birthdate is known, the query should be:  
+   "What is the birthdate or age of [Person with missing info]?"
+
+If the claim involves multiple nationalities or roles, and only partial info is available, the query should ask specifically about the identities, nationalities, or professions of the key persons involved.
+
+By following this approach, you will help retrieve the essential documents needed to verify complex claims effectively.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+German Frank Sinatra has won more awards than this Skinny Puppy band member, for whom the Rx (band) was a one-off side project.
+
+### notes
+['Rx was a one-off side project by Skinny Puppy band member Nivek Ogre.', 'Nivek Ogre is a founding member and vocalist of Skinny Puppy.', "German Frank Sinatra's awards are not mentioned in the current context.", "No information on Nivek Ogre's awards is provided in the context.", 'Claim compares awards between German Frank Sinatra and Nivek Ogre based on Rx being a one-off project.', 'Rx was a one-off side project by Skinny Puppy band member Nivek Ogre.', 'Nivek Ogre is a founding member and vocalist of Skinny Puppy.', 'No awards information for Nivek Ogre or German Frank Sinatra found in the context.', 'Unable to verify if German Frank Sinatra has won more awards than Nivek Ogre due to lack of award data.', 'Nivek Ogre is the band member of Skinny Puppy connected to the Rx one-off side project.', 'No award information is available for Nivek Ogre in the context.', 'No award information is available for German Frank Sinatra in the context.', 'The claim about award comparison cannot be verified with the given information.']
+
+## Generated Outputs
+### reasoning
+The claim compares the number of awards won by German Frank Sinatra and the Skinny Puppy band member Nivek Ogre (who had Rx as a one-off side project). The notes confirm that Rx was a side project of Nivek Ogre and that he is a founding member and vocalist of Skinny Puppy. However, there is no information about the awards won by either German Frank Sinatra or Nivek Ogre in the notes. Therefore, to verify this claim, it is necessary to obtain authoritative and detailed information about the awards and recognitions received by both German Frank Sinatra and Nivek Ogre.
+
+### query
+What awards and recognitions has German Frank Sinatra received in his career?  
+What awards and recognitions has Nivek Ogre, founding member and vocalist of Skinny Puppy, received in his career?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Nivek Ogre', 'Rx (band)']. Documents remaining to be retrieved: ['Frank Sinatra'].
+
+
+
+# Example 2
+## Inputs
+### claim
+This publication is published more often than Bookmarks. Keith Moon was inducted into its Hall of Fame in the early 'eighties.
+
+### notes
+['Bookmarks is a bimonthly literary magazine.', 'The UK Music Hall of Fame started in 2004 and held ceremonies until 2006.', "There is no mention of Keith Moon's induction in a Hall of Fame in the early 1980s in the provided context.", "No publication with a Hall of Fame that inducted Keith Moon in the early '80s is identified in the sources.", 'Bookmarks is a bimonthly literary magazine, meaning it publishes 6 issues a year.', 'Keith Moon was posthumously inducted into the Modern Drummer Hall of Fame in 1982.', "The UK Music Hall of Fame started in 2004, which is too late for the early '80s induction claim.", 'Modern Drummer magazine likely publishes more frequently than bimonthly, fitting the claim that this publication is published more often than Bookmarks.', "No explicit publication named 'Modern Drummer' was in the original notes but the Hall of Fame induction in 1982 strongly points to Modern Drummer magazine.", 'Modern Drummer magazine inducted Keith Moon into its Hall of Fame in 1982.', 'Bookmarks is a bimonthly literary magazine, publishing 6 issues per year.', 'Modern Drummer likely publishes more frequently than bimonthly, making it published more often than Bookmarks.', "Keith Moon's early 1980s induction refers to Modern Drummer's Hall of Fame, not the UK Music Hall of Fame or others starting later."]
+
+## Generated Outputs
+### reasoning
+The claim makes two separate assertions that need verification: 
+1) The publication in question is published more frequently than Bookmarks, which is known to be a bimonthly literary magazine (published once every two months). Therefore, the publication must be issued more frequently than bimonthly (e.g., monthly or weekly). 
+2) Keith Moon was inducted into this publication's Hall of Fame in the early 1980s. However, the notes indicate no identified publication with a Hall of Fame that inducted Keith Moon in the early 1980s, and also that the UK Music Hall of Fame began only in 2004, so it cannot be the publication referenced. 
+
+To verify the claim, we need to identify which publication is being referenced—one that is published more frequently than Bookmarks and has a Hall of Fame that inducted Keith Moon in the early 1980s. The notes do not reveal the publication's name or details of this Hall of Fame induction.
+
+Hence, the key information missing is:
+- The identity and publication frequency of the publication referenced.
+- Whether this publication has a Hall of Fame.
+- Whether Keith Moon was inducted into it in the early 1980s.
+
+### query
+What is the name of the publication that is published more frequently than Bookmarks and has a Hall of Fame that inducted Keith Moon in the early 1980s? Additionally, what is the publication frequency of this publication, and what details exist about Keith Moon's Hall of Fame inductions in the early 1980s?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Bookmarks (magazine)', 'Keith Moon']. Documents remaining to be retrieved: ['Modern Drummer'].
+
+
+
+# Example 3
+## Inputs
+### claim
+"Experimenter" stars the actress who won critical acclaim with her appearance as Johnny Depp in Tim Burton's "Beetlejuice". The producer of "Experimenter" also produced Man Camp.
+
+### notes
+["Winona Ryder is the critically acclaimed actress from 'Beetlejuice', where she played Lydia Deetz.", "Johnny Depp starred in Tim Burton's 'Edward Scissorhands', not 'Beetlejuice'.", "'Beetlejuice' starred Michael Keaton as Betelgeuse.", "No information is available regarding the producers of 'Experimenter' or 'Man Camp' in the given context.", "Johnny Depp starred in Tim Burton's 'Edward Scissorhands', not 'Beetlejuice'.", "Winona Ryder was the critically acclaimed actress in 'Beetlejuice', portraying Lydia Deetz.", "No evidence was found regarding the producer(s) of the films 'Experimenter' or 'Man Camp' in the given context.", "The claim that the actress starred as Johnny Depp in 'Beetlejuice' is factually incorrect.", "Johnny Depp did not appear in 'Beetlejuice'; his acclaimed film with Tim Burton is 'Edward Scissorhands'.", "Winona Ryder starred in 'Beetlejuice' as Lydia Deetz and was critically acclaimed for this role.", "No evidence from the context supports that the actress in 'Experimenter' corresponds to any actress from 'Beetlejuice'.", "There is no information in the context regarding the producers of 'Experimenter' or 'Man Camp' or any connection between them.", "The claim that the actress played Johnny Depp in 'Beetlejuice' is incorrect and confused.", "The claim that the producer of 'Experimenter' also produced 'Man Camp' is unsubstantiated and absent from the provided context."]
+
+## Generated Outputs
+### reasoning
+The claim states that "Experimenter" stars an actress who won critical acclaim for her appearance as Johnny Depp in Tim Burton's "Beetlejuice." The notes clarify that Johnny Depp did not appear in "Beetlejuice." Instead, Winona Ryder was the critically acclaimed actress in "Beetlejuice," though she played Lydia Deetz, not Johnny Depp. Therefore, the first part of the claim is factually incorrect or based on a misunderstanding. Additionally, the claim asserts that the producer of "Experimenter" also produced "Man Camp," but there is no information about the producers of either film in the notes. Thus, to verify the claim fully, we need to know (1) the starring actress in "Experimenter" and whether this actress appeared in "Beetlejuice" in any notable role, particularly associated with Johnny Depp in any way, and (2) the producers of "Experimenter" and "Man Camp" and whether they share a producer in common.
+
+### query
+Who is the lead actress in the film "Experimenter"? Did this actress act in "Beetlejuice," and in what role? Who are the producers of "Experimenter" and "Man Camp"? Is there any producer common to both films?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Winona Ryder']. Documents remaining to be retrieved: ['Man Camp', 'Uri Singer'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

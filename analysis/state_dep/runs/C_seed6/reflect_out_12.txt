@@ -1,0 +1,52 @@
+```  
+Task Description:  
+You will receive an input with three fields:  
+
+1. **claim**: A factual statement involving specific entities, events, dates, or subjects that requires verification or validation.  
+2. **notes**: A list of extracted sentences from source materials that pertain to the claim. These sentences may contain factual information supporting, contradicting, or insufficient to verify the claim. The notes often include biographical details, historical context, or entity descriptions.  
+3. **context**: A collection of documents or document excerpts that provide detailed, background, or authoritative information potentially relevant to the claim and its verification. This corpus spans diverse domains (e.g., historical military units, films, composers, technology brands).  
+
+Your task is to produce **two outputs**:  
+
+1. **new_notes**:  
+   - Select and refine a concise subset of the input notes that most directly address the accuracy of the claim.  
+   - Prioritize notes that offer definitive or evidential information confirming, contradicting, or indicating a lack of evidence about the claim’s key assertions.  
+   - Emphasize statements clarifying crucial entities, dates, events, or subjects cited in the claim.  
+   - Remove repetitive, extraneous, or unrelated sentences.  
+   - If the claim cannot be verified with the provided materials, return an empty list here.  
+
+2. **titles**:  
+   - From the provided context documents, identify the titles of the most authoritative, relevant, and central sources necessary for verifying the claim.  
+   - These titles should closely match the claim’s key entities or events (e.g., named military regiments, proper nouns related to people, specific film titles and their directors, novel names, biographical articles, specific products or platform names).  
+   - Prioritize documents with direct genealogical, historical, or thematic ties to the claim entities over loosely or tangentially related material.  
+   - If no relevant documents support verification, return an empty list here as well.  
+
+Detailed Reasoning and Approach:  
+- **Careful claim deconstruction**: Identify all key components such as people, military units (e.g., WWII era units like the 100th Infantry Battalion or 442nd Regimental Combat Team), cultural works (films, novels, plays), dates, and attributes (nationalities, professions).  
+- **Notes analysis**: Examine the notes closely to determine which sentences:  
+   * Provide direct validation or contradiction (e.g., correct unit formation dates, verified composer authorship).  
+   * Clarify identity distinctions between potentially confusingly named entities (e.g., different "Nate" individuals, or multiple composers named Pepusch or Bartók).  
+   * Include relevant biographical or contextual facts essential for verifying claim accuracy.  
+- **Context cross-referencing**: Match notes with context entries to identify foundational documents. Use these to confirm which are the best sources for authoritative factual verification. For example:  
+   * Military regiments and units’ formation histories and famous member biographies.  
+   * Films linked to named directors and lead actors or connected to source material (novels/plays).  
+   * Product/platform origin details (e.g., country of development, manufacturer companies).  
+   * Composer biographies or specific compositions tied to those composers (distinguishing similarly titled works).  
+- **Domain-specific knowledge incorporation**:  
+   * WWII military units often have well-documented formation years and associated key figures; verify these accurately.  
+   * Films often have named directors and stars which are critical to distinguish (e.g., Lane Nishikawa directing films about 442nd RCT).  
+   * Publications and online services may be distinct even if similarly described.  
+   * Hall of Fame inductions can be confirmed via official start dates and member lists.  
+   * Portrayals of famous individuals (e.g., Marilyn Monroe) in film can be corroborated via cast listings and source references.  
+- **Conciseness and clarity**: The output notes should be minimal yet comprehensive enough to clearly inform on the claim’s truthfulness or lack thereof. Titles must be precise and relevant without extraneous entries.  
+- **When no evidence is found**: Return empty lists for both outputs and optionally include a minimal inference comment explaining the lack of verification evidence.  
+
+Additional Instructions:  
+- Avoid including irrelevant or generic context entries unrelated to specific claim components.  
+- Do not restate reasoning; only provide the final curated `new_notes` and `titles` output.  
+- Use complete and accurate entity names and titles as they appear in documents, preserving capitalization and punctuation.  
+- Avoid repetition in the output; each note and title should be unique.  
+
+Summary:  
+This task requires a precise extraction and synthesis of relevant factual data from noisy input notes and a broader document context to assess complex claims involving diverse domains such as historical military facts, filmography, musicology, technology products, and personal biographies. The outputs should provide a distilled, evidence-based representation of the claim’s accuracy and the key authoritative sources supporting that evaluation.  
+```

@@ -1,0 +1,45 @@
+```  
+Task Description:  
+You will be provided with three inputs:  
+- `claim`: a sentence or set of sentences making an assertion or statement involving specific named entities such as people (e.g., musicians, athletes, professionals), places (e.g., counties, cities), films (e.g., movie titles, songs), bands, albums, or institutions (e.g., colleges, companies). The claim involves concrete factual relationships or attributes about these entities, such as memberships, authorship, geographic containment, or attribute comparisons.  
+- `notes`: a list of candidate supporting or related sentences (extracted document snippets) that contain factual information relevant to the claim. These notes may have partial, overlapping, or sometimes duplicate facts from different sources. They vary in specificity, accuracy, and relevance. Your job is to filter, deduplicate, and summarize these notes to only keep the most relevant, precise, and factually accurate statements that best support or contextualize the claim.  
+- `context`: a list of full document descriptions, excerpts, or summaries about the entities involved in the claim or related to the notes. These context documents resemble Wikipedia-style entries and often include biographical details, production information, geographic and administrative facts about places or institutions, discographies, filmographies, and other detailed metadata. They serve as authoritative knowledge bases to verify relationships and facts mentioned in the claim and notes.
+
+Your task is to synthesize and produce two outputs:  
+1. `new_notes`: a concise set of notes, derived from the original `notes`, that best support or contextualize the claim. These should be factually precise, non-redundant, and clearly focused on verifying or explaining the claim. They should eliminate repeated or irrelevant information. If necessary, you may synthesize or rephrase notes for clarity and conciseness but must retain accuracy.  
+2. `titles`: a list of document or entity titles chosen from the `context` that are essential and most relevant to fully support or understand the claim and the selected `new_notes`. These titles represent key knowledge sources backing your reasoning and should include all major entities crucial for comprehending or verifying the claim. If the `context` does not include some evidently relevant entities critical for the claim, you should add their likely titles if derivable from the claim or notes, to improve coverage.
+
+Key Domain-Specific and Task-Specific Considerations:  
+- Entities are domain-specific, often from niche areas such as:  
+  - Geography: counties, cities, towns, educational institutions located within administrative boundaries.  
+  - Sports: player biographies, team membership, colleges attended, achievements.  
+  - Music: bands, solo artists, album and song authorship, dates, band lineups, frontmen.  
+  - Film and media: movie titles, characters, production crew, song placements and credits.  
+  - Institutional information: colleges, universities, government agencies, companies.  
+- Claims often require resolving factual relations such as:  
+  - Which entities belong to or are located within others (e.g., a college within a county).  
+  - Who authored or performed a song or film.  
+  - Which members belong to a band or institution.  
+  - Flavor or characteristic attributes of products (e.g., soft drink flavors).  
+  - Confirming if two or more named entities share or differ in a particular attribute (e.g., nationality).  
+- Notes may contain slight variations or duplicates; your filtering must keep only the highest quality and clearest facts relevant to the claim.  
+- The final `titles` output should comprehensively cover the main entities that verify or explain the claim, including the entity that embodies the relationship, the people involved, and any relevant geographic or institutional context necessary for understanding the claim fully.
+
+General Strategy:  
+- Carefully analyze the claim to identify all key entities, their attributes, and inter-relationships mentioned.  
+- Examine `notes` thoroughly to identify all factually supportive or clarifying information that directly relates to the claim and its entities. Discard irrelevant or unsupported notes. Identify and remove exact duplicates or overlapping statements, keeping the clearest note. Summarize if appropriate to maintain clarity and precision.  
+- Review the `context` documents to find titles of documents that correspond to the entities identified in the claim and filtered notes, ensuring all relevant entities from people, places, songs, bands, institutions, or products are included to underpin the claim reasoning.  
+- If the claim or notes imply the importance of an entity missing in the context, include that entity's title to improve coverage.  
+- If the claim or notes mention information absent or unsupported in all context and notes, i.e., no verification possible, reflect that by leaving outputs minimal or empty, without introducing unsupported statements.  
+- Prioritize clarity, relevance, completeness, and factual accuracy in your `new_notes` and ensure your `titles` cover the entire information needed to verify or understand the claim.
+
+Output Format:  
+Return your response as a JSON-like object with two keys:  
+- `new_notes`: a list of concise strings representing factually accurate, non-duplicative, relevant notes synthesized from the input `notes`.  
+- `titles`: a list of strings representing document/entity titles from the input `context` essential for verifying or understanding the claim. Add any evidently missing relevant titles as needed.
+
+Example:  
+If the claim concerns a baseball player and colleges in a county, `new_notes` should clearly link which colleges are in the county and which colleges the player attended; `titles` should list the baseball player's bio document, the colleges, and the county entity.
+
+This approach ensures domain-specific understanding and filtering that produces high-quality knowledge supports suitable for thorough claim verification or knowledge extraction.  
+```

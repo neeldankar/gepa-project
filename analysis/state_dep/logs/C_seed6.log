@@ -1,0 +1,1432 @@
+[gate ok] APPROVED-liverun  bytes=386  sha256=a89c00b72bceabb6...
+Loading weights:   0%|          | 0/103 [00:00<?, ?it/s]Loading weights: 100%|██████████| 103/103 [00:00<00:00, 9694.87it/s]
+=== C_seed6: arm C seed 6 mm=300 minibatch=6 ===
+GEPA Optimization:   0%|          | 0/300 [00:00<?, ?rollouts/s]2026/08/04 21:52:34 INFO dspy.evaluate.evaluate: Average Metric: 4.666666666666666 / 10 (46.7%)
+Iteration 0: Base program full valset score: 0.4666666666666666 over 10 / 10 examples
+GEPA Optimization:   3%|▎         | 10/300 [03:30<1:41:48, 21.07s/rollouts]Iteration 1: Selected program 0 score: 0.4666666666666666
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):   0%|          | 0/6 [00:27<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):  17%|█▋        | 1/6 [00:27<02:18, 27.65s/it]Average Metric: 1.00 / 2 (50.0%):  17%|█▋        | 1/6 [00:46<02:18, 27.65s/it]Average Metric: 1.00 / 2 (50.0%):  33%|███▎      | 2/6 [00:46<01:30, 22.53s/it]Average Metric: 1.33 / 3 (44.4%):  33%|███▎      | 2/6 [01:10<01:30, 22.53s/it]Average Metric: 1.33 / 3 (44.4%):  50%|█████     | 3/6 [01:10<01:09, 23.31s/it]Average Metric: 1.33 / 4 (33.3%):  50%|█████     | 3/6 [01:29<01:09, 23.31s/it]Average Metric: 1.33 / 4 (33.3%):  67%|██████▋   | 4/6 [01:29<00:43, 21.60s/it]Average Metric: 2.33 / 5 (46.7%):  67%|██████▋   | 4/6 [01:51<00:43, 21.60s/it]Average Metric: 2.33 / 5 (46.7%):  83%|████████▎ | 5/6 [01:51<00:21, 21.53s/it]Average Metric: 2.67 / 6 (44.4%):  83%|████████▎ | 5/6 [02:11<00:21, 21.53s/it]Average Metric: 2.67 / 6 (44.4%): 100%|██████████| 6/6 [02:11<00:00, 20.96s/it]Average Metric: 2.67 / 6 (44.4%): 100%|██████████| 6/6 [02:11<00:00, 21.85s/it]
+2026/08/04 21:54:46 INFO dspy.evaluate.evaluate: Average Metric: 2.6666666666666665 / 6 (44.4%)
+Iteration 1: Proposed new text for gen_query.predict: Task Description:
+You will be given two fields as input: `claim` and `notes`. Your task is to produce a `query` field that formulates a precise, focused search question or set of questions aimed at verifying or investigating the claim using the information in the notes. The `query` should guide retrieval of relevant evidence to support or refute the claim.
+
+Input Format:
+- `claim`: A concise factual or relational statement whose truthfulness or details are to be verified.
+- `notes`: A list of text snippets, facts, or excerpts containing factual information related to entities or events mentioned in the claim that can be used as evidence.
+
+Output Format:
+- `query`: A natural language question or set of linked questions designed to retrieve relevant documents or information that best support the verification of the claim. The query should explicitly target the key entities and relationships mentioned in the claim, as clarified or contextualized by the notes.
+
+Detailed Instructions and Domain-Specific Considerations:
+1. Identify the key entities (e.g., places, people, organizations, events) and relationships (e.g., jurisdiction, starring in a film, membership in a group) mentioned in the claim.
+2. Use the notes to understand relevant background or additional context about these entities and relationships, which can help refine and disambiguate the query. For example:
+   - Geopolitical context (e.g., administrative divisions of counties and cities; provinces and countries in China).
+   - Relationships and roles in films (e.g., familial relations among actors; filmography and production companies with similar names but different time periods).
+   - Membership or membership disputes in entertainment industry contexts (e.g., judges on a TV show; producers and singers).
+3. Reflect contradictions or confirmations present in the notes by phrasing the query to specifically verify disputed or critical facts, such as:
+   - Confirming if a location falls under a particular administrative jurisdiction.
+   - Checking if a particular person starred in a specific film in a given year.
+   - Clarifying who are the official members of a judging panel and whether certain individuals or roles are included.
+4. When multiple entities or facts are involved, structure the query to encompass the relevant combined aspects. For instance, verifying if both cities are in the same country, or if a group of judges includes a particular individual plus another related person.
+5. Keep queries clear, concise, and answerable with the available or to-be-retrieved evidence—avoid overly broad or vague phrases.
+6. The query should aim to retrieve the ‘gold’ or key documents relevant to the claim’s truthfulness as reflected in the feedback examples (e.g., documents specifically tied to key entities like "Puyang," "Jennifer Kendal," or "Aaina (album)").
+
+Generalizable Strategy:
+- Extract key factual components and entity mentions from the claim.
+- Analyze notes to gather grounded factual context, verify contradictions, dates, names, or jurisdictions.
+- Formulate a focused, natural language question or linked questions that explicitly mention the entities and facts to be verified.
+- Incorporate any relevant entity disambiguation or temporal context to narrow retrieval.
+
+Example:
+If the claim is about a county’s jurisdiction and same-country status with another city, produce a query that asks if the county’s jurisdiction city lies in the stated province and if both cities belong to the same country.
+
+If the claim involves whether a person acted in a specific film in a certain year, produce a query asking if that person starred in that film in that year and if not, what roles or films are associated with them.
+
+If the claim states a list of judges on a show plus an additional individual, produce a query confirming whether all those individuals are judges on that show, especially clarifying disputed membership and any related persons joined later.
+
+Summary:
+Produce well-formed, fact-focused queries for verifying relationships and entity attributes in the claim, informed by the contextual details in the notes, to guide retrieval of the most relevant documents for claim verification.
+2026/08/04 21:56:05 INFO dspy.evaluate.evaluate: Average Metric: 1.6666666666666665 / 3 (55.6%)
+Iteration 1: New subsample score 1.6666666666666665 is better than old score 1.3333333333333333. Continue to full eval and add to candidate pool.
+2026/08/04 21:59:24 INFO dspy.evaluate.evaluate: Average Metric: 5.0 / 10 (50.0%)
+Iteration 1: Found a better program on the valset with score 0.5.
+Iteration 1: Valset score for new program: 0.5 (coverage 10 / 10)
+Iteration 1: Val aggregate for new program: 0.5
+Iteration 1: Individual valset scores for new program: {0: 0.3333333333333333, 1: 1.0, 2: 0.3333333333333333, 3: 0.3333333333333333, 4: 0.6666666666666666, 5: 0.0, 6: 0.3333333333333333, 7: 1.0, 8: 0.3333333333333333, 9: 0.6666666666666666}
+Iteration 1: New valset pareto front scores: {0: 0.6666666666666666, 1: 1.0, 2: 0.3333333333333333, 3: 0.6666666666666666, 4: 0.6666666666666666, 5: 0.0, 6: 0.3333333333333333, 7: 1.0, 8: 0.3333333333333333, 9: 0.6666666666666666}
+Iteration 1: Valset pareto front aggregate score: 0.5666666666666667
+Iteration 1: Updated valset pareto front programs: {0: {0}, 1: {1}, 2: {0, 1}, 3: {0}, 4: {0, 1}, 5: {0, 1}, 6: {0, 1}, 7: {0, 1}, 8: {1}, 9: {1}}
+Iteration 1: Best valset aggregate score so far: 0.5
+Iteration 1: Best program as per aggregate score on valset: 1
+Iteration 1: Best score on valset: 0.5
+Iteration 1: Linear pareto front program index: 1
+Iteration 1: New program candidate index: 1
+GEPA Optimization:  10%|▉         | 29/300 [10:20<1:36:46, 21.43s/rollouts]Iteration 2: Selected program 1 score: 0.5
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):   0%|          | 0/6 [00:20<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):  17%|█▋        | 1/6 [00:20<01:42, 20.43s/it]Average Metric: 0.67 / 2 (33.3%):  17%|█▋        | 1/6 [00:39<01:42, 20.43s/it]Average Metric: 0.67 / 2 (33.3%):  33%|███▎      | 2/6 [00:39<01:17, 19.35s/it]Average Metric: 1.00 / 3 (33.3%):  33%|███▎      | 2/6 [01:09<01:17, 19.35s/it]Average Metric: 1.00 / 3 (33.3%):  50%|█████     | 3/6 [01:09<01:13, 24.66s/it]Average Metric: 1.67 / 4 (41.7%):  50%|█████     | 3/6 [01:28<01:13, 24.66s/it]Average Metric: 1.67 / 4 (41.7%):  67%|██████▋   | 4/6 [01:28<00:44, 22.38s/it]Average Metric: 2.33 / 5 (46.7%):  67%|██████▋   | 4/6 [01:47<00:44, 22.38s/it]Average Metric: 2.33 / 5 (46.7%):  83%|████████▎ | 5/6 [01:47<00:20, 20.87s/it]Average Metric: 3.00 / 6 (50.0%):  83%|████████▎ | 5/6 [02:08<00:20, 20.87s/it]Average Metric: 3.00 / 6 (50.0%): 100%|██████████| 6/6 [02:08<00:00, 20.91s/it]Average Metric: 3.00 / 6 (50.0%): 100%|██████████| 6/6 [02:08<00:00, 21.34s/it]
+2026/08/04 22:01:32 INFO dspy.evaluate.evaluate: Average Metric: 2.9999999999999996 / 6 (50.0%)
+Iteration 2: Proposed new text for append_notes.predict: You will be given three fields as input:
+
+- `claim`: A factual statement or assertion that needs to be verified or supported by evidence.
+- `notes`: A list of extracted evidential snippets or statements (often redundant or overlapping) relevant to the claim.
+- `context`: A list of document titles paired with brief summaries or descriptions that may contain additional relevant information.
+
+Your task is to analyze the inputs and produce two output fields:
+
+1. **new_notes**: A concise, distilled list of evidence snippets selected from the input `notes` that directly support or relate to verifying the `claim`. Avoid excessive repetition and retain only the most relevant and clear statements that substantiate the claim.
+
+2. **titles**: A list of document titles from the `context` that are crucial for supporting the claim. These are the primary sources or documents that contain key information relevant to validating the claim.
+
+### Detailed Task Description and Domain-Specific Considerations:
+
+- The claims often involve specific domain entities like songs, albums, films, events, venues, or people, and relationships such as release dates, authorship, recordings, ownership, locations, or collaborations.
+- Your reasoning should identify which pieces of evidence among the notes directly affirm or clarify parts of the claim, filtering out duplicates or less relevant statements.
+- When selecting titles, prefer those documents whose content descriptions in `context` strongly connect to or provide authoritative backing for the claim.
+- Some claims require cross-referencing multiple facts (e.g., song release year AND who first recorded it), so your `new_notes` should encompass all relevant fact snippets that together verify the claim.
+- Avoid including notes or titles that do not add unique or necessary information toward supporting the claim.
+- In cases where the evidence is not explicitly available for part of the claim, use reasonable inference grounded in the provided notes and context.
+- The outputs should be concise but sufficiently informative to justify the veracity of the claim.
+
+### General Strategy:
+
+1. **Understand the claim fully**, including domain-specific nuances (e.g., music chart positions, film production roles, venue ownership).
+2. **Review the notes** to identify which statements best confirm or deny the claim.
+3. **Cross-check the context titles** to find documents whose summaries indicate authoritative or detailed coverage of claim aspects, and include those titles.
+4. **Eliminate redundant notes** and produce a focused set of evidence that covers all claim facets.
+5. **Ensure titles represent the main knowledge sources** needed to verify the claim, as per the context information.
+
+By following the above approach, you will produce a well-supported evidential summary and identify key documents underpinning the factual verification of the claim.
+2026/08/04 22:02:48 INFO dspy.evaluate.evaluate: Average Metric: 1.6666666666666665 / 3 (55.6%)
+Iteration 2: New subsample score 1.6666666666666665 is not better than old score 1.6666666666666665, skipping
+GEPA Optimization:  13%|█▎        | 38/300 [13:43<1:35:17, 21.82s/rollouts]Iteration 3: Selected program 1 score: 0.5
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.67 / 1 (66.7%):   0%|          | 0/6 [00:27<?, ?it/s]Average Metric: 0.67 / 1 (66.7%):  17%|█▋        | 1/6 [00:27<02:19, 27.85s/it]Average Metric: 1.33 / 2 (66.7%):  17%|█▋        | 1/6 [00:47<02:19, 27.85s/it]Average Metric: 1.33 / 2 (66.7%):  33%|███▎      | 2/6 [00:47<01:31, 22.83s/it]Average Metric: 2.00 / 3 (66.7%):  33%|███▎      | 2/6 [01:12<01:31, 22.83s/it]Average Metric: 2.00 / 3 (66.7%):  50%|█████     | 3/6 [01:12<01:11, 23.97s/it]Average Metric: 2.00 / 4 (50.0%):  50%|█████     | 3/6 [01:33<01:11, 23.97s/it]Average Metric: 2.00 / 4 (50.0%):  67%|██████▋   | 4/6 [01:33<00:45, 22.78s/it]Average Metric: 2.67 / 5 (53.3%):  67%|██████▋   | 4/6 [01:52<00:45, 22.78s/it]Average Metric: 2.67 / 5 (53.3%):  83%|████████▎ | 5/6 [01:52<00:21, 21.37s/it]Average Metric: 3.67 / 6 (61.1%):  83%|████████▎ | 5/6 [02:20<00:21, 21.37s/it]Average Metric: 3.67 / 6 (61.1%): 100%|██████████| 6/6 [02:20<00:00, 23.75s/it]Average Metric: 3.67 / 6 (61.1%): 100%|██████████| 6/6 [02:20<00:00, 23.45s/it]
+2026/08/04 22:05:09 INFO dspy.evaluate.evaluate: Average Metric: 3.6666666666666665 / 6 (61.1%)
+Iteration 3: Proposed new text for gen_query.predict: Task Description:
+You will be given two fields as input: `claim` and `notes`. Your task is to produce a single `query` field that formulates a precise, concise, and focused natural language question or linked set of questions aimed specifically at verifying or investigating the factual accuracy of the claim using the contextual and factual information found in the notes. This query will be used to retrieve relevant evidence that can support or refute the claim.
+
+Input Format:
+- `claim`: A concise factual or relational statement involving specific entities, relationships, or attributes whose truthfulness or details need to be checked.
+- `notes`: A list of text snippets, facts, or excerpts that contain relevant factual information, clarifications, or contextual background about the entities, relationships, or events mentioned in the claim. The notes may include domain-specific details such as scientific classifications, geopolitical jurisdictions, film credits, musical collaborations, or other specialized knowledge about entity roles or attributes.
+
+Output Format:
+- `query`: A natural language question or linked questions explicitly targeting the key entities and relationships highlighted or implied by the claim and refined by the notes. The query should be formulated to retrieve authoritative or “gold standard” documents or evidence relevant to verifying the claim’s truthfulness.
+
+Detailed Instructions and Domain-Specific Considerations:
+
+1. **Entity and Relationship Identification**  
+   - Extract the key factual components from the claim, including entities (people, places, organizations, species, works of art, bands, shows) and relationships (jurisdiction, membership, professional roles, coining terminology, number of species, award comparisons, film or music credits).
+   
+2. **Contextual Disambiguation Using Notes**  
+   - Use the notes to clarify, disambiguate, or augment the identities and relationships in the claim. For example:  
+     - Confirm the exact scientific names or genus associated with common names (e.g., “Saule” is French for “willow” in genus Salix).  
+     - Verify jurisdictional or geopolitical relationships (e.g., administrative boundaries).  
+     - Disambiguate film and music credits based on time, familial relationships, or production company distinctions.  
+     - Identify specific individuals in colloquial or nickname references (e.g., “German Frank Sinatra” refers to Udo Jürgens).  
+     - Clarify professional roles and collaborations to test shared professions or memberships.  
+     - Validate award counts or comparative prominence where noted or implied.  
+
+3. **Verification of Critical Facts and Contradictions**  
+   - Frame queries that explicitly target disputed, confirmatory, or critical elements of the claim, such as:  
+     - Does a specific entity hold the claimed attribute or profession?  
+     - Is a named person a member or judge on a particular panel or show?  
+     - Are two entities related via a particular relationship (e.g., “coined term with,” “colleague,” “band member”)?  
+     - Numeric or comparative relationships like counts of species or awards.  
+
+4. **Combining Multiple Entities or Relations**  
+   - When the claim involves multiple interrelated facts (e.g., two cities’ jurisdiction and country membership, two people sharing a profession, or multiple band members’ involvements), structure the query to encompass all relevant verifications together in logically connected questions to maximize retrieval relevance.  
+
+5. **Query Style and Scope**  
+   - Keep queries clear, direct, and specific so that retrieved documents are likely to provide definitive verification.  
+   - Avoid vague, overly broad, or generalized questions unrelated to the entities and relationships at hand.  
+   - Include temporal context if relevant to disambiguate (e.g., the year of a film, or the era of a music collaboration).  
+   - Reflect known contradictions or confirmations in the notes by phrasing the query to test those critical points explicitly.  
+
+6. **Domain Examples**  
+   - Taxonomy: Query genus-species comparisons and confirm associations between common names and scientific genera.  
+   - Entertainment: Query filmography, judge panels of shows, band membership, and professional affiliations.  
+   - Awards: Query comparative award counts or recognitions associated with nicknames or stage personas.  
+   - Academic: Query professional titles and collaborations (e.g., researchers who coined terms together).  
+
+Generalizable Strategy:
+
+- Carefully parse the claim to extract each discrete factual assertion or relationship.  
+- Cross-reference the notes to gain clarity, resolve ambiguity, establish relevant background, and identify contradictions or confirmations related to these assertions.  
+- Formulate one or more natural language questions that explicitly mention the entities and relationships involved, refined by facts or contradictions evident in the notes, designed to retrieve key and authoritative documents or information sources to verify or refute the claim.
+
+Summary:
+
+Produce a focused, entity- and relationship-specific, natural language query or linked queries that explicitly address the main factual points and discrepancies in the claim, utilizing the contextual information from the notes to refine and clarify the search intent. The final query should direct retrieval toward the most relevant evidence needed to confirm or dispute the claim’s truth.
+2026/08/04 22:06:28 INFO dspy.evaluate.evaluate: Average Metric: 2.0 / 3 (66.7%)
+Iteration 3: New subsample score 2.0 is not better than old score 2.0, skipping
+GEPA Optimization:  16%|█▌        | 47/300 [17:24<1:35:36, 22.67s/rollouts]Iteration 4: Selected program 1 score: 0.5
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):   0%|          | 0/6 [00:20<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):  17%|█▋        | 1/6 [00:20<01:41, 20.21s/it]Average Metric: 0.67 / 2 (33.3%):  17%|█▋        | 1/6 [00:48<01:41, 20.21s/it]Average Metric: 0.67 / 2 (33.3%):  33%|███▎      | 2/6 [00:48<01:39, 24.85s/it]Average Metric: 1.67 / 3 (55.6%):  33%|███▎      | 2/6 [01:13<01:39, 24.85s/it]Average Metric: 1.67 / 3 (55.6%):  50%|█████     | 3/6 [01:13<01:14, 24.89s/it]Average Metric: 1.67 / 4 (41.7%):  50%|█████     | 3/6 [01:38<01:14, 24.89s/it]Average Metric: 1.67 / 4 (41.7%):  67%|██████▋   | 4/6 [01:38<00:49, 24.87s/it]Average Metric: 1.67 / 5 (33.3%):  67%|██████▋   | 4/6 [02:03<00:49, 24.87s/it]Average Metric: 1.67 / 5 (33.3%):  83%|████████▎ | 5/6 [02:03<00:25, 25.10s/it]Average Metric: 2.67 / 6 (44.4%):  83%|████████▎ | 5/6 [02:22<00:25, 25.10s/it]Average Metric: 2.67 / 6 (44.4%): 100%|██████████| 6/6 [02:22<00:00, 23.01s/it]Average Metric: 2.67 / 6 (44.4%): 100%|██████████| 6/6 [02:22<00:00, 23.76s/it]
+2026/08/04 22:08:51 INFO dspy.evaluate.evaluate: Average Metric: 2.6666666666666665 / 6 (44.4%)
+Iteration 4: Proposed new text for append_notes.predict: Task Description:
+You are given three input fields: `claim` (a statement about a factual matter), `notes` (a list of relevant extracted sentences concerning the claim that indicate whether or not the claim is supported or contradicted), and `context` (a list of documents or document extracts potentially containing factual information related to the claim). 
+
+Your goal is to produce two output fields:
+
+1. `new_notes`: A refined and concise subset of the input `notes` that are the most relevant to assessing the factual accuracy of the claim, ideally emphasizing statements that clarify whether the claim is supported, contradicted, or lacks verification based on the provided `context`. These notes should focus strictly on definitive or evidential information about the claim and its key entities or events.
+
+2. `titles`: A list of the most relevant document titles from the `context` that are critical to understanding or verifying the claim. The titles should correspond closely to the main subjects, entities, or events referenced in the claim and supported or contradicted in the notes/context. Retrieve titles of those documents that are likely authoritative or central to the claim’s factual verification, prioritizing exact matches or direct relevance over peripheral or loosely related topics. Include known proper nouns, notable units, named individuals, or historical events central to the claim.
+
+Detailed instructions for reasoning and approach:
+
+- Analyze the claim carefully to identify the key entities, dates, events, or subjects it references.
+- Examine the `notes` for statements that address the accuracy of the claim, especially those clarifying dates of formation, key persons involved, or direct contradictions/validations.
+- Cross-reference the `notes` with the provided `context` entries to identify which documents relate closely to the claim’s core subjects. Note that context entries may have detailed background or historical information relevant for claim verification.
+- Select a concise set of `new_notes` that best summarize the evidence for or against the claim, omitting less relevant or unsupported statements.
+- Extract from `context` those document titles that provide foundational or authoritative knowledge about the claim’s key elements (e.g. notable historical military units, specific films with named directors and actors, specific publications or people, or named works and biographies).
+- If the claim is unsupported by the context, the `new_notes` and `titles` can be empty lists, but still provide a short reasoning inference explaining the lack of evidence.
+- Use domain-specific knowledge gleaned from the examples, such as:
+  * Military unit formation years relative to WWII, especially units like the 100th Infantry Battalion/442nd Regimental Combat Team.
+  * Films centered on historical military units by named directors (e.g. Lane Nishikawa).
+  * Publications and social bookmarking services distinctions.
+  * Hall of Fame start dates relevant for verifying induction claims.
+  * Actors and films related to portrayals of Marilyn Monroe linked to named novels or plays.
+- Avoid including unrelated or generic context entries; focus on those directly related to the claim subject and entities.
+- When multiple documents are relevant, prioritize titles that explicitly match or have direct genealogical or functional ties to the claim (e.g., military regiments, named filmmakers, film titles).
+- Your response is not required to include the `reasoning` text explicitly, but make sure the `new_notes` and `titles` reflect clear evidence or lack thereof to support or contradict the claim.
+
+Summary:
+Effectively, your task is to synthesize the supporting or contradicting facts from the input notes and identify the foundational documents that underpin those facts, ensuring that the outputs provide clear, evidence-based refinement of the claim’s truthfulness and its key sources.
+2026/08/04 22:10:31 INFO dspy.evaluate.evaluate: Average Metric: 1.6666666666666665 / 3 (55.6%)
+Iteration 4: New subsample score 1.6666666666666665 is better than old score 1.0. Continue to full eval and add to candidate pool.
+2026/08/04 22:14:27 INFO dspy.evaluate.evaluate: Average Metric: 5.0 / 10 (50.0%)
+Iteration 4: Valset score for new program: 0.5 (coverage 10 / 10)
+Iteration 4: Val aggregate for new program: 0.5
+Iteration 4: Individual valset scores for new program: {0: 0.6666666666666666, 1: 1.0, 2: 0.3333333333333333, 3: 0.0, 4: 1.0, 5: 0.0, 6: 0.3333333333333333, 7: 1.0, 8: 0.3333333333333333, 9: 0.3333333333333333}
+Iteration 4: New valset pareto front scores: {0: 0.6666666666666666, 1: 1.0, 2: 0.3333333333333333, 3: 0.6666666666666666, 4: 1.0, 5: 0.0, 6: 0.3333333333333333, 7: 1.0, 8: 0.3333333333333333, 9: 0.6666666666666666}
+Iteration 4: Valset pareto front aggregate score: 0.6
+Iteration 4: Updated valset pareto front programs: {0: {0, 2}, 1: {1, 2}, 2: {0, 1, 2}, 3: {0}, 4: {2}, 5: {0, 1, 2}, 6: {0, 1, 2}, 7: {0, 1, 2}, 8: {1, 2}, 9: {1}}
+Iteration 4: Best valset aggregate score so far: 0.5
+Iteration 4: Best program as per aggregate score on valset: 1
+Iteration 4: Best score on valset: 0.5
+Iteration 4: Linear pareto front program index: 1
+Iteration 4: New program candidate index: 2
+GEPA Optimization:  22%|██▏       | 66/300 [25:23<1:33:19, 23.93s/rollouts]Iteration 5: Selected program 0 score: 0.4666666666666666
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 1.00 / 1 (100.0%):   0%|          | 0/6 [00:15<?, ?it/s]Average Metric: 1.00 / 1 (100.0%):  17%|█▋        | 1/6 [00:15<01:17, 15.51s/it]Average Metric: 1.33 / 2 (66.7%):  17%|█▋        | 1/6 [00:39<01:17, 15.51s/it] Average Metric: 1.33 / 2 (66.7%):  33%|███▎      | 2/6 [00:39<01:20, 20.22s/it]Average Metric: 2.00 / 3 (66.7%):  33%|███▎      | 2/6 [01:00<01:20, 20.22s/it]Average Metric: 2.00 / 3 (66.7%):  50%|█████     | 3/6 [01:00<01:02, 20.77s/it]Average Metric: 2.33 / 4 (58.3%):  50%|█████     | 3/6 [01:25<01:02, 20.77s/it]Average Metric: 2.33 / 4 (58.3%):  67%|██████▋   | 4/6 [01:25<00:44, 22.27s/it]Average Metric: 3.00 / 5 (60.0%):  67%|██████▋   | 4/6 [01:48<00:44, 22.27s/it]Average Metric: 3.00 / 5 (60.0%):  83%|████████▎ | 5/6 [01:48<00:22, 22.83s/it]Average Metric: 3.67 / 6 (61.1%):  83%|████████▎ | 5/6 [02:06<00:22, 22.83s/it]Average Metric: 3.67 / 6 (61.1%): 100%|██████████| 6/6 [02:06<00:00, 20.95s/it]Average Metric: 3.67 / 6 (61.1%): 100%|██████████| 6/6 [02:06<00:00, 21.02s/it]
+2026/08/04 22:16:34 INFO dspy.evaluate.evaluate: Average Metric: 3.6666666666666665 / 6 (61.1%)
+Iteration 5: Proposed new text for append_notes.predict: Task Description:
+
+You are provided with three input fields: 
+- `claim`: A factual statement or assertion, often involving relationships or properties of entities (e.g., locations, people, events, temporal sequences).
+- `notes`: A list of extracted factual sentences that may support, refute, or provide context about the claim.
+- `context`: A list of longer, detailed passages or descriptions from various sources related to entities or topics mentioned in the claim and notes.
+
+Your goal is to process these inputs and produce two outputs: 
+- `new_notes`: A concise, relevant subset of the `notes` that directly supports or refutes the claim, synthesizing key factual points without repetition. The `new_notes` should be coherent, focused, and sufficient to understand the verification or falsification of the claim.
+- `titles`: A list of document or entity titles corresponding to the main sources or topics referenced in the `new_notes`. These titles should accurately represent the principal entities or documents needed to verify the claim. The titles are often proper nouns such as names of people, organizations, places, or works (films, TV shows, cathedrals, etc.).
+
+Detailed Instructions and Considerations:
+
+1. Understand the claim thoroughly: Identify the entities involved, their relationships, and any temporal, geographic, or hierarchical information implied.
+
+2. Analyze the `notes`: Select and consolidate relevant information that directly pertains to the claim. Remove redundant or duplicate facts unless repetition reinforces a different nuance. Prioritize notes that clearly establish facts supporting or contradicting the claim.
+
+3. Consult the `context` for domain-specific or niche factual details to verify, clarify, or add nuance to the notes, especially for place names, temporal sequences, or roles of people/entities. The context often contains precise dates, locations, or hierarchical geographic information (e.g., states within countries, cities within states).
+
+4. In `new_notes`, strive for clarity and sufficiency but brevity. Keep only facts necessary to confirm or refute the claim, restate key facts succinctly, and combine related facts where appropriate.
+
+5. For the `titles` field:
+   - Identify primary and authoritative sources or entities relevant to the claim’s validation.
+   - Titles should be specific and reflect entities or documents that offer the foundational information (e.g., a company name, a film title, an airport, a cathedral).
+   - Avoid overly broad or unrelated titles. Choose titles that are likely the main sources a fact-checker or reader would consult.
+
+6. Account for temporal sequences (dates, premieres, releases) when verifying chronological claims.
+
+7. Respect domain-specific conventions: 
+   - Geographic entities should be represented with proper hierarchies (e.g., city, state, country).
+   - Titles of films, TV seasons, organizations, cathedrals, and people’s names should be formatted correctly as they appear in the context.
+   - Include relevant details such as city and state for places and dates for events or releases, when they help clarify the claim.
+
+8. Always ensure that the `new_notes` and `titles` together provide a clear path for understanding the validity of the claim using the input data.
+
+Summary:
+
+Given `claim`, `notes`, and `context`, produce:
+- `new_notes`: A refined and focused subset of notes that directly address and support or refute the claim with accurate, unambiguous information.
+- `titles`: A list of key entity or document titles that represent the main sources from which the new notes are derived or could be verified.
+
+This task involves careful synthesis, elimination of redundancy, domain-specific factual verification, and clear presentation of both evidence and source attribution.
+2026/08/04 22:17:35 INFO dspy.evaluate.evaluate: Average Metric: 1.6666666666666665 / 3 (55.6%)
+Iteration 5: New subsample score 1.6666666666666665 is not better than old score 2.0, skipping
+GEPA Optimization:  25%|██▌       | 75/300 [28:31<1:26:54, 23.17s/rollouts]Iteration 6: Selected program 1 score: 0.5
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):   0%|          | 0/6 [00:34<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):  17%|█▋        | 1/6 [00:34<02:51, 34.34s/it]Average Metric: 0.67 / 2 (33.3%):  17%|█▋        | 1/6 [01:12<02:51, 34.34s/it]Average Metric: 0.67 / 2 (33.3%):  33%|███▎      | 2/6 [01:12<02:25, 36.36s/it]Average Metric: 1.00 / 3 (33.3%):  33%|███▎      | 2/6 [01:40<02:25, 36.36s/it]Average Metric: 1.00 / 3 (33.3%):  50%|█████     | 3/6 [01:40<01:38, 32.74s/it]Average Metric: 1.67 / 4 (41.7%):  50%|█████     | 3/6 [02:11<01:38, 32.74s/it]Average Metric: 1.67 / 4 (41.7%):  67%|██████▋   | 4/6 [02:11<01:04, 32.12s/it]Average Metric: 2.00 / 5 (40.0%):  67%|██████▋   | 4/6 [02:43<01:04, 32.12s/it]Average Metric: 2.00 / 5 (40.0%):  83%|████████▎ | 5/6 [02:43<00:31, 31.98s/it]Average Metric: 2.67 / 6 (44.4%):  83%|████████▎ | 5/6 [03:05<00:31, 31.98s/it]Average Metric: 2.67 / 6 (44.4%): 100%|██████████| 6/6 [03:05<00:00, 28.69s/it]Average Metric: 2.67 / 6 (44.4%): 100%|██████████| 6/6 [03:05<00:00, 30.96s/it]
+2026/08/04 22:20:41 INFO dspy.evaluate.evaluate: Average Metric: 2.6666666666666665 / 6 (44.4%)
+Iteration 6: Proposed new text for gen_query.predict: Task Description:
+You will be given two fields as input: `claim` and `notes`. Your goal is to produce a single `query` field that formulates a precise, focused natural language question or linked questions designed specifically to verify or investigate the claim by using the information contained in the notes. The query should be constructed to guide retrieval of relevant evidence that can support or refute the claim efficiently.
+
+Input Format:
+- `claim`: A concise factual or relational statement describing one or more entities, their attributes, or relationships that need verification.
+- `notes`: A list of text snippets, facts, or excerpts providing background knowledge, contextual details, or partial information about the entities or relationships mentioned in the claim.
+
+Output Format:
+- `query`: A targeted natural language question or set of logically connected questions that explicitly focus on the key entities and relationships present in the claim, refined and disambiguated using the information found in the notes. The query should be composed to maximize retrieval of relevant, authoritative documents or facts.
+
+Detailed Instructions and Domain-Specific Considerations:
+1. Entity and Relation Identification  
+   - Extract the key named entities from the claim (e.g., persons, locations, organizations, events, works such as books or films).  
+   - Identify the relationships or factual claims being made (e.g., authorship, native habitat, time-overlapping lifespans, membership, jurisdiction, participation in an event).  
+
+2. Use of the Notes for Context and Disambiguation  
+   - Analyze the notes to gather supplemental facts such as dates, places, definitions, or known associations that clarify or restrict the scope of verification.  
+   - Use notes to determine if any terms or entities require disambiguation (e.g., multiple entities with similar names, geographic subdivisions, temporal context).  
+   - Identify if the notes reveal confirmations, contradictions, or insufficient evidence regarding key aspects of the claim.
+
+3. Query Content and Scope  
+   - Formulate a query that explicitly targets verification of the claim’s core factual components focusing on:  
+     • Existence of relationships (e.g., was Person A a creator of Film B?)  
+     • Specific attributes or temporal facts (e.g., dates of authorship or lifespan overlap)  
+     • Jurisdiction or classification details (e.g., is a city within a given province, are two magazines both periodicals).  
+   - Where multiple entities or relationships are involved, structure the query to cover combined or comparative facts, for example:  
+     • Are both entities geographically related?  
+     • Did an individual and another related individual serve simultaneously in a role?  
+   - Incorporate any contradictions or ambiguous points noted, by phrasing the query so that it explicitly seeks resolution of those points.
+
+4. Query Quality and Precision  
+   - Keep queries concise, clear, and focused solely on retrieving the critical evidence necessary for claim verification. Avoid vague or overly broad questions.  
+   - Use natural-language phrasing that a search or retrieval system can effectively interpret to find relevant documents.  
+   - Ensure queries mention key entities with relevant attributes or temporal markers wherever applicable.  
+
+5. Generalizable Strategy  
+   - Extract and prioritize verification of key factual claims from the input claim.  
+   - Review the notes carefully for background and possible contradictions or confirmations.  
+   - Identify and disambiguate entities and relationships using the notes.  
+   - Formulate a minimal set of precise, clearly linked natural language questions covering all relevant aspects of the claim to aid retrieval of authoritative evidence.
+
+Niche and Domain-Specific Knowledge Captured from Examples:
+- For claims relating to book authorship, publication medium, and dates: verify authorship attribution, publication year, and the classification/type of publication (e.g., magazine versus periodical).  
+- For natural history or biology claims involving species and native habitats: verify native habitat specifically, focusing on whether it is arid, semi-desert, temperate, or otherwise.  
+- For temporal overlap claims concerning individuals (e.g., creators and historical figures), clarify exact lifespans or alive periods and cross-check with creation/release dates of works or events.  
+- For entertainment industry claims about film creators or judges on a show: identify exact persons associated with a work or role, their temporal involvement, and membership status if relevant.  
+- For geographic or political jurisdiction claims: verify administrative divisions and whether two or more entities lie within the same jurisdiction or country.  
+- Recognize periodicals as including magazines, so queries should clarify if entities classified as periodicals are indeed periodicals by definition.
+
+Summary:
+Generate a well-formed, fact-focused natural language query or set of linked queries explicitly tailored to verify the factual claims in the input by leveraging all relevant contextual and disambiguating details found in the notes. Structure queries to maximize the chance of retrieving the ‘gold’ or key documents essential for verifying or refuting the claim, according to the examples and feedback.
+2026/08/04 22:22:05 INFO dspy.evaluate.evaluate: Average Metric: 2.0 / 3 (66.7%)
+Iteration 6: New subsample score 2.0 is better than old score 1.6666666666666665. Continue to full eval and add to candidate pool.
+2026/08/04 22:26:00 INFO dspy.evaluate.evaluate: Average Metric: 5.0 / 10 (50.0%)
+Iteration 6: Valset score for new program: 0.5 (coverage 10 / 10)
+Iteration 6: Val aggregate for new program: 0.5
+Iteration 6: Individual valset scores for new program: {0: 0.0, 1: 0.6666666666666666, 2: 0.3333333333333333, 3: 0.6666666666666666, 4: 1.0, 5: 0.0, 6: 0.3333333333333333, 7: 1.0, 8: 0.3333333333333333, 9: 0.6666666666666666}
+Iteration 6: New valset pareto front scores: {0: 0.6666666666666666, 1: 1.0, 2: 0.3333333333333333, 3: 0.6666666666666666, 4: 1.0, 5: 0.0, 6: 0.3333333333333333, 7: 1.0, 8: 0.3333333333333333, 9: 0.6666666666666666}
+Iteration 6: Valset pareto front aggregate score: 0.6
+Iteration 6: Updated valset pareto front programs: {0: {0, 2}, 1: {1, 2}, 2: {0, 1, 2, 3}, 3: {0, 3}, 4: {2, 3}, 5: {0, 1, 2, 3}, 6: {0, 1, 2, 3}, 7: {0, 1, 2, 3}, 8: {1, 2, 3}, 9: {1, 3}}
+Iteration 6: Best valset aggregate score so far: 0.5
+Iteration 6: Best program as per aggregate score on valset: 1
+Iteration 6: Best score on valset: 0.5
+Iteration 6: Linear pareto front program index: 1
+Iteration 6: New program candidate index: 3
+GEPA Optimization:  31%|███▏      | 94/300 [36:56<1:24:33, 24.63s/rollouts]Iteration 7: Selected program 3 score: 0.5
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):   0%|          | 0/6 [00:25<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):  17%|█▋        | 1/6 [00:25<02:07, 25.49s/it]Average Metric: 0.67 / 2 (33.3%):  17%|█▋        | 1/6 [00:50<02:07, 25.49s/it]Average Metric: 0.67 / 2 (33.3%):  33%|███▎      | 2/6 [00:50<01:41, 25.50s/it]Average Metric: 1.33 / 3 (44.4%):  33%|███▎      | 2/6 [01:12<01:41, 25.50s/it]Average Metric: 1.33 / 3 (44.4%):  50%|█████     | 3/6 [01:12<01:11, 23.81s/it]Average Metric: 2.00 / 4 (50.0%):  50%|█████     | 3/6 [01:37<01:11, 23.81s/it]Average Metric: 2.00 / 4 (50.0%):  67%|██████▋   | 4/6 [01:37<00:48, 24.15s/it]Average Metric: 2.33 / 5 (46.7%):  67%|██████▋   | 4/6 [02:01<00:48, 24.15s/it]Average Metric: 2.33 / 5 (46.7%):  83%|████████▎ | 5/6 [02:01<00:23, 23.98s/it]Average Metric: 3.00 / 6 (50.0%):  83%|████████▎ | 5/6 [02:25<00:23, 23.98s/it]Average Metric: 3.00 / 6 (50.0%): 100%|██████████| 6/6 [02:25<00:00, 23.97s/it]Average Metric: 3.00 / 6 (50.0%): 100%|██████████| 6/6 [02:25<00:00, 24.18s/it]
+2026/08/04 22:28:25 INFO dspy.evaluate.evaluate: Average Metric: 3.0 / 6 (50.0%)
+Iteration 7: Proposed new text for append_notes.predict: Given the input fields:
+- `claim`: a complex factual assertion often involving named entities, historical or cultural facts, biographical details, or domain-specific events;
+- `notes`: a list of factual statements or extracted evidences relevant to the claim, which may include confirmations, contradictions, or clarifications;
+- `context`: a list of summarized or partial background documents or encyclopedia-like excerpts providing detailed information about entities, events, or topics related to the claim;
+
+Your task is to produce two output fields:
+
+1. `new_notes`: a concise, filtered, and logically organized subset of the input `notes` that best supports a reasoned evaluation of the claim. This output should:
+   - Emphasize directly relevant facts that confirm or disprove components of the claim,
+   - Remove redundancies and less relevant information,
+   - Incorporate clarifications about the factual context (such as correcting misattributed roles, distinguishing verified from unverified individuals, or explaining historical or administrative structures),
+   - Reflect a balanced view from the evidence if the claim is partially true or unverified,
+   - Aim to produce a compact and coherent set of statements that can support reasoning or verdicts about the claim's accuracy.
+
+2. `titles`: a list of document titles or entity names that represent the key contextual sources or topics that underpin the reasoning. These should:
+   - Include titles clearly linked to the main entities or events in the claim (such as biographies, specific historical sites, literary works, or film titles),
+   - Prioritize documents that provide unique or authoritative explanatory background,
+   - Strive to match or exceed the set of gold or expected documents that would be used to verify or refute the claim,
+   - Avoid overly generic or unrelated titles unless they provide necessary background context (e.g., genre definitions when relevant).
+
+In forming your outputs, follow these domain-specific and task-specific insights:
+
+- Claims may blend multiple facts (dates, roles, identity, works) that must be separately verified and addressed.
+- Verification requires matching entities (people, films, events) in the notes and context to those in the claim, noting variant name spellings or aliases.
+- Distinguish official titles and roles from common misunderstandings (e.g., Auschwitz was run by the SS, not private owners; Neo-western is distinct from western genre).
+- Avoid introducing information not present in the supplied notes or context.
+- When a part of the claim is unverified due to lack of information in context, acknowledge that explicitly in the notes.
+- Your outputs should enable subsequent fact-checking, providing both precise evidence (`new_notes`) and source anchors (`titles`).
+
+As a high-level strategy, analyze the claim’s components, identify relevant evidence within notes and context, summarize the key points supporting or refuting the claim in `new_notes`, and select authoritative titles from the context that a researcher would consult to assess the claim’s accuracy.
+2026/08/04 22:29:29 INFO dspy.evaluate.evaluate: Average Metric: 1.0 / 3 (33.3%)
+Iteration 7: New subsample score 1.0 is not better than old score 1.3333333333333333, skipping
+GEPA Optimization:  34%|███▍      | 103/300 [40:25<1:19:50, 24.32s/rollouts]Iteration 8: Selected program 2 score: 0.5
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):   0%|          | 0/6 [00:28<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):  17%|█▋        | 1/6 [00:28<02:24, 28.99s/it]Average Metric: 1.00 / 2 (50.0%):  17%|█▋        | 1/6 [00:50<02:24, 28.99s/it]Average Metric: 1.00 / 2 (50.0%):  33%|███▎      | 2/6 [00:50<01:37, 24.41s/it]Average Metric: 1.67 / 3 (55.6%):  33%|███▎      | 2/6 [01:19<01:37, 24.41s/it]Average Metric: 1.67 / 3 (55.6%):  50%|█████     | 3/6 [01:19<01:20, 26.77s/it]Average Metric: 2.00 / 4 (50.0%):  50%|█████     | 3/6 [01:38<01:20, 26.77s/it]Average Metric: 2.00 / 4 (50.0%):  67%|██████▋   | 4/6 [01:38<00:47, 23.57s/it]Average Metric: 2.67 / 5 (53.3%):  67%|██████▋   | 4/6 [02:01<00:47, 23.57s/it]Average Metric: 2.67 / 5 (53.3%):  83%|████████▎ | 5/6 [02:01<00:23, 23.48s/it]Average Metric: 2.67 / 6 (44.4%):  83%|████████▎ | 5/6 [02:25<00:23, 23.48s/it]Average Metric: 2.67 / 6 (44.4%): 100%|██████████| 6/6 [02:25<00:00, 23.58s/it]Average Metric: 2.67 / 6 (44.4%): 100%|██████████| 6/6 [02:25<00:00, 24.26s/it]
+2026/08/04 22:31:55 INFO dspy.evaluate.evaluate: Average Metric: 2.6666666666666665 / 6 (44.4%)
+Iteration 8: Proposed new text for gen_query.predict: Task Description:
+You will be given two fields as input: `claim` and `notes`. Your task is to create a precise, fact-focused `query` field that is a natural language question or set of linked questions aimed at verifying or investigating the truthfulness, details, or relationships within the `claim` by using the context provided in the `notes`.
+
+Input Format:
+- `claim`: A concise factual or relational statement involving one or more named entities (such as people, places, organizations, works, events) and their attributes or relationships. The claim may involve checking membership, jurisdiction, authorship, chronology, or other defined relationships.
+- `notes`: A collection of text snippets, factual statements, or excerpts relevant to the entities and facts mentioned in the claim. These notes provide additional context, background, or potential contradictions to help formulate a focused retrieval query.
+
+Output Format:
+- `query`: One or more clear, concise natural language questions that explicitly reference the key entities and relationships in the claim and are designed to retrieve relevant evidence to support or refute the claim. The query should be narrowly targeted to the elements most critical for verifying the claim’s truthfulness.
+
+Detailed Task Instructions and Domain-Specific Considerations:
+1. Identify key factual components in the claim:
+   - Extract named entities (e.g., places, people, organizations, works, dates).
+   - Determine key relationships or attributes to verify (e.g., membership in a group, administrative jurisdiction, awards won, role in a work).
+2. Use the notes to understand the relevant domain context, including:
+   - Geopolitical hierarchies or jurisdictional boundaries (e.g., towns within shires, cities within provinces and countries).
+   - Temporal sequencing of events or releases (e.g., membership status relative to DVD or album release dates).
+   - Specific roles of individuals in creative works (e.g., actor roles, producer/singer credits, jury membership on TV shows).
+   - Disambiguate entities with similar names or resolve potential contradictions.
+3. Reflect in the query any conflicting or missing information in the notes that are crucial to affirm or deny parts of the claim. Queries should explicitly:
+   - Confirm if an individual/entity held a particular role or membership at a specified time.
+   - Verify if one location is administratively governed by another location or governing body.
+   - Verify provenance or authorship and associated awards if relevant.
+4. When multiple entities or claims are involved, structure the query to check combined relationships:
+   - E.g., Is a person both a member of a group and a contributor to a work?
+   - Are two places in the same administrative or national boundaries?
+   - Are all listed judges or participants officially part of a panel, including disputed or additional members?
+5. The query should be narrowly scoped but inclusive enough to fetch all key documents relevant to the claim’s verification, avoiding broad or vague phrasing.
+6. Utilize temporal qualifiers or disambiguation where necessary to separate entities or events occurring at different times or with overlapping names.
+
+Generalizable Strategy:
+- Parse the claim into its core factual components focusing on entities and relationships.
+- Analyze the notes to capture context, confirm or question temporal sequences, membership statuses, geographic jurisdictions, or role assignments.
+- Construct concise, answerable natural language questions explicitly mentioning the critical entities and relationships in the claim.
+- Integrate relevant disambiguation and temporal or jurisdictional context from the notes to refine the query.
+- Formulate the query to explicitly target the primary documents or facts that would provide a definitive answer to the claim, facilitating retrieval of the ‘gold’ or key documents indicated in feedback examples.
+
+Examples (illustrative only):
+- For a claim about membership and release timing: "Did [person] leave [group] before the release of [work]? When did [person] leave [group], and when was [work] released?"
+- For a claim about administrative location and proximity: "Is [town] administered by [local council]? Is [town] located near [geographic feature] and [national park]? What is the spatial relationship among them?"
+- For claims about award recipients and authorship: "Who is the [nationality] poet-diplomat who won the Nobel Prize in Literature? Is this person recognized as a writer? Is [other person] also recognized as a writer?"
+
+Summary:
+Your output should be well-formed, focused queries designed to retrieve documents or information that best verify the presence, status, or relationship of key entities and facts in the claim, guided by the contextual information in the notes. These queries enable evidence-based verification and should be customized for each task according to domain-specific nuances like geopolitical hierarchy, timeline, membership, and role identity.
+2026/08/04 22:33:36 INFO dspy.evaluate.evaluate: Average Metric: 1.9999999999999998 / 3 (66.7%)
+Iteration 8: New subsample score 2.0 is better than old score 1.3333333333333333. Continue to full eval and add to candidate pool.
+2026/08/04 22:37:29 INFO dspy.evaluate.evaluate: Average Metric: 5.0 / 10 (50.0%)
+Iteration 8: Valset score for new program: 0.5 (coverage 10 / 10)
+Iteration 8: Val aggregate for new program: 0.5
+Iteration 8: Individual valset scores for new program: {0: 0.6666666666666666, 1: 1.0, 2: 0.3333333333333333, 3: 0.6666666666666666, 4: 0.3333333333333333, 5: 0.0, 6: 0.3333333333333333, 7: 1.0, 8: 0.3333333333333333, 9: 0.3333333333333333}
+Iteration 8: New valset pareto front scores: {0: 0.6666666666666666, 1: 1.0, 2: 0.3333333333333333, 3: 0.6666666666666666, 4: 1.0, 5: 0.0, 6: 0.3333333333333333, 7: 1.0, 8: 0.3333333333333333, 9: 0.6666666666666666}
+Iteration 8: Valset pareto front aggregate score: 0.6
+Iteration 8: Updated valset pareto front programs: {0: {0, 2, 4}, 1: {1, 2, 4}, 2: {0, 1, 2, 3, 4}, 3: {0, 3, 4}, 4: {2, 3}, 5: {0, 1, 2, 3, 4}, 6: {0, 1, 2, 3, 4}, 7: {0, 1, 2, 3, 4}, 8: {1, 2, 3, 4}, 9: {1, 3}}
+Iteration 8: Best valset aggregate score so far: 0.5
+Iteration 8: Best program as per aggregate score on valset: 1
+Iteration 8: Best score on valset: 0.5
+Iteration 8: Linear pareto front program index: 1
+Iteration 8: New program candidate index: 4
+GEPA Optimization:  41%|████      | 122/300 [48:25<1:13:15, 24.69s/rollouts]Iteration 9: Selected program 3 score: 0.5
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):   0%|          | 0/6 [00:22<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):  17%|█▋        | 1/6 [00:22<01:54, 22.87s/it]Average Metric: 1.00 / 2 (50.0%):  17%|█▋        | 1/6 [00:51<01:54, 22.87s/it]Average Metric: 1.00 / 2 (50.0%):  33%|███▎      | 2/6 [00:51<01:45, 26.41s/it]Average Metric: 1.33 / 3 (44.4%):  33%|███▎      | 2/6 [01:15<01:45, 26.41s/it]Average Metric: 1.33 / 3 (44.4%):  50%|█████     | 3/6 [01:15<01:14, 25.00s/it]Average Metric: 1.67 / 4 (41.7%):  50%|█████     | 3/6 [01:41<01:14, 25.00s/it]Average Metric: 1.67 / 4 (41.7%):  67%|██████▋   | 4/6 [01:41<00:51, 25.57s/it]Average Metric: 2.67 / 5 (53.3%):  67%|██████▋   | 4/6 [02:14<00:51, 25.57s/it]Average Metric: 2.67 / 5 (53.3%):  83%|████████▎ | 5/6 [02:14<00:28, 28.24s/it]Average Metric: 3.33 / 6 (55.6%):  83%|████████▎ | 5/6 [02:37<00:28, 28.24s/it]Average Metric: 3.33 / 6 (55.6%): 100%|██████████| 6/6 [02:37<00:00, 26.44s/it]Average Metric: 3.33 / 6 (55.6%): 100%|██████████| 6/6 [02:37<00:00, 26.24s/it]
+2026/08/04 22:40:07 INFO dspy.evaluate.evaluate: Average Metric: 3.333333333333333 / 6 (55.6%)
+Iteration 9: Proposed new text for gen_query.predict: Task Description:  
+You will receive two inputs: a `claim` and a set of `notes`. Your task is to generate a single concise, focused `query` — a natural language question or logically linked set of questions — designed specifically to verify or investigate the factual accuracy of the claim by leveraging the information contained in the notes. The query should guide retrieval of authoritative, relevant evidence that can either support or refute the claim as efficiently and precisely as possible.
+
+Input Format:  
+- `claim`: A brief, factual or relational statement involving one or more entities (people, places, organizations, works, events, etc.), their attributes, or their relationships that require verification.  
+- `notes`: A list of textual snippets providing background details, contextual information, partial facts, or clarifications about the entities or relationships mentioned in the claim.
+
+Output Format:  
+- `query`: A targeted, natural language question or set of clearly linked questions explicitly addressing the key entities and factual claims in the claim, refined and disambiguated using the contextual information in the notes. The query must be optimized to retrieve critical documents or facts for claimant verification.
+
+Detailed Instructions and Domain-Specific Considerations:
+
+1. Entity and Relation Identification  
+   - Extract the main named entities from the claim (persons, bands, companies, places, events, publications, etc.).  
+   - Identify the specific relationships or factual assertions made (e.g., authorship, membership, sponsorship, geographic location, temporal overlap, participation, classification).  
+
+2. Use of the Notes for Context and Disambiguation  
+   - Carefully analyze the notes to gather supplemental details such as specific dates, locations, organizational affiliations, definitions, or clarifications to disambiguate entities or relationships.  
+   - Use the notes to identify and resolve ambiguous or conflicting information (e.g., multiple entities with the same or similar names, geographic subdivisions like cities vs. counties, time frames for events or lifespans).  
+   - Recognize confirmations or contradictions within the notes regarding the claim’s components, and use these to sharpen the focus of the query.
+
+3. Query Content and Scope  
+   - Formulate queries that explicitly target verification of the core factual elements of the claim, including:  
+     • Existence and nature of relationships (e.g., was a person a member of a band? Did a company sponsor a specific event?)  
+     • Precise attributes or temporal facts (e.g., dates related to authorship, tenure, event occurrence, or geographic jurisdiction)  
+     • Classification or category confirmation (e.g., is a source a magazine, a periodical, or another media type).  
+   - When multiple entities or related claims exist, link queries logically to cover relevant comparative or relational facts (e.g., did two persons serve simultaneously? Are two entities located within the same geographic area?).  
+   - Where contradictory or ambiguous points arise in the notes, explicitly include questions aimed at resolving those uncertainties.
+
+4. Query Quality and Precision  
+   - Keep queries concise, clear, and narrowly focused solely on retrieving evidence required for verifying the claim. Avoid overly broad, vague, or multi-topic questions.  
+   - Utilize natural-language phrasing optimized for retrieval systems to find authoritative and relevant documents or facts.  
+   - Mention key entities with relevant attributes, dates, or locations whenever possible to maximize precision in retrieval.
+
+5. Niche and Domain-Specific Knowledge & Examples  
+   - For claims about authorship or publication: focus on verifying exact authorship attribution, publication years, and the classification/type of publication (e.g., understanding magazines as periodicals).  
+   - For natural history or biology-oriented claims: focus on verifying native habitat with precise ecological terms (arid, semi-desert, temperate).  
+   - For temporal overlap claims: clarify exact lifespans or periods of activity of persons vs. event or creation dates to check feasibility.  
+   - For entertainment industry or sports claims: verify specific persons’ participation or membership, temporal spans of involvement, and relationships to events or roles (e.g., sports team rosters, competition categories).  
+   - For geographic and political jurisdiction claims: verify administrative divisions to confirm if entities or events belong within defined geographic or political borders (e.g., city within county, country).  
+   - Recognize synonyms or overlapping categories (e.g., magazines as periodicals) to enhance retrieval coverage.
+
+6. Generalizable Strategy  
+   - Extract and prioritize the claim’s key factual assertions for verification.  
+   - Use the notes to disambiguate all entities and relationships, resolve conflicts and provide refining context.  
+   - Construct a minimal set of precise, logically connected natural language questions that explicitly target key verification points.  
+   - This approach maximizes retrieval of ‘gold’ or core documents essential for evidence-based verification or refutation.
+
+Summary:  
+Generate a well-structured, fact-focused natural language query or set of linked queries tailored explicitly to verify the claim by leveraging all relevant and clarifying information in the notes. Ensure queries are concise, precise, and structured so that retrieval systems can efficiently find necessary authoritative evidence to confirm or deny the claim’s factual components.
+2026/08/04 22:41:33 INFO dspy.evaluate.evaluate: Average Metric: 1.0 / 3 (33.3%)
+Iteration 9: New subsample score 1.0 is not better than old score 1.0, skipping
+GEPA Optimization:  44%|████▎     | 131/300 [52:28<1:10:59, 25.20s/rollouts]Iteration 10: Selected program 3 score: 0.5
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):   0%|          | 0/6 [00:27<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):  17%|█▋        | 1/6 [00:27<02:17, 27.50s/it]Average Metric: 1.00 / 2 (50.0%):  17%|█▋        | 1/6 [00:46<02:17, 27.50s/it]Average Metric: 1.00 / 2 (50.0%):  33%|███▎      | 2/6 [00:46<01:30, 22.51s/it]Average Metric: 2.00 / 3 (66.7%):  33%|███▎      | 2/6 [01:10<01:30, 22.51s/it]Average Metric: 2.00 / 3 (66.7%):  50%|█████     | 3/6 [01:10<01:10, 23.35s/it]Average Metric: 2.33 / 4 (58.3%):  50%|█████     | 3/6 [01:35<01:10, 23.35s/it]Average Metric: 2.33 / 4 (58.3%):  67%|██████▋   | 4/6 [01:35<00:47, 23.84s/it]Average Metric: 3.00 / 5 (60.0%):  67%|██████▋   | 4/6 [02:02<00:47, 23.84s/it]Average Metric: 3.00 / 5 (60.0%):  83%|████████▎ | 5/6 [02:02<00:25, 25.02s/it]Average Metric: 3.33 / 6 (55.6%):  83%|████████▎ | 5/6 [02:25<00:25, 25.02s/it]Average Metric: 3.33 / 6 (55.6%): 100%|██████████| 6/6 [02:25<00:00, 24.33s/it]Average Metric: 3.33 / 6 (55.6%): 100%|██████████| 6/6 [02:25<00:00, 24.26s/it]
+2026/08/04 22:43:58 INFO dspy.evaluate.evaluate: Average Metric: 3.3333333333333335 / 6 (55.6%)
+Iteration 10: Proposed new text for append_notes.predict: You will be given three inputs: 
+
+1. **claim** – A statement or assertion that potentially involves one or more entities or facts.
+2. **notes** – A list of factual sentences or observations relevant to the claim. These notes summarize or extract information from source documents and contain important facts that support or refute aspects of the claim.
+3. **context** – Full textual descriptions or extended summaries of multiple entities or topics related to the claim. These context passages often come from encyclopedia-style or detailed reference sources and provide background, definitions, timelines, and supporting information.
+
+Your task is to process these inputs and produce two outputs:
+
+- **new_notes**: A refined, concise set of factual sentences distilled from the input *notes* that are directly relevant to verifying or understanding the claim, while removing redundant, contradictory, or irrelevant details. Emphasize clarity, factual correctness, and alignment with the evidence presented in the context. The new notes should focus on the main factual points supporting or contradicting the claim and clarify temporal, causal, or definitional relationships crucial for evaluating the claim.
+
+- **titles**: A list of the names or titles of the key entities, topics, or documents referenced both in the notes and context that are essential for understanding or providing evidence for the claim. This list should be comprehensive with respect to the main factual components and should prioritize retrieval of gold-standard supporting documents or key concepts mentioned explicitly or implicitly in the claim and notes.
+
+When forming your response, use the following reasoning strategy learned from the examples:
+
+- Analyze the *claim* carefully and identify the key entities, relationships, and claims needing verification.
+- Examine the *notes* to find factual data points—such as release dates, roles, institutional statuses, or popularity metrics—that bear directly on the claim.
+- Reference the *context* to confirm details, clarify ambiguities, and supplement or validate the notes.
+- Detect and resolve any contradictions or inaccuracies emerging from notes or context, especially regarding timelines, roles, or definitions.
+- Summarize or consolidate the notes to reflect the accurate timeline or facts that confirm or refute the claim, avoiding unnecessary repetition.
+- Extract and output the minimal set of key titles/entities that genuinely explain or support the reasoning.
+
+Additional domain-specific details you should consider during the task:
+
+- For claims about films, actors, or media, verify release years, casting, and the order of releases.
+- For academic or institutional claims, confirm founding figures, university statuses (e.g., public or private), and historical name changes.
+- For games and designers, distinguish between niche popularity, fanbase scope, and global recognition levels.
+- Use temporal order and contextual knowledge to check claims about sequences (e.g., which movie released first).
+- When any conflicting note suggests one thing while the reliable context clarifies otherwise, rely primarily on the authoritative context.
+- Always output notes and titles that directly address the claim; do not include tangential or loosely related information.
+- Ensure to cover all significant entities that appear in the claim and evidence, as failure to retrieve even one relevant title may result in incomplete or incorrect conclusions.
+
+In sum, your output must be a carefully curated evidence summary (new_notes) and an exhaustive, relevant entity list (titles) that together provide a firm factual foundation for assessing the input claim.
+2026/08/04 22:45:13 INFO dspy.evaluate.evaluate: Average Metric: 1.6666666666666665 / 3 (55.6%)
+Iteration 10: New subsample score 1.6666666666666665 is not better than old score 2.0, skipping
+GEPA Optimization:  47%|████▋     | 140/300 [56:08<1:06:43, 25.02s/rollouts]Iteration 11: Selected program 3 score: 0.5
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.67 / 1 (66.7%):   0%|          | 0/6 [00:22<?, ?it/s]Average Metric: 0.67 / 1 (66.7%):  17%|█▋        | 1/6 [00:22<01:51, 22.34s/it]Average Metric: 1.33 / 2 (66.7%):  17%|█▋        | 1/6 [00:42<01:51, 22.34s/it]Average Metric: 1.33 / 2 (66.7%):  33%|███▎      | 2/6 [00:42<01:24, 21.15s/it]Average Metric: 2.33 / 3 (77.8%):  33%|███▎      | 2/6 [01:15<01:24, 21.15s/it]Average Metric: 2.33 / 3 (77.8%):  50%|█████     | 3/6 [01:15<01:18, 26.26s/it]Average Metric: 3.00 / 4 (75.0%):  50%|█████     | 3/6 [01:39<01:18, 26.26s/it]Average Metric: 3.00 / 4 (75.0%):  67%|██████▋   | 4/6 [01:39<00:51, 25.66s/it]Average Metric: 3.67 / 5 (73.3%):  67%|██████▋   | 4/6 [02:06<00:51, 25.66s/it]Average Metric: 3.67 / 5 (73.3%):  83%|████████▎ | 5/6 [02:06<00:25, 25.96s/it]Average Metric: 4.67 / 6 (77.8%):  83%|████████▎ | 5/6 [02:33<00:25, 25.96s/it]Average Metric: 4.67 / 6 (77.8%): 100%|██████████| 6/6 [02:33<00:00, 26.51s/it]Average Metric: 4.67 / 6 (77.8%): 100%|██████████| 6/6 [02:33<00:00, 25.64s/it]
+2026/08/04 22:47:46 INFO dspy.evaluate.evaluate: Average Metric: 4.666666666666666 / 6 (77.8%)
+Iteration 11: Proposed new text for gen_query.predict: Task Overview:  
+You will receive two types of inputs: a `claim` and a set of `notes`. Your role is to generate a single `query` field consisting of one or more tightly linked natural language question(s) that explicitly aim to verify or investigate the factual content of the claim by extracting and using critical contextual details found in the notes. The purpose of the query is to facilitate efficient retrieval of authoritative evidence that can support, refute, or clarify the claim.
+
+Input Format:  
+- `claim`: A concise factual or relational statement involving one or more entities (persons, works, locations, events, etc.) and the factual relationships or attributes asserted about them (like authorship, event outcomes, native habitat, genre classification, etc.).  
+- `notes`: A list of text excerpts, facts, or partial information providing background, clarifications, temporal or geographic details, or confirmations/contradictions relating to the entities and relations mentioned in the claim.
+
+Output Format:  
+- `query`: A focused, precise natural language question or set of logically connected questions explicitly focused on verifying the claim’s factual substance, as refined and disambiguated by the notes.
+
+Detailed Instructions:
+
+1. **Entity and Relationship Extraction**  
+   - Identify all key named entities in the claim, including persons, places, organizations, creative works (films, books, performances), species, events, or other proper nouns.  
+   - Extract the primary factual claims or relationships described involving these entities, such as authorship, participation, defeat/competition results, genre classification, native habitats, temporal overlaps, or administrative jurisdictions.
+
+2. **Leveraging Notes for Context and Disambiguation**  
+   - Use the notes to gather supplementary information relevant for scope refinement, disambiguation, or temporal/geographical contextualization. For example:  
+     • Identifying exact individuals referenced (in case of multiple entities with similar names)  
+     • Determining production years, event dates, or lifespan dates  
+     • Clarifying definitions or classifications (e.g., whether a publication counts as a periodical, or genre classifications of films)  
+     • Noting if any contradictions or confirmations exist that affect how the claim should be queried  
+     • Incorporating known affiliations or locations to refine geographic or jurisdictional questions.
+
+3. **Focus and Content of the Query**  
+   - Construct questions that directly target the main factual elements necessary to verify the claim, such as:  
+     • The identity of a person or entity involved in a described event (e.g., who was defeated by whom, who starred in what)  
+     • Attributes or temporal facts relevant to the entities (e.g., when someone started competing, exact event dates, etc.)  
+     • Classification or genre designation of works or entities (e.g., is a film a family comedy adventure, is a magazine considered a periodical)  
+     • Relationships between entities (e.g., are two entities both sportsmen, do two places lie in the same administrative division)  
+   - Where multiple factual claims or entities are included, formulate questions that systematically cover all key aspects, using linked or logically connected phrasing (e.g., "Did X and Y both star in Z? Did X begin sports at age A?").
+
+4. **Quality and Precision**  
+   - Keep queries clear, concise, and narrowly targeted to maximize retrieval of relevant and authoritative supporting evidence. Avoid vague or overly broad questions.  
+   - Use natural language phrasing easily interpretable by search or retrieval systems.  
+   - Explicitly mention key entities and relevant attributes or temporal factors uncovered in the notes to minimize ambiguity.  
+   - If the notes reveal potential conflicting evidence or ambiguities, formulate queries to explicitly resolve these (e.g., "Who exactly starred in X?" where multiple possible persons are mentioned).
+
+5. **Domain-Specific and Niche Knowledge to Consider**  
+   - For claims about sports or competitions: verify identities of competitors, match results (e.g., who defeated whom), starting ages, and professional status.  
+   - For claims about creative or entertainment works (films, performances, books): verify involvement of named actors or creators, production or release dates, genre classifications, and location of performances/events.  
+   - For claims about publications: confirm authorship, publication medium, publication year, and whether a publication is a periodical or magazine. Note that magazines are considered a type of periodical.  
+   - For biology or natural history claims: verify native habitats with attention to terrain type (arid, semi-desert, temperate, etc.) and confirm species-related facts.  
+   - For geographic or political claims: verify administrative jurisdictions, subdivisions, and whether multiple entities share the same geographic or political area.  
+   - For temporal overlap claims: verify lifespans or active periods to confirm whether persons/entities overlapped in time relevant to the claim (e.g., whether someone was alive when a work was created).  
+   
+6. **Generalizable Strategy**  
+   - Prioritize extraction and verification of the core factual elements from the claim.  
+   - Use the notes exhaustively to clarify, disambiguate, and contextualize entities and relationships before formulating queries.  
+   - Formulate a minimal yet complete set of linked natural language questions covering all relevant verification points, structured to lead to retrieval of ‘gold-standard’ authoritative documents or facts that decisively address the claim.
+
+Example Patterns:  
+- "Who did [Person A] defeat in the [Event, Year]? Are both [Person A's opponent] and [Person B] recognized as sportsmen? Did [Person B] begin competing at age [X]?"  
+- "Did English actor [Person] star in the stage performance '[Performance]' at [Venue] and also star in the film '[Film Title]' (Year/genre)?"  
+- "Are both the Disney animated film featuring character [Character Name] and the film [Film Title] American-produced family comedy action adventure movies? In which film does [Character Name] appear?"  
+- "Is [Publication] considered a periodical or magazine? Did [Author] author [Work] published by [Publisher] in [Year]?"
+
+Remember: The goal is to produce precise, focused, and well-formed natural language queries explicitly designed to maximize retrieval of core evidence needed to verify or refute the factual claim, incorporating all relevant disambiguation and contextual details from the notes.
+2026/08/04 22:49:19 INFO dspy.evaluate.evaluate: Average Metric: 2.333333333333333 / 3 (77.8%)
+Iteration 11: New subsample score 2.333333333333333 is not better than old score 2.333333333333333, skipping
+GEPA Optimization:  50%|████▉     | 149/300 [1:00:15<1:04:29, 25.63s/rollouts]Iteration 12: Selected program 4 score: 0.5
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):   0%|          | 0/6 [00:28<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):  17%|█▋        | 1/6 [00:28<02:20, 28.19s/it]Average Metric: 0.67 / 2 (33.3%):  17%|█▋        | 1/6 [01:01<02:20, 28.19s/it]Average Metric: 0.67 / 2 (33.3%):  33%|███▎      | 2/6 [01:01<02:04, 31.08s/it]Average Metric: 1.33 / 3 (44.4%):  33%|███▎      | 2/6 [01:23<02:04, 31.08s/it]Average Metric: 1.33 / 3 (44.4%):  50%|█████     | 3/6 [01:23<01:20, 26.83s/it]Average Metric: 1.67 / 4 (41.7%):  50%|█████     | 3/6 [01:44<01:20, 26.83s/it]Average Metric: 1.67 / 4 (41.7%):  67%|██████▋   | 4/6 [01:44<00:49, 24.66s/it]Average Metric: 2.00 / 5 (40.0%):  67%|██████▋   | 4/6 [02:08<00:49, 24.66s/it]Average Metric: 2.00 / 5 (40.0%):  83%|████████▎ | 5/6 [02:08<00:24, 24.47s/it]Average Metric: 2.67 / 6 (44.4%):  83%|████████▎ | 5/6 [02:39<00:24, 24.47s/it]Average Metric: 2.67 / 6 (44.4%): 100%|██████████| 6/6 [02:39<00:00, 26.80s/it]Average Metric: 2.67 / 6 (44.4%): 100%|██████████| 6/6 [02:39<00:00, 26.64s/it]
+2026/08/04 22:51:59 INFO dspy.evaluate.evaluate: Average Metric: 2.6666666666666665 / 6 (44.4%)
+Iteration 12: Proposed new text for append_notes.predict: Task Description:  
+You will receive an input with three fields:  
+
+1. **claim**: A factual statement involving specific entities, events, dates, or subjects that requires verification or validation.  
+2. **notes**: A list of extracted sentences from source materials that pertain to the claim. These sentences may contain factual information supporting, contradicting, or insufficient to verify the claim. The notes often include biographical details, historical context, or entity descriptions.  
+3. **context**: A collection of documents or document excerpts that provide detailed, background, or authoritative information potentially relevant to the claim and its verification. This corpus spans diverse domains (e.g., historical military units, films, composers, technology brands).  
+
+Your task is to produce **two outputs**:  
+
+1. **new_notes**:  
+   - Select and refine a concise subset of the input notes that most directly address the accuracy of the claim.  
+   - Prioritize notes that offer definitive or evidential information confirming, contradicting, or indicating a lack of evidence about the claim’s key assertions.  
+   - Emphasize statements clarifying crucial entities, dates, events, or subjects cited in the claim.  
+   - Remove repetitive, extraneous, or unrelated sentences.  
+   - If the claim cannot be verified with the provided materials, return an empty list here.  
+
+2. **titles**:  
+   - From the provided context documents, identify the titles of the most authoritative, relevant, and central sources necessary for verifying the claim.  
+   - These titles should closely match the claim’s key entities or events (e.g., named military regiments, proper nouns related to people, specific film titles and their directors, novel names, biographical articles, specific products or platform names).  
+   - Prioritize documents with direct genealogical, historical, or thematic ties to the claim entities over loosely or tangentially related material.  
+   - If no relevant documents support verification, return an empty list here as well.  
+
+Detailed Reasoning and Approach:  
+- **Careful claim deconstruction**: Identify all key components such as people, military units (e.g., WWII era units like the 100th Infantry Battalion or 442nd Regimental Combat Team), cultural works (films, novels, plays), dates, and attributes (nationalities, professions).  
+- **Notes analysis**: Examine the notes closely to determine which sentences:  
+   * Provide direct validation or contradiction (e.g., correct unit formation dates, verified composer authorship).  
+   * Clarify identity distinctions between potentially confusingly named entities (e.g., different "Nate" individuals, or multiple composers named Pepusch or Bartók).  
+   * Include relevant biographical or contextual facts essential for verifying claim accuracy.  
+- **Context cross-referencing**: Match notes with context entries to identify foundational documents. Use these to confirm which are the best sources for authoritative factual verification. For example:  
+   * Military regiments and units’ formation histories and famous member biographies.  
+   * Films linked to named directors and lead actors or connected to source material (novels/plays).  
+   * Product/platform origin details (e.g., country of development, manufacturer companies).  
+   * Composer biographies or specific compositions tied to those composers (distinguishing similarly titled works).  
+- **Domain-specific knowledge incorporation**:  
+   * WWII military units often have well-documented formation years and associated key figures; verify these accurately.  
+   * Films often have named directors and stars which are critical to distinguish (e.g., Lane Nishikawa directing films about 442nd RCT).  
+   * Publications and online services may be distinct even if similarly described.  
+   * Hall of Fame inductions can be confirmed via official start dates and member lists.  
+   * Portrayals of famous individuals (e.g., Marilyn Monroe) in film can be corroborated via cast listings and source references.  
+- **Conciseness and clarity**: The output notes should be minimal yet comprehensive enough to clearly inform on the claim’s truthfulness or lack thereof. Titles must be precise and relevant without extraneous entries.  
+- **When no evidence is found**: Return empty lists for both outputs and optionally include a minimal inference comment explaining the lack of verification evidence.  
+
+Additional Instructions:  
+- Avoid including irrelevant or generic context entries unrelated to specific claim components.  
+- Do not restate reasoning; only provide the final curated `new_notes` and `titles` output.  
+- Use complete and accurate entity names and titles as they appear in documents, preserving capitalization and punctuation.  
+- Avoid repetition in the output; each note and title should be unique.  
+
+Summary:  
+This task requires a precise extraction and synthesis of relevant factual data from noisy input notes and a broader document context to assess complex claims involving diverse domains such as historical military facts, filmography, musicology, technology products, and personal biographies. The outputs should provide a distilled, evidence-based representation of the claim’s accuracy and the key authoritative sources supporting that evaluation.
+2026/08/04 22:53:25 INFO dspy.evaluate.evaluate: Average Metric: 1.3333333333333333 / 3 (44.4%)
+Iteration 12: New subsample score 1.3333333333333333 is not better than old score 1.3333333333333333, skipping
+GEPA Optimization:  53%|█████▎    | 158/300 [1:04:21<1:01:42, 26.08s/rollouts]Iteration 13: Selected program 3 score: 0.5
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):   0%|          | 0/6 [00:31<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):  17%|█▋        | 1/6 [00:31<02:35, 31.11s/it]Average Metric: 0.67 / 2 (33.3%):  17%|█▋        | 1/6 [00:56<02:35, 31.11s/it]Average Metric: 0.67 / 2 (33.3%):  33%|███▎      | 2/6 [00:56<01:50, 27.67s/it]Average Metric: 1.33 / 3 (44.4%):  33%|███▎      | 2/6 [01:18<01:50, 27.67s/it]Average Metric: 1.33 / 3 (44.4%):  50%|█████     | 3/6 [01:18<01:15, 25.14s/it]Average Metric: 2.33 / 4 (58.3%):  50%|█████     | 3/6 [01:40<01:15, 25.14s/it]Average Metric: 2.33 / 4 (58.3%):  67%|██████▋   | 4/6 [01:40<00:47, 23.72s/it]Average Metric: 3.33 / 5 (66.7%):  67%|██████▋   | 4/6 [02:11<00:47, 23.72s/it]Average Metric: 3.33 / 5 (66.7%):  83%|████████▎ | 5/6 [02:11<00:26, 26.43s/it]Average Metric: 3.67 / 6 (61.1%):  83%|████████▎ | 5/6 [02:41<00:26, 26.43s/it]Average Metric: 3.67 / 6 (61.1%): 100%|██████████| 6/6 [02:41<00:00, 27.80s/it]Average Metric: 3.67 / 6 (61.1%): 100%|██████████| 6/6 [02:41<00:00, 26.96s/it]
+2026/08/04 22:56:07 INFO dspy.evaluate.evaluate: Average Metric: 3.6666666666666665 / 6 (61.1%)
+Iteration 13: Proposed new text for append_notes.predict: Given three input fields: `claim` (a statement that asserts certain facts), `notes` (a list of extracted snippets or statements relevant to the claim), and `context` (a list of background articles or documents related to the claim), your task is to produce two output fields: 
+
+1. `new_notes`: a concise, non-redundant set of evidence-based notes extracted or synthesized primarily from the `notes` and supported by `context`, which directly support, clarify, or refute the claim. These notes should be factual, precise, and limited to relevant information that helps validate or invalidate the claim.
+
+2. `titles`: a short list of document or article titles from the `context` (or inferred document titles when applicable) that represent key documents containing the information used in `new_notes`. The titles should correspond to authoritative sources that best cover the facts underlying the claim.
+
+When performing this task, keep the following domain-specific considerations and best practices in mind:
+
+- Claims often require verifying specific factual relationships, such as organizational composition, geographical headquarters, biographical data, album attributions, or historical events.
+
+- Identify and exclude misinformation or incorrect details found in the claim by cross-referencing the notes and context (e.g., excluding "Concordia Junior-Senior High School" as part of a district when it is located elsewhere).
+
+- Focus on disambiguation of entities or facts when multiple similar or related entities exist (e.g., distinguishing the solo albums of Carlos Santana from his band’s albums).
+
+- Use notes that are well-supported by context, ensuring the facts are consistent, and remove duplicate or contradicting entries. 
+
+- Summarize detailed reasoning in your own words succinctly to clarify why certain notes were included or excluded based on factual support.
+
+- Titles should align as closely as possible with the entities or subjects in the notes and claim (e.g., use "ValuJet Airlines" rather than generic aviation topics when the claim concerns that airline).
+
+- When multiple documents pertain to the claim, include all relevant document titles, prioritizing completeness of coverage.
+
+- The accuracy of capturing the correct documents is evaluated; strive to retrieve all key relevant documents from the context.
+
+- Avoid introducing unverified information, personal opinions, or speculative reasoning not grounded in the provided notes or context.
+
+- Each `new_notes` entry should be a standalone factual statement that clarifies or backs the claim or its contradiction.
+
+The overall goal is to produce a factual, evidence-based synthesis from the input notes and context that validates or refutes the claim with appropriate, non-redundant supporting sentences and to identify the minimal but sufficient set of source titles that contain definitive information on the claim’s topic.
+2026/08/04 22:57:30 INFO dspy.evaluate.evaluate: Average Metric: 2.0 / 3 (66.7%)
+Iteration 13: New subsample score 2.0 is better than old score 1.6666666666666665. Continue to full eval and add to candidate pool.
+2026/08/04 23:01:43 INFO dspy.evaluate.evaluate: Average Metric: 5.333333333333333 / 10 (53.3%)
+Iteration 13: Found a better program on the valset with score 0.5333333333333333.
+Iteration 13: Valset score for new program: 0.5333333333333333 (coverage 10 / 10)
+Iteration 13: Val aggregate for new program: 0.5333333333333333
+Iteration 13: Individual valset scores for new program: {0: 0.6666666666666666, 1: 1.0, 2: 0.3333333333333333, 3: 0.6666666666666666, 4: 0.0, 5: 0.0, 6: 0.6666666666666666, 7: 1.0, 8: 0.3333333333333333, 9: 0.6666666666666666}
+Iteration 13: New valset pareto front scores: {0: 0.6666666666666666, 1: 1.0, 2: 0.3333333333333333, 3: 0.6666666666666666, 4: 1.0, 5: 0.0, 6: 0.6666666666666666, 7: 1.0, 8: 0.3333333333333333, 9: 0.6666666666666666}
+Iteration 13: Valset pareto front aggregate score: 0.6333333333333333
+Iteration 13: Updated valset pareto front programs: {0: {0, 2, 4, 5}, 1: {1, 2, 4, 5}, 2: {0, 1, 2, 3, 4, 5}, 3: {0, 3, 4, 5}, 4: {2, 3}, 5: {0, 1, 2, 3, 4, 5}, 6: {5}, 7: {0, 1, 2, 3, 4, 5}, 8: {1, 2, 3, 4, 5}, 9: {1, 3, 5}}
+Iteration 13: Best valset aggregate score so far: 0.5333333333333333
+Iteration 13: Best program as per aggregate score on valset: 5
+Iteration 13: Best score on valset: 0.5333333333333333
+Iteration 13: Linear pareto front program index: 5
+Iteration 13: New program candidate index: 5
+GEPA Optimization:  59%|█████▉    | 177/300 [1:12:39<53:33, 26.12s/rollouts]  Iteration 14: Selected program 5 score: 0.5333333333333333
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 1.00 / 1 (100.0%):   0%|          | 0/6 [00:23<?, ?it/s]Average Metric: 1.00 / 1 (100.0%):  17%|█▋        | 1/6 [00:23<01:58, 23.80s/it]Average Metric: 1.67 / 2 (83.3%):  17%|█▋        | 1/6 [00:57<01:58, 23.80s/it] Average Metric: 1.67 / 2 (83.3%):  33%|███▎      | 2/6 [00:57<01:58, 29.68s/it]Average Metric: 2.00 / 3 (66.7%):  33%|███▎      | 2/6 [01:15<01:58, 29.68s/it]Average Metric: 2.00 / 3 (66.7%):  50%|█████     | 3/6 [01:15<01:12, 24.22s/it]Average Metric: 3.00 / 4 (75.0%):  50%|█████     | 3/6 [01:34<01:12, 24.22s/it]Average Metric: 3.00 / 4 (75.0%):  67%|██████▋   | 4/6 [01:34<00:44, 22.21s/it]Average Metric: 4.00 / 5 (80.0%):  67%|██████▋   | 4/6 [01:55<00:44, 22.21s/it]Average Metric: 4.00 / 5 (80.0%):  83%|████████▎ | 5/6 [01:55<00:21, 21.85s/it]Average Metric: 4.67 / 6 (77.8%):  83%|████████▎ | 5/6 [02:24<00:21, 21.85s/it]Average Metric: 4.67 / 6 (77.8%): 100%|██████████| 6/6 [02:24<00:00, 24.16s/it]Average Metric: 4.67 / 6 (77.8%): 100%|██████████| 6/6 [02:24<00:00, 24.05s/it]
+2026/08/04 23:04:07 INFO dspy.evaluate.evaluate: Average Metric: 4.666666666666667 / 6 (77.8%)
+Iteration 14: Proposed new text for gen_query.predict: Task Description:  
+You will receive two fields as input: a `claim` and a `notes` list. Your goal is to create a single `query` field composed of one or more precise, targeted natural language question(s), explicitly designed to verify or investigate the factual accuracy of the claim using context and information derived from the notes. The final query must be formulated to guide retrieval systems or human fact-checkers to find relevant, authoritative evidence that can confirm or refute the claim efficiently.
+
+Input Format:  
+- `claim`: A concise factual or relational statement mentioning one or more entities (people, places, organizations, works such as books, operas, films, or natural subjects) and asserting specific information about them (e.g., relationships, attributes, classifications, temporal or geographic details).  
+- `notes`: A list of background snippets, partial facts, excerpts, or clarifications that provide context, additional factual content, or contradict/confirm parts of the claim. These notes may contain dates, classifications, definitions, locations, authorships, event participation details, or any other relevant disambiguation information.
+
+Output Format:  
+- `query`: One or more logically connected and tightly focused natural language questions designed to retrieve or verify the core factual claims in the input `claim`. Queries should explicitly reference key entities and relevant attributes or relationships and incorporate refinements, clarifications, or disambiguations indicated by the notes.
+
+Detailed Instructions and Domain-Specific Considerations:  
+
+1. Entity and Relation Identification  
+   - Identify all key named entities mentioned in the claim (people, places, organizations, works/creations, events).  
+   - Identify the factual relationships or claims made about these entities (e.g., birthplace, birth year, authorship or directorship of a work, native habitat, membership, classification, temporal overlaps).  
+
+2. Use of Notes for Contextual Refinement and Disambiguation  
+   - Leverage notes to clarify ambiguous or disputed terms such as:  
+     • Nationalities or ethnicities (e.g., whether the actor is Greek or otherwise).  
+     • Exact birth dates or years.  
+     • Geographic hierarchies and classifications (e.g., whether a city is in a given state or jurisdiction, its ranking by population).  
+     • Classification of works (opera vs. film, number of acts, influence or inspiration).  
+     • Temporal details (publication dates, lifespan periods, release dates).  
+     • Confirmations or contradictions of claim elements.  
+   - Use notes to correct or challenge the claim’s assertions (e.g., correcting a film’s co-production countries, confirming if a film is divided into acts like an opera).  
+   - Disambiguate homonymous or closely related entities (e.g., multiple places with similar names, distinguishing between different works with overlapping influences).
+
+3. Query Content and Scope  
+   - Formulate queries tightly focused on the core factual claims needing verification:  
+     • Explicitly ask about the existence of relationships or events (e.g., “Did Isaiah Mustafa portray a CIA operative in the ‘Chuck Versus the A-Team’ episode?”).  
+     • Ask for key temporal or numeric attributes (birth year, number of acts, ranking of a city).  
+     • Confirm or clarify classifications and definitions (e.g., “Is ‘Magic Hunter’ a Hungarian-Swiss-French or Hungarian-Swiss-Italian film?”, “Is it structured in acts like an opera?”).  
+     • Combine related queries logically when multiple entities or facts are connected (e.g., “Did both individuals share the same birthplace?”, “Is the birthplace in the specified German state and is it the fifth-largest city in Germany?”).  
+     • Explicitly address contradictions or unclear points found in notes, phrased as queries seeking definitive resolution.
+
+4. Query Quality and Style  
+   - Keep queries concise, unambiguous, and clearly focused on retrieving the minimal set of critical facts needed to verify the claim.  
+   - Use natural, fluent language with explicit references to key entities, works, dates, or descriptors as indicated in claim and notes.  
+   - Avoid overly broad or vague questions that could retrieve irrelevant information.  
+   - When multiple linked questions are necessary, structure them clearly and logically, ensuring each targets a distinct verification aspect.
+
+5. Domain and Niche Knowledge Integration  
+   - For entertainment-related claims: verify specific roles (e.g., acting in a particular episode), birth dates, national or ethnic identity claims, and commercial appearances.  
+   - For works of art (opera, film, literature): verify authorship, directors, number of acts/scenes, inspiration sources, and co-production nationalities.  
+   - For geographic and biographical claims: verify exact birthplaces, city rankings, state or national jurisdiction relationships.  
+   - For natural history or biological claims: focus queries on native habitats with specified ecological classifications (arid, temperate, etc.).  
+   - Recognize the inclusion or exclusion criteria for classifications such as ‘periodical’ includes magazines.
+
+6. Generalizable Strategy  
+   - Extract main entities and claims from the input.  
+   - Review notes for additional, clarifying, contradictory, or disambiguating information.  
+   - Reformulate the core verification questions incorporating that additional context.  
+   - Create the minimal complete set of concise, focused natural language questions that cover all necessary aspects for efficient information retrieval or fact-checking.
+
+Summary:  
+Produce a well-structured, fact-focused, and contextually refined natural language query or set of queries that explicitly target verification of the claim by leveraging all relevant details and clarifications available in the notes. The query should maximize the probability of retrieving the key evidence or ‘gold’ documents necessary to confirm or reject the claim with high precision and minimal ambiguity.
+2026/08/04 23:05:51 INFO dspy.evaluate.evaluate: Average Metric: 2.6666666666666665 / 3 (88.9%)
+Iteration 14: New subsample score 2.6666666666666665 is not better than old score 2.6666666666666665, skipping
+GEPA Optimization:  62%|██████▏   | 186/300 [1:16:47<50:16, 26.46s/rollouts]Iteration 15: Selected program 5 score: 0.5333333333333333
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 1.00 / 1 (100.0%):   0%|          | 0/6 [00:29<?, ?it/s]Average Metric: 1.00 / 1 (100.0%):  17%|█▋        | 1/6 [00:29<02:28, 29.62s/it]Average Metric: 2.00 / 2 (100.0%):  17%|█▋        | 1/6 [00:58<02:28, 29.62s/it]Average Metric: 2.00 / 2 (100.0%):  33%|███▎      | 2/6 [00:58<01:57, 29.46s/it]Average Metric: 3.00 / 3 (100.0%):  33%|███▎      | 2/6 [01:34<01:57, 29.46s/it]Average Metric: 3.00 / 3 (100.0%):  50%|█████     | 3/6 [01:34<01:37, 32.40s/it]Average Metric: 3.67 / 4 (91.7%):  50%|█████     | 3/6 [02:00<01:37, 32.40s/it] Average Metric: 3.67 / 4 (91.7%):  67%|██████▋   | 4/6 [02:00<00:59, 29.82s/it]Average Metric: 4.33 / 5 (86.7%):  67%|██████▋   | 4/6 [02:36<00:59, 29.82s/it]Average Metric: 4.33 / 5 (86.7%):  83%|████████▎ | 5/6 [02:36<00:32, 32.05s/it]Average Metric: 5.00 / 6 (83.3%):  83%|████████▎ | 5/6 [02:58<00:32, 32.05s/it]Average Metric: 5.00 / 6 (83.3%): 100%|██████████| 6/6 [02:58<00:00, 28.51s/it]Average Metric: 5.00 / 6 (83.3%): 100%|██████████| 6/6 [02:58<00:00, 29.73s/it]
+2026/08/04 23:08:49 INFO dspy.evaluate.evaluate: Average Metric: 5.0 / 6 (83.3%)
+Iteration 15: Proposed new text for append_notes.predict: Task: Given a claim about specific factual information, and three inputs — `claim` (a statement asserting particular facts), `notes` (a set of extracted snippets directly or indirectly related to the claim), and `context` (a list of background documents or articles relevant to the claim) — your goal is to produce two outputs:
+
+1. **new_notes**: A concise, factual, and non-redundant synthesis of notes that directly support, clarify, or refute the claim. These notes must be:
+
+   - **Evidence-based**, drawing primarily from the provided `notes` and cross-verified by the `context`.
+   - **Focused on verifying or invalidating specific factual relationships**, such as individual or organizational biographical details, geographical locations, event dates, entity attributions (e.g., album authorship), or historical facts.
+   - **Disambiguated and precisely stated** where entities or facts may be easily conflated (for example, distinguishing an individual’s solo work from a group’s work).
+   - **Clean of misinformation or contradictions**, removing notes or claim elements clearly invalidated by the context.
+   - **Free from duplication or contradictory statements**, ensuring clarity and exactness.
+   - **Standalone and comprehensible** such that each note independently conveys a factual point relevant to assessing the claim.
+   - **Restricted to verified information** — avoid adding any unverified speculation, personal opinions, or assumptions not grounded in the provided notes and context.
+
+2. **titles**: A minimal but complete list of authoritative document or article titles from `context` that best cover the facts underlying the synthesized notes. Titles should:
+
+   - Match explicitly or be inferred accurately from the `context` provided.
+   - Represent key documents or sources that directly contain or support the facts in your `new_notes`.
+   - Include all relevant sources necessary for completeness without unnecessary additions.
+   - Use precise and domain-specific titles related to the claim’s subject rather than generic or tangentially related sources.
+
+**Domain-Specific and Procedural Considerations:**
+
+- Claims often hinge on verifying **specific factual relations** (e.g., membership in an organization during a specific season, geographical distribution of a plant subspecies, casting dates in TV series, differing roles an individual may have across times or series).
+- Carefully **disambiguate entities with similar or overlapping names or roles** (e.g., distinguishing whether Kevin Wilson’s roles at different times were head coach or offensive coordinator, or whether an actor joined one show or another).
+- **Fact-check and exclude incorrect claim elements** if contradicted within `notes` or `context` (for example, if a plant’s habitat is on a different island or if a series premiere date differs).
+- Leverage redundancy in `notes` to confirm facts but remove repeated statements unless subtle clarifications differ.
+- When multiple relevant documents exist, include all that contribute uniquely or importantly to supporting/refuting the claim.
+- Provide succinct reasoning when necessary to clarify **why certain notes were included or excluded**, especially when correcting misinformation in the claim.
+- Avoid including unsubstantiated assertions or details beyond what is verifiable from the `notes` and `context`.
+- Maintain **precision and clarity in wording**, ensuring factual correctness and easy verifiability.
+
+**General Strategy:**
+
+- Start by verifying each component of the claim against the provided `notes` and corroborating them with `context`.
+- Identify contradictions and flag or exclude unsupported elements.
+- Synthesize a short list of precise factual statements (notes) that collectively support or refute the claim.
+- Extract the minimal set of document titles covering these facts to guide readers to authoritative sources.
+- Always ensure every output note can stand alone as a factual assertion, and every listed title clearly corresponds to a source validating these assertions.
+
+By following these instructions, the assistant will generate a focused, domain-aware, factually grounded synthesis that accurately evaluates claims with supporting evidence and identifies key reference documents.
+2026/08/04 23:10:49 INFO dspy.evaluate.evaluate: Average Metric: 2.0 / 3 (66.7%)
+Iteration 15: New subsample score 2.0 is not better than old score 2.333333333333333, skipping
+GEPA Optimization:  65%|██████▌   | 195/300 [1:21:45<49:12, 28.12s/rollouts]Iteration 16: Selected program 3 score: 0.5
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):   0%|          | 0/6 [00:35<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):  17%|█▋        | 1/6 [00:35<02:55, 35.12s/it]Average Metric: 1.00 / 2 (50.0%):  17%|█▋        | 1/6 [00:56<02:55, 35.12s/it]Average Metric: 1.00 / 2 (50.0%):  33%|███▎      | 2/6 [00:56<01:47, 26.81s/it]Average Metric: 1.33 / 3 (44.4%):  33%|███▎      | 2/6 [01:23<01:47, 26.81s/it]Average Metric: 1.33 / 3 (44.4%):  50%|█████     | 3/6 [01:23<01:21, 27.21s/it]Average Metric: 2.33 / 4 (58.3%):  50%|█████     | 3/6 [01:53<01:21, 27.21s/it]Average Metric: 2.33 / 4 (58.3%):  67%|██████▋   | 4/6 [01:53<00:56, 28.13s/it]Average Metric: 3.00 / 5 (60.0%):  67%|██████▋   | 4/6 [02:16<00:56, 28.13s/it]Average Metric: 3.00 / 5 (60.0%):  83%|████████▎ | 5/6 [02:16<00:26, 26.47s/it]Average Metric: 4.00 / 6 (66.7%):  83%|████████▎ | 5/6 [02:49<00:26, 26.47s/it]Average Metric: 4.00 / 6 (66.7%): 100%|██████████| 6/6 [02:49<00:00, 28.48s/it]Average Metric: 4.00 / 6 (66.7%): 100%|██████████| 6/6 [02:49<00:00, 28.21s/it]
+2026/08/04 23:13:39 INFO dspy.evaluate.evaluate: Average Metric: 3.9999999999999996 / 6 (66.7%)
+Iteration 16: Proposed new text for gen_query.predict: Task Title: Formulation of Precise Verification Queries from Claims and Contextual Notes
+
+Task Overview:  
+You will be provided with a factual claim and a set of background notes related to that claim. Your objective is to construct a single, targeted natural language query (or a logically linked set of queries) designed specifically to verify or investigate the truthfulness of the claim, using the contextual details provided in the notes to disambiguate entities, resolve contradictions, and focus on key factual elements. The query should maximize retrieval of authoritative, relevant evidence that can confirm or refute the claim efficiently.
+
+Input Format:  
+- `claim`: A concise statement putting forward a factual or relational assertion involving one or more entities (persons, locations, organizations, works of art or media, biological species, etc.), their attributes, or relationships.  
+- `notes`: A list of textual snippets or facts related to the claim, providing background, clarifications, partial evidence, or possible contradictions.
+
+Output Format:  
+- `query`: A well-formed, precise, and concise natural language question or set of linked questions. These queries should explicitly target the verification of core factual components of the claim, tightened and refined based on the information and contextual cues drawn from the notes.
+
+Detailed Task Instructions:
+
+1. **Entity and Relation Identification**  
+   - Identify all key named entities from the claim, such as persons, geographic locations, organizations, events, creative works (films, books, TV shows), biological species, and roles or titles.  
+   - Extract the factual or relational claims made between those entities, for example: authorship, direction, acting roles, membership, native habitat, jurisdictional boundaries, date/time overlaps, production or publication details.
+
+2. **Utilizing Notes for Disambiguation and Context**  
+   - Analyze notes for supplemental facts, including dates (years, time periods), relationships, clarifications about identities or titles, geographic or political jurisdictions, or classifications (e.g., distinguishing types of publications—magazines vs. periodicals).  
+   - Detect any disambiguation needs arising from ambiguous names, multiple entities with similar names, or overlapping timelines or roles.  
+   - Identify contradictions, confirmations, or insufficient evidence highlighted in the notes about the claim’s specifics.  
+   - Use the notes to apply domain-specific knowledge for narrowing scope and clarifying ambiguous points.
+
+3. **Domain-Specific Verification Focus Areas**  
+   a. **Film and Media Claims:**  
+      - Confirm directors, writers, actors, and their roles in specific works and years.  
+      - Clarify overlapping roles (e.g., co-writing vs. sole authorship).  
+      - Check temporal details to confirm contemporaneity or timeline accuracy.  
+      - Verify professional background and media industry affiliation.  
+   
+   b. **Book Authorship and Publication Claims:**  
+      - Verify author attribution, publication medium type, and publication dates.  
+      - Confirm classification of the publication (e.g., magazine considered a periodical).  
+   
+   c. **Biological/Natural History Claims:**  
+      - Confirm native habitat classifications (specific biomes or regions such as arid, semi-desert, temperate).  
+   
+   d. **Geographical and Political Jurisdiction Claims:**  
+      - Verify administrative divisions (e.g., city within a province or country).  
+      - Check if multiple entities share jurisdiction or classification.  
+   
+   e. **Temporal Overlap Claims:**  
+      - Check lifespans, periods active, or timelines of events and entity participation to confirm concurrency or sequence.
+
+4. **Query Formulation Principles**  
+   - Queries should explicitly refer to the key entities and relationships identified.  
+   - Formulate concise, logically connected questions that collectively cover all major factual elements of the claim.  
+   - Prioritize clarity and focus on retrieving definitive evidence to support or refute each factual component.  
+   - Where notes suggest ambiguity or challenge parts of the claim, phrase queries to explicitly seek resolution.  
+   - Avoid queries that are overly broad, vague, or encompassing irrelevant details.  
+   - Use natural language phrasing that can be effectively interpreted by retrieval systems to target authoritative documents or facts.
+
+5. **Generalizable Strategy**  
+   - Extract and prioritize verification of the claim’s core factual points.  
+   - Disambiguate and contextualize all key entities and relations using the notes.  
+   - Explicitly separate multiple sub-claims into linked queries for clear retrieval targets.  
+   - Incorporate any temporal, geographic, role-based, or classification detail provided in the notes to refine and narrow the query scope.  
+   - Identify if the notes confirm, contradict, or lack sufficient information, and focus queries accordingly to verify or disprove the claim.
+
+Summary:  
+Produce a single, well-structured, focused natural-language query or minimal set of linked questions that explicitly address the essential entities and relationships presented in the claim, enriched and disambiguated by the background notes. The query should maximize the effectiveness of retrieval systems in locating authoritative evidence that directly confirms or refutes the claim’s validity, leveraging all relevant domain knowledge and contextual insights from the notes.
+2026/08/04 23:15:18 INFO dspy.evaluate.evaluate: Average Metric: 2.333333333333333 / 3 (77.8%)
+Iteration 16: New subsample score 2.3333333333333335 is better than old score 2.0. Continue to full eval and add to candidate pool.
+2026/08/04 23:20:25 INFO dspy.evaluate.evaluate: Average Metric: 5.0 / 10 (50.0%)
+Iteration 16: Valset score for new program: 0.5 (coverage 10 / 10)
+Iteration 16: Val aggregate for new program: 0.5
+Iteration 16: Individual valset scores for new program: {0: 0.3333333333333333, 1: 1.0, 2: 0.3333333333333333, 3: 0.3333333333333333, 4: 0.6666666666666666, 5: 0.3333333333333333, 6: 0.3333333333333333, 7: 1.0, 8: 0.3333333333333333, 9: 0.3333333333333333}
+Iteration 16: New valset pareto front scores: {0: 0.6666666666666666, 1: 1.0, 2: 0.3333333333333333, 3: 0.6666666666666666, 4: 1.0, 5: 0.3333333333333333, 6: 0.6666666666666666, 7: 1.0, 8: 0.3333333333333333, 9: 0.6666666666666666}
+Iteration 16: Valset pareto front aggregate score: 0.6666666666666666
+Iteration 16: Updated valset pareto front programs: {0: {0, 2, 4, 5}, 1: {1, 2, 4, 5, 6}, 2: {0, 1, 2, 3, 4, 5, 6}, 3: {0, 3, 4, 5}, 4: {2, 3}, 5: {6}, 6: {5}, 7: {0, 1, 2, 3, 4, 5, 6}, 8: {1, 2, 3, 4, 5, 6}, 9: {1, 3, 5}}
+Iteration 16: Best valset aggregate score so far: 0.5333333333333333
+Iteration 16: Best program as per aggregate score on valset: 5
+Iteration 16: Best score on valset: 0.5333333333333333
+Iteration 16: Linear pareto front program index: 5
+Iteration 16: New program candidate index: 6
+GEPA Optimization:  71%|███████▏  | 214/300 [1:31:21<41:38, 29.05s/rollouts]Iteration 17: Selected program 5 score: 0.5333333333333333
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 1.00 / 1 (100.0%):   0%|          | 0/6 [00:23<?, ?it/s]Average Metric: 1.00 / 1 (100.0%):  17%|█▋        | 1/6 [00:23<01:57, 23.45s/it]Average Metric: 1.33 / 2 (66.7%):  17%|█▋        | 1/6 [00:48<01:57, 23.45s/it] Average Metric: 1.33 / 2 (66.7%):  33%|███▎      | 2/6 [00:48<01:38, 24.58s/it]Average Metric: 1.67 / 3 (55.6%):  33%|███▎      | 2/6 [01:18<01:38, 24.58s/it]Average Metric: 1.67 / 3 (55.6%):  50%|█████     | 3/6 [01:18<01:20, 26.79s/it]Average Metric: 2.00 / 4 (50.0%):  50%|█████     | 3/6 [01:43<01:20, 26.79s/it]Average Metric: 2.00 / 4 (50.0%):  67%|██████▋   | 4/6 [01:43<00:52, 26.11s/it]Average Metric: 2.67 / 5 (53.3%):  67%|██████▋   | 4/6 [02:14<00:52, 26.11s/it]Average Metric: 2.67 / 5 (53.3%):  83%|████████▎ | 5/6 [02:14<00:27, 27.79s/it]Average Metric: 3.33 / 6 (55.6%):  83%|████████▎ | 5/6 [02:47<00:27, 27.79s/it]Average Metric: 3.33 / 6 (55.6%): 100%|██████████| 6/6 [02:47<00:00, 29.75s/it]Average Metric: 3.33 / 6 (55.6%): 100%|██████████| 6/6 [02:47<00:00, 27.94s/it]
+2026/08/04 23:23:13 INFO dspy.evaluate.evaluate: Average Metric: 3.333333333333333 / 6 (55.6%)
+Iteration 17: Proposed new text for gen_query.predict: Task Overview:
+You are given two inputs: a `claim` and `notes`. Your goal is to produce a single, well-crafted `query` field that consists of one or more precise, linked natural language questions. These questions must be explicitly tailored to verify, investigate, or refute the factual assertions made in the claim by leveraging the contextual and disambiguating information found in the notes. The generated query should be optimized for retrieving authoritative, relevant evidence efficiently.
+
+Input Format:
+- `claim`: A concise factual or relational statement reporting one or more entities, attributes, or relationships that need verification.
+- `notes`: A list of textual snippets providing background knowledge, clarifications, partial evidence, or disambiguation about the entities or relationships in the claim.
+
+Output Format:
+- `query`: A minimal set of clearly linked, fact-focused natural language questions aimed specifically at confirming or denying the core factual components of the claim, using all relevant context derived from the notes.
+
+Detailed Instructions:
+
+1. Entity and Relationship Extraction  
+   - Identify all key named entities in the claim (persons, organizations, locations, events, works such as songs, films, or books).  
+   - Determine the precise factual relationships or claims involved (e.g., authorship, membership, native habitat, temporal overlaps, attribution of quotes, coaching roles, performances, administrative jurisdictions).
+
+2. Use Notes for Contextualization and Disambiguation  
+   - Extract supplemental facts from the notes such as relevant dates, geographical distinctions, definitions, roles, or unique qualifiers that clarify or restrict the scope of the claim.  
+   - Resolve ambiguous or potentially confusing terms (e.g., when multiple entities share a name, or when a classification like "periodical" vs. "magazine" is contested).  
+   - Identify confirmations, contradictions, or absent evidence within the notes, and incorporate this insight into refining the queries to explicitly seek resolution of these points.
+
+3. Query Formulation: Content and Scope  
+   - Focus queries tightly on the claim’s essential factual elements for efficient retrieval of key evidence:  
+     • Verification of the existence or non-existence of relationships (e.g., “Was Person A a director of Film B?”)  
+     • Attributes with temporal aspects (e.g., lifespan overlapping with an event date, date range of authorship or membership)  
+     • Jurisdictional or organizational classifications (e.g., geographical location, whether entities share jurisdiction, classification as a periodical)  
+     • Attribution of specific quoted statements or titles (e.g., who named whom, who credited which title)  
+   - When multiple entities or relationships are involved, frame queries that combine or compare them logically (e.g., “Did both Person A and Person B serve simultaneously?” or “Are these entities located in the same administrative region?”).  
+   - Explicitly address contradictions or ambiguous points from the notes by including queries that aim to resolve these.
+
+4. Query Quality, Clarity, and Precision  
+   - Produce queries that are concise, clear, and fully focused on critical verification tasks. Avoid vague, overly broad, or multi-topical questions that hamper retrieval effectiveness.  
+   - Write in natural language suitable for semantic search or structured document retrieval. Include relevant entity names, attributes, dates, and locations explicitly for disambiguation.  
+   - Compose a minimal set of logically connected questions rather than unrelated broad sets.
+
+5. Domain-Specific Guidance and Examples  
+   - **Authorship and Publication:** Verify authorship claims, publication dates, and classification/type of publication (magazine, periodical, journal). Confirm that named entities correspond to the correct work or publication.  
+   - **Music and Band Membership:** Confirm whether an individual is a band member, and whether any outsiders performed vocals or contributed to named songs. Verify attribution of vocal credits and membership explicitly.  
+   - **Sports and Coaching Claims:** Identify individuals credited with quotes or honors, verify coaching roles especially related to team names, and confirm ethnic or nationality claims such as being the “first Native American” to achieve a medal or title.  
+   - **Film and Entertainment Roles:** Confirm directing or co-directing roles, temporal association with a film or era (e.g., silent era), and clarify membership or role statuses in related productions or shows.  
+   - **Geographic and Jurisdictional Claims:** Verify if entities lie within the same geographic or political jurisdiction (city, province, country).  
+   - **Biological and Natural History Claims:** Verify species’ native habitats with precise environmental classifications like arid, semi-desert, or temperate zones.
+
+6. Generalizable Strategy  
+   - Extract and prioritize the claim’s key factual assertions.  
+   - Carefully analyze the notes for relevant disambiguating context, conflicting information, or confirmations.  
+   - Disambiguate entities and claims using temporal, geographic, or role-specific details from the notes.  
+   - Formulate a minimal, focused set of linked natural language questions covering all necessary verification points.  
+   - Ensure queries directly seek evidence to confirm or refute the claim, maximizing recall of gold or authoritative documents with minimal noise.
+
+Summary:
+Your output should be a single, targeted natural language query or succinct set of linked questions that directly address all central factual claims in the input claim, refined by insights from the notes. This will maximize retrieval of critical authoritative sources needed to validate or invalidate the claim effectively and efficiently.
+2026/08/04 23:24:52 INFO dspy.evaluate.evaluate: Average Metric: 1.3333333333333333 / 3 (44.4%)
+Iteration 17: New subsample score 1.3333333333333333 is not better than old score 1.3333333333333333, skipping
+GEPA Optimization:  74%|███████▍  | 223/300 [1:35:48<37:28, 29.20s/rollouts]Iteration 18: Selected program 5 score: 0.5333333333333333
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):   0%|          | 0/6 [00:30<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):  17%|█▋        | 1/6 [00:30<02:33, 30.77s/it]Average Metric: 1.00 / 2 (50.0%):  17%|█▋        | 1/6 [00:58<02:33, 30.77s/it]Average Metric: 1.00 / 2 (50.0%):  33%|███▎      | 2/6 [00:58<01:56, 29.14s/it]Average Metric: 2.00 / 3 (66.7%):  33%|███▎      | 2/6 [01:19<01:56, 29.14s/it]Average Metric: 2.00 / 3 (66.7%):  50%|█████     | 3/6 [01:19<01:16, 25.52s/it]Average Metric: 2.67 / 4 (66.7%):  50%|█████     | 3/6 [01:47<01:16, 25.52s/it]Average Metric: 2.67 / 4 (66.7%):  67%|██████▋   | 4/6 [01:47<00:52, 26.18s/it]Average Metric: 3.33 / 5 (66.7%):  67%|██████▋   | 4/6 [02:12<00:52, 26.18s/it]Average Metric: 3.33 / 5 (66.7%):  83%|████████▎ | 5/6 [02:12<00:25, 25.87s/it]Average Metric: 4.00 / 6 (66.7%):  83%|████████▎ | 5/6 [02:31<00:25, 25.87s/it]Average Metric: 4.00 / 6 (66.7%): 100%|██████████| 6/6 [02:31<00:00, 23.41s/it]Average Metric: 4.00 / 6 (66.7%): 100%|██████████| 6/6 [02:31<00:00, 25.19s/it]
+2026/08/04 23:27:24 INFO dspy.evaluate.evaluate: Average Metric: 3.9999999999999996 / 6 (66.7%)
+Iteration 18: Proposed new text for append_notes.predict: You will be given three inputs:
+
+1. `claim`: A factual statement asserting relationships about entities, such as locations, persons, organizations, events, or works (e.g., films, albums, sports seasons). The claim may include ambiguous or partially incorrect information that needs verification.
+
+2. `notes`: A list of extracted snippets or statements relevant to the claim. These notes may contain duplicates, slightly varying phrasings, or contradicting details. They represent raw extracted data primarily relevant to validating or invalidating the claim.
+
+3. `context`: A list of background documents or articles related to the entities mentioned in the claim. These are authoritative or descriptive sources containing detailed information supporting or refuting elements of the claim and notes.
+
+Your overall task is to produce two outputs:
+
+1. `new_notes`:
+   - A concise, precise, and non-redundant set of factual sentences that directly support, clarify, or refute the claim.
+   - Extract or synthesize these from the provided `notes` prioritized by strong support from the `context`.
+   - Each note should be a standalone factual statement with no speculative or unsupported content.
+   - Remove duplicate or contradictory information.
+   - Explicitly exclude misinformation or inaccuracies present in the claim based on evidence.
+   - When multiple similar facts appear, merge or select the clearest and most context-supported version.
+   - Clarify any ambiguity or disambiguate entities/facts if multiple similar entities exist (e.g., distinguishing solo albums versus band albums, specific airports versus similarly named airports, nationality versus ethnic background).
+   - Focus on relationships or factual assertions relevant to verifying the claim, such as:
+       * Organizational headquarters or locations,
+       * Biographical data (e.g., name, nationality, career span),
+       * Specific event outcomes or timelines (e.g., winner of a season, date ranges),
+       * Roles and professions (e.g., confirming if a person is a film director or actor associated with a film),
+       * Clarification of entity attributes or involvement (e.g., who directed a particular film),
+       * Avoid introducing new facts not supported by notes/context.
+
+2. `titles`:
+   - Provide a minimal, short list of document or article titles from the `context` that most authoritatively cover the facts used in `new_notes`.
+   - Titles should closely correspond to the specific subjects/entities central to the claim and notes—not generic or tangential sources.
+   - If multiple documents cover key facts, include all relevant titles to ensure completeness.
+   - The goal is to identify the key sources justifying the factual synthesis in `new_notes`, to enable verification of the output.
+   - Avoid inferring or fabricating document titles; use titles as given or clearly derivable from the context data.
+
+Domain-specific considerations and best practices:
+
+- Claims often focus on verifying precise factual relationships. Pay attention to details such as:
+    * Geographical location hierarchies (city, state, country),
+    * Temporal ranges (e.g., years active),
+    * Correct identity matching in cases of similar names,
+    * Attribution of creative works (film directors, album credits),
+    * Sporting event outcomes including season numbering and competitor participation.
+
+- Use the `context` to validate and disambiguate the information in `notes`. Discard facts in notes unsupported or contradicted by context.
+
+- Carefully avoid carrying forward misinformation from the claim text. If a claim element is unsupported or contradicted, explicitly exclude or correct it in `new_notes`.
+
+- Where notes contain redundant or repeated facts, distill them into the most clear, accurate, and supported statements.
+
+- Summarize your reasoning implicitly in the structure and content of `new_notes` by choosing and phrasing evidence carefully.
+
+- Never introduce personal opinions, guesswork, or unverifiable information.
+
+- Each output `new_notes` entry should be brief yet sufficiently informative for verifying the claim's validity.
+
+- The quality of your output is judged on factual accuracy, clarity, non-redundancy, and appropriate source referencing through `titles`.
+
+Example general strategy:
+
+- Identify key factual elements of the claim requiring verification.
+
+- Locate corresponding facts in notes that address these elements.
+
+- Confirm these facts against the detailed `context` documents.
+
+- Remove duplicates and contradictions from notes, prioritizing contextual support.
+
+- Write clear, standalone factual sentences for `new_notes`.
+
+- Select document titles from the `context` best representing those facts as `titles`.
+
+By following this methodology and the above considerations, produce a factual, precise, and well-documented validation or refutation of the claim using the given notes and context.
+2026/08/04 23:29:00 INFO dspy.evaluate.evaluate: Average Metric: 2.333333333333333 / 3 (77.8%)
+Iteration 18: New subsample score 2.333333333333333 is not better than old score 2.333333333333333, skipping
+GEPA Optimization:  77%|███████▋  | 232/300 [1:39:55<32:36, 28.78s/rollouts]Iteration 19: Selected program 3 score: 0.5
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):   0%|          | 0/6 [00:26<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):  17%|█▋        | 1/6 [00:26<02:11, 26.22s/it]Average Metric: 1.00 / 2 (50.0%):  17%|█▋        | 1/6 [00:54<02:11, 26.22s/it]Average Metric: 1.00 / 2 (50.0%):  33%|███▎      | 2/6 [00:54<01:49, 27.36s/it]Average Metric: 1.67 / 3 (55.6%):  33%|███▎      | 2/6 [01:17<01:49, 27.36s/it]Average Metric: 1.67 / 3 (55.6%):  50%|█████     | 3/6 [01:17<01:15, 25.25s/it]Average Metric: 2.00 / 4 (50.0%):  50%|█████     | 3/6 [01:41<01:15, 25.25s/it]Average Metric: 2.00 / 4 (50.0%):  67%|██████▋   | 4/6 [01:41<00:50, 25.08s/it]Average Metric: 2.67 / 5 (53.3%):  67%|██████▋   | 4/6 [02:07<00:50, 25.08s/it]Average Metric: 2.67 / 5 (53.3%):  83%|████████▎ | 5/6 [02:07<00:25, 25.33s/it]Average Metric: 3.33 / 6 (55.6%):  83%|████████▎ | 5/6 [02:44<00:25, 25.33s/it]Average Metric: 3.33 / 6 (55.6%): 100%|██████████| 6/6 [02:44<00:00, 29.32s/it]Average Metric: 3.33 / 6 (55.6%): 100%|██████████| 6/6 [02:44<00:00, 27.46s/it]
+2026/08/04 23:31:44 INFO dspy.evaluate.evaluate: Average Metric: 3.333333333333333 / 6 (55.6%)
+Iteration 19: Proposed new text for append_notes.predict: Task Description:
+
+You are given three input fields: 
+- `claim`: a factual or semi-factual statement that typically mentions entities (people, places, organizations, media titles, etc.) and relationships or events between them.
+- `notes`: a list of evidential or explanatory sentences derived from or about the claim, providing affirmations, contradictions, clarifications, or contextual information about the claim’s components.
+- `context`: a list of background reference documents or summaries related to entities and topics relevant to the claim and notes.
+
+Your objective is to produce two output fields:  
+- `new_notes`: a concise, accurate, and well-justified synthesis of the key evidential points from the `notes` that relate directly to verifying or refuting parts of the claim. The `new_notes` should remove redundancy, discard irrelevant or unverified details, highlight any contradictions or affirmations discovered, and emphasize whether certain claim components are correct, incorrect, or unverifiable within the given context.  
+- `titles`: a list of document or entity titles from the `context` that are critical to supporting or refuting the claim, or that best represent the main topics or entities involved in your reasoning.
+
+Key points and domain-specific considerations:
+
+1. **Fact Verification via Cross-Referencing**: The task requires rigorous cross-referencing of claim contents against notes and the context to evaluate factual correctness, entity associations, timelines, and relationships. When an element of the claim does not match the context or notes, denote this clearly in the `new_notes`.
+
+2. **Entity Disambiguation and Identification**: Claims often mention entities such as actors, schools, films, or organizations, along with specifics like dates, genres, or locations. Use the context to confirm these entity identities, affiliations, and attributes accurately. For example:
+   - Confirm exact film titles, release years, cast, and production/distribution companies.
+   - Confirm membership and composition of organizations or districts.
+   - Confirm correct timelines of events related to individuals/entities.
+
+3. **Temporal Reasoning**: When claims involve sequences or timing (e.g., a person performing an action after a certain event), verify the chronology based on the years or dates given in the context and notes.
+
+4. **Handling Negative Evidence and Non-Confirmations**: Explicitly state when information in the claim cannot be verified or is negated by the context or notes, e.g., “Meryl Streep did not star in the referenced film,” or “No confirmation that the film was produced by that company in the given documents.”
+
+5. **Concise, Relevant Output**: The `new_notes` should succinctly represent the verified core facts, corrections, and unresolved points; avoid verbatim repetition of input notes unless clarifying or summarizing key evidence. The `titles` output should include main related documents or entities that support the reasoning and help retrieval or further validation.
+
+6. **Domain Examples and Terms**: Be aware of domain-specific references such as:
+   - Film industry terms: film titles (including year), cast, director, production companies.
+   - Television terminology: series and season titles, premiere dates.
+   - Educational institutions: school district composition, school names, locations, and demographics.
+   - Geographic terms: census-designated places, hamlets, counties.
+   Use these to enhance precision in verification and output notes.
+
+7. **Generalizable Reasoning Approach**:
+   - Parse the claim to identify all entities and relations.
+   - Extract and group relevant notes and context snippets referencing these entities.
+   - Identify consistencies and contradictions.
+   - Note any missing or unverifiable claims.
+   - Summarize evidence to confirm or refute claim components.
+   - Select titles that relate directly to key entities and factual points.
+
+Deliverable:
+
+- For each input claim and supporting inputs, produce:
+  - `new_notes`: a focused, verified, and synthesized set of notes clarifying the factual status of the claim parts.
+  - `titles`: a list of key context article or document titles essential for supporting or disputing the claim.
+
+This structured approach ensures factual validation, precise entity matching, and clear summarization of evidence to support accurate claim assessment.
+2026/08/04 23:33:50 INFO dspy.evaluate.evaluate: Average Metric: 1.6666666666666665 / 3 (55.6%)
+Iteration 19: New subsample score 1.6666666666666665 is not better than old score 1.6666666666666665, skipping
+GEPA Optimization:  80%|████████  | 241/300 [1:44:45<29:10, 29.67s/rollouts]Iteration 20: Selected program 6 score: 0.5
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.67 / 1 (66.7%):   0%|          | 0/6 [00:37<?, ?it/s]Average Metric: 0.67 / 1 (66.7%):  17%|█▋        | 1/6 [00:37<03:06, 37.21s/it]Average Metric: 0.67 / 2 (33.3%):  17%|█▋        | 1/6 [01:03<03:06, 37.21s/it]Average Metric: 0.67 / 2 (33.3%):  33%|███▎      | 2/6 [01:03<02:04, 31.04s/it]Average Metric: 1.00 / 3 (33.3%):  33%|███▎      | 2/6 [01:42<02:04, 31.04s/it]Average Metric: 1.00 / 3 (33.3%):  50%|█████     | 3/6 [01:42<01:42, 34.32s/it]Average Metric: 2.00 / 4 (50.0%):  50%|█████     | 3/6 [02:14<01:42, 34.32s/it]Average Metric: 2.00 / 4 (50.0%):  67%|██████▋   | 4/6 [02:14<01:07, 33.61s/it]Average Metric: 2.67 / 5 (53.3%):  67%|██████▋   | 4/6 [02:40<01:07, 33.61s/it]Average Metric: 2.67 / 5 (53.3%):  83%|████████▎ | 5/6 [02:40<00:30, 30.85s/it]Average Metric: 3.00 / 6 (50.0%):  83%|████████▎ | 5/6 [03:02<00:30, 30.85s/it]Average Metric: 3.00 / 6 (50.0%): 100%|██████████| 6/6 [03:02<00:00, 27.74s/it]Average Metric: 3.00 / 6 (50.0%): 100%|██████████| 6/6 [03:02<00:00, 30.39s/it]
+2026/08/04 23:36:52 INFO dspy.evaluate.evaluate: Average Metric: 3.0 / 6 (50.0%)
+Iteration 20: Proposed new text for append_notes.predict: You will be given three input fields:
+
+- `claim`: a statement or assertion to verify or analyze.
+- `notes`: a list of extracted factual observations, evidence, or reasoning points related to the claim. These often clarify details, confirm or refute aspects of the claim, and cite contextual facts.
+- `context`: a list of documents or snippets presenting background facts, biographies, historical data, timelines, affiliations, etc., relevant to entities or topics in the claim.
+
+Your task is to use information from `notes` and `context` to produce two output fields:
+
+1. `new_notes`: a distilled, concise, and well-structured summary of key points from `notes` that directly address the truth or accuracy of the claim, highlighting supporting or contradicting evidence. The new notes should:
+
+   - Correctly synthesize relevant information from both `notes` and `context`.
+   - Identify any conflations, inaccuracies, or missing connections in the claim.
+   - Avoid repetition and prioritize clarity and factual grounding.
+   - Emphasize important domain-specific details such as individuals’ identities, roles, dates, affiliations, accomplishments, sponsorships, or institutional founding dates.
+
+2. `titles`: a list of the most relevant document or entity titles (from `context`) needed to comprehensively verify or refute the claim. The titles should cover key people, institutions, organizations, leagues, teams, or events specifically referenced or implicated in the claim and evidence. Include just enough titles to fully encompass the claim's components for further retrieval or review.
+
+Reasoning and methodology to produce these outputs:
+- Analyze the claim carefully to understand its factual components and relations.
+- Review the notes to understand existing evidence supporting or contradicting the claim.
+- Corroborate and enrich this with the context documents that provide detailed domain-specific facts, such as:
+   - Biographical and career details of persons (e.g., athlete names, trainer roles, sports teams, academic history).
+   - Institutional founding dates and affiliations (universities, clubs, leagues).
+   - Specifics on sponsorships, team memberships, accomplishments tied to dates and places.
+- Identify any logical inconsistencies or conflations in the claim by cross-referencing the facts in notes and context.
+- Summarize the evidence in `new_notes` with clear, precise language.
+- Select titles representing the core topics/entities within the verified or falsified claim to facilitate targeted retrieval.
+
+The output should be factual, domain-aware, concise, and clearly linked to evidence, suitable for fact-checking, verification, or retrieval augmentation.
+2026/08/04 23:38:39 INFO dspy.evaluate.evaluate: Average Metric: 1.6666666666666665 / 3 (55.6%)
+Iteration 20: New subsample score 1.6666666666666665 is not better than old score 2.0, skipping
+GEPA Optimization:  83%|████████▎ | 250/300 [1:49:35<25:16, 30.33s/rollouts]Iteration 21: Selected program 5 score: 0.5333333333333333
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):   0%|          | 0/6 [00:27<?, ?it/s]Average Metric: 0.33 / 1 (33.3%):  17%|█▋        | 1/6 [00:27<02:17, 27.42s/it]Average Metric: 1.00 / 2 (50.0%):  17%|█▋        | 1/6 [01:12<02:17, 27.42s/it]Average Metric: 1.00 / 2 (50.0%):  33%|███▎      | 2/6 [01:12<02:31, 37.98s/it]Average Metric: 2.00 / 3 (66.7%):  33%|███▎      | 2/6 [01:40<02:31, 37.98s/it]Average Metric: 2.00 / 3 (66.7%):  50%|█████     | 3/6 [01:40<01:40, 33.35s/it]Average Metric: 3.00 / 4 (75.0%):  50%|█████     | 3/6 [02:08<01:40, 33.35s/it]Average Metric: 3.00 / 4 (75.0%):  67%|██████▋   | 4/6 [02:08<01:02, 31.27s/it]Average Metric: 3.67 / 5 (73.3%):  67%|██████▋   | 4/6 [02:36<01:02, 31.27s/it]Average Metric: 3.67 / 5 (73.3%):  83%|████████▎ | 5/6 [02:36<00:29, 29.85s/it]Average Metric: 4.33 / 6 (72.2%):  83%|████████▎ | 5/6 [03:02<00:29, 29.85s/it]Average Metric: 4.33 / 6 (72.2%): 100%|██████████| 6/6 [03:02<00:00, 28.62s/it]Average Metric: 4.33 / 6 (72.2%): 100%|██████████| 6/6 [03:02<00:00, 30.38s/it]
+2026/08/04 23:41:41 INFO dspy.evaluate.evaluate: Average Metric: 4.333333333333333 / 6 (72.2%)
+Iteration 21: Proposed new text for gen_query.predict: Task Description:  
+You will be given two inputs: a `claim` and a set of `notes`. Your goal is to generate a single, precise natural language `query` (or a tight set of linked queries) designed specifically to verify or investigate the claim by leveraging the information available in the notes. The query should be targeted and unambiguous, formulated to efficiently retrieve the authoritative evidence needed to support or refute the claim.
+
+Input Format:  
+- `claim`: A concise factual or relational statement involving one or more entities, their attributes, or relationships, which requires verification.  
+- `notes`: A list of text snippets containing factual background, clarifications, partial information, or potential contradictions about the claim entities or their relationships.
+
+Output Format:  
+- `query`: A focused, well-structured natural language question or connected questions that explicitly target the critical elements of the claim, refined and disambiguated using the notes. The query must facilitate retrieval of relevant and authoritative documents or facts necessary for verification.
+
+Detailed Instructions:
+
+1. Entity and Relationship Extraction  
+   - Identify all key named entities mentioned in the claim (e.g., persons, locations, organizations, events, works such as books, songs, films).  
+   - Extract the claim’s core factual relationships or assertions (e.g., authorship, membership, native place, event participation, temporal overlap, genre classification).  
+
+2. Use Notes for Contextualization and Disambiguation  
+   - Analyze the notes for supplemental data — dates, places, roles, definitions, or known associations — that clarify or constrain the claim’s scope.  
+   - Detect and resolve ambiguities such as:  
+     • Multiple entities with similar or identical names,  
+     • Geographic subdivisions or jurisdictions,  
+     • Temporal details (e.g., birth dates, event dates),  
+     • Classification clarifications (e.g., genre, type of publication, band membership).  
+   - Pay particular attention to contradictions or confirmations in the notes about the claim’s key assertions.
+
+3. Query Content and Focus  
+   - Develop queries explicitly to verify the claim’s main factual components:  
+     • Presence or absence of the stated relationship(s),  
+     • Specific attributes or temporal facts necessary to support/refute the claim,  
+     • Jurisdictional, membership, or classification aspects relevant to the entities.  
+   - When multiple entities or facts are involved, connect queries logically to encompass comparative or combined verifications, for example:  
+     • Do two entities share a geographic or temporal context?  
+     • Does one entity have more members than another?  
+     • Is a work attributed to the specified creator at a given date?  
+   - Where contradictions or ambiguous points are apparent from the notes, the query should explicitly seek resolution of these, often by questioning both sides or alternative possibilities.
+
+4. Query Quality and Efficiency  
+   - Compose queries to be as concise, clear, and narrowly targeted as possible, avoiding overly broad or vague questions.  
+   - Use natural-language phrasing that retrieval systems can effectively interpret to identify relevant authoritative evidence.  
+   - Always include key entities by name and relevant qualifiers (e.g., birth year, band genre, event date) to disambiguate and focus the retrieval.
+
+5. Domain-Specific and Niche Knowledge Considerations  
+   - For claims about authorship, publication, or creative attributions: verify authorship, publication year, work type (e.g., magazine as a periodical), and proper entity disambiguation.  
+   - For natural history or biology claims: focus queries on native habitat classification and geographic distribution (e.g., desert versus temperate regions).  
+   - For temporal overlap or lifespan claims: clarify birth and death years or career periods to verify conditions like coexistence or active involvement in an event.  
+   - For entertainment industry claims (e.g., actors, musicians): verify roles, participation dates, and membership status or associations.  
+   - For geographic or political jurisdiction claims: query administration levels and verify if multiple entities lie within the same regions or jurisdictions.  
+   - Recognize “periodical” scope includes magazines; clarify classification to aid precise retrieval.  
+
+6. Generalizable Strategy  
+   - Prioritize verification of key factual claims embedded in the input claim.  
+   - Carefully leverage notes to provide disambiguation, conflicting details, or confirmation.  
+   - Identify all pertinent entities and relationships, accounting for possible ambiguity or contradiction.  
+   - Formulate a minimal but comprehensive set of linked, precise natural language questions covering all critical aspects, thus maximizing retrieval of the authoritative "gold" documents or facts to verify or refute the claim.
+
+Summary:  
+Produce a single, explicit, and focused natural language query (or tightly linked questions) tailored to effectively verify the claim using the notes. The query should distinctly mention the main entities with relevant attributes or temporal markers and explicitly address any ambiguities or contradictions identified in the notes. This will enable retrieval of core authoritative evidence needed for fact-checking or investigation.
+2026/08/04 23:43:55 INFO dspy.evaluate.evaluate: Average Metric: 2.333333333333333 / 3 (77.8%)
+Iteration 21: New subsample score 2.333333333333333 is not better than old score 2.333333333333333, skipping
+GEPA Optimization:  86%|████████▋ | 259/300 [1:54:50<21:37, 31.64s/rollouts]Iteration 22: Selected program 5 score: 0.5333333333333333
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 1.00 / 1 (100.0%):   0%|          | 0/6 [00:30<?, ?it/s]Average Metric: 1.00 / 1 (100.0%):  17%|█▋        | 1/6 [00:30<02:33, 30.72s/it]Average Metric: 1.67 / 2 (83.3%):  17%|█▋        | 1/6 [01:01<02:33, 30.72s/it] Average Metric: 1.67 / 2 (83.3%):  33%|███▎      | 2/6 [01:01<02:03, 30.91s/it]Average Metric: 2.67 / 3 (88.9%):  33%|███▎      | 2/6 [01:24<02:03, 30.91s/it]Average Metric: 2.67 / 3 (88.9%):  50%|█████     | 3/6 [01:25<01:22, 27.41s/it]Average Metric: 3.00 / 4 (75.0%):  50%|█████     | 3/6 [01:41<01:22, 27.41s/it]Average Metric: 3.00 / 4 (75.0%):  67%|██████▋   | 4/6 [01:41<00:46, 23.21s/it]Average Metric: 3.00 / 5 (60.0%):  67%|██████▋   | 4/6 [02:06<00:46, 23.21s/it]Average Metric: 3.00 / 5 (60.0%):  83%|████████▎ | 5/6 [02:06<00:23, 23.63s/it]Average Metric: 3.33 / 6 (55.6%):  83%|████████▎ | 5/6 [02:29<00:23, 23.63s/it]Average Metric: 3.33 / 6 (55.6%): 100%|██████████| 6/6 [02:29<00:00, 23.55s/it]Average Metric: 3.33 / 6 (55.6%): 100%|██████████| 6/6 [02:29<00:00, 24.92s/it]
+2026/08/04 23:46:24 INFO dspy.evaluate.evaluate: Average Metric: 3.3333333333333335 / 6 (55.6%)
+Iteration 22: Proposed new text for append_notes.predict: You will be given three inputs:
+
+1. **claim**: A statement asserting a factual relationship or fact that needs verification or clarification.
+
+2. **notes**: A list of extracted snippets, statements, or paraphrased facts relevant to the claim. These may contain redundancies, partial contradictions, or incomplete support.
+
+3. **context**: A list of background documents or article summaries associated with the claim topic. Each document contains authoritative, detailed, or supporting factual information that may back or refute the notes or claim.
+
+Your task is to produce two outputs:
+
+### Outputs
+
+1. **new_notes**:  
+   A concise, factual, and non-redundant set of notes synthesized primarily from the provided notes and supported by the context. This set should:  
+   - Directly support, clarify, or refute the claim by focusing on *relevant, precise facts only*.  
+   - Exclude unsupported information, contradictions, or extraneous details.  
+   - Be factually correct and consistent with the context documents.  
+   - Summarize or merge duplicate or overlapping notes into single clear statements.  
+   - Use standalone sentences—each note should independently convey a fact related to the claim’s verification or contradiction.  
+   - Remove any misinformation or incorrect details present in the original notes by cross-referencing with the context.  
+   - Address domain-specific considerations where relevant, such as:  
+     - Distinguishing between persons/entities with similar names or roles (disambiguation).  
+     - Clarifying organizational/geographical affiliations (e.g., band bases, county vs. city locations, school and district distinctions).  
+     - Verifying biographies, filmographies, historical dates, or attribution of works accurately.  
+   - Avoid introducing any information not present in the notes or context or based on unsupported assumptions or speculation.
+
+2. **titles**:  
+   A short list of document or article titles from the provided context that *best represent the authoritative sources* containing the facts used in the new_notes. Selection of titles should aim for:  
+   - Completeness: Cover all key facts underlying the new_notes.  
+   - Appropriateness: Titles closely align with the entities or subjects pertinent to the claim (technical or domain-specific specificity preferred, e.g., use "ValuJet Airlines" for airline-related facts rather than generic aviation articles).  
+   - Minimality: Include the smallest sufficient set of titles that together cover the evidence.  
+   - Accuracy: Titles correspond exactly or as closely as possible to the context documents that provide definitive factual support.
+
+### Domain-Specific and General Best Practices
+
+- Claims often hinge on verifying specific factual relationships such as:  
+  - The composition or membership of organizations or bands.  
+  - Geographical bases, headquarters, or county/city affiliations.  
+  - Biographical data (birth dates, nationalities).  
+  - Attribution of creative works (films, albums, roles).  
+  - Historical facts and timelines.  
+
+- Notes and context may contain redundancies, contradictions, or misinformation; critical evaluation against the context is essential.
+
+- When multiple similar entities exist (e.g., people with similar names or related bands), disambiguate carefully to avoid conflating facts.
+
+- Reasoning should synthesize and clarify why particular notes are included or excluded based on their factual support by the context.
+
+- Summarize detailed background from multiple notes into clear, singular statements without loss of meaning.
+
+- Do not invent details or include speculative reasoning beyond the information in the notes and context.
+
+- Each new_notes entry must stand on its own as a factual statement relevant to verifying or invalidating the claim.
+
+- When assessing and selecting titles, ensure no critical documents from the context are overlooked that substantiate the new_notes.
+
+### Summary
+
+Your overall goal is to produce an evidence-based synthesis from the notes and context that *validates or refutes the claim* with accurate, precise, and non-redundant factual statements, accompanied by the minimal but comprehensive set of source titles that definitively underpin the conclusions.
+2026/08/04 23:47:56 INFO dspy.evaluate.evaluate: Average Metric: 1.6666666666666665 / 3 (55.6%)
+Iteration 22: New subsample score 1.6666666666666665 is better than old score 1.3333333333333333. Continue to full eval and add to candidate pool.
+2026/08/04 23:53:08 INFO dspy.evaluate.evaluate: Average Metric: 4.333333333333333 / 10 (43.3%)
+Iteration 22: Valset score for new program: 0.4333333333333333 (coverage 10 / 10)
+Iteration 22: Val aggregate for new program: 0.4333333333333333
+Iteration 22: Individual valset scores for new program: {0: 0.3333333333333333, 1: 0.6666666666666666, 2: 0.3333333333333333, 3: 0.6666666666666666, 4: 0.0, 5: 0.3333333333333333, 6: 0.3333333333333333, 7: 1.0, 8: 0.3333333333333333, 9: 0.3333333333333333}
+Iteration 22: New valset pareto front scores: {0: 0.6666666666666666, 1: 1.0, 2: 0.3333333333333333, 3: 0.6666666666666666, 4: 1.0, 5: 0.3333333333333333, 6: 0.6666666666666666, 7: 1.0, 8: 0.3333333333333333, 9: 0.6666666666666666}
+Iteration 22: Valset pareto front aggregate score: 0.6666666666666666
+Iteration 22: Updated valset pareto front programs: {0: {0, 2, 4, 5}, 1: {1, 2, 4, 5, 6}, 2: {0, 1, 2, 3, 4, 5, 6, 7}, 3: {0, 3, 4, 5, 7}, 4: {2, 3}, 5: {6, 7}, 6: {5}, 7: {0, 1, 2, 3, 4, 5, 6, 7}, 8: {1, 2, 3, 4, 5, 6, 7}, 9: {1, 3, 5}}
+Iteration 22: Best valset aggregate score so far: 0.5333333333333333
+Iteration 22: Best program as per aggregate score on valset: 5
+Iteration 22: Best score on valset: 0.5333333333333333
+Iteration 22: Linear pareto front program index: 5
+Iteration 22: New program candidate index: 7
+GEPA Optimization:  93%|█████████▎| 278/300 [2:04:04<11:11, 30.51s/rollouts]Iteration 23: Selected program 6 score: 0.5
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.67 / 1 (66.7%):   0%|          | 0/6 [00:28<?, ?it/s]Average Metric: 0.67 / 1 (66.7%):  17%|█▋        | 1/6 [00:28<02:20, 28.19s/it]Average Metric: 1.33 / 2 (66.7%):  17%|█▋        | 1/6 [01:02<02:20, 28.19s/it]Average Metric: 1.33 / 2 (66.7%):  33%|███▎      | 2/6 [01:02<02:07, 31.95s/it]Average Metric: 2.00 / 3 (66.7%):  33%|███▎      | 2/6 [01:28<02:07, 31.95s/it]Average Metric: 2.00 / 3 (66.7%):  50%|█████     | 3/6 [01:28<01:26, 29.00s/it]Average Metric: 2.67 / 4 (66.7%):  50%|█████     | 3/6 [02:01<01:26, 29.00s/it]Average Metric: 2.67 / 4 (66.7%):  67%|██████▋   | 4/6 [02:01<01:01, 30.77s/it]Average Metric: 3.00 / 5 (60.0%):  67%|██████▋   | 4/6 [02:22<01:01, 30.77s/it]Average Metric: 3.00 / 5 (60.0%):  83%|████████▎ | 5/6 [02:22<00:27, 27.22s/it]Average Metric: 4.00 / 6 (66.7%):  83%|████████▎ | 5/6 [02:53<00:27, 27.22s/it]Average Metric: 4.00 / 6 (66.7%): 100%|██████████| 6/6 [02:53<00:00, 28.57s/it]Average Metric: 4.00 / 6 (66.7%): 100%|██████████| 6/6 [02:53<00:00, 28.97s/it]
+2026/08/04 23:56:02 INFO dspy.evaluate.evaluate: Average Metric: 4.0 / 6 (66.7%)
+Iteration 23: Proposed new text for gen_query.predict: Task Title: Construction of Precise Verification Queries for Fact-Checking Claims Using Contextual Notes
+
+Task Objective:  
+Given a factual claim and a set of background notes related to that claim, your task is to generate a concise, well-structured, natural language query or a logically connected set of queries that effectively focus on verifying or investigating the truthfulness of the claim. The query must tightly incorporate and disambiguate all key entities and relationships using the supplemental information from the notes — such as dates, classifications, roles, and geopolitical or domain-specific context — to maximize retrieval of authoritative and relevant evidence that can confirm or refute the core assertions efficiently.
+
+Input Format:  
+- `claim`: A short factual or relational statement involving named entities (persons, locations, organizations, creative works, biological species, etc.) and their attributes or relationships.  
+- `notes`: A list of textual snippets providing clarifications, contextual background, partial evidence, contradictory or confirming facts, or domain-specific details regarding the claim.
+
+Output Format:  
+- `query`: A focused, precise natural language question or minimal linked set of questions, explicitly targeting the verification of the main factual points, refined by contextual clues and potential ambiguities highlighted in the notes.
+
+Detailed Task Instructions:
+
+1. **Entity and Relation Extraction**  
+   - Identify all key named entities in the claim: persons (including roles like directors, actors), places (cities, countries, regions), organizations (labels, studios), creative works (films, books, albums), biological species, or other relevant entities.  
+   - Extract the factual or relational claims made between these entities, such as authorship, membership, directorship, native habitat, time period overlaps, and label affiliations.
+
+2. **Disambiguation and Context Utilization**  
+   - Use the notes to:  
+     - Clarify ambiguous names, overlapping identities, or unclear references (e.g., a band name vs. a label of the same name).  
+     - Distinguish entity types (e.g., differentiating labels from bands or actors from characters).  
+     - Resolve contradictions in the claim or corroborate details with multiple note snippets.  
+     - Incorporate domain-specific knowledge such as industry terminology, classification of works, or geopolitical jurisdictions.  
+     - Use temporal and geographic details in notes to refine or narrow the focus of verification.
+
+3. **Domain-Specific Verification Considerations**  
+
+   a. **Film and Media**  
+     - Verify identities and roles of directors, actors, screenwriters for specific works with attention to dates and sequels.  
+     - Check if set periods (e.g., “worked for 3 years”) are supported by evidence.  
+     - Resolve whether multiple entities referenced (e.g., bands, labels) share origin or collaboration history accurately.  
+   
+   b. **Book and Publication Claims**  
+     - Confirm author attribution and publication mediums (e.g., magazine vs. periodical).  
+     - Verify publication dates and classification of the publishing outlet.  
+   
+   c. **Biological and Natural History Claims**  
+     - Confirm habitat classification and regional specificity for species or natural entities.  
+   
+   d. **Geographical and Political Jurisdiction**  
+     - Validate locations’ administrative relationships (e.g., city within province, or organizations’ origin within countries).  
+   
+   e. **Temporal Overlaps**  
+     - Verify timeline overlaps such as active years, lifespan, or concurrent participation in events or projects by entities.
+
+4. **Query Formulation Principles**  
+   - Explicitly mention the key entities and the precise relationships/facts to verify.  
+   - Use concise, focused phrasing to target retrieval at definitive evidence sources.  
+   - Where the notes suggest ambiguity, contradictions, or gaps, phrase queries to directly resolve those points.  
+   - Separate multiple core sub-claims into linked, coherent questions if necessary, to cover all critical factual elements thoroughly without redundancy.  
+   - Avoid vagueness or broad queries that introduce irrelevant information.  
+   - Ensure natural language formulation that retrieval systems can effectively interpret to return authoritative documents confirming or refuting the claim.
+
+5. **Generalizable Strategy for Verification Query Construction**  
+   - Begin by extracting and prioritizing the core factual components of the claim (entities and key relationships).  
+   - Analyze notes to disambiguate or contextualize ambiguous elements and identify contradictions or confirmations.  
+   - Translate these insights into explicit verification questions, addressing each critical component and any disputed or ambiguous aspect.  
+   - Incorporate temporal, geographic, role-specific, or domain-classification details from notes to narrow query scope.  
+   - Produce a single, well-structured query or minimal set of logically linked queries that collectively cover all essential verification points with maximal clarity and precision.
+
+Summary:  
+Your output should be a single, tightly focused natural language query or a minimal cluster of linked queries that leverages all relevant background information from the notes to verify the claim’s validity. The queries must explicitly target authoritative, relevant sources, thereby maximizing the efficiency and effectiveness of fact-checking by directing attention to the essential entities, their relationships, and contextual nuances identified.
+2026/08/04 23:57:48 INFO dspy.evaluate.evaluate: Average Metric: 1.6666666666666665 / 3 (55.6%)
+Iteration 23: New subsample score 1.6666666666666665 is not better than old score 2.0, skipping
+GEPA Optimization:  96%|█████████▌| 287/300 [2:08:43<06:38, 30.63s/rollouts]Iteration 24: Selected program 5 score: 0.5333333333333333
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 1.00 / 1 (100.0%):   0%|          | 0/6 [00:28<?, ?it/s]Average Metric: 1.00 / 1 (100.0%):  17%|█▋        | 1/6 [00:28<02:24, 28.85s/it]Average Metric: 1.67 / 2 (83.3%):  17%|█▋        | 1/6 [00:50<02:24, 28.85s/it] Average Metric: 1.67 / 2 (83.3%):  33%|███▎      | 2/6 [00:50<01:39, 24.85s/it]Average Metric: 2.67 / 3 (88.9%):  33%|███▎      | 2/6 [01:12<01:39, 24.85s/it]Average Metric: 2.67 / 3 (88.9%):  50%|█████     | 3/6 [01:12<01:10, 23.42s/it]Average Metric: 3.67 / 4 (91.7%):  50%|█████     | 3/6 [01:47<01:10, 23.42s/it]Average Metric: 3.67 / 4 (91.7%):  67%|██████▋   | 4/6 [01:47<00:56, 28.14s/it]Average Metric: 4.33 / 5 (86.7%):  67%|██████▋   | 4/6 [02:14<00:56, 28.14s/it]Average Metric: 4.33 / 5 (86.7%):  83%|████████▎ | 5/6 [02:14<00:27, 27.68s/it]Average Metric: 5.00 / 6 (83.3%):  83%|████████▎ | 5/6 [02:40<00:27, 27.68s/it]Average Metric: 5.00 / 6 (83.3%): 100%|██████████| 6/6 [02:40<00:00, 27.06s/it]Average Metric: 5.00 / 6 (83.3%): 100%|██████████| 6/6 [02:40<00:00, 26.79s/it]
+2026/08/05 00:00:28 INFO dspy.evaluate.evaluate: Average Metric: 5.0 / 6 (83.3%)
+Iteration 24: Proposed new text for gen_query.predict: Task Description:  
+You will receive two inputs: a `claim` and a `notes` list. Your goal is to generate a single `query` field that is a precisely formulated, natural language question or set of closely linked questions. The query should be explicitly designed to verify or investigate the factual accuracy of the claim by focusing on the information and context contained in the notes. The main purpose of the query is to guide retrieval of authoritative, relevant documents or facts that can confirm or refute the claim efficiently and unambiguously.
+
+Input Format:  
+- `claim`: A concise statement asserting one or more factual or relational facts involving key named entities (people, works, places, events, organizations, etc.), their attributes, or relationships.  
+- `notes`: A list of text snippets or facts providing background knowledge, clarifications, temporal markers, or partial information relevant to the entities and relationships mentioned in the claim.
+
+Output Format:  
+- `query`: A concise, clear, and focused natural language question or linked set of questions that target the key entities, relationships, and claims. The query must be carefully scoped and disambiguated using the notes for maximal precision and efficiency in retrieving evidence.
+
+Detailed Instruction and Domain-Specific Considerations:  
+
+1. Entity and Relation Identification  
+   - Extract all key named entities from the claim (persons, geographic locations, organizations, cultural works such as operas, films, books, etc.).  
+   - Identify the claim’s factual relationships such as authorship/composition, birth/death dates, roles or memberships, historical overlap or timing, or classification (e.g., is a publication a periodical).  
+   - When multiple entities or relationships are involved, parse whether the claim posits equivalences, differences, temporal overlaps, geographic jurisdiction, or composite conditions.
+
+2. Use of Notes for Context and Disambiguation  
+   - Analyze notes to obtain critical clarifying facts such as precise dates (e.g., composition years, death dates), entity definitions (e.g., identifying "Castor et Pollux" as the specific 1755 opera), or disambiguations (noting multiple adaptations of "Manon Lescaut").  
+   - Use notes to confirm or reveal contradictions or insufficiencies in the claim’s information, and adjust the query accordingly to focus on resolving ambiguities or verifying contested points.  
+   - Identify if entities or terms require explicit disambiguation due to multiple possible referents or variants.
+
+3. Query Construction  
+   - Formulate queries that explicitly address the core factual claims to be verified:  
+     • Confirm existence or non-existence of relationships (e.g., who composed which opera?).  
+     • Confirm specific temporal facts (e.g., precise death dates or composition years).  
+     • Confirm attributes and classifications (e.g., magazine vs. periodical, jurisdiction of a city).  
+   - Where multiple entities are involved, link queries logically to verify combined facts (e.g., were two people both judges on the same show at the same time?).  
+   - If notes reveal partial evidence or contradictions, phrase queries to explicitly seek clarity on these points.  
+   - Include all significant entity names with relevant contextual markers (dates, places, roles) to ensure retrieval systems can locate relevant authoritative sources.
+
+4. Query Quality and Precision  
+   - Keep the query concise, carefully scoped, and clearly focused solely on the elements needed to verify the claim’s factual core.  
+   - Avoid broad or vague questions; prefer direct, natural-language formulations that a search/retrieval system can interpret effectively.  
+   - Where appropriate, form compound questions that explicitly connect the entities and relationships involved for maximal disambiguation and document retrieval.
+
+5. Generalizable Strategy  
+   - Extract and prioritize the most critical factual components from the claim for verification.  
+   - Use notes to enrich, disambiguate, and clarify these components, noting any contradictions or confirmations in the data.  
+   - Formulate a minimal, precise, linked set of natural-language questions that direct retrieval systems to authoritative evidence essential for claim verification or refutation.  
+   - In complex claims, explicitly separate verification of each factual sub-claim (e.g., verification of death date, verification of teacher identity, etc.) within the query if needed, maintaining clear logical linkage.
+
+Niche and Domain-Specific Knowledge Incorporated:  
+- For authorship claims in operas, books, and periodicals: verify exact composers/authors, composition/publication years, and publication types (magazine vs. broader class 'periodical').  
+- For natural history or biology claims: verify specific habitat types (arid, semi-desert, temperate) when relating species to habitat.  
+- For temporal claims regarding individuals: verify death and birth dates, lifespan overlaps, or service periods for roles or offices carefully as per notes.  
+- For entertainment industry claims on actors and awards: confirm main cast or role attributions, nomination or award details, and timing. Disambiguate roles such as “The King of Cocaine” and cross-check associated actors and awards.  
+- For geographic or political jurisdiction claims: verify exact jurisdiction hierarchies (e.g., whether a city lies within a specified province or country).  
+- Understand that periodicals can include magazines; verify classification when relevant.  
+
+Summary:  
+Produce a well-formed, targeted, and disambiguated natural-language query or tightly linked question set that explicitly addresses all key factual components of the claim, guided by relevant context and clarifications found in the notes. Structure questions to maximize retrieval of authoritative documents or data essential for confirming or refuting the claim’s truthfulness, reflecting all domain-specific subtleties and known ambiguities.
+2026/08/05 00:02:17 INFO dspy.evaluate.evaluate: Average Metric: 2.0 / 3 (66.7%)
+Iteration 24: New subsample score 2.0 is not better than old score 2.333333333333333, skipping
+GEPA Optimization:  99%|█████████▊| 296/300 [2:13:13<02:01, 30.45s/rollouts]Iteration 25: Selected program 3 score: 0.5
+  0%|          | 0/6 [00:00<?, ?it/s]Average Metric: 0.00 / 1 (0.0%):   0%|          | 0/6 [00:22<?, ?it/s]Average Metric: 0.00 / 1 (0.0%):  17%|█▋        | 1/6 [00:22<01:51, 22.22s/it]Average Metric: 0.33 / 2 (16.7%):  17%|█▋        | 1/6 [00:58<01:51, 22.22s/it]Average Metric: 0.33 / 2 (16.7%):  33%|███▎      | 2/6 [00:58<02:00, 30.22s/it]Average Metric: 1.33 / 3 (44.4%):  33%|███▎      | 2/6 [01:31<02:00, 30.22s/it]Average Metric: 1.33 / 3 (44.4%):  50%|█████     | 3/6 [01:31<01:35, 31.73s/it]Average Metric: 2.00 / 4 (50.0%):  50%|█████     | 3/6 [02:05<01:35, 31.73s/it]Average Metric: 2.00 / 4 (50.0%):  67%|██████▋   | 4/6 [02:05<01:05, 32.76s/it]Average Metric: 2.67 / 5 (53.3%):  67%|██████▋   | 4/6 [02:42<01:05, 32.76s/it]Average Metric: 2.67 / 5 (53.3%):  83%|████████▎ | 5/6 [02:42<00:34, 34.01s/it]Average Metric: 3.67 / 6 (61.1%):  83%|████████▎ | 5/6 [03:12<00:34, 34.01s/it]Average Metric: 3.67 / 6 (61.1%): 100%|██████████| 6/6 [03:12<00:00, 32.61s/it]Average Metric: 3.67 / 6 (61.1%): 100%|██████████| 6/6 [03:12<00:00, 32.00s/it]
+2026/08/05 00:05:29 INFO dspy.evaluate.evaluate: Average Metric: 3.6666666666666665 / 6 (61.1%)
+Iteration 25: Proposed new text for gen_query.predict: Task Description:
+You will be given two input fields: `claim` and `notes`. Your objective is to generate a single `query` field consisting of a precise, focused natural-language question or logically linked questions specifically designed to verify or investigate the factual accuracy of the claim using the information provided in the notes. The query is intended to guide efficient retrieval of authoritative evidence that can directly support or refute the claim.
+
+Input Format:
+- `claim`: A concise factual or relational statement involving one or more named entities (e.g., persons, works, organizations, locations, events) and their attributes or relationships requiring validation.
+- `notes`: A list of relevant text snippets, facts, or contextual excerpts that provide supplemental, clarifying, or partial information about the claim’s key entities or relationships.
+
+Output Format:
+- `query`: A natural language question or set of logically connected questions explicitly targeting the verification of the claim’s core factual components, refined through disambiguation and contextual clues from the notes. The query should maximize retrieval of relevant documents or facts that are authoritative and directly applicable for confirming or refuting the claim.
+
+Detailed Instructions and Considerations:
+
+1. Entity and Relationship Identification
+   - Identify the main named entities in the claim (e.g., individuals, films, songs, organizations, locations).
+   - Determine the key factual relationships or claims to be verified (e.g., authorship, original recording artist, company nationality and location, participation or role in events or works, native habitat, temporal aspects like dates or lifespan overlap).
+   - Distinguish attributes such as genre, chart rankings, headquarters location, filmography credits, or temporal facts relevant to the claim.
+
+2. Utilizing Notes for Context, Disambiguation, and Constraints
+   - Analyze notes to supplement, clarify, or restrict the scope of verification: e.g., correct disambiguation of locations, multiple individuals with similar names, temporal anchoring, or classification of entities (e.g., distinguishing a magazine from a periodical).
+   - Identify any contradictions or confirmatory facts in the notes pertinent to the claim.
+   - Use notes to recognize subtleties such as: 
+     • Whether a named artist’s song actually reached the claimed chart position.
+     • Identification of the first recorded artist versus later performers.
+     • Corporate nationality vs. headquarters location.
+     • Overlapping involvement of persons in works or roles.
+     • Classification nuances (e.g., magazines as periodicals).
+     • Exact dates and sequencing (e.g., first composition credits).
+   
+3. Query Content and Scope
+   - Formulate queries that explicitly verify each key factual component of the claim:
+     • Confirm existence and identity of entities and relationships.
+     • Clarify relevant temporal facts (e.g., which came first, overlap in dates).
+     • Establish jurisdictional or geographic facts (e.g., company headquarters locations versus nationality).
+     • Confirm classification or genre when relevant (e.g., music genre, publication type).
+   - Where multiple entities or relational claims exist, logically connect questions to jointly verify combined facts.
+   - Address any potential contradictions or ambiguities by phrasing queries that seek to resolve them clearly.
+   - Avoid vague or overly broad questions; maintain focus on critical verification targets.
+
+4. Query Quality and Precision
+   - Keep queries concise, clear, and specific to the claim’s factual core.
+   - Use natural-language phrasing suitable for retrieval/search systems to locate key evidence or documents efficiently.
+   - Explicitly include the key entities and relevant temporal or attribute qualifiers to refine retrieval.
+
+5. Domain-Specific and Niche Knowledge Integrated from Examples
+   - For music or discography-related claims: verify chart positions, original recording artist identity, genre classification, and authorship dates.
+   - For film and entertainment industry claims: verify composer credits, acting roles, sequence of works, and collaborative roles.
+   - For aviation or corporate claims: verify people’s roles (e.g., captain), airline/company nationality, headquarters location, and possible contradictions in nationality versus location.
+   - For geographic or political claims: verify administrative divisions, geographic jurisdiction, and compare geographic locations of entities.
+   - Recognize periodicals as including magazines and clarify classification when relevant.
+   - Understand temporal sequencing, such as first works or overlapping lifespans, to check plausibility of relationships.
+
+6. Generalizable Strategy
+   - Extract and prioritize verification of the claim’s critical facts.
+   - Use the notes to confirm, disambiguate, or provide necessary qualifiers.
+   - Formulate a minimal, precise, and linked set of natural language questions that cover all relevant factual facets needed for verification.
+   - Target the query design to maximize the likelihood of retrieving gold-standard or key authoritative documents.
+
+Summary:
+Produce a focused, well-formed natural language query or linked queries that explicitly seek to confirm or refute the factual claims in the input `claim` by leveraging contextual and disambiguating details found in the `notes`. The query must be narrowly tailored to retrieve the essential evidence for verification, incorporating domain-specific nuances and adhering to precision and clarity best practices demonstrated in the example feedback.
+2026/08/05 00:07:12 INFO dspy.evaluate.evaluate: Average Metric: 2.0 / 3 (66.7%)
+Iteration 25: New subsample score 2.0 is not better than old score 2.0, skipping
+GEPA Optimization:  99%|█████████▊| 296/300 [2:18:08<01:52, 28.00s/rollouts]
+
+===== RUN SUMMARY =====
+{
+  "run": "C_seed6",
+  "arm": "C",
+  "seed": 6,
+  "smoke": false,
+  "reflection_events": 25,
+  "trace_entries": 25,
+  "child_bearing_events": 25,
+  "selection_events_logged": 25,
+  "candidates_incl_seed": 8,
+  "accepts": 7,
+  "total_num_evals": 305,
+  "predicted_total_five_site": 305,
+  "counter_matches_model": true,
+  "task_calls": 1830,
+  "reflection_calls": 25,
+  "backoffs": 0,
+  "spend_usd": 2.009,
+  "wire_est_usd": 2.009,
+  "wall_clock_s": 8288.1,
+  "peak_rss_mb": 1367.2,
+  "archive_size_final": 75,
+  "spend_cap_usd": 6.0
+}
+
+DONE

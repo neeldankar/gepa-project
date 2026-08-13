@@ -1,0 +1,60 @@
+```  
+Task Description:  
+You will be given two inputs:  
+- `claim`: a factual statement asserting a relationship or attribute involving named entities (such as persons, bands, institutions, works like films, albums or books, events, categories or objects).  
+- `notes`: a set of extracted textual snippets from multiple documents containing factual details relevant to verify the claim’s core entities and relationships.
+
+Your goal is to analyze the `claim` and `notes` and generate a single, concise, natural language **verification question** (`query`). This question is intended to guide subsequent document retrieval to verify the core factual assertions in the claim.
+
+Key Objectives and Principles:  
+
+1. **Identify Core Factual Assertions and Entities:**  
+   - Extract all key named entities mentioned in the claim.  
+   - Focus on the core factual relationships or attributes asserted: e.g., membership in a band, authorship or directing of a work, event occurrence details (location, date), collaborations, or technical attributes (e.g., country of origin, platform support).  
+   - Ensure all key entities (people, bands, works, institutions, events) are fully named and disambiguated by qualifiers if necessary (like nationality, genre, or other relevant context) especially where multiple similarly named entities could exist.
+
+2. **Reflect Precise Relationships and Logical Nuances:**  
+   - Frame the question to target the exact relationship or fact to be verified as stated in the claim: who did what, when, where, and with whom.  
+   - If the claim contains logical negatives or exclusivity—phrasing like "not both," "did not," or "was only directed by"—the question must capture this logical nuance explicitly, ensuring the question is logically equivalent to the claim’s assertion.  
+   - Include all relevant relationship parameters in the question (e.g., durations of collaborations, specific roles like director vs. writer, exact event names, album types, or positional specifics).
+
+3. **Domain-Specific Sensitivities:**  
+   Incorporate knowledge and terminology relevant to the domain; do not restate plainly but leverage domain nuances visible in the notes to produce an informative, precise query:  
+   - **Music:** Differentiate between bands and individual musicians; specify album types (studio, live, compilation); distinguish original songs from covers; consider release or fame period references.  
+   - **Film & TV:** Specify director names, film titles (with years if available), screenplay writers, and clear roles; identify adaptations versus original works.  
+   - **Sports:** Emphasize event names and dates, stadium locations and tenant clubs, country/geographic qualifiers.  
+   - **Technology/Computing:** Include platform specifics, maker (e.g., company names), and country of origin.  
+   - **Science & Academia:** Capture roles such as corresponding authorship, affiliations, or term coining.  
+
+4. **Use Only Supported Information:**  
+   - Base all phrasing strictly on entities and information found explicitly in the notes.  
+   - Avoid introducing any assumptions, extrapolations, or background knowledge not found or strongly implied in the notes.
+
+5. **Query Retrieval Usefulness:**  
+   - The final question should be detailed and precise enough to guide retrieval of all relevant documents covering all the claim’s key entities and their relationships.  
+   - Avoid vagueness or under-specifying the entities or relationships, which may cause missed retrievals.
+
+6. **Question Format:**  
+   - Produce a single natural language question (not a list) that combines all essential verification points.  
+   - Confirm explicitly the factual connections or disconnections, e.g., "Did X and Y both collaborate with Z during [period]?" or "Are X and Y members of band W at the same time?" or "Is the platform for game G from the same country as device D?"  
+   - Use domain-specific terminology and carefully crafted phrasing to ensure clarity and disambiguation.
+
+General Strategy:  
+- Parse the claim fully for all entities and relationships.  
+- Cross-reference with notes to confirm which entities and relationships are mentioned or supported.  
+- Detect any ambiguities, conflicts, or missing information needing clarification via retrieval.  
+- Formulate a logically precise, domain-aware question that encapsulates these verification needs in as much detail as supported by notes.
+
+Examples of Common Domain-Specific Contexts to Reference in Queries:  
+- Music bands and musicians (membership overlap, songwriting credits, cover songs vs originals, album types).  
+- Films and TV shows (directors, co-writers, adaptations, documentary vs fiction).  
+- Sporting events (event dates, locations, involved clubs or teams).  
+- Computing (hardware platforms, company of origin, game platform compatibility).  
+- Science (affiliations, authorship roles, coining terms).
+
+By following these instructions, the query generated will uniquely and effectively support retrieval of documents covering the key factual aspects of the claim for fact-checking.
+
+Deliverable:  
+A single, concise, domain-aware, logically accurate natural language question naming all relevant entities and precisely describing the relationships or factual points to be verified, grounded solely on the notes provided.
+
+```

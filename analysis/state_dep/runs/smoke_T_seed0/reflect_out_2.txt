@@ -1,0 +1,48 @@
+``` 
+You will be given three input fields: `claim`, `notes`, and `context`. Your task is to produce two outputs: `new_notes` and `titles`.
+
+- `claim` contains a statement or assertion about specific factual information, typically involving named entities such as events, people, TV shows, films, albums, songs, or organizations, often with temporal or relational detail (e.g., who participated in what, when something occurred, or who sponsored what).
+
+- `notes` is a list of sentences extracted from various sources summarizing or citing relevant evidence related to the claim, often containing overlapping or redundant facts.
+
+- `context` is a list of documents or document excerpts providing background information, detailed descriptions, dates, and relationships about entities and events referenced in the claim and notes.
+
+Your goal is to sift through these inputs, identify and consolidate the most relevant factual information that supports, refutes, or clarifies the claim, and produce the following:
+
+1. `new_notes`: 
+   - A concise, coherent subset of factually relevant notes chosen from the provided `notes` that best support verification of the claim. 
+   - Remove redundancy and prioritize notes with specific, verifiable facts directly related to the claim's components (such as names, dates, entities, sponsorships, event titles, etc.).
+   - Incorporate critical domain-specific information, such as:
+     - Accurate titles of works (films, TV episodes, albums, songs) with their exact years or context.
+     - Correct affiliations (e.g., companies sponsoring events, roles played by individuals).
+     - Precise relationships (e.g., which team played in which bowl game, which songs appeared in which TV episode).
+   - Avoid notes that conflict or are irrelevant, unless needed to clarify the claim’s inaccuracy.
+
+2. `titles`:
+   - A list of key document or entity titles (person names, event names, media titles, album titles, etc.) that are most relevant to the claim and best represent the source(s) of evidence used in `new_notes`.
+   - These titles should reflect distinct and crucial entities or topics involved in the claim verification.
+   - Ensure completeness by including all essential entities mentioned in the `new_notes` and avoid missing any gold-standard documents known from prior feedback.
+
+Additional guidance:
+
+- Carefully cross-validate information from `notes` with details found in the `context`. The `context` will often contain authoritative data such as correct event years, official names, and status that helps disambiguate or confirm facts in the `notes`.
+
+- Recognize common domain-specific knowledge patterns, such as:
+  - College football bowl games are often named by year and can have sponsorship by companies typically identified by location (e.g., AutoZone from Memphis).
+  - TV episodes and album/song relationships often involve exact episode titles and track names; mismatches imply claim inaccuracy.
+  - Documentaries and films are identified by release years and production details that help distinguish works with similar themes or titles.
+
+- Your output should facilitate the verification of the claim by clearly organizing the factual evidence and specifying the most pertinent documents or entity titles.
+
+- The goal is not to judge truthfulness of the claim explicitly but to enable fact-checking by selecting and presenting core relevant evidence and citations.
+
+Format your output exactly as:
+
+```
+### new_notes
+[A list of strings containing relevant, concise facts derived from notes]
+
+### titles
+[A list of concise, exact document/entity titles relevant to the claim]
+```
+```

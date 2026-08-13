@@ -1,0 +1,67 @@
+``` 
+Task Description:
+
+You will be given three input fields:
+
+- `claim`: A statement involving one or more entities (such as people, organizations, events, or works) and specific factual relationships or attributes connecting them.
+- `notes`: A list of factual snippets or candidate fact claims extracted from various sources that relate in some way to the claim. These notes may contain redundancies or contradictions.
+- `context`: A list of documents or excerpts (including their titles and texts) that provide detailed, authoritative background about the entities, events, or concepts mentioned in the claim.
+
+Your Outputs:
+
+You must produce the following two fields:
+
+- `new_notes`: A concise, accurate subset of the input `notes` that best supports or refutes the `claim` when cross-checked against the given `context`. These notes must be (a) factually validated by the context, (b) directly relevant to the claim’s components, (c) free of redundancy, and (d) exclude any unsupported or contradicting notes.
+  
+- `titles`: A list of **exact** document titles from the `context` that contain all necessary information to verify the truthfulness of your chosen `new_notes`. Include all documents referenced by your `new_notes` and no unrelated ones.
+
+Key Requirements and Domain-Specific Knowledge:
+
+1. **Entity and Relationship Mapping**  
+   - Identify all entities and key relationships mentioned in the claim (e.g., authorship, sponsorship, roles, event participation).  
+   - Disambiguate entities with identical or similar names by cross-referencing contextual career, biographical, or domain details (e.g., multiple professionals named Gould must be distinguished by occupation or known works).
+
+2. **Cross-Verification Using Context**  
+   - Use the `context` documents as ground truth to confirm or refute each claim component.  
+   - Do not rely solely on `notes`; verify every fact against the context and remove or revise any note not fully supported.  
+   - When context is silent on a point, treat it as unsupported.
+
+3. **Precision and Completeness**  
+   - Select only the minimal necessary notes that comprehensively support or dispute the entire claim—including all subclaims if the claim is compound.  
+   - Correspondingly, retrieve all and only those context documents that contain evidence for these notes. Partial or incomplete retrieval reduces answer accuracy.
+
+4. **Handling Redundancies and Contradictions**  
+   - Remove duplicated notes.  
+   - In case of contradictions among notes, keep only those verified by the context and discard unsupported or contradicted notes.
+
+5. **Summarizing Compound Claims**  
+   - Break down complex claims into parts (e.g., entity A did X, entity B did Y) and verify each individually.  
+   - Ensure `new_notes` and `titles` cover all parts fully.
+
+6. **Domain-Specific Contextual Knowledge**  
+   - Recognize domain-specific professional roles and terminology:
+     * Scientists (e.g., paleontologists like Elisabeth Vrba and Stephen Jay Gould).  
+     * Writers, journalists, and other creative professionals.  
+     * Athletes, especially professional tennis players and football teams, with relevant results and tournament information.  
+     * Musical works and artistic productions—distinguish accurately between authorship, performance roles, venue of publication (e.g., book vs. magazine article), and periodical type.  
+     * Events such as sports tournaments, film productions, or historical occurrences that serve as facts to verify claims.  
+   - Consider naming ambiguities; for instance, various individuals named Gould must be verified by career context.  
+   - Use historical and cultural knowledge embedded in provided context (e.g., typical act structures in operas and films, standard practices in sports seasons and bowl games).
+
+7. **Reasoning and Fact-Checking Strategy (Generalizable Approach)**  
+   - Parse the claim to extract discrete factual assertions and involved entities.  
+   - Map notes to these assertions and cross-check each note with the context.  
+   - Discard unsupported or contradicted notes; refine facts as needed to align strictly with context.  
+   - Collect the minimal, full set of context documents that validate the chosen notes completely.  
+   - Generate succinct, precise `new_notes` and the corresponding `titles` for full coverage of the claim.
+
+8. **Output Format and Quality**  
+   - `new_notes`: An array of factually accurate, relevant notes derived from the input `notes` but strictly filtered and verified by the context.  
+   - `titles`: An array of exact titles of all context documents that underpin the facts in `new_notes`.  
+   - Ensure clarity, factual accuracy, and traceability of each fact back to one or more cited context documents.
+
+Summary:
+
+Your primary goal is to produce a factually sound, concise evidence set (`new_notes`) that reliably supports or refutes the `claim` by validating each fact against the provided `context`. Alongside, provide complete and exact `titles` from the context to allow independent verification. Balance thoroughness and conciseness, applying domain-specific understanding and rigorous cross-verification to resolve entity ambiguities, contradictions, and to capture compound claims fully.
+
+```

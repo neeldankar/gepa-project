@@ -1,0 +1,133 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be provided with three fields as input: 
+1. `claim` - a factual statement that may contain multiple subclaims or assertions. 
+2. `notes` - a list of extracted sentences or statements related to the claim, possibly overlapping or redundant and at varying levels of detail or correctness.
+3. `context` - a list of encyclopedic-style paragraphs or document snippets relevant to entities or topics mentioned in the claim and notes. These contain detailed background information and help verify or refute subclaims in the claim.
+
+Your output should contain two fields:
+- `new_notes`: a cleaned, concise, and factual subset list of notes that directly support, refine, correct, or clarify the original claim. This should:
+  - Include information drawn from both the `notes` and `context`.
+  - Remove redundancies and outdated or inaccurate information found among the notes.
+  - Incorporate corrections or clarifications based on authoritative contextual information.
+  - Explicitly identify and rectify any factual errors or inaccuracies in the claim based on the evidence.
+  - Focus on distinct, verified facts that are relevant to the claim’s core assertions.
+
+- `titles`: a list of the names or titles of relevant documents or entities from the context that substantiate or provide essential background for the claim and your chosen notes. These should be:
+  - Specific and correctly formatted, usually matching the titles or entities as referenced in the context.
+  - Comprehensive enough to cover all crucial elements of the claim.
+  - Reflective of gold standard references typically expected for complete claim validation.
+
+General strategy to solve task:
+- Break down the claim into constituent factual subclaims.
+- Cross-check each subclaim with both the provided notes and the richer contextual documents.
+- Identify inconsistencies, correct erroneous details (e.g., date errors or misattributed roles), and confirm facts that are fully supported.
+- Aggregate the validated facts into new_notes, summarizing the relevant evidence.
+- Select titles of the most relevant, authoritative documents from the context that cover the validated evidence.
+- Avoid including irrelevant or unsupported notes or titles.
+- Your response should be formatted cleanly and be concise while comprehensive, reflecting critical thinking on the veracity and completeness of the claim.
+
+Domain-specific considerations:
+- Claims often involve people, films, songs, or other entertainment industry entities; verifying authorship, starring roles, production details, and timelines is crucial.
+- Precise name spellings, dates, and relationships (e.g., familial, professional) are often critical for verification.
+- Claims about membership in bands or contributions to songs require identifying accurate credits and affiliations.
+- When multiple sources conflict on details (such as premiere years), preference should be given to authoritative contextual evidence.
+- Notes may contain duplicates, minor variations, and explicit corrections; synthesize these carefully.
+- Titles should reflect actual documents or knowledge base entries referenced in the context, not invented or generalized terms.
+
+Formatting:
+- Use the exact field names `new_notes` and `titles` for outputs.
+- Provide the output as lists (array format), with each item a string concise enough to be a standalone fact or title.
+- Ensure factual accuracy and clarity in all provided notes and titles.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The star of Institute Benjamenta portrayed a character in "Double Bass". The real name of that character is Vilyam "Willie" Genrikhovich Fisher.
+
+### notes
+["Mark Rylance starred in 'Institute Benjamenta' (1996).", "Vilyam 'Willie' Genrikhovich Fisher is the real name of Rudolf Abel, a Soviet intelligence officer.", "There is no evidence that Mark Rylance portrayed a character named Vilyam 'Willie' Genrikhovich Fisher in 'Double Bass', nor that such a character is part of 'Double Bass'.", "Mark Rylance starred in 'Institute Benjamenta' (1996).", "Vilyam 'Willie' Genrikhovich Fisher is the real name of Rudolf Abel, a Soviet intelligence officer.", "There is no evidence that Mark Rylance portrayed a character named Vilyam 'Willie' Genrikhovich Fisher in 'Double Bass', nor that such a character appears in 'Double Bass'."]
+
+### context
+['Rudolf Abel | Rudolf Ivanovich Abel (Russian: Рудольф Иванович Абель ), real name Vilyam "Willie" Genrikhovich Fisher (Вильям "Вилли" Генрихович Фишер), (July 11, 1903 – November 15, 1971) was a Soviet intelligence officer.  He adopted his alias when arrested on charges of conspiracy by FBI agents in 1957.', 'Willy Fritsch | Willy Fritsch (27 January 1901 – 13 July 1973) was a German theater and film actor, a popular leading man and character actor from the silent-film era to the early 1960s.', 'Mark Rylance | Sir David Mark Rylance Waters (born 18 January 1960) is an English actor, theatre director, and playwright.  He was the first artistic director of Shakespeare\'s Globe in London, from 1995 to 2005.  His film appearances include "Prospero\'s Books" (1991), "Angels and Insects" (1995), "Institute Benjamenta" (1996), and "Intimacy" (2001).  Rylance won the Academy Award and the BAFTA Award for Best Supporting Actor for his portrayal of Rudolf Abel in "Bridge of Spies" (2015).', 'Actor (1993 film) | Actor (Persian: هنرپیشه\u200e \u200e , Honarpisheh) is a 1993 Iranian film directed by Mohsen Makhmalbaf.  The film features Akbar Abdi as Akbar, Fatemeh Motamed-Aria as his wife, Simin, and Mahaya Petrosian as the gypsy girl.  The film is a combination of fiction and reality since the leading character has the same name and occupation as the actor who portrays the role, while the details and events are fictional.', 'Murali (Malayalam actor) | Murali (Malayalam: മുരളി , 25 May 1954 – 6 August 2009) was an Indian film, stage, and television actor and author.  He mainly appeared in Malayalam films and a few Tamil films.  He won the National Film Award for Best Actor for his portrayal of Appa Mestry, a communist freedom fighter and professional weaver in the 2002 film "Neythukaran".  Regarded by film critics as one of the greatest actors in Indian cinema, he was known for his powerful portrayal of character roles, lead roles, and negative roles.', 'David Dunn (character) | David Dunn is a fictional character and the main protagonist in the "Unbreakable" film series, portrayed by American actor Bruce Willis.  Dunn is a former college football prodigy and presently a security guard who discovers he has superhuman abilities.', 'A Double Life (1947 film) | A Double Life is a 1947 film noir which tells the story of an actor whose mind becomes affected by the character he portrays.  The movie starred Ronald Colman and Signe Hasso.  It was directed by George Cukor and written for the screen by Ruth Gordon and Garson Kanin.  Ronald Colman won the Academy Award for Best Actor for his performance in this film.', 'List of supporting actors in Three Stooges films | This is a list of actors who have co-starred in films with The Three Stooges.  Inclusion on this list should be reserved for notable actors that can be confirmed as taking supporting roles (either credited or uncredited) in films commonly regarded as having the Three Stooges as primary characters.  Films where the Three Stooges appear as a guest or cameo appearance, or the actors who portray them appear outside the character of The Three Stooges should not be considered.', 'List of Batman films cast members | The following is a list of cast members who voiced or portrayed characters appearing in the "Batman" films.  The list is sorted by film and character, as some characters may have been portrayed by multiple actors.', 'Jeet filmography | Jeet (born Jeetendra Madnani on 30 November 1978) is an Indian Bengali film actor, producer and television presenter.  He made his film debut with a Telugu film, named "Chandu" that was released in 2001 which did not do that well at the box office.  Further, Jeet moved on to do Bengali films and had his first breakthrough by portraying the lead character in "Sathi".  He has become one of the biggest superstars and highest paid actors in Bengali cinema through the years, with films like "Yuddho", "Shubhodrishti", "Josh", "Awara", "", "Bachchan" to his credit, all of them being box office hits.']
+
+## Generated Outputs
+### reasoning
+The claim states that the star of "Institute Benjamenta" portrayed a character in "Double Bass" whose real name is Vilyam "Willie" Genrikhovich Fisher. From the context, the star of "Institute Benjamenta" is Mark Rylance. However, the name Vilyam "Willie" Genrikhovich Fisher corresponds to the real name of Rudolf Abel, a Soviet intelligence officer, not a character from "Double Bass." There is no contextual evidence linking a character named Vilyam "Willie" Genrikhovich Fisher or Rudolf Abel to the production "Double Bass." Therefore, the part of the claim that associates the character named Vilyam "Willie" Genrikhovich Fisher with a role in "Double Bass" portrayed by the star of "Institute Benjamenta" is incorrect or unsupported. The accurate part is that Mark Rylance starred in "Institute Benjamenta."
+
+### new_notes
+["Mark Rylance starred in 'Institute Benjamenta' (1996).", "Vilyam 'Willie' Genrikhovich Fisher is the real name of Rudolf Abel, a Soviet intelligence officer.", "There is no evidence that Mark Rylance portrayed a character named Vilyam 'Willie' Genrikhovich Fisher in 'Double Bass', nor that such a character is part of 'Double Bass'."]
+
+### titles
+['Mark Rylance', 'Rudolf Abel']
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Institute Benjamenta', 'Mark Rylance', 'Rudolf Abel']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+The French star of The Cutting Edge voiced a character in an animated 1994 film. She voiced the character named Nala.
+
+### notes
+["Moira Kelly, an American actress, starred in the 1992 film 'The Cutting Edge'.", "Moira Kelly provided the voice for the adult lioness character Nala in Disney's 1994 animated film 'The Lion King'.", "'The Lion King' introduced the character Nala, a fictional lioness, who was voiced by Moira Kelly as an adult in the 1994 film.", "Moira Kelly, an American actress, starred in the 1992 film 'The Cutting Edge'.", "Moira Kelly provided the voice for the adult lioness character Nala in Disney's 1994 animated film 'The Lion King'.", "'The Lion King' (1994) introduced the character Nala, voiced by Moira Kelly as an adult.", 'Moira Kelly, an American actress, starred in the 1992 film The Cutting Edge.', "Moira Kelly provided the voice for the adult lioness character Nala in Disney's 1994 animated film The Lion King.", 'Nala is a fictional lioness character introduced in The Lion King (1994).', 'Moira Kelly is American, not French.']
+
+### context
+['Nala (Disney) | Nala is a fictional lioness, a character who appears in the Disney "Lion King" franchise.  Introduced in the animated film "The Lion King" in 1994, Nala subsequently appears as a less prominent character in the film\'s sequels "" (1998) and "The Lion King 1½" (2004).  In the original film, the adult Nala was voiced by American actress Moira Kelly.  Young Nala\'s speaking voice is provided by actress Niketa Calame, while singers Laura Williams and Sally Dworsky provide the singing voices of young and adult Nala respectively.', 'I Just Can\'t Wait to Be King | "I Just Can\'t Wait to Be King" is a song from Disney\'s 1994 animated film, "The Lion King".  With music by Elton John and words written by Tim Rice, the song is performed by the characters of Simba (Jason Weaver), Nala (Laura Williams) and Zazu (Rowan Atkinson) in the film.', 'Scar (Disney) | Scar is a fictional character who appears in Walt Disney Pictures\' 32nd animated feature film "The Lion King" (1994).  The character is voiced by English actor Jeremy Irons, while his singing voice is provided by both Irons and American actor Jim Cummings, the latter of whom was hired to replace Irons when the former damaged his singing voice.  Subsequently, Scar makes minor appearances in the film\'s sequel " "(1998) and "The Lion King 1½ "(2004), in both of which he is voiced entirely by Cummings, as well as appearing in the Broadway musical adaptation of the film, in which the role of Scar was originated by American actor John Vickery.', 'Aladdin (Disney character) | Aladdin is a fictional character and the protagonist of Disney\'s 1992 animated feature film "Aladdin", and its two direct-to-video sequels "The Return of Jafar" (1994) and "Aladdin and the King of Thieves" (1996).  He also stars in the animated television series based on the film.  In all animated productions, Aladdin is voiced by American actor Scott Weinger, while his singing voice is provided by Brad Kane.  Mena Massoud is set to play a live-action version of the character in a live action adaptation of the 1992 film.', 'Simba | Simba is a fictional character who appears in Disney\'s "The Lion King" franchise.  Introduced in Walt Disney Animation\'s 32nd animated feature film "The Lion King" (1994), the character subsequently appears in its sequels "" (1998) and "The Lion King 1½" (2004).', 'Eye of the Leopard | Eye Of The Leopard, is a 2006 nature documentary film by National Geographic Channel that shows the journey, life, and growth of a young leopard cub named "Legadema".  The film is narrated by Jeremy Irons, who also voiced Scar in Disney\'s 1994 animated film "The Lion King".  Irons would later narrate "The Last Lions", a 2011 National Geographic documentary film.', 'The Lion King Celebration | The Lion King Celebration was a parade based on the animated film "The Lion King".  It was designed to tell story of Simba, the protagonist of "The Lion King", as if it were a tale passed down in Africa for generations.  Its parade featured six floats designed around different aspects of Africa, dancers dressed in animal costumes and a Pride Rock float featuring Simba and Nala.  The parade ran at Disneyland from June 1, 1994 to June 1, 1997, after which four of the floats were moved to Disney\'s Animal Kingdom for the Festival of the Lion King show.', 'The Madness of King Scar | "The Madness of King Scar" is a song written by composer Elton John and lyricist Tim Rice, which premiered in the musical "The Lion King", a stage adaptation of Disney\'s 1994 animated film of the same name.  Originally recorded and storyboarded for the movie, it was removed from the final version.  Media outlets believed the decision to exclude the song was based on its explicit references to sexuality.  "The Madness of King Scar" had been added to the musical along with two other songs.  It is one of two tracks that more prominently features vocals from the character Nala.  The title is a reference to the 1994 film "The Madness of King George".', 'The Lion King (2019 film) | The Lion King is an upcoming American computer-animated epic musical drama film, directed and co-produced by Jon Favreau, produced by Walt Disney Pictures, and written by Jeff Nathanson.  It is the remake of Disney\'s 1994 animated film of the same name and inspired in part by William Shakespeare\'s "Hamlet".  The film stars the voices of Donald Glover, James Earl Jones, Billy Eichner, Seth Rogen, John Oliver, Alfre Woodard, John Kani.  It is set to be released on July 19, 2019.', 'Moira Kelly | Moira Kelly (born March 6, 1968) is an American actress.  She is best known for portraying Kate Moseley in the 1992 film "The Cutting Edge", as well as single mother Karen Roe on the teen drama "One Tree Hill".  She is also known for playing the role of Donna Hayward in "", replacing Lara Flynn Boyle in the prequel to the 1990 TV series "Twin Peaks".  Other roles include Dorothy Day in "", White House media consultant Mandy Hampton in the first season of "The West Wing", and the voice of Simba\'s love interest Nala in "The Lion King" and its sequel "".  She also played Hetty Kelly and Oona O\'Neill in "Chaplin".']
+
+## Generated Outputs
+### reasoning
+The claim states that a French star of The Cutting Edge voiced the character Nala in an animated 1994 film. From the notes and context, it is clear that Moira Kelly is the actress who starred in The Cutting Edge (1992) and voiced the adult lioness character Nala in Disney's 1994 animated film The Lion King. However, Moira Kelly is American, not French. This is an important factual correction to the claim. The animated film referred to is The Lion King (1994). Therefore, the accurate version is that the American actress Moira Kelly, who starred in The Cutting Edge, voiced Nala in The Lion King (1994).
+
+### new_notes
+['Moira Kelly, an American actress, starred in the 1992 film The Cutting Edge.', "Moira Kelly provided the voice for the adult lioness character Nala in Disney's 1994 animated film The Lion King.", 'Nala is a fictional lioness character introduced in The Lion King (1994).', 'Moira Kelly is American, not French.']
+
+### titles
+['Moira Kelly', 'Nala (Disney)', 'The Lion King (1994 film)']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Moira Kelly', 'The Lion King']. Documents remaining to be retrieved: ['The Cutting Edge'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The kind of dog Banana Joe V Tani Kazari is and Villanuco de Las Encartaciones are not both breeds of dog.
+
+### notes
+['The Villanuco de Las Encartaciones is a recognized Spanish breed of dog from the Las Encartaciones region.', 'Banana Joe V Tani Kazari is an individual toy Affenpinscher dog that won Best In Show at the 2013 Westminster Kennel Club Dog Show.', 'Affenpinscher is a recognized breed of dog, but Banana Joe V Tani Kazari is a specific dog, not a breed.', 'Banana Joe V Tani Kazari is an individual toy Affenpinscher dog, not a breed.', 'Affenpinscher is a recognized breed of dog.', 'The Villanuco de Las Encartaciones is a recognized Spanish breed of dog from the Las Encartaciones region.', 'The Villanuco de Las Encartaciones is a recognized Spanish breed of dog from the Las Encartaciones region.', 'Banana Joe V Tani Kazari is an individual toy Affenpinscher dog that won Best In Show at the 2013 Westminster Kennel Club Dog Show.', 'Affenpinscher is a recognized breed of dog, but Banana Joe V Tani Kazari is a specific dog, not a breed.']
+
+### context
+['Banana Joe V Tani Kazari | GCH Banana Joe V Tani Kazari, also known as Joe, is a (2017)-(2007)-((11)<(03)or(11)==(03)and(30)<(30)) year old toy Affenpinscher, that won Best In Show at the 137th Westminster Kennel Club Dog Show on February 12, 2013.  Banana Joe was the first of his breed to win Best in Show at Madison Square Garden.  This was his last show, and following it Joe went home to the Netherlands to be with his owner Mieke Cooijmans.', 'Villanuco de Las Encartaciones | The Villanuco de Las Encartaciones (Basque: "Enkarterriko billanuko" , Cantabrian: "Villanucu", English: Little Villein of Las Encartaciones ) is a Spanish breed of dog typical of the region of Las Encartaciones (Biscay), Cantabria and northern Burgos (Spain).', 'Villano de las Encartaciones | The Villano de Las Encartaciones (Basque: "Enkarterriko billano" , Cantabrian: "Villanu", English: Villein of las Encartaciones ) is a Spanish working dog originated in Las Encartaciones, a comarca of the province of Biscay, in the Basque country, eastern Cantabria and northern Burgos.  There are less than 100 of them in existence.  The Villano derived from the Spanish Bulldog, of which it represents a lighter, faster and more agile version.  The dog is used to catch Monchina cattle, which are raised in a feral state in northern Spain.  The Villano is also used for boar hunting given its qualities as a catch dog.  Males stand 60 to 65\xa0cm at the shoulder and weigh up to 35\xa0kg.', 'Miniature Schnauzer | The Miniature Schnauzer is a breed of small dog of the Schnauzer type that originated in Germany in the mid-to-late 19th century.  Miniature Schnauzers developed from crosses between the Standard Schnauzer and one or more smaller breeds such as the Poodle and Affenpinscher, as farmers bred a small dog that was an efficient ratting dog.  They are described as "spunky" but aloof dogs, with good guarding tendencies without some guard dogs\' predisposition to bite.  Miniature Schnauzers are recognized in three colors internationally: solid black, black and silver, and a color known as \'salt and pepper\'.  There is a controversial fourth color variant in Miniature Schnauzers, pure white, which is not recognized universally.', 'Asno de las Encartaciones | The Asno de las Encartaciones , Basque: "" , is a breed of small domestic donkey from the western part of the autonomous community of the Basque Country, in north-east Spain.  It is named for the comarca of Las Encartaciones (Enkarterri), in the province of Biscay (Bizkaia).  It is the only small donkey breed of Spain, and resembles the Gascon donkey, now a sub-type of the Pyrenean donkey.  The Asno de las Encartaciones is critically endangered, and is protected by conservation measures.', 'Hypoallergenic dog breed | The term hypoallergenic dog breed is commonly used to refer to a dog breed (or crossbreed) that is more compatible with allergic people than other breeds.  However, prominent allergen researchers have claimed that there is no basis to the claims that certain dog breeds are hypoallergenic and, while allergen levels vary among individual dogs, the breed is not a significant factor.', 'Laekenois dog | The Laekenois is a breed of dog, sometimes classified as a variety of the Belgian Shepherd rather than as a separate breed.  "Laekenois" is pronounced .  This breed is not fully recognized in the United States.  However, they can be shown in Britain, Canada, Australia, and throughout Europe, along with all three of the closely related breeds which share a heritage with the Laekenois: the Tervuren, the Malinois, and the Groenendael, the last being shown in the U.S. as the Belgian Sheepdog.', 'Affenpinscher | The Affenpinscher , also known as the Monkey Terrier, is a terrier-like toy breed of dog.', 'Malinois dog | The Malinois is a medium-to-large breed of dog, sometimes classified as a variety of the Belgian Shepherd dog rather than as a separate breed.  The name "Malinois" is derived from Malines, the French name for the breed\'s city of origin.', 'List of kennel clubs | A Kennel Club (known as a Kennel Council or Canine Council in some countries) is an organization for canine affairs that concerns itself with the breeding, showing and promotion of more than one breed of dog.  All-encompassing kennel clubs are also referred to as \'all-breed clubs\', although "all" means only those breeds that they have decided to recognize, and "breed" means purebred dogs, not including dog hybrids and crossbreeds or mixed-breed dogs.  A club that handles only one breed is known as a breed club.']
+
+## Generated Outputs
+### reasoning
+The claim states that Banana Joe V Tani Kazari and Villanuco de Las Encartaciones are not both breeds of dog. From the notes and context: Banana Joe V Tani Kazari is an individual dog, specifically a toy Affenpinscher, which is a recognized breed. Villanuco de Las Encartaciones, on the other hand, is explicitly described as a recognized Spanish breed of dog from the Las Encartaciones region. Hence, Villanuco de Las Encartaciones is a breed, while Banana Joe V Tani Kazari is a single dog, not a breed. Therefore, the claim that they are not both breeds is correct. The key distinction is that Banana Joe V Tani Kazari is a specimen of a breed (Affenpinscher), not a breed itself.
+
+### new_notes
+['Banana Joe V Tani Kazari is an individual toy Affenpinscher dog, not a breed.', 'Affenpinscher is a recognized breed of dog.', 'The Villanuco de Las Encartaciones is a recognized Spanish breed of dog from the Las Encartaciones region.']
+
+### titles
+['Banana Joe V Tani Kazari', 'Villanuco de Las Encartaciones', 'Affenpinscher']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Affenpinscher', 'Villanuco de Las Encartaciones']. Documents remaining to be retrieved: ['German Pinscher'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

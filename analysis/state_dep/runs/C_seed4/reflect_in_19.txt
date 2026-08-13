@@ -1,0 +1,109 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will receive two fields as input: `claim` and `notes`. Your task is to generate a `query` that can be used to fact-check the given claim based on the information in the notes.
+
+Input Format:
+- `claim`: A factual statement or assertion that may include multiple components which require validation.
+- `notes`: A list of sentences or facts extracted from multiple documents, containing relevant information related to the claim, often repeating or overlapping. These notes contain key domain-specific factual details needed to verify parts or all of the claim.
+
+Output:
+- Produce a `query` which is a concise, precise, and fact-checking question that targets the key points necessary to verify the claim accurately.
+- The `query` should help retrieve or verify all critical entities, relationships, and attributes referenced in the claim.
+- The query typically includes explicit comparisons, clarifications of terms (e.g., correcting taxonomy or genre), or confirmations of data (e.g., number of members, species counts, release years).
+- The query should integrate multiple relevant pieces of information from the notes, especially when the claim includes compound facts or comparisons.
+
+Key Points and Domain-Specific Details to Consider:
+1. Claims may involve multiple entities or concepts such as bands, albums, taxonomy (e.g., genus vs. subfamily), or counts (number of members, species).
+2. Claims might incorrectly assert facts that require correction or disambiguation (e.g., mislabeling taxonomic rank, misattributing an album to a band).
+3. Notes may include overlapping or repetitive information, multiple entities related to the claim or the same entity represented differently (including clarifications or corrections).
+4. Your query should explicitly reference the key entities or concepts (e.g., band names, album names, taxonomic names) and the relationships being verified (such as formation years, genre, member counts, species counts).
+5. When estimating quantities or comparisons (e.g., "more members than," "more species than"), your query should explicitly ask to verify those comparisons.
+6. Include clarifying questions when the claim involves ambiguous or misclassified terminology (e.g., "Is Caesalpinioideae a genus or a subfamily?").
+7. The goal of the query is to retrieve key missing or partially retrieved gold documents mentioned for verification, ensuring a comprehensive check.
+
+Generalizable Strategy:
+- Decompose the claim into its individual factual components.
+- Identify any potential misconceptions or terminology errors.
+- Cross-reference related information in the notes.
+- Formulate the query to explicitly target verifying these components together, including comparisons or categorical clarifications as needed.
+- Ensure the query is suitable for retrieving the critical domain-specific documents or facts necessary to confirm or refute the entire claim.
+
+Example Template for Queries:
+- "What is the [property] of [entity1], and how does it compare to the [property] of [entity2], especially regarding [specific claim detail]?"
+- "Is [entity] correctly classified as [category], and what are the relevant facts about [property1], [property2], etc.?"
+- "Did [entity1] and [entity2] share [attribute] such as formation year or genre, and which entity released [album/song]?"
+
+Your output should be a single, clear, and fact-check oriented query designed to retrieve or confirm all critical facts relevant to the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The actor who starred in a main role on A Lua Me Disse received the Golden Globe nomination for playing the lead role of "The King of Cocaine".
+
+### notes
+['A Lua Me Disse starred Adriana Esteves and Wagner Moura in main roles.', 'No mention of Golden Globe nominations for the cast of A Lua Me Disse.', "No evidence of a role called 'The King of Cocaine' related to Golden Globe nominations among listed actors.", 'Actors with Golden Globe nominations mentioned in context do not overlap with cast of A Lua Me Disse.', 'Adriana Esteves and Wagner Moura starred in main roles on A Lua Me Disse but have no documented Golden Globe nominations.', "No actor from A Lua Me Disse is linked to a Golden Globe nomination for a role called 'The King of Cocaine'.", "Several actors have Golden Globe nominations for other roles, none overlap with the cast of A Lua Me Disse or the role 'The King of Cocaine'.", 'Adriana Esteves and Wagner Moura are the main stars of A Lua Me Disse, with no Golden Globe nominations.', "No evidence links any A Lua Me Disse cast member to a Golden Globe nomination for the role of 'The King of Cocaine'.", "Several actors have Golden Globe nominations for other roles but do not relate to A Lua Me Disse or the role 'The King of Cocaine'."]
+
+## Generated Outputs
+### reasoning
+The claim states that the actor who played a main role in "A Lua Me Disse" was nominated for a Golden Globe for portraying "The King of Cocaine." To verify this, we need to identify the main actor(s) in "A Lua Me Disse," confirm whether any of these actors were nominated for a Golden Globe, and specifically check if the nomination was for playing "The King of Cocaine." These points involve verifying the cast of the show, Golden Globe nomination records for those actors, and the character named "The King of Cocaine" or similar roles associated with such a title.
+
+### query
+Who were the main actors in "A Lua Me Disse," and did any of them receive a Golden Globe nomination for playing the lead role known as "The King of Cocaine"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['A Lua Me Disse']. Documents remaining to be retrieved: ['Pablo Escobar', 'Wagner Moura'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Ellesmere Port Town Football Club are currently members of the league, whose current principal sponsor is the Football Conference, that Ford Motors F.C. is a part of.
+
+### notes
+['Ellesmere Port Town F.C. currently play in West Cheshire League Division Two.', 'Ford Motors F.C. compete in the West Cheshire Association Football League.', 'No evidence that the West Cheshire League is sponsored by the Football Conference.', 'Football Conference is a separate higher-level league with different clubs.', 'Ellesmere Port Town F.C. and Ford Motors F.C. do not appear to be in the same league sponsored by the Football Conference.', 'Ellesmere Port Town F.C. currently play in West Cheshire League Division Two.', 'Ford Motors F.C. compete in the West Cheshire Association Football League.', 'The Football Conference is a separate league at a higher competitive level and sponsors different clubs.', 'There is no evidence that the West Cheshire League is sponsored by the Football Conference.', 'Ellesmere Port Town F.C. and Ford Motors F.C. are not members of the Football Conference.', 'Ellesmere Port Town F.C. currently play in West Cheshire League Division Two.', 'Ford Motors F.C. compete in the West Cheshire Association Football League.', "The West Cheshire Association Football League's current principal sponsor is Carlsberg.", 'Football Conference is a separate, higher-level football league with different clubs.', 'There is no evidence that the West Cheshire League is sponsored by the Football Conference.', 'Ellesmere Port Town F.C. and Ford Motors F.C. are not members of the Football Conference.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that Ellesmere Port Town Football Club and Ford Motors F.C. are members of a league currently sponsored by the Football Conference, and that Ford Motors F.C. belongs to this league. According to the notes, Ellesmere Port Town F.C. plays in the West Cheshire League Division Two, while Ford Motors F.C. competes in the West Cheshire Association Football League, potentially indicating they are in related leagues but not necessarily the same. Additionally, there is no evidence that the West Cheshire League is sponsored by the Football Conference, which operates as a separate higher-level league with different clubs. Ellesmere Port Town F.C. and Ford Motors F.C. are not part of a league sponsored by the Football Conference. Therefore, the claim appears to be inaccurate regarding league membership and sponsorship. The query should confirm the league affiliations of both clubs and whether the Football Conference sponsors any of the leagues they participate in.
+
+### query
+Are Ellesmere Port Town Football Club and Ford Motors F.C. members of the same league, and is that league currently sponsored by the Football Conference? Additionally, which leagues do Ellesmere Port Town F.C. and Ford Motors F.C. each compete in, and does the Football Conference sponsor these leagues?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Ellesmere Port Town F.C.', 'Ford Motors F.C.', 'West Cheshire Association Football League']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+The film that the father of the star of Sultanat starred in in 1970 was Bombay Talkie.
+
+### notes
+['Sultanat (2014 film) is a Pakistani film produced by Aslam Bhatti, who also acts as the lead.', 'Bombay Talkie (1970) is a film by Merchant Ivory Productions, unrelated to Bombay Talkies studio.', 'No information connects the father of the star of Sultanat to the film Bombay Talkie or any film in 1970.', 'No information is available about the father of Aslam Bhatti, the star of Sultanat, acting in any film in 1970.', 'Bombay Talkie (1970) by Merchant Ivory Productions does not involve any known relatives of the Sultanat lead actor.', 'The claim cannot be verified or supported based on current data.', 'Aslam Bhatti is the lead actor in Sultanat (2014) with no available information about his father acting in any film.', 'Bombay Talkie (1970) was produced by Merchant Ivory Productions and is unrelated to the older Bombay Talkies studio.', 'No records connect the father of Sultanat’s star to Bombay Talkie or any 1970 film.', 'The claim that the father of the star of Sultanat acted in Bombay Talkie (1970) is unverified based on current data.']
+
+## Generated Outputs
+### reasoning
+The claim states that the father of the star of the film Sultanat starred in the 1970 film Bombay Talkie. From the notes, we know that Sultanat (2014) is a Pakistani film produced by Aslam Bhatti, who also acts as the lead, which implies he is the star. There is a 1970 film titled Bombay Talkie, but there is no information confirming that Aslam Bhatti’s father was involved in that film or any other film in 1970. Therefore, we need to verify if the father of Aslam Bhatti appeared in the 1970 film Bombay Talkie or any film from that year.
+
+### query
+Did the father of Aslam Bhatti, the star of the 2014 film Sultanat, act in the 1970 film Bombay Talkie or any other film made in 1970?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Jennifer Kendal']. Documents remaining to be retrieved: ['Karan Kapoor', 'Sultanat'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

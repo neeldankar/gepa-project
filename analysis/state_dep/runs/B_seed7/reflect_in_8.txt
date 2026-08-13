@@ -1,0 +1,109 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:  
+You will be given two input fields: `claim` and `notes`. Your goal is to produce a single output field called `query`.  
+
+- The `claim` is a factual statement that may involve multiple entities, events, or comparisons.  
+- The `notes` are observations and extracted information relevant to the claim. These notes often highlight missing data, ambiguities, or context needed to verify or assess the claim. They may also reference specific entities, works (e.g., films, books, bands), or people relevant to the claim.  
+
+Your primary job is to generate a clear, focused, and precise `query` that will retrieve the necessary evidence or sources to verify the claim. The query should:  
+
+1. Identify the key entities, roles, or relationships in the claim that require further information to confirm or refute.  
+2. Address ambiguities noted in the `notes` — for example, unclear identities, missing award counts, missing cast information, or unclear film adaptation connections.  
+3. Include comparative elements if the claim involves comparisons (e.g., number of awards won by two persons).  
+4. Target the retrieval of documents or information that will help establish the truthfulness of the claim by filling knowledge gaps noted in the `notes`.  
+5. Avoid redundant or overly broad questions; focus on the missing critical pieces of information needed for verification.  
+
+Niche or domain-specific information to consider:  
+- When the claim involves titles (films, books, bands), ensure these are explicitly mentioned in the query if relevant.  
+- When multiple persons could fit a role (e.g., "German Frank Sinatra" could refer to multiple people), the query should seek disambiguation.  
+- When claims involve connecting roles (e.g., an actor who starred in one film also portraying a character in another), the query should retrieve actor names, roles, and film adaptation connections.  
+- When verifying director roles or similar, queries should explicitly ask for a person's involvement and their professional recognition.  
+- Data such as award counts or comparisons require explicit delineation in the query to retrieve statistics or lists.  
+
+Generalizable Strategy:  
+- Use the `notes` to identify knowledge gaps or ambiguities critical to assessing the claim.  
+- Construct queries that directly request the missing key information, including names, roles, relationships, or data points needed for verification.  
+- Incorporate both entities and relationships or attributes mentioned in the claim to produce effective retrieval queries.  
+- Keep the query concise but sufficiently descriptive to retrieve documents that can fully support or challenge the claim.  
+- When multiple key entities appear, the query should connect them logically in the question (e.g., by comparison or by their joint involvement).  
+
+Example approach:  
+If the claim compares award wins between two ambiguous figures, the query should identify the figures clearly and seek award counts for each.  
+If the claim states an actor starred in a film and played a specific role in another film, the query should request actor names in the first film and any link to the specified role or film connected to the novel mentioned.  
+If the claim involves co-directors, the query should seek the identity of the co-director(s) and whether they have directorial recognition.  
+
+Summary:  
+Produce a targeted, fact-seeking query that retrieves key missing information needed to verify the factual claim, utilizing the insights and knowledge gaps identified in the notes, ensuring precise entity reference and relevant relationships or comparisons.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+A participant in the summer 2013 Big Ten Conference football season was led by Kevin Reece Wilson. He is the current offensive coordinator at Ohio State.
+
+### notes
+['Kevin Reece Wilson was the head coach of the Indiana Hoosiers during the 2013 Big Ten Conference season.', 'Indiana University played in the Big Ten Conference during the 2013 football season.', 'Kevin Wilson is currently the offensive coordinator at Ohio State University.', 'Kevin Wilson served as the head coach at Indiana University Bloomington from 2011 to 2016, including the 2013 football season.', 'Indiana University was a participant in the Big Ten Conference during the 2013 football season, specifically in the Leaders Division.', 'Kevin Wilson is currently the offensive coordinator at Ohio State University as of the latest available information.', 'Kevin Reece Wilson was the head coach of the Indiana Hoosiers football team during the 2013 Big Ten Conference season.', 'Indiana University participated in the Big Ten Conference football season in 2013.', 'Kevin Wilson has been the offensive coordinator at Ohio State University as of the most recent information available.', "Kevin Wilson served as Indiana's head coach from 2011 to 2016, including the 2013 season."]
+
+## Generated Outputs
+### reasoning
+The claim involves identifying a participant in the summer 2013 Big Ten Conference football season who was led by Kevin Reece Wilson. Additionally, it states Kevin Reece Wilson is the current offensive coordinator at Ohio State. To verify the claim, it is necessary to establish which Big Ten football team Kevin Reece Wilson was affiliated with in 2013 and confirm his leadership role. Moreover, confirming if he currently serves as Ohio State's offensive coordinator will validate the second part of the claim. The key points are Kevin Reece Wilson’s role and team in 2013 as well as his current position at Ohio State.
+
+### query
+What team did Kevin Reece Wilson coach or lead during the summer 2013 Big Ten Conference football season, and what was his role? Is Kevin Reece Wilson currently the offensive coordinator at Ohio State University football team?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['2013 Indiana Hoosiers football team', 'Kevin Wilson (American football)']. Documents remaining to be retrieved: ['2013 Big Ten Conference football season'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The location that houses the M7 Aerospace LP company,  and Yakutat Airport are in the same country.
+
+### notes
+['M7 Aerospace LP headquarters is located in San Antonio, Texas, United States.', 'Yakutat Airport is located in Yakutat, Alaska, United States.', 'M7 Aerospace LP is headquartered in San Antonio, Texas, United States.', 'Yakutat Airport is located in Yakutat, Alaska, United States.', 'Texas and Alaska are both states within the United States.', 'M7 Aerospace LP is headquartered in San Antonio, Texas, United States.', 'Yakutat Airport is located in Yakutat, Alaska, United States.', 'Texas and Alaska are both states within the United States.']
+
+## Generated Outputs
+### reasoning
+The claim states that M7 Aerospace LP company and Yakutat Airport are located in the same country. The notes indicate that M7 Aerospace LP's headquarters is in San Antonio, Texas, United States, and Yakutat Airport is in Yakutat, Alaska, United States. Both Texas and Alaska are states within the United States. Therefore, both locations are within the same country, the United States. To confirm this claim, the key information required is the country location for both entities and whether both are indeed in the United States.
+
+### query
+What country is M7 Aerospace LP headquartered in, and in which country is Yakutat Airport located?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['M7 Aerospace', 'Yakutat Airport']. Documents remaining to be retrieved: ['San Antonio International Airport'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Relient K vocalist, who wrote Rebuild with Jon Foreman of Switchfoot, and George Thorogood have the profession of musician in common.
+
+### notes
+["Matt Thiessen is the vocalist of Relient K and co-writer of 'Rebuild' with Jon Foreman.", 'Jon Foreman is the lead singer and songwriter of Switchfoot.', 'George Thorogood is widely recognized as a musician, specifically a blues rock singer and guitarist.', "Matt Thiessen is the musician and lead vocalist of Relient K and co-writer of 'Rebuild' with Jon Foreman.", 'George Thorogood is recognized as a blues rock musician, singer, and guitarist.', 'Both Matt Thiessen and George Thorogood share the profession of musician.', "Matt Thiessen is the vocalist of Relient K and co-writer of 'Rebuild' with Jon Foreman of Switchfoot.", 'George Thorogood is an American musician, singer, and songwriter.', 'Both Matt Thiessen and George Thorogood share the profession of musician.']
+
+## Generated Outputs
+### reasoning
+The claim involves identifying the profession of two individuals: the Relient K vocalist who co-wrote "Rebuild" with Jon Foreman of Switchfoot, and George Thorogood. The claim asserts that they share the profession of musician. To verify this, I need to confirm that the Relient K vocalist did indeed co-write "Rebuild" with Jon Foreman, confirm the identity of that vocalist, and verify that both this person and George Thorogood have the profession of musician.
+
+### query
+Who is the vocalist of Relient K who co-wrote the song "Rebuild" with Jon Foreman of Switchfoot, and what is the profession of both that vocalist and George Thorogood?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['George Thorogood', 'Matt Thiessen', 'Rebuild (song)']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

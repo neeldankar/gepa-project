@@ -1,0 +1,129 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:  
+You are tasked with generating a concise, precise natural language query to verify the factual accuracy of a given claim using a provided set of notes. The claim will be a declarative statement related to specific entities (e.g., persons, films, albums, dog breeds, biological taxa) and their relationships or attributes. The notes are factual sentences drawn from relevant documents, potentially providing supporting, contradictory, or partial evidence about the claim.
+
+Your goal is to create a query that directly targets the key factual elements of the claim, framed in a way that facilitates efficient and effective fact-checking or document retrieval against the notes.
+
+Input Format:  
+- `claim`: A textual factual assertion involving one or more entities, their attributes, or relationships. For example, the claim might state that an actor starred in certain productions, that a screenplay was based on a novel, that a musical artist covered a specific song on an album, or that one botanical taxon contains more species than another.  
+- `notes`: A list of text strings containing relevant factual information from related documents that can support or refute the claim, including clarifications about names, roles, taxonomy, awards, or factual corrections.
+
+Output Format:  
+- `query`: A concise, clear natural language question that forms a targeted and precise interrogative about the truthfulness of the claim, reflecting all crucial entities, attributes, and relationships in the claim.
+
+Detailed Guidance and Domain-Specific Knowledge:  
+
+1. **Focus on Core Entities and Relationships:**  
+   Identify the primary entities mentioned in the claim (e.g., names of actors, film titles, musicians, albums, songs, dog breeds, botanical taxa) and the factual relationships or attributes asserted about them (e.g., starring roles, screenplay authorship and source material, Nobel Prize recipients, dog breed recognition, taxonomic rank and species counts). The query must explicitly mention these to enable precise fact-checking.
+
+2. **Incorporate All Essential Claim Components:**  
+   Ensure the query covers every key element in the claim — all entities, any dates, qualifiers (e.g., nationality, roles), and all relationships or properties asserted. For example, if the claim involves a person being both a commandant and a negotiator, the query should ask whether the same person held both roles.
+
+3. **Leverage Evidence from Notes to Inform Query Phrasing:**  
+   Use information from the notes to disambiguate or clarify references from the claim. For example:  
+   - If the notes reveal a naming confusion (e.g., "The Night Hunter" vs. "The Night of the Hunter"), the query should correct this and explicitly question the known correct title and its screenplay authorship.  
+   - If the notes state that a term in the claim is taxonomically incorrect (e.g., a "subfamily" being called a "genus"), the query should reflect the correct scientific understanding and ask whether the claim’s taxonomic assertions are accurate.  
+   - When the claim mentions potential overlapping or mutually exclusive honors (e.g., winning a Nobel Prize), the query should clearly query the status of each individual.
+
+4. **Explicitly Handle Negations, Contradictions, and Misattributions:**  
+   If the claim is negative or involves a contradiction (such as "the writer and Nelly Sachs have not both won the Nobel Prize"), reformulate the query into a clear yes/no or confirmatory question that directly probes the truth of both parts. Likewise, if the claim confuses names or roles, the query should ask whether those attributions are correct or if they belong to different people.
+
+5. **Maintain Clarity, Precision, and Conciseness:**  
+   Avoid verbosity or ambiguity. The query must be straightforward, enabling quick document retrieval and accurate fact verification. Use proper names, titles, and terms rather than vague pronouns or ambiguous phrases.
+
+6. **Generalizable Strategy for Query Construction:**  
+   - Parse the claim thoroughly to extract all named entities, attributes, relationships, and modifiers (e.g., dates, nationalities, roles).  
+   - Cross-reference these elements with the notes to identify any clarifications, corrections, or contradictions.  
+   - Reformulate the claim as a direct question that encompasses the entire factual scope asserted, reflecting correct nomenclature and pointing out ambiguous or potentially incorrect components implicitly.
+
+7. **Domain-Specific Fact Knowledge to Consider:**  
+   - **Film and Theater:** Confirm actor identities, production titles (correct titles vs. mistaken ones), screenplay authorship, and source materials (e.g., novels).  
+   - **Literary Awards:** Confirm Nobel Prize history for named individuals, especially in possible overlapping claims.  
+   - **Music:** Confirm album releases, cover songs, and artists involved.  
+   - **Dog Breeds and Individual Dogs:** Confirm breed recognition and identification of specific show dogs or breed characteristics.  
+   - **Botany and Taxonomy:** Recognize correct taxonomic ranks (e.g., subfamily vs. genus), typical species counts, and correct scientific nomenclature.
+
+Examples of Typical Claims and Queries:  
+- Did Michael York, an English actor, star in both "Hollywood Goes Classical" and "Lethal Obsession"?  
+- Was the screenplay of "The Night of the Hunter" written by James Agee and based on a novel by Davis Grubb?  
+- Did Nelly Sachs and James Agee both win the Nobel Prize in Literature?  
+- Is Caesalpinioideae a genus of flowering plants, and does it contain more species than the genus Achimenes?  
+- Was Rudolf Höss the longest-serving commandant of Auschwitz, and did Rainer Hoss’s grandfather conduct negotiations with Zyklon B suppliers there?
+
+By following these directives and embedding domain-specific context, the assistant will generate high-quality query questions that encapsulate the claim's facts effectively for fact verification against the notes, reduce confusion from ambiguous or incorrect claim elements, and support thorough document retrieval.
+
+Summary Instruction:  
+Given a `claim` and related `notes`, produce a natural language question that succinctly and precisely probes the correctness of every key factual element within the claim, incorporating all critical entities, their attributes, and relationships as clarified or informed by the notes, making the query optimal for document retrieval and factual verification tasks.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Fàn County falls under the jurisdiction of a city in  Henan Province. That city and Pu'er City are located in the same country.
+
+### notes
+["Pu'er City is a prefecture-level city located in Yunnan Province, China.", 'Henan Province is a province in China.', 'Fàn County is under the jurisdiction of a city in Henan Province.', "Both the city governing Fàn County and Pu'er City are located in China.", "Pu'er City is a prefecture-level city located in Yunnan Province, China.", 'Henan Province is a province in China.', 'Fàn County is under the jurisdiction of a city in Henan Province.', "Both the city governing Fàn County and Pu'er City are located in China.", 'Fàn County is under the jurisdiction of a city in Henan Province, China.', 'Henan Province is a province in China.', "Pu'er City is a prefecture-level city located in Yunnan Province, China.", "Both the city governing Fàn County and Pu'er City are located in China."]
+
+## Generated Outputs
+### reasoning
+The claim states that Fàn County is within a city’s jurisdiction in Henan Province, and that this city and Pu'er City are located in the same country. The notes confirm that Fàn County is governed by a city in Henan Province, which is a province in China, and that Pu'er City is a prefecture-level city located in Yunnan Province, China. Since both Henan and Yunnan provinces are in China, the governing city of Fàn County and Pu'er City indeed share the same country. Therefore, the claim is consistent with the notes.
+
+### query
+Is Fàn County governed by a city in Henan Province, China, and are both that city and Pu'er City, which is located in Yunnan Province, located in the same country of China?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ["Pu'er City"]. Documents remaining to be retrieved: ['Fan County', 'Puyang'].
+
+
+
+# Example 2
+## Inputs
+### claim
+An actor that was in the Wonder Woman (2017 film) of the action adventure genre, performed in Anomalisa after the premier of Fargo.
+
+### notes
+["David Thewlis acted in the 2017 'Wonder Woman' film.", "David Thewlis provided voice work in the 2015 film 'Anomalisa'.", "David Thewlis appeared as antagonist V.M. Varga in the third season of 'Fargo' (2017).", "'Anomalisa' (2015) was released before the premiere of 'Fargo' season 3 in 2017.", 'David Thewlis acted in the 2017 "Wonder Woman" film.', 'David Thewlis provided voice work in the 2015 film "Anomalisa."', '"Fargo" season 3, featuring David Thewlis as antagonist V.M. Varga, premiered in April 2017.', '"Anomalisa" (2015) was released before the premiere of "Fargo" season 3 (2017).', "David Thewlis acted in the 2017 'Wonder Woman' film.", "David Thewlis provided voice work in the 2015 film 'Anomalisa'.", "David Thewlis appeared as antagonist V.M. Varga in the third season of 'Fargo' (2017).", "'Fargo' season 3 premiered in April 2017.", "'Anomalisa' was released in December 2015, before the premiere of 'Fargo' season 3."]
+
+## Generated Outputs
+### reasoning
+The claim involves an actor who appeared in the 2017 action adventure film "Wonder Woman" and also performed in the film "Anomalisa," with the additional temporal detail that their participation in "Anomalisa" occurred after the premiere of the TV series "Fargo." To verify this, we need to confirm if there is at least one actor who starred in both "Wonder Woman" (2017) and "Anomalisa" and that the timeline aligns with "Anomalisa" being performed after "Fargo" premiered.
+
+### query
+Did any actor who appeared in the 2017 action adventure film "Wonder Woman" also perform in "Anomalisa" after the premiere of "Fargo"?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['David Thewlis', 'Wonder Woman (2017 film)']. Documents remaining to be retrieved: ['Fargo (TV series)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The actress made her debut in the film by the director who was American. She also starred in The Death and Life of John F. Donovan.
+
+### notes
+['The Death and Life of John F. Donovan is a Canadian drama film directed by Xavier Dolan, who is Canadian, not American.', "Xavier Dolan's film is his English-language debut and does not involve an American director.", "'The Death and Life of John F. Donovan' features actors such as Kit Harington, Natalie Portman, and Jessica Chastain, with no indication of the actress in the claim starring in it.", "No information is found that the actress made her debut in a film directed by an American director or starred in 'The Death and Life of John F. Donovan.'", 'The Death and Life of John F. Donovan is a Canadian film directed by French Canadian director Xavier Dolan, not an American director.', "Xavier Dolan's 'The Death and Life of John F. Donovan' features actors like Kit Harington, Natalie Portman, and Jessica Chastain, with no indication that the actress in the claim starred in it.", 'There is no evidence that the actress made her film debut in a movie directed by an American director.', "The actress did not star in 'The Death and Life of John F. Donovan' according to available casting information."]
+
+## Generated Outputs
+### reasoning
+The claim states that the actress made her debut in a film by an American director and also starred in "The Death and Life of John F. Donovan." The notes clarify that "The Death and Life of John F. Donovan" is directed by Canadian director Xavier Dolan, not an American director. Additionally, the notes do not list the actress among the cast of that film, and there is no information confirming that the actress made her debut in a film by an American director. Therefore, the query should carefully question both the director's nationality in the debut film and whether the actress starred in "The Death and Life of John F. Donovan."
+
+### query
+Did the actress make her film debut in a movie directed by an American director, and did she star in the Canadian film "The Death and Life of John F. Donovan," which was directed by Canadian Xavier Dolan?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['The Death and Life of John F. Donovan']. Documents remaining to be retrieved: ['Amara Karan', 'Wes Anderson'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

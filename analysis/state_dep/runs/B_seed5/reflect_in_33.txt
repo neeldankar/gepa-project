@@ -1,0 +1,134 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given three input fields: `claim` (a factual statement or set of statements), `notes` (a list of supporting or related factual snippets), and `context` (a list of longer documents or entries relevant to the claim), produce two output fields:
+
+1. `new_notes`: a distilled, concise set of factual notes extracted, merged, or summarized from the input `notes` and `context` that directly support or refute the claim parts. These should exclude redundant or irrelevant details, focusing on verifiable facts that address the claim components. If some parts of the claim lack evidence, explicitly note the absence of supporting evidence in the new notes.
+
+2. `titles`: a list of relevant document or article titles from the input `context` that underpin the factual basis of the claim. This list ideally corresponds to “gold documents” or key references that validate the claim or clarify missing elements. Titles should be accurate and reflect the main supporting source(s) of information.
+
+---
+
+Task details and domain-specific considerations:
+
+- The `claim` may contain multiple factual assertions or subclaims that need to be separately verified or discussed.
+- The `notes` represent extracted facts, often duplicated or partially overlapping, sometimes mentioning relationships, events, dates, or biographical details.
+- The `context` is a broader background containing longer entries (e.g., Wikipedia-style articles) that provide detailed factual evidence.
+- The assistant’s role is to carefully cross-reference `notes` and `context` to identify consistent, reliable information confirming or refuting parts of the claim.
+- The assistant should reason about ambiguities or where evidence is lacking by explicitly acknowledging missing information or contradictory evidence.
+- Summarize or synthesize overlapping `notes` into fewer, clearer `new_notes` that directly support claim verification.
+- The titles in `titles` should represent sources from the context that the assistant implies or explicitly used as authoritative support.
+- This task involves domain knowledge across various fields (e.g., sports history, music biographies, tennis tournaments, academic careers), requiring recognition of domain-specific entities (e.g., player names, team names, event years, professional roles).
+- Maintain focus on factual correctness, detailed validation of claim components, and clarity in presenting evidence.
+- If the claim references specific events (e.g., sports competitions in a given year), ensure the titles include relevant event or season articles.
+- If claim components relate to people’s careers, deaths, or relationships, include both biographical entries and any specialized references to their teachers or affiliations.
+- The assistant should aim to retrieve all critical supporting documents from the context and note when some expected documents remain unreferenced.
+
+---
+
+Recommended generalizable strategy:
+
+- Parse the claim into discrete assertions.
+- Identify matching, supportive, or contradictory facts from `notes`.
+- Cross-validate these facts against the detailed `context` documents.
+- Aggregate and synthesize extracted facts into a set of clear, non-repetitive `new_notes`.
+- List the titles of context documents that best correspond to these core facts in the `titles` field.
+- Explicitly note gaps in evidence or contradictions.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Rhapsody, Op. 1 was written by a male composer. This composer was Hungarian, not Johann Christoph Pepusch.
+
+### notes
+['Johann Christoph Pepusch (1667–1752) was a German-born composer who worked mostly in England, not Hungarian.', 'Rhapsody, Op. 1, Sz. 26, BB 36, is a piano composition by Hungarian composer Béla Bartók finished in 1904.', 'Béla Bartók, the composer of Rhapsody, Op. 1, was male.', 'There is no evidence linking Johann Christoph Pepusch to the composition of Rhapsody, Op. 1.', 'Johann Christoph Pepusch (1667–1752) was a German-born composer who worked mostly in England, not Hungarian.', 'Rhapsody, Op. 1, Sz. 26, BB 36 is a piano composition by Hungarian composer Béla Bartók, finished in 1904.', 'Béla Bartók, the composer of Rhapsody, Op. 1, was male.', 'There is no evidence linking Johann Christoph Pepusch to the composition of Rhapsody, Op. 1.', 'Rhapsody, Op. 1, Sz. 26, BB 36 is a piano composition finished in 1904 by Hungarian composer Béla Bartók.', 'Béla Bartók, the composer of Rhapsody, Op. 1, was male.', 'Johann Christoph Pepusch (1667–1752) was a German-born composer who worked mostly in England and is not linked to Rhapsody, Op. 1.']
+
+### context
+['Johann Christoph Pepusch | Johann Christoph Pepusch (1667 – 20 July 1752), also known as John Christopher Pepusch and Dr Pepusch, was a German-born composer who spent most of his working life in England.', 'Rhapsodies, Op. 79 (Brahms) | The Rhapsodies, Op. 79, for piano were written by Johannes Brahms in 1879 during his summer stay in Pörtschach, when he had reached the maturity of his career.  They were inscribed to his friend, the musician and composer Elisabeth von Herzogenberg.  At the suggestion of the dedicatee, Brahms reluctantly renamed the sophisticated compositions from "Klavierstücke" (piano pieces) to "rhapsodies".', 'Alto Rhapsody | The Alto Rhapsody, Op.  53, is a composition for contralto, male chorus, and orchestra by Johannes Brahms, a setting of verses from Johann Wolfgang von Goethe\'s "".  It was written in 1869, as a wedding gift for Robert and Clara Schumann\'s daughter, Julie.  Brahms scholars have long speculated that the composer may have had romantic feelings for Julie, which he may have integrated into the text and music of the "Alto Rhapsody".  The text, with its metaphysical portrayal of a misanthropic soul who is urged to find spiritual sustenance and throw off the shackles of his suffering, has powerful parallels in Brahms\'s life and character.', 'Rhapsody, Op. 1 (Bartók) | "Rhapsody", Op.  1, Sz.  26, BB 36, is a composition for piano by Hungarian composer Béla Bartók.  It was finished in 1904.  A year later, he wrote a version for piano and orchestra.  The catalogue number of this composition is Op. 1, Sz.  26.  The initial full-length composition for piano eventually received a catalogue number BB 36a, whereas the second version, with piano and orchestra, received a catalogue number BB 36b.', "John Travers (composer) | John Travers (ca. 1703 – June 1758) was an English composer who held the office of Organist to the Chapel Royal from 1737 to 1758.  Before filling several parochial posts in London he had been a choir boy at St. George's Chapel, Windsor and a pupil of Johann Christoph Pepusch.", 'Frederic Austin | Frederic Austin (30 March 187210 April 1952) was an English baritone singer, a musical teacher and composer in the period 1905–30.  He is best remembered for his restoration and production of "The Beggar\'s Opera" by John Gay and Johann Christoph Pepusch, and its sequel, "Polly", in 1920–23.  Austin was the older brother of the composer Ernest Austin (1874–1947).', "Four Pieces for Piano, Op. 119 (Brahms) | The Four Pieces for Piano (German: 'Klavierstücke' ) Op. 119, are four character pieces for piano composed by Johannes Brahms in 1893.  The collection is the last composition for solo piano by Brahms.  Together with the six pieces from Op. 118, Op. 119 was premiered in London in January 1894.", 'Zigeunerweisen | Zigeunerweisen ("Gypsy Airs"), Op.  20, is a musical composition for violin and orchestra written in 1878 by the Spanish composer Pablo de Sarasate.  It was premiered the same year in Leipzig, Germany.  It is based on themes of the Roma people, and in the last section the rhythms of the csárdás; this section uses a theme previously used in Franz Liszt\'s Hungarian Rhapsody No. 13, composed in 1847.', 'Debut-Quadrille | Debut-Quadrille, Op. \xa02, is a quadrille composed by Johann Strauss II.  It was one of four compositions that Strauss had written for his as a composer at the in Hietzing, Vienna in the fall of 1844.  The composition is in standard Viennese quadrille form, with six sections, named: No. 1 Pantalon; No. 2 Été; No. 3 Poule; No. 4 Trénis; No. 5 Pastourelle; No. 6 Finale.', "Six Pieces for Piano, Op. 118 (Brahms) | The Six Pieces for Piano, Op. 118, are some of the most beloved compositions that Johannes Brahms created for solo piano.  Completed in 1893, and dedicated to Clara Schumann, the collection was the penultimate composition to be published during Brahms' lifetime.  It was also his penultimate work composed for piano solo.  Consistent with Brahms' other late keyboard works, Op. 118 is more introspective than his earlier piano pieces, which tended to be more virtuosic in character.  The six pieces are:"]
+
+## Generated Outputs
+### reasoning
+The claim states that Rhapsody, Op. 1 was composed by a male Hungarian composer and specifically that it was not composed by Johann Christoph Pepusch. From the notes and context:
+
+- Johann Christoph Pepusch was a German-born composer who worked mostly in England, not Hungarian. This refutes any attribution of Rhapsody, Op. 1 to Pepusch.
+- Rhapsody, Op. 1, Sz. 26, BB 36 is explicitly identified as a piano composition by Hungarian composer Béla Bartók.
+- Béla Bartók, the composer of Rhapsody, Op. 1, was male.
+- There is no evidence linking Pepusch to this composition.
+- The context explicitly confirms that Rhapsody, Op. 1 (Bartók), Sz. 26, BB 36 was completed in 1904 by Hungarian composer Béla Bartók and that Bartók is male.
+- No contradictory evidence is present.
+
+Hence, the claim is supported by the facts: Rhapsody, Op. 1 was written by Béla Bartók, who was a male Hungarian composer, and not by Pepusch.
+
+### new_notes
+['Johann Christoph Pepusch (1667–1752) was a German-born composer who worked mostly in England, not Hungarian.', 'Rhapsody, Op. 1, Sz. 26, BB 36 is a piano composition by Hungarian composer Béla Bartók, finished in 1904.', 'Béla Bartók, the composer of Rhapsody, Op. 1, was male.', 'There is no evidence linking Johann Christoph Pepusch to the composition of Rhapsody, Op. 1.']
+
+### titles
+['Johann Christoph Pepusch', 'Rhapsody, Op. 1 (Bartók)']
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Béla Bartók', 'Johann Christoph Pepusch', 'Rhapsody, Op. 1 (Bartók)']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+Rhapsody, Op. 1 was written by a male composer. This composer was Hungarian, not Johann Christoph Pepusch.
+
+### notes
+['"Rhapsody, Op. 1" is a piano composition by Béla Bartók, a male Hungarian composer, finished in 1904.', 'Johann Christoph Pepusch was a German-born composer who worked mainly in England and is distinct from Béla Bartók.', 'The claim that the composer of "Rhapsody, Op. 1" was Hungarian and not Pepusch is supported by the fact that Béla Bartók, a Hungarian male composer, wrote it.', '"Rhapsody, Op. 1" is a piano composition completed in 1904 by Béla Bartók, a male Hungarian composer.', 'Béla Bartók is distinct from Johann Christoph Pepusch, who was a German-born composer active mainly in England.', 'Contextual information confirms Johann Christoph Pepusch was German-born and not Hungarian.', 'Bartók\'s "Rhapsody, Op. 1" has catalogue numbers Op. 1, Sz. 26, BB 36a (piano version) and BB 36b (piano and orchestra version).', '"Rhapsody, Op. 1" is a piano composition completed in 1904 by Béla Bartók, a male Hungarian composer.', 'Béla Bartók is distinct from Johann Christoph Pepusch, who was German-born and worked mainly in England.', 'The catalogue numbers for Bartók\'s "Rhapsody, Op. 1" are Op. 1, Sz. 26, BB 36a (piano version) and BB 36b (piano and orchestra version).', 'Johann Christoph Pepusch (1667–1752) was a German-born composer and is not the composer of "Rhapsody, Op. 1."']
+
+### context
+['Johann Christoph Pepusch | Johann Christoph Pepusch (1667 – 20 July 1752), also known as John Christopher Pepusch and Dr Pepusch, was a German-born composer who spent most of his working life in England.', 'Alto Rhapsody | The Alto Rhapsody, Op.  53, is a composition for contralto, male chorus, and orchestra by Johannes Brahms, a setting of verses from Johann Wolfgang von Goethe\'s "".  It was written in 1869, as a wedding gift for Robert and Clara Schumann\'s daughter, Julie.  Brahms scholars have long speculated that the composer may have had romantic feelings for Julie, which he may have integrated into the text and music of the "Alto Rhapsody".  The text, with its metaphysical portrayal of a misanthropic soul who is urged to find spiritual sustenance and throw off the shackles of his suffering, has powerful parallels in Brahms\'s life and character.', "John Travers (composer) | John Travers (ca. 1703 – June 1758) was an English composer who held the office of Organist to the Chapel Royal from 1737 to 1758.  Before filling several parochial posts in London he had been a choir boy at St. George's Chapel, Windsor and a pupil of Johann Christoph Pepusch.", 'Rhapsodies, Op. 79 (Brahms) | The Rhapsodies, Op. 79, for piano were written by Johannes Brahms in 1879 during his summer stay in Pörtschach, when he had reached the maturity of his career.  They were inscribed to his friend, the musician and composer Elisabeth von Herzogenberg.  At the suggestion of the dedicatee, Brahms reluctantly renamed the sophisticated compositions from "Klavierstücke" (piano pieces) to "rhapsodies".', 'Hungarian Rhapsody No. 17 | Hungarian Rhapsody No. 17, S.244/17, in D minor, is the seventeenth Hungarian Rhapsody composed by Franz Liszt for solo piano.  Being one of the later Hungarian Rhapsodies, it was composed and published in 1882.  This piece and the eighteenth rhapsody are the shortest of the Hungarian Rhapsodies, each having a duration of just over three minutes.', 'Hungarian Rhapsody No. 16 | Hungarian Rhapsody No. 16, S.244/16, in A minor, is the sixteenth Hungarian Rhapsody composed by Franz Liszt for solo piano.  Being one of the later Hungarian Rhapsodies, it was composed and published in 1882.  The rhapsody, subtitled "Budapest Munkácsy-Festlichkeiten", has a duration of approximately five minutes and is dedicated to Mihály Munkácsy.', 'Rhapsody, Op. 1 (Bartók) | "Rhapsody", Op.  1, Sz.  26, BB 36, is a composition for piano by Hungarian composer Béla Bartók.  It was finished in 1904.  A year later, he wrote a version for piano and orchestra.  The catalogue number of this composition is Op. 1, Sz.  26.  The initial full-length composition for piano eventually received a catalogue number BB 36a, whereas the second version, with piano and orchestra, received a catalogue number BB 36b.', 'Hungarian Rhapsody No. 4 | Hungarian Rhapsody No. 4, S.244/4, in E-flat major, is the fourth in a set of nineteen Hungarian Rhapsodies composed by Franz Liszt for solo piano.  It was composed in 1847 and published in 1853.', 'Frederic Austin | Frederic Austin (30 March 187210 April 1952) was an English baritone singer, a musical teacher and composer in the period 1905–30.  He is best remembered for his restoration and production of "The Beggar\'s Opera" by John Gay and Johann Christoph Pepusch, and its sequel, "Polly", in 1920–23.  Austin was the older brother of the composer Ernest Austin (1874–1947).', 'Hungarian Rhapsody No. 5 | Hungarian Rhapsody No. 5, S.244/5, in E minor, is the fifth in a set of 19 Hungarian Rhapsodies by composer Franz Liszt.  It is marked "Lento, con duolo".  The piece was given the nickname "Héroïde-élégiaque" by the composer himself.  It is very different from his other Hungarian Rhapsodies, as it does not follow the "intro" - "lassan" - "friska" structure and is perhaps the darkest and most melancholic of the set.  It was later arranged for orchestra.']
+
+## Generated Outputs
+### reasoning
+The claim states that Rhapsody, Op. 1 was composed by a male Hungarian composer and specifically excludes Johann Christoph Pepusch as the composer. From the notes, it is clear that "Rhapsody, Op. 1" is a piano work by Béla Bartók, who was a Hungarian male composer, completed in 1904. The notes also clarify that Johann Christoph Pepusch was a German-born composer, distinct from Bartók. The context further supports this distinction, giving background on Pepusch as a German-born composer active mainly in England, while Bartók's "Rhapsody, Op. 1" is described as a piano piece finished in 1904 by the Hungarian composer Béla Bartók. Therefore, the claim is supported: the composer of "Rhapsody, Op. 1" was indeed a male Hungarian composer (Béla Bartók), not Johann Christoph Pepusch.
+
+### new_notes
+['"Rhapsody, Op. 1" is a piano composition completed in 1904 by Béla Bartók, a male Hungarian composer.', 'Béla Bartók is distinct from Johann Christoph Pepusch, who was a German-born composer active mainly in England.', 'Contextual information confirms Johann Christoph Pepusch was German-born and not Hungarian.', 'Bartók\'s "Rhapsody, Op. 1" has catalogue numbers Op. 1, Sz. 26, BB 36a (piano version) and BB 36b (piano and orchestra version).']
+
+### titles
+['Johann Christoph Pepusch', 'Rhapsody, Op. 1 (Bartók)']
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Béla Bartók', 'Johann Christoph Pepusch', 'Rhapsody, Op. 1 (Bartók)']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+The actor, who starred in the thriller 400 Boys, plays Marilyn Monroe in a film based on the novel "Northern Lights".
+
+### notes
+["No evidence is found in the provided context or notes linking an actor who starred in the thriller '400 Boys' to playing Marilyn Monroe in a film based on the novel 'Northern Lights'.", "Several films featuring Marilyn Monroe or characters portraying her exist, such as 'Norma Jean & Marilyn' and 'Nobody Else But You' (the latter based on a different novel), but none relate to 'Northern Lights'.", "There is no mention of the thriller '400 Boys' or its actors in the given information.", "There is no evidence linking an actor from the thriller '400 Boys' to playing Marilyn Monroe in any film.", "Several films portray Marilyn Monroe, such as 'Norma Jean & Marilyn' and 'Blonde,' but none are based on the novel 'Northern Lights.'", "The context provides no information about the thriller '400 Boys' or any actor from that film.", "No film adaptation of 'Northern Lights' featuring Marilyn Monroe or a character based on her is present in the context.", "There is no evidence linking any actor from the thriller '400 Boys' to playing Marilyn Monroe in any film.", "No film adaptation of the novel 'Northern Lights' featuring Marilyn Monroe or a character based on her is mentioned in the context.", "Multiple films depict Marilyn Monroe or characters portraying her but none are based on or related to 'Northern Lights'.", "The thriller '400 Boys' and its actors are not mentioned in any provided context or notes."]
+
+### context
+['Norma Jean &amp; Marilyn | Norma Jean & Marilyn is a 1996 made-for-TV biographical film produced by HBO and premiered on May 18, 1996.  The film featured Ashley Judd as Norma Jean Dougherty and Mira Sorvino as Marilyn Monroe.  It was partially based on "Norma Jean: My Secret Life With Marilyn Monroe" by actor Eddie Jordan (played by Josh Charles), who claimed to have had a years-long relationship with Monroe.', 'The Legend of Marilyn Monroe | The Legend of Marilyn Monroe is a 1966 American documentary film chronicling the life and career of actress Marilyn Monroe.  Directed by Terry Sanders, and narrated by John Huston, the film was also released under the title The Marilyn Monroe Story in the UK.', 'The Secret Life of Marilyn Monroe | The Secret Life of Marilyn Monroe is a 2015 American made-for-TV drama film on Marilyn Monroe.  It stars Kelli Garner, Susan Sarandon, Emily Watson, Jeffrey Dean Morgan, and Eva Amurri Martino and was first aired on Lifetime on May 30 and May 31, 2015.  The (two-hour forty-seven minute) miniseries is based on "The New York Times" bestseller of the same name by J. Randy Taraborrelli.  It has been nominated for 3 Creative Arts Emmy Awards', "Clash by Night | Clash by Night is a 1952 American drama film with some film noir aspects, directed by Fritz Lang and starring Barbara Stanwyck, Paul Douglas, Robert Ryan, Marilyn Monroe and Keith Andes.  The movie was based on the play by Clifford Odets, adapted by writer Alfred Hayes.  This was the first major film in which Monroe was credited before the movie's title, albeit with fourth billing.", 'Goodnight, Sweet Marilyn | Goodnight, Sweet Marilyn is a film from Larry Buchanan which is a follow-up to his 1976 film, "Goodbye, Norma Jean", and starred Misty Rowe reprising her role as the young Marilyn Monroe.', 'Forever Marilyn | Forever Marilyn is a giant statue of Marilyn Monroe designed by Seward Johnson.  The statue is a representation of one of the most famous images of Monroe, taken from the 1955 film "The Seven Year Itch".  Created in July 2011, the statue has been displayed in a variety of locations in the United States as well as in Australia.', "Marilyn Monroe in popular culture | Marilyn Monroe's life and persona have been used in film, television, music, the arts, and by other celebrities.", 'My Week with Marilyn | My Week with Marilyn is a 2011 British drama film directed by Simon Curtis and written by Adrian Hodges.  It stars Michelle Williams, Kenneth Branagh, Eddie Redmayne, Dominic Cooper, Julia Ormond, Emma Watson and Judi Dench.  Based on two books by Colin Clark, it depicts the making of the 1957 film "The Prince and the Showgirl", which starred Marilyn Monroe (Williams) and Laurence Olivier (Branagh).  The film focuses on the week during the shooting of the 1957 film when Monroe was escorted around London by Colin (Redmayne), after her husband Arthur Miller (Dougray Scott) had returned to the United States.', 'White dress of Marilyn Monroe | Marilyn Monroe wore a white dress in the 1955 film "The Seven Year Itch", directed by Billy Wilder.  The dress was created by costume designer William Travilla and was worn in one of the best-known scenes in the movie.  The dress is regarded as an icon of film history and the image of Monroe in the white dress standing above a subway grating blowing the dress up has been described as one of the iconic images of the 20th century.', 'The Sitter (1991 film) | The Sitter is a 1991 television film starring Kim Myers as Nell, an unstable baby-sitter, who lives in the reality of romance novels.  This television film is a remake of the 1952 Marilyn Monroe movie "Don\'t Bother to Knock".']
+
+## Generated Outputs
+### reasoning
+The claim asserts two specific facts: first, that an actor starred in the thriller "400 Boys;" second, that this same actor plays Marilyn Monroe in a film based on the novel "Northern Lights." The notes clearly state that there is no evidence linking any actor from "400 Boys" to portraying Marilyn Monroe in any film, nor is there any mention of such a film based on "Northern Lights." The context provides multiple entries about various films and portrayals of Marilyn Monroe, none of which reference "Northern Lights" as the source material, nor mention the thriller "400 Boys" or its cast. Therefore, the claim cannot be substantiated with the given information. There is no support for the existence of a film adaptation of "Northern Lights" featuring Marilyn Monroe, nor a connection to an actor from "400 Boys."
+
+### new_notes
+["There is no evidence linking any actor from the thriller '400 Boys' to playing Marilyn Monroe in any film.", "No film adaptation of the novel 'Northern Lights' featuring Marilyn Monroe or a character based on her is mentioned in the context.", "Multiple films depict Marilyn Monroe or characters portraying her but none are based on or related to 'Northern Lights'.", "The thriller '400 Boys' and its actors are not mentioned in any provided context or notes."]
+
+### titles
+['Norma Jean & Marilyn', 'The Legend of Marilyn Monroe', 'The Secret Life of Marilyn Monroe', 'Clash by Night', 'Goodnight, Sweet Marilyn', 'My Week with Marilyn', 'The Sitter (1991 film)']
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['400 Boys', 'Charlie Rowe', 'The Golden Compass (film)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

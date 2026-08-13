@@ -132,12 +132,22 @@ def selftest() -> int:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--selftest", action="store_true")
-    ap.add_argument("--endpoints", help="JSON list of the 8 backfilled Stage-1 test scores")
+    ap.add_argument("--endpoints", help="the 8 backfilled Stage-1 test scores: either a bare JSON "
+                                        "list, or the dict backfill_stage1.py --run writes, whose "
+                                        "'endpoints' key holds that list")
     ap.add_argument("--dose", type=float, default=None, help="D from dose_compute.py --live")
     a = ap.parse_args()
     if a.selftest:
         raise SystemExit(selftest())
     if not a.endpoints:
         ap.error("need --selftest or --endpoints")
-    pts = np.asarray(json.load(open(a.endpoints)), dtype=float)
+    # backfill_stage1.py:188 writes {"design":…, "endpoints":[…], "rows":[…]}, not a bare list.
+    # Accept both: the dict carries provenance worth keeping, and the producer is frozen at its
+    # §7 hash, so the consumer is the correct side to widen.
+    blob = json.load(open(a.endpoints))
+    if isinstance(blob, dict):
+        if "endpoints" not in blob:
+            ap.error(f"{a.endpoints}: dict has no 'endpoints' key (got {sorted(blob)})")
+        blob = blob["endpoints"]
+    pts = np.asarray(blob, dtype=float)
     report(pts, os.path.basename(a.endpoints), a.dose)

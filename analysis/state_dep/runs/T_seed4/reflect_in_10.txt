@@ -1,0 +1,137 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Your task is to generate precise and effective information retrieval queries based on claims and corresponding notes, with the goal of retrieving all authoritative and relevant documents necessary to fully verify or refute the claim.
+
+Input format:  
+- `claim`: a natural language statement involving specific factual assertions about entities (people, places, organizations), their attributes (e.g., birth years, roles, countries), relationships between entities, and contextual facts (e.g., geographic comparisons, film release dates, band memberships).  
+- `notes`: a collection of factual data points and evidence snippets partially related or supporting the claim.
+
+Key objectives and strategies:  
+
+1. **Comprehensively decompose the claim**  
+   Identify all core factual components expressed or implied in the claim, including:  
+   - Entities and their precise names (full names, countries, organizations).  
+   - Attributes relevant to those entities (birth year, nationality, roles such as director, voice actor, band member).  
+   - Relationships or linkages between entities (one person directed a film, two people belong to a band, films’ relative release dates).  
+   - Comparative or hierarchical contextual facts (e.g., country sizes compared, temporal order of releases).  
+   - Any negations or exclusivity claims (e.g., “not both members of the same band”).
+
+2. **Synthesize evidence from the notes**  
+   Use the notes to:  
+   - Confirm or clarify factual details present or absent in the claim.  
+   - Identify exact terminology, proper names, and relationships that align with the claim’s components.  
+   - Note any contradictions or implications that affect the final verification.
+
+3. **Construct a comprehensive, focused query that:**
+   - Uses precise entity and relationship terms taken directly or logically inferred from the claim and notes, avoiding aliases or unrelated terms.  
+   - Includes all factual components relevant to the claim in a single query (or equivalent semantic scope) to maximize retrieval completeness.  
+     For example: if the claim compares two directors’ countries by geographic size and references the final film by one director, the query must include: both directors’ names, the countries involved, terms related to geographic size, and the film title.  
+   - Combines multiple conditions implicitly or explicitly by using conjunctions or separating clauses—covering all elements to enable retrieval of all corresponding gold documents.  
+   - Balances specificity and generality: specific enough to target the exact claim’s entities and relationships, but not so narrow as to exclude useful documents.  
+   - Avoids redundant or unrelated information that could dilute precision or add noise to results.
+
+4. **Domain-specific nuances from examples:**  
+   - When the claim involves nationality + birth year + show or commercial role for a person, combine these identifiers precisely.  
+   - For geographic or administrative claims, specify entities within hierarchical relationships (e.g., counties, cities, countries) and their relative sizes or governance.  
+   - For artistic or entertainment claims: include exact film titles, director names, release years, and voice actors linked to characters.  
+   - For band membership and song performance claims: name all relevant musicians, the band’s full genre description if known, and the specific song titles and roles (e.g., lead singer).  
+   - For temporal ordering, include exact release years or original release dates for movies or albums.
+
+5. **Use concise, yet explicit phrasing to ensure coverage of all claim aspects, enabling correct retrieval of all gold-standard documents needed for verification or refutation.**  
+
+In summary, your query should act as a reliable, unified information retrieval request capturing all factual components of the claim and leveraging the notes to maximize accuracy and completeness. This involves multi-entity, multi-attribute, and multi-relation inclusion with carefully chosen keywords and logical structuring to guarantee comprehensive coverage of the claim's facts.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The movie Sacred Planet came out after another film. Award winning actor Damion Poitier had a role in this other film.
+
+### notes
+['Sacred Planet is a 2004 documentary film narrated by Robert Redford.', "Damion Poitier is an American actor with roles in film and television, including a brief appearance as Thanos in the 2012 film 'The Avengers'.", "Damion Poitier starred in 'Hunter Prey' (2010), which was released after 'Sacred Planet'.", "No evidence that Damion Poitier was involved in any film released before 2004, the release year of 'Sacred Planet'.", 'Sidney Poitier is an award-winning actor but distinct from Damion Poitier.', "No connection found linking Damion Poitier with an earlier film than 'Sacred Planet'.", "Sacred Planet was released in 2004; Damion Poitier's known film roles, including Hunter Prey (2010), are post-2004.", 'Damion Poitier is not an award-winning actor; Sidney Poitier is a different, award-winning actor with films prior to 2004.', 'No evidence links Damion Poitier to any film released before Sacred Planet.', 'The claim conflates Damion Poitier with Sidney Poitier, who were active at different times.', 'Sacred Planet was released in 2004.', "Damion Poitier's known film roles were released after 2004.", 'Damion Poitier is not an award-winning actor; Sidney Poitier is the award-winning actor.', "Sidney Poitier starred in films before 2004, including 'Lilies of the Field' which won him an Academy Award.", "There is no evidence Damion Poitier appeared in any film before Sacred Planet's release.", 'The claim conflates Damion Poitier with Sidney Poitier.']
+
+## Generated Outputs
+### reasoning
+The claim involves two key factual components: 1) The movie "Sacred Planet" was released after another unspecified film. 2) This other film featured award-winning actor Damion Poitier in a role. To verify the claim, it is necessary to identify the films involving Damion Poitier, especially those released before "Sacred Planet," and confirm the release dates of both "Sacred Planet" and the other film. The core entities are the movie "Sacred Planet," the unspecified other film, and Damion Poitier (an award-winning actor). The critical attributes include film titles, actor roles, and release dates. The goal is to find information confirming that Damion Poitier acted in another film released prior to "Sacred Planet."
+
+### query
+Damion Poitier filmography release date "Sacred Planet" release date compare films Damion Poitier roles "Sacred Planet" release year earlier film featuring Damion Poitier
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Damion Poitier', 'Sacred Planet']. Documents remaining to be retrieved: ['Snow Dogs'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Paul Shaw wrote a book on the history of the design of the New York subway system in 2014 for a magazine. That magazine and National Journal are not both periodicals.
+
+### notes
+["Paul Shaw wrote a book titled 'Helvetica and the New York Subway System: The True (Maybe) Story' related to subway design history but the publication year 2014 is not confirmed.", "Paul Shaw has written for 'Print' magazine but it is unclear if the subway book was written specifically for any magazine.", 'No information about National Journal is present in the context.', 'No explicit info to confirm whether the magazine Paul Shaw wrote for and National Journal are both periodicals or not.', "Paul Shaw wrote a book titled 'Helvetica and the New York Subway System: The True (Maybe) Story' but no year of publication or magazine publication context is confirmed.", 'Paul Shaw has written for Print magazine, a bimonthly periodical about design.', "There is no information linking Paul Shaw's subway book to National Journal or any other magazine.", 'National Journal is not described in the current context; therefore, it cannot be determined whether it is a periodical or if it is or is not a periodical alongside the magazine Paul Shaw writes for.', 'The claim that Shaw wrote the subway book in 2014 for a magazine and the statement about the magazine and National Journal not both being periodicals is not supported by the provided data.', "Paul Shaw wrote the book 'Helvetica and the New York Subway System: The True (Maybe) Story', but the publication year and context of being written for a magazine are not confirmed.", 'Paul Shaw writes for Print magazine, which is a bimonthly periodical, but no linkage between the subway book and any magazine publication is given.', 'No information is provided about National Journal or its periodical status in relation to the magazine Paul Shaw writes for.', 'The claim that a magazine and National Journal are not both periodicals cannot be verified with the available data.']
+
+## Generated Outputs
+### reasoning
+The claim involves several components to verify: first, that Paul Shaw authored a book on the history of the New York subway system design, specifically in 2014 and for a magazine; second, the identification of that magazine; and third, the status of both that magazine and National Journal as periodicals, asserting they are not both periodicals. From the notes, we know Paul Shaw wrote a book titled "Helvetica and the New York Subway System: The True (Maybe) Story" connected to subway design history, but the year 2014 is unconfirmed. Paul Shaw has written for "Print" magazine, but it is unclear if the subway book was published there or for a magazine at all. There is no information about National Journal or the periodical status of either "Print" or National Journal.
+
+To fully verify or refute the claim, the query must cover:  
+- Paul Shaw as the author of the book on New York subway design history, including the year 2014 if possible.  
+- The relationship between this book and magazines, focusing on identifying if it was written for any magazine, and if so, which one.  
+- Whether "Print" magazine is related to the subway book or just other writings by Paul Shaw.  
+- Whether "Print" magazine is a periodical.  
+- Whether National Journal is a periodical.  
+- That the magazine Paul Shaw wrote for (related or unrelated to the book) and National Journal are not both periodicals.
+
+Including terms explicitly linking Paul Shaw, the subway book, publication year 2014, "Print" magazine, National Journal, and the concept of "periodical" or "publication type" will provide comprehensive coverage.
+
+### query
+Paul Shaw "Helvetica and the New York Subway System" 2014 book subway design history wrote for magazine "Print" magazine periodical National Journal periodical publication type
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Paul Shaw (design historian)', 'Print (magazine)']. Documents remaining to be retrieved: ['National Journal'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The person who claimed that Castro was killed in the 26th July Movement but was proven wrong by the man who Ruby Hart Phillips was at odds with, first served as President of Cuba in 1940.
+
+### notes
+['Fulgencio Batista served as President of Cuba starting in 1940.', 'Ruby Hart Phillips was a New York Times correspondent with a pro-Batista stance, often at odds with Herbert Matthews, a correspondent who favored Fidel Castro.', 'Herbert Matthews contradicted claims that Fidel Castro was killed in the 26th July Movement.', 'The 26th of July Movement was led by Fidel Castro, who overthrew Batista in 1959.', "Fulgencio Batista claimed that Fidel Castro was killed during the 26th of July Movement's landing.", 'Herbert Matthews, at odds with Ruby Hart Phillips, revealed that Fidel Castro was alive after this claim.', 'Fulgencio Batista first served as President of Cuba in 1940.', 'Ruby Hart Phillips had a pro-Batista stance and often disagreed with Herbert Matthews who favored Fidel Castro.', "Fulgencio Batista claimed that Fidel Castro was killed during the 26th of July Movement's landing.", "Herbert Matthews contradicted Batista's claim and revealed that Fidel Castro was alive.", 'Ruby Hart Phillips, a pro-Batista correspondent, was often at odds with Herbert Matthews, who favored Castro.', 'Fulgencio Batista first served as President of Cuba in 1940.']
+
+## Generated Outputs
+### reasoning
+The claim involves a complex sequence of historical and biographical facts:
+
+1. Identify the person who claimed that Castro was killed in the 26th July Movement and later was proven wrong by another individual.
+2. Identify the individual who proved this claim wrong and had a known conflict with Ruby Hart Phillips.
+3. Confirm that the first person served as President of Cuba in 1940.
+4. Connect these elements based on historical context around the Cuban Revolution and associated figures, including the 26th July Movement, Fidel Castro, and relevant historians, journalists, or political figures.
+5. Establish the identity and timeline of the Cuban president in 1940.
+6. Clarify who Ruby Hart Phillips was at odds with and that this person disproved the claim about Castro’s death.
+
+The query therefore must cover:
+- The claim about Castro's death during the 26th July Movement.
+- The person who made this claim.
+- The person who disproved it and had disputes with Ruby Hart Phillips.
+- The presidency of Cuba in 1940.
+
+### query
+Castro killed in 26th July Movement claim person name; person who disproved claim and was at odds with Ruby Hart Phillips; Ruby Hart Phillips conflicts; President of Cuba in 1940; Cuban presidents timeline; Cuban Revolution controversies; 26th July Movement events; historical disputes about Fidel Castro's survival; Cuban political figures 1940; identity of Cuban president serving in 1940
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Herbert Matthews', 'Ruby Hart Phillips']. Documents remaining to be retrieved: ['Fulgencio Batista'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

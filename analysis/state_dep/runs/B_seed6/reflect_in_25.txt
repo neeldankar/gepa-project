@@ -1,0 +1,124 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given two fields as input: `claim` and `notes`. The `claim` is a factual statement requiring verification or fact-checking. The `notes` contain extracted or summarized information related to the claim, including potential evidence that supports, contradicts, or is neutral toward the claim. The goal is to generate an effective *search query* (output field `query`) that can be used to retrieve authoritative documents or data to verify the truthfulness of the claim.
+
+Your task is to carefully analyze both the claim and the notes, then compose a concise, targeted search query designed to maximize relevant retrieval and minimize irrelevant results. This search query will guide downstream document retrieval systems to find evidence that confirms or refutes the claim.
+
+Detailed instructions for generating the query:
+
+1. **Analyze the Claim:**
+   - Identify the key entities (people, organizations, events, places, championships, films, songs).
+   - Pinpoint the main factual assertions (dates, awards, titles, roles, competition results, historical facts).
+   - Understand the relationships between entities (e.g., who acted in which movie, who won which championship, founding dates of sports teams).
+   - Note any temporal bounds (e.g., specific seasons, years, decades).
+   - Include nicknames, alternate names, or common epithets if relevant (e.g., "The King of Cocaine" = Pablo Escobar).
+
+2. **Review the Notes:**
+   - Extract domain-specific context from the notes that refine or clarify the claim.
+   - Identify corrections, contradictions, or confirmations embedded within the notes.
+   - Identify relevant domain-specific facts that may help narrow or specify the search query. For example:
+     - Baseball franchises: founding years, franchise relocations, managers, player tenure.
+     - Film domain: actors’ filmographies, familial relations, awards received.
+     - Motorsports: seasons, driver participation years, winners, nationality.
+     - Geographic details: place names, administrative divisions, jurisdictions.
+   - Recognize when some elements in the claim might be false or partially true from the notes, and incorporate key terms to check those facts explicitly.
+
+3. **Formulating the Query:**
+   - The query should be a natural language question or a targeted keyword phrase (or combination) that directly asks about the core elements necessary to verify the claim.
+   - Include all critical named entities, dates, and unique identifiers that anchor the claim in a factual context.
+   - Avoid vague or overly broad search terms; prefer specificity to guide retrieval towards authoritative sources.
+   - When applicable, combine search terms with logical connectors (e.g., AND, OR) or phrase them as concise fact-check questions (e.g., “Who won X in year Y?”, “Did person A receive award B for role C?”, “Which songs by artist D reached number one and who originally recorded them?”).
+   - Include alternative names or aliases if mentioned or deducible (e.g., “Pablo Escobar” and “The King of Cocaine”).
+
+4. **Domain-Specific Nuances:**
+   - **Music domain:** Focus on chart positions such as "Billboard Hot Country Singles & Tracks," original recording artists, and genre classifications.
+   - **Film and TV domain:** Confirm main cast members’ roles and their awards (e.g., Golden Globe nominations), also note familial or biographical relationships when relevant.
+   - **Sports (especially motorsports and baseball):** Check start and end years of participation, season numbering equivalences (e.g., "28th season = 2000"), nationality of competitors, and record of winners.
+   - **Geography:** Clarify administrative divisions and their hierarchical relationships where claims involve location-based facts.
+
+5. **Implementation Strategies:**
+   - Use the notes to rule out impossibilities or prior refutations in the query construction by explicitly including key facts the claim contradicts.
+   - Construct factual verification queries rather than open-ended broad questions.
+   - Prioritize queries that can retrieve multiple relevant documents (e.g., one query that simultaneously addresses claim aspects and related entities).
+   - When the notes identify misalignments (e.g., claimed facts are false), incorporate those exact elements for checking.
+
+6. **Desired Output:**
+   - Output only the field `query` with a single refined search query string.
+   - The query should be concise yet comprehensive enough to yield authoritative evidence for or against the claim.
+   - Avoid extraneous explanation or analysis in the final output.
+
+By following these instructions, you will generate effective search queries tailored to domain-specific factual claims across varied topics such as music chart history, filmographies and awards, sports seasons and participants, and geographic or political facts. The query will enable precise and productive evidence retrieval for accurate claim verification.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The Sewanhaka Central High School District is composed of Sewanhaka High School, Concordia Junior-Senior High School, New Hyde Park Memorial High School, Floral Park Memorial High School, and one other. That other school serves students in the census-designated place of Nassau County in New York.
+
+### notes
+['Sewanhaka Central High School District comprises five high schools: Sewanhaka High School, Elmont Memorial High School, New Hyde Park Memorial High School, Floral Park Memorial High School, and H. Frank Carey Junior-Senior High School.', 'The claim incorrectly names Concordia Junior-Senior High School as part of the district; it is not listed among the current five schools.', 'All these schools, including H. Frank Carey Junior-Senior High School, serve students within Nassau County, New York, including census-designated places such as Floral Park and New Hyde Park.', 'The Sewanhaka Central High School District comprises five high schools: Sewanhaka High School, Elmont Memorial High School, New Hyde Park Memorial High School, Floral Park Memorial High School, and H. Frank Carey Junior-Senior High School.', 'Concordia Junior-Senior High School is not part of the Sewanhaka Central High School District; it is a school in Concordia, Kansas.', 'All five Sewanhaka district schools serve students in Nassau County, New York, including in various census-designated places such as Floral Park and New Hyde Park.', 'The Sewanhaka Central High School District consists of five high schools: Sewanhaka High School, Elmont Memorial High School, New Hyde Park Memorial High School, Floral Park Memorial High School, and H. Frank Carey Junior-Senior High School.', 'Concordia Junior-Senior High School is not part of the Sewanhaka Central High School District; it is located in Concordia, Kansas.', 'All five district schools serve students in Nassau County, New York, including in census-designated places such as Floral Park and New Hyde Park.', 'H. Frank Carey Junior-Senior High School is the other high school in the district that serves students within Nassau County, New York.']
+
+## Generated Outputs
+### reasoning
+The claim states that the Sewanhaka Central High School District includes Sewanhaka High School, Concordia Junior-Senior High School, New Hyde Park Memorial High School, Floral Park Memorial High School, and one other. The notes clarify that the district actually comprises Sewanhaka High School, Elmont Memorial High School, New Hyde Park Memorial High School, Floral Park Memorial High School, and H. Frank Carey Junior-Senior High School, explicitly correcting the claim about Concordia Junior-Senior High School being part of the district. Additionally, the notes confirm these schools serve students in Nassau County, including census-designated places such as Floral Park and New Hyde Park. To verify the claim's accuracy, the search query should target the correct composition of the district's schools, the presence or absence of Concordia Junior-Senior High School, and the locations or service areas covered by those schools within Nassau County.
+
+### query
+Sewanhaka Central High School District schools list site:.k12.ny.us Elmont Memorial High School H. Frank Carey Junior-Senior High School Concordia Junior-Senior High School Nassau County census-designated places service area
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['H. Frank Carey Junior-Senior High School', 'Sewanhaka Central High School District']. Documents remaining to be retrieved: ['Garden City South, New York'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The album that included the cover of the song Stormy, is the studio album by Carlos Santana, a musician who first became famous in the late 1960s and early 1970s.
+
+### notes
+['"Stormy" was originally a hit song by Classics IV in 1968 and was covered by Santana in 1978 on the album "Inner Secrets."', '"Inner Secrets" is a studio album by Santana, the band led by Carlos Santana.', 'Carlos Santana is a Mexican-American musician who first became famous in the late 1960s and early 1970s with his band Santana.', '"Stormy" was originally a hit song by Classics IV in 1968 and was covered by Santana in 1978 on the studio album "Inner Secrets."', '"Inner Secrets" is the ninth studio album by Santana, the band led by Carlos Santana, released in 1978.', 'Carlos Santana is a Mexican-American musician who first became famous in the late 1960s and early 1970s with his band Santana.', '"Stormy" was originally a 1968 hit song by Classics IV and was covered by Santana in 1978.', '"Inner Secrets" is the ninth studio album by Santana, led by Carlos Santana, released in 1978.', 'Carlos Santana is a Mexican-American musician who first became famous in the late 1960s and early 1970s with his band Santana.', 'Santana\'s "Inner Secrets" marks a change towards album-oriented rock and includes the cover of "Stormy."']
+
+## Generated Outputs
+### reasoning
+The claim states that a studio album by Carlos Santana includes a cover of the song "Stormy." To verify this, it is important to identify whether Carlos Santana has an album—specifically a studio album—that features "Stormy," which is originally a song by Classics IV. Additionally, confirming Carlos Santana as a musician who became famous in the late 1960s and early 1970s helps to contextualize the timeframe relevant to his studio albums. The search should therefore focus on Carlos Santana’s discography, particularly his studio albums, and check for any that include a track titled "Stormy."
+
+### query
+Carlos Santana studio albums track listing Stormy cover song late 1960s early 1970s musician
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Carlos Santana', 'Inner Secrets', 'Stormy (song)']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+The person from Albania who is known for the 1980 film Cannibal Holocaust and Mexican Alejandro Springall, are both film directors.
+
+### notes
+['Cannibal Holocaust (1980) was directed by Italian director Ruggero Deodato.', 'There is no evidence of an Albanian director connected to the film Cannibal Holocaust.', 'Alejandro Springall is a Mexican film director and producer.', 'Cannibal Holocaust (1980) was directed by Italian director Ruggero Deodato.', 'There is no evidence of an Albanian director connected to the film Cannibal Holocaust.', 'Alejandro Springall is a Mexican film director and producer.', 'Cannibal Holocaust (1980) was directed by Italian director Ruggero Deodato.', 'There is no evidence linking an Albanian director to the film Cannibal Holocaust.', 'Alejandro Springall is a Mexican film director and producer.']
+
+## Generated Outputs
+### reasoning
+The claim involves two main assertions: first, that a person from Albania is known for the 1980 film "Cannibal Holocaust," and second, that Mexican Alejandro Springall and this person are both film directors. To verify this claim, it is necessary to identify the individual from Albania associated with the film "Cannibal Holocaust" and confirm whether they are a film director. Also, it is important to verify Alejandro Springall's nationality and profession as a film director. Since no supporting notes are provided, the search query should focus on the director or key personnel related to "Cannibal Holocaust," details about Alejandro Springall, and specifically include their nationalities.
+
+### query
+Who directed the 1980 film Cannibal Holocaust? Is the person associated with Cannibal Holocaust from Albania? Is Alejandro Springall a Mexican film director?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Alejandro Springall', 'Cannibal Holocaust']. Documents remaining to be retrieved: ['Ruggero Deodato'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

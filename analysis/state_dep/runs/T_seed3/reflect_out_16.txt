@@ -1,0 +1,71 @@
+```  
+Task Description:
+
+You will be provided with three input fields:
+
+- `claim`: A statement asserting facts or relationships involving entities such as people, organizations, events, publications, or other domain-specific items. The claim may be compound, involving multiple components (e.g., a person’s lifespan, affiliation, authorship, team membership, or event outcomes).
+
+- `notes`: A list of candidate factual assertions or relevant snippets that partly support, dispute, or relate to the claim components. These notes may contain redundancies, contradictions, or vague information.
+
+- `context`: A set of documents or excerpts, each identified by a title and containing detailed source material with facts about the entities, events, or concepts related to the claim. Context sources serve as the authoritative reference to verify facts in the claim and notes.
+
+Your goal is to produce two outputs:
+
+1. `new_notes`: A concise, accurate subset of `notes` that are directly supported or refuted by the `context`. These notes must:
+
+   - Be factually correct according to the `context`.
+   - Accurately represent all factual components of the claim and remove unsupported, ambiguous, or contradicted details.
+   - Avoid duplication and irrelevant details.
+   - Capture the minimal necessary information to verify or dispute the claim components.
+
+2. `titles`: A list of exact document titles from `context` that contain the information essential to verify the facts in `new_notes`. This list should:
+
+   - Include all key documents referenced within selected `new_notes`.
+   - Provide comprehensive coverage of the factual bases for all parts of the claim.
+   - Exclude unrelated or non-essential documents.
+   - Match precisely the titles as given in `context`.
+
+Detailed Requirements and Domain-Specific Knowledge:
+
+1. **Entity and Relationship Disambiguation**  
+   - Identify all entities mentioned in the claim including persons, organizations, teams, publications, artistic or scholarly works, and events.  
+   - Differentiate between similarly named individuals (especially when multiple persons share a surname, e.g., different Goulds).  
+   - For publications, distinguish authorship, publication formats (magazine article, book, journal essay), and roles (composer, editor, playwright, director).  
+   - For sports-related claims, verify players’ participation, roles (e.g., striker), scoring events, and team nicknames.
+
+2. **Verification via Cross-Referencing**  
+   - Examine each `note` for factual assertions and verify them by direct evidence in the `context` documents.  
+   - If the `context` contradicts or does not support a `note`, exclude that note.  
+   - When multiple `notes` are similar or redundant, select the one that is most complete and precisely supported by `context`.
+
+3. **Inference and Partial Information**  
+   - When information is missing or only partially provided (e.g., the claim involves a French name for a plant without direct context for that name), only retain notes verifiably supported by `context`.  
+   - Avoid assumptions outside `context`, even if the claim references common knowledge; the assistant’s output must be grounded strictly in the provided data.
+
+4. **Complex Claim Handling**  
+   - For claims involving multiple components (e.g., comparisons, overlapping lifespans, team memberships), ensure each component is verified separately and collectively represented in the final notes.  
+   - Provide evidence that covers all claim parts to uphold completeness and precision.
+
+5. **Domain-Specific Contextual Intelligence**  
+   - Paleontologists like Elisabeth Vrba and Stephen Jay Gould: Recognize their fields, contributions, and commonly mentioned professional details.  
+   - Sports domain: Recognize tournament names and formats (e.g., FIFA Confederations Cup), player positions, scoring details, and official vs colloquial team names.  
+   - Film and publication domain: Identify roles like directors, editors, composers, writers, and distinguish between film releases, soundtracks, and novel sources.  
+   - Botanical domain: Recognize genus names, species counts, vernacular common names (e.g., "Saule" in French referring to willow, genus Salix), and know that genus species counts in the context serve as verification.
+
+6. **Output Formatting and Precision**  
+   - `new_notes` must be as brief as possible while preserving full factual accuracy and coverage.  
+   - `titles` should be exact text matches from `context` titles, no partial titles or altered forms.
+
+Generalizable Reasoning and Fact-Checking Strategy:
+
+1. **Map Entities and Relationships**: Identify all entities and relationships mentioned in the claim.
+
+2. **Cross-Reference Notes to Context**: For each note, check every factual detail against the relevant context documents. Discard unsupported or contradicted notes.
+
+3. **Resolve Ambiguities and Redundancies**: Choose the most accurate, concise, and fully supported notes, removing duplicates and resolving contradictory information via the context.
+
+4. **Select Relevant Context Titles**: Include every context source that provides direct evidence for the retained notes; exclude unrelated or unnecessary documents.
+
+5. **Summarize the Claim Components**: Provide a minimal set of notes that collectively verify or dispute all components of the claim, ensuring clarity and traceability.
+
+Your final output must ensure factual correctness grounded exclusively in the provided `context`, clearly cover all aspects of the `claim`, and present the most germane subset of `notes` along with their corresponding source `titles`.

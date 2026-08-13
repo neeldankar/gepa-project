@@ -1,0 +1,130 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given three input fields: 
+- `claim`: a factual statement or assertion whose truthfulness needs to be evaluated.
+- `notes`: a list of textual snippets extracted from various documents that are relevant to the claim. These notes may contain overlapping information and varying levels of detail.
+- `context`: a list of concise summaries or descriptions of source documents that may provide additional information related to the claim.
+
+Your task is to produce two output fields: 
+- `new_notes`: a refined, concise, and non-redundant subset or synthesis of the input `notes` that directly address key facts needed to evaluate the claim. These should focus on relevant factual information supporting verification or falsification of the claim, removing repetition and irrelevant details.
+- `titles`: a list of the most relevant document titles (from the given `context`) whose content contains essential information that supports verification of the claim. Titles should be directly tied to entities or facts critical to assessing the claim’s truth.
+
+Detailed task description and guidelines:
+
+1. **Understand the claim carefully:** Identify what factual relationships or attributes the claim asserts. Common relationships involve dates (e.g., birthdates), locations, sponsorships, team participation in events, or organizational affiliations.
+
+2. **Analyze the `notes`:** 
+   - Identify the core facts within the notes that relate to the claim components.
+   - Remove duplicate or near-duplicate statements.
+   - Remove notes that do not contribute meaningful information for verifying the claim.
+   - Combine closely related facts into a single coherent note if appropriate.
+
+3. **Use the `context` documents to identify relevant titles:**
+   - Match core entities or specific facts mentioned in new_notes to the titles in the context.
+   - Select document titles that contain background, biographical, event-related, or organizational information directly related to the claim or the facts used in new_notes.
+   - Include all titles necessary to cover the key factual points supporting or refuting the claim.
+   
+4. **Focus on comprehensive and precise fact coverage:**
+   - For claims involving dates or comparisons (e.g., birth dates before/after), emphasize the presence or absence of those dates in the new_notes.
+   - For claims involving events and participants (e.g., bowl games, sponsorships), include notes identifying the event, sponsor, location, and participating entities.
+   - For claims about geographical relations (e.g., entities located in the same country), use notes emphasizing the locations and their geopolitical hierarchy.
+
+5. **Avoid fabricating information or adding facts not supported by the notes or context.** Work only with provided inputs.
+
+6. **The reasoning behind new_notes should be implicitly reflected in the selection and refinement of notes and titles.** While no explicit reasoning output is required, your outputs should facilitate straightforward verification or rebuttal of the claim.
+
+7. **Maintain clarity and specificity:**
+   - Notes should stand alone as clear, factual statements extracted from the input.
+   - Titles should be the exact document titles from context, indicating the sources of key facts.
+
+The goal is to distill, from possibly redundant and partially overlapping information, the most relevant and precise facts and corresponding source titles that directly support verification or falsification of the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Jay Park left the South Korean music group that Jay Park is a part of, before the release of the group's DVD called "Take Off".
+
+### notes
+['Jay Park was the leader of the South Korean boy band 2PM and officially left the group in early 2010.', '"Ultra Lover" is the third Japanese single by 2PM, released on November 2, 2011, along with the group\'s second live DVD "1st Japan Tour 2011 \'Take Off\'".', 'The DVD titled "Take Off" was released in 2011 after Jay Park had already left 2PM.', 'Jay Park was the leader of the South Korean boy band 2PM and officially left the group in early 2010.', "The DVD titled 'Take Off' was released in 2011, after Jay Park had already left 2PM.", '\'Ultra Lover\' is the third Japanese single by 2PM, released on November 2, 2011, along with the group\'s second live DVD \'1st Japan Tour 2011 "Take Off".\'']
+
+### context
+['Ultra Lover | "Ultra Lover" is the third Japanese single by South Korean boy band 2PM.  It was released on November 2, 2011 in 3 editions: CD+DVD, CD+Photobook and a Regular edition.  The single was released along with the group\'s second live DVD "1st Japan Tour 2011 "Take Off" in Makuhari Messe".  The single ranked #4 in Oricon\'s Weekly chart.', 'Take Off (2PM song) | "Take Off" is the debut Japanese single by South Korean boy band, 2PM.  This single was released on May 18, 2011 in 4 editions: CD+DVD, CD+Photobook, CD only limited and a Regular edition.  The song was used as ending song theme for the first 6 episodes of Season 1 of the anime ""Blue Exorcist"".  It peaked no. 4 in Oricon\'s Weekly singles chart with 59,059 sold in the first week.', 'Take-off (Vivid song) | "Take-off" is the debut single released by the Japanese band Vivid.  A document music video was made for the title song and is available on the limited B CD+DVD edition of their major debut (and fifth overall) single ""Yume": Mugen no Kanata" along with a live performance of the title track taped at Shibuya-AX on August 8, 2010.  The single reached number 3 on the indies Oricon weekly charts and number 63 on the overall chart where it charted for a week.  It has sold 1,319 copies.', 'Take a Load Off | "Take a Load Off" is a song by American rock band Stone Temple Pilots.  "Take a Load Off" is the second track off the band\'s sixth studio album, "Stone Temple Pilots", released in 2010.  The song was the album\'s second single, after the #1 hit "Between the Lines".  A music video for "Take a Load Off" was released on September 8, 2010.  The song was used in "".', 'Take a Load Off Your Feet | "Take a Load Off Your Feet" is a song written by Al Jardine, Brian Wilson and Gary Winfrey for the American rock band The Beach Boys.  It was projected to be released on "Add Some Music", an album which was to be released in 1970.  After that album was reworked into "Sunflower", "Take a Load Off Your Feet" was released on the next Beach Boys album, "Surf\'s Up".', 'Dear (Vivid song) | "Dear" is the second single released by ViViD, release a month after their debut single "Take-off".  It was first released in CD+DVD only format and it features their first PV.  When it sold-out, a CD version was released on February 1, 2010.  The CD+DVD release is limited, having only 3,000 copies.  The single reached #2 on the indies Oricon weekly chart and #44 on the over charts where it charted for a week; it has sold 2,023 copies.', 'Tone (TVXQ album) | Tone (stylized as TONE) is the fifth Japanese studio album (tenth overall) by South Korean pop group Tohoshinki, released on September 28, 2011 by Avex Trax.  It is Tohoshinki\'s first Japanese album since becoming a two-piece band, with members Yunho and Changmin.  "Tone" was released in three physical versions – Version A, a CD+DVD version with music videos; Version B, another CD+DVD version with off-shot movies; and Version C, a CD only version with a bonus track.  Composing sessions for the album began in 2009, bull full production began in early 2011.', "Take Off (EP) | Take Off is the first extended play by Japanese band Folks, independently released on March 29, 2013.  It was the band's first release, and their only self-issued album before their major label debut under Ki/oon Music in 2014.", 'Take a Deeper Look | Take a Deeper Look is the first mini album (second extended play overall) by Korean-American singer, Jay Park.  The album was released in digital and physical format by April 27, 2011.', 'Going Off on One | Going Off on One is the second live album released by the international progressive rock group The Tangent.  It was released as a double CD/single DVD format (available separately), but also as a limited special edition, containing both CDs and the DVD, plus a deluxe digipack cover with enhanced artwork and extended booklet.']
+
+## Generated Outputs
+### reasoning
+The claim concerns Jay Park leaving a South Korean music group before the release of the group's DVD called "Take Off." From the provided notes and context, there is no direct mention of Jay Park's membership status in any group related to a DVD named "Take Off." The contexts mostly relate to 2PM's "Take Off" DVD and single releases, with no information on Jay Park's participation or departure. Additionally, Jay Park's own release noted is an EP titled "Take a Deeper Look," not a group DVD called "Take Off." There are no notes linking Jay Park to the group 2PM or any other group releasing a DVD titled "Take Off," nor to the timing of his departure relative to such a DVD release. Therefore, the claim cannot be confirmed or denied based on the given data.
+
+### new_notes
+[]
+
+### titles
+['Take Off (2PM song)', 'Take a Deeper Look']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['2PM', 'Ultra Lover']. Documents remaining to be retrieved: ['Go Crazy (album)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Chess is more popular around the world than a game designed by Leo Colovini.
+
+### notes
+["Leo Colovini is an Italian designer of German-style board games, known for games such as 'Cartagena', 'Clans', 'Inkognito', and 'Familienbande'.", "None of Leo Colovini's designed games are described as having widespread global popularity similar to chess.", 'Chess is a historically global game with a long tradition, including various eras such as the Romantic chess period lasting until the late 19th century.', "Chess has inspired numerous variants and is the basis of popular skill ranking systems for games such as Microsoft's TrueSkill, highlighting its broad influence.", 'Chess variants like Congo exist but remain less popular compared to chess itself.', 'The context implies chess has a much broader worldwide recognition and player base than any individual board games designed by Leo Colovini.', 'Leo Colovini is an Italian designer known for games such as Cartagena, Clans, Inkognito, and Familienbande.', "None of Leo Colovini's designed games have widespread global popularity comparable to chess.", 'Chess is a historically global game with a long tradition and broad worldwide recognition.', 'Chess has inspired numerous variants and ranking systems, highlighting its broad influence and popularity.', 'The evidence implies chess has a much broader worldwide recognition and player base than any individual board game designed by Leo Colovini.', 'Leo Colovini is an Italian designer of German-style board games, known for games such as Cartagena, Clans, Inkognito, and Familienbande.', "None of Leo Colovini's designed games have widespread global popularity comparable to chess.", 'Chess is a historically global game with a long tradition and broad worldwide recognition.', 'Chess has inspired numerous variants and ranking systems, highlighting its broad influence and popularity.', 'The evidence implies chess has a much broader worldwide recognition and player base than any individual board game designed by Leo Colovini.']
+
+### context
+['Leo Colovini | Leo Colovini is an Italian designer of German-style board games born in Venice 1964.  His most popular game is "Cartagena".  He is one of the few top board game designers who has owned a game store.', 'Clans (board game) | Clans is a German-style board game designed by Leo Colovini.  The game centers on the creation of villages.', 'Inkognito | Inkognito is a board game for 3 to 5 players designed by Alex Randolph and Leo Colovini first published in 1988 by Milton Bradley Company.  It has since been republished several times including by the company Venice Connection established by the designers and Dario De Toffoli.', 'Familienbande | Familienbande (German for "Family Ties") is a card game designed by Leo Colovini.', "Alex Randolph | Alexander Randolph (4 May 1922 – 28 April 2004) was an American designer of board games and writer.  Randolph's game creations include TwixT, Breakthru, Inkognito (with Leo Colovini), Raj, Ricochet Robot, and Enchanted Forest (with Michael Matschoss).", 'Infinite chess | Infinite chess is any of several variations of the game chess played on an unbounded chessboard.  Versions of infinite chess have been introduced independently by multiple players, chess theorists, and mathematicians, both as a playable game and as a model for theoretical study.  It has been found that even though the board is unbounded, there are ways in which a player can win the game in a finite number of moves.', 'The Duke (board game) | The Duke is a two-player abstract strategy board game played on a square-tiled gameboard, with 36 squares arranged in a 6×6 grid.  The game has been compared to chess and chess variants, while retaining notable differences in unit movement and overall gameplay.', "Chess rating system | A chess rating system is a system used in chess to calculate an estimate of the strength of the player, based on his or her performance versus other players.  They are used by organizations such as FIDE, the US Chess Federation (USCF or US Chess), International Correspondence Chess Federation, and the English Chess Federation.  Most of the systems are used to recalculate ratings after a tournament or match but some are used to recalculate ratings after individual games.  Popular online chess sites such as chess.com and Internet Chess Club also implement rating systems.  In almost all systems a higher number indicates a stronger player.  In general, players' ratings go up if they perform better than expected and down if they perform worse than expected.  The magnitude of the change depends on the rating of their opponents.  The Elo rating system is currently the most widely used.", 'Morphy number | The Morphy number is a measure of how closely a chess player is connected to Paul Morphy (1837–1884) by way of playing chess games.  People who played a chess game with Morphy have a Morphy number of 1.  Players who did not play Morphy but played someone with a Morphy number of 1 have a Morphy number of 2.  People who played someone with a Morphy number of 2 have a Morphy number of 3, et cetera.', 'Penultima | Penultima is a game of inductive logic, played on a chess board.  It was invented by Michael Greene and Adam Chalcraft in Cambridge in 1994.  The game is derived from the chess variant Ultima (otherwise known as "Baroque Chess"), and played with a standard chess board and pieces, each piece having different movement and capture rules from standard chess.  In a manner similar to the game Mao, which was a popular game in Cambridge at that time, the rules for each piece vary from game to game, and are initially kept secret from the players.  Penultima is similar in style to Eleusis, Zendo and Mao.  The name of the game is a pun on "penultimate", and "Ultima", the name of the chess variant.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that chess is more popular globally than any game designed by Leo Colovini. The notes consistently state that Leo Colovini is a designer of German-style board games, listing his known games, but none are described as having widespread global popularity comparable to chess. Chess is noted to have a long-standing global tradition, extensive worldwide recognition, and significant influence including variants and ranking systems, which imply far broader popularity than any individual Colovini game. The context documents provide information on Leo Colovini’s identity and games but do not suggest their global popularity rivals that of chess. Thus, the new notes focus on these key comparisons.
+
+### new_notes
+['Leo Colovini is an Italian designer of German-style board games, known for games such as Cartagena, Clans, Inkognito, and Familienbande.', "None of Leo Colovini's designed games have widespread global popularity comparable to chess.", 'Chess is a historically global game with a long tradition and broad worldwide recognition.', 'Chess has inspired numerous variants and ranking systems, highlighting its broad influence and popularity.', 'The evidence implies chess has a much broader worldwide recognition and player base than any individual board game designed by Leo Colovini.']
+
+### titles
+['Leo Colovini', 'Clans (board game)', 'Inkognito', 'Familienbande']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Leo Colovini']. Documents remaining to be retrieved: ['Cartagena (board game)', 'Chess'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Rhapsody, Op. 1 was written by a male composer. This composer was Hungarian, not Johann Christoph Pepusch.
+
+### notes
+["The composition 'Rhapsody, Op. 1' (Sz. 26, BB 36) for piano was written in 1904 by Hungarian male composer Béla Bartók.", "Johann Christoph Pepusch (1667–1752) was a German-born composer who spent most of his working life in England and is not the composer of 'Rhapsody, Op. 1.'", "The composition 'Rhapsody, Op. 1' (Sz. 26, BB 36) for piano was written in 1904 by Hungarian male composer Béla Bartók.", "Johann Christoph Pepusch (1667–1752) was a German-born composer who spent most of his working life in England and is not the composer of 'Rhapsody, Op. 1.'", "The composition 'Rhapsody, Op. 1' (Sz. 26, BB 36) for piano was written in 1904 by Hungarian male composer Béla Bartók.", "Johann Christoph Pepusch (1667–1752) was a German-born composer who spent most of his working life in England and is not the composer of 'Rhapsody, Op. 1.'"]
+
+### context
+['Rhapsodies, Op. 79 (Brahms) | The Rhapsodies, Op. 79, for piano were written by Johannes Brahms in 1879 during his summer stay in Pörtschach, when he had reached the maturity of his career.  They were inscribed to his friend, the musician and composer Elisabeth von Herzogenberg.  At the suggestion of the dedicatee, Brahms reluctantly renamed the sophisticated compositions from "Klavierstücke" (piano pieces) to "rhapsodies".', 'Alto Rhapsody | The Alto Rhapsody, Op.  53, is a composition for contralto, male chorus, and orchestra by Johannes Brahms, a setting of verses from Johann Wolfgang von Goethe\'s "".  It was written in 1869, as a wedding gift for Robert and Clara Schumann\'s daughter, Julie.  Brahms scholars have long speculated that the composer may have had romantic feelings for Julie, which he may have integrated into the text and music of the "Alto Rhapsody".  The text, with its metaphysical portrayal of a misanthropic soul who is urged to find spiritual sustenance and throw off the shackles of his suffering, has powerful parallels in Brahms\'s life and character.', 'Rhapsody, Op. 1 (Bartók) | "Rhapsody", Op.  1, Sz.  26, BB 36, is a composition for piano by Hungarian composer Béla Bartók.  It was finished in 1904.  A year later, he wrote a version for piano and orchestra.  The catalogue number of this composition is Op. 1, Sz.  26.  The initial full-length composition for piano eventually received a catalogue number BB 36a, whereas the second version, with piano and orchestra, received a catalogue number BB 36b.', 'Hungarian Rhapsody No. 17 | Hungarian Rhapsody No. 17, S.244/17, in D minor, is the seventeenth Hungarian Rhapsody composed by Franz Liszt for solo piano.  Being one of the later Hungarian Rhapsodies, it was composed and published in 1882.  This piece and the eighteenth rhapsody are the shortest of the Hungarian Rhapsodies, each having a duration of just over three minutes.', 'Hungarian Rhapsody No. 16 | Hungarian Rhapsody No. 16, S.244/16, in A minor, is the sixteenth Hungarian Rhapsody composed by Franz Liszt for solo piano.  Being one of the later Hungarian Rhapsodies, it was composed and published in 1882.  The rhapsody, subtitled "Budapest Munkácsy-Festlichkeiten", has a duration of approximately five minutes and is dedicated to Mihály Munkácsy.', 'Hungarian Rhapsody No. 4 | Hungarian Rhapsody No. 4, S.244/4, in E-flat major, is the fourth in a set of nineteen Hungarian Rhapsodies composed by Franz Liszt for solo piano.  It was composed in 1847 and published in 1853.', 'Zigeunerweisen | Zigeunerweisen ("Gypsy Airs"), Op.  20, is a musical composition for violin and orchestra written in 1878 by the Spanish composer Pablo de Sarasate.  It was premiered the same year in Leipzig, Germany.  It is based on themes of the Roma people, and in the last section the rhythms of the csárdás; this section uses a theme previously used in Franz Liszt\'s Hungarian Rhapsody No. 13, composed in 1847.', "Hungarian Rhapsody No. 3 | Hungarian Rhapsody No. 3, S.244/3, in B-flat major, is the third in a set of nineteen Hungarian Rhapsodies composed by Franz Liszt for solo piano.  The rhapsody has an earlier version, like many other of Liszt's compositions: its Andante music appeared in No. 11 in the set of 21 pieces of the Magyar Dalok (1839–1847).  It was composed in 1847 and published in 1853.", 'Hungarian Rhapsody No. 5 | Hungarian Rhapsody No. 5, S.244/5, in E minor, is the fifth in a set of 19 Hungarian Rhapsodies by composer Franz Liszt.  It is marked "Lento, con duolo".  The piece was given the nickname "Héroïde-élégiaque" by the composer himself.  It is very different from his other Hungarian Rhapsodies, as it does not follow the "intro" - "lassan" - "friska" structure and is perhaps the darkest and most melancholic of the set.  It was later arranged for orchestra.', 'Johann Christoph Pepusch | Johann Christoph Pepusch (1667 – 20 July 1752), also known as John Christopher Pepusch and Dr Pepusch, was a German-born composer who spent most of his working life in England.']
+
+## Generated Outputs
+### reasoning
+The claim concerns the composer of "Rhapsody, Op. 1," asserting that it was written by a male Hungarian composer, not Johann Christoph Pepusch. The notes provide no relevant information, but the context clarifies that "Rhapsody, Op. 1" is a composition for piano by Hungarian composer Béla Bartók, composed in 1904. Bartók is male and Hungarian, which supports the claim. Additionally, Johann Christoph Pepusch was a German-born composer active in England during the 17th and 18th centuries, unrelated to the piece in question, confirming that he is not the composer of "Rhapsody, Op. 1."
+
+### new_notes
+["The composition 'Rhapsody, Op. 1' (Sz. 26, BB 36) for piano was written in 1904 by Hungarian male composer Béla Bartók.", "Johann Christoph Pepusch (1667–1752) was a German-born composer who spent most of his working life in England and is not the composer of 'Rhapsody, Op. 1.'"]
+
+### titles
+['Rhapsody, Op. 1 (Bartók)', 'Johann Christoph Pepusch']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Johann Christoph Pepusch', 'Rhapsody, Op. 1 (Bartók)']. Documents remaining to be retrieved: ['Béla Bartók'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

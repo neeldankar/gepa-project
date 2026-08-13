@@ -1,0 +1,125 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two fields as input: `claim` and `notes`. Your goal is to produce a single `query` field that formulates a precise, focused natural language question or linked questions designed specifically to verify or investigate the claim by using the information contained in the notes. The query should be constructed to guide retrieval of relevant evidence that can support or refute the claim efficiently.
+
+Input Format:
+- `claim`: A concise factual or relational statement describing one or more entities, their attributes, or relationships that need verification.
+- `notes`: A list of text snippets, facts, or excerpts providing background knowledge, contextual details, or partial information about the entities or relationships mentioned in the claim.
+
+Output Format:
+- `query`: A targeted natural language question or set of logically connected questions that explicitly focus on the key entities and relationships present in the claim, refined and disambiguated using the information found in the notes. The query should be composed to maximize retrieval of relevant, authoritative documents or facts.
+
+Detailed Instructions and Domain-Specific Considerations:
+1. Entity and Relation Identification  
+   - Extract the key named entities from the claim (e.g., persons, locations, organizations, events, works such as books or films).  
+   - Identify the relationships or factual claims being made (e.g., authorship, native habitat, time-overlapping lifespans, membership, jurisdiction, participation in an event).  
+
+2. Use of the Notes for Context and Disambiguation  
+   - Analyze the notes to gather supplemental facts such as dates, places, definitions, or known associations that clarify or restrict the scope of verification.  
+   - Use notes to determine if any terms or entities require disambiguation (e.g., multiple entities with similar names, geographic subdivisions, temporal context).  
+   - Identify if the notes reveal confirmations, contradictions, or insufficient evidence regarding key aspects of the claim.
+
+3. Query Content and Scope  
+   - Formulate a query that explicitly targets verification of the claim’s core factual components focusing on:  
+     • Existence of relationships (e.g., was Person A a creator of Film B?)  
+     • Specific attributes or temporal facts (e.g., dates of authorship or lifespan overlap)  
+     • Jurisdiction or classification details (e.g., is a city within a given province, are two magazines both periodicals).  
+   - Where multiple entities or relationships are involved, structure the query to cover combined or comparative facts, for example:  
+     • Are both entities geographically related?  
+     • Did an individual and another related individual serve simultaneously in a role?  
+   - Incorporate any contradictions or ambiguous points noted, by phrasing the query so that it explicitly seeks resolution of those points.
+
+4. Query Quality and Precision  
+   - Keep queries concise, clear, and focused solely on retrieving the critical evidence necessary for claim verification. Avoid vague or overly broad questions.  
+   - Use natural-language phrasing that a search or retrieval system can effectively interpret to find relevant documents.  
+   - Ensure queries mention key entities with relevant attributes or temporal markers wherever applicable.  
+
+5. Generalizable Strategy  
+   - Extract and prioritize verification of key factual claims from the input claim.  
+   - Review the notes carefully for background and possible contradictions or confirmations.  
+   - Identify and disambiguate entities and relationships using the notes.  
+   - Formulate a minimal set of precise, clearly linked natural language questions covering all relevant aspects of the claim to aid retrieval of authoritative evidence.
+
+Niche and Domain-Specific Knowledge Captured from Examples:
+- For claims relating to book authorship, publication medium, and dates: verify authorship attribution, publication year, and the classification/type of publication (e.g., magazine versus periodical).  
+- For natural history or biology claims involving species and native habitats: verify native habitat specifically, focusing on whether it is arid, semi-desert, temperate, or otherwise.  
+- For temporal overlap claims concerning individuals (e.g., creators and historical figures), clarify exact lifespans or alive periods and cross-check with creation/release dates of works or events.  
+- For entertainment industry claims about film creators or judges on a show: identify exact persons associated with a work or role, their temporal involvement, and membership status if relevant.  
+- For geographic or political jurisdiction claims: verify administrative divisions and whether two or more entities lie within the same jurisdiction or country.  
+- Recognize periodicals as including magazines, so queries should clarify if entities classified as periodicals are indeed periodicals by definition.
+
+Summary:
+Generate a well-formed, fact-focused natural language query or set of linked queries explicitly tailored to verify the factual claims in the input by leveraging all relevant contextual and disambiguating details found in the notes. Structure queries to maximize the chance of retrieving the ‘gold’ or key documents essential for verifying or refuting the claim, according to the examples and feedback.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+A song from the Kathy Mattea discography, that peaked at #1 on the Billboard Hot Country Singles & Tracks chart, was first recorded by a singer that sang country music.
+
+### notes
+['No Kathy Mattea song mentioned in the context reached #1 on the Billboard Hot Country Singles & Tracks chart.', "Some songs in Kathy Mattea's discography were first recorded by other country music artists, e.g., 'Love at the Five and Dime' by Nanci Griffith.", 'Highest chart positions for Kathy Mattea songs shown are in the top 10 but no #1.', 'Claim does not hold based on provided data.', "Kathy Mattea has four #1 hits on the Billboard Hot Country Singles & Tracks chart: 'Goin' Gone', 'Eighteen Wheels and a Dozen Roses', 'Come from the Heart', and 'Burnin' Old Memories'.", 'No information indicates any of these #1 songs were first recorded by another country artist.', "'Love at the Five and Dime' was first recorded by country singer Nanci Griffith and later recorded by Kathy Mattea but peaked at #3, not #1.", 'Therefore, there is no evidence confirming a song that peaked at #1 was first recorded by a country singer other than Kathy Mattea.', "Kathy Mattea has four songs that reached #1 on Billboard Hot Country Singles & Tracks: 'Goin' Gone', 'Eighteen Wheels and a Dozen Roses', 'Come from the Heart', 'Burnin' Old Memories'.", 'No evidence that any of those #1 songs were first recorded by another country artist.', "'Love at the Five and Dime', first recorded by Nanci Griffith, peaked at #3 for Mattea and did not reach #1.", 'Kathy Mattea songs that first were recorded by other country artists did not reach #1 on Billboard charts.', 'The claim that a #1 Kathy Mattea song was first recorded by another country singer is not supported by data.']
+
+## Generated Outputs
+### reasoning
+The claim involves three key elements: a song included in Kathy Mattea's discography, that song reaching #1 on the Billboard Hot Country Singles & Tracks chart, and the song having been first recorded by a singer who performed country music. Verification requires identification of which songs in Kathy Mattea's discography topped this chart, determining their original recording artist, and confirming that artist's genre as country music. Since no additional notes are provided, the query must encompass all these points explicitly.
+
+### query
+Which songs in Kathy Mattea's discography reached #1 on the Billboard Hot Country Singles & Tracks chart? For each such song, who was the original recording artist? Did the original recording artist perform country music?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Kathy Mattea discography']. Documents remaining to be retrieved: ['Come from the Heart', 'Don Williams discography'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Veyyil was the first film scored by the man who composed the soundtrack for the film in which Ashrita Shetty had a part.
+
+### notes
+['G. V. Prakash Kumar composed the soundtrack for Veyyil (2006), his first film as a composer.', 'Ashrita Shetty acted in Udhayam NH4 (2013), which had its soundtrack and score composed by G. V. Prakash Kumar.', 'G. V. Prakash Kumar composed the soundtrack for Veyyil (2006), his first film as a composer.', 'Ashrita Shetty acted in Udhayam NH4 (2013), which had its soundtrack and score composed by G. V. Prakash Kumar.', "G. V. Prakash Kumar's first film as a composer was Veyyil (2006).", 'Ashrita Shetty acted in Udhayam NH4 (2013), which had music composed by G. V. Prakash Kumar.', 'Veyyil was the first film scored by G. V. Prakash Kumar, who later composed music for Udhayam NH4 featuring Ashrita Shetty.']
+
+## Generated Outputs
+### reasoning
+The claim states that "Veyyil" was the first film scored by the composer who also created the soundtrack for a film featuring Ashrita Shetty. From the notes, G. V. Prakash Kumar is identified as the composer for "Veyyil" and it was his first film as a composer. Additionally, Ashrita Shetty acted in "Udhayam NH4," which also had its soundtrack composed by G. V. Prakash Kumar. Therefore, to verify the claim, we need to confirm that G. V. Prakash Kumar composed both soundtracks and that "Veyyil" was indeed his first film as a composer.
+
+### query
+Did G. V. Prakash Kumar compose the soundtrack for the film "Veyyil" and was it his first film as a composer? Did G. V. Prakash Kumar also compose the soundtrack for the film "Udhayam NH4" in which Ashrita Shetty acted?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['G. V. Prakash Kumar', 'Udhayam NH4']. Documents remaining to be retrieved: ['Ashrita Shetty'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Candi Kubeck was the captain of a plane. That plane was operated by the Swiss company headquartered in Clayton County, Georgia.
+
+### notes
+['Candi Kubeck was the captain of ValuJet Flight 592.', 'ValuJet Airlines was an American airline headquartered in Clayton County, Georgia.', 'ValuJet was not a Swiss company.', 'Belair is a Swiss airline headquartered in Glattbrugg, Switzerland, unrelated to Candi Kubeck or ValuJet.', 'Candi Kubeck was the captain of ValuJet Flight 592, an American airline headquartered in Clayton County, Georgia.', 'ValuJet Airlines was not a Swiss company but American.', 'Belair is a Swiss airline headquartered in Glattbrugg, Switzerland, unrelated to Candi Kubeck or ValuJet.', 'Candi Kubeck was the captain of ValuJet Flight 592.', 'ValuJet Airlines was an American airline headquartered in Clayton County, Georgia.', 'ValuJet was not a Swiss company but an American one.', 'Belair is a Swiss airline headquartered in Glattbrugg, unrelated to Candi Kubeck or ValuJet.']
+
+## Generated Outputs
+### reasoning
+The claim involves two key assertions: first, that Candi Kubeck was the captain of a plane, and second, that the plane she captained was operated by a Swiss company whose headquarters is located in Clayton County, Georgia. The first part of the claim asserts a role (captain) linked to a person (Candi Kubeck). The second part involves the company's nationality (Swiss) combined with a specific geographic location of its headquarters (Clayton County, Georgia), which presents a geographical and national contradiction since Switzerland and Georgia are distinct countries/regions. The claim implies that a Swiss company is headquartered in a U.S. county, which is unusual and merits verification. There are no notes to provide additional context or disambiguate, so the query must focus both on verifying Candi Kubeck’s role and the nature and headquarters location of the company operating the plane.
+
+### query
+Was Candi Kubeck the captain of a commercial plane? If so, which airline operated that plane? Is the airline a Swiss company? Where is the headquarters of this airline located? Does any Swiss airline have its headquarters in Clayton County, Georgia, USA?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Candi Kubeck', 'ValuJet Airlines', 'ValuJet Flight 592']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

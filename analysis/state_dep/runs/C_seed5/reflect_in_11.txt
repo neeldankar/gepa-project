@@ -1,0 +1,115 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields:
+- `claim`: a factual statement or assertion that may require verification or further factual support.
+- `notes`: a list of textual snippets containing partial information relevant to verifying the claim. These notes might include facts, contradictions, or missing information about entities or topics in the claim.
+
+Your goal is to produce the output field `query` — a precise and focused question (or set of questions) aimed at retrieving the key missing or uncertain factual information needed to verify the claim. The `query` should target specific entities, attributes, relationships, or facts that have not been confirmed or sufficiently covered in the provided notes.
+
+Key Points and Domain-Specific Knowledge:
+- The claim involves named entities such as people, films, bands, roles (e.g., director, bassist), birthdates, nationalities, professions, and works (e.g., films, songs).
+- Notes often contain partial or confirmatory information about these entities, but sometimes lack critical data required to verify the claim fully.
+- Your query should be designed to retrieve authoritative documents or data specifically covering the missing or ambiguous elements mentioned or implied by the claim.
+- The query should reflect recognition of domain-specific facts, such as:
+   * Individuals’ roles and contributions (e.g., “bass player and lead vocalist who created Cobra Starship” refers to Gabe Saporta).
+   * Nationality or origin of persons associated with cultural works (e.g., nationality of film directors related to 'Cannibal Holocaust').
+   * Dates of birth or ages when claims relate to relative age.
+   * Professional associations or occupations that confirm or refute the claim.
+   * Connections between named works and their creators or contributors.
+
+Generalizable Strategy:
+1. Analyze the claim and identify the factual assertions that require verification.
+2. Review the notes to establish which parts of the claim are already supported and which parts are missing, contradictory, or uncertain.
+3. Formulate concise, targeted queries that seek the minimal yet sufficient data required to resolve remaining ambiguities.
+4. When multiple pieces of missing information exist, combine them efficiently in the query, balancing completeness and precision.
+5. Focus on retrieving documents or facts about:
+   - Specific named entities not covered or unclear in the notes.
+   - Attributes or relationships critical to verifying the claim.
+6. Avoid overly broad or generic questions; tailor queries to close specific knowledge gaps evident from the notes.
+
+Example:
+If the claim is about the relative age of two persons, and only one birthdate is known, the query should be:  
+   "What is the birthdate or age of [Person with missing info]?"
+
+If the claim involves multiple nationalities or roles, and only partial info is available, the query should ask specifically about the identities, nationalities, or professions of the key persons involved.
+
+By following this approach, you will help retrieve the essential documents needed to verify complex claims effectively.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Bruce Guthro  and another rock musician are not both members of the alternative rock band Radiohead. The other rock musician sins on the Radiohead song "All I need".
+
+### notes
+['Bruce Guthro is a Canadian folk and pop singer-songwriter, not a member of Radiohead.', '"All I Need" is a song by Radiohead from their album "In Rainbows."', 'Thom Yorke, Radiohead\'s lead singer, is the vocalist on "All I Need."', 'No evidence links Bruce Guthro to Radiohead or the song "All I Need."', 'The claim that Guthro and another musician are not both members of Radiohead is accurate.', 'Bruce Guthro is a Canadian folk and pop singer-songwriter, not a member of Radiohead.', '"All I Need" is a song performed by Radiohead, with Thom Yorke as the lead singer.', 'There is no evidence that Bruce Guthro is associated with Radiohead or the song "All I Need."', 'Thom Yorke is the vocalist on Radiohead\'s song "All I Need."', 'The claim that Bruce Guthro and another musician are not both members of Radiohead is accurate.', 'Bruce Guthro is a Canadian folk and pop singer-songwriter unrelated to Radiohead.', '"All I Need" is a song by Radiohead from their album In Rainbows, released in 2007.', 'Thom Yorke, Radiohead\'s lead singer, performs the vocals on "All I Need."', 'There is no association between Bruce Guthro and Radiohead.', 'The claim that Bruce Guthro and another musician are not both members of Radiohead is accurate.', 'The other musician referenced is Thom Yorke, the vocalist for Radiohead\'s song "All I Need."']
+
+## Generated Outputs
+### reasoning
+The claim states that Bruce Guthro and another rock musician are not both members of Radiohead and that the other musician sings on the Radiohead song "All I Need." The notes confirm that Bruce Guthro is not a member of Radiohead and that Thom Yorke is the vocalist for "All I Need." However, the identity of the "other rock musician" mentioned in the claim is unclear—whether it is Thom Yorke or someone else is not specified. To verify the claim fully, it is essential to clarify who the "other rock musician" is and confirm if they are indeed a member of Radiohead and the vocalist on "All I Need."
+
+### query
+Who is the "other rock musician" mentioned in the claim alongside Bruce Guthro, and is this musician a member of Radiohead and the vocalist on the song "All I Need"?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['All I Need (Radiohead song)', 'Bruce Guthro']. Documents remaining to be retrieved: ['Thom Yorke'].
+
+
+
+# Example 2
+## Inputs
+### claim
+An Greek actor who was a CIA operative in Chuck Versus the A-Team was born in 1974. The actor plays a character in commercials for Old Spice.
+
+### notes
+['Isaiah Mustafa is an actor born in 1974.', "Isaiah Mustafa acts as a CIA operative in the episode 'Chuck Versus the A-Team'.", "Isaiah Mustafa stars in Old Spice commercials, known as 'The Man Your Man Could Smell Like'.", "Isaiah Mustafa's ethnic background is not explicitly described as Greek in the provided context.", "Isaiah Mustafa is an American actor born in 1974 who played a CIA operative in 'Chuck Versus the A-Team'.", "Isaiah Mustafa is known for starring in Old Spice commercials as 'The Man Your Man Could Smell Like'.", 'There is no evidence that Isaiah Mustafa has Greek heritage; his ethnicity is not specified as Greek.', "Isaiah Mustafa is an American actor born in 1974 known for playing a CIA operative in 'Chuck Versus the A-Team'.", "Isaiah Mustafa stars in Old Spice commercials as 'The Man Your Man Could Smell Like'.", 'There is no evidence or source claiming Isaiah Mustafa is of Greek descent; his ethnicity is not described as Greek.']
+
+## Generated Outputs
+### reasoning
+The claim involves multiple specific facts that need verification: 
+1. There is a Greek actor born in 1974.
+2. This actor was a CIA operative in the TV show "Chuck."
+3. This actor also appeared in "Chuck Versus the A-Team," which is a specific episode or season of "Chuck."
+4. This actor plays a character in Old Spice commercials.
+
+To verify this claim, we need to identify the Greek actor born in 1974 who fits this profile and verify their roles on "Chuck" and in Old Spice commercials. Since there are no notes, all aspects must be queried: the actor’s identity, birth year, nationality (Greek), role as a CIA operative in "Chuck Versus the A-Team," and their involvement in Old Spice commercials.
+
+### query
+Who is the Greek actor born in 1974 who played a CIA operative in "Chuck Versus the A-Team" and also appeared as a character in Old Spice commercials?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Chuck Versus the A-Team', 'Isaiah Mustafa', 'Make a Smellmitment']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+"Leni" Riefenstahl was born before the Ukrainian director of "Young Doctors in Love".
+
+### notes
+['Leni Riefenstahl was born on August 22, 1902.', "The director of 'Young Doctors in Love' is Michael Gottlieb, an American born in 1945.", 'Michael Gottlieb is not Ukrainian.', 'Leni Riefenstahl was born on August 22, 1902.', "Michael Gottlieb, the director of 'Young Doctors in Love', is American, not Ukrainian, and was born in 1945.", 'Leni Riefenstahl was born on August 22, 1902.', "The director of 'Young Doctors in Love' (1982) is Garry Marshall, who is American.", "Michael Gottlieb is an American director but is not credited as director of 'Young Doctors in Love'.", "No Ukrainian director is identified as having directed 'Young Doctors in Love'."]
+
+## Generated Outputs
+### reasoning
+The claim compares the birthdates of two individuals: Leni Riefenstahl and the Ukrainian director of the film "Young Doctors in Love." To assess the claim, we need to know the birthdate of Leni Riefenstahl and the identity and birthdate of the Ukrainian director of "Young Doctors in Love." Without knowing who the Ukrainian director of this film is, or any birthdate information for both persons, it’s impossible to confirm the claim. Therefore, the key missing information is the identity and birthdate of the Ukrainian director of "Young Doctors in Love," along with Leni Riefenstahl’s birthdate for comparison.
+
+### query
+What is the birthdate of Leni Riefenstahl? Who is the Ukrainian director of the film "Young Doctors in Love" and what is their birthdate?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Leni Riefenstahl', 'Young Doctors in Love']. Documents remaining to be retrieved: ['Garry Marshall'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

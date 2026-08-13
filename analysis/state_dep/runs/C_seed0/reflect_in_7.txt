@@ -1,0 +1,116 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two fields as input: `claim` and `notes`. Your task is to produce a new field called `query`.
+
+- The `claim` is a statement that makes one or more factual assertions involving people, films, awards, professions, or other related domain-specific entities.
+- The `notes` contain a collection of relevant factual information, corrections, contradictions, confirmations, or clarifications related to the claim, often extracted from various documents or knowledge sources.
+  
+Your goal is to generate one or more concise, precise, and well-formulated questions in the `query` field that break down the claim into atomic factual verification sub-questions. These queries should:
+1. Identify the core fact(s) being asserted in the claim that need verification.
+2. Reflect all critical parts of the claim that require evidence from external sources or the knowledge base.
+3. Address any ambiguity, contradictory details, or multiple entities involved in the claim as surfaced by the `notes`.
+4. Be designed to retrieve the necessary documents or pieces of evidence that can confirm or refute the claim.
+5. Use domain-specific terminology and relevant entity names exactly as presented or alluded to in the input data.
+
+Guidelines and Key Points:
+- Focus on decomposing complex claims involving multiple entities or nested relations (e.g., who starred with whom, who directed which film).
+- Incorporate correction or contradiction information from `notes` to guide the construction of queries that explicitly cover those aspects (e.g., when a director’s name is disputed, ask about the director’s identity).
+- Ensure your queries cover all parts of the claim, especially when multiple factual assertions are made (e.g., listing all relevant persons involved, cross-referencing their roles).
+- Use precise and natural language questions that are answerable by retrieving factual documents or authoritative sources.
+- Consider queries that will retrieve missing documents not yet obtained if feedback is provided.
+- When entities are mentioned both positively and negatively in the notes (confirmed or denied roles), reflect these distinctions in the queries to disambiguate.
+- Avoid broad vague questions; focus on retrieval of documents or facts that directly address the truthfulness or falsehood of the claim's components.
+- If a claim involves multiple parts (e.g., two different people’s statuses or achievements), produce queries that can verify each part independently.
+
+Example of reasoning behind queries:
+- A claim about an actor appearing in two films and one film’s director is challenged by notes showing different directors and no evidence the actor appeared in the second film -> queries should ask precisely "Who starred in film X alongside [actor]?" and "Who directed film Y?" and "Did [actor] appear in film Y?"
+- A claim about co-direction between two films referencing specific directors, where notes provide details confirming or denying involvement, should produce queries about "Did [director] co-direct film A?" and "Did [director] co-direct film B?" to clarify overlaps.
+- A claim involving multiple people’s professions or awards (e.g., an Austrian poet-diplomat Nobel laureate and a noted writer) requires queries checking "Are there any Austrian poet-diplomats who won Nobel Prize in Literature?" and "Is [person] a writer?" separately to verify each fact.
+
+In summary, your output `query` must be a well-crafted set of fact-checking questions grounded in the claim’s assertions and the contradictions, confirmations, or omissions presented in the notes. This will maximize document retrieval effectiveness and enable thorough claim verification.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Both the director of the 2006 film Little Children, and Zoltan Korda work in the media industry.
+
+### notes
+['Zoltan Korda was a Hungarian-born film director, screenwriter, and producer, working in the film industry in Hungary, London, and Hollywood.', 'The director of the 2006 film Little Children is Todd Field, an American filmmaker known for his work in the film industry.', 'Both Todd Field and Zoltan Korda have careers related to directing films, placing them in the media industry.', 'Todd Field is the director of the 2006 film Little Children and works in the film industry as an American filmmaker.', 'Zoltan Korda was a Hungarian-born film director, screenwriter, and producer, and he worked extensively in the film industry in Hungary, London, and Hollywood.', 'Both Todd Field and Zoltan Korda have careers in the media industry, specifically in film directing and production.', 'Todd Field is the director of the 2006 film Little Children and works as an American filmmaker in the media industry.', 'Zoltan Korda was a Hungarian-born film director, screenwriter, and producer who worked extensively in the film industry across Hungary, London, and Hollywood.', 'Both Todd Field and Zoltan Korda have careers in film directing and production, which places them in the media industry.']
+
+## Generated Outputs
+### reasoning
+The claim makes two factual assertions: (1) that the director of the 2006 film "Little Children" works in the media industry, and (2) that Zoltan Korda works in the media industry as well. To verify this claim, it is necessary to identify who directed "Little Children" in 2006 and confirm their profession. Additionally, it requires confirmation of Zoltan Korda's involvement or role within the media industry. Since no specific evidence or clarifications are provided in the notes, separate queries are needed to establish whether each individual is associated with the media industry.
+
+### query
+Who directed the 2006 film "Little Children"?  
+Does the director of the 2006 film "Little Children" work in the media industry?  
+Who is Zoltan Korda, and what are his professional roles?  
+Is Zoltan Korda known to work in the media industry?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Little Children (film)', 'Zoltan Korda']. Documents remaining to be retrieved: ['Todd Field'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Christopher B. Landon wrote a 2007 movie that stars Shia Saide LaBeouf, an American actor who starred in the Disney Channel series Even Stevens that premiered in 2004.
+
+### notes
+['Shia LaBeouf played Louis Stevens in the Disney Channel series Even Stevens, which began before 2004.', 'Christopher Landon co-wrote the 2007 movie Disturbia starring Shia LaBeouf.', 'The Even Stevens series had a related movie in 2003 and was not premiered in 2004.', "Shia LaBeouf's full name includes Saide and he is an American actor.", 'Christopher Landon co-wrote the 2007 movie Disturbia starring Shia LaBeouf.', 'Shia Saide LaBeouf is an American actor known for his role as Louis Stevens in the Disney Channel series Even Stevens.', 'Even Stevens TV series began before 2004, with the related movie premiering in 2003.', 'The claim incorrectly states that Even Stevens premiered in 2004; it actually premiered earlier.', 'Christopher Landon co-wrote the 2007 movie Disturbia starring Shia LaBeouf.', 'Shia Saide LaBeouf is an American actor known for his role as Louis Stevens in the Disney Channel series Even Stevens.', 'Even Stevens premiered in 2000 and ran until 2003, with a related movie in 2003.', 'The claim incorrectly states that Even Stevens premiered in 2004.']
+
+## Generated Outputs
+### reasoning
+The claim makes three linked factual assertions: 
+1) Christopher B. Landon wrote a 2007 movie starring Shia Saide LaBeouf, 
+2) Shia LaBeouf starred in the Disney Channel series Even Stevens, and 
+3) the Even Stevens series premiered in 2004.
+
+The notes confirm that Christopher Landon co-wrote the 2007 movie Disturbia which starred Shia LaBeouf, and also confirm that Shia LaBeouf's full name includes "Saide" and that he is an American actor. The notes affirm that LaBeouf played a lead role in Even Stevens but clarify the series did not premiere in 2004; instead, it started earlier and the related movie aired in 2003.
+
+Therefore, verification requires confirmation that Christopher B. Landon is the same as Christopher Landon credited as a writer, that he indeed wrote this 2007 movie starring Shia LaBeouf; that Shia LaBeouf starred in Even Stevens; and clarification of the exact premiere date of Even Stevens to determine if it matches the 2004 claim or not.
+
+### query
+Who is Christopher B. Landon and is he credited with writing a 2007 movie starring Shia LaBeouf?  
+Did Shia Saide LaBeouf star in the Disney Channel series Even Stevens?  
+When did the Disney Channel series Even Stevens officially premiere?  
+What is the full name of actor Shia LaBeouf, and is he an American actor?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Disturbia (film)', 'Shia LaBeouf']. Documents remaining to be retrieved: ['Christopher B. Landon'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Star of American neo-western film The Far Horizons was born in August and was a professor.
+
+### notes
+['The Far Horizons (1955) starred Fred MacMurray and Charlton Heston.', 'Fred MacMurray was born August 30, 1908.', 'There is no evidence that Fred MacMurray or Charlton Heston were professors.', 'The claim about being a professor is unsupported.', 'Charlton Heston was born in October, not August.', 'The film is an American neo-western.', 'Fred MacMurray starred in The Far Horizons and was born on August 30, 1908.', 'There is no evidence that Fred MacMurray or Charlton Heston were professors in real life.', 'Charlton Heston starred in The Far Horizons but was born in October, not August.', "Fred MacMurray played a professor in 'The Absent-Minded Professor,' a different film.", 'The claim that the star of The Far Horizons was a professor is unsupported.', 'Fred MacMurray was born on August 30, 1908, and starred in The Far Horizons.', 'Charlton Heston, also a star of The Far Horizons, was born in October, not August.', 'There is no evidence that Fred MacMurray or Charlton Heston were professors in real life.', 'Fred MacMurray played a professor in a different film but was not a professor himself.', 'The claim that the star of The Far Horizons was a professor is unsupported and false.', 'The Far Horizons is a 1955 American neo-western film starring Fred MacMurray and Charlton Heston.']
+
+## Generated Outputs
+### reasoning
+The claim asserts two main facts: (1) the star of the American neo-western film "The Far Horizons" was born in August, and (2) the same person was a professor. Verification requires identifying the lead actor(s) of "The Far Horizons," confirming their birth month as August, and establishing whether they ever held a professor position. Since no notes provide additional details or contradictions, the query will focus on these specific points.
+
+### query
+Who were the lead actors starring in the American neo-western film "The Far Horizons"? Among these lead actors, were any born in the month of August? Did any of these lead actors hold a professorship or work as a professor at any time?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Fred MacMurray', 'The Absent-Minded Professor', 'The Far Horizons']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

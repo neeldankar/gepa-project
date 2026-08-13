@@ -1,0 +1,107 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task:  
+You will be provided with two fields as input: `claim` and `notes`. Your task is to produce a `query` that will enable effective retrieval of additional, relevant documents or facts needed to verify the `claim`.
+
+Context and Details:  
+- The `claim` is a factual assertion involving people, events, works (e.g., films, albums), or relationships between entities (e.g., co-occurrence in time, membership in groups, production dates).  
+- The `notes` contain extracted or summarized factual statements relevant to the claim that may partially support or contextualize it but are often incomplete or insufficient to fully verify the claim. These notes may include names, dates (birth, death, production years), roles (e.g., director, actor, group member), and connections (e.g., overlap in life spans, collaborations).  
+- The `query` you generate should be designed to retrieve factual, authoritative knowledge sources or documents that fill the gaps left by the `notes` to fully verify or falsify the claim.
+
+Key Guidelines for Generating the `query`:  
+1. Identify the critical pieces of factual information needed to verify the claim that are not fully confirmed or directly supported in the `notes`. For example:  
+   - Precise birth/death dates of involved individuals.  
+   - Confirmation of membership or participation of named individuals in groups or collaborations.  
+   - Exact dates of work productions or releases when comparing years.  
+   - Relationships between multiple entities (e.g., overlapping lifespans, co-authorship, co-starring).  
+2. Incorporate all relevant entities (people, works, groups) referenced in the claim and notes that pertain to the verification.  
+3. Phrase your query in a clear and factual manner aimed at retrieving authoritative verification documents (e.g., biographical data, production timelines, discographies).  
+4. If specific ambiguous or uncertain entities exist (e.g., “the Irish artist who released the EP ‘The First Collage’”), attempt to identify them by name with justification if available (e.g., "SOAK" for that EP), and include them in the query to enable precise retrieval.  
+5. Structure your query as one or more concise, targeted questions that collectively cover all necessary information to adjudicate the truth of the claim.  
+
+Example General Strategy to Follow:  
+- Parse the claim to identify all main entities and assertions.  
+- Scan the notes to detect confirmed facts vs. missing or uncertain points.  
+- Formulate questions that explicitly target those missing points, using names, dates, titles, and relationships explicitly.  
+- Ensure the query targets documents that can establish biographical details, production chronology, or group membership history as required.  
+
+By following the above approach, the generated `query` will effectively guide downstream retrieval systems to find the needed gold documents or information to validate or refute the claim comprehensively.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Somebody's Daughter's star, who was in D.C. Cab, was most widely known for his role in the television show "Barney Miller".
+
+### notes
+["Ron Carey was best known for his role on 'Barney Miller' but no association with 'Somebody's Daughter' or 'D.C. Cab' is mentioned.", "None of the actors listed in the context connect stardom in 'Somebody's Daughter' and a role in 'D.C. Cab' with 'Barney Miller'.", 'The claim likely conflates different actors; verification with additional sources is needed.', "Ron Carey was best known for his role on 'Barney Miller' but has no noted connection to 'Somebody's Daughter' or 'D.C. Cab'.", "Jim Moody appeared in 'D.C. Cab' but is not associated with 'Barney Miller' or 'Somebody's Daughter'.", "No actor in the provided context is linked with starring in 'Somebody's Daughter', appearing in 'D.C. Cab', and being most widely recognized for 'Barney Miller'.", 'The claim likely confuses separate actors and roles; verification from additional sources is needed.', "No actor in the available context is linked to starring in Somebody's Daughter, appearing in D.C. Cab, and being most famous for Barney Miller.", "Ron Carey is best known for Barney Miller but has no known link to Somebody's Daughter or D.C. Cab.", "Jim Moody has a role in D.C. Cab but no connection to Barney Miller or Somebody's Daughter.", 'The claim appears to conflate roles from multiple actors; further confirmation is required.']
+
+## Generated Outputs
+### reasoning
+The claim involves identifying the star of "Somebody's Daughter" who also appeared in "D.C. Cab" and determining whether this person is most widely known for their role in the television show "Barney Miller." To verify this, we need to determine who starred in "Somebody's Daughter," confirm if that same actor was in "D.C. Cab," and then check if that actor is best known for a role on "Barney Miller." Since there are no notes provided that already mention the actor's name, known filmography, or television roles, we must query for the cast of "Somebody's Daughter," the "D.C. Cab" cast, and notable actors associated with "Barney Miller" to establish the overlap and prominence of roles.
+
+### query
+Who starred in the film "Somebody's Daughter"? Did any of those actors also appear in the movie "D.C. Cab"? For any actor who appeared in both, what are their most widely recognized roles, specifically, are they best known for their role in the television show "Barney Miller"? Provide the actor’s name, filmography highlights including "Somebody's Daughter," "D.C. Cab," and their role in "Barney Miller," with indications of which role is most recognized.
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Max Gail']. Documents remaining to be retrieved: ['D.C. Cab', "Somebody's Daughter"].
+
+
+
+# Example 2
+## Inputs
+### claim
+The cemetery that professional golf player George W. Wallace is buried at, is located at a park that is part of Golden Gate National Recreation Area.
+
+### notes
+['Golden Gate National Cemetery is separate from the Golden Gate National Recreation Area and is located in San Bruno, CA.', 'No information found about George W. Wallace or his burial location within the provided context.', 'Golden Gate National Recreation Area includes various parks but does not list any cemeteries or burial grounds associated with George W. Wallace.', 'Golden Gate National Cemetery is distinct and separate from the Golden Gate National Recreation Area.', 'Golden Gate National Recreation Area includes parks such as Marin Headlands and Hawk Hill but has no cemeteries mentioned in the context.', 'No information was found about George W. Wallace or details of his burial location in the provided context.', 'San Francisco National Cemetery and Golden Gate National Cemetery are two different cemeteries near San Francisco, neither linked to Golden Gate National Recreation Area.', 'George W. Wallace is buried at San Francisco National Cemetery located in the Presidio of San Francisco.', 'San Francisco National Cemetery is distinct from and not part of the Golden Gate National Recreation Area.', 'Golden Gate National Cemetery is separate from the Golden Gate National Recreation Area and located in San Bruno, CA.', 'Golden Gate National Recreation Area comprises various parks and natural areas but contains no cemeteries related to George W. Wallace.']
+
+## Generated Outputs
+### reasoning
+The claim revolves around verifying the burial location of professional golf player George W. Wallace, specifically whether the cemetery where he is buried is located within a park that is part of the Golden Gate National Recreation Area (GGNRA). The notes indicate that the Golden Gate National Cemetery is separate from the GGNRA and located in San Bruno, CA, but they do not provide any direct information about George W. Wallace or his burial site. Additionally, the GGNRA includes various parks but does not list cemeteries or burial grounds related to George W. Wallace. This leaves unclear whether George W. Wallace is buried at the Golden Gate National Cemetery (which is outside the GGNRA), another cemetery within the GGNRA, or elsewhere.
+
+To verify the claim conclusively, it is necessary to determine:
+- The exact burial location of George W. Wallace (i.e., the name and location of the cemetery).
+- Whether this cemetery is part of or located within any park of the Golden Gate National Recreation Area.
+- Clarification of boundaries and distinctions between the Golden Gate National Cemetery and the GGNRA regarding burial grounds.
+
+Hence, the query should seek authoritative biographical data, cemetery records, and official park or cemetery designations related to George W. Wallace, the Golden Gate National Cemetery, and the Golden Gate National Recreation Area.
+
+### query
+What is the name and location of the cemetery where professional golf player George W. Wallace is buried? Is this cemetery located within a park that is part of the Golden Gate National Recreation Area? Additionally, what are the boundaries and distinctions between Golden Gate National Cemetery and the Golden Gate National Recreation Area regarding cemeteries and burial grounds?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['George W. Wallace', 'San Francisco National Cemetery']. Documents remaining to be retrieved: ['Presidio of San Francisco'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Nathaniel "Nate" Jacks is the colloquial name of the professional football team in which this striker, who scored in Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final, played.
+
+### notes
+["Nathaniel 'Nate' Jacks is an American former professional football player, not a team name.", 'The 2013 FIFA Confederations Cup Final was between Brazil and Spain, with Brazil winning 3-0.', 'Strikers who scored in that final include Neymar, Fred, and Jo, not Nathaniel Jacks.', "No evidence supports that 'Nathaniel Jacks' refers to any professional football team.", "Nathaniel 'Nate' Jacks is an individual former American football player, not a soccer team name.", 'The goal scorers in the 2013 FIFA Confederations Cup Final were Neymar and Fred; Nathaniel Jacks did not score.', "'Nathaniel Jacks' does not correspond to any professional football (soccer) team name.", 'The 2013 FIFA Confederations Cup Final was contested by national teams Brazil and Spain, with Brazil winning 3-0.', "Nathaniel 'Nate' Jacks is an American former professional football player unrelated to soccer teams.", 'The 2013 FIFA Confederations Cup Final was contested by Brazil and Spain, with Brazil winning 3-0.', 'Goals in the final were scored by Neymar and Fred; Nathaniel Jacks did not score or participate.', "There is no record of a professional football team colloquially called 'Nathaniel Jacks'.", 'Nathaniel Jacks is not associated with any striker who played or scored in the 2013 FIFA Confederations Cup Final.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that "Nathaniel 'Nate' Jacks" is a colloquial name of a professional football team for which a striker who scored in the 2013 FIFA Confederations Cup Final (Brazil 3-0 Spain) played. However, notes clarify that Nathaniel "Nate" Jacks refers to an American former professional football player, not a team. Also, the goal scorers in that final were Neymar, Fred, and Jo, none of whom are named Nathaniel Jacks. Furthermore, there is no evidence that "Nathaniel Jacks" is associated with any professional football team. To verify the claim, it is necessary to check if there is any professional football team known colloquially as "Nathaniel 'Nate' Jacks," and whether this player was part of any team relevant to the 2013 FIFA Confederations Cup final or if the striker who scored for Brazil under that or any similar name truly exists.
+
+### query
+Is there any professional football team colloquially or officially known as "Nathaniel 'Nate' Jacks"? What is the full career history of Nathaniel "Nate" Jacks as a professional football player? Which football players scored in Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final? Did a player named Nathaniel Jacks ever participate in the 2013 FIFA Confederations Cup, particularly on Brazil's team? Are there any known nicknames or colloquial names for Brazilian football teams involving the name Nathaniel Jacks?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['2013 FIFA Confederations Cup Final']. Documents remaining to be retrieved: ['Clube Atlético Mineiro', 'Fred (footballer)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

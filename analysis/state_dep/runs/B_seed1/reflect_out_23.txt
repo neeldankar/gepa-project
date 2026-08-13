@@ -1,0 +1,64 @@
+```  
+Task Description:  
+You are provided with two inputs:  
+- `claim`: a factual statement making a specific assertion about relationships or attributes involving named entities (persons, bands, institutions, films, events, etc.).  
+- `notes`: a collection of textual snippets from multiple documents containing factual information relevant to the claim’s core entities and relationships.  
+
+Your goal is to analyze the claim and notes, carefully extracting the key factual assertions and any uncertainties, contradictions, or gaps. From this analysis, generate a single, concise, precise natural language question (`query`) designed for targeted document retrieval to assist in verifying the claim.
+
+Key Requirements for the Query:  
+
+1. **Core Factual Focus:**  
+   - The query must directly target the essential fact(s) or relationship(s) in the claim, focusing on named entities explicitly mentioned in the claim.  
+   - This includes verifying membership in bands or groups, roles (lead vocalist, bassist, director, producer, combat veteran), event attributes (location, date, awards), coining or authorship of terms or works, collaborations and their durations, album-song relationships (studio/live, covers), and similar detailed domain-specific links.
+
+2. **Entity Specificity with Disambiguation:**  
+   - Name all key entities exactly as in the claim, and when ambiguity exists (e.g., multiple people or bands with similar names or overlapping domains), include disambiguating information from the notes, such as nationality, geographic qualifiers, genre, or role.  
+   - Do NOT introduce entities or assumptions not supported in the notes.
+
+3. **Precise Relationship and Logical Nuance:**  
+   - Clearly specify the precise relationship or fact to check.  
+   - For example, membership overlap (“Are X and Y both members of band Z?”), collaborations (“Did X and Y collaborate with Z during a certain period?”), event timing and venue (“Was event E held at stadium S on date D?”), or exclusion (“Did X and Y not both collaborate with Z?”).  
+   - When the claim includes logical negatives or exclusivity, the query should reproduce that logic exactly.
+
+4. **Grounded Solely in Supported Facts:**  
+   - Use only facts, attributes, and entities that appear in the notes.  
+   - Avoid adding background knowledge or assumptions.
+
+5. **Domain-Appropriate Terminology and Nuance:**  
+   - Incorporate domain-specific language and distinctions observed in the notes:  
+     - *Music domain*: differentiate between band and individual musician entities, specify album types (studio, live), clarify if a song is original or a cover, highlight temporal context (dates of fame, release years).  
+     - *Film and military history domain*: specify director names, film titles explicitly, event dates, military regiment action start dates vs. activation dates.  
+     - *Sports domain*: include event names, dates, stadium names, club tenancy periods, and geographic qualifiers.  
+     - *Science domain*: specify coining of terms, author affiliations, corresponding author roles.
+
+6. **Conciseness and Retrieval Utility:**  
+   - Formulate one focused, unambiguous question that includes all relevant entities and fact checks necessary to verify the claim fully.  
+   - The query should be detailed enough to guide retrieval of all documents covering those entities and relationships comprehensively.
+
+General Strategy for Query Construction:  
+
+- Identify and list all named entities explicitly mentioned in the claim.  
+- Cross-reference these entities with their attributes and relationships as found in the notes.  
+- Identify any ambiguity, gaps, or contradictions in the claim relative to notes.  
+- Transform these analyses into a precise question capturing the root verification need.  
+- Maintain strict alignment with the information in the notes—no extrapolation beyond them.  
+- Frame the question with domain-specific clarity, differentiating roles, temporal contexts, and entity types to maximize retrieval relevance.
+
+Example Considerations:  
+- When comparing ages or birth dates (e.g., musicians), ask explicitly for birth dates and comparative order referencing named individuals.  
+- For event-based claims, include event name, location, date, and entities involved in attendance or hosting.  
+- For film claims, explicitly mention film titles, directors, actors, roles, and awards, ensuring to clarify genres if relevant (e.g., whether a film is musical).  
+- For collaboration claims, specify participants, roles, and duration periods.  
+- For music works, specify album type and whether performance or cover status applies.
+
+Deliverable:  
+Produce a single precise, concise, and unambiguous natural language verification question capturing:  
+- all key claim entities (with qualifying descriptors as needed),  
+- all core factual relations or attributes to verify,  
+- logical nuances (negation or exclusivity) exactly as stated,  
+- phrased using domain-relevant terminology,  
+- grounded only in the provided notes’ content.  
+The question should be optimized to retrieve all relevant documents for comprehensive claim verification.
+
+```

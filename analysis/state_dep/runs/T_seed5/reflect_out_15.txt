@@ -1,0 +1,43 @@
+```  
+Task Description:  
+You will be provided with three types of inputs:  
+- `claim`: A sentence or set of sentences making a factual assertion involving specific entities such as people, places, films, bands, institutions, or other domain-specific items. The claim often asserts membership, involvement, temporal order, jurisdiction, or relationships among these entities.  
+- `notes`: A list of candidate supporting or related sentences extracted from various documents or sources. These are often overlapping, partially redundant, or paraphrased snippets containing factual details.  
+- `context`: A list of detailed document descriptions or summaries (similar to Wikipedia or authoritative source style) related to the named entities in the claim and notes. These contain comprehensive factual information including dates, roles, locations, attributions, relationships, and metadata relevant to understanding and verifying the claim.
+
+Your task is to use the `claim`, `notes`, and `context` to synthesize and produce two outputs:  
+1. `new_notes`: A concise, de-duplicated, and highly relevant subset of the original `notes` that best support, clarify, or contextualize the claim. Your selection should:  
+   - Include only notes that directly relate to entities and relationships in the claim, filtering out irrelevant or unsupported statements.  
+   - Remove repetitive or overlapping notes, keeping the clearest, most precise, and factually accurate ones.  
+   - Summarize or synthesize information when appropriate to improve clarity, relevance, and accuracy without introducing unsupported facts.  
+   - Reflect any missing or insufficient information about entities if relevant for understanding the claim.  
+2. `titles`: A curated list of titles of the documents or entities from the `context` that are necessary and sufficient to support or understand the claim fully. These entities/documents provide the key knowledge base for reasoning about the claim. Your selection should:  
+   - Include all key entities mentioned in the claim and the selected notes (e.g., films, actors, bands, places, institutions).  
+   - Add any relevant core documents from context that cover these entities and the relationships described.  
+   - Exclude unrelated or unsupported documents, focusing on main relevant knowledge sources.  
+   - If some evidently relevant gold-standard documents are missing in the context, include their titles if you infer their relevance from the claim and notes.  
+
+Key Domain-Specific Considerations:  
+- Entities relate to niche or specialized domains such as:  
+  - Geography: counties, cities, provinces, countries, administrative jurisdictions.  
+  - Films and TV: films, TV seasons, directors, actors, genres, release dates, roles, production details.  
+  - Music: bands, albums, songs, band members, genres, concert tours.  
+  - Institutions: colleges, organizations, their locations and affiliations.  
+- Claims may rely on detailed temporal or hierarchical relationships, such as which actor appeared in which film or TV season, sequence of release or premieres, or administrative hierarchy of geographic entities.  
+- Notes may contain repeated or partially redundant information, varying precision, or subtle distinctions that must be evaluated for factual correctness before selection.  
+- Context contains authoritative summaries which should be used to confirm or clarify details in the notes and the claim.
+
+Recommended General Approach:  
+- Carefully parse the claim to identify all key entities, their attributes, and relationships. Consider temporal elements (dates, premieres) and hierarchical relations (jurisdiction, membership).  
+- Review all notes to select those that directly support or contextualize these entities and the claim’s relationships. Avoid unsupported or loosely related notes. Remove duplicates.  
+- Use the context documents to verify facts, confirm dates, roles, or hierarchical relationships; resolve ambiguities or partial information in notes.  
+- Select the minimal set of context titles that cover all key entities and essential knowledge to understand or verify the claim.  
+- Summarize or combine notes only when it enhances clarity and factual accuracy without losing key details.  
+
+Output Format Requirements:  
+Produce JSON-compatible outputs with exactly two fields:  
+- `new_notes`: list of strings - the filtered and summarized notes best supporting or contextualizing the claim.  
+- `titles`: list of strings - the titles of documents or entities from the context (or inferred relevant missing ones) most important for supporting or understanding the claim.
+
+By applying this domain-aware and precise approach, your output will provide a focused and factually sound knowledge base for subsequent claim validation or knowledge retrieval tasks.  
+```

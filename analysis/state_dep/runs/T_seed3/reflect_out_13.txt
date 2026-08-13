@@ -1,0 +1,65 @@
+```  
+Task Description:
+
+You will be given three input fields:
+
+- `claim`: A factual assertion involving one or more named entities (people, organizations, events, publications, locations) and relationships between them (e.g., membership in a group, authorship, historic events, achievements).
+- `notes`: A list of candidate factual statements extracted from various sources that pertain to the claim. These notes may support, refute, or partially correspond to components of the claim. They may be duplicated, partially overlapping, or contain inaccuracies.
+- `context`: A list of documents or document excerpts (with explicit titles and detailed text) providing authoritative background information about the entities, events, or claims referenced.
+
+Your objective is to produce two output fields:
+
+- `new_notes`: A concise, accurate, and non-redundant subset of the provided `notes`, strictly filtered and fact-checked against the `context`. These notes should directly support or dispute the claim, reflecting only information fully corroborated by facts in the `context`.
+
+- `titles`: A list of exact document titles from the `context` that contain evidence supporting or refuting the selected `new_notes`. This list must collectively cover every fact in `new_notes` without including irrelevant or unrelated documents.
+
+--
+
+Detailed instructions and domain-specific guidance:
+
+1. **Entity and Relationship Identification**  
+   Carefully identify all entities mentioned in the claim (e.g., individuals, organizations, publications, events) and their stated relationships (e.g., authorship, professional roles, membership, familial ties). Detect and differentiate entities with similar names by leveraging context-based attributes (professions, historical periods, geographic locations).
+
+2. **Cross-Verification with Context**  
+   Use the `context` as the definitive source of truth. For each candidate note, check its individual factual assertions against the `context`. Include a note in `new_notes` only if all claim components in that note are verified by information contained explicitly within the `context`. Discard or modify notes that are contradicted, unsupported, ambiguous, or not fully substantiated by the context.
+
+3. **Precision and Completeness**  
+   - The `new_notes` must be succinct, retaining only the relevant facts that enable verification of the claim. Remove redundancies and irrelevant details.  
+   - The `titles` must include all documents that provide evidence for the facts in `new_notes`, but no extraneous documents.  
+   - Partial or incomplete document retrieval reduces precision and should be avoided. Ensure full coverage of `new_notes` facts with the minimal necessary set of document titles from `context`.
+
+4. **Handling Ambiguities and Conflicts**  
+   - If notes contain conflicting information, select the version consistent with the context.  
+   - If an entity name is ambiguous (e.g., several people named “Gould”), use contextual clues such as profession, lifespan, geographic region, and activity to disambiguate and confirm identity.
+
+5. **Complex Claims and Multi-Faceted Verification**  
+   - Decompose complex claims into separate factual assertions.  
+   - Verify each component independently against the context.  
+   - Construct `new_notes` to collectively encompass verified components without introducing unsupported details.
+
+6. **Domain-Specific Contextual Knowledge**  
+   The following specialized knowledge may help correctly interpret documents and notes:
+
+   - **Individuals**: Paleontologists (e.g., Elisabeth Vrba, Stephen Jay Gould), professional athletes (notably tennis players with tournaments and rankings), writers, academics, journalists, designers, and historical figures.  
+   - **Publications and works**: Distinguish between authorship (author vs. co-author), publication types (books, magazine articles, journal essays), and venues (e.g., academic journals vs. mass-market periodicals).  
+   - **Events and Achievements**: Sports tournament results, historical events or roles (e.g., commandants of camps), negotiations (with entities or companies), or professional affiliations. Know that tournament or event titles differ and identify relevant locations.  
+   - **Ambiguity Handling**: Differentiate individuals/entities with the same or similar names by aligning contextual details such as profession, time period, and associated events.
+
+7. **General Reasoning and Fact-Checking Strategy**
+
+   - Map entities and relations in the claim to those in notes and context documents.  
+   - Inspect each note for factual claims; validate these against relevant context entries.  
+   - Exclude unsupported or contradictory notes.  
+   - Aggregate all necessary documents covering the validated notes to form the `titles` list.  
+   - Refine and condense `new_notes` to an essential, accurate subset for verification.
+
+--
+
+Output format:
+
+- `new_notes`: List of factually verified, concise notes that directly support or refute the claim, derived from `notes` and fully corroborated by `context`.
+- `titles`: List of exact document titles from `context` that contain the evidence supporting `new_notes`.
+
+Your outputs must be traceable and verifiable based on the provided context, precise without speculation, and focused strictly on the claim components.
+
+Use clear, logical reasoning to address all parts of the claim, resolve ambiguities, and ensure factual correctness corresponding to the provided context.

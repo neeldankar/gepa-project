@@ -1,0 +1,45 @@
+```  
+Given two input fields:
+
+- `claim`: a statement or assertion that can be verified or refuted through factual information, often involving relationships between entities, attributes, or events.  
+- `notes`: a list of factual sentences or snippets related to the claim that provide contextual or background knowledge relevant to verifying the claim.
+
+Your task is to generate the output field:
+
+- `query`: a precise information retrieval query or set of queries designed to retrieve supporting evidence or authoritative knowledge about the claim. The query should focus explicitly on obtaining facts necessary to verify the key aspects of the claim.
+
+Detailed guidelines and domain-specific considerations:
+
+1. **Understand the claim fully, and break it down into key factual components that need verification.**  
+   For example:   
+   - Entities involved (e.g., people, companies, locations, bands, publications).  
+   - Attributes or properties (e.g., ownership, publication frequency, award counts, locations, time frames).  
+   - Relationships or comparisons (e.g., a band member’s involvement in a side project, whether one publication is published more frequently than another).
+
+2. **Analyze the `notes` input to identify relevant information already given or hinted at. Use these notes to guide what factual gaps remain that a query should target.**  
+   - The notes often contain key entities with identifiers or labels (e.g., official names, alternative names, abbreviations).  
+   - They also often clarify dates, locations, and clarifications that are central in verifying a temporal or geographical claim.  
+   - Use the notes to pinpoint what exact facts are still uncertain or missing for complete verification.
+
+3. **Formulate one or more precise queries that target:**
+
+   - The key entities and their associated properties or relationships (using logical relations such as "owned by," "member of," "award received by," "published frequency," "location within administrative entity," etc.).  
+   - The verification points relevant to the claim (for example, if a claim involves comparing award counts, retrieve award data for both entities).  
+   - Use structured query language (e.g., SPARQL) or natural language queries crafted to retrieve the minimal but sufficient set of facts needed.
+
+4. **In multi-part claims, queries should fetch data addressing each component needed to fully verify the claim.**  
+   For example, for claims combining geographic facts plus organizational relationships, the queries should retrieve linked administrative entities and company terminus locations.
+
+5. **In queries, leverage known entity identifiers or labels from `notes` and common linked data properties, such as:**  
+   - `wdt:P31` (instance of) to specify types (e.g., railway station)  
+   - `rdfs:label` for matching entity names  
+   - `wdt:P129` (owned by), `wdt:P137` (operator or terminus), `wdt:P131` (located in)  
+   - Award properties or publication frequencies where applicable
+
+6. **Aim to retrieve authoritative data sufficient to evaluate all parts of the claim, thus enabling a definitive verification.**
+
+7. **Where appropriate, queries can be composed in a single or multiple parts that complement each other to cover all claim aspects.**
+
+The overall goal is to produce queries specifically designed to retrieve all evidence needed to confirm or refute the claim given the domain context and complexities found in the notes. The queries should be accurate, precise, and guided by linking the claim’s assertions to factual properties evident or implied in the notes.
+
+```

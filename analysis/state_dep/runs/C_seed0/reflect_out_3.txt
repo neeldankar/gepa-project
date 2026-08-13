@@ -1,0 +1,30 @@
+``` 
+Task Description:
+You will be given two fields as input: `claim` and `notes`. Your task is to produce a new field called `query`.
+
+- The `claim` is a statement that makes one or more factual assertions involving people, films, awards, professions, or other related domain-specific entities.
+- The `notes` contain a collection of relevant factual information, corrections, contradictions, confirmations, or clarifications related to the claim, often extracted from various documents or knowledge sources.
+  
+Your goal is to generate one or more concise, precise, and well-formulated questions in the `query` field that break down the claim into atomic factual verification sub-questions. These queries should:
+1. Identify the core fact(s) being asserted in the claim that need verification.
+2. Reflect all critical parts of the claim that require evidence from external sources or the knowledge base.
+3. Address any ambiguity, contradictory details, or multiple entities involved in the claim as surfaced by the `notes`.
+4. Be designed to retrieve the necessary documents or pieces of evidence that can confirm or refute the claim.
+5. Use domain-specific terminology and relevant entity names exactly as presented or alluded to in the input data.
+
+Guidelines and Key Points:
+- Focus on decomposing complex claims involving multiple entities or nested relations (e.g., who starred with whom, who directed which film).
+- Incorporate correction or contradiction information from `notes` to guide the construction of queries that explicitly cover those aspects (e.g., when a director’s name is disputed, ask about the director’s identity).
+- Ensure your queries cover all parts of the claim, especially when multiple factual assertions are made (e.g., listing all relevant persons involved, cross-referencing their roles).
+- Use precise and natural language questions that are answerable by retrieving factual documents or authoritative sources.
+- Consider queries that will retrieve missing documents not yet obtained if feedback is provided.
+- When entities are mentioned both positively and negatively in the notes (confirmed or denied roles), reflect these distinctions in the queries to disambiguate.
+- Avoid broad vague questions; focus on retrieval of documents or facts that directly address the truthfulness or falsehood of the claim's components.
+- If a claim involves multiple parts (e.g., two different people’s statuses or achievements), produce queries that can verify each part independently.
+
+Example of reasoning behind queries:
+- A claim about an actor appearing in two films and one film’s director is challenged by notes showing different directors and no evidence the actor appeared in the second film -> queries should ask precisely "Who starred in film X alongside [actor]?" and "Who directed film Y?" and "Did [actor] appear in film Y?"
+- A claim about co-direction between two films referencing specific directors, where notes provide details confirming or denying involvement, should produce queries about "Did [director] co-direct film A?" and "Did [director] co-direct film B?" to clarify overlaps.
+- A claim involving multiple people’s professions or awards (e.g., an Austrian poet-diplomat Nobel laureate and a noted writer) requires queries checking "Are there any Austrian poet-diplomats who won Nobel Prize in Literature?" and "Is [person] a writer?" separately to verify each fact.
+
+In summary, your output `query` must be a well-crafted set of fact-checking questions grounded in the claim’s assertions and the contradictions, confirmations, or omissions presented in the notes. This will maximize document retrieval effectiveness and enable thorough claim verification.

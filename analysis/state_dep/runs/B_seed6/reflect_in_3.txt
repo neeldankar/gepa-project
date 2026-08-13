@@ -1,0 +1,106 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given two fields, `claim` and `notes`. The `claim` is a factual or knowledge-based statement that requires verification or fact-checking. The `notes` field contains a list of sentences or bullet points extracted or summarized from various documents or context relevant to the claim, including potential evidence that supports, contradicts, or is neutral towards the claim.
+
+Your goal is to produce a clear, focused, and efficient *search query* (output field `query`) that can be used to retrieve evidence documents or data to verify the truthfulness of the `claim`. The query should be designed to maximize the retrieval of relevant documents supporting or refuting the claim and minimize retrieval of irrelevant documents. 
+
+Instructions for generating the query:
+
+1. Analyze the `claim` carefully to understand the key entities, relationships, dates, and facts involved. Identify the main factual assertions in the claim that require verification.
+
+2. Review the `notes` to gather background knowledge and domain-specific information that may help refine or contextualize the claim for the search. The `notes` often contain critical domain-specific temporal facts (e.g., founding dates, term years), geographic details (e.g., jurisdictions, provinces, cities), biographical details (e.g., players, managers, film stars, familial relationships), and precise named entities (e.g., sports teams, cities, films, persons).
+
+3. From this analysis, compose a concise but comprehensive query that:
+   - Explicitly targets the key parts of the claim that must be verified.
+   - Includes relevant named entities (e.g., proper nouns, dates, official names).
+   - Uses natural language questions or keyword phrases that align with typical knowledge sources.
+   - Avoids unnecessary ambiguity or overly broad terms, focusing on search terms that can retrieve authoritative evidence documents.
+
+4. When formulating the query, account for domain-specific nuances extracted from the notes such as:
+   - Baseball franchises’ founding years and managerial history.
+   - Administrative divisions and geographic hierarchies in China.
+   - Filmographies and familial relations between actors in cinema.
+   
+5. The goal of the query is to guide a retrieval system toward documents that can confirm or reject the claim with relevant factual evidence.
+
+Example approach from the illustrations:
+
+- Identify the precise claim elements (e.g., “Canadian baseball team founded in 1969,” “manager of Tampa Bay Devil Rays,” “player tenure 1973-1987”).
+- Note corrections or clarifications in the notes (e.g., real founding dates).
+- Formulate direct fact-check queries that ask about these components explicitly for verification.
+
+Your final output should only contain the field `query` with the refined question or search phrase best suited to retrieve documents relevant to verifying the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+A song from the Kathy Mattea discography, that peaked at #1 on the Billboard Hot Country Singles & Tracks chart, was first recorded by a singer that sang country music.
+
+### notes
+['None of the Kathy Mattea songs listed in the context reached #1 on the Billboard Hot Country Singles & Tracks chart.', "Several of Kathy Mattea's songs were first recorded by artists known to sing country music or related genres (e.g., Nanci Griffith).", "None of Kathy Mattea's songs mentioned reached #1 on the Billboard Hot Country Singles & Tracks chart.", 'No evidence found of a Kathy Mattea song that reached #1 and was first recorded by another country music artist.', 'Some songs were first recorded by notable country or related genre artists, but none of these songs hit #1.', 'No Kathy Mattea song listed in the context reached #1 on the Billboard Hot Country Singles & Tracks chart.', 'Several songs were first recorded by artists known for country music, but none of these songs reached #1 on the chart.', 'The provided context lists peak chart positions, none of which are #1 for any Kathy Mattea song.', 'No evidence supports the existence of a Kathy Mattea song that topped the Billboard Hot Country chart and was first recorded by a country singer.']
+
+## Generated Outputs
+### reasoning
+The claim involves verifying if a song from Kathy Mattea’s discography, which reached #1 on the Billboard Hot Country Singles & Tracks chart, was originally recorded by a country music singer. The key elements to verify are: which of Kathy Mattea’s songs hit #1 on that chart, and to check the original recording artist of that song, specifically whether that artist was a country music singer. Since no notes provide relevant details, the search query should directly ask for Kathy Mattea’s #1 hits and their original recording artists with genre classification.
+
+### query
+Which songs by Kathy Mattea reached #1 on the Billboard Hot Country Singles & Tracks chart, and who originally recorded those songs? Were the original artists country music singers?
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Come from the Heart', 'Don Williams discography', 'Kathy Mattea discography'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The actor who starred in a main role on A Lua Me Disse received the Golden Globe nomination for playing the lead role of "The King of Cocaine".
+
+### notes
+['A Lua Me Disse starred Adriana Esteves and Wagner Moura in the main roles.', "No provided information confirms any 'A Lua Me Disse' main actor received a Golden Globe nomination for playing 'The King of Cocaine'.", "Wagner Moura, a main actor in 'A Lua Me Disse', played Pablo Escobar in 'Narcos' and was nominated for a Golden Globe for this role.", "No other main actors from 'A Lua Me Disse' have been associated with a Golden Globe nomination for the role of 'The King of Cocaine'.", "'The King of Cocaine' is a common epithet for Pablo Escobar, whom Wagner Moura portrayed in 'Narcos'.", "Wagner Moura, a main actor in 'A Lua Me Disse', received a Golden Globe nomination for playing Pablo Escobar, aka 'The King of Cocaine', in the Netflix series 'Narcos'.", "'The King of Cocaine' is a nickname for Pablo Escobar, the character portrayed by Wagner Moura in 'Narcos'."]
+
+## Generated Outputs
+### reasoning
+The claim states that an actor in a main role on "A Lua Me Disse" received a Golden Globe nomination for playing the lead role of "The King of Cocaine." From the notes, the main actors on "A Lua Me Disse" are Adriana Esteves and Wagner Moura. Wagner Moura portrayed Pablo Escobar, also known as "The King of Cocaine," in "Narcos" and was nominated for a Golden Globe for this role. There is no evidence that Adriana Esteves or any other main actor from the show was nominated for playing "The King of Cocaine." Thus, verifying the claim boils down to confirming Wagner Moura's main role status on "A Lua Me Disse" and his Golden Globe nomination for portraying Pablo Escobar.
+
+### query
+Did Wagner Moura, a main actor in "A Lua Me Disse," receive a Golden Globe nomination for playing Pablo Escobar, known as "The King of Cocaine"?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['A Lua Me Disse', 'Pablo Escobar', 'Wagner Moura']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+In the 28th season a Spanish rally driver won the racing series which was not competed in by Harri Rovanperä from 1993 to 2006.
+
+### notes
+['Harri Rovanperä competed in the World Rally Championship from 1993 to 2006.', 'The 28th season of the World Rally Championship was in the year 2000.', "Marcus Grönholm (Finnish) won the 2000 WRC drivers' championship.", 'Carlos Sainz (Spanish) was a contender in 2000 but did not win the championship.', 'The 28th season of the World Rally Championship corresponds to the year 2000.', 'Harri Rovanperä competed in the World Rally Championship continuously from 1993 to 2006, including the 2000 season.', 'The winner of the 2000 World Rally Championship was Marcus Grönholm, a Finnish driver, not a Spanish driver.', 'Carlos Sainz, a Spanish driver, participated in the 2000 season but did not win; he was runner-up.', 'Therefore, the claim that a Spanish rally driver won the 28th season of the WRC is false.', 'Harri Rovanperä did compete in the series claimed to be not competed in by him.', 'The 28th season of the World Rally Championship is the year 2000.', 'Harri Rovanperä competed continuously in the WRC from 1993 to 2006, including the 2000 season.', 'Marcus Grönholm, a Finnish driver, won the 28th (2000) WRC season.', 'Carlos Sainz, a Spanish driver, participated in the 2000 season but did not win the championship.', 'The claim that a Spanish driver won the 28th season of the WRC is incorrect.', 'The claim that Harri Rovanperä did not compete in the 28th season is incorrect.']
+
+## Generated Outputs
+### reasoning
+The claim states that a Spanish rally driver won the racing series in its 28th season, and that Harri Rovanperä did not compete in it during 1993-2006. The notes clarify that the 28th World Rally Championship season was in 2000, Harri Rovanperä indeed competed in WRC from 1993 to 2006, and the 2000 champion was Finnish driver Marcus Grönholm. Carlos Sainz, a Spanish driver, competed but did not win in 2000. Therefore, the claim that a Spanish driver won the 28th season appears to contradict the documented winner. The key fact to verify is whether a Spanish driver won the 28th WRC season (year 2000) and whether Harri Rovanperä competed that year.
+
+### query
+Who won the 2000 World Rally Championship and did Harri Rovanperä compete in the 2000 season?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['2000 World Rally Championship', 'Harri Rovanperä']. Documents remaining to be retrieved: ['Carlos Sainz'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

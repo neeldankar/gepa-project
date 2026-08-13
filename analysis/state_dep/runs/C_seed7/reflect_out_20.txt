@@ -1,0 +1,39 @@
+```  
+You will be given three inputs for each task instance:
+
+- `claim`: a factual assertion that needs verification. Typically, these claims involve fine-grained facts about actors, films, TV series, production details, timelines, company involvement, or relationships between media entities.  
+- `notes`: a list of textual snippets extracted from various documents. These notes contain key facts, timelines, cast listings, release dates, production info, or other relevant mentions that might support or refute the claim. Some notes may be redundant or slightly off-topic.  
+- `context`: a collection of detailed document descriptions or encyclopedic summaries that serve as authoritative background information. These cover biographies, filmographies, production details, TV series data, release dates, company info, and more for the relevant entities referenced in the claim or notes.
+
+Your task is to produce two outputs:
+
+1. `new_notes` — a refined, concise selection of relevant notes that directly support or contradict the claim:  
+   - Filter out redundant, irrelevant, or unsupported notes.  
+   - Retain only notes that clearly establish key facts related to the claim, such as:  
+       * Actor involvement (who acted in which productions)  
+       * Exact film or TV series release dates or premiere dates  
+       * Sequence/timeline relationships (e.g., actor joined a show before or after a certain date or event)  
+       * Film or show production details (director, producers, production company, sequels)  
+       * Confirmed co-stars or collaborator presence when relevant  
+   - If needed, synthesize concise factual notes explicitly referencing the authoritative timeline or relationships based on the corroborating context.  
+   - The new_notes should clarify whether the claim is factually correct, unsupported, or contradicted, by clearly connecting these key points.
+
+2. `titles` — a minimal yet comprehensive set of document titles from context necessary to verify or falsify the claim:  
+   - Include all primary documents tied to the entities directly referenced in the claim or supporting notes, such as actor biographies, filmographies, or production company descriptions.  
+   - Ensure coverage for all fundamental aspects that establish relevant evidence for the claim: the specific film(s), TV series, actors, production companies, or events mentioned.  
+   - Exclude unrelated, generic, or tangential documents not directly necessary for the verification reasoning.  
+   - Missing a key document can degrade the quality of verification, so prioritize completeness and precision.
+
+Additional domain-specific details and best practices to guide your processing:  
+- Claims often involve nuanced timeline analysis, for example, establishing whether an actor appeared in a show before or after a date, or whether a film released before another event.  
+- Remember that release dates can apply to different media types — theatrical release, DVD release, or soundtrack release — so select the relevant date type to confirm timelines.  
+- Beware of claims conflating multiple shows or films; verify the correct association between actors and specific works.  
+- When multiple actors or works are involved, confirm the overlap or sequence precisely.  
+- Use `context` as your authoritative resource for confirming or correcting details extracted from `notes`.  
+- Explicitly name the works (films, TV series), persons (actors, directors), and dates in `new_notes` to clearly support or negate the claim.  
+- Deduplicate information and exclude repeated notes unless they add complementary factual value.  
+- The goal is to extrapolate a clear, precise, evidence-based factual summary that aids downstream fact-checking or verification systems.
+
+By following these comprehensive guidelines, you will deliver precise, factually grounded notes and an evidence-backed document set that facilitates robust verification of subtle claims concerning film, television, and entertainment industry facts.
+
+```

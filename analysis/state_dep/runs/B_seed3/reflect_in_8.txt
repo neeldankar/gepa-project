@@ -1,0 +1,109 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given two fields, `claim` and `notes`, your task is to generate a precise and focused `query` that can be used to verify or investigate the truthfulness of the claim based on the information in the notes.
+
+Detailed task description:
+
+1. **Input Fields:**
+   - `claim`: A statement containing one or more factual assertions about people, works (movies, books, etc.), dates, or events.
+   - `notes`: A list of supporting or related factual information extracted from various documents, which often includes biographical data, filmographies, authorship details, dates, and contextual clarifications.
+
+2. **Output Field:**
+   - `query`: A concise, targeted question or information request that:
+     - Directly addresses ambiguous or missing information needed to confirm or refute the claim.
+     - Focuses on retrieving specific domain facts (e.g., birth dates of individuals, authorship, nationality, involvement in projects).
+     - Mentions the key entities or relevant documents referenced in the `claim` and `notes`.
+     - Is formulated as a clear question or query that can guide retrieval or verification in a knowledge base or document corpus.
+
+3. **Key Considerations and Domain-Specific Details:**
+   - Identify all relevant entities (people, works, organizations) mentioned in the claim and the notes. Note that sometimes the claim can be false or misleading if an entity mentioned does not exist (e.g., a Ukrainian director of a specific movie that does not exist).
+   - The query should explicitly seek verification or details of these entities, including:
+     - Biographical data (birthdates, nationality).
+     - Professional involvement (e.g., directing, acting, writing).
+     - Existence or association with a specific work (movie, book, etc.).
+     - Clarifications of contradictions or unsupported facts in the claim.
+   - If the notes indicate missing information, the query should focus on the absent or uncertain facts necessary to assess the claim.
+   - Ensure the query requests information that would enable retrieval of all relevant gold documents connected to the claim.
+   - Avoid vague or overly broad queries; focus on precision and relevance to the claim’s key elements.
+   - When multiple persons or works are mentioned, explicitly include them in the query to target the required documents.
+   
+4. **Generalizable Strategy:**
+   - Parse the claim to identify the factual components.
+   - Cross-reference the claim components with the notes to identify confirmed facts and missing or contradictory information.
+   - Formulate the query to ask for data on the unverified or ambiguous elements that determine the claim’s validity.
+   - When a claim hinges on the existence or attributes of a person or entity, the query should explicitly request confirmation of those attributes or existence.
+   - When the claim references a work and its creators, the query should include the names of the work(s) and associated persons whose roles or attributes are in question.
+   
+By following these instructions, the generated `query` will serve as an effective information-seeking question that enables accurate verification or refutation of the claim based on the underlying factual notes and facilitates retrieval of all relevant supporting documents.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The player who was defeated by Johan Kriek in the 1982 Australian Open – Men's Singles and Albert Costa are both sportsmen, and one of them, Costa, began competing at the age of five.
+
+### notes
+["Johan Kriek defeated Steve Denton in the 1982 Australian Open Men's Singles final.", 'Both Steve Denton and Albert Costa are recognized sportsmen, specifically tennis players.', 'There is no information confirming that Albert Costa began competing at the age of five.', "Johan Kriek defeated Steve Denton in the 1982 Australian Open Men's Singles final.", 'Both Steve Denton and Albert Costa are recognized tennis sportsmen.', 'Albert Costa began playing tennis at the age of five.', "Johan Kriek defeated Steve Denton in the 1982 Australian Open Men's Singles final.", 'Both Steve Denton and Albert Costa are recognized tennis sportsmen.', 'Albert Costa began playing tennis at the age of five, although the information is only present in the notes, not confirmed in the context.']
+
+## Generated Outputs
+### reasoning
+The claim states that Johan Kriek defeated a player in the 1982 Australian Open Men's Singles final, and that player along with Albert Costa are sportsmen. It also claims that Albert Costa began competing at the age of five. From the notes, it is confirmed that Johan Kriek defeated Steve Denton in that final and both Steve Denton and Albert Costa are tennis players, hence sportsmen. However, there is no confirmation or information in the notes about Albert Costa starting to compete at age five. To verify the accuracy of the claim, it is necessary to establish whether Albert Costa began competing at the age of five.
+
+### query
+Did Albert Costa begin competing in tennis at the age of five?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ["1982 Australian Open – Men's Singles", 'Albert Costa']. Documents remaining to be retrieved: ['Steve Denton'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The person who claimed that Castro was killed in the 26th July Movement but was proven wrong by the man who Ruby Hart Phillips was at odds with, first served as President of Cuba in 1940.
+
+### notes
+["Herbert Matthews of the New York Times revealed that Fidel Castro was alive despite Fulgencio Batista's public claims that Castro was killed during the 26th of July Movement's landing.", "Ruby Hart Phillips, a New York Times correspondent in Cuba, was often at odds with Herbert Matthews due to their opposing coverage of the Batista regime and Castro's rise.", 'Fulgencio Batista, who publicly claimed Castro was dead, served as President of Cuba starting in 1940.', "The 26th of July Movement was led by Fidel Castro against Batista's government and eventually succeeded in overthrowing Batista in 1959.", "Fulgencio Batista publicly claimed that Fidel Castro was killed during the 26th of July Movement's landing but was proven wrong by Herbert Matthews of The New York Times, who revealed that Castro was alive in the Sierra Maestra mountains.", "Ruby Hart Phillips, a New York Times correspondent in Cuba, was often at odds with Herbert Matthews due to their opposing coverage of Batista's regime and Castro's rise.", 'Fulgencio Batista first served as President of Cuba starting in 1940.', "The 26th of July Movement, led by Fidel Castro, eventually overthrew Batista's government in 1959.", "Fulgencio Batista publicly claimed that Fidel Castro was killed during the 26th of July Movement's landing, but this was proven false by Herbert Matthews of The New York Times, who revealed Castro was alive in the Sierra Maestra mountains.", "Ruby Hart Phillips, a New York Times correspondent in Cuba, was often at odds with Herbert Matthews due to their opposing coverage of Batista's regime and Castro's rise.", 'Fulgencio Batista first served as President of Cuba starting in 1940.', "The 26th of July Movement, led by Fidel Castro, eventually overthrew Batista's government in 1959."]
+
+## Generated Outputs
+### reasoning
+The claim involves identifying the person who claimed that Castro was killed during the 26th July Movement but was proven wrong by the man Ruby Hart Phillips was at odds with. The notes establish that Fulgencio Batista publicly claimed Castro was dead, and Herbert Matthews revealed that Castro was alive, with Ruby Hart Phillips being at odds with Herbert Matthews. The claim also states that this person first served as President of Cuba in 1940, which aligns with Batista's tenure starting in 1940. To verify the claim fully, it is necessary to confirm the identities and roles of the individuals who made these claims and their respective timelines, specifically confirming that Batista served as President starting in 1940, that he claimed Castro was dead, and that Herbert Matthews exposed this falsehood, with Ruby Hart Phillips opposing Matthews.
+
+### query
+Who first served as President of Cuba in 1940, publicly claimed that Fidel Castro was killed during the 26th July Movement's landing, and was proven wrong by Herbert Matthews, who was opposed by Ruby Hart Phillips?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Herbert Matthews', 'Ruby Hart Phillips']. Documents remaining to be retrieved: ['Fulgencio Batista'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The movie Midnight Madness was released before the sequel-in-part David Shire composed the score for in 1985.
+
+### notes
+["No direct evidence found for the release date of the movie 'Midnight Madness' or a related sequel released in 1985.", "No information confirming David Shire composed the score for either 'Midnight Madness' or a sequel-in-part of it.", "'Midnight Madness' is referenced as a 1980 film related to an urban experience event, but details about the film’s release or sequels are lacking.", "The soundtrack 'Mad Max Beyond Thunderdome' was released in 1985 but has no verified link to David Shire or 'Midnight Madness'.", "'Midnight Madness' is a 1980 American comedy film produced by Walt Disney Productions.", "There is no evidence that David Shire composed the score for 'Midnight Madness' or any sequel related to it.", "No information found about a sequel-in-part to 'Midnight Madness' released in 1985.", "The soundtrack 'Mad Max Beyond Thunderdome' was released in 1985 but is unrelated to 'Midnight Madness' or David Shire.", 'Midnight Madness is a 1980 American comedy film produced by Walt Disney Productions.', 'There is no evidence that David Shire composed the score for Midnight Madness or any sequel related to it.', 'No information supports the existence of a sequel-in-part to Midnight Madness released in 1985.', 'The soundtrack Mad Max Beyond Thunderdome was released in 1985 but is unrelated to Midnight Madness or David Shire.']
+
+## Generated Outputs
+### reasoning
+The claim involves establishing the release year of the movie "Midnight Madness," identifying a sequel or related work with a score composed by David Shire, and verifying if "Midnight Madness" came out before 1985, when David Shire composed that sequel's score. The claim depends on knowing the release date of "Midnight Madness," the existence and release date of the sequel or related movie scored by David Shire in 1985, and confirming if the sequel is indeed connected to the first film. Since the notes do not provide this information, the query should request details about the release date of "Midnight Madness," the movie scored by David Shire in 1985 regarded as its sequel or related film, and confirmation of the composition and release chronology.
+
+### query
+What is the release year of the movie "Midnight Madness," and which related sequel-in-part movie did David Shire compose the score for in 1985? Did "Midnight Madness" release before that 1985 movie?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Midnight Madness (film)']. Documents remaining to be retrieved: ['David Shire', 'Return to Oz'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

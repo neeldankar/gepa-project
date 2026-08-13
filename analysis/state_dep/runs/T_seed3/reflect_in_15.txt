@@ -1,0 +1,190 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be provided with three input fields:
+
+- `claim`: A factual statement or assertion involving one or more entities, events, or relationships.
+- `notes`: A list of extracted relevant factual statements or snippets that pertain to the claim, often summarizing or supporting/refuting parts of the claim.
+- `context`: A list of documents or document excerpts (titles and text) that provide detailed background information about the entities, events, or concepts mentioned in the claim.
+
+Your goal is to produce two output fields:
+
+- `new_notes`: A concise, accurate subset of the given `notes` that best supports or disputes the claim based on the provided context. These notes should be directly relevant and factually correct according to the context, avoiding redundant or irrelevant information.
+- `titles`: A list of document titles from the `context` that contain information necessary to verify the claim and support the chosen `new_notes`. This list should include all key documents referenced in `new_notes`, reflect comprehensive coverage of crucial facts, and omit irrelevant or unrelated documents.
+
+Detailed requirements and domain-specific knowledge:
+
+1. **Entity and Relationship Identification**:  
+   The `claim` will often involve multiple entities (people, organizations, events, publications) and relationships between them (e.g., coining a term, professional affiliation, authorship, competition results). The `notes` and `context` will contain overlapping and sometimes repeated factual assertions regarding these entities and their connections.
+
+2. **Cross-verification of Facts**:  
+   The `notes` serve as candidate fact claims to be supported or refuted against the `context`. Your output should consolidate relevant facts, validated and confirmed by the `context`, while excluding unsupported, incorrect, or ambiguous notes.
+
+3. **Precision in Retrieval**:  
+   The `titles` in your output represent the exact documents from the `context` that allow verification of the facts in `new_notes`. Titles should correspond exactly to the relevant context entries and cover all evidence for the facts in `new_notes`. Partial or incomplete document retrieval reduces accuracy.
+
+4. **Handling Redundancies and Contradictions in Notes**:  
+   Duplicate facts or contradictory notes may appear. Select the most accurate, concise, and context-supported notes. Remove duplicates and clearly represent the verified facts.
+
+5. **Summarizing Complex Claims**:  
+   Claims may involve compound facts (e.g., two entities sharing a profession, one entity having a specific characteristic). Your reasoning should dissect the claim into factual components, verify each component, and retain notes and documents relevant to all parts of the claim.
+
+6. **Domain-Specific Contextual Knowledge**:  
+   - Professionals referenced may include scientists (e.g., paleontologists such as Elisabeth Vrba and Stephen Jay Gould), writers, athletes (professional tennis players with tournament results), designers, and journalists.  
+   - Publications and artistic works (books, magazines, journals, essays) appear frequently; it is essential to distinguish authorship, publication venue (book vs. magazine article), and the nature of periodicals.  
+   - Events like sports tournaments, professional achievements, and historical occurrences frequently provide verification points.  
+   - Namesake ambiguity is possible (e.g., different individuals named Gould); confirm identity using contextual career and biographical details.
+
+7. **Reasoning and Fact-Checking Strategy (Generalizable)**:  
+   - Map entities and relationships mentioned in the claim to those referenced in `notes` and `context`.  
+   - Crosscheck each factual assertion in `notes` against the detailed information in `context`.  
+   - Discard or modify notes unsupported by context or contradicted by it.  
+   - Identify and include all documents whose content is essential to verify or refute the claim, ensuring completeness.  
+   - Produce a concise set of newly filtered notes (`new_notes`) that reflect the validated facts.  
+   - Provide the precise titles of relevant context documents that underpin these notes.
+
+Your final outputs must be factually accurate, focused, and traceable to the cited documents in the `context`.
+
+Format:
+- `new_notes`: List of succinct, verified factual notes derived from the input `notes` and supported by the `context`.
+- `titles`: List of exact document titles from the `context` that contain the evidence for these notes.
+
+Use clear reasoning to cover all components of the claim and disambiguate entities where necessary.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Il trovatore has more acts than the 1994 Hungarian-Swiss-Italian fantasy film which was loosely inspired by. This Hungarian-Swiss-Italian fantasy film was directed by Ildikó Enyedi and called Magic Hunter.
+
+### notes
+['Il trovatore is an opera in four acts by Giuseppe Verdi.', 'Magic Hunter is a 1994 Hungarian-Swiss-French fantasy film directed by Ildikó Enyedi and loosely inspired by the opera Der Freischütz.', 'Il trovatore is an opera in four acts by Giuseppe Verdi.', 'Magic Hunter is a 1994 Hungarian-Swiss-French fantasy film directed by Ildikó Enyedi and loosely inspired by the opera Der Freischütz.', 'Il trovatore is an opera in four acts by Giuseppe Verdi.', 'Magic Hunter is a 1994 Hungarian-Swiss-French fantasy film directed by Ildikó Enyedi and loosely inspired by the opera Der Freischütz.']
+
+### context
+["Act structure | Act structure explains how a plot of a film story is composed.  Just like plays (staged drama) have 'acts', critics and screenwriters tend to divide films into acts; though films don't require to be physically broken down as such in reality.", 'Integer points in convex polyhedra | Study of integer points in convex polyhedra is motivated by the questions, such as "how many nonnegative integer-valued solutions does a system of linear equations with nonnegative coefficients have" or "how many solutions does an integer linear program have".  Counting integer points in polyhedra or other questions about them arise in representation theory, commutative algebra, algebraic geometry, statistics, and computer science.', 'Indecent Displays (Control) Act 1981 | The Indecent Displays (Control) Act is an Act of Parliament covering Scotland, England and Wales but not Northern Ireland.  It is concerned with preventing the display of “indecent” material to the unsuspecting public.  As with the Protection of Children Act, the Act does not define indecency, although it does give some directions as to how a display can be considered indecent.  It establishes that “If any indecent matter is publicly displayed the person making the display and any person causing or permitting the display to be made shall be guilty of an offence”, making exceptions for the following:', 'Di quella pira | "Di quella pira " is a short tenor aria (or more specifically, a cabaletta) sung by Manrico in act 3, scene 2, of Giuseppe Verdi\'s opera "Il trovatore".  It is the last number of the act.', 'The Fox and the Cat (fable) | The Fox and the Cat is an ancient fable, with both Eastern and Western analogues involving different animals, that addresses the difference between resourceful expediency and a master stratagem.  Included in collections of Aesop\'s fables since the start of printing in Europe, it is number 605 in the Perry Index.  In the basic story a cat and a fox discuss how many tricks and dodges they have.  The fox boasts that he has many; the cat confesses to having only one.  When hunters arrive with their dogs, the cat quickly decides to climb a tree, but the fox thinks of many ways without acting and is caught by the hounds.  Many morals have been drawn from the fable\'s presentations through history and, as Isaiah Berlin\'s use of it in his essay "The Hedgehog and the Fox" shows, it continues to be interpreted anew.', 'Grimoire | A grimoire ( ) is a textbook of magic, typically including instructions on how to create magical objects like talismans and amulets, how to perform magical spells, charms and divination, and how to summon or invoke supernatural entities such as angels, spirits, and demons.  In many cases, the books themselves are believed to be imbued with magical powers, though in many cultures, other sacred texts that are not grimoires (such as the Bible) have been believed to have supernatural properties intrinsically.  In this manner, while all "books on magic" could be thought of as grimoires, not all "magical books" should be thought of as grimoires.', 'Acting workshop | An acting workshop is a meeting of actors or others of one specific trade to learn how to hone their skills and to network with other actors, acting coaches and casting directors.  Many actors will critique, mentor and coach their peers and offer tips on how to improve their preparation for roles, auditions, and enhance their performing abilities.  Acting workshops are often staffed by professionals, which can include acting coaches, directors, or actors.  Casting directors sometimes also act as coaches.  It is usually recommended that serious actors attend acting workshops to help increase their skill.', 'Contempt of the sovereign | Contempt of the Sovereign (also called contempt of statute) was an ancient doctrine in English law dating from medieval times, and now obsolete.  It referred to the notion that if somebody disobeyed an Act of Parliament, but the Act did not say what the penalty was or how the Act was to be enforced, then that person was guilty of a criminal offence under common law (although the crime itself was not called contempt).  This doctrine was based on the idea that an Act of Parliament was an expression of the Sovereign\'s will, enacted with the "advice and consent" of Parliament.  In modern legislation and jurisprudence it has become the rule that contravening a statute is not a crime unless the statute expressly says so in clear terms, and so the doctrine has long since lapsed.  However the law does still exist, and the last time it was used was in 1840.', 'New Zealand local government and human rights | Local government bodies in New Zealand have responsibilities under the Local Government Act 2002 (LGA) to perform a wide range of functions, and provide a wide range of services to the communities they represent.  There is not an explicit focus on human rights in New Zealand local government, or any direct reference to human rights under the LGA.  Local bodies in New Zealand are required to act in a way that is consistent with the rights guaranteed under the New Zealand Bill of Rights Act 1990 (NZBORA).  Internationally there is growing consideration of how local government does and could promote and protect fundamental rights.', 'Transparent Airfares Act of 2014 | The Transparent Airfares Act of 2014 ( ) was a proposed legislation that would have changed government regulations about how airlines advertise fares so that they could advertise the base, listing government imposed taxes and fees separately.']
+
+## Generated Outputs
+### reasoning
+The claim involves two main components: 1) Il trovatore has more acts than the Hungarian-Swiss-Italian fantasy film mentioned, and 2) this film is called Magic Hunter, directed by Ildikó Enyedi. 
+
+From the notes:
+- Il trovatore is an opera in four acts by Giuseppe Verdi (supported by notes 1 and 3).
+- Magic Hunter is a 1994 Hungarian-Swiss-French fantasy film directed by Ildikó Enyedi and loosely inspired by the opera Der Freischütz (notes 2 and 4). The note says Hungarian-Swiss-French, while the claim says Hungarian-Swiss-Italian, but the claim’s main point is about the film Magic Hunter directed by Ildikó Enyedi.
+
+The context does not directly mention the number of acts of the film Magic Hunter, but it contains an explanation of act structure generally, indicating that films are divided into acts but not necessarily physically broken. Since Magic Hunter is a film, it is likely it has fewer or differently structured acts than a four-act opera. The claim that Il trovatore has more acts than Magic Hunter aligns with typical opera and film act conventions.
+
+Therefore:
+- The verified fact is that Il trovatore has four acts.
+- The film Magic Hunter is indeed a Hungarian-Swiss-[French (not Italian in context)] fantasy film directed by Ildikó Enyedi.
+- The comparison of acts is supported by the general act structure explanation and the known structure of Il trovatore.
+
+Hence, the notes about Il trovatore being a four-act opera and Magic Hunter being the 1994 Hungarian-Swiss-French fantasy film by Ildikó Enyedi are directly relevant. The slight difference in the nationality descriptor (French vs. Italian) is an inconsistency but does not affect the core verification of the film title and director.
+
+### new_notes
+['Il trovatore is an opera in four acts by Giuseppe Verdi.', 'Magic Hunter is a 1994 Hungarian-Swiss-French fantasy film directed by Ildikó Enyedi and loosely inspired by the opera Der Freischütz.']
+
+### titles
+['Act structure | Act structure explains how a plot of a film story is composed.']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Il trovatore', 'Magic Hunter']. Documents remaining to be retrieved: ['Der Freischütz'].
+
+
+
+# Example 2
+## Inputs
+### claim
+"Experimenter" stars the actress who won critical acclaim with her appearance as Johnny Depp in Tim Burton's "Beetlejuice". The producer of "Experimenter" also produced Man Camp.
+
+### notes
+['Annie McEnroe had an important role in the 1980s film "Beetlejuice", which starred Johnny Depp.', 'There is no information about the film "Experimenter" or its cast and producers in the given context.', 'No evidence is provided linking "Experimenter"\'s producer to "Man Camp".', 'Annie McEnroe had an important role in the 1980s film "Beetlejuice", which starred Johnny Depp.', 'There is no information about the film "Experimenter" or its cast and producers in the given context.', 'No evidence is provided linking "Experimenter"\'s producer to "Man Camp".', 'Annie McEnroe had an important role in the 1980s film "Beetlejuice", which starred Johnny Depp.', 'There is no information about the film "Experimenter" or its cast and producers in the given context.', 'No evidence is provided linking "Experimenter"\'s producer to "Man Camp".']
+
+### context
+['Wild 90 | Wild 90 is a 1968 experimental film directed and produced by U.S. novelist Norman Mailer, who also plays the starring role.', 'Mark Buntzman | Mark Buntzman is the film director, writer, producer and actor of the cult classic movie "Exterminator 2", and was also the producer of the first, "The Exterminator".  Other than those two movies, he hasn\'t produced, directed, or written any other prominent films.  He did, though, have a cameo in the 1993 movie "Posse" as Deputy Buntzman, as well as playing a reporter in the 1995 movie "Panther".  Both movies starred Mario Van Peebles, who also played a large role in "Exterminator 2".', 'Time Piece | Time Piece is a 1965 experimental short film directed, written, produced by and starring Jim Henson.  The film depicts an ordinary man moving in constant motion, in a desperate attempt to escape the passage of time.  "Time Piece" is notable as one of the few live-action projects Jim Henson produced that did not involve any form of puppetry.  The short film was nominated for an Academy Award for Best Live Action Short Film in 1966.', 'Edward Scissorhands | Edward Scissorhands is a 1990 American romantic dark fantasy film directed by Tim Burton, produced by Denise Di Novi and Tim Burton, and written by Caroline Thompson from a story by Tim Burton and Caroline Thompson, starring Johnny Depp as an artificial man named Edward, an unfinished creation who has scissor blades instead of hands.  The young man is taken in by a suburban family and falls in love with their teenage daughter Kim (Winona Ryder).  Additional roles were played by Dianne Wiest, Anthony Michael Hall, Kathy Baker, Vincent Price and Alan Arkin.', 'Annie McEnroe | Annie McEnroe (born c.1956) is an American film actress who had some important roles in the 1980s and 90s.  Roles include "Wall Street" and "Beetlejuice".  She is married to Edward R. Pressman, whom she met on the set of The Hand which he produced.', 'Traci Lords filmography | Traci Lords is an American actress, singer, writer, producer and director.  After having appeared in dozens of pornographic films between 1984 and 1986 while she was underage, Lords made a transition to mainstream films.  She made her mainstream screen debut in "Not of This Earth" (1988), a remake of Roger Corman\'s 1957 film of the same name, playing the leading role of Nadine Story.  She followed with "Fast Food" (1989) and the John Waters\' teen comedy, "Cry-Baby" (1990), where she appeared alongside Johnny Depp.  The film received positive reviews and the part of Wanda Woodward remains Lords\' most notable role.  Around the same time, she also appeared in many television series, including "Wiseguy", "MacGyver", "Married... with Children", "" and "Tales from the Crypt".', 'Kudirithe Kappu Coffee | Kudirithe Kappu Coffee ("English":"Cup Coffee, If possible") is a 2011 Telugu film directed by Ramana Salva who has worked as a cinematographer for the movie Village Lo Vinayakudu.  He makes his debut as a director with this film.  The duo Mahi and Shiva who also produced Village Lo Vinayakudu, are jointly producing this movie under the banner of Shiva Productions and Moon Water Pictures.  Varun Sandesh acts in the lead role along with the debutant actress Suma Bhattacharya in the opposite lead role.  Yogeshwara Sharma, who is the son of acclaimed lyricist Sirivennala Seetha Rama Sastry, debuts himself as the music composer for this film.  The producers of the movie have announced the start of the film and also remarked that the film would be an entertaining film as nice as a cup of hot coffee during the rains.', 'Kadamai Kanniyam Kattupaadu | Kadamai Kanniyam Kattupaadu (Tamil: கடமை கண்ணியம் கட்டுப்பாடு / English : Duty, Discipline, Control) is a 1987 Tamil language Indian feature film directed by Santhana Bharathi for producer Kamal Haasan, starring Sathyaraj, Geetha and Captain Raju in lead roles.The film had no songs and it ran for 100 days in Chennai and other parts of Tamil Nadu making it a box office hit.  Sathyaraj proved his versatility acting as a serious police officer and did justice to his role.  The film was produced by Kamal Haasan, who did not act in the film.  The film is a remake of 1986 Malayalam film "Aavanazhi".', "The Man Who Wasn't There (2001 film) | The Man Who Wasn't There is a 2001 American neo-noir crime film written, produced and directed by Joel and Ethan Coen.  Billy Bob Thornton stars in the title role.  Also featured are Tony Shalhoub, Scarlett Johansson, James Gandolfini, and Coen regulars Frances McDormand, Michael Badalucco, Richard Jenkins and Jon Polito.  Joel Coen won the Best Director Award at the 2001 Cannes Film Festival.  Ethan Coen, Joel Coen's brother and co-director of the film, did not receive the Best Director Award as he was not credited as a director.", 'Little Man (2006 film) | Little Man is a 2006 American comedy film written, produced and directed by Keenen Ivory Wayans, and also written and produced by Wayans Brothers Marlon and Shawn Wayans, who also both starred in the lead roles.  The film co-stars Kerry Washington, John Witherspoon, Tracy Morgan and Lochlyn Munro.']
+
+## Generated Outputs
+### reasoning
+The claim states two things: 
+
+1. "Experimenter" stars an actress who won critical acclaim with her appearance in Tim Burton's "Beetlejuice" as Johnny Depp.
+2. The producer of "Experimenter" also produced "Man Camp."
+
+Looking at the notes and context:
+
+- The notes include an assertion that Annie McEnroe had an important role in "Beetlejuice," which starred Johnny Depp (note [1]).
+- The context confirms Annie McEnroe had important roles in the 1980s and 90s including "Beetlejuice" but does not specify her role as Johnny Depp or her playing Johnny Depp (context [5]). Actually, context [5] says Annie McEnroe was an actress in "Beetlejuice," but Johnny Depp was the male lead in "Beetlejuice" (context [4]); no actress plays Johnny Depp, a male role.
+- There is no information about the film "Experimenter" or its cast and producers in the context, nor is there any information linking the producer of "Experimenter" to "Man Camp" (notes [2] and [3]).
+- No documents in the context mention "Experimenter" or "Man Camp."
+
+Evaluating accuracy:
+- The claim that the actress playing in "Experimenter" also played Johnny Depp in "Beetlejuice" is incorrect because Johnny Depp is a male actor playing a male role, so no actress could have played Johnny Depp.
+- Annie McEnroe did star in "Beetlejuice," but not as Johnny Depp.
+- The claim about the producer of "Experimenter" and "Man Camp" is unsupported due to lack of information.
+
+Thus, the first note ([1]) is partially relevant but the critical acclaim as Johnny Depp is incorrect. The other two notes ([2], [3]) correctly point out missing information.
+
+Given no supporting evidence of the "Experimenter" cast or producer, or the link to "Man Camp," we should keep only notes indicating that no such information is available and that Annie McEnroe had a notable role in "Beetlejuice."
+
+Accordingly, the new notes should include that Annie McEnroe had an important role in "Beetlejuice" with Johnny Depp, but she did not play Johnny Depp. Also, note the absence of information about "Experimenter" and its producer's link to "Man Camp."
+
+Relevant documents are the ones about Annie McEnroe, "Beetlejuice," and Johnny Depp in Tim Burton films.
+
+### new_notes
+['Annie McEnroe had an important role in the 1980s film "Beetlejuice", which starred Johnny Depp.', 'There is no information about the film "Experimenter" or its cast and producers in the given context.', 'No evidence is provided linking "Experimenter"\'s producer to "Man Camp".']
+
+### titles
+['Annie McEnroe', 'Edward Scissorhands']
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Man Camp', 'Uri Singer', 'Winona Ryder'].
+
+
+
+# Example 3
+## Inputs
+### claim
+A college football game was sponsored by a company based in Memphis. The 2015 Kansas State Wildcats football team was invited to this bowl.
+
+### notes
+['The 2016 Liberty Bowl, played in Memphis, Tennessee, was sponsored by AutoZone, a company based in Memphis.', 'The 2016 Liberty Bowl featured the Kansas State Wildcats from the 2015–16 bowl games, representing the 2015 season.', 'The 2016 Liberty Bowl, played in Memphis, Tennessee, was sponsored by AutoZone, a company based in Memphis.', 'The 2016 Liberty Bowl featured the Kansas State Wildcats from the 2015–16 bowl games, representing the 2015 season.', 'The 2016 Liberty Bowl, played in Memphis, Tennessee, was sponsored by AutoZone, a company based in Memphis.', 'The 2016 Liberty Bowl featured the Kansas State Wildcats from the 2015–16 bowl games, representing the 2015 season.']
+
+### context
+['2016 Liberty Bowl (January) | The 2016 Liberty Bowl was a post-season American college football bowl game played on January 2, 2016 at Liberty Bowl Memorial Stadium in Memphis, Tennessee.  The 57th edition of the Liberty Bowl featured the Kansas State Wildcats of the Big 12 Conference against the Arkansas Razorbacks of the Southeastern Conference.  It began at 2:20\xa0p.m. CST and aired on ESPN.  It was one of the 2015–16 bowl games that concluded the 2015 FBS football season.  Sponsored by automobile parts and accessories store AutoZone, it is officially known as the AutoZone Liberty Bowl.', '2015 Alamo Bowl | The 2015 Alamo Bowl was an American college football bowl game played on January 2, 2015, at the Alamodome in San Antonio, Texas.  The 22nd edition of the Alamo Bowl featured the Kansas State Wildcats from the Big 12 Conference and the UCLA Bruins from the Pac-12 Conference.  It was televised at 5:45\xa0p.m. CST on ESPN and heard on the ESPN Radio.  It was one of the 2014–15 bowl games that conclude the 2014 FBS football season.  The game was sponsored by the Valero Energy Corporation and was officially known as the Valero Alamo Bowl.  The Bruins defeated the Wildcats, 40–35, and ended the season with 10 wins.', 'List of Kansas State Wildcats bowl games | The Kansas State Wildcats football team competes as part of the NCAA Division I Football Bowl Subdivision (FBS), representing the Kansas State University in the Big 12 Conference.  Since the establishment of the team in 1896, Kansas State has been invited to 20 bowl games.  This total includes six appearances in the current "New Year\'s Six" major bowl games (the Rose, Sugar, Fiesta, Orange, Cotton, and Peach Bowl).  The team played in two Fiesta Bowls during the Bowl Championship Series (BCS) era, and one Fiesta Bowl during the Bowl Alliance era.', '2013 Kansas State Wildcats football team | The 2013 Kansas State Wildcats football team represented Kansas State University in the 2013 NCAA Division I FBS football season.  The Wildcats play their home games at Bill Snyder Family Football Stadium, in Manhattan, Kansas as they have since 1968.  2013 is the 118th season in school history.  The Wildcats are led by head coach Bill Snyder in his 22nd overall and fifth straight season since taking over in his second tenure in 2009.  K-State is a member of the Big 12 Conference.  Conference play began with a loss to the Texas Longhorns, which ended the Wildcats 5-game winning streak against the Longhorns.  Their last lost against Texas was in 2003.  The regular season ended with a win over in-state rival Kansas in the Sunflower Showdown.  After completing the regular season with a 7–5 record, the Kansas State Wildcats returned for a bowl game for the fourth straight year, were selected to play in the 2013 Buffalo Wild Wings Bowl and played the Michigan Wolverines.  The season ended with the Wildcats defeating the Wolverines, 31–14, to break a five-game bowl losing streak winning their first bowl game since the 2002 Holiday Bowl and finishing the season 8–5.', '2010 Pinstripe Bowl | The 2010 New Era Pinstripe Bowl was the first edition of this college football bowl game, and was played at Yankee Stadium in Bronx, New York.  The game started at 3:20 p.m. ET on December 30, 2010, and was telecast on ESPN.  The game featured the Syracuse Orange of the Big East Conference and the Kansas State Wildcats of the Big 12 Conference.  New Era Cap Company was the title sponsor of the game.  It ended with Syracuse defeating Kansas State, 36-34.', "2003 Kansas State Wildcats football team | The 2003 Kansas State Wildcats football team represented Kansas State University in the 2003 NCAA Division I-A football season.  The team's head coach was Bill Snyder.  The Wildcats played their home games in KSU Stadium.  The team finished the season with a win-loss record of 11–4, and a Big 12 Conference record of 6–2.  They notched a stunning 35–7 victory over the #1 ranked Oklahoma Sooners in the Big 12 Championship Game.  With their first conference championship since 1934, they earned a berth in one of the Bowl Championship Series bowl games, the 2004 Fiesta Bowl, where they were defeated by the Ohio State Buckeyes, 35–28.  The Wildcats played 15 games, most in school history.", '2016 Texas Bowl | The 2016 Texas Bowl was an American college football bowl game played on December 28, 2016 at NRG Stadium in Houston, Texas.  Sponsored by the AdvoCare nutrition and sports performance company, it is officially known as the AdvoCare V100 Texas Bowl.  It was one of the 2016–17 bowl games concluding the 2016 FBS football season.  The eleventh edition of the Texas Bowl, it featured the Kansas State Wildcats of the Big 12 Conference against the Texas A&M Aggies of the Southeastern Conference.  This was the first meeting between the two teams since Texas A&M left the Big 12 Conference after the 2011 season.', '2015 New Mexico Bowl | The 2015 New Mexico Bowl was a college football bowl game that was played on December 19, 2015 at University Stadium in Albuquerque, New Mexico.  The tenth annual New Mexico Bowl, it pitted the University of New Mexico Lobos of the Mountain West Conference against the University of Arizona Wildcats of the Pac-12 Conference.  It was one of the 2015–16 bowl games that concluded the 2015 FBS football season.  The game started at 12:20\xa0p.m. MST and aired on ESPN.  Sponsored by clothing company Gildan Activewear, the game was officially known as the Gildan New Mexico Bowl.', "1999 Kansas State Wildcats football team | The 1999 Kansas State Wildcats football team represented Kansas State University in the 1999 NCAA Division I-A football season The team's head football coach was Bill Snyder.  The Wildcats played their home games in KSU Stadium.  1999 saw the Wildcats finish with a record of 11–1, and a 7–1 record in Big 12 Conference play.  The season culminated with a win over Washington in the 1999 Holiday Bowl.  The Wildcat defense did not give up a score in the third quarter all season.", '1997 Fiesta Bowl (December) | The 1997 Tostitos Fiesta Bowl game was a post-season college football bowl game between the Kansas State Wildcats and the Syracuse Orangemen on December 31, 1997, at Sun Devil Stadium in Tempe, Arizona.  Kansas State defeated Syracuse, 35-18.  The game was part of the 1997-1998 Bowl Alliance of the 1997 NCAA Division I-A football season and represented the concluding game of the season for both teams.']
+
+## Generated Outputs
+### reasoning
+The claim consists of two parts: 
+1) A college football game sponsored by a company based in Memphis.
+2) The 2015 Kansas State Wildcats football team was invited to this bowl.
+
+From the context:
+- The 2016 Liberty Bowl took place in Memphis, Tennessee, at the Liberty Bowl Memorial Stadium.
+- The Liberty Bowl is sponsored by AutoZone, an automobile parts and accessories store.
+- AutoZone is based in Memphis, Tennessee (this is known general knowledge supported by the contextual implication since the game is in Memphis and sponsored by AutoZone which is the title sponsor).
+- The 2016 Liberty Bowl featured the Kansas State Wildcats from the 2015-16 bowl season (which includes the 2015 football season teams).
+- Therefore, the 2015 Kansas State Wildcats team participated in the Liberty Bowl sponsored by AutoZone, a Memphis-based company.
+
+No notes were originally provided, so the relevant new notes must be distilled from the context to directly support the claim.
+
+### new_notes
+['The 2016 Liberty Bowl, played in Memphis, Tennessee, was sponsored by AutoZone, a company based in Memphis.', 'The 2016 Liberty Bowl featured the Kansas State Wildcats from the 2015–16 bowl games, representing the 2015 season.']
+
+### titles
+['2016 Liberty Bowl (January)']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['2015 Kansas State Wildcats football team', '2016 Liberty Bowl (January)']. Documents remaining to be retrieved: ['AutoZone'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

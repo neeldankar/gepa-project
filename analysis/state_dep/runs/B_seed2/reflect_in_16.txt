@@ -1,0 +1,130 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given three input fields: 
+- `claim`: a factual statement or assertion whose truthfulness needs to be evaluated.
+- `notes`: a list of textual snippets extracted from various documents that are relevant to the claim. These notes may contain overlapping information and varying levels of detail.
+- `context`: a list of concise summaries or descriptions of source documents that may provide additional information related to the claim.
+
+Your task is to produce two output fields: 
+- `new_notes`: a refined, concise, and non-redundant subset or synthesis of the input `notes` that directly address key facts needed to evaluate the claim. These should focus on relevant factual information supporting verification or falsification of the claim, removing repetition and irrelevant details.
+- `titles`: a list of the most relevant document titles (from the given `context`) whose content contains essential information that supports verification of the claim. Titles should be directly tied to entities or facts critical to assessing the claim’s truth.
+
+Detailed task description and guidelines:
+
+1. **Understand the claim carefully:** Identify what factual relationships or attributes the claim asserts. Common relationships involve dates (e.g., birthdates), locations, sponsorships, team participation in events, or organizational affiliations.
+
+2. **Analyze the `notes`:** 
+   - Identify the core facts within the notes that relate to the claim components.
+   - Remove duplicate or near-duplicate statements.
+   - Remove notes that do not contribute meaningful information for verifying the claim.
+   - Combine closely related facts into a single coherent note if appropriate.
+
+3. **Use the `context` documents to identify relevant titles:**
+   - Match core entities or specific facts mentioned in new_notes to the titles in the context.
+   - Select document titles that contain background, biographical, event-related, or organizational information directly related to the claim or the facts used in new_notes.
+   - Include all titles necessary to cover the key factual points supporting or refuting the claim.
+   
+4. **Focus on comprehensive and precise fact coverage:**
+   - For claims involving dates or comparisons (e.g., birth dates before/after), emphasize the presence or absence of those dates in the new_notes.
+   - For claims involving events and participants (e.g., bowl games, sponsorships), include notes identifying the event, sponsor, location, and participating entities.
+   - For claims about geographical relations (e.g., entities located in the same country), use notes emphasizing the locations and their geopolitical hierarchy.
+
+5. **Avoid fabricating information or adding facts not supported by the notes or context.** Work only with provided inputs.
+
+6. **The reasoning behind new_notes should be implicitly reflected in the selection and refinement of notes and titles.** While no explicit reasoning output is required, your outputs should facilitate straightforward verification or rebuttal of the claim.
+
+7. **Maintain clarity and specificity:**
+   - Notes should stand alone as clear, factual statements extracted from the input.
+   - Titles should be the exact document titles from context, indicating the sources of key facts.
+
+The goal is to distill, from possibly redundant and partially overlapping information, the most relevant and precise facts and corresponding source titles that directly support verification or falsification of the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The writer Norman Alfred Norman Lindsay enjoyed boxing, but the author of The Hundred Secret Senses did not.
+
+### notes
+['Norman Alfred William Lindsay (1879–1969) was an Australian artist, writer, and an accomplished amateur boxer.', 'Amy Tan is the author of the bestselling 1995 novel The Hundred Secret Senses.', "There is no available information in the provided notes about Amy Tan's interest in boxing.", 'Norman Alfred William Lindsay (1879–1969) was an Australian artist, writer, and an accomplished amateur boxer.', 'Amy Tan is the author of the bestselling 1995 novel The Hundred Secret Senses.', "There is no available information in the provided notes about Amy Tan's interest in boxing.", 'Norman Alfred William Lindsay (1879–1969) was an Australian artist, writer, and an accomplished amateur boxer.', 'Amy Tan is the author of the bestselling 1995 novel The Hundred Secret Senses.', "There is no available information in the provided notes about Amy Tan's interest in boxing."]
+
+### context
+['The Hundred Secret Senses | The Hundred Secret Senses is a bestselling 1995 novel by Chinese-American writer Amy Tan.  It was published by Putnam, and was shortlisted for the 1996 Orange Prize for Fiction.  While the story is fictional, it is based on the experiences of Tan and on stories told by her mother.', 'Ling Tan | Tan Mang Ling (born 9 October 1974 in Kuala Lumpur), usually credited as Ling Tan, is a Malaysian supermodel, of Chinese descent, based in New York City.  The first supermodel from Southeast Asia, she participated in hundreds of fashion shows and has been captured by top fashion photographers such as Richard Avedon, who photographed Tan for the Pirelli Calendar in 1997.', 'Fish Cheeks | "Fish Cheeks" is a 1987 one page short story by Chinese-American author Amy Tan and her first published essay.  The work was first published in "Seventeen" and covers a Christmas Eve dinner when Tan was 14 years old.  It was subsequently published as a part of "".', 'Two Kinds | "Two Kinds" is a short story from the book "The Joy Luck Club" by Amy Tan.  It was first published in 1989.  The short story outlines the main character Jing-mei Woo’s childhood and the effects of her mother’s high expectations for her life.  It is clear that some of the events in the short story reflect events that happened in the author’s life.  For example, the main character\'s mother left China, leaving behind her family and children.  The same is true with Amy Tan\'s mother.  In 1993, a movie based on the book was made.', 'Jack-in-the-Box (Astro City) | Jack-in-the-Box is a fictional character in the comic book series "Astro City".  Created by writer Kurt Busiek and artists Brent Anderson and Alex Ross, Jack-in-the-Box is a prominent superhero of Astro City.  He is motivated by a powerful desire for justice based on his own family history, with a strong sense of responsibility to society based on his expertise, capabilities and the sheer enjoyment of being a superhero.  A conflicting sense of responsibility to his own family, however, combine with reminders of his own mortality to make him question his superheroic mission.', "Mr S and the Secrets of Andorra's Box | Mr S and the Secrets of Andorra's Box is a 2008 novel by Irish journalist and author Paul Howard, and the eighth in the Ross O'Carroll-Kelly series.", 'Dead Babies (novel) | Dead Babies is Martin Amis\' second novel, published in 1975 by Jonathan Cape.  It was published in paperback as "Dark Secrets".  Amis\'s second novel—a parody of Agatha Christie\'s country-house mysteries—takes place over a single weekend at a manor called Appleseed Rectory.  In 2000, the book was adapted into a film of the same name, starring Paul Bettany and Olivia Williams.  In 2001, BBC critic David Wood wrote "Amis\' second novel ranks among his most incendiary with its mordant wit, black comedy, and sense of the violently absurd."', 'Amy Tan | Amy Tan (born February 19, 1952) is an American writer whose works explore mother-daughter relationships and the Chinese American experience.  Her novel "The Joy Luck Club" was adapted into a film in 1993 by director Wayne Wang.', "The Kitchen God's Wife | The Kitchen God's Wife is the second novel by Chinese-American author, Amy Tan.  First published in 1991, it deals extensively with Sino-American female identity and draws on the story of her mother's life.", 'Colonel Sun | Colonel Sun is a novel by Kingsley Amis published by Jonathan Cape on 28 March 1968 under the pseudonym "Robert Markham".  "Colonel Sun" is the first James Bond continuation novel published after Ian Fleming\'s 1964 death.  Before writing the novel, Amis wrote two other Bond related works, the literary study "The James Bond Dossier" and the humorous "The Book of Bond".  "Colonel Sun" centres on the fictional British Secret Service operative James Bond and his mission to track down the kidnappers of M, his superior at the Secret Service.  During the mission he discovers a communist Chinese plot to cause an international incident.  Bond, assisted by a Greek spy working for the Russians, finds M on a small Aegean island, rescues him and kills the two main plotters: Colonel Sun Liang-tan and a former Nazi commander, Von Richter.']
+
+## Generated Outputs
+### reasoning
+The claim involves verifying that Norman Alfred William Lindsay was an amateur boxer and that Amy Tan, author of The Hundred Secret Senses, did not enjoy boxing. The notes clearly state Lindsay’s interest in boxing, confirming that he enjoyed it. However, there is no information regarding Amy Tan’s interest or enjoyment of boxing; the notes explicitly mention a lack of available information on this topic. The context documents provide background on both individuals but do not add evidence about Amy Tan’s engagement with boxing. Thus, the claim that Lindsay enjoyed boxing is supported, while the claim regarding Amy Tan is not directly confirmed or denied, only that no information is available about her involvement with boxing.
+
+### new_notes
+['Norman Alfred William Lindsay (1879–1969) was an Australian artist, writer, and an accomplished amateur boxer.', 'Amy Tan is the author of the bestselling 1995 novel The Hundred Secret Senses.', "There is no available information in the provided notes about Amy Tan's interest in boxing."]
+
+### titles
+['The Hundred Secret Senses', 'Amy Tan']
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Amy Tan', 'Norman Lindsay', 'The Hundred Secret Senses']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+The Disney animated film with the character Cruella de Vil and G-Force are American family comedy action  adventure type of movies.
+
+### notes
+['One Hundred and One Dalmatians, featuring the character Cruella de Vil, is a 1961 American animated adventure film produced by Walt Disney, based on the novel by Dodie Smith.', 'The film tells the story of Dalmatian puppies kidnapped by Cruella de Vil, who wants to make coats from their fur; their parents set out to rescue them.', 'The film is recognized as a family-oriented Disney animated feature, blending adventure and comedic elements appropriate for children.', 'One Hundred and One Dalmatians, featuring the character Cruella de Vil, is a 1961 American animated adventure film produced by Walt Disney, based on the novel by Dodie Smith.', 'The film is recognized as a family-oriented Disney animated feature, blending adventure and comedic elements appropriate for children.', 'One Hundred and One Dalmatians, featuring the character Cruella de Vil, is a 1961 American animated adventure film produced by Walt Disney based on a novel by Dodie Smith.', 'The film is recognized as a family-oriented Disney animated feature blending adventure and comedic elements appropriate for children.', 'G-Force is a 2009 American family comedy adventure film produced by Walt Disney Pictures and Jerry Bruckheimer Films.', 'G-Force includes elements of comedy, adventure, and action, and was released by Disney with notable voice actors.']
+
+### context
+["Classification of wine | The classification of wine can be done according to various methods including place of origin or appellation, vinification methods and style, sweetness and vintage, or variety used.  Practices vary in different countries and regions of origin, and many practices have varied over time.  Some classifications enjoy official protection by being part of the wine law in their country of origin, while others have been created by, for example, grower's organizations without such protection.", 'Reality film | Reality film or reality movie describes a genre of films that have resulted from reality television, such as "The Real Cancun", MTV\'s film version of "The Real World", which was originally titled "Spring Break: The Reality Movie".  In an article in "Time Magazine", Joel Stein wrote, "Like reality TV, a reality film is supercheap, and as "Jackass" proved, there\'s an audience willing to pay $9 for what it gets free on television."  Typically, a pre-determined situation is staged or created, often with the use of non-professional actors, and then the "reality" of what happens is filmed.  In an article on reality movies, "Variety" pointed out the low budget of reality films in an era of skyrocketing marketing and production costs for traditional films has made them an attractive option for studios, with the selling point being "Tits and ass.  Teenage tits and ass, that is."', 'What Men Talk About | What Men Talk About (Russian: O chyom govoryat muzhchiny) is a 2010 Russian comedy written and directed by Dmitriy Dyachenko, filmed in the genre of road movie based on the Russian play "Conversations middle-aged men have about women, movies and aluminum forks" with the participation of the actors of the comic theatre "Quartet".  "What Men Talk About" is the third film adaptation of the theatre "Quartet".  After a successful theatrical release, "What Men Still Talk About" was announced.  In April 2010, the film began licensing issued on DVD by The Mystery of Sound.', 'Movie and Television Review and Classification Board | Movie and Television Review and Classification Board', 'Country music | Country music (frequently referred to as just country and historically country and western{citation needed) is a musical genre that originated in the Southern United States in the early 1920s.  It takes its roots from genres such as folk music (especially Appalachian folk music) and blues.', 'Scary Movie | Scary Movie is a 2000 American horror comedy film directed by Keenen Ivory Wayans.  The film is a parody of the horror, slasher, and mystery film genres.  Several mid- and late-\'90s films and TV shows are spoofed, and the script is primarily based on the \'90s hit horror films "Scream" (1996) and "I Know What You Did Last Summer" (1997).', "Merritt Ruhlen | Merritt Ruhlen ( ; born 1944) is an American linguist who has worked on the classification of languages and what this reveals about the origin and evolution of modern humans.  Amongst other linguists, Ruhlen's work is recognized as standing outside the mainstream of comparative-historical linguistics.  He is the principal advocate and defender of Joseph Greenberg's approach to language classification.", 'What\'s Your Name? | What\'s Your Name?  is the third studio album by Adam Sandler.  Unlike his other comedy albums, which typically mix songs with non-musical comedy skits, "What\'s Your Name?"  consists entirely of songs of various genres, including country, ballad and reggae.  "What\'s Your Name?"  was certified gold, having sold over 500,000 copies.', 'Avanspettacolo | Avanspettacolo (literally: "before the show") is an Italian theatrical genre that developed between the 1930s and 1950s.  Closely related to revue and variety show, avanspettacolo features a diverse mixture of music, ballet, sketch comedy, and other forms of entertainment.  The genre emerged during the Fascist era, as a consequence of the promulgation of "modernist" laws that granted tax relief advantages to the theatres that were adapted to play movies.  As a consequence, theatre companies were forced to devise a light and short form of representation that could be performed on the stage to entertain the audience before the "main show" (i.e., the movie).', 'The 100 Scariest Movie Moments | The 100 Scariest Movie Moments is an American television documentary miniseries that aired in late October 2004 on Bravo.  Aired in five 60-minute segments, the miniseries counts down what producer Anthony Timpone, writer Patrick Moses, and director Kevin Kaufman have determined as the 100 most frightening and disturbing moments in the history of movies.  Each segment includes interviews from horror genre experts and other celebrities who experienced the listed films, as well as film clips and movie stills from the films covered.  This 2004 offering was followed up in 2006 by the two-part sequel, "30 Even Scarier Movie Moments", as well as another countdown, "13 Scarier Movie Moments".']
+
+## Generated Outputs
+### reasoning
+The claim asserts two parts: first, that the Disney animated film featuring Cruella de Vil is an American family comedy adventure movie, and second, that the movie "G-Force" is also an American family comedy action adventure movie. The provided notes only directly reference the Disney animated film "One Hundred and One Dalmatians," including that it features Cruella de Vil, is American, family-oriented, animated, with adventure and comedic elements. However, there is no information in the notes about "G-Force" or its genre or country of origin, so that part of the claim cannot be verified from the given information. Therefore, we will retain notes that confirm the first part and not infer anything about "G-Force." From the context, none of the document titles seem directly related to either "One Hundred and One Dalmatians" or "G-Force," so no titles match directly. The original input notes are few and non-redundant, so most should be preserved for completeness.
+
+### new_notes
+['One Hundred and One Dalmatians, featuring the character Cruella de Vil, is a 1961 American animated adventure film produced by Walt Disney, based on the novel by Dodie Smith.', 'The film is recognized as a family-oriented Disney animated feature, blending adventure and comedic elements appropriate for children.']
+
+### titles
+[]
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['101 Dalmatians (1996 film)', 'Cruella de Vil', 'G-Force (film)']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+The player who was defeated by Johan Kriek in the 1982 Australian Open – Men's Singles and Albert Costa are both sportsmen, and one of them, Costa, began competing at the age of five.
+
+### notes
+["Johan Kriek defeated Steve Denton 6–3, 6–3, 6–2 in the final to win the Men's Singles title at the 1982 Australian Open.", 'Johan Kriek is a South African-American professional male tennis player.', 'Albert Costa is a professional male tennis player.', "Johan Kriek defeated Steve Denton 6–3, 6–3, 6–2 in the final to win the Men's Singles title at the 1982 Australian Open.", 'Johan Kriek is a South African-American professional male tennis player.', 'Albert Costa is a professional male tennis player who began playing tennis at the age of five.', "Johan Kriek defeated Steve Denton 6–3, 6–3, 6–2 in the final to win the Men's Singles title at the 1982 Australian Open.", 'Johan Kriek is a South African-American professional male tennis player.', 'Albert Costa is a professional male tennis player who began playing tennis at the age of five.']
+
+### context
+['Albert Costa | Costa began playing tennis at the age of five.  He first came to the tennis world\'s attention as an outstanding junior player.  In 1993, he reached the French Open junior final and won the Orange Bowl.  He turned professional later that year and quickly established a reputation as a strong clay court player.  Spanish former player and commentator for Spanish television Andrés Gimeno used to call him "the man with two forehands", because he could hit with the same accuracy and strength both forehand and backhand.  In 1994, he won two challenger series events and was named the ATP\'s Newcomer of the Year.', '1996 EA-Generali Open – Singles | Albert Costa was the defending champion but did not compete that year.', 'Albert Costa career statistics | This is an "(incomplete)" list of main career statistics page of Spanish professional tennis player Albert Costa.', '2005 Rafael Nadal tennis season | The 2005 Rafael Nadal tennis season started in January.  Nadal won eleven singles titles and one doubles title with Albert Costa in 2005.', "Like-A-Butterfly | Like-A-Butterfly (19 April 1994 – 7 February 2013) was an Irish Thoroughbred racehorse and broodmare who competed in National Hunt racing.  Although she did not begin competing in public until she was seven years old she had a successful racing career, winning twelve of her seventeen races, including five at Grade I level.  She was unbeaten in three National Hunt Flat races including the Champion INH Flat Race and her first five over hurdles including the Royal Bond Novice Hurdle, Deloitte Novice Hurdle and Supreme Novices' Hurdle.  She won the Irish Champion Hurdle but missed the whole of the next season through injury.  In her final season she competed in steeplechases and won three times including the Powers Gold Cup and the Mildmay Novices' Chase.  After retiring from racing she produced five foals before dying of horse colic at the age of nineteen.", '2006 Qatar Open – Doubles | Albert Costa and Rafael Nadal were the defending champions, but did not participate this year.', 'Costa Rica at the 1992 Summer Paralympics | Costa Rica competed at the 1992 Summer Paralympics in Barcelona, Spain.  2 competitors from Costa Rica won no medals and so did not place in the medal table.', "Hélder Lopes (tennis) | Hélder Lopes (born 7 August 1977) is a Portuguese former professional tennis player who competed in the ITF Men's Circuit.  He achieved his highest singles ranking of 455 in the world by the Association of Tennis Professionals (ATP) in August 2003.  Though he played almost his entire career in the minor circuits, Lopes did play singles and doubles events at the Estoril Open between 2000 and 2003.  He also entered five Davis Cup ties in 2002 and 2003.", "Albert Lippmann | Albert Lippmann was a French tennis player.  He competed in the men's singles event at the 1900 Summer Olympics.", '2015 Aspria Tennis Cup – Singles | Albert Ramos-Viñolas was the defending champion, but he did not participate this year.']
+
+## Generated Outputs
+### reasoning
+The claim has two parts: first, that Johan Kriek defeated a player in the 1982 Australian Open Men's Singles final, and second, that Albert Costa is a sportsman who began competing at five years old. From the notes, Johan Kriek defeated Steve Denton in the 1982 Australian Open Men's Singles final, so the player Kriek defeated is Steve Denton. Both Johan Kriek and Albert Costa are professional tennis players, which confirms both are sportsmen. The note about Albert Costa states he began playing tennis at age five, confirming the second part of the claim. The claim’s assertion about the defeated player and Albert Costa being sportsmen is verified, and Costa's early start age is also verified. Therefore, relevant notes include the fact of Kriek defeating Denton, the professional status of Costa and Kriek, and Costa's early start in tennis. The most relevant titles from the context are those specifically about Albert Costa that discuss his starting age and career as a tennis player.
+
+### new_notes
+["Johan Kriek defeated Steve Denton 6–3, 6–3, 6–2 in the final to win the Men's Singles title at the 1982 Australian Open.", 'Johan Kriek is a South African-American professional male tennis player.', 'Albert Costa is a professional male tennis player who began playing tennis at the age of five.']
+
+### titles
+['Albert Costa']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ["1982 Australian Open – Men's Singles", 'Albert Costa']. Documents remaining to be retrieved: ['Steve Denton'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

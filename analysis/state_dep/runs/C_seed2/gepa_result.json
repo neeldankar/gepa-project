@@ -1,0 +1,1808 @@
+{
+  "prog_candidate_val_subscores": [
+    {
+      "0": 0.6666666666666666,
+      "1": 0.6666666666666666,
+      "2": 0.6666666666666666,
+      "3": 1.0,
+      "4": 0.6666666666666666,
+      "5": 0.0,
+      "6": 0.3333333333333333,
+      "7": 0.6666666666666666,
+      "8": 0.3333333333333333,
+      "9": 0.3333333333333333
+    },
+    {
+      "0": 0.0,
+      "1": 1.0,
+      "2": 0.3333333333333333,
+      "3": 0.6666666666666666,
+      "4": 0.6666666666666666,
+      "5": 0.0,
+      "6": 0.3333333333333333,
+      "7": 1.0,
+      "8": 0.3333333333333333,
+      "9": 0.0
+    },
+    {
+      "0": 0.6666666666666666,
+      "1": 1.0,
+      "2": 0.3333333333333333,
+      "3": 0.6666666666666666,
+      "4": 0.3333333333333333,
+      "5": 0.3333333333333333,
+      "6": 0.0,
+      "7": 1.0,
+      "8": 0.3333333333333333,
+      "9": 0.0
+    },
+    {
+      "0": 0.6666666666666666,
+      "1": 0.6666666666666666,
+      "2": 0.6666666666666666,
+      "3": 0.6666666666666666,
+      "4": 1.0,
+      "5": 0.0,
+      "6": 0.3333333333333333,
+      "7": 1.0,
+      "8": 0.3333333333333333,
+      "9": 0.0
+    },
+    {
+      "0": 0.6666666666666666,
+      "1": 1.0,
+      "2": 0.6666666666666666,
+      "3": 0.6666666666666666,
+      "4": 0.3333333333333333,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 1.0,
+      "8": 0.0,
+      "9": 0.0
+    },
+    {
+      "0": 0.6666666666666666,
+      "1": 0.6666666666666666,
+      "2": 0.3333333333333333,
+      "3": 0.3333333333333333,
+      "4": 0.3333333333333333,
+      "5": 0.3333333333333333,
+      "6": 0.3333333333333333,
+      "7": 1.0,
+      "8": 0.3333333333333333,
+      "9": 0.3333333333333333
+    },
+    {
+      "0": 0.6666666666666666,
+      "1": 1.0,
+      "2": 0.3333333333333333,
+      "3": 0.6666666666666666,
+      "4": 0.6666666666666666,
+      "5": 0.0,
+      "6": 0.0,
+      "7": 1.0,
+      "8": 0.3333333333333333,
+      "9": 0.0
+    }
+  ],
+  "parent_program_for_candidate": [
+    [
+      null
+    ],
+    [
+      0
+    ],
+    [
+      0
+    ],
+    [
+      0
+    ],
+    [
+      0
+    ],
+    [
+      0
+    ],
+    [
+      0
+    ]
+  ],
+  "num_metric_calls_by_discovery": [
+    0,
+    37,
+    119,
+    156,
+    193,
+    284,
+    303
+  ],
+  "program_candidates": [
+    {
+      "gen_query.predict": "Given the fields `claim`, `notes`, produce the fields `query`.",
+      "append_notes.predict": "Given the fields `claim`, `notes`, `context`, produce the fields `new_notes`, `titles`."
+    },
+    {
+      "gen_query.predict": "Task Description:\nYou are given two input fields:  \n- `claim`: a factual statement or assertion that may reference people, groups, events, works (e.g., films, albums), or concepts.  \n- `notes`: a list of extracted factual fragments, evidence, or metadata related to entities mentioned in the claim. These notes can include confirmations, denials, ambiguities, or relevant domain knowledge.\n\nYour goal is to generate a `query` field, which should be one or more concise, clear, fact-seeking questions designed to retrieve the key pieces of information necessary to verify or refute the claim.\n\nDetailed instructions and domain-specific considerations:\n\n1. **Purpose of the Query:**  \n   The query must explicitly target the critical factual elements needed to validate the claim. This usually means asking about specific attributes, counts, relationships, professions, dates, or appearances related to the entities mentioned in the claim.\n\n2. **Scope and Granularity:**  \n   - If the claim compares quantities or attributes (e.g., \"twice as many albums\"), generate queries that ask for the relevant counts or comparative data for each entity involved.  \n   - If the claim concerns professions or shared roles, ask about the precise professions or occupations of the named individuals.  \n   - If the claim links appearances, roles, or participation in events/media, query the identity and relevant credits (e.g., did person X appear in show Y at time Z).  \n   - Avoid vague or overly broad queries; each query must be focused on retrieving the specific fact(s) that would confirm or disprove the claim.\n\n3. **Multiple Entities:**  \n   When multiple entities are involved (e.g., bands, people, works), generate queries that explicitly retrieve information for each entity mentioned, especially when comparative or relational facts are concerned.\n\n4. **Handling Ambiguities:**  \n   If the claim or notes reveal ambiguity (e.g., uncertainty about whether two names refer to the same entity), encode this into the query by asking clarifying questions, e.g., \"Is entity A also known as entity B?\"\n\n5. **Use of Notes:**  \n   Use the notes to identify what is known and what is missing. The query should target the missing or uncertain knowledge that blocks verification. For example, if notes state one entity's facts are known but not the other's, the query should focus on the latter.\n\n6. **Example strategy:**  \n   - Break down the claim logically (e.g., entity attributes, relations, timeframes).  \n   - From the notes, identify which assertions are already supported or refuted, and which knowledge gaps remain.  \n   - Construct precise questions aimed solely at the remaining gaps.  \n   - When applicable, include multiple questions to cover all required information for full verification.\n\n7. **Query Format:**  \n   Output the query as a natural language question or set of questions, which can be used to retrieve or look up factual documents or knowledge snippets relevant to verifying the claim.\n\n---\n\nSummary:  \nTransform the `claim` and `notes` inputs into one or more tightly focused, clear, fact-seeking questions that efficiently identify the necessary information to verify the claim, by querying the relevant entities, attributes, and relationships indicated by the claim and unresolved by the notes.",
+      "append_notes.predict": "Given the fields `claim`, `notes`, `context`, produce the fields `new_notes`, `titles`."
+    },
+    {
+      "gen_query.predict": "Task Description:\nYou are given two input fields:\n- `claim`: a statement or assertion involving specific entities, events, or relationships.\n- `notes`: a list of factual evidence, background information, or context related to the claim, often containing detailed domain-specific pieces of information.\n\nYour objective is to produce a `query` — a set of clear, factual, and relevant questions that will help verify the truthfulness or accuracy of the `claim` based on the information in the `notes`. These queries should be designed to retrieve or check the critical underlying facts referenced or implied in the claim.\n\nDetailed Instructions and Considerations:\n\n1. Understand the claim thoroughly:\n   - Identify all named entities, relationships, or events mentioned.\n   - Parse compound claims that may involve multiple assertions.\n\n2. Analyze the notes carefully:\n   - Extract and correlate key facts from the notes, especially those that confirm or deny parts of the claim.\n   - Identify specific entities, events, or data points that are critical to verifying the claim.\n   - Use domain knowledge or detailed context embedded in the notes to understand nuanced facts (e.g., music artists and their roles, sports match details, relationships between people and entities).\n\n3. Generate a set of focused, fact-checking questions (`query`) that:\n   - Directly address all significant assertions made in the `claim`.\n   - Cover the verification of existence, identities, relationships, and attributes of the entities mentioned.\n   - Clarify temporal, geographic, or other contextual information essential for establishing the claim's truth.\n   - Use precise language reflecting domain-specific terminology where applicable (e.g., \"goal scorers,\" \"judges,\" \"songwriters,\" \"team nicknames\").\n\n4. Structure the `query` as multiple distinct questions if the claim contains multiple parts or assertions.\n\n5. The `query` should aim to retrieve all necessary and diverse supporting documents to fully assess the claim (i.e., no major fact in the claim should remain unqueried).\n\nExample best practices derived from prior examples:\n- When a claim involves people and their roles (e.g., authorship, position in a band, judging status), ask specifically about their role and involvement.\n- When multiple factual assertions are made, form separate questions for each to ensure each is independently verifiable.\n- Include entity disambiguation in queries if needed, such as distinguishing between similarly named people, roles, or events.\n- Avoid vague or overly broad questions; focus queries on the exact facts necessary to validate each claim component.\n\nOutcome:\nBy following this approach, your queries will effectively guide the retrieval of comprehensive, precise factual evidence, ensuring that fact-checking or knowledge validation can be thorough and accurate.",
+      "append_notes.predict": "Given the fields `claim`, `notes`, `context`, produce the fields `new_notes`, `titles`."
+    },
+    {
+      "gen_query.predict": "Given the fields `claim`, `notes`, produce the fields `query`.",
+      "append_notes.predict": "You will be given three fields as input: `claim`, `notes`, and `context`.\n\n- `claim` is a factual statement or assertion that needs to be verified or understood in detail.\n- `notes` is a list of sentences containing relevant factual details extracted from various sources that can help assess, confirm, or refute the claim.\n- `context` is a list of background information documents or short summaries related to entities, events, or topics mentioned in the claim or notes. These can provide additional encyclopedic or domain-specific knowledge to support or clarify facts from the notes.\n\nYour task is to generate two fields as output: `new_notes` and `titles`.\n\n1. `new_notes`:\n   - Select and refine the most relevant, concise, and factually accurate notes from the input `notes` related directly to the claim.\n   - Include only those notes that provide clear evidence or essential context that support verification or explanation of the claim.\n   - Remove redundant or irrelevant information.\n   - Summarize or slightly rephrase notes if needed to enhance clarity but preserve the factual content.\n   - The `new_notes` should collectively allow a reader to understand and verify the claim effectively.\n\n2. `titles`:\n   - Provide a list of key document or entity titles from the `context` input that are highly relevant to the claim and notes.\n   - These titles should represent main topics, persons, organizations, songs, films, places, or other entities that contextualize or verify the claim.\n   - Prioritize documents that directly correspond to names or subjects explicitly mentioned in the claim or the refined notes.\n   - The titles serve as references or sources the claim and notes relate to.\n\nAdditional domain-specific considerations:\n- Claims may relate to music songwriting and performance credits (lyricists, bands, albums).\n- Claims may involve birthplaces, geographical facts (cities, population ranks, administrative regions).\n- Claims may involve historical military units (infantry regiments), their formation years, and connections to media portrayals (films).\n- When notes mention multiple specific individuals, groups, or organizations, carefully distinguish their specific roles or relevance to the claim.\n- When multiple closely related titles or entities exist, include those that best cover the claim’s main subjects (for instance, include the main songwriter’s name if songwriter-related).\n- Use contextual knowledge from both the notes and context to resolve ambiguities (e.g., a song’s writer versus performer, birthplaces of individuals, regiment origins).\n- The refined notes and titles should collectively facilitate verification or understanding of the claim with well-supported evidence.\n\nReasoning or explanation of your selection is not required in the output but can guide your decisions during processing."
+    },
+    {
+      "gen_query.predict": "Given input fields:\n- `claim`: a factual or factual-claim statement involving specific entities, relationships, or events.\n- `notes`: a list of sentences extracted from knowledge sources that provide partial or complete background information relevant to the claim.\n\nProduce output field:\n- `query`: a precise, targeted search query (or series of queries) that would retrieve documents or sources necessary to verify or refute the claim.\n\nTask explanation and guidance:\n1. **Goal:** From the claim and provided notes, infer the minimal, specific questions that must be answered to fact-check or validate the claim. This involves explicitly identifying key entities, relationships, attributes, or comparisons in the claim that need external verification.\n\n2. **Understanding the claim:**\n   - Identify all proper nouns (people, bands, songs, companies, events).\n   - Parse comparative or relational claims (e.g., \"X won more awards than Y\", \"X was the captain of a plane operated by Y\", \"X and Y are members of band Z\").\n   - Recognize any implied or explicit factual assertions that could be verified by authoritative documents.\n\n3. **Using the notes:** \n   - Extract the key facts and knowledge points referenced.\n   - Note which entities or relationships have partial coverage or confirmation from the notes.\n   - Recognize gaps where information is missing or ambiguous (for example, absence of awards info, or confusion about company nationality).\n\n4. **Formulating queries:**\n   - Queries should focus on retrieving knowledge sources that can address any missing or ambiguous items critical to fully validate the claim.\n   - Structure queries as precise questions or keyword combinations targeting the key entities and relationships.\n   - Include queries that ask for:\n     - Identity or roles of individuals.\n     - Membership or participation in groups/bands.\n     - Awards or achievements.\n     - Company headquarters or nationalities.\n     - Specific performances in songs or events.\n   - When comparisons are made (e.g., awards count), include queries to obtain data on both sides of the comparison.\n\n5. **Examples of domain-specific factual knowledge relevant to this task:**\n   - Band members and side projects (e.g., Nivek Ogre is a Skinny Puppy member with the Rx side project).\n   - Song performers and vocalists.\n   - Airline companies and their headquarters.\n   - Flight captains and associated flights.\n   - Awards earned by artists or musicians.\n   - Corporate nationalities and geographic headquarters.\n   - Recognition that missing information from notes should be explicitly requested in queries.\n\n6. **Generalizable strategy:**\n   - Carefully read and decompose the claim into its factual components.\n   - Align known facts from notes to those components.\n   - Identify what critical information is missing or unconfirmed.\n   - Compose queries that retrieve documents which fill those gaps or confirm the facts.\n   - Ensure the queries cover all elements needed to confirm or refute the entire claim.\n\nSummary: Your main task is to transform given factual claims, supported by partial note-based context, into a set of targeted queries designed to retrieve authoritative knowledge about the key entities and facts involved, enabling accurate fact verification. Include domain-specific understandings of music groups, awards, corporate details, and performers to inform query formulation.",
+      "append_notes.predict": "Given the fields `claim`, `notes`, `context`, produce the fields `new_notes`, `titles`."
+    },
+    {
+      "gen_query.predict": "Task Description:\nYou will be given two input fields: `claim` and `notes`. Your goal is to produce an output field called `query`.\n\n- The input `claim` is a factual or verification statement that needs to be confirmed or refuted.\n- The input `notes` are supporting facts, observations, or evidences related to the claim. These are typically extracted from various documents and may include verification details, ownership statements, attribution facts, or popularity metrics.\n\nYour Task:\nGenerate a focused, precise, and effective `query` that can be used to retrieve supporting documents or information to verify the claim. This `query` should be designed to maximize recall of relevant documents while minimizing noise, targeting key entities, relationships, or factual points necessary to validate the claim.\n\nKey Details and Domain-Specific Considerations:\n1. The `query` should typically be a natural-language question or a phrase that directly targets fact verification relevant to the claim. \n2. Use specific named entities mentioned in the claim and notes (e.g., person names, organizations, venues, titles of works or shows, brands).\n3. Include core relationships or attributes expressed in the claim which can be directly addressed by documents (e.g., ownership, authorship, location, popularity comparisons).\n4. When the claim involves comparisons (e.g., popularity between two games), ensure the query reflects that comparative nature explicitly.\n5. When the claim involves authorship, credits, or identification of contributors, tailor the query to ask for authorship or credits.\n6. When the claim involves venues, ownership, or organizational relationships, frame the query around confirmation of those connections.\n7. The query should be specific enough to avoid overly broad document retrieval but broad enough to cover all required facets of the claim.\n8. Where multiple potential key documents are expected (e.g., multiple entities need verification), the query can combine these elements logically.\n9. Reflect context from notes to enrich or clarify the query, especially when notes mention entities or evidence not fully explicit in the claim.\n10. Avoid redundant or vague queries such as simply restating the claim verbatim. Instead, produce an information-seeking query that would naturally lead to authoritative document retrieval.\n\nGeneral Strategy:\n- Analyze the claim to identify key factual assertions.\n- Extract named entities, attributes, relationships relevant to verifying the claim.\n- Integrate the information from notes to focus the query on documented evidence.\n- Formulate a natural, direct question or query phrase targeting those key elements.\n- Ensure the query targets retrieval of documents sufficient to confirm or refute the claim.\n\nExample Pattern:\n- If claim is about authorship: \"Who are the credited writers or authors of [work]?\"\n- If claim is about venue and ownership: \"Is [Event] performed at [Venue] located in [Property], and who owns [Property]?\"\n- If claim is about popularity comparison: \"What are the global popularity metrics for [Entity1] compared to [Entity2]?\"\n\nBy following these detailed guidelines, your outputted `query` will effectively aid in identifying the documents necessary to verify the veracity of the claim.",
+      "append_notes.predict": "Given the fields `claim`, `notes`, `context`, produce the fields `new_notes`, `titles`."
+    },
+    {
+      "gen_query.predict": "Given the fields `claim`, `notes`, produce the fields `query`.",
+      "append_notes.predict": "You will be given three input fields: `claim`, `notes`, and `context`.\n\n- `claim` is a factual assertion that may involve named entities such as films, operas, actors, directors, or other domain-specific entities.\n- `notes` is a list of extracted facts or statements that potentially support or refute the claim, often including domain-specific details like film release years, cast members, act structures of operas, director names, and biographical snippets.\n- `context` is a collection of structured textual data entries or short knowledge snippets about relevant entities, including films (with details like country, genre, director, cast), operas (number of acts, composer), actors and actresses (roles, appearances, awards), directors (filmography), and other pertinent topics that aid in validating or clarifying the claim.\n\nYour task is to process these inputs and produce:\n\n1. **new_notes**: a concise, carefully curated subset of the `notes` that directly pertains to verifying the claim and removing redundant or irrelevant points. This subset should be factually accurate, focused only on evidence that supports or refutes the claim, or contextualizes key named entities mentioned.\n\n2. **titles**: a list of the most relevant entity titles (such as film titles, opera titles, persons’ names, or thematic document topics) derived from the `context` that are essential to understanding or verifying the claim. The selected titles should include core subjects referenced explicitly or implicitly in the claim and those providing crucial background information, such as works referenced in the claim, their creators, or related entities. Include the official or commonly recognized titles, including disambiguating years or country if supplied (e.g., 'Office (2015 South Korean film)'). Titles should not include unrelated or marginally relevant entities.\n\n---\n\n**Domain-specific considerations and nuances:**\n\n- Opera works often have formal acts explicitly defined (e.g., Il trovatore has four acts), while films typically do not have formal act divisions, generally considered to have a single \"act\" or no defined acts. This distinction is important when claims involve comparing structural components of works from different domains (opera vs. film).\n\n- Film-related claims often reference actors and directors with exact filmographies and roles. Notable domain details include that actors might appear in multiple films across different years, and directors are identified separately from actors even when similarly named.\n\n- When actors or directors are mentioned, cross-check that the role (actor/director) is correctly assigned to the individual to avoid conflating their professions.\n\n- Pay attention to correctly identifying and retrieving relevant documents/entities with disambiguation terms, especially when films or persons have common names or multiple entries (e.g., 'The Deal (2015 South Korean film)').\n\n- For television series and films, consider including key actors and relevant shows or series in the `titles` if they help verify the claim.\n\n---\n\n**Reasoning and strategy:**\n\n- Examine the `claim` carefully: identify named entities, relationships, and assertions.\n\n- Use the `notes` to filter and keep only those statements that directly relate to the entities or facts needed to verify the claim.\n\n- From the `context`, infer which entity documents offer the most direct evidence or background to the claim. Prioritize official titles of works (with years and countries if given) and prominent persons (actors, directors) related to the claim.\n\n- Avoid including unrelated or marginally related entities from the context or notes.\n\n- Your output should enable a clear and focused verification of the claim, supporting research, or fact-checking by highlighting only the most pertinent facts and references.\n\n---\n\n**Input format:**\n\n- `claim`: a string containing the factual claim.\n\n- `notes`: a list of strings, each a factual statement related to the claim or entities.\n\n- `context`: a list of strings, each a brief entity or document overview that may include titles, biographical info, or categorical details.\n\n---\n\n**Output format:**\n\n- `new_notes`: a list of strings, extracted and summarized from `notes` to contain only relevant, precise evidence supporting or refuting the claim.\n\n- `titles`: a list of strings, representing the most relevant entity titles from `context`, formatted according to their official or most specific designations (including disambiguators).\n\n---\n\nUse this approach to maximize factually accurate, precise, and relevant outputs to support claim verification and to identify the key documents or entities necessary for deeper investigation or retrieval."
+    }
+  ],
+  "list_of_named_predictors": [
+    "gen_query.predict",
+    "append_notes.predict"
+  ],
+  "full_program_trace": [
+    {
+      "i": 0,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        0,
+        78,
+        51
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        0,
+        93,
+        62,
+        78,
+        1,
+        51
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 0,
+      "statedep_rule": "coldstart_random3",
+      "statedep_novelties": [
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN,
+        NaN
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          3,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.0,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 1,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        2,
+        19,
+        24
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        2,
+        6,
+        16,
+        19,
+        13,
+        24
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 3,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.376412957906723,
+        0.2994212508201599,
+        0.22454601526260376,
+        0.2724074721336365,
+        0.22331124544143677,
+        0.23372776806354523
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          3,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 2,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        12,
+        9,
+        60
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        90,
+        12,
+        76,
+        9,
+        68,
+        60
+      ],
+      "statedep_drawn_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.3333333333333333,
+        1.0,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 6,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.2790854871273041,
+        0.3119567632675171,
+        0.2920895516872406,
+        0.15310639142990112,
+        0.1651657372713089,
+        0.16507680714130402
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          1,
+          3,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0
+      ],
+      "new_program_idx": 1,
+      "evaluated_val_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "i": 3,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        5,
+        7,
+        38
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0
+      ],
+      "statedep_drawn_ids": [
+        5,
+        42,
+        7,
+        38,
+        70,
+        41
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.0,
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333,
+        1.0
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 9,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.13634426891803741,
+        0.14703452587127686,
+        0.10639939457178116,
+        0.10909225791692734,
+        0.13309673964977264,
+        0.2021472305059433
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          2,
+          3
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0
+      ]
+    },
+    {
+      "i": 4,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        53,
+        14,
+        66
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        36,
+        44,
+        18,
+        53,
+        14,
+        66
+      ],
+      "statedep_drawn_scores": [
+        1.0,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 12,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.11468371003866196,
+        0.1733795553445816,
+        0.3024648129940033,
+        0.1367640644311905,
+        0.10293080657720566,
+        0.15112023055553436
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          3,
+          4,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 5,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        45,
+        89,
+        79
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        95,
+        72,
+        45,
+        89,
+        79,
+        87
+      ],
+      "statedep_drawn_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 15,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.12873810529708862,
+        0.173978790640831,
+        0.19182397425174713,
+        0.11550865322351456,
+        0.13520459830760956,
+        0.15224117040634155
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          2,
+          3,
+          4
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        1.0
+      ]
+    },
+    {
+      "i": 6,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        17,
+        31,
+        25
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        17,
+        31,
+        15,
+        71,
+        82,
+        25
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 18,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.1534571647644043,
+        0.23635615408420563,
+        0.37696218490600586,
+        0.2711445391178131,
+        0.17846642434597015,
+        0.16076737642288208
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          1,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 7,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        49,
+        63,
+        57
+      ],
+      "subsample_scores": [
+        1.0,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        98,
+        52,
+        49,
+        63,
+        37,
+        57
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        1.0,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 21,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.26484179496765137,
+        0.17051613330841064,
+        0.1926613301038742,
+        0.12170187383890152,
+        0.16168127954006195,
+        0.2223706841468811
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          2,
+          3,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        1.0,
+        0.6666666666666666,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 8,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        33,
+        84,
+        83
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        33,
+        84,
+        26,
+        83,
+        28,
+        61
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 24,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.15567588806152344,
+        0.14938168227672577,
+        0.1792050451040268,
+        0.15312786400318146,
+        0.14304687082767487,
+        0.2183954119682312
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          1,
+          3
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 9,
+      "selected_program_candidate": 1,
+      "subsample_ids": [
+        35,
+        23,
+        73
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        35,
+        43,
+        58,
+        23,
+        73,
+        92
+      ],
+      "statedep_drawn_scores": [
+        0.3333333333333333,
+        1.0,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 27,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.14473223686218262,
+        0.17589890956878662,
+        0.1997586488723755,
+        0.15080423653125763,
+        0.17502976953983307,
+        0.1726892739534378
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          3,
+          4
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 10,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        86,
+        80,
+        29
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        8,
+        99,
+        86,
+        80,
+        75,
+        29
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 30,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.1493947058916092,
+        0.1339980512857437,
+        0.12446840852499008,
+        0.2501055896282196,
+        0.11559327691793442,
+        0.1317795366048813
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          2,
+          3,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "new_program_idx": 2,
+      "evaluated_val_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "i": 11,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        22,
+        67,
+        54
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        30,
+        22,
+        96,
+        67,
+        54,
+        48
+      ],
+      "statedep_drawn_scores": [
+        1.0,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 33,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.16375963389873505,
+        0.13682317733764648,
+        0.2130769044160843,
+        0.18110203742980957,
+        0.13514284789562225,
+        0.13034331798553467
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          1,
+          3,
+          4
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 12,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        40,
+        59,
+        97
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        40,
+        59,
+        97,
+        3,
+        88,
+        34
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.3333333333333333,
+        1.0
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 36,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.18829768896102905,
+        0.1297300010919571,
+        0.1330217570066452,
+        0.12111010402441025,
+        0.14778828620910645,
+        0.19726580381393433
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          1,
+          2
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 13,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        64,
+        69,
+        50
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        64,
+        56,
+        69,
+        47,
+        65,
+        50
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 39,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.10796066373586655,
+        0.218459352850914,
+        0.11031117290258408,
+        0.14601631462574005,
+        0.15017516911029816,
+        0.1827777773141861
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          2,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        1.0
+      ],
+      "new_program_idx": 3,
+      "evaluated_val_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "i": 14,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        74,
+        4,
+        91
+      ],
+      "subsample_scores": [
+        1.0,
+        1.0,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        81,
+        55,
+        20,
+        74,
+        4,
+        91
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333,
+        1.0,
+        1.0,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 42,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.1614551544189453,
+        0.1320284754037857,
+        0.22305695712566376,
+        0.1554313451051712,
+        0.10255011171102524,
+        0.27577003836631775
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          3,
+          4,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        1.0,
+        0.3333333333333333
+      ]
+    },
+    {
+      "i": 15,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        77,
+        85,
+        94
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.0
+      ],
+      "statedep_drawn_ids": [
+        27,
+        77,
+        32,
+        39,
+        85,
+        94
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.0
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 45,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.13099545240402222,
+        0.16623634099960327,
+        0.15996088087558746,
+        0.14213193953037262,
+        0.13597865402698517,
+        0.10882607847452164
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          1,
+          4,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.0
+      ]
+    },
+    {
+      "i": 16,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        21,
+        11,
+        10
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        21,
+        46,
+        10,
+        11,
+        11,
+        10
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 48,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.13527555763721466,
+        0.2579819858074188,
+        0.11600639671087265,
+        0.17009834945201874,
+        0.1542455554008484,
+        0.1252441257238388
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          4,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        1.0,
+        1.0,
+        0.3333333333333333
+      ],
+      "new_program_idx": 4,
+      "evaluated_val_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "i": 17,
+      "selected_program_candidate": 2,
+      "subsample_ids": [
+        5,
+        8,
+        98
+      ],
+      "subsample_scores": [
+        1.0,
+        0.6666666666666666,
+        1.0
+      ],
+      "statedep_drawn_ids": [
+        5,
+        8,
+        16,
+        98,
+        96,
+        89
+      ],
+      "statedep_drawn_scores": [
+        1.0,
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0,
+        1.0,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 51,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.06809288263320923,
+        0.1493947058916092,
+        0.14564712345600128,
+        0.18923026323318481,
+        0.18287508189678192,
+        0.0758264884352684
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          1,
+          3
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 18,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        68,
+        78,
+        69
+      ],
+      "subsample_scores": [
+        1.0,
+        0.3333333333333333,
+        1.0
+      ],
+      "statedep_drawn_ids": [
+        68,
+        28,
+        78,
+        58,
+        17,
+        69
+      ],
+      "statedep_drawn_scores": [
+        1.0,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 54,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.11357945203781128,
+        0.1308329850435257,
+        0.06633851677179337,
+        0.1969383805990219,
+        0.08947137743234634,
+        0.06964478641748428
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          2,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        1.0,
+        0.0,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 19,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        57,
+        15,
+        55
+      ],
+      "subsample_scores": [
+        1.0,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        25,
+        40,
+        57,
+        15,
+        55,
+        82
+      ],
+      "statedep_drawn_scores": [
+        1.0,
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 57,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.08062177896499634,
+        0.122394859790802,
+        0.1389286369085312,
+        0.3309977650642395,
+        0.1320284754037857,
+        0.16286195814609528
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          2,
+          3,
+          4
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        1.0,
+        0.3333333333333333,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 20,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        74,
+        61,
+        47
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        74,
+        61,
+        38,
+        76,
+        47,
+        53
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0,
+        1.0,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 60,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.11805945634841919,
+        0.18708187341690063,
+        0.06073002144694328,
+        0.1868676394224167,
+        0.13935868442058563,
+        0.08316139131784439
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          1,
+          4
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        1.0
+      ]
+    },
+    {
+      "i": 21,
+      "selected_program_candidate": 3,
+      "subsample_ids": [
+        80,
+        39,
+        59
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        1.0
+      ],
+      "statedep_drawn_ids": [
+        51,
+        21,
+        80,
+        92,
+        39,
+        59
+      ],
+      "statedep_drawn_scores": [
+        1.0,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333,
+        0.6666666666666666,
+        1.0
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 63,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.11665473133325577,
+        0.08842138200998306,
+        0.1256479024887085,
+        0.16702799499034882,
+        0.14213193953037262,
+        0.06632524728775024
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          2,
+          4,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        1.0
+      ]
+    },
+    {
+      "i": 22,
+      "selected_program_candidate": 3,
+      "subsample_ids": [
+        22,
+        18,
+        36
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        22,
+        18,
+        36,
+        7,
+        93,
+        50
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666,
+        1.0
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 66,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.08910763263702393,
+        0.23915068805217743,
+        0.1297972947359085,
+        0.07632753998041153,
+        0.12661294639110565,
+        0.10918863862752914
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          1,
+          2
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 23,
+      "selected_program_candidate": 2,
+      "subsample_ids": [
+        81,
+        71,
+        6
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        81,
+        71,
+        6,
+        72,
+        44,
+        62
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666,
+        1.0,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 69,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.157948300242424,
+        0.26199716329574585,
+        0.1433899998664856,
+        0.13897208869457245,
+        0.15277116000652313,
+        0.14587563276290894
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          1,
+          2
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 24,
+      "selected_program_candidate": 3,
+      "subsample_ids": [
+        26,
+        37,
+        1
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        26,
+        63,
+        45,
+        37,
+        1,
+        84
+      ],
+      "statedep_drawn_scores": [
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 72,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.17046834528446198,
+        0.07420267909765244,
+        0.10187407582998276,
+        0.14741259813308716,
+        0.2440635710954666,
+        0.10001516342163086
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          3,
+          4
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666
+      ]
+    },
+    {
+      "i": 25,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        77,
+        64,
+        43
+      ],
+      "subsample_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "statedep_drawn_ids": [
+        77,
+        64,
+        85,
+        83,
+        48,
+        43
+      ],
+      "statedep_drawn_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 75,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.09078945964574814,
+        0.07121783494949341,
+        0.08845118433237076,
+        0.09235940128564835,
+        0.12110090255737305,
+        0.1560342162847519
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          0,
+          1,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.6666666666666666
+      ],
+      "new_program_idx": 5,
+      "evaluated_val_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "i": 26,
+      "selected_program_candidate": 0,
+      "subsample_ids": [
+        24,
+        41,
+        60
+      ],
+      "subsample_scores": [
+        0.6666666666666666,
+        0.6666666666666666,
+        0.3333333333333333
+      ],
+      "statedep_drawn_ids": [
+        73,
+        24,
+        41,
+        34,
+        86,
+        60
+      ],
+      "statedep_drawn_scores": [
+        0.3333333333333333,
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666,
+        0.3333333333333333
+      ],
+      "statedep_arm": "C",
+      "statedep_archive_size": 78,
+      "statedep_rule": "uniform_random3",
+      "statedep_novelties": [
+        0.11364283412694931,
+        0.09841600805521011,
+        0.17451846599578857,
+        0.18062756955623627,
+        0.08228524774312973,
+        0.08465397357940674
+      ],
+      "statedep_selection": {
+        "chosen_idx": [
+          1,
+          2,
+          5
+        ],
+        "rule": "uniform_random_3_of_6"
+      },
+      "new_subsample_scores": [
+        0.6666666666666666,
+        1.0,
+        1.0
+      ],
+      "new_program_idx": 6,
+      "evaluated_val_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    }
+  ],
+  "n_val": 10,
+  "trainset_threehop_ids": [
+    134,
+    118,
+    54,
+    116,
+    290,
+    133,
+    103,
+    115,
+    175,
+    141,
+    66,
+    193,
+    228,
+    269,
+    97,
+    155,
+    215,
+    69,
+    152,
+    130,
+    156,
+    216,
+    104,
+    181,
+    244,
+    254,
+    146,
+    140,
+    230,
+    294,
+    102,
+    86,
+    235,
+    191,
+    63,
+    268,
+    194,
+    123,
+    239,
+    231,
+    73,
+    221,
+    225,
+    137,
+    272,
+    95,
+    220,
+    224,
+    121,
+    85,
+    173,
+    213,
+    142,
+    99,
+    84,
+    117,
+    60,
+    67,
+    276,
+    256,
+    77,
+    270,
+    74,
+    126,
+    248,
+    211,
+    262,
+    209,
+    136,
+    64,
+    185,
+    292,
+    284,
+    114,
+    271,
+    283,
+    169,
+    234,
+    252,
+    222,
+    75,
+    124,
+    139,
+    166,
+    250,
+    174,
+    125,
+    52,
+    59,
+    120,
+    237,
+    79,
+    55,
+    101,
+    76,
+    214,
+    227,
+    150,
+    58,
+    163
+  ],
+  "valset_threehop_ids": [
+    257,
+    282,
+    62,
+    92,
+    198,
+    275,
+    182,
+    251,
+    289,
+    280
+  ],
+  "total_num_evals": 313
+}

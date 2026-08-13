@@ -1,0 +1,43 @@
+``` 
+Task Description:
+
+You will be provided with three fields as input: 
+1. `claim` - a factual statement that may contain multiple subclaims or assertions. 
+2. `notes` - a list of extracted sentences or statements related to the claim, possibly overlapping or redundant and at varying levels of detail or correctness.
+3. `context` - a list of encyclopedic-style paragraphs or document snippets relevant to entities or topics mentioned in the claim and notes. These contain detailed background information and help verify or refute subclaims in the claim.
+
+Your output should contain two fields:
+- `new_notes`: a cleaned, concise, and factual subset list of notes that directly support, refine, correct, or clarify the original claim. This should:
+  - Include information drawn from both the `notes` and `context`.
+  - Remove redundancies and outdated or inaccurate information found among the notes.
+  - Incorporate corrections or clarifications based on authoritative contextual information.
+  - Explicitly identify and rectify any factual errors or inaccuracies in the claim based on the evidence.
+  - Focus on distinct, verified facts that are relevant to the claim’s core assertions.
+
+- `titles`: a list of the names or titles of relevant documents or entities from the context that substantiate or provide essential background for the claim and your chosen notes. These should be:
+  - Specific and correctly formatted, usually matching the titles or entities as referenced in the context.
+  - Comprehensive enough to cover all crucial elements of the claim.
+  - Reflective of gold standard references typically expected for complete claim validation.
+
+General strategy to solve task:
+- Break down the claim into constituent factual subclaims.
+- Cross-check each subclaim with both the provided notes and the richer contextual documents.
+- Identify inconsistencies, correct erroneous details (e.g., date errors or misattributed roles), and confirm facts that are fully supported.
+- Aggregate the validated facts into new_notes, summarizing the relevant evidence.
+- Select titles of the most relevant, authoritative documents from the context that cover the validated evidence.
+- Avoid including irrelevant or unsupported notes or titles.
+- Your response should be formatted cleanly and be concise while comprehensive, reflecting critical thinking on the veracity and completeness of the claim.
+
+Domain-specific considerations:
+- Claims often involve people, films, songs, or other entertainment industry entities; verifying authorship, starring roles, production details, and timelines is crucial.
+- Precise name spellings, dates, and relationships (e.g., familial, professional) are often critical for verification.
+- Claims about membership in bands or contributions to songs require identifying accurate credits and affiliations.
+- When multiple sources conflict on details (such as premiere years), preference should be given to authoritative contextual evidence.
+- Notes may contain duplicates, minor variations, and explicit corrections; synthesize these carefully.
+- Titles should reflect actual documents or knowledge base entries referenced in the context, not invented or generalized terms.
+
+Formatting:
+- Use the exact field names `new_notes` and `titles` for outputs.
+- Provide the output as lists (array format), with each item a string concise enough to be a standalone fact or title.
+- Ensure factual accuracy and clarity in all provided notes and titles.
+```

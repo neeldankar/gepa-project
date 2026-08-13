@@ -1,0 +1,65 @@
+```  
+Task Description:
+
+You will be presented with three inputs:
+
+- `claim`: A factual statement involving one or more entities, their attributes, and relationships. Entities may be people, organizations, events, works (e.g., albums, films), or other domain-specific objects.
+- `notes`: A list of factual snippets or candidate claims related to the `claim`. These notes are extracted from various sources and may contain redundancy, contradictions, or inaccuracies.
+- `context`: A set of document excerpts or full documents, each with a title and text, providing authoritative background on the entities, events, or concepts referenced in the `claim` and `notes`.
+
+Your task is to produce two outputs:
+
+1. `new_notes`: A minimal, concise, and fully supported subset of the input `notes` that:
+   - Are directly relevant to the `claim`'s components.
+   - Are factually verified against the `context`.  
+   - Free from contradicted or unsupported information.  
+   - Free of redundancy (no duplicate or overlapping facts).  
+   - Covers all parts of the claim if it is compound (i.e., all subclaims are supported or refuted).
+
+2. `titles`: A list of exact document titles from the `context` that contain the evidence supporting the `new_notes`. Include all and only those documents needed to validate every fact in `new_notes`.
+
+Detailed Instructions and Domain Knowledge:
+
+1. Entity and Relationship Identification  
+   - Parse the claim into discrete assertions focusing on entities and their specific factual relationships (e.g., authorship, roles, event participation, formation years).  
+   - Disambiguate entities with identical or similar names by using career, domain, or biographical details from the `context`. For example, different individuals named Gould must be distinguished by their occupations (e.g., paleontologist vs. musician).  
+   - Ensure you understand domain-specific roles clearly (e.g., a "producer and singer" in music, a "defending champion" in sports).
+
+2. Cross-Verification Process  
+   - Each fact in the `notes` must be verified by consulting the `context`. If the `context` does not mention or directly support a fact, it is considered unsupported and must be excluded from `new_notes`.  
+   - Contradictions between notes are resolved strictly by referring to the `context`; only facts supported by the `context` are retained.  
+   - If a fact is partially supported, revise or reject it to adhere strictly to `context` evidence.
+
+3. Handling Compound Claims  
+   - Decompose compound claims into multiple factual components. Verify each independently and ensure that the combined `new_notes` support or refute the entire claim fully.  
+   - Do not omit any part of the claim’s factual assertions without explicit verification or refutation.
+
+4. Redundancy and Contradiction Resolution  
+   - Remove duplicates or near-duplicates in `new_notes`.  
+   - When conflicting notes exist, discard those unsupported or contradicted by the `context`.  
+   - Keep only the minimal number of notes sufficient to cover all parts of the claim.
+
+5. Domain-Specific Knowledge  
+   - Recognize the specific domain and terminologies involved:  
+     * Music domain: distinguish album vs. song vs. a band's formation; roles such as singer, producer, or judge on talent shows.  
+     * Sports domain: career timelines, nationality, defending champion status, tournament participation details (including gender and event distinctions).  
+     * Historical or media domain: Titles of films, TV shows, events; roles of individuals (actors, directors, producers).  
+   - Use the `context` to confirm domain-specific meanings and relationships rather than assumptions.  
+   - Take special care with naming ambiguities, e.g., ensure the identity of “Alamgir” or “Gould” by cross-checking domain identifiers like occupation, nationality, or known works.
+
+6. Reasoning and Fact-Checking Approach  
+   - Carefully parse the claim sentence(s) into individual facts and entities.  
+   - Map each note to these facts and cross-check them against the `context`.  
+   - Separate the claim’s components and verify them independently to avoid conflation or incorrect merging.  
+   - Discard or refine notes that do not fully correspond to information in the `context`.  
+   - Gather the minimal but complete set of `context` documents that cover all facts you accept in `new_notes`.  
+   - Ensure that each fact in `new_notes` can be clearly traced back to one or more `context` documents in `titles`.
+
+7. Output Format and Quality  
+   - `new_notes`: An array of clean, precise, and fully context-supported fact statements derived from the input `notes`.  
+   - `titles`: An array of exact `context` document titles necessary and sufficient to support the `new_notes`.  
+   - Both outputs must be factually accurate, concise, and internally consistent.
+
+Summary:  
+Your primary objective is to determine which parts of the `claim` are supported or refuted by the `context`, via careful vetting of the given `notes`. You must produce an evidence set (`new_notes`) that is accurate, minimal, and comprehensive to the claim, and accompany it with corresponding `titles` of documents from the `context` that verify your output. Balance thoroughness with precision, applying domain knowledge, rigorous fact-checking, disambiguation, and logical reasoning to achieve a sound and reliable answer.  
+```

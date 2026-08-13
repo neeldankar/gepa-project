@@ -1,0 +1,49 @@
+``` 
+You will be given three inputs:
+
+- `claim`: a factual statement (or set of statements) whose truth needs to be verified or supported.
+- `notes`: a list of extracted sentences that summarize relevant factual information from various documents.
+- `context`: a list of document summaries, excerpts, or metadata (including titles) that possibly relate to the claim.
+
+Your task is to analyze these inputs critically and produce two outputs:
+
+1. `new_notes`:  
+   - A concise, precise subset or paraphrase of the provided notes that directly relate to verifying or supporting the claim.  
+   - Emphasize key facts or evidence that either confirm, refute, or leave the claim unverified.  
+   - Remove any redundant, irrelevant, speculative, or contradictory information not helpful for claim verification.  
+   - If the evidence is incomplete to fully verify the claim, clearly state that while presenting all reliable partial evidence.  
+   - When the claim contains multiple assertions or components, address each part systematically with relevant notes.
+
+2. `titles`:  
+   - A carefully selected list of document titles from the `context` that are the most authoritative and relevant for verifying the claim.  
+   - Titles should directly correspond to entities, events, works (films, albums, novels), individuals, or topics mentioned in the claim.  
+   - Prefer precise matches over vague or loosely related titles, especially where multiple similar titles exist.  
+   - If there are known "gold standard" or key documents directly related to the claim (e.g., primary works, biographies, official filmographies), prioritize including them if present.  
+   - Ensure that all essential facets of the claim are covered by the retrieved titles.
+
+Domain- and task-specific considerations to guide your reasoning and output:
+
+- Claims often relate to specific works such as films, albums, novels, or to recognized individuals (actors, musicians, directors, athletes) and their attributes (e.g., authorship, awards, debut roles, nationality).  
+- Relationships between entities matter: e.g., albums by a band formed by a named individual, or sports teams participating in league matches sponsored by certain bodies.  
+- Details such as alternate or variant titles, release years, and production credits can be vital. Be attentive to naming variations and temporal markers when verifying chronology or identity assertions.  
+- Distinguish between lead actors and other cast members when relevant.  
+- Recognize when the claim introduces inaccuracies in nationality, work titles, roles, or sponsorships, and emphasize corrections grounded in reliable notes/context.  
+- If evidence contradicts part or all of the claim, clearly highlight this in `new_notes`.  
+- If evidence is insufficient, report the uncertainty while providing all relevant, factual partial information found.  
+- Avoid speculative or unrelated information even if superficially connected.
+
+General strategy to achieve accuracy:
+
+- Break down the claim into its key factual components.  
+- Identify all relevant notes supporting or refuting these components.  
+- Cross-check these facts against the document titles in context to ensure you assign appropriate source documents to the claim's topics.  
+- Remove duplicates, contradictions, and irrelevant details from the new notes, focusing strictly on evidence pertinent to the claim.  
+- When multiple possible relevant documents exist, select those that cover the claim’s core entities and topics most directly and authoritatively.  
+- If a key gold standard document (e.g., a primary film, an official biography) is missing from context, note this but work with the available titles.
+
+Output formatting requirements:  
+- Return `new_notes` as a list of concise, factual sentences focused on claim verification.  
+- Return `titles` as a list of strings containing selected document titles exactly as provided in `context`.
+
+The ultimate goal is to produce factually precise, focused evidence and an authoritative set of source documents that support informed verification or refutation of the given claim.
+```

@@ -1,0 +1,35 @@
+``` 
+Given three input fields: `claim` (a factual statement or set of statements), `notes` (a list of supporting or related factual snippets), and `context` (a list of longer documents or entries relevant to the claim), produce two output fields:
+
+1. `new_notes`: a distilled, concise set of factual notes extracted, merged, or summarized from the input `notes` and `context` that directly support or refute the claim parts. These should exclude redundant or irrelevant details, focusing on verifiable facts that address the claim components. If some parts of the claim lack evidence, explicitly note the absence of supporting evidence in the new notes.
+
+2. `titles`: a list of relevant document or article titles from the input `context` that underpin the factual basis of the claim. This list ideally corresponds to “gold documents” or key references that validate the claim or clarify missing elements. Titles should be accurate and reflect the main supporting source(s) of information.
+
+---
+
+Task details and domain-specific considerations:
+
+- The `claim` may contain multiple factual assertions or subclaims that need to be separately verified or discussed.
+- The `notes` represent extracted facts, often duplicated or partially overlapping, sometimes mentioning relationships, events, dates, or biographical details.
+- The `context` is a broader background containing longer entries (e.g., Wikipedia-style articles) that provide detailed factual evidence.
+- The assistant’s role is to carefully cross-reference `notes` and `context` to identify consistent, reliable information confirming or refuting parts of the claim.
+- The assistant should reason about ambiguities or where evidence is lacking by explicitly acknowledging missing information or contradictory evidence.
+- Summarize or synthesize overlapping `notes` into fewer, clearer `new_notes` that directly support claim verification.
+- The titles in `titles` should represent sources from the context that the assistant implies or explicitly used as authoritative support.
+- This task involves domain knowledge across various fields (e.g., sports history, music biographies, tennis tournaments, academic careers), requiring recognition of domain-specific entities (e.g., player names, team names, event years, professional roles).
+- Maintain focus on factual correctness, detailed validation of claim components, and clarity in presenting evidence.
+- If the claim references specific events (e.g., sports competitions in a given year), ensure the titles include relevant event or season articles.
+- If claim components relate to people’s careers, deaths, or relationships, include both biographical entries and any specialized references to their teachers or affiliations.
+- The assistant should aim to retrieve all critical supporting documents from the context and note when some expected documents remain unreferenced.
+
+---
+
+Recommended generalizable strategy:
+
+- Parse the claim into discrete assertions.
+- Identify matching, supportive, or contradictory facts from `notes`.
+- Cross-validate these facts against the detailed `context` documents.
+- Aggregate and synthesize extracted facts into a set of clear, non-repetitive `new_notes`.
+- List the titles of context documents that best correspond to these core facts in the `titles` field.
+- Explicitly note gaps in evidence or contradictions.
+```

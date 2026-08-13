@@ -1,0 +1,165 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given a concise, factual claim and a list of notes containing factual sentences or snippets extracted from documents relevant to verifying the claim. Your task is to generate one or more precise, natural-language search queries that effectively target the key facts, entities, events, attributes, and relationships in the claim. These queries will be used to retrieve or verify documents that confirm or refute each core assertion of the claim.
+
+Input Format:
+- `claim`: A short, fact-based statement or assertion that may include multiple related facts or relationships.
+- `notes`: A list of factual sentences or short information pieces extracted from one or more documents. These notes serve as supporting evidence, conflicting information, or contextual background pertinent to the claim.
+
+Detailed Instructions:
+1. Understand and decompose the claim:
+   - Identify the main entities (people, places, works, products), attributes (birthdates, roles, flavors, release years), and relationships (acted alongside, voiced, produced by, release order).
+   - Break down compound or multi-part claims into atomic factual units for targeted verification.
+   - Resolve indirect or inferential references in the claim into direct factual relationships; for example, instead of "born in the birthplace of X," identify the birthplace of both entities explicitly.
+
+2. Leverage the notes to enrich and clarify:
+   - Extract relevant factual information about entities, dates, film titles, roles, productions, or relationships present in the notes.
+   - Use notes to identify corrections, disambiguations, or missing facts that affect claim verification.
+   - Detect contradictions or gaps revealed in the notes to guide formulation of verification queries.
+
+3. Formulate precise verification queries:
+   - Queries should explicitly ask about each atomic fact or relationship necessary to verify the claim.
+   - Address each part of the claim separately if multiple assertions are present.
+   - Incorporate entity disambiguation, e.g., specify full names, film years, or production companies to avoid ambiguity.
+   - Include relational queries such as "Did Actor X star alongside Actor Y in Film Z?", "Was Film A produced by Company B?", or "Was Person C born before Person D?"
+   - When notes reveal contradictions or uncertainty, include queries explicitly designed to confirm or refute those uncertainties.
+
+4. Contextual specificity and domain knowledge:
+   - Use exact names, spellings, and titles as found in the notes (e.g., full names of actors, exact film titles with release years).
+   - Apply domain-specific knowledge where relevant:
+     * Biographical facts: birthplaces, birthdates, occupations.
+     * Filmography: actors’ roles, co-stars, directors, production companies, film genres, release years.
+     * Product facts: flavors, advertising relationships.
+   - Time-related facts (e.g., release dates, birth years) should be explicitly addressed to verify chronological claims.
+
+5. Generalizable verification strategy:
+   - Parse the claim into clear, discrete factual units.
+   - Cross-reference these units with the notes to identify which facts are supported, contradicted, or missing.
+   - Develop natural, targeted, and fact-specific queries that foster retrieval or verification of all relevant supporting or refuting documents.
+   - This ensures maximal evidence coverage and accurate verification of each assertion.
+
+Examples of types of queries to generate:
+- Verification of roles:  
+  "Did Travis Oates voice Piglet in the 2011 Winnie the Pooh movie?"  
+  "Did Gary Oldman star alongside Demi Moore and Meryl Streep in a 1995 American romantic drama?"
+- Verification of production or release details:  
+  "Was the 1995 film 'The Scarlet Letter' produced by Cinergi Pictures?"  
+  "Was 'The Jungle Book' released before the 2011 Winnie the Pooh movie?"
+- Verification of birthdates or birthplaces:  
+  "Was Darren Stanley Hayes born before Darren Middleton, lead guitarist of Powderfinger?"
+- Verification of compound or relationship claims by breaking into individual factual queries to cover each aspect explicitly.
+
+Purpose:
+These queries are intended to guide information retrieval systems to fetch documents that either substantiate or refute the claim comprehensively. Precision, disambiguation, and coverage of all factual units in the claim maximize verification effectiveness and retrieval success.
+
+Summary:
+Given a claim and related factual notes, output fact-specific, verification-focused natural language queries targeting key entities, relationships, and temporal facts. Use domain-specific insights, clarifications, and corrections from the notes to structure queries that uncover complete and accurate evidence for claim validation.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The location that houses the M7 Aerospace LP company,  and Yakutat Airport are in the same country.
+
+### notes
+['M7 Aerospace LP headquarters is in San Antonio, Texas, USA.', 'Yakutat Airport is located in Yakutat, Alaska, USA.', 'Both Texas and Alaska are states in the United States of America.', 'M7 Aerospace LP is headquartered in San Antonio, Texas, USA.', 'Yakutat Airport is located in Yakutat, Alaska, USA.', 'Both Texas and Alaska are states in the United States of America.', 'San Antonio and Yakutat are cities located in two different states, Texas and Alaska respectively, but both within the USA.', 'M7 Aerospace LP is based in San Antonio, Texas, USA.', 'Yakutat Airport is located in Yakutat, Alaska, USA.', 'Both Texas and Alaska are states within the United States of America, confirming both places are in the same country.']
+
+## Generated Outputs
+### reasoning
+The claim states that both M7 Aerospace LP and Yakutat Airport are located in the same country. The notes clarify that M7 Aerospace LP is headquartered in San Antonio, Texas, USA, and Yakutat Airport is located in Yakutat, Alaska, USA. Additionally, Texas and Alaska are both states within the United States of America. Since both locations are in states of the USA, the claim that they are in the same country is supported by the notes.
+
+### query
+"Is M7 Aerospace LP headquartered in San Antonio, Texas, USA?"
+"Is Yakutat Airport located in Yakutat, Alaska, USA?"
+"Are Texas and Alaska both states in the United States of America?"
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['M7 Aerospace', 'Yakutat Airport']. Documents remaining to be retrieved: ['San Antonio International Airport'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The trainer, who named Eddie Mahan "the greatest football player of all time", coached the Indians and was the first Native American to win a metal in his home country.
+
+### notes
+['Jim Thorpe named Eddie Mahan the greatest football player of all time.', 'Jim Thorpe was the first Native American to win an Olympic gold medal for his home country.', 'Jim Thorpe was not a trainer.', 'Eddie Mahan was a Harvard football player, not a coach or trainer.', "The Buffalo Indians were coached by Earl 'Red' Seick and Orlando Nesmith, not by Jim Thorpe or Eddie Mahan.", 'No evidence links a trainer who named Eddie Mahan the greatest player to coaching the Indians or winning a Native American medal.', 'Jim Thorpe named Eddie Mahan the greatest football player of all time.', 'Jim Thorpe was the first Native American to win an Olympic gold medal for his home country.', 'Jim Thorpe coached the Oorang Indians, a Native American football team in the NFL.', 'Eddie Mahan was solely a player at Harvard and was never a coach or trainer.', 'The Carlisle Indians football team in 1911 was coached by Pop Warner, not Jim Thorpe.', 'No individual is documented as both naming Eddie Mahan the greatest player, coaching the Indians, and winning a Native American medal.', 'Jim Thorpe named Eddie Mahan the greatest football player of all time.', 'Jim Thorpe was the first Native American to win an Olympic gold medal for his home country.', 'Jim Thorpe coached the Oorang Indians, an NFL team composed of Native Americans.', 'Jim Thorpe was a player and coach, but not a trainer.', 'Eddie Mahan was a Harvard football player and never a coach or trainer.', 'No individual is documented as both a trainer who named Eddie Mahan the greatest player, coached the Indians, and won a Native American medal.', 'The Carlisle Indians were coached by Pop Warner, not Jim Thorpe.', 'The claim incorrectly merges roles and achievements of Jim Thorpe and Eddie Mahan.']
+
+## Generated Outputs
+### reasoning
+The claim makes three key assertions about a single individual ("the trainer"): (1) this trainer named Eddie Mahan "the greatest football player of all time," (2) coached the Indians, and (3) was the first Native American to win a medal in his home country. 
+
+From the notes, it is clear that: 
+- Jim Thorpe named Eddie Mahan the greatest football player of all time (notes [1], [7]). 
+- Jim Thorpe was the first Native American to win an Olympic gold medal for his home country (notes [2], [8]). 
+- Jim Thorpe coached the Oorang Indians, a Native American NFL team (note [9]). 
+- However, Jim Thorpe was not a trainer (note [3]). 
+- Eddie Mahan was only a Harvard player, not a coach or trainer (notes [4], [10]). 
+- The Buffalo Indians were coached by Earl 'Red' Seick and Orlando Nesmith, not Jim Thorpe or Eddie Mahan (note [5]).
+- The Carlisle Indians football team was coached by Pop Warner, not Jim Thorpe (note [11]).
+- No evidence links any trainer who named Mahan the greatest to coaching the Indians or winning a Native American medal (notes [6], [12]).
+
+Therefore, the individual who named Mahan the greatest was Jim Thorpe, who also coached the Indians and was the first Native American to win an Olympic gold medal—but Jim Thorpe was not a trainer. The claim conflates "trainer" with Jim Thorpe, which contradicts note [3]. Also, no individual fits all three criteria simultaneously as a "trainer." 
+
+To verify or refute the claim adequately, queries should explicitly ask:
+- Did Jim Thorpe name Eddie Mahan the greatest football player of all time?
+- Did Jim Thorpe coach the Indians (specifically Oorang Indians or Buffalo Indians or Carlisle Indians)?
+- Was Jim Thorpe the first Native American to win a medal in his home country?
+- Was Jim Thorpe a trainer?
+- Did anyone else name Mahan the greatest, coach the Indians, and win a Native American medal as a trainer?
+- Who coached the Indians football teams referred to (Buffalo Indians, Oorang Indians, Carlisle Indians)?
+- Was Eddie Mahan ever a trainer or coach?
+- Who was the first Native American to win an Olympic gold medal?
+This covers all key facets and addresses contradictions found in notes.
+
+### query
+Did Jim Thorpe name Eddie Mahan the greatest football player of all time?  
+Did Jim Thorpe coach the Oorang Indians or any other Indians football team?  
+Was Jim Thorpe the first Native American to win an Olympic gold medal for his home country?  
+Was Jim Thorpe ever a trainer?  
+Who coached the Buffalo Indians football team?  
+Who coached the Carlisle Indians football team in 1911?  
+Was Eddie Mahan ever a coach or trainer?  
+Is there any record of a trainer who named Eddie Mahan the greatest football player of all time, coached an Indians football team, and was the first Native American to win an Olympic medal in his home country?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Eagle Feather', 'Eddie Mahan', 'Jim Thorpe']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+This Welsh actor was in the 2007 movie that was a sequel to the successful 2002 film, 28 Days Later. He also starred in Avengers: Age of Ultron.
+
+### notes
+['28 Weeks Later is the 2007 sequel to 28 Days Later, directed by Juan Carlos Fresnadillo.', 'Jeremy Renner acted in 28 Weeks Later (2007) but is American, not Welsh.', 'Jeremy Renner appeared in several films including MCU movies but is not listed in Avengers: Age of Ultron cast in the context.', 'Vuyo Dabula appeared in Avengers: Age of Ultron but is South African and not mentioned in 28 Weeks Later.', 'The claim about a Welsh actor in both 28 Weeks Later and Avengers: Age of Ultron lacks confirmation from context information.', 'Jeremy Renner appeared in 28 Weeks Later (2007) and Avengers: Age of Ultron (2015) but he is American, not Welsh.', 'No Welsh actor is identified in the context as starring in both the 2007 sequel to 28 Days Later and Avengers: Age of Ultron.', 'Vuyo Dabula appeared in Avengers: Age of Ultron but is South African and not mentioned in 28 Weeks Later.', 'The claim about a Welsh actor in both 28 Weeks Later and Avengers: Age of Ultron lacks confirmation from the provided context.', 'Jeremy Renner appeared in both 28 Weeks Later (2007) and Avengers: Age of Ultron (2015), but he is American, not Welsh.', 'Vuyo Dabula acted in Avengers: Age of Ultron but is South African and not associated with 28 Weeks Later.', 'No Welsh actor is identified as starring in both 28 Weeks Later and Avengers: Age of Ultron in the available context.', 'The claim about a Welsh actor featuring in both 28 Weeks Later and Avengers: Age of Ultron is unconfirmed and unsupported by the provided data.']
+
+## Generated Outputs
+### reasoning
+The claim states that a Welsh actor appeared in both the 2007 sequel to 28 Days Later (which is 28 Weeks Later) and in Avengers: Age of Ultron. The notes confirm that 28 Weeks Later is indeed the 2007 sequel to 28 Days Later. Jeremy Renner acted in 28 Weeks Later but is American, not Welsh, and he is also not confirmed to have appeared in Avengers: Age of Ultron in the given notes. Vuyo Dabula appeared in Avengers: Age of Ultron but is South African, not Welsh, and is not mentioned in 28 Weeks Later. There is no confirmation of a Welsh actor being in both films from the notes, so we need to verify if any Welsh actor starred in 28 Weeks Later and if the same actor appeared in Avengers: Age of Ultron. This requires queries about the Welsh actors in both movies and whether any overlap exists.
+
+### query
+- Was there a Welsh actor who starred in the 2007 movie 28 Weeks Later, the sequel to 28 Days Later?  
+- Which Welsh actors appeared in Avengers: Age of Ultron?  
+- Did any Welsh actor appear in both 28 Weeks Later and Avengers: Age of Ultron?  
+- What is the full cast list of 28 Weeks Later and their nationalities?  
+- What is the full cast list of Avengers: Age of Ultron and the nationalities of the main actors?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['28 Weeks Later', 'Avengers: Age of Ultron', 'Jeremy Renner']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,147 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Your task is to generate a precise, focused, and factually relevant *verification query* based on a given factual or historical `claim` and a corresponding set of detailed `notes`. This query should be designed to explicitly confirm or refute the key factual elements, including entities, temporal facts, events, or relationships present in the claim, cross-referenced against the notes.
+
+**Input format:**  
+- `claim`: A factual or historical statement containing specific entities such as people, organizations, teams, military units, film titles; temporal facts like formation dates or release years; events like battles, matches, tournaments, film releases; or relationships such as roles (e.g., voice actors, team nicknames), affiliations, or geographic composition (e.g., school districts and their member schools, or geographical areas served).  
+- `notes`: A collection of factual sentences or excerpts summarizing key information related to the claim. These notes may confirm, contradict, nuance, or lack information about the claim components. They often contain domain-specific details such as official names, accurate dates, geographic clarifications, or precise role descriptions.  
+
+---
+
+### Goal & Requirements:
+
+Generate a **single, well-structured, clear, neutral, and explicit fact-checking question (`query`)** that:  
+- **Identifies and references relevant key entities** using their full official names or correct domain-specific terminology (for example, full school names, official military unit designations, exact movie titles including release years and directors, or official tournament names).  
+- **Includes temporal information** like event dates, formation years, release years, or episode numbers to provide time-bound precision.  
+- **Addresses roles, relationships, or affiliations** clearly and precisely (e.g., who voiced a character in a specific film version, which players scored or participated in a particular sports match, which schools belong to a particular district, or which military units participated in specific battles).  
+- **Captures geographic specifics** when relevant (such as cities, census-designated places (CDPs), countries) to distinguish entities or clarify claims involving location-related ambiguity.  
+- **Explicitly highlights any ambiguities, missing information, or contradictions** present between the claim and the notes, by formulating queries that verify these disputed points. This may include contrasting alternatives (e.g., "Did X occur in year Y or earlier?", "Is school A part of district B?", "Which team did player C represent in event D?", or "Was actor X the voice of character Y in film Z?").  
+
+---
+
+### Domain-Specific Considerations:
+
+- **Education domain:**  
+  - Confirm official membership of specific schools in school districts.  
+  - Verify official school names and geographic areas served (e.g., census-designated places served by each school).  
+  - Address contradictions or gaps about district compositions or school names.  
+
+- **Sports domain:**  
+  - Identify players, teams, match details with event names, dates, and outcomes.  
+  - Verify championship status, player nationalities, affiliations with teams (including colloquial nicknames).  
+  - Clarify scoring details or participation in key matches and tournaments.  
+
+- **Military units:**  
+  - Verify official unit names, formation dates, and historical engagements.  
+  - Clarify official designations and chronological origins (e.g., whether a unit was formed in a specified year or earlier).  
+
+- **Film and Media:**  
+  - Confirm voice actor roles tied to specific film versions (including release year and director).  
+  - Verify film genres, release years, directors, and connections between films and real-life subjects/names.  
+  - Confirm if different versions or remakes precede or follow each other.  
+
+- **General:**  
+  - Carefully differentiate between similarly named entities (e.g., original animated films vs. live-action adaptations; official vs. colloquial names).  
+  - Use full and accurate names of entities, events, or organizations.  
+
+---
+
+### Methodology / Approach for Generating the Query:
+
+1. **Parse the claim** for its core components: entities, relationships, temporal facts, events, and geographic data.  
+2. **Cross-reference the claim components against the notes**, paying close attention to:  
+   - Contradictions or disputes between claim and notes.  
+   - Confirming details missing from the claim or notes.  
+   - Nuances or partial confirmations that suggest the claim may only be partially accurate.  
+3. **Construct a clear, neutral question** that:  
+   - Explicitly mentions the entities, relevant dates/events, relationships, and geographic elements in focus.  
+   - Incorporates noted contradictions or information gaps by questioning those points openly, rather than assuming truth or falsehood.  
+   - Enables downstream retrieval or expert verification that can prove or disprove the claim's key factual assertions.  
+4. **Avoid assumptions or presuppositions not supported by claim or notes.** Keep the question open to either confirmation or refutation.
+
+---
+
+### Example query templates you may follow or adapt as applicable:
+
+- "**Which high schools are official members of [District Name] in [Location]? Is [School Name] included?**"  
+- "**What census-designated places are served by each school in [District Name], specifically for [School Name]?**"  
+- "**Is [Person] originally from [Location A] or from [Location B]? Who was the defending champion of [Event] in [Year], and does this relate to [Person] or [Location]?**"  
+- "**Who scored during the [Match/Event] between [Team A] and [Team B] in [Year], and which professional football team, colloquially called [Nickname], did the scorer belong to?**"  
+- "**When was the [Military Unit Name] originally formed? Did it exist starting from year [Y] or earlier?**"  
+- "**Did [Actor/Person] provide the voice of [Character] in the [Year] film '[Exact Movie Title]' directed by [Director]? Was [Another Film/Version] released before that?**"
+
+---
+
+By following these detailed instructions, you enable the production of precise, domain-aware questions that accurately spotlight the core factual points under scrutiny, factoring in any contradictions or ambiguities surfaced by the notes, thus maximizing the effectiveness of fact-checking or information retrieval processes.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The Sewanhaka Central High School District is composed of Sewanhaka High School, Concordia Junior-Senior High School, New Hyde Park Memorial High School, Floral Park Memorial High School, and one other. That other school serves students in the census-designated place of Nassau County in New York.
+
+### notes
+['The Sewanhaka Central High School District contains five high schools: Sewanhaka High School, Elmont Memorial High School, New Hyde Park Memorial High School, Floral Park Memorial High School, and H. Frank Carey Junior-Senior High School.', 'Concordia Junior-Senior High School is located in Concordia, Kansas, not in Nassau County, New York, and is not part of the Sewanhaka Central High School District.', 'The claim incorrectly includes Concordia Junior-Senior High School as part of the Sewanhaka Central High School District.', 'The fifth school in the district (H. Frank Carey Junior-Senior High School) serves students in Nassau County but is not named in the claim.', 'No information confirms the fifth school described in the claim as serving a census-designated place; however, the district and schools listed in the context are all in Nassau County, New York.', 'Sewanhaka Central High School District consists of five high schools: Sewanhaka High School, Elmont Memorial High School, New Hyde Park Memorial High School, Floral Park Memorial High School, and H. Frank Carey Junior-Senior High School.', 'Concordia Junior-Senior High School is located in Concordia, Kansas and is not part of the Sewanhaka Central High School District.', 'H. Frank Carey Junior-Senior High School is the fifth school in the district and serves students in Nassau County, New York.', 'The claim incorrectly includes Concordia Junior-Senior High School in the district.', 'There is no direct information confirming that H. Frank Carey Junior-Senior High School serves a census-designated place in Nassau County, only that it serves students in Nassau County generally.', 'Sewanhaka Central High School District consists of five high schools: Sewanhaka High School, Elmont Memorial High School, New Hyde Park Memorial High School, Floral Park Memorial High School, and H. Frank Carey Junior-Senior High School.', 'Concordia Junior-Senior High School is located in Kansas and is not part of the Sewanhaka Central High School District.', 'H. Frank Carey Junior-Senior High School is the actual fifth school in the district and serves students in Nassau County, New York.', 'There is no direct information confirming that H. Frank Carey Junior-Senior High School serves students from a census-designated place within Nassau County.', 'The claim incorrectly includes Concordia Junior-Senior High School and omits H. Frank Carey Junior-Senior High School.']
+
+## Generated Outputs
+### reasoning
+The claim lists four specific high schools as part of the Sewanhaka Central High School District and mentions that there is one other school included in the district. Additionally, it states that this other school serves students in a census-designated place (CDP) in Nassau County, New York, but does not name the school or specify which CDP it serves. Since no notes are provided to confirm or contradict this information, a verification question should clearly inquire about the official composition of the Sewanhaka Central High School District, including all member schools by name, and identify the correct CDPs served by each school, particularly focusing on the unnamed "other" school and its geographic jurisdiction.
+
+### query
+What are the official member high schools of the Sewanhaka Central High School District in Nassau County, New York? Specifically, besides Sewanhaka High School, Concordia Junior-Senior High School, New Hyde Park Memorial High School, and Floral Park Memorial High School, is there an additional school in the district? If so, what is its name and which census-designated place does it serve?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Sewanhaka Central High School District']. Documents remaining to be retrieved: ['Garden City South, New York', 'H. Frank Carey Junior-Senior High School'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The person who claimed that Castro was killed in the 26th July Movement but was proven wrong by the man who Ruby Hart Phillips was at odds with, first served as President of Cuba in 1940.
+
+### notes
+["Fulgencio Batista claimed that Fidel Castro was killed during the 26th July Movement's landing, but this was disproven by Herbert Matthews, a New York Times correspondent.", 'Ruby Hart Phillips, another New York Times correspondent in Cuba, was often at odds with Herbert Matthews due to their opposing views on Castro and Batista.', 'Herbert Matthews revealed that Fidel Castro was alive and active in the Sierra Maestra mountains during the Cuban Revolution.', 'Fulgencio Batista served as President of Cuba, with his first presidency beginning in 1940, before eventually leading during the Cuban Revolution.', "The claim that the person who alleged Castro's death first served as President of Cuba in 1940 aligns with Batista's historical role.", "No contradictory information regarding Batista's presidency or Matthews' reporting is present in the context.", 'The exact year Batista first became president is not explicitly stated in the provided texts but is consistent with known historical facts.', 'Fulgencio Batista claimed Fidel Castro was killed during the 26th July Movement landing, but this was disproven by Herbert Matthews, a New York Times correspondent.', 'Ruby Hart Phillips often held opposing views and was at odds with Herbert Matthews regarding Castro and Batista.', 'Herbert Matthews revealed that Castro was alive and active during the Cuban Revolution.', 'Fulgencio Batista first served as President of Cuba beginning in 1940.', "No information contradicts Batista's presidency date or Matthews' role in disproving Batista's claim about Castro.", 'Thus, the person who claimed Castro was killed during the Movement was Batista, who was disproved by Matthews, and Batista first became president in 1940.', "Fulgencio Batista claimed Fidel Castro was killed during the 26th July Movement's landing but was disproven by Herbert Matthews, a New York Times correspondent.", 'Ruby Hart Phillips, also a New York Times correspondent in Cuba, was often at odds with Herbert Matthews regarding their opposing views on Castro and Batista.', 'Fulgencio Batista first served as President of Cuba beginning in 1940.', 'Herbert Matthews revealed that Castro was alive in the Sierra Maestra mountains during the Cuban Revolution.', "The claim that the person who alleged Castro's death first served as President in 1940 accurately corresponds to Batista's historical record.", 'There is no contradicting information about Batista’s presidency date or Matthews’ role in disproving the death claim.']
+
+## Generated Outputs
+### reasoning
+The claim involves multiple specific elements about Cuban history and political figures. It states a person who erroneously claimed that Fidel Castro was killed during the 26th of July Movement later served as President of Cuba in 1940. Furthermore, this error was disproven by another individual associated with a person named Ruby Hart Phillips, who was at odds with them. To verify this claim, we need to identify: (1) the person who made the incorrect claim about Castro's death and their role as Cuban President in 1940, (2) the person who disproved this claim, and (3) the connection involving Ruby Hart Phillips and who she was at odds with. Since no notes are provided, this key information must be explicitly sought.
+
+### query
+Who was the Cuban President who first served in 1940 and reportedly claimed that Fidel Castro was killed during the 26th of July Movement? Who was the individual that disproved this claim, and what was their connection to Ruby Hart Phillips, specifically regarding who Ruby Hart Phillips was at odds with?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Herbert Matthews', 'Ruby Hart Phillips']. Documents remaining to be retrieved: ['Fulgencio Batista'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Christopher B. Landon wrote a 2007 movie that stars Shia Saide LaBeouf, an American actor who starred in the Disney Channel series Even Stevens that premiered in 2004.
+
+### notes
+['Shia LaBeouf is an American actor who played Louis Stevens in the Disney Channel series Even Stevens.', 'Even Stevens originally aired before 2004; the related Disney Channel movie aired in 2003.', 'Christopher Landon co-wrote the 2007 film Disturbia, which stars Shia LaBeouf.', 'The claim about the premiere year of Even Stevens as 2004 is incorrect.', 'The connection between Christopher Landon, Shia LaBeouf, and the 2007 movie Disturbia is verified.', 'Christopher Landon co-wrote the 2007 film Disturbia, which stars Shia LaBeouf.', 'Shia LaBeouf is an American actor known for playing Louis Stevens in the Disney Channel series Even Stevens.', 'Even Stevens aired before 2004, with a related Disney Channel movie in 2003—thus, the claim that it premiered in 2004 is incorrect.', 'The connection between Landon, LaBeouf, and the 2007 film Disturbia is confirmed.', "Christopher Landon co-wrote the 2007 film 'Disturbia' starring Shia LaBeouf.", "Shia LaBeouf is an American actor who starred as Louis Stevens in the Disney Channel series 'Even Stevens'.", "'Even Stevens' aired from June 17, 2000, to June 2, 2003, with a total of three seasons and 65 episodes.", "'The Even Stevens Movie' premiered in 2003 as the series finale.", "The claim that 'Even Stevens' premiered in 2004 is incorrect; it premiered in 2000."]
+
+## Generated Outputs
+### reasoning
+The claim states that Christopher B. Landon wrote a 2007 movie starring Shia Saide LaBeouf, an American actor who starred in the Disney Channel series Even Stevens which premiered in 2004. The notes confirm that Shia LaBeouf is an American actor who played Louis Stevens in Even Stevens, but Even Stevens originally aired before 2004, and the related Disney Channel movie aired in 2003, thus contradicting the claimed 2004 premiere year. Additionally, Christopher Landon co-wrote the 2007 film Disturbia, which stars Shia LaBeouf. The claim about the premiere date of Even Stevens is incorrect, but the association between Christopher Landon, Shia LaBeouf, and the 2007 film Disturbia is verified.
+
+### query
+Did the Disney Channel series Even Stevens, starring Shia LaBeouf as Louis Stevens, premiere before 2004, and did Christopher B. Landon co-write the 2007 film Disturbia, which stars Shia LaBeouf?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Disturbia (film)', 'Shia LaBeouf']. Documents remaining to be retrieved: ['Christopher B. Landon'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

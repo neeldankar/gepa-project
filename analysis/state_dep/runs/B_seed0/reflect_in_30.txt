@@ -1,0 +1,148 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You are provided with a concise factual claim and a list of notes containing factual information relevant to the claim. Your objective is to generate natural-language verification queries that directly target the core facts and relationships in the claim by leveraging the information and context present in the notes. These queries are intended to be used to retrieve or verify evidence documents that confirm or refute the claim.
+
+Input Format:
+- `claim`: A concise statement containing one or more factual assertions involving entities, attributes, relationships, or events.
+- `notes`: A collection of factual sentences or snippets extracted from documents. These notes provide evidence, clarifications, corrections, or contextual background related to the claim’s content.
+
+Output:
+- `query`: One or more precise, fact-specific natural language questions designed to verify each key factual assertion within the claim by querying the relationships and details referenced or implied in the notes.
+
+Detailed Instructions and Domain-Specific Guidance:
+
+1. **Claim Analysis and Decomposition**  
+   - Carefully parse the claim into atomic factual units or assertions.  
+   - Identify all main entities (people, places, works, organizations), attributes (birthplaces, roles, dates), and relationships (membership, authorship, participation) described.  
+   - Resolve indirect references or complex relational claims into direct, checkable facts.  
+     For example, if the claim refers to “born in the birthplace of X,” identify and verify the birthplaces of both entities.
+
+2. **Leverage Notes for Fact Clarification and Expansion**  
+   - Use the notes to disambiguate entities, verify relationships, and gather temporal or contextual qualifiers (years, nationalities, versions).  
+   - Detect explicit contradictions or corrections within the notes (e.g., misattributed roles, mistaken sponsorship).  
+   - Note any distinctions or confusions between similarly named entities or works referenced in the note (e.g., different football clubs, similarly named films).  
+
+3. **Formulating Verification-Focused Queries**  
+   - Generate queries that directly target verification of the claim’s atomic facts, such as:  
+     • Membership or affiliation of an entity to a group or league.  
+     • Identification of sponsors or organizational roles.  
+     • Confirmation of roles in films (director, actor, composer).  
+     • Temporal sequencing (e.g., which film was scored first by a composer).  
+     • Popularity or recognition comparison when claims involve relative assessments.  
+   - Break down complex or compound claims into multiple, related questions addressing each core fact or relationship.  
+   - Include explicit entity disambiguation in queries (e.g., confirming identity to avoid confusion between entities with similar names).
+
+4. **Precision and Contextualization**  
+   - Use exact names, roles, and terms as provided in the notes to avoid ambiguity.  
+   - Include relevant qualifiers such as dates, places, nationalities, or versions to ensure precise retrieval.  
+   - Avoid vague or overly broad queries; queries should be narrowly tailored to test the validity of specific claim elements.
+
+5. **Generalizable Strategy for Fact Verification Queries**  
+   - Dissect the claim into clear factual units.  
+   - Cross-reference the notes to understand which assertions are supported, contradicted, or unconfirmed.  
+   - For each unit, formulate a natural language query likely to retrieve supporting or refuting evidence.  
+   - This ensures comprehensive coverage of the claim’s verifiability and maximizes relevant evidence retrieval.
+
+Domain-Specific Insights:
+- **Biographical Details:** Queries often involve verifying birthplaces, birth years, or occupational roles of persons named in the claim.  
+- **Filmography:** Many claims relate to films, including verifying actors’ roles, directors, composers, or film release dates.  
+- **Sports Teams and Leagues:** Verify league memberships, sponsorships, and team identities, especially resolving confusions between similarly named clubs and clarifying organizational roles of sponsors vs. leagues.  
+- **Product Attributes and Popularity:** Confirm product features (e.g., flavors or variants), or compare popularity and cultural reach, especially for games or cultural works.  
+- The notes may contain explicit refutations or ambiguous information; generate queries that test these points directly to resolve contradictions.
+
+Summary:
+Given a claim and a set of notes, your role is to generate a set of focused, clear, fact-specific verification queries that will facilitate thorough checking of each factual element within the claim. These queries should make explicit what facts need confirmation and help retrieve comprehensive evidence, thus enabling accurate claim validation.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The writer of the metal song "Veteran of the Psychic Wars" is a lyricist, not Otep Shamaya.
+
+### notes
+["The song 'Veteran of the Psychic Wars' was written by Eric Bloom of Blue Öyster Cult and British author Michael Moorcock.", 'Michael Moorcock, known as an author, co-wrote the lyrics for the song; Eric Bloom is a band member credited for the song.', "Otep Shamaya is the lead vocalist of the nu metal band Otep and has no known connection to writing 'Veteran of the Psychic Wars'.", "Therefore, the writers of 'Veteran of the Psychic Wars' are lyricists distinct from Otep Shamaya.", "The song 'Veteran of the Psychic Wars' was co-written by Eric Bloom, lead singer of Blue Öyster Cult, and British author and lyricist Michael Moorcock.", 'Michael Moorcock, known primarily as a science fiction and fantasy author, contributed lyrics, making him a lyricist for the song rather than a performing musician.', "Otep Shamaya is the lead vocalist of the nu metal band Otep and has no connection to writing or performing 'Veteran of the Psychic Wars'.", "'Veteran of the Psychic Wars' first appeared on Blue Öyster Cult's 1981 album 'Fire of Unknown Origin' and was featured in the 1981 animated film 'Heavy Metal'.", 'Eric Bloom and Michael Moorcock collaborated by exchanging lyrics and music ideas, with Moorcock providing lyrical content inspired by his literary works.', "The claim that the writer of the song is a lyricist and not Otep Shamaya is supported by multiple authoritative sources and the band's official credits.", "The song 'Veteran of the Psychic Wars' was written by Eric Bloom, lead singer of Blue Öyster Cult, and British science fiction and fantasy author Michael Moorcock, who contributed lyrics.", 'Michael Moorcock acted as a lyricist for the song, supplying lyrical content inspired by his literary works, rather than performing musically.', "Otep Shamaya is the lead vocalist of the nu metal band Otep and has no known involvement in writing or performing 'Veteran of the Psychic Wars'.", "'Veteran of the Psychic Wars' first appeared on Blue Öyster Cult's 1981 album 'Fire of Unknown Origin' and featured in the 1981 animated film 'Heavy Metal'.", 'Eric Bloom and Michael Moorcock began collaborating after Bloom sent Moorcock a fan letter; Moorcock subsequently sent lyrics that he co-wrote.', "The claim that the song's writer is a lyricist and not Otep Shamaya is supported by official credits and multiple authoritative sources."]
+
+## Generated Outputs
+### reasoning
+The claim states that the writer of the metal song "Veteran of the Psychic Wars" is a lyricist and explicitly states that this writer is not Otep Shamaya. To verify this, we need to confirm two key facts: who wrote the song "Veteran of the Psychic Wars," and whether Otep Shamaya is that writer or not. Since the claim distinguishes the writer as a lyricist, it implies that the role is specifically related to the lyrics rather than overall composition or performance. There are no notes provided to clarify or refute this, so the query should focus on identifying the credited lyricist of the song "Veteran of the Psychic Wars," as well as confirming the involvement or non-involvement of Otep Shamaya in writing the song.
+
+### query
+Who is credited as the lyricist or writer of the metal song "Veteran of the Psychic Wars"?  
+Is Otep Shamaya credited as a writer or lyricist of "Veteran of the Psychic Wars"?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Eric Bloom', 'Otep Shamaya', 'Veteran of the Psychic Wars']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+Jay Park left the South Korean music group that Jay Park is a part of, before the release of the group's DVD called "Take Off".
+
+### notes
+['Jay Park was the leader of the South Korean boy band 2PM.', 'Jay Park officially left 2PM in early 2010.', '2PM released a DVD titled \'1st Japan Tour 2011 "Take Off"\' in 2011.', "Since Jay Park left before 2011, he was not part of the group during the release of the 'Take Off' DVD.", 'Jay Park was the leader of the South Korean boy band 2PM.', 'Jay Park officially left 2PM in early 2010.', '2PM released a DVD titled \'1st Japan Tour 2011 "Take Off"\' in 2011, after Jay Park\'s departure.', "The single 'Take Off' was released in May 2011 and was tied to the DVD release.", "Jay Park was not part of 2PM during the release of the 'Take Off' DVD.", 'Jay Park was the leader of the South Korean boy band 2PM and officially left the group in early 2010.', '2PM released the DVD \'1st Japan Tour 2011 "Take Off"\' in 2011, which is after Jay Park\'s departure.', "The single 'Take Off' by 2PM was released in May 2011 and was tied to the DVD release.", "Jay Park was not part of 2PM during the release of the 'Take Off' DVD and related single."]
+
+## Generated Outputs
+### reasoning
+The claim states that Jay Park left the South Korean music group he was part of before the release of the group's DVD called "Take Off." According to the notes, Jay Park was the leader of the boy band 2PM (note [1]) and officially left 2PM in early 2010 (note [2]). The DVD titled "1st Japan Tour 2011 'Take Off'" was released by 2PM in 2011 (note [3]), and since Jay Park left the group before 2011, he was not part of the group during the DVD release (note [4]). Therefore, to verify the claim, the core facts to confirm are Jay Park's membership in 2PM, the time of his departure, the DVD release date, and the absence of Jay Park in the group at the time of DVD release.
+
+### query
+- Did Jay Park belong to the South Korean boy band 2PM?  
+- When did Jay Park officially leave 2PM?  
+- When was the DVD titled "1st Japan Tour 2011 'Take Off'" by 2PM released?  
+- Was Jay Park a member of 2PM at the time of the DVD "Take Off" release?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['2PM', 'Ultra Lover']. Documents remaining to be retrieved: ['Go Crazy (album)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Basil Dean and a creator of Godfather Part II were both alive at some point in time.
+
+### notes
+['Basil Dean was an English actor, writer, producer, and director born in 1888 and died in 1978.', 'The Godfather Part II (1974) was directed by Francis Ford Coppola, who was born in 1939 and is a creator of the film.', 'Mario Puzo, author and co-writer of The Godfather Part II, was born in 1920 and died in 1999.', 'Carmine Coppola, an American composer and contributor of original music to The Godfather Part II, lived from 1910 to 1991.', "Given these lifespans, Basil Dean and at least one creator of The Godfather Part II were alive concurrently before Basil Dean's death in 1978.", 'Basil Dean was an English actor, writer, producer, and director born in 1888 and died in 1978.', 'The Godfather Part II (1974) was directed by Francis Ford Coppola (born 1939), who is a creator of the film.', 'Mario Puzo (1920–1999) was the author and co-writer of The Godfather Part II.', 'Carmine Coppola (1910–1991) composed original music for The Godfather Part II.', 'Basil Dean was alive until 1978, overlapping with the lifespans of Francis Ford Coppola, Mario Puzo, and Carmine Coppola.', 'Hence, Basil Dean and at least one creator of The Godfather Part II were contemporaries during part of their lives.', 'Basil Dean was an English actor, writer, producer, and director who lived from 1888 to 1978.', 'The Godfather Part II (1974) was directed by Francis Ford Coppola, born in 1939, making him a creator of the film.', 'Mario Puzo (1920–1999) co-wrote the screenplay of The Godfather Part II and thus is a creator of the film.', 'Carmine Coppola (1910–1991) composed original music for The Godfather Part II, making him a contributing creator.', "Basil Dean's lifespan overlapped with the lifespans of Francis Ford Coppola, Mario Puzo, and Carmine Coppola before his death in 1978.", 'Therefore, Basil Dean and at least one creator of The Godfather Part II were alive contemporaneously.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that Basil Dean and a creator of The Godfather Part II were alive at the same time. To verify this, we need to confirm the lifespan of Basil Dean and the lifespans (or at least overlapping lifetimes) of the creators of The Godfather Part II. According to the notes:
+
+- Basil Dean lived from 1888 to 1978.
+- Francis Ford Coppola (director, a creator) was born in 1939 and is still living beyond 1978.
+- Mario Puzo (author/co-writer) lived from 1920 to 1999.
+- Carmine Coppola (composer/contributor) lived from 1910 to 1991.
+
+All these creators' lifespans overlap with Basil Dean’s lifetime before Basil Dean died in 1978. Thus, the claim that Basil Dean and at least one creator of The Godfather Part II were alive simultaneously is supported by the notes. 
+
+To fully verify this claim, the queries should check:
+- Basil Dean’s birth and death years.
+- The identity of the creators of The Godfather Part II.
+- The birth and death years of these creators.
+- Confirmation that there was a timeframe during which both Basil Dean and at least one creator were alive.
+
+### query
+What were the birth and death years of Basil Dean?  
+Who were the creators (director, writers, composers) of The Godfather Part II?  
+What were the birth and death years of each creator of The Godfather Part II?  
+Did the lifespan of Basil Dean overlap with the lifespan of any creator of The Godfather Part II?  
+Specifically, was Basil Dean alive at any time when Francis Ford Coppola, Mario Puzo, or Carmine Coppola were also alive?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Basil Dean', 'The Godfather Part II']. Documents remaining to be retrieved: ['Francis Ford Coppola'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,62 @@
+``` 
+You will be provided with three input fields:
+
+- **claim**: A factual statement or assertion that needs to be checked for truthfulness.
+- **notes**: A list of textual snippets pulled from various documents relevant to the claim. These notes may overlap in information, have different levels of detail, and may contain redundancies or unrelated content.
+- **context**: A list of concise descriptions or summaries of source documents that may offer further background or authoritative information on entities, events, or facts related to the claim.
+
+Your task is to produce two output fields:
+
+- **new_notes**: A refined and synthesized subset of the input `notes` that directly and unambiguously addresses the key facts necessary to verify or falsify the claim. In this step:
+    - Identify core factual elements in the notes that relate precisely to what the claim affirms or denies (e.g., dates, locations, event participation, biographical details, relationships among entities).
+    - Remove duplicates and near-duplicates to avoid redundancy.
+    - Exclude notes that do not contribute meaningful or relevant factual information related to claim verification.
+    - Combine closely related facts into clear, concise standalone statements to facilitate straightforward validation or rebuttal.
+    - Avoid introducing any new information not present in the inputs.
+
+- **titles**: A carefully selected list of the most relevant document titles from `context` whose content underpins the facts in `new_notes`. Selection criteria include:
+    - Titles that refer directly to key entities, events, or facts necessary for supporting or refuting the claim.
+    - Titles providing background, authoritative detail, or essential biographical or event-related information connected to the claim.
+    - Include all such documents required to cover the factual points included in `new_notes`.
+    - Titles should be exact matches from `context` and not paraphrased.
+
+### Detailed Instructions and Domain-Specific Guidelines
+
+1. **Understand and Decompose the Claim:**
+   - Determine what the claim asserts factually (e.g., a person's birthdate, event participation, organizational affiliation, relationship between entities).
+   - Identify all critical elements needed to verify or falsify the claim.
+
+2. **Analyze and Refine Notes:**
+   - Extract core facts relevant to the claim.
+   - Identify redundancies and remove repeated or near-identical notes.
+   - Filter out irrelevant or tangential information.
+   - If multiple notes cover the same fact with varying degrees of detail, prefer the most comprehensive and clear phrasing.
+   - When facts are split across multiple notes, merge them carefully into a comprehensive, standalone fact.
+   - Ensure facts are presented clearly to be independently understandable without external context.
+
+3. **Match Facts to Context Titles:**
+   - Link each core fact in `new_notes` to the most relevant source document(s) from `context`.
+   - Select titles that focus on entities or events critical to the claim’s verification.
+   - Include titles even if they provide partial but essential coverage.
+   - Avoid including unrelated context documents even if loosely connected by entities.
+
+4. **Maintain Precision and Scope:**
+   - Do not infer or fabricate facts beyond what the `notes` and `context` provide.
+   - Emphasize dates, personal details, specific event outcomes, or unique identifiers when relevant to the claim.
+   - When verifying negations or absences (e.g., absence of evidence for a fact), include explicit statements about lack of information if present in the notes.
+
+5. **Output Clarity and Usefulness:**
+   - `new_notes` should be concise but complete with respect to verifying the claim, avoiding ambiguity.
+   - `titles` should help a fact-checker directly access authoritative sources corroborating each fact.
+
+### Examples of Common Claim Types and Corresponding Note Focus
+
+- **Biographical claims:** Emphasize birthdates, professions, notable achievements, affiliations, and other personal data.
+- **Event participation or outcomes:** Emphasize dates, participants' names, results, locations, and roles.
+- **Geographical or organizational relations:** Emphasize hierarchical or locational data, regional relationships, and entities’ bases.
+- **Factual negations or unknowns:** Include clear notes indicating the absence of information if explicitly stated.
+- **Multiple entities or comparisons:** Make sure to capture distinguishing facts clearly and separately for each entity mentioned.
+
+By synthesizing and precisely matching note facts with authoritative document titles, your outputs will enable clear, efficient verification or falsification of the claim without extraneous information.
+
+```

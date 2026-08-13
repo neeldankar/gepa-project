@@ -1,0 +1,119 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You are given a textual claim and a list of notes that provide factual information related to the claim. Your goal is to generate an effective search query (or a set of queries) that can be used to verify the claim using the information contained in the notes or to retrieve relevant documents needed for verification.
+
+Input Format:
+- `claim`: A concise, fact-based statement or assertion that may combine multiple facts or relationships.
+- `notes`: A list of factual sentences or short snippets extracted from one or more documents. These provide evidence, context, or refutations related to the claim.
+
+Output:
+- `query`: One or more natural language questions designed to verify the truthfulness of the claim by querying the content and relationships mentioned in the notes. The queries should focus on the key entities, events, attributes, and relationships explicitly or implicitly stated in the claim and cross-checked against the notes.
+
+Detailed Instructions:
+1. **Understand the claim carefully**: Identify the main entities, attributes, and relationships described in the claim. In cases where the claim contains indirect references (e.g., “born in the birthplace of X”), resolve these to direct facts that can be checked (e.g., birthplaces of both entities).
+
+2. **Use notes to clarify and expand the claim**: Analyze the notes to identify relevant facts that relate directly to the claim’s key assertions. These often include:
+   - Names of persons, places, or works referenced.
+   - Temporal information (e.g., years, release dates).
+   - Relationships such as birthplaces, roles (actor, director), attributes (flavor, ranking).
+   - Disambiguations or corrections from the notes (e.g., corrections of director or actor roles).
+
+3. **Formulate verification-focused queries**:
+   - Queries should ask directly about the key facts or relationships necessary to verify the claim.
+   - When the claim contains multiple assertions or compound facts, break them into separate but related questions.
+   - Include entity disambiguation and relationship verification, such as confirming if two people share the same birthplace, if a person directed a film, or if a product has a given feature.
+   - If the notes show contradictions or lack of evidence, include queries that test these points explicitly, e.g., “Did Actor X appear in Film Y?” or “Is Film Z directed by Person A?”
+
+4. **Be precise and contextual**:
+   - Use the exact names and terms found in the notes for entities and works.
+   - Include relevant qualifiers like dates, nationalities, or versions to avoid ambiguity.
+   - Avoid generating overly broad or generic queries that do not focus on key claim assertions.
+
+5. **Generalizable strategy**:
+   - Parse the claim into atomic factual units.
+   - Cross-reference with the notes to identify which facts are supported, contradicted, or missing.
+   - Generate natural-language queries that aim at resolving the truthfulness or factual status of each atomic fact.
+   - This approach ensures maximum retrieval of relevant evidence documents for claim verification.
+
+Domain-specific Insights:
+- Claims often involve biographical details (birthplaces, dates, occupations).
+- Claims may relate to filmography: actors starring in films, directors of films, film release years.
+- Claims can concern product attributes like flavors of soft drinks or advertising associations.
+- Notes may explicitly correct or refute claim elements, or indicate absence of evidence.
+- The resulting queries must reflect these factual domains and relationships with precision to guide retrieval systems effectively.
+
+Summary:
+Given `claim` and `notes`, produce verification-oriented, fact-specific queries that directly target the core assertions of the claim using the contextual and factual information in the notes. These queries enable retrieval or verification of all relevant documents and help confirm or refute each part of the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The star of Institute Benjamenta portrayed a character in "Double Bass". The real name of that character is Vilyam "Willie" Genrikhovich Fisher.
+
+### notes
+['Rudolf Abel\'s real name was Vilyam "Willie" Genrikhovich Fisher, a Soviet intelligence officer who used the name as an alias.', 'No contextual information was found linking the film \'Institute Benjamenta\' or its star to a character named Vilyam "Willie" Genrikhovich Fisher in \'Double Bass\'.', "Vilyam 'Willie' Genrikhovich Fisher is the real name of Rudolf Abel, a Soviet intelligence officer.", "No evidence links the films 'Institute Benjamenta' and 'Double Bass' or their stars to a character named Vilyam 'Willie' Genrikhovich Fisher.", "Rudolf Abel's alias and identity are unrelated to known fictional characters portrayed in 'Institute Benjamenta' or 'Double Bass'.", "Vilyam 'Willie' Genrikhovich Fisher was a real Soviet intelligence officer, known as Rudolf Abel.", "There is no evidence that the star of 'Institute Benjamenta' portrayed a character named Vilyam 'Willie' Genrikhovich Fisher.", "'Double Bass' is not linked to a character named Vilyam 'Willie' Genrikhovich Fisher.", "'Institute Benjamenta' is a film starring Mark Rylance, Alice Krige, and Gottfried John and is unrelated to the character or real person Vilyam 'Willie' Genrikhovich Fisher."]
+
+## Generated Outputs
+### reasoning
+The claim consists of two parts: first, that the star of the film "Institute Benjamenta" portrayed a character in the film "Double Bass," and second, that the character's real name is Vilyam "Willie" Genrikhovich Fisher. The notes clearly state that Vilyam "Willie" Genrikhovich Fisher is the real name of Rudolf Abel, a Soviet intelligence officer, and not a fictional character in either "Institute Benjamenta" or "Double Bass." Additionally, multiple notes (2, 4, 5) explicitly mention that there is no evidence linking "Institute Benjamenta," "Double Bass," or their stars to a character by that name. Therefore, the queries should verify (1) who the star of "Institute Benjamenta" is, (2) whether this star portrayed any character in the film "Double Bass," and (3) whether there is any character named Vilyam "Willie" Genrikhovich Fisher in "Double Bass," and any connection of that character to either of the films or their stars.
+
+### query
+Who is the star of the film "Institute Benjamenta"? Did the star of "Institute Benjamenta" portray any character in the film "Double Bass"? Is there a character named Vilyam "Willie" Genrikhovich Fisher in the film "Double Bass"? If so, which actor portrayed this character? Is the character Vilyam "Willie" Genrikhovich Fisher associated in any way with the films "Institute Benjamenta" or "Double Bass" or their cast members?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Institute Benjamenta', 'Mark Rylance', 'Rudolf Abel']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+Nathaniel "Nate" Jacks is the colloquial name of the professional football team in which this striker, who scored in Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final, played.
+
+### notes
+["Nathaniel 'Nate' Jacks is not mentioned in relation to the 2013 FIFA Confederations Cup Final.", 'The only goal scorers for Brazil in the 2013 final were Fred and Neymar.', "There is no known professional football team colloquially called Nathaniel 'Nate' Jacks.", "The claim incorrectly associates Nathaniel 'Nate' Jacks with the 2013 Brazil vs Spain final.", "Nathaniel 'Nate' Jacks was an American football cornerback, not a soccer player.", 'The 2013 FIFA Confederations Cup Final was won by Brazil 3-0 against Spain, with goals by Fred and Neymar.', "No professional soccer team is known colloquially as 'Nathaniel Nate Jacks.'", "Nathaniel 'Nate' Jacks did not score in the 2013 FIFA Confederations Cup Final.", 'The claim incorrectly associates an American football player with a soccer event and team.', "Nathaniel 'Nate' Jacks is an American football player, not a soccer player.", "No record associates Nate Jacks with the 2013 FIFA Confederations Cup or Brazil's national soccer team.", "The goal scorers in Brazil's 3-0 win over Spain in 2013 were Fred and Neymar, not Nate Jacks.", "There is no professional soccer team colloquially known as Nathaniel 'Nate' Jacks.", 'Claim wrongly mixes American football personages with international soccer events.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that "Nathaniel 'Nate' Jacks" is a colloquial name for a professional football team and that a striker who scored in Brazil's 3-0 win against Spain in the 2013 FIFA Confederations Cup final played for that team. To verify this claim, we need to determine: (1) whether "Nathaniel 'Nate' Jacks" is indeed the colloquial name of any professional football team, and (2) identify the striker(s) who scored for Brazil in that final and find their club affiliation at the time. Since the notes provide no direct information, the queries must seek the striker(s) who scored in that final and then check if "Nathaniel 'Nate' Jacks" corresponds to any football team they played for.
+
+### query
+Who were the goal scorers for Brazil in their 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final? Which professional football clubs did those goal scorers play for at that time? Is "Nathaniel 'Nate' Jacks" a known colloquial name for any professional football team associated with those strikers?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['2013 FIFA Confederations Cup Final']. Documents remaining to be retrieved: ['Clube Atlético Mineiro', 'Fred (footballer)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The French star of The Cutting Edge voiced a character in an animated 1994 film. She voiced the character named Nala.
+
+### notes
+["Nala, from Disney's 1994 animated film 'The Lion King,' was voiced by American actress Moira Kelly for the adult character. Young Nala's speaking voice was by Niketa Calame, and the singing voices were Laura Williams and Sally Dworsky. No French actors or stars from 'The Cutting Edge' are associated with voicing Nala.", "Moira Kelly voiced adult Nala in the 1994 Disney film 'The Lion King'.", "No French actors or stars from 'The Cutting Edge' are documented as voicing any character in 'The Lion King'.", 'The young and singing voices of Nala were performed by American actresses, not French talent.', 'The claim of a French star voicing Nala in the 1994 film is unsupported by available information.', "Nala in the 1994 Disney animated film 'The Lion King' was voiced by American actresses: Moira Kelly (adult speaking voice), Niketa Calame (young speaking voice), Laura Williams and Sally Dworsky (singing voices).", "No French actors or actresses, nor anybody associated with 'The Cutting Edge,' are credited with voicing any character in 'The Lion King'.", "The claim that a French star from 'The Cutting Edge' voiced Nala is unsupported by the voice cast listings and available documentation."]
+
+## Generated Outputs
+### reasoning
+The claim makes several assertions that need verification: (1) a French star participated in the film "The Cutting Edge," (2) this star provided voice work in an animated film released in 1994, (3) in that animated film, the character voiced was named Nala. To verify this claim, we need to identify who the French star of "The Cutting Edge" is, confirm their nationality and role, check if they indeed performed voice acting in an animated film from 1994, and if so, confirm whether the character voiced was Nala. Since "Nala" is famously known from the 1994 animated film "The Lion King," it is relevant to ask specifically about the French star's connection to that film and character. The absence of notes means no direct information is available, so the queries must cover the key relationships and identities involved to search for supporting or contradictory evidence.
+
+### query
+Who is the French star in the film "The Cutting Edge"? Did this French star provide the voice for a character named Nala in any animated film released in 1994? Is the character Nala the same one from the 1994 film "The Lion King," and if so, who voiced Nala in the French or original version of that film?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['The Lion King']. Documents remaining to be retrieved: ['Moira Kelly', 'The Cutting Edge'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

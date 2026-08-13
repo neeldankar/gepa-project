@@ -1,0 +1,113 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two fields as input: `claim` and `notes`. Your task is to produce a `query` field that formulates a precise, focused search question or set of questions aimed at verifying or investigating the claim using the information in the notes. The `query` should guide retrieval of relevant evidence to support or refute the claim.
+
+Input Format:
+- `claim`: A concise factual or relational statement whose truthfulness or details are to be verified.
+- `notes`: A list of text snippets, facts, or excerpts containing factual information related to entities or events mentioned in the claim that can be used as evidence.
+
+Output Format:
+- `query`: A natural language question or set of linked questions designed to retrieve relevant documents or information that best support the verification of the claim. The query should explicitly target the key entities and relationships mentioned in the claim, as clarified or contextualized by the notes.
+
+Detailed Instructions and Domain-Specific Considerations:
+1. Identify the key entities (e.g., places, people, organizations, events) and relationships (e.g., jurisdiction, starring in a film, membership in a group) mentioned in the claim.
+2. Use the notes to understand relevant background or additional context about these entities and relationships, which can help refine and disambiguate the query. For example:
+   - Geopolitical context (e.g., administrative divisions of counties and cities; provinces and countries in China).
+   - Relationships and roles in films (e.g., familial relations among actors; filmography and production companies with similar names but different time periods).
+   - Membership or membership disputes in entertainment industry contexts (e.g., judges on a TV show; producers and singers).
+3. Reflect contradictions or confirmations present in the notes by phrasing the query to specifically verify disputed or critical facts, such as:
+   - Confirming if a location falls under a particular administrative jurisdiction.
+   - Checking if a particular person starred in a specific film in a given year.
+   - Clarifying who are the official members of a judging panel and whether certain individuals or roles are included.
+4. When multiple entities or facts are involved, structure the query to encompass the relevant combined aspects. For instance, verifying if both cities are in the same country, or if a group of judges includes a particular individual plus another related person.
+5. Keep queries clear, concise, and answerable with the available or to-be-retrieved evidence—avoid overly broad or vague phrases.
+6. The query should aim to retrieve the ‘gold’ or key documents relevant to the claim’s truthfulness as reflected in the feedback examples (e.g., documents specifically tied to key entities like "Puyang," "Jennifer Kendal," or "Aaina (album)").
+
+Generalizable Strategy:
+- Extract key factual components and entity mentions from the claim.
+- Analyze notes to gather grounded factual context, verify contradictions, dates, names, or jurisdictions.
+- Formulate a focused, natural language question or linked questions that explicitly mention the entities and facts to be verified.
+- Incorporate any relevant entity disambiguation or temporal context to narrow retrieval.
+
+Example:
+If the claim is about a county’s jurisdiction and same-country status with another city, produce a query that asks if the county’s jurisdiction city lies in the stated province and if both cities belong to the same country.
+
+If the claim involves whether a person acted in a specific film in a certain year, produce a query asking if that person starred in that film in that year and if not, what roles or films are associated with them.
+
+If the claim states a list of judges on a show plus an additional individual, produce a query confirming whether all those individuals are judges on that show, especially clarifying disputed membership and any related persons joined later.
+
+Summary:
+Produce well-formed, fact-focused queries for verifying relationships and entity attributes in the claim, informed by the contextual details in the notes, to guide retrieval of the most relevant documents for claim verification.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Between this plant and Darwinia, the genus with more species is Darwinia. This plant is called Saule in French.
+
+### notes
+['Saule is the French name for willow, which belongs to the genus Salix.', 'The genus Salix comprises around 400 species.', 'The genus Darwinia comprises about 70 species.', 'Therefore, Salix has significantly more species than Darwinia.', 'Saule is the French name for willow, which belongs to the genus Salix.', 'The genus Salix comprises around 400 species.', 'The genus Darwinia comprises about 70 species.', 'Salix has significantly more species than Darwinia.', "The French name 'Saule' corresponds to the genus Salix (willow).", 'The genus Salix comprises around 400 species.', 'The genus Darwinia comprises about 70 species.', 'Salix has significantly more species than Darwinia.']
+
+## Generated Outputs
+### reasoning
+The claim involves comparing the number of species between two genera: the unnamed plant genus referred to as "Saule" in French, and Darwinia. It also states that the plant is called "Saule" in French, which is the common French name for willows in the genus Salix. Therefore, the claim can be interpreted as stating that Darwinia has more species than Salix (Saule in French). To verify, we need to (1) confirm the meaning of "Saule" in French as referring to the genus Salix, and (2) determine which genus, Salix or Darwinia, has more species.
+
+### query
+What is the genus referred to as "Saule" in French? How many species are in the genus Salix (willows)? How many species are in the genus Darwinia? Which genus has more species, Salix or Darwinia?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Darwinia (plant)', 'Willow']. Documents remaining to be retrieved: ['Saule'].
+
+
+
+# Example 2
+## Inputs
+### claim
+German Frank Sinatra has won more awards than this Skinny Puppy band member, for whom the Rx (band) was a one-off side project.
+
+### notes
+['Rx (band) was a one-off side project by Skinny Puppy member Nivek Ogre.', 'Nivek Ogre is a founding member and primary vocalist of Skinny Puppy.', "No award information is provided for either Nivek Ogre or any German singer referred to as 'German Frank Sinatra' in the given context.", "Common external knowledge associates 'German Frank Sinatra' with Udo Jürgens, an acclaimed singer.", 'Award counts for both individuals would require additional external information.', 'Nivek Ogre is the Skinny Puppy member associated with the one-off side project Rx.', "The 'German Frank Sinatra' commonly refers to Udo Jürgens.", 'Udo Jürgens won the Eurovision Song Contest 1966 and had a celebrated career with many awards.', 'No specific award information is provided for Nivek Ogre, suggesting fewer or less notable awards compared to Udo Jürgens.', 'Rx (band) was a one-off side project by Skinny Puppy member Nivek Ogre.', 'Nivek Ogre is the founding member and primary vocalist of Skinny Puppy.', "Udo Jürgens, known as the 'German Frank Sinatra', won the Eurovision Song Contest 1966 and earned multiple awards throughout his career.", 'There is no notable record of awards for Nivek Ogre, suggesting he has fewer or less prominent awards than Udo Jürgens.', 'It is therefore likely that Udo Jürgens (German Frank Sinatra) has won more awards than Nivek Ogre.']
+
+## Generated Outputs
+### reasoning
+The claim involves a comparison of awards won by two musicians: "German Frank Sinatra" and an unnamed Skinny Puppy band member who had Rx (band) as a one-off side project. To verify or investigate this claim, I need to identify who "German Frank Sinatra" refers to, verify their awards, identify which Skinny Puppy member was involved with Rx (band) as a one-off project, and check that person’s awards. Since no notes are given, the query must focus on clarifying the identities and awards of both parties, and whether "Rx (band)" is tied to a Skinny Puppy member and whether "German Frank Sinatra" has more awards.
+
+### query
+Who is referred to as "German Frank Sinatra"? What awards has this person won? Which Skinny Puppy band member was involved with the band Rx as a one-off side project? What awards has that Skinny Puppy member won? Has "German Frank Sinatra" won more awards than that Skinny Puppy member?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Nivek Ogre', 'Rx (band)']. Documents remaining to be retrieved: ['Frank Sinatra'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Both Elisabeth Vrba's colleague, who she coined the word exaptation with, and Ann Beattie have a profession in common.
+
+### notes
+['Elisabeth Vrba is a paleontologist.', "Elisabeth Vrba coined the term 'exaptation' with her colleague Stephen Jay Gould, who was a paleontologist and evolutionary biologist.", 'Ann Beattie is known as a novelist and short story writer, a profession in literature and the arts, not science.', "Elisabeth Vrba's colleague Stephen Jay Gould was a paleontologist and evolutionary biologist.", 'Ann Beattie is a novelist and short story writer, working in literature, not science.', 'Ann Beattie and Stephen Jay Gould do not share a profession.', "Stephen Jay Gould was Elisabeth Vrba's colleague with whom she coined the term 'exaptation'.", 'Stephen Jay Gould was a paleontologist and evolutionary biologist.', 'Ann Beattie is a novelist and short story writer, which is a profession in literature, not science.', 'Ann Beattie and Stephen Jay Gould do not share a profession.']
+
+## Generated Outputs
+### reasoning
+The claim is that Elisabeth Vrba's colleague, with whom she coined the term exaptation, and Ann Beattie share a profession. The notes identify Elisabeth Vrba as a paleontologist and her colleague Stephen Jay Gould as a paleontologist and evolutionary biologist. Ann Beattie is described as a novelist and short story writer, whose profession lies in literature and the arts, not science. Multiple notes explicitly state that Ann Beattie and Stephen Jay Gould do not share a profession. Therefore, the claim asserts a common profession between Stephen Jay Gould and Ann Beattie, but the notes indicate that they do not share professions.
+
+### query
+Do Elisabeth Vrba's colleague Stephen Jay Gould and Ann Beattie share the same profession? Specifically, is Stephen Jay Gould's profession as a paleontologist and evolutionary biologist the same as Ann Beattie's profession as a novelist and short story writer?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Elisabeth Vrba', 'Stephen Jay Gould']. Documents remaining to be retrieved: ['Ann Beattie'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

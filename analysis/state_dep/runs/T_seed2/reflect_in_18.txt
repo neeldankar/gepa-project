@@ -1,0 +1,86 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given the fields `claim`, `notes`, produce the fields `query`.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Echeveria is native to arid or semi-desert areas, while Alopecurus creticus is.
+
+### notes
+['Echeveria is native to semi-desert areas of Central America, Mexico, and northwestern South America.', 'Alopecurus creticus is a species of foxtail grass known as Cretan meadow foxtail.', 'No evidence found that Alopecurus creticus is native to arid or semi-desert areas.', 'Echeveria is native to semi-desert areas of Central America, Mexico, and northwestern South America.', 'Alopecurus creticus is known as Cretan meadow foxtail and there is no current evidence supporting it is native to arid or semi-desert areas.', 'Echeveria is native to semi-desert areas of Central America, Mexico, and northwestern South America.', 'Alopecurus creticus is known as Cretan meadow foxtail.', 'There is no evidence that Alopecurus creticus is native to arid or semi-desert areas.']
+
+## Generated Outputs
+### reasoning
+The claim suggests that Echeveria is native to arid or semi-desert areas, and also references Alopecurus creticus in a comparable context, but the sentence seems incomplete regarding Alopecurus creticus. To verify this claim, it is necessary to check the native habitats of both Echeveria and Alopecurus creticus to confirm if Echeveria is indeed native to arid or semi-desert areas and determine where Alopecurus creticus is native to.
+
+### query
+What are the native habitats of Echeveria and Alopecurus creticus?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Alopecurus creticus', 'Echeveria']. Documents remaining to be retrieved: ['Alopecurus'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Director Robert Stevenson was from a geographically smaller country than another director. That director directed his final film Romance of Astree and Celadon.
+
+### notes
+['Robert Stevenson was a British-American director, born in England, which is part of the UK.', "'Romance of Astree and Celadon' is a French film directed by Eric Rohmer.", 'England is geographically smaller than France.', 'Robert Stevenson was born in England, part of the UK, which is geographically smaller than France.', "'Romance of Astree and Celadon' is a French film directed by Eric Rohmer, who was French.", "Eric Rohmer directed 'Romance of Astree and Celadon' as his final film."]
+
+## Generated Outputs
+### reasoning
+The claim states that Robert Stevenson was from a geographically smaller country than another director, who directed their final film titled "Romance of Astree and Celadon." To verify this, we need to identify the countries of both Robert Stevenson and the director of "Romance of Astree and Celadon," then compare their land sizes. Additionally, we need to check that "Romance of Astree and Celadon" was indeed the final film of that director.
+
+### query
+SELECT director1.name AS Director1, director1.country AS Director1_country, country1.area_km2 AS Director1_area,
+       director2.name AS Director2, director2.country AS Director2_country, country2.area_km2 AS Director2_area,
+       films.title AS Final_film
+FROM directors AS director1
+JOIN countries AS country1 ON director1.country = country1.name
+JOIN films ON films.director_name = director2.name
+JOIN directors AS director2 ON films.director_name = director2.name
+JOIN countries AS country2 ON director2.country = country2.name
+WHERE director1.name = 'Robert Stevenson'
+  AND films.title = 'Romance of Astree and Celadon'
+  AND films.is_final_film = TRUE
+  AND country1.area_km2 < country2.area_km2;
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Robert Stevenson (director)', 'Romance of Astree and Celadon', 'Éric Rohmer'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The writer of the metal song "Veteran of the Psychic Wars" is a lyricist, not Otep Shamaya.
+
+### notes
+['"Veteran of the Psychic Wars" was written by Eric Bloom and British author Michael Moorcock.', 'Otep Shamaya is the lead vocalist of the band Otep and did not write "Veteran of the Psychic Wars."', '"Veteran of the Psychic Wars" is a song by Blue Öyster Cult and appeared on their 1981 album "Fire of Unknown Origin."', '"Veteran of the Psychic Wars" was written by Eric Bloom and British author Michael Moorcock.', 'Otep Shamaya is the lead vocalist of the band Otep and did not write "Veteran of the Psychic Wars."', '"Veteran of the Psychic Wars" is a song by Blue Öyster Cult and appeared on their 1981 album "Fire of Unknown Origin."', '"Veteran of the Psychic Wars" is credited to Eric Bloom and British author Michael Moorcock as writers.', 'Eric Bloom is the lead singer of Blue Öyster Cult, and Michael Moorcock is a noted British science fiction and fantasy author.', 'Otep Shamaya is the lead vocalist of the nu metal band Otep and did not contribute to the writing of "Veteran of the Psychic Wars."', '"Veteran of the Psychic Wars" appeared on the 1981 Blue Öyster Cult album "Fire of Unknown Origin."', 'Michael Moorcock also collaborated with Blue Öyster Cult on multiple songs, serving as a lyricist or co-writer.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that the writer of the metal song "Veteran of the Psychic Wars" is a lyricist who is not Otep Shamaya. To verify this, we need to identify the credited songwriter(s) of the song "Veteran of the Psychic Wars" and determine if Otep Shamaya is included in that group. Typically, "Veteran of the Psychic Wars" is associated with the band Blue Öyster Cult, and the lyrics were written by Michael Moorcock and the music by Eric Bloom and others. Otep Shamaya is known as the lead vocalist and lyricist for the band Otep, but is not commonly associated with this particular song. Thus, the claim that the song's writer is a lyricist other than Otep Shamaya is likely true and needs verification by checking official credits for the song.
+
+### query
+Who is credited as the lyricist and songwriter for the metal song "Veteran of the Psychic Wars," and is Otep Shamaya listed among the writers?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Otep Shamaya', 'Veteran of the Psychic Wars']. Documents remaining to be retrieved: ['Eric Bloom'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

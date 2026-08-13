@@ -1,0 +1,87 @@
+```
+You will be given three inputs for each task:
+
+- **claim**: A factual assertion regarding entities, events, or relationships (e.g., people involved in films or sports, dates, teams, participation in events, organizational affiliations, roles, or titles). The claim needs to be evaluated for its truthfulness based on provided evidence.
+
+- **notes**: A set (list) of textual snippets extracted from various documents relevant to the claim. These notes may contain overlapping information, varying levels of detail, exact repetitions, partial duplicates, or some irrelevant details.
+
+- **context**: A list of document summaries or descriptions, each including exact official titles of source documents. These documents may contain additional evidence or background information relevant to the claim.
+
+---
+
+### Your output must be twofold:
+
+1. **new_notes**: A distilled, concise, non-redundant synthesis or subset of the input notes focused strictly on factual information required to verify or falsify the claim.
+
+    - Remove duplicate or near-duplicate facts from the notes.
+    - Remove notes irrelevant or not directly contributing to verification of the claim.
+    - Combine closely related facts into a single clear, factual statement if it improves clarity or efficiency.
+    - Prioritize precision and relevance: include dates, entities, roles, event details, or concrete facts that directly support or refute the claim.
+    - The new_notes should be self-explanatory and stand alone without needing additional context to understand their relevance to the claim.
+
+2. **titles**: A list of one or more exact document titles from the provided context that contain essential, verifiable information regarding the core facts summarized in new_notes.
+
+    - Select titles that correspond directly to key entities or topics critical to assessing the claim.
+    - Include all necessary titles to cover all key facts in new_notes — for example, if birth dates and event information are both necessary, include titles covering both.
+    - Do not include titles unrelated to the claim’s core facts.
+
+---
+
+### Detailed guidelines and domain-specific considerations:
+
+- **Claim understanding**: Carefully analyze the claim to identify the central factual components — e.g., relationships between people, dates, event participation, affiliations, roles, or other key attributes.
+
+- **Notes analysis**:
+
+  - Detect and eliminate repetitive notes, even if paraphrased.
+  - Extract only those notes that provide direct, concrete evidence about elements of the claim (e.g., names linked to events, roles, dates).
+  - When multiple notes describe the same fact with varying detail or wording, synthesize these into a single clear statement.
+
+- **Context utilization**:
+
+  - Match key entities or facts mentioned in new_notes to the titles in context.
+  - Choose titles that, by their descriptions, are most likely sources of authoritative or comprehensive information to verify these facts.
+  - Avoid including unrelated or partially related titles that do not contribute substantively to fact-checking.
+
+- **Types of claims often include**:
+  
+  - Identification or disambiguation of individuals or entities (e.g., distinguishing between players with similar names, confirming whether a name refers to a person or an organization).
+  - Temporal claims involving dates of birth, event dates, or career timelines.
+  - Role or occupational claims (e.g., whether someone worked in a particular industry such as film or music).
+  - Participation claims linking people to teams, films, or events.
+  - Geographic claims about location or nationality.
+  - Output should focus strictly on factual verification; do not infer or add any unsupported information.
+
+- **Avoid fabrications or unverifiable speculation**: Only use information explicitly provided in notes or context.
+
+- **Clarity and precision**:
+
+  - Each note in new_notes must be a precise factual statement relevant to the claim.
+  - Notes should facilitate straightforward verification or rebuttal of the claim.
+  - Titles should exactly match the document titles given in context inputs.
+
+- **Output format**:
+
+```json
+{
+  "new_notes": [ list of concise, relevant, factual notes ],
+  "titles": [ list of exact document titles aligned with new_notes ]
+}
+```
+
+No explanations or reasoning steps are required in output, but your selection and synthesis should implicitly reflect logical verification.
+
+---
+
+### Examples of best practices inferred from prior tasks and feedback:
+
+- When multiple notes repeat similar facts (e.g., about a person’s profession or event details), keep the one with the clearest and most relevant fact and merge details if helpful.
+
+- When a claim references participation of multiple individuals in an event or show, explicitly list only those confirmed by notes; omit unverified names.
+
+- Always include document titles that fully cover both entities and events mentioned in refined notes to ensure comprehensive supporting evidence.
+
+- For claims about roles in media or sports, clarify industry association (e.g., American football vs. association football) to prevent confusion.
+
+Use these detailed instructions to produce tightly focused, fact-driven outputs enabling clear and accurate assessment of claims without extraneous or redundant information.
+```

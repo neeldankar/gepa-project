@@ -1,0 +1,168 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be provided with three input fields:
+
+- `claim`: A factual statement or assertion involving one or more entities, events, or relationships.
+- `notes`: A list of extracted relevant factual statements or snippets that pertain to the claim, often summarizing or supporting/refuting parts of the claim.
+- `context`: A list of documents or document excerpts (titles and text) that provide detailed background information about the entities, events, or concepts mentioned in the claim.
+
+Your goal is to produce two output fields:
+
+- `new_notes`: A concise, accurate subset of the given `notes` that best supports or disputes the claim based on the provided context. These notes should be directly relevant and factually correct according to the context, avoiding redundant or irrelevant information.
+- `titles`: A list of document titles from the `context` that contain information necessary to verify the claim and support the chosen `new_notes`. This list should include all key documents referenced in `new_notes`, reflect comprehensive coverage of crucial facts, and omit irrelevant or unrelated documents.
+
+Detailed requirements and domain-specific knowledge:
+
+1. **Entity and Relationship Identification**:  
+   The `claim` will often involve multiple entities (people, organizations, events, publications) and relationships between them (e.g., coining a term, professional affiliation, authorship, competition results). The `notes` and `context` will contain overlapping and sometimes repeated factual assertions regarding these entities and their connections.
+
+2. **Cross-verification of Facts**:  
+   The `notes` serve as candidate fact claims to be supported or refuted against the `context`. Your output should consolidate relevant facts, validated and confirmed by the `context`, while excluding unsupported, incorrect, or ambiguous notes.
+
+3. **Precision in Retrieval**:  
+   The `titles` in your output represent the exact documents from the `context` that allow verification of the facts in `new_notes`. Titles should correspond exactly to the relevant context entries and cover all evidence for the facts in `new_notes`. Partial or incomplete document retrieval reduces accuracy.
+
+4. **Handling Redundancies and Contradictions in Notes**:  
+   Duplicate facts or contradictory notes may appear. Select the most accurate, concise, and context-supported notes. Remove duplicates and clearly represent the verified facts.
+
+5. **Summarizing Complex Claims**:  
+   Claims may involve compound facts (e.g., two entities sharing a profession, one entity having a specific characteristic). Your reasoning should dissect the claim into factual components, verify each component, and retain notes and documents relevant to all parts of the claim.
+
+6. **Domain-Specific Contextual Knowledge**:  
+   - Professionals referenced may include scientists (e.g., paleontologists such as Elisabeth Vrba and Stephen Jay Gould), writers, athletes (professional tennis players with tournament results), designers, and journalists.  
+   - Publications and artistic works (books, magazines, journals, essays) appear frequently; it is essential to distinguish authorship, publication venue (book vs. magazine article), and the nature of periodicals.  
+   - Events like sports tournaments, professional achievements, and historical occurrences frequently provide verification points.  
+   - Namesake ambiguity is possible (e.g., different individuals named Gould); confirm identity using contextual career and biographical details.
+
+7. **Reasoning and Fact-Checking Strategy (Generalizable)**:  
+   - Map entities and relationships mentioned in the claim to those referenced in `notes` and `context`.  
+   - Crosscheck each factual assertion in `notes` against the detailed information in `context`.  
+   - Discard or modify notes unsupported by context or contradicted by it.  
+   - Identify and include all documents whose content is essential to verify or refute the claim, ensuring completeness.  
+   - Produce a concise set of newly filtered notes (`new_notes`) that reflect the validated facts.  
+   - Provide the precise titles of relevant context documents that underpin these notes.
+
+Your final outputs must be factually accurate, focused, and traceable to the cited documents in the `context`.
+
+Format:
+- `new_notes`: List of succinct, verified factual notes derived from the input `notes` and supported by the `context`.
+- `titles`: List of exact document titles from the `context` that contain the evidence for these notes.
+
+Use clear reasoning to cover all components of the claim and disambiguate entities where necessary.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+1969 saw the founding of the Canadian baseball team where the future manager played from 1973-87. He managed the Tampa Bay Devil Rays season.
+
+### notes
+['The Tampa Bay Devil Rays MLB franchise was established as an expansion team in 1998, with organizational groundwork starting in 1995.', "Larry Rothschild was named the Tampa Bay Devil Rays' first manager in 1997.", 'The team was originally known as the Tampa Bay Devil Rays until a name change in 2007.', 'No mention in the context of any Canadian baseball team founded in 1969 related to Tampa Bay Devil Rays managers.', 'The Montgomery Biscuits and Princeton Rays are minor league affiliates of the Tampa Bay Rays but not Canadian teams nor founded in 1969.', 'The Tampa Bay Devil Rays MLB franchise was established as an expansion team in 1998, with organizational groundwork starting in 1995.', "Larry Rothschild was named the Tampa Bay Devil Rays' first manager in 1997.", 'No mention in the context of any Canadian baseball team founded in 1969 related to Tampa Bay Devil Rays managers.', 'The Tampa Bay Devil Rays MLB franchise was established as an expansion team in 1998, with organizational groundwork starting in 1995.', "Larry Rothschild was named the Tampa Bay Devil Rays' first manager in 1997.", 'No mention in the context of any Canadian baseball team founded in 1969 related to Tampa Bay Devil Rays managers.']
+
+### context
+['List of Tampa Bay Rays managers | The Tampa Bay Rays are a professional baseball franchise based in St. Petersburg, Florida.  They are a member of the American League (AL) East in Major League Baseball (MLB).  The team joined MLB in 1998 as an expansion team with the Arizona Diamondbacks.  In November 2007, Rays owner Stuart Sternberg renamed his team from the "Tampa Bay Devil Rays" to the "Tampa Bay Rays", which he described as "A beacon that radiates throughout Tampa Bay and across the entire state of Florida."  The Rays won their first AL championship in 2008.  The Rays have played their home games at Tropicana Field since their inaugural season.  Andrew Friedman is the Vice President of Baseball operations, in essence the general manager.', 'List of Tampa Bay Rays team records | The Tampa Bay Rays are a professional baseball team based in St. Petersburg, Florida.  They compete in the Eastern Division of Major League Baseball\'s (MLB) American League (AL).  Tampa Bay first competed in Major League Baseball during the 1998 baseball season as the "Tampa Bay Devil Rays", an expansion team.  Prior to the 2008 season, the team\'s name was officially shortened to "Rays".  The list below documents players and teams that hold particular club records.', 'List of Tampa Bay Rays first-round draft picks | The Tampa Bay Rays are a Major League Baseball franchise based in St. Petersburg, Florida.  The Rays (formerly the Tampa Bay Devil Rays) compete in the American League East division.  Since the franchise was established in 1995, the Rays have selected 33 players in the first round.  Officially known as the "First-Year Player Draft", the Rule 4 Draft is Major League Baseball\'s primary mechanism for assigning amateur baseball players from high schools, colleges, and other amateur baseball clubs to its teams.  The draft order is determined based on the previous season\'s standings, with the team possessing the worst record receiving the first pick.  In addition, teams which lost free agents in the previous off-season may be awarded compensatory or supplementary picks.  The First-Year Player Draft is unrelated to the 1997 expansion draft in which the Rays filled their roster.', 'List of Tampa Bay Rays seasons | The Tampa Bay Rays are a professional baseball team based in St. Petersburg, Florida.  The Rays are a member of both the Major League Baseball\'s (MLB) American League Eastern Division and the American League (AL) itself.  Since their inaugural season in 1998, the Rays have played their home games at Tropicana Field.  The team was originally known as the "Tampa Bay Devil Rays", which was inspired by a common nickname of the manta ray, but after the 2007 season, they changed their official name to the "Tampa Bay Rays."', "History of the Tampa Bay Rays | The Devil Rays began to build their organization shortly after the franchise was awarded in 1995 by naming former Atlanta Braves assistant general manager Chuck LaMar the senior vice president of baseball operations and general manager.  The franchise's first minor league games took place in the 1996 season.  On November 7, 1997, Larry Rothschild was named the team's first manager.  The team acquired 35 players in the Expansion Draft on November 18, 1997.  Tony Saunders from the Florida Marlins was the first player drafted by the Devil Rays.  The team also drafted future star Bobby Abreu but traded him to the Philadelphia Phillies for Kevin Stocker, who had very little success for the Rays.  Before the 1998 season, veteran stars Wade Boggs, Fred McGriff, and Wilson Álvarez were acquired.", "2005 Tampa Bay Devil Rays season | The 2005 Tampa Bay Devil Rays season was the team's eighth since the franchise was created.  This season, they finished last in the AL East division, and managed to finish the season with the AL's third-worst record of 67-95.  Their manager was Lou Piniella who entered his 3rd and last season with the Devil Rays.", 'List of Tampa Bay Rays no-hitters | The Tampa Bay Rays (formerly "Tampa Bay Devil Rays" (1998–2007)) are a Major League Baseball franchise based in St. Petersburg, Florida.  Formed in 1998, they play in the American League East division.  Pitchers for the Rays have thrown one no-hitter in franchise history, which was accomplished by Matt Garza on July 26, 2010.  A no-hitter is officially recognized by Major League Baseball only “when a pitcher (or pitchers) retires each batter on the opposing team during the entire course of a game, which consists of at least nine innings”.  No-hitters of less than nine complete innings were previously recognized by the league as official; however, several rule alterations in 1991 changed the rule to its current form.  A no-hitter is rare enough that one team in Major League Baseball has never had a pitcher accomplish the feat.', '2008 Tampa Bay Rays season | The Tampa Bay Rays\' 2008 season, the 11th season in franchise history, marked the change of the team\'s name from the "Tampa Bay Devil Rays" to the "Tampa Bay Rays", as revealed on November 8, 2007.  The change in name also came with a change in logo and uniforms, with new team colors of Columbia blue, Navy blue and gold.  The new logo, colors and name were leaked on September 20, 2007, and were confirmed officially on November 8, 2007, when an official announcement was made in downtown St. Petersburg.  Prior to the decision to rename the team the Rays, other options considered included the "Aces", "Bandits", "Cannons", "Dukes", "Stripes", and Stuart Sternberg\'s personal favorite, the "Nine."', '2000 Tampa Bay Devil Rays season | The 2000 Tampa Bay Devil Rays season was their third since the franchise was created.  This season, they finished last in the AL East division, and managed to finish the season with a record of 69-92.  Their manager were Larry Rothschild, who entered his 3rd year with the club.  This season is sometimes referred to as the "Hit Show" because the club signed several big-name sluggers in hopes of the team putting up better offensive numbers.', 'Montgomery Biscuits | The Montgomery Biscuits are a minor league baseball team based in Montgomery, Alabama.  The team is the Double-A affiliate of the Tampa Bay Rays and plays in the Southern League.  The team was founded in Orlando, Florida, in 1973 as the Orlando Twins, an affiliate of the Minnesota Twins.  After remaining in the Minnesota minor league organization for 20 seasons, the team became an affiliate of the Chicago Cubs for four seasons and then the Seattle Mariners for one.  In 1999, the team became an affiliate of the Tampa Bay Rays, and they have remained in the organization ever since.']
+
+## Generated Outputs
+### reasoning
+The claim contains two main parts: (1) a Canadian baseball team was founded in 1969 where a future Tampa Bay Devil Rays manager played from 1973 to 1987, and (2) that individual managed the Tampa Bay Devil Rays season.
+
+From the context, the Tampa Bay Devil Rays franchise was established as an expansion team in 1998 with groundwork beginning in 1995. There is no mention of any Canadian baseball team founded in 1969 related to the Tampa Bay Devil Rays or their managers. The minor league affiliates mentioned (Montgomery Biscuits and Princeton Rays) are not Canadian teams, and none were founded in 1969. The context identifies Larry Rothschild as the first Tampa Bay Devil Rays manager named in 1997; he is from the Tampa Bay Rays context, but no association with a Canadian team or playing career from 1973-87 is documented.
+
+Therefore, the claim that in 1969 a Canadian baseball team was founded where the future Tampa Bay Devil Rays manager played between 1973-87, who later managed the Devil Rays, is unsupported by the context. No relevant information about a Canadian team founded in 1969 or about such a player-manager connection appears.
+
+The notes that state the Devil Rays were established in 1998 (groundwork 1995), that Larry Rothschild was their first manager in 1997, and no Canadian baseball teams founded in 1969 related to Tampa Bay managers, best summarize the facts contradicting or not supporting the claim.
+
+### new_notes
+['The Tampa Bay Devil Rays MLB franchise was established as an expansion team in 1998, with organizational groundwork starting in 1995.', "Larry Rothschild was named the Tampa Bay Devil Rays' first manager in 1997.", 'No mention in the context of any Canadian baseball team founded in 1969 related to Tampa Bay Devil Rays managers.']
+
+### titles
+['List of Tampa Bay Rays managers', 'History of the Tampa Bay Rays']
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['2002 Tampa Bay Devil Rays season', 'Hal McRae', 'Kansas City Royals'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Echeveria is native to arid or semi-desert areas, while Alopecurus creticus is.
+
+### notes
+['Echeveria is a large genus of flowering plants in the Crassulaceae family, native to semi-desert areas of Central America, Mexico and northwestern South America.', 'Several Echeveria species, such as Echeveria elegans and Echeveria setosa, are native to semi-desert habitats in Mexico.', 'Alopecurus creticus is a species of foxtail grass, but its native habitat is not specified in the context.', 'Echeveria is a large genus of flowering plants in the Crassulaceae family, native to semi-desert areas of Central America, Mexico and northwestern South America.', 'Several Echeveria species, such as Echeveria elegans and Echeveria setosa, are native to semi-desert habitats in Mexico.', 'Alopecurus creticus is a species of foxtail grass, but its native habitat is not specified in the context.', 'Echeveria is a large genus of flowering plants in the Crassulaceae family, native to semi-desert areas of Central America, Mexico and northwestern South America.', 'Several Echeveria species, such as Echeveria elegans and Echeveria setosa, are native to semi-desert habitats in Mexico.', 'Alopecurus creticus is a species of foxtail grass, but its native habitat is not specified in the context.']
+
+### context
+['Alopecurus creticus | Alopecurus creticus, the Cretan meadow foxtail, is a species of foxtail grass.', 'Alopecurus aequalis | Alopecurus aequalis is a common species of grass known as shortawn foxtail or orange foxtail.  It is native to much of the temperate Northern Hemisphere from Eurasia to North America, where it can be found in many types of habitat.', 'Alopecurus pratensis | Alopecurus pratensis, known as the meadow foxtail or the field meadow foxtail, is a perennial grass belonging to the grass family (Poaceae).  It is native to Europe and Asia.', 'Alopecurus arundinaceus | Alopecurus arundinaceus (creeping meadow foxtail or creeping foxtail) is a rhizomatous perennial species in the Grass family (Poaceae).  Native to Eurasia and northern Africa, and widely introduced elsewhere, this sod forming grass is useful as a forage and for erosion control.  It grows in damp or saline grasslands and banks of waterways, and on mountains up to 1,200\xa0m.  It flowers between April and July, depending on its location.', 'British NVC community OV8 | British NVC community OV8 ("Veronica persica" - "Alopecurus myosuroides" community) is one of the open habitat communities in the British National Vegetation Classification system.  It is one of eight arable weed and wasteland communities of fertile loams and clays.', 'Alopecurus carolinianus | Alopecurus carolinianus is a species of grass known by the common names Carolina foxtail and tufted foxtail.', 'Alopecurus geniculatus | Alopecurus geniculatus is a species of grass known by the common name water foxtail or marsh foxtail.', 'Marcus Antonius Creticus | Marcus Antonius Creticus (flourished 1st century BC) was a Roman politician, member of the Antonius family.  Creticus was son of Marcus Antonius and, by his marriage to Julia Antonia, he had three sons: Triumvir Marcus Antonius, Gaius Antonius and Lucius Antonius.', 'Alopecurus saccatus | Alopecurus saccatus is a species of grass known by the common name Pacific foxtail, or Pacific meadow foxtail.', 'Rhizotrogus creticus | Rhizotrogus creticus is a species of beetle in the Melolonthinae subfamily that is endemic to Crete.']
+
+## Generated Outputs
+### reasoning
+The claim states that Echeveria is native to arid or semi-desert areas, while Alopecurus creticus is (incomplete, presumably implying a native habitat as well). To verify, notes [1], [2], [4], and [5] consistently state that Echeveria is native to semi-desert areas, especially in Central America, Mexico, and northwestern South America, supported by the context (note [1] and [2] specify semi-desert habitats for Echeveria species). Regarding Alopecurus creticus, the notes [3] and [6] indicate that its native habitat is not specified in the context. The context excerpts mention Alopecurus creticus as the Cretan meadow foxtail but do not specify its native habitat or whether it is native to arid or semi-desert areas. Therefore, only the claim about Echeveria's nativity to semi-desert areas is supported; the habitat of Alopecurus creticus is not confirmed by the available context and notes.
+
+### new_notes
+['Echeveria is a large genus of flowering plants in the Crassulaceae family, native to semi-desert areas of Central America, Mexico and northwestern South America.', 'Several Echeveria species, such as Echeveria elegans and Echeveria setosa, are native to semi-desert habitats in Mexico.', 'Alopecurus creticus is a species of foxtail grass, but its native habitat is not specified in the context.']
+
+### titles
+['Alopecurus creticus']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Alopecurus creticus', 'Echeveria']. Documents remaining to be retrieved: ['Alopecurus'].
+
+
+
+# Example 3
+## Inputs
+### claim
+An actor in a musical film was also a United States Navy Combat veteran in World War II. This film was awarded The Golden Bear at the 50th Berlin International Film Festival.
+
+### notes
+['Jason Robards was an American actor and United States Navy combat veteran of World War II.', "The Golden Bear at the 50th Berlin International Film Festival held in 2000 was awarded to the American film 'Magnolia' directed by Paul Thomas Anderson.", "'Magnolia' is not documented as a musical film in the context provided.", "'Chicago' is a musical film mentioned in the context but it did not win the Golden Bear and was screened at the 54th Berlin International Film Festival, not the 50th.", 'Jason Robards was an American actor and United States Navy combat veteran of World War II.', "The Golden Bear at the 50th Berlin International Film Festival held in 2000 was awarded to the American film 'Magnolia' directed by Paul Thomas Anderson.", "'Magnolia' is not documented as a musical film in the context provided.", "'Chicago' is a musical film mentioned in the context but it did not win the Golden Bear and was screened at the 54th Berlin International Film Festival, not the 50th.", 'Jason Robards was an American actor and United States Navy combat veteran of World War II.', "The Golden Bear at the 50th Berlin International Film Festival held in 2000 was awarded to the American film 'Magnolia' directed by Paul Thomas Anderson.", "'Magnolia' is not documented as a musical film in the context provided.", "'Chicago' is a musical film but it did not win the Golden Bear at the 50th Berlin International Film Festival and was screened at the 54th Berlin International Film Festival."]
+
+### context
+['Jason Robards | Jason Nelson Robards Jr. (July 26, 1922 – December 26, 2000) was an American stage, film, and television actor.  He was a winner of the Tony Award, two Academy Awards and an Emmy Award.  He was also a United States Navy combat veteran of World War II.', '4th Berlin International Film Festival | The 4th annual Berlin International Film Festival was held from 18 June to 29 June 1954.  This year\'s festival did not give any official jury prizes, instead awards were given by audience voting.  This continued until the FIAPF granted Berlin "A-Status" in 1956.  David Lean won the Golden Bear by the audience voting for his film "Hobson\'s Choice" at the festival.', 'Jason Robards Sr. | Jason Nelson Robards Sr. (December 31, 1892 – April 4, 1963) was an American stage and screen actor, and the father of Oscar-winning actor Jason Robards Jr. Robards appeared in many films, initially as a leading man, then in character roles and occasional bits.  Most of his final roles were in television.', 'Peter Lilienthal | Peter Lilienthal (born 27 November 1929) is a German film director, writer, actor and producer.  His 1979 film "David" won the Golden Bear at the 29th Berlin International Film Festival.  His 1984 film "Das Autogramm" was entered into the 34th Berlin International Film Festival.  In 1996, he was a member of the jury at the 46th Berlin International Film Festival.', '5th Berlin International Film Festival | The 5th annual Berlin International Film Festival was held from 24 June to 5 July 1955.  This year\'s festival did not give any official jury prizes, instead awards were given by audience voting.  This continued until the FIAPF granted Berlin "A-Status" in 1956.  The Golden Bear was awarded to "Die Ratten" by audience vote.', 'Isabella (2006 film) | Isabella () is a 2006 Hong Kong film directed by Pang Ho-Cheung and starring Chapman To, Isabella Leong and Anthony Wong.  It played in competition at the 56th annual Berlin International Film Festival, where it won the Silver Bear for best film music (it was nominated for the Golden Bear as well).  The film is set in Macau.', 'Tizoc (film) | Tizoc is a 1957 Mexican drama film directed by Ismael Rodríguez.  It was entered into the 7th Berlin International Film Festival, where Pedro Infante won the Silver Bear for Best Actor.  The film also won the Golden Globe Award for Best Foreign Language Film at the 15th Golden Globe Awards.', '50th Berlin International Film Festival | The 50th annual Berlin International Film Festival was held from February 9 to 20, 2000.  The festival opened with "The Million Dollar Hotel" by Wim Wenders. " Bossa Nova" by Bruno Barreto, screened out of competition was the closing film of the festival.  The Golden Bear was awarded to American film "Magnolia" directed by Paul Thomas Anderson.', 'Jasmila Žbanić | Jasmila Žbanić (born 19 December 1974) is a Bosnian film director and screenwriter.  She is noted for the film "Grbavica," which won the 2006 Golden Bear at the 56th Berlin International Film Festival.  Her 2010 film "Na putu" was nominated for the Golden Bear at the 60th Berlin International Film Festival.', '53rd Berlin International Film Festival | The 54th annual Berlin International Film Festival was held from February 6–16, 2003.  The festival opened with musical film "Chicago" by Rob Marshall and closed with Martin Scorsese\'s "Gangs of New York", both films played out of competition at the festival.  The Golden Bear was awarded to British film "In This World" directed by Michael Winterbottom.']
+
+## Generated Outputs
+### reasoning
+The claim involves two primary facts: 
+
+1. An actor in a musical film was also a United States Navy Combat veteran in World War II.  
+2. The film in question was awarded the Golden Bear at the 50th Berlin International Film Festival.
+
+From the notes and context:
+
+- Jason Robards was a United States Navy combat veteran of World War II (Notes [1],[5]; Context [1]).
+- The Golden Bear at the 50th Berlin International Film Festival (2000) was awarded to "Magnolia" directed by Paul Thomas Anderson (Notes [2],[6]; Context [8]).
+- "Magnolia" is not documented as a musical film in the context (Notes [3],[7]), so it fails the second part of the claim.
+- "Chicago," a musical film listed in notes and context ([4],[8]), did not win the Golden Bear but was screened at the 54th Berlin International Film Festival, not the 50th (Context [10]).
+- There is no mention in the context of Jason Robards acting in "Chicago" or "Magnolia," nor is there mention of an actor who was both a WWII Navy Combat veteran and appeared in a musical film that won the Golden Bear at the 50th festival.
+
+Thus:
+- Jason Robards fulfills the WWII Navy veteran and actor claim.
+- "Magnolia" won the Golden Bear at the 50th Berlin International Film Festival but is not a musical.
+- "Chicago" is a musical but did not win the Golden Bear at the 50th festival.
+- No overlap given of an actor who was both a WWII Navy veteran and starring in a musical film that won the Golden Bear at the 50th Berlin International Film Festival.
+
+Therefore, the claim is not fully supported by the evidence. The notes verify the parts separately (Navy veteran actor, film with Golden Bear, and musicals), but no single musical film with an actor who is a WWII Navy Combat veteran won the Golden Bear at the 50th Berlin International Film Festival. Hence, none of the notes fully support the claim. The best-supported facts are that Jason Robards was a WWII U.S. Navy combat veteran and that the Golden Bear at the 50th Berlin International Film Festival was awarded to "Magnolia," which is not a musical film.
+
+### new_notes
+['Jason Robards was an American actor and United States Navy combat veteran of World War II.', "The Golden Bear at the 50th Berlin International Film Festival held in 2000 was awarded to the American film 'Magnolia' directed by Paul Thomas Anderson.", "'Magnolia' is not documented as a musical film in the context provided.", "'Chicago' is a musical film but it did not win the Golden Bear at the 50th Berlin International Film Festival and was screened at the 54th Berlin International Film Festival."]
+
+### titles
+['Jason Robards', '50th Berlin International Film Festival', '53rd Berlin International Film Festival']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['50th Berlin International Film Festival', 'Jason Robards']. Documents remaining to be retrieved: ['Magnolia (film)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

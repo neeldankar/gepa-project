@@ -1,0 +1,69 @@
+```  
+Task Description:  
+You will be given three distinct inputs:  
+- `claim`: A statement or assertion typically involving relationships, memberships, attributes, or comparisons related to specific entities. Entities may include niche domain-specific subjects such as geographic locations (counties, colleges), sports entities (players, teams, seasons), musical acts (bands, albums, members), movies (films, characters, production details), and institutions. Claims often require factual verification or clarification of relationships like membership, roles, founding details, sponsorship, or discography counts.  
+
+- `notes`: A list of candidate sentences extracted from various sources that may partially or fully support, refute, or relate to the claim. These notes can contain overlapping or redundant information and may vary in clarity and accuracy. They often provide concise factual data points or excerpts useful to validate the claim.
+
+- `context`: A larger set of document descriptions or entity summaries providing comprehensive background information about the key entities mentioned in the claim and notes. These documents are usually well-structured, detailed, and reflect authoritative content such as encyclopedia entries or well-curated metadata. Examples: full bios of sports teams or players, histories of leagues, band discographies, or institutional overviews, including dates, memberships, sponsorship, and performance statistics.  
+
+Your task is to synthesize a clear, concise, and domain-accurate response shaped around the claim, by performing the following:  
+
+1. **Select and produce `new_notes`:**  
+   - Identify the subset of provided `notes` that are most relevant, precise, and supportive of verifying the claim.  
+   - Remove repetitions, contradictions, or ambiguous notes.  
+   - When necessary, paraphrase or combine note sentences to improve clarity and precision, always preserving factual accuracy.  
+   - Include notes that explicitly confirm or contradict key aspects of the claim (such as memberships, founding dates, managerial roles, sponsorships, album counts, etc.).  
+   - Where information about an entity or detail is missing or explicitly stated as unavailable, include notes reflecting that fact to address potential knowledge gaps.  
+
+2. **Select and produce `titles`:**  
+   - From the provided `context` documents, identify which source documents correspond to the main entities or themes pertinent to the claim and the selected notes.  
+   - The titles represent authoritative knowledge sources that justify or corroborate the contents of the chosen notes and support evaluating the claim fully.  
+   - Include major relevant entities such as persons (players, managers, band members), organizations (leagues, clubs, bands), works (albums, films), or locations referenced in the claim or notes.  
+   - If some key authoritative documents are missing from the context but evidently required based on the claim and notes, include their inferred titles to improve coverage.  
+   - Exclude irrelevant or unrelated documents not tied closely to the claim or supported notes.  
+
+**Domain-Specific Considerations:**  
+- Entities often come from specialized domains where knowledge of typical organizational structures or standard facts is essential (e.g., sports franchises are founded in specific years, managers have tenures aligned with seasons, bands release albums and have lineup changes, leagues have official sponsors, football clubs play in specific league divisions).  
+- Claims may combine multiple facts requiring verification of temporal overlaps (e.g., founding dates vs. playing years), entity relationships (e.g., membership, sponsorship), or comparative numeric assertions (e.g., album counts).  
+- Verifying claims often involves ruling out inaccuracies (e.g., a team’s founding year contradicted by official franchise data), clarifying ambiguous synonyms or name changes (e.g., "Tampa Bay Devil Rays" now "Tampa Bay Rays"), and confirming presence or absence of entities in a league or association.  
+- Notes may contain multiple similar or partial statements that must be distilled into the clearest authoritative facts (e.g., multiple notes repeating founding year but expressed differently or multiple notes about a league’s sponsorship).  
+- Context documents provide fuller entity background, often including attributes such as home locations, seasons played, sponsorship history, discography, or league memberships that are essential for comprehensive claim evaluation.  
+
+**Recommended Strategy:**  
+- Carefully parse the claim to identify all involved entities and the relationships or factual points asserted.  
+- Systematically examine the notes to:  
+  * Extract those notes that explicitly address the claim’s entities or asserted facts.  
+  * Identify any contradictions or confirmations.  
+  * Deduplicate and synthesize related notes into a concise set conveying the key facts relevant to the claim.  
+  * If some claim elements cannot be validated or are contradicted by notes, reflect this explicitly in the new notes.  
+- Review the context documents’ titles and summaries to:  
+  * Select those that cover key individuals, organizations, or topics introduced by the claim and supported by the notes, ensuring comprehensive representation.  
+  * Add inferred titles if critical documents appear missing but can be clearly identified from the claim or notes.  
+- Output:  
+  * `new_notes`: a factually accurate, clear, and non-redundant list of sentences that best support or contextualize the claim, suitable for consumption by verification systems or decision-makers.  
+  * `titles`: a list of document/entity titles from the context representing primary knowledge sources necessary to understand or assess the claim fully.  
+
+**Output Format:**  
+```json  
+{  
+  "new_notes": ["string", ...],  
+  "titles": ["string", ...]  
+}  
+```  
+
+**Examples of Domain-Specific Relationships to Track:**  
+- Sports teams: founding year, league memberships, manager tenures, player career spans.  
+- Music bands: number of albums released, band membership overlaps, alternative performing aliases.  
+- Football clubs: league current division memberships, sponsorship details, ground locations.  
+- Film or institutions: production years, associated personnel, institutional roles.  
+
+**Additional Guidance:**  
+- When verifying numeric or comparative claims (e.g., "twice as many albums"), select notes providing exact counts or clear numeric indicators.  
+- Correctly handle name changes and aliases by linking notes or contexts that show equivalency (e.g., a club renamed, a band performing under multiple names).  
+- If notes contradict the claim, include the contradiction clearly to highlight discrepancies.  
+- Avoid introducing unsupported information not evidenced by the notes or context.  
+- Where no relevant information is present, return empty `new_notes` and `titles` reflecting lack of coverage, optionally noting this explicitly in `new_notes` if it aids clarity.  
+
+This task requires precision, domain awareness, and the ability to synthesize fragmented or overlapping textual evidence into a coherent supporting fact set and knowledge source list, facilitating effective claim verification or knowledge retrieval in specialized domains.  
+```

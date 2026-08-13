@@ -1,0 +1,87 @@
+{
+    "titles": [
+        "Chakradhar Satapathy",
+        "Cornell Brown",
+        "Denny Mooney",
+        "Gene Cichowski",
+        "George Kokinis",
+        "Go!Cam",
+        "Gran Turismo (PSP)",
+        "Jim Parker (American football)",
+        "John Hudson (American football)",
+        "Ken Strong",
+        "Lem Barney",
+        "List of Iowa State Cyclones in the NFL Draft",
+        "List of Pro Football Hall of Fame inductees",
+        "Ozzie Newsome",
+        "PSP Padang",
+        "Pacifist Socialist Party",
+        "Paintball Sports Promotions",
+        "Paul Hornung",
+        "Personnel Support Programs",
+        "Phil Savage",
+        "Planet PSP",
+        "Ron Wolf",
+        "Scott Pioli",
+        "T. J. McCreight",
+        "Ted Thompson"
+    ],
+    "notes": [
+        "Philip Savage served as Director of Player Personnel for the Baltimore Ravens under GM Ozzie Newsome from 2003 to 2004.",
+        "Ozzie Newsome is inducted into both the College Football Hall of Fame (1994) and the Pro Football Hall of Fame (1999).",
+        "Steve Little was drafted higher (15th overall) than Ozzie Newsome (23rd overall) in the 1978 NFL draft.",
+        "Philip Savage served as Director of Player Personnel for the Baltimore Ravens under GM Ozzie Newsome from 2003 to 2004.",
+        "Ozzie Newsome is inducted into both the College Football Hall of Fame (1994) and the Pro Football Hall of Fame (1999).",
+        "Steve Little was drafted higher (15th overall) than Ozzie Newsome (23rd overall) in the 1978 NFL draft."
+    ],
+    "per_hop": [
+        {
+            "hop": 1,
+            "query": "SELECT \n  psp.position,\n  psp.team AS team_name, \n  gm.name AS general_manager, \n  draft1.player_name AS player_drafted_higher,\n  draft2.player_name AS player_drafted_lower,\n  cfhof.inducted AS college_hof,\n  pfhof.inducted AS pro_hof\nFROM personnel_positions psp\nJOIN general_managers gm ON psp.general_manager_id = gm.id\nJOIN drafts draft1 ON draft1.general_manager_id = gm.id AND draft1.pick_number < draft2.pick_number\nJOIN drafts draft2 ON draft2.player_name = 'Steve Little'\nLEFT JOIN college_football_hall_of_fame cfhof ON draft1.player_name = cfhof.player_name\nLEFT JOIN pro_football_hall_of_fame pfhof ON draft1.player_name = pfhof.player_name\nWHERE psp.position = 'Director of Player Personnel'\n  AND psp.team = 'Baltimore Ravens'\n  AND cfhof.inducted = TRUE\n  AND pfhof.inducted = TRUE;",
+            "retrieved_titles": [
+                "Chakradhar Satapathy",
+                "Ron Wolf",
+                "Personnel Support Programs",
+                "Paintball Sports Promotions",
+                "Pacifist Socialist Party",
+                "Denny Mooney",
+                "Go!Cam",
+                "Gran Turismo (PSP)",
+                "PSP Padang",
+                "Planet PSP"
+            ]
+        },
+        {
+            "hop": 2,
+            "query": "Who was the Baltimore Ravens general manager during Philip Savage\u2019s tenure as Director of Player Personnel? Was Steve Little drafted higher than this general manager? And was this general manager inducted into both the College Football Hall of Fame and the Pro Football Hall of Fame? Additionally, confirm Philip Savage\u2019s role as Director of Player Personnel for the Baltimore Ravens.",
+            "retrieved_titles": [
+                "Phil Savage",
+                "Ozzie Newsome",
+                "T. J. McCreight",
+                "Ron Wolf",
+                "Ted Thompson",
+                "George Kokinis",
+                "Cornell Brown",
+                "Scott Pioli",
+                "List of Pro Football Hall of Fame inductees",
+                "List of Iowa State Cyclones in the NFL Draft"
+            ]
+        },
+        {
+            "hop": 3,
+            "query": "Did Philip Savage serve as Director of Player Personnel for the Baltimore Ravens under general manager Ozzie Newsome, who was drafted lower than Steve Little and is inducted into both the College Football Hall of Fame and the Pro Football Hall of Fame?",
+            "retrieved_titles": [
+                "Ozzie Newsome",
+                "Phil Savage",
+                "Ken Strong",
+                "Lem Barney",
+                "Gene Cichowski",
+                "Jim Parker (American football)",
+                "Cornell Brown",
+                "John Hudson (American football)",
+                "Paul Hornung",
+                "List of Iowa State Cyclones in the NFL Draft"
+            ]
+        }
+    ]
+}

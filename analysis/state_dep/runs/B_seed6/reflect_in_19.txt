@@ -1,0 +1,124 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given two fields as input: `claim` and `notes`. The `claim` is a factual statement requiring verification or fact-checking. The `notes` contain extracted or summarized information related to the claim, including potential evidence that supports, contradicts, or is neutral toward the claim. The goal is to generate an effective *search query* (output field `query`) that can be used to retrieve authoritative documents or data to verify the truthfulness of the claim.
+
+Your task is to carefully analyze both the claim and the notes, then compose a concise, targeted search query designed to maximize relevant retrieval and minimize irrelevant results. This search query will guide downstream document retrieval systems to find evidence that confirms or refutes the claim.
+
+Detailed instructions for generating the query:
+
+1. **Analyze the Claim:**
+   - Identify the key entities (people, organizations, events, places, championships, films, songs).
+   - Pinpoint the main factual assertions (dates, awards, titles, roles, competition results, historical facts).
+   - Understand the relationships between entities (e.g., who acted in which movie, who won which championship, founding dates of sports teams).
+   - Note any temporal bounds (e.g., specific seasons, years, decades).
+   - Include nicknames, alternate names, or common epithets if relevant (e.g., "The King of Cocaine" = Pablo Escobar).
+
+2. **Review the Notes:**
+   - Extract domain-specific context from the notes that refine or clarify the claim.
+   - Identify corrections, contradictions, or confirmations embedded within the notes.
+   - Identify relevant domain-specific facts that may help narrow or specify the search query. For example:
+     - Baseball franchises: founding years, franchise relocations, managers, player tenure.
+     - Film domain: actors’ filmographies, familial relations, awards received.
+     - Motorsports: seasons, driver participation years, winners, nationality.
+     - Geographic details: place names, administrative divisions, jurisdictions.
+   - Recognize when some elements in the claim might be false or partially true from the notes, and incorporate key terms to check those facts explicitly.
+
+3. **Formulating the Query:**
+   - The query should be a natural language question or a targeted keyword phrase (or combination) that directly asks about the core elements necessary to verify the claim.
+   - Include all critical named entities, dates, and unique identifiers that anchor the claim in a factual context.
+   - Avoid vague or overly broad search terms; prefer specificity to guide retrieval towards authoritative sources.
+   - When applicable, combine search terms with logical connectors (e.g., AND, OR) or phrase them as concise fact-check questions (e.g., “Who won X in year Y?”, “Did person A receive award B for role C?”, “Which songs by artist D reached number one and who originally recorded them?”).
+   - Include alternative names or aliases if mentioned or deducible (e.g., “Pablo Escobar” and “The King of Cocaine”).
+
+4. **Domain-Specific Nuances:**
+   - **Music domain:** Focus on chart positions such as "Billboard Hot Country Singles & Tracks," original recording artists, and genre classifications.
+   - **Film and TV domain:** Confirm main cast members’ roles and their awards (e.g., Golden Globe nominations), also note familial or biographical relationships when relevant.
+   - **Sports (especially motorsports and baseball):** Check start and end years of participation, season numbering equivalences (e.g., "28th season = 2000"), nationality of competitors, and record of winners.
+   - **Geography:** Clarify administrative divisions and their hierarchical relationships where claims involve location-based facts.
+
+5. **Implementation Strategies:**
+   - Use the notes to rule out impossibilities or prior refutations in the query construction by explicitly including key facts the claim contradicts.
+   - Construct factual verification queries rather than open-ended broad questions.
+   - Prioritize queries that can retrieve multiple relevant documents (e.g., one query that simultaneously addresses claim aspects and related entities).
+   - When the notes identify misalignments (e.g., claimed facts are false), incorporate those exact elements for checking.
+
+6. **Desired Output:**
+   - Output only the field `query` with a single refined search query string.
+   - The query should be concise yet comprehensive enough to yield authoritative evidence for or against the claim.
+   - Avoid extraneous explanation or analysis in the final output.
+
+By following these instructions, you will generate effective search queries tailored to domain-specific factual claims across varied topics such as music chart history, filmographies and awards, sports seasons and participants, and geographic or political facts. The query will enable precise and productive evidence retrieval for accurate claim verification.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The Manchester United Football Club is known as "the Red Devils". The goalie who led the strike force for the 1928–29 Leicester City F.C. season played for them.
+
+### notes
+["Manchester United is known as 'the Red Devils' (context [3], [4]).", 'No information found about the goalie from the 1928-29 Leicester City season playing for Manchester United.', 'Walter Smith was a goalkeeper for Leicester Fosse before WWI but played for Manchester City, not Manchester United (context [10]).', 'Kasper Schmeichel plays for Leicester City but was born in 1986, so unrelated to 1928-29 season (context [2]).', 'The 1928-29 Leicester City strike force was led by Ernie Hine, Arthur Chandler, and Arthur Lochhead, none of whom were goalkeepers.', 'No record of the goalie from 1928-29 Leicester City playing for Manchester United has been found.', 'Walter Smith was a goalkeeper associated with Leicester Fosse and Manchester City before WWI, not Manchester United.', "Manchester United is confirmed to be known as 'the Red Devils'.", "Manchester United is nicknamed 'the Red Devils'.", 'The 1928-29 Leicester City strike force leaders were Ernie Hine, Arthur Chandler, and Arthur Lochhead, none of whom were goalkeepers.', 'Walter Smith was a goalkeeper for Leicester Fosse and Manchester City but never played for Manchester United.', 'No evidence exists that the 1928-29 Leicester City goalie played for Manchester United.', 'Kasper Schmeichel is a modern Leicester City goalkeeper and son of former Manchester United goalkeeper Peter Schmeichel, unrelated to 1928-29 season.']
+
+## Generated Outputs
+### reasoning
+The claim states that Manchester United FC is called "the Red Devils," which is confirmed true by the notes. The claim also asserts that the goalie leading the strike force for the 1928-29 Leicester City season played for Manchester United. However, the notes indicate that the 1928-29 Leicester City strike force was led by outfield players (Ernie Hine, Arthur Chandler, Arthur Lochhead), none being a goalkeeper. Moreover, no record exists of the Leicester City goalie from that season playing for Manchester United. Also, previous goalkeepers associated with Leicester (Walter Smith) played for Manchester City, not Manchester United, ruling out that connection. Therefore, the main fact to verify is whether any goalie from the 1928-29 Leicester City season subsequently played for Manchester United. The search query should focus on the identity of the 1928-29 Leicester City goalkeeper(s), their career trajectory, and any links to Manchester United, while also covering the official nickname of Manchester United to confirm the known fact.
+
+### query
+"Manchester United nickname Red Devils" AND "Leicester City 1928-29 goalkeeper" AND "Leicester City 1928-29 season player transfers" AND "goalkeeper career Manchester United"
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['1928–29 Leicester City F.C. season', 'Manchester United F.C.']. Documents remaining to be retrieved: ['Ernie Hine'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The movie Sacred Planet came out after another film. Award winning actor Damion Poitier had a role in this other film.
+
+### notes
+['Sacred Planet was released in 2004.', 'Hunter Prey, featuring Damion Poitier, was released in 2010.', 'There is no information about any other film starring Damion Poitier that came out before Sacred Planet.', 'Sacred Planet was released in 2004.', 'Hunter Prey, featuring Damion Poitier, was released in 2010.', 'No evidence was found of any other film starring Damion Poitier that came out before Sacred Planet.', 'Damion Poitier is known for roles after 2004 and is not confirmed as award-winning in the provided context.', 'Sacred Planet was released in 2004, before any film featuring Damion Poitier such as Hunter Prey (2010).', 'There is no evidence that Damion Poitier had roles in films released before Sacred Planet.', 'Damion Poitier is not confirmed as an award-winning actor based on the provided information.']
+
+## Generated Outputs
+### reasoning
+The claim states that Sacred Planet came out after another film that featured award-winning actor Damion Poitier. The notes specify that Sacred Planet was released in 2004 and that Hunter Prey, a film featuring Damion Poitier, was released in 2010. There is no information about any other film featuring Damion Poitier released before Sacred Planet. Therefore, the claim about the timing of Sacred Planet relative to a prior film featuring Damion Poitier contradicts the given information. To verify this claim, it is necessary to check the release dates of Sacred Planet and any films featuring Damion Poitier, including whether Poitier had roles in films released before 2004 and whether he has won any acting awards.
+
+### query
+Damion Poitier filmography award wins and release dates before 2004; Sacred Planet release date 2004; films starring Damion Poitier released before Sacred Planet
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Damion Poitier', 'Sacred Planet']. Documents remaining to be retrieved: ['Snow Dogs'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Reverend Lyttleton Morgan was the first chairman of the board of trustees at a university. That university and the University of Idaho are public types of universities.
+
+### notes
+['Reverend Lyttleton Morgan was the first chairman of the board of trustees at Morgan State University.', 'Morgan State University is a public urban university in Maryland.', 'The University of Idaho is a public university in the state of Idaho.', 'Reverend Lyttleton Morgan was the first chairman of the board of trustees at Morgan State University, a public urban university in Maryland.', "Morgan State University is Maryland's designated public urban university and the largest historically black university in Maryland.", 'The University of Idaho is a public university in the state of Idaho.', 'Reverend Lyttleton Morgan was the first chairman of the board of trustees at Morgan State University.', "Morgan State University is a public urban university in Maryland, designated as Maryland's public urban university and the largest historically black university in the state.", 'The University of Idaho is a public university located in Idaho.', 'Morgan State University was originally founded as the Centenary Biblical Institute and renamed in honor of Reverend Lyttleton Morgan in 1890.', 'Morgan State University became a university in 1975 and is a member of the Thurgood Marshall College Fund.']
+
+## Generated Outputs
+### reasoning
+The claim makes two primary assertions: (1) Reverend Lyttleton Morgan was the first chairman of the board of trustees at a university, and (2) that university, together with the University of Idaho, are public universities. To verify this, it is essential to identify the university where Reverend Lyttleton Morgan served as the first chairman of the board of trustees, confirm his role and timeline, and then establish if that institution is a public university. Furthermore, verification should also confirm the status of the University of Idaho as a public university. The query should therefore target authoritative historical records or institutional histories about Reverend Lyttleton Morgan’s role in university governance and the public or private status of the universities mentioned.
+
+### query
+"Reverend Lyttleton Morgan first chairman board of trustees" AND "public university status" AND "University of Idaho public university"
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Lyttleton Morgan', 'Morgan State University']. Documents remaining to be retrieved: ['University of Idaho'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

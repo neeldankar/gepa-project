@@ -44,16 +44,71 @@ M_PER_CALL = 0.004543  # v2 §14 fitted rate, for projections only; actuals are 
 
 
 # --------------------------------------------------------------------------- probe bootstrap
+def _install_mmap(probe, bm25s):
+    """Rebind probe.load_index to the mmap variant. Byte-for-byte hover_swap_run.py:30-37.
+
+    probe.py is frozen (it produced the Stage-1 corpus), so the mmap switch is monkeypatched rather
+    than edited there; probe.search() resolves load_index() through probe's module globals, so
+    rebinding the attribute is sufficient. Verified byte-identical retrieval vs mmap=False over 135
+    live queries / 1350 docs (seed0_i0, 2026-07-08). 5.06 GB resident -> 0.92 GB mmapped.
+
+    THIS IS A COPY, ON PURPOSE -- the third, after hover_swap_run.py:30-46 and screen_bm25.py:42-58.
+    Importing hover_swap_run to share it is NOT safe here: that module chdirs and mutates sys.path at
+    import (`:19-20`) and, decisively, sets `litellm.success_callback = [_wire_cb]` (`:67`), which
+    would install a foreign cost callback into every scoring process and corrupt Meter accounting.
+    """
+    def _load_index_mmap():
+        if probe._retriever is None:
+            r = bm25s.BM25.load("bm25s_index", load_corpus=True, mmap=True)
+            probe._retriever = r
+            probe._corpus = r.corpus
+        return probe._retriever
+
+    probe.load_index = _load_index_mmap
+
+
+def assert_mmap(probe):
+    """Warm the index single-threaded AND prove the patch took. Mirrors hover_swap_run.py:39-46.
+
+    Two jobs, both load-bearing:
+
+    1. WARM-UP. probe.load_index (probe.py:21-27) is an unlocked check-then-set, and
+       score_candidate() fans out to WORKERS=8 threads whose first retrieval all arrives while the
+       global is still None -- every one of them then builds its own index. Measured: 8/8 threads
+       entered the loader body, ~40 GB transient per process, which is what SIGKILLed 8 runs and
+       panicked the machine on 2026-08-06 (notes/PHASE2-DIAGNOSIS.md). Calling load_index() here,
+       before any executor exists, fills the global once and makes the race unreachable -- without
+       touching frozen probe.py.
+    2. ASSERTION. Fail loudly rather than silently loading a 5 GB private copy of the index. The
+       §8b path had no such assertion, which is exactly how it regressed unnoticed.
+    """
+    import numpy as np  # noqa: PLC0415
+
+    probe.load_index()
+    if not isinstance(probe._retriever.scores["data"], np.memmap):
+        raise RuntimeError("BM25 score arrays are not memmapped — mmap patch did not take")
+    if type(probe._corpus).__name__ != "JsonlCorpus":
+        raise RuntimeError(f"corpus is {type(probe._corpus).__name__}, expected JsonlCorpus (mmap)")
+
+
 def bootstrap():
-    """Import probe with its relative paths resolvable, load the API key, return (dspy, probe)."""
+    """Import probe with its relative paths resolvable, load the API key, return (dspy, probe).
+
+    Also installs the mmap patch and warms the index, so that every §8b consumer of this module
+    gets the same protection hover_swap_run.py:156 gets before any spend. Do not move the
+    assert_mmap() call after this function returns: it must precede the first ThreadPoolExecutor.
+    """
     if HOVER_PROBE not in sys.path:
         sys.path.insert(0, HOVER_PROBE)
     os.chdir(HOVER_PROBE)  # probe resolves bm25s_index/, threehop.jsonl, ../../.env relatively
     import probe  # noqa: PLC0415
 
+    import bm25s  # noqa: PLC0415
     import dspy  # noqa: PLC0415
 
+    _install_mmap(probe, bm25s)
     probe._load_env()
+    assert_mmap(probe)  # warms the global single-threaded; the 8-way race cannot occur after this
     return dspy, probe
 
 

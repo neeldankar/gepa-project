@@ -1,0 +1,109 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields:
+- `claim`: a factual statement or assertion that may require verification or further factual support.
+- `notes`: a list of textual snippets containing partial information relevant to verifying the claim. These notes might include facts, contradictions, or missing information about entities or topics in the claim.
+
+Your goal is to produce the output field `query` — a precise and focused question (or set of questions) aimed at retrieving the key missing or uncertain factual information needed to verify the claim. The `query` should target specific entities, attributes, relationships, or facts that have not been confirmed or sufficiently covered in the provided notes.
+
+Key Points and Domain-Specific Knowledge:
+- The claim involves named entities such as people, films, bands, roles (e.g., director, bassist), birthdates, nationalities, professions, and works (e.g., films, songs).
+- Notes often contain partial or confirmatory information about these entities, but sometimes lack critical data required to verify the claim fully.
+- Your query should be designed to retrieve authoritative documents or data specifically covering the missing or ambiguous elements mentioned or implied by the claim.
+- The query should reflect recognition of domain-specific facts, such as:
+   * Individuals’ roles and contributions (e.g., “bass player and lead vocalist who created Cobra Starship” refers to Gabe Saporta).
+   * Nationality or origin of persons associated with cultural works (e.g., nationality of film directors related to 'Cannibal Holocaust').
+   * Dates of birth or ages when claims relate to relative age.
+   * Professional associations or occupations that confirm or refute the claim.
+   * Connections between named works and their creators or contributors.
+
+Generalizable Strategy:
+1. Analyze the claim and identify the factual assertions that require verification.
+2. Review the notes to establish which parts of the claim are already supported and which parts are missing, contradictory, or uncertain.
+3. Formulate concise, targeted queries that seek the minimal yet sufficient data required to resolve remaining ambiguities.
+4. When multiple pieces of missing information exist, combine them efficiently in the query, balancing completeness and precision.
+5. Focus on retrieving documents or facts about:
+   - Specific named entities not covered or unclear in the notes.
+   - Attributes or relationships critical to verifying the claim.
+6. Avoid overly broad or generic questions; tailor queries to close specific knowledge gaps evident from the notes.
+
+Example:
+If the claim is about the relative age of two persons, and only one birthdate is known, the query should be:  
+   "What is the birthdate or age of [Person with missing info]?"
+
+If the claim involves multiple nationalities or roles, and only partial info is available, the query should ask specifically about the identities, nationalities, or professions of the key persons involved.
+
+By following this approach, you will help retrieve the essential documents needed to verify complex claims effectively.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The location that houses the M7 Aerospace LP company,  and Yakutat Airport are in the same country.
+
+### notes
+['M7 Aerospace LP is headquartered at San Antonio International Airport in San Antonio, Texas, United States.', 'Yakutat Airport is located in Yakutat, Alaska, which is part of the United States.', "Both M7 Aerospace LP's location and Yakutat Airport are in the United States, confirming they are in the same country.", 'M7 Aerospace LP is headquartered at San Antonio International Airport in San Antonio, Texas, United States.', 'Yakutat Airport is located in Yakutat, Alaska, United States.', 'Both M7 Aerospace LP and Yakutat Airport are located within the United States, confirming they are in the same country.', 'M7 Aerospace LP is headquartered at San Antonio International Airport in San Antonio, Texas, United States.', 'Yakutat Airport is located in Yakutat, Alaska, United States.', 'Both M7 Aerospace LP and Yakutat Airport are located within the United States, confirming they are in the same country.']
+
+## Generated Outputs
+### reasoning
+The notes consistently state that M7 Aerospace LP is headquartered at San Antonio International Airport in San Antonio, Texas, which is in the United States. Additionally, Yakutat Airport is located in Yakutat, Alaska, which is also part of the United States. Since both locations are within different states but the same country, the claim that M7 Aerospace LP's location and Yakutat Airport are in the same country is supported. The notes cover all necessary information confirming the country for both entities.
+
+### query
+No additional query is needed as the available notes sufficiently confirm that both M7 Aerospace LP and Yakutat Airport are located in the United States.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['M7 Aerospace', 'Yakutat Airport']. Documents remaining to be retrieved: ['San Antonio International Airport'].
+
+
+
+# Example 2
+## Inputs
+### claim
+"Leni" Riefenstahl was born before the Ukrainian director of "Young Doctors in Love".
+
+### notes
+['Leni Riefenstahl, German film director and actress, was born on August 22, 1902.', "No information provided about the Ukrainian director of 'Young Doctors in Love', including their date of birth or identity.", "The claim that Leni Riefenstahl was born before the Ukrainian director of 'Young Doctors in Love' cannot be verified due to missing evidence about the latter's birth date.", 'Leni Riefenstahl was a German film director and actress born on August 22, 1902.', "There is no information available about a Ukrainian director of the film 'Young Doctors in Love,' including their identity or birth date.", "The claim that Riefenstahl was born before the Ukrainian director of 'Young Doctors in Love' cannot be verified due to missing evidence about the latter.", 'Leni Riefenstahl was a German film director and actress born on August 22, 1902.', "The film 'Young Doctors in Love' (1982) is an American comedy directed by Garry Marshall, who is not Ukrainian.", "There is no evidence or information about a Ukrainian director of 'Young Doctors in Love' or their birth date.", "The claim that Leni Riefenstahl was born before the Ukrainian director of 'Young Doctors in Love' cannot be verified due to the absence of evidence about any Ukrainian director related to this film."]
+
+## Generated Outputs
+### reasoning
+The claim compares the birthdates of two individuals: Leni Riefenstahl and the Ukrainian director of "Young Doctors in Love." The notes confirm Leni Riefenstahl’s birthdate (August 22, 1902) but do not identify the Ukrainian director of "Young Doctors in Love" or provide their birthdate. To verify the claim, it is necessary to establish the identity, nationality, and birthdate of the director who fits the description "Ukrainian director of 'Young Doctors in Love'." Without this information, the claim cannot be assessed.
+
+### query
+Who directed the film "Young Doctors in Love"? What is the nationality and date of birth of this director? Specifically, is this director Ukrainian and born after August 22, 1902?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Leni Riefenstahl', 'Young Doctors in Love']. Documents remaining to be retrieved: ['Garry Marshall'].
+
+
+
+# Example 3
+## Inputs
+### claim
+An actor that was in the Wonder Woman (2017 film) of the action adventure genre, performed in Anomalisa after the premier of Fargo.
+
+### notes
+["David Thewlis acted in the 2017 film 'Wonder Woman' and provided voice work in the 2015 film 'Anomalisa'.", "'Anomalisa' premiered on December 30, 2015, before the premiere of Fargo Season 3 in April 2017.", "David Thewlis appeared in the third season of 'Fargo', which premiered in April 2017.", "Tom Noonan voiced characters in 'Anomalisa' but there is no evidence he acted in 'Wonder Woman' (2017).", "No actor from the provided context performed in 'Anomalisa' after the premiere of 'Fargo'.", "David Thewlis acted in 'Wonder Woman' (2017) and provided voice work in 'Anomalisa' (2015).", "'Anomalisa' premiered on December 30, 2015, prior to the 'Fargo' Season 3 premiere in April 2017.", "David Thewlis appeared as an antagonist in 'Fargo' Season 3, which premiered after 'Anomalisa'.", "No actor from 'Wonder Woman' performed in 'Anomalisa' after the 'Fargo' Season 3 premiere.", "Tom Noonan voiced characters in 'Anomalisa' but was not part of the 'Wonder Woman' (2017) cast.", "David Thewlis acted in the 2017 film 'Wonder Woman' and provided voice work in the 2015 film 'Anomalisa'.", "'Anomalisa' premiered on December 30, 2015, which is before the April 2017 premiere of 'Fargo' Season 3.", "David Thewlis appeared as an antagonist in 'Fargo' Season 3, which premiered after 'Anomalisa'.", "No actor from 'Wonder Woman' performed in 'Anomalisa' after the 'Fargo' Season 3 premiere.", "Tom Noonan voiced characters in 'Anomalisa' but was not part of the 'Wonder Woman' (2017) cast."]
+
+## Generated Outputs
+### reasoning
+The claim is that an actor from the 2017 action-adventure film Wonder Woman performed in Anomalisa after the premiere of Fargo. The notes clarify that David Thewlis acted in Wonder Woman (2017) and provided voice work in Anomalisa (2015). However, Anomalisa premiered in December 2015, which is before Fargo Season 3's premiere in April 2017. Multiple notes emphasize that no actor from Wonder Woman performed in Anomalisa after Fargo's premiere. Tom Noonan voiced characters in Anomalisa but was not in Wonder Woman. Therefore, the timeline contradicts the claim's assertion about the order of performances. What remains uncertain is whether there is any actor from Wonder Woman who performed in Anomalisa after Fargo's premiere, or if the claim confuses the timeline. To verify the claim fully, we need to confirm the exact performance dates and roles of any Wonder Woman cast members in Anomalisa or in other works after Fargo's premiere.
+
+### query
+Did any actor who appeared in the 2017 action-adventure film Wonder Woman perform in the film Anomalisa after the premiere of Fargo Season 3 in April 2017? Please provide the timeline of their roles and performance dates to clarify if any such post-Fargo performance in Anomalisa exists.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['David Thewlis', 'Wonder Woman (2017 film)']. Documents remaining to be retrieved: ['Fargo (TV series)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

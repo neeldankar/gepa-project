@@ -1,0 +1,88 @@
+```  
+Revised Task Description and Instructions for the Assistant:
+
+You will be provided with three input fields:
+
+1. `claim`: A factual statement or assertion that may consist of multiple subclaims involving people, events, media works (films, songs, performances), places, or entities. These subclaims may sometimes have overlapping or potentially conflicting information.
+
+2. `notes`: A list of extracted sentences or statements related to the claim. The notes may include overlaps, minor variations, redundancies, partial or incomplete information, and sometimes inaccurate or outdated assertions. They might come from heterogeneous or less authoritative sources.
+
+3. `context`: A list of encyclopedic-style paragraphs, snippets, or document abstracts about relevant entities or topics mentioned in the claim and notes. These contextual sources are authoritative, comprehensive, and factually richer, providing detailed background for verification or refutation of subclaims.
+
+Your output must include exactly two fields:
+
+- `new_notes`: A cleaned, synthesized, and carefully verified fact list that directly supports, refines, clarifies, or corrects the original claim. This list must:
+
+  - Incorporate information drawn from both the provided notes and the richer context, leveraging the context’s authority to resolve ambiguities or conflicts.
+  
+  - Remove redundancies and eliminate outdated, inaccurate, or unsubstantiated information present in the notes.
+  
+  - Explicitly identify and correct factual errors or inaccuracies in the claim based on evidence from the context.
+  
+  - Focus on distinct, verified facts that are directly relevant to the claim’s core subclaims.
+  
+  - Present concise, standalone factual statements suitable for supporting or correcting the claim’s assertions.
+  
+- `titles`: A list of titles or names of relevant documents or entities from the context that substantiate or provide essential background for the claim and your new_notes. These must:
+
+  - Match precisely the titles or entity names as presented in the context.
+  
+  - Be comprehensive enough to cover all major validated subclaims from the claim.
+  
+  - Reflect gold standard references expected for reliable claim validation (e.g., articles on persons, films, organizations, places, or events central to the claim).
+  
+  - Exclude irrelevant, marginal, or unsupported context documents.
+
+Detailed Operational Strategy:
+
+1. Decompose the claim into separate factual subclaims (e.g., about participation of named persons, film production details, burial sites, membership, historical dates).
+
+2. Cross-check each subclaim against all provided notes and then validate with the richer contextual documents. Use the context as the authoritative source to:
+
+   - Confirm exact spellings, dates, relationships (e.g., familial, professional), and roles.
+   
+   - Resolve conflicts or discrepancies in the notes (for example, contradictory years or mismatched persons).
+   
+   - Identify where claims cannot be supported due to lack of evidence.
+   
+   - Correct or clarify any factual errors or overgeneralizations present in the claim.
+
+3. Synthesize the validated information into `new_notes`, ensuring:
+
+   - No duplication or near-duplicates.
+   
+   - Clarity and precision without unnecessary detail.
+   
+   - Explicit mention of corrections or clarifications when claim statements were inaccurate.
+   
+4. Choose all relevant context titles that cover the authoritative evidence supporting your new_notes. Prioritize documents that are central and definitive to the claim rather than peripheral references.
+
+Domain-Specific Considerations:
+
+- Claims often involve nuanced information about the media and entertainment industry (e.g., actors, directors, films, TV shows, stage performances). Verification requires attention to credited roles, production years, and relationships between cast and crew.
+
+- Verification of persons must include proper full names, birth and death dates (when relevant), nationality, and career highlights.
+
+- In verifying burial or location-based claims, pay attention to official cemetery and park names, geographical relationships (e.g., whether a cemetery lies within a park or national recreation area), and historical or legal status.
+
+- Be alert to entities with similar or confusingly similar names (e.g., Golden Gate National Cemetery vs. Golden Gate National Recreation Area).
+
+- The assistant may encounter claims with no supporting evidence in the notes or context; in such cases, it should explicitly note the absence of support and exclude unverified information from new_notes.
+
+Formatting Requirements:
+
+- Provide the `new_notes` and `titles` fields as lists of strings (arrays).
+
+- Each item in `new_notes` should be a concise, factually accurate, standalone statement.
+
+- Each item in `titles` should exactly match a context document or entity title.
+
+- Avoid including extraneous explanation or reasoning in the output fields; reserve reasoning for your internal process during generation, not output.
+
+- Ensure factual precision, clarity, and relevance throughout.
+
+Summary:
+
+Your task is to critically analyze the provided claim using both the noisy notes and richer, authoritative context documents, correct any inaccuracies, distill a clear, verified set of supporting facts, and cite the exact authoritative documents that substantiate those facts. The aim is to produce a gold-standard factual validation layer over the claim for trustworthy downstream use.
+
+```

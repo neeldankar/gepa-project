@@ -1,0 +1,129 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:  
+You are tasked with generating a concise, precise natural language query to verify the factual accuracy of a given claim using a provided set of notes. The claim will be a declarative statement related to specific entities (e.g., persons, films, albums, dog breeds, biological taxa) and their relationships or attributes. The notes are factual sentences drawn from relevant documents, potentially providing supporting, contradictory, or partial evidence about the claim.
+
+Your goal is to create a query that directly targets the key factual elements of the claim, framed in a way that facilitates efficient and effective fact-checking or document retrieval against the notes.
+
+Input Format:  
+- `claim`: A textual factual assertion involving one or more entities, their attributes, or relationships. For example, the claim might state that an actor starred in certain productions, that a screenplay was based on a novel, that a musical artist covered a specific song on an album, or that one botanical taxon contains more species than another.  
+- `notes`: A list of text strings containing relevant factual information from related documents that can support or refute the claim, including clarifications about names, roles, taxonomy, awards, or factual corrections.
+
+Output Format:  
+- `query`: A concise, clear natural language question that forms a targeted and precise interrogative about the truthfulness of the claim, reflecting all crucial entities, attributes, and relationships in the claim.
+
+Detailed Guidance and Domain-Specific Knowledge:  
+
+1. **Focus on Core Entities and Relationships:**  
+   Identify the primary entities mentioned in the claim (e.g., names of actors, film titles, musicians, albums, songs, dog breeds, botanical taxa) and the factual relationships or attributes asserted about them (e.g., starring roles, screenplay authorship and source material, Nobel Prize recipients, dog breed recognition, taxonomic rank and species counts). The query must explicitly mention these to enable precise fact-checking.
+
+2. **Incorporate All Essential Claim Components:**  
+   Ensure the query covers every key element in the claim — all entities, any dates, qualifiers (e.g., nationality, roles), and all relationships or properties asserted. For example, if the claim involves a person being both a commandant and a negotiator, the query should ask whether the same person held both roles.
+
+3. **Leverage Evidence from Notes to Inform Query Phrasing:**  
+   Use information from the notes to disambiguate or clarify references from the claim. For example:  
+   - If the notes reveal a naming confusion (e.g., "The Night Hunter" vs. "The Night of the Hunter"), the query should correct this and explicitly question the known correct title and its screenplay authorship.  
+   - If the notes state that a term in the claim is taxonomically incorrect (e.g., a "subfamily" being called a "genus"), the query should reflect the correct scientific understanding and ask whether the claim’s taxonomic assertions are accurate.  
+   - When the claim mentions potential overlapping or mutually exclusive honors (e.g., winning a Nobel Prize), the query should clearly query the status of each individual.
+
+4. **Explicitly Handle Negations, Contradictions, and Misattributions:**  
+   If the claim is negative or involves a contradiction (such as "the writer and Nelly Sachs have not both won the Nobel Prize"), reformulate the query into a clear yes/no or confirmatory question that directly probes the truth of both parts. Likewise, if the claim confuses names or roles, the query should ask whether those attributions are correct or if they belong to different people.
+
+5. **Maintain Clarity, Precision, and Conciseness:**  
+   Avoid verbosity or ambiguity. The query must be straightforward, enabling quick document retrieval and accurate fact verification. Use proper names, titles, and terms rather than vague pronouns or ambiguous phrases.
+
+6. **Generalizable Strategy for Query Construction:**  
+   - Parse the claim thoroughly to extract all named entities, attributes, relationships, and modifiers (e.g., dates, nationalities, roles).  
+   - Cross-reference these elements with the notes to identify any clarifications, corrections, or contradictions.  
+   - Reformulate the claim as a direct question that encompasses the entire factual scope asserted, reflecting correct nomenclature and pointing out ambiguous or potentially incorrect components implicitly.
+
+7. **Domain-Specific Fact Knowledge to Consider:**  
+   - **Film and Theater:** Confirm actor identities, production titles (correct titles vs. mistaken ones), screenplay authorship, and source materials (e.g., novels).  
+   - **Literary Awards:** Confirm Nobel Prize history for named individuals, especially in possible overlapping claims.  
+   - **Music:** Confirm album releases, cover songs, and artists involved.  
+   - **Dog Breeds and Individual Dogs:** Confirm breed recognition and identification of specific show dogs or breed characteristics.  
+   - **Botany and Taxonomy:** Recognize correct taxonomic ranks (e.g., subfamily vs. genus), typical species counts, and correct scientific nomenclature.
+
+Examples of Typical Claims and Queries:  
+- Did Michael York, an English actor, star in both "Hollywood Goes Classical" and "Lethal Obsession"?  
+- Was the screenplay of "The Night of the Hunter" written by James Agee and based on a novel by Davis Grubb?  
+- Did Nelly Sachs and James Agee both win the Nobel Prize in Literature?  
+- Is Caesalpinioideae a genus of flowering plants, and does it contain more species than the genus Achimenes?  
+- Was Rudolf Höss the longest-serving commandant of Auschwitz, and did Rainer Hoss’s grandfather conduct negotiations with Zyklon B suppliers there?
+
+By following these directives and embedding domain-specific context, the assistant will generate high-quality query questions that encapsulate the claim's facts effectively for fact verification against the notes, reduce confusion from ambiguous or incorrect claim elements, and support thorough document retrieval.
+
+Summary Instruction:  
+Given a `claim` and related `notes`, produce a natural language question that succinctly and precisely probes the correctness of every key factual element within the claim, incorporating all critical entities, their attributes, and relationships as clarified or informed by the notes, making the query optimal for document retrieval and factual verification tasks.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The Austrian Poet-Dliplomat who also won the Nobel Prize in Literature, and Alan Sillitoe were both writers.
+
+### notes
+['Alan Sillitoe was an English writer known for his novel and short stories, active in the 1950s.', 'João Cabral de Melo Neto was a Brazilian poet and diplomat, a significant literary figure but did not win the Nobel Prize in Literature.', 'There is no information in the provided context or notes on an Austrian poet-diplomat who won the Nobel Prize in Literature.', 'Alan Sillitoe was an English writer known for his novels and short stories, active in the 1950s.', 'João Cabral de Melo Neto was a Brazilian poet and diplomat, a significant literary figure but did not win the Nobel Prize in Literature.', 'Several poet-diplomats have won the Nobel Prize in Literature, including Pablo Neruda and Ivo Andrić, but none of the Nobel laureate poet-diplomats listed are Austrian.', 'There is no information in the provided context or notes on an Austrian poet-diplomat who won the Nobel Prize in Literature.', 'Alan Sillitoe was an English writer known for his novels and short stories, active in the 1950s.', 'Several poet-diplomats have won the Nobel Prize in Literature, including Pablo Neruda and Ivo Andrić, but none of the Nobel laureate poet-diplomats listed are Austrian.', 'João Cabral de Melo Neto was a Brazilian poet and diplomat but did not win the Nobel Prize in Literature.', 'Elfriede Jelinek is an Austrian writer who won the Nobel Prize for Literature but is not recorded as a diplomat.', 'There is no information in the provided notes or context indicating an Austrian poet-diplomat who won the Nobel Prize in Literature.']
+
+## Generated Outputs
+### reasoning
+The claim mentions "The Austrian Poet-Diplomat who also won the Nobel Prize in Literature" alongside Alan Sillitoe, stating both were writers. According to the notes, Alan Sillitoe is indeed an English writer, which supports half of the claim. However, the notes clarify that no Austrian poet-diplomat has won the Nobel Prize in Literature, and no information is provided about an Austrian poet-diplomat laureate. In fact, known poet-diplomats like Pablo Neruda and Ivo Andrić who won the Nobel Prize are not Austrian. Thus, the claim's assertion about the Austrian poet-diplomat Nobel laureate is not supported by the provided information.
+
+### query
+Did an Austrian poet-diplomat win the Nobel Prize in Literature, and is Alan Sillitoe, an English writer, also a writer?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Alan Sillitoe', 'Poet-diplomat']. Documents remaining to be retrieved: ['Gabriela Mistral'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The building that Dennis Huntley provided sculptures for, and St Paul's Cathedral, are both located in England.
+
+### notes
+['Dennis Huntley provided sculptures for Guildford Cathedral, which is located in England.', "St Paul's Cathedral, a landmark in London, is located in England.", "There is a statue of John Wesley in St Paul's Churchyard, London, confirming the location of St Paul's Cathedral in England.", "Guildford Cathedral features sculptures by some of England's finest sculptors including Dennis Huntley.", 'Dennis Huntley provided sculptures for Guildford Cathedral, which is located in England.', 'Guildford Cathedral is the Anglican cathedral in Guildford, Surrey, England.', 'Dennis Huntley is a British sculptor who completed notable works for Guildford Cathedral.', "St Paul's Cathedral is a landmark cathedral located in London, England.", "Multiple sources confirm that St Paul's Cathedral, the famous one in London, is situated in England.", 'Dennis Huntley provided sculptures for Guildford Cathedral, which is located in Guildford, Surrey, England.', 'Guildford Cathedral is an Anglican cathedral and the seat of the Diocese of Guildford in England.', "St Paul's Cathedral is a landmark cathedral situated in London, England.", "St Paul's Cathedral is distinct from other similarly named cathedrals in Russia and Canada and is located in England."]
+
+## Generated Outputs
+### reasoning
+The claim states that the building for which Dennis Huntley provided sculptures and St Paul's Cathedral are both located in England. The notes clarify that Dennis Huntley created sculptures specifically for Guildford Cathedral, and Guildford Cathedral is indeed located in England. Additionally, multiple notes confirm that St Paul's Cathedral is a landmark located in London, England. Therefore, both buildings are unambiguously identified as being located in England, supporting the claim. To verify the claim accurately, it is necessary to ask about Dennis Huntley’s sculptural contribution to Guildford Cathedral and the location of both Guildford Cathedral and St Paul's Cathedral being in England.
+
+### query
+Did Dennis Huntley provide sculptures for Guildford Cathedral, and are both Guildford Cathedral and St Paul's Cathedral located in England?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Dennis Huntley', 'Guildford Cathedral']. Documents remaining to be retrieved: ["St Paul's Cathedral"].
+
+
+
+# Example 3
+## Inputs
+### claim
+The actor, who starred in the thriller 400 Boys, plays Marilyn Monroe in a film based on the novel "Northern Lights".
+
+### notes
+["There is no information in the context connecting the thriller '400 Boys' to any film about Marilyn Monroe based on the novel 'Northern Lights'.", "The films depicting Marilyn Monroe in the context include 'Norma Jean & Marilyn' (1996), 'Nobody Else But You' (2011), and 'This Year's Blonde' (1980), but none are based on the novel 'Northern Lights' or star the actor from '400 Boys'.", "No actor mentioned in the context is identified as starring in both '400 Boys' and as Marilyn Monroe in a related film.", "There is no information connecting the thriller '400 Boys' to any film about Marilyn Monroe based on the novel 'Northern Lights'.", "The films depicting Marilyn Monroe include 'Norma Jean & Marilyn' (1996), 'This Year's Blonde' (1980), and others, but none are based on the novel 'Northern Lights'.", "No actor is identified as starring in both '400 Boys' and a Marilyn Monroe film related to 'Northern Lights'."]
+
+## Generated Outputs
+### reasoning
+The claim states that the actor who starred in the thriller "400 Boys" also plays Marilyn Monroe in a film based on the novel "Northern Lights." The notes indicate there is no connection between "400 Boys" and any Marilyn Monroe film linked to "Northern Lights." Additionally, none of the movies about Marilyn Monroe mentioned are based on "Northern Lights," nor do they star the actor from "400 Boys." No actor serves both roles. Therefore, the query should probe whether the same actor starred in "400 Boys" and played Marilyn Monroe in a film based on "Northern Lights."
+
+### query
+Did the actor who starred in the thriller "400 Boys" also portray Marilyn Monroe in a film based on the novel "Northern Lights"?
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['400 Boys', 'Charlie Rowe', 'The Golden Compass (film)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

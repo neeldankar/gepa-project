@@ -1,0 +1,45 @@
+```  
+You will receive three inputs:  
+
+- `claim`: A factual statement or multiple factual assertions to verify or support. Claims often pertain to specific entities such as films, albums, songs, individuals (e.g., writers, musicians, athletes), locations, or events, and sometimes contain multiple parts covering different aspects of the same topic. Claims may involve complex relationships between entities (e.g., a song's origin, film screenwriters, locations of species) or precise attributes (e.g., track lists, awards, dates).  
+
+- `notes`: A list of sentences extracted from relevant documents that summarize supporting, refuting, or potentially contradictory factual information related to the claim. These notes may contain redundant, overlapping, ambiguous, or partially missing information. They can also include clarifications of naming variants, temporal data (dates, years), or relationships between multiple entities (e.g., which artist recorded which song first, which park a species is found in).  
+
+- `context`: A list of document summaries, excerpts, or metadata (including document titles) that provide background or source information related to the claim and the notes. These context documents often correspond to key authoritative sources ("gold standard" documents) relevant to verifying the claim, such as official biographies, filmographies, discographies, or scientific descriptions. Titles may be similar or overlapping, so precise title selection is critical.  
+
+Your task is to produce two outputs:
+
+1. `new_notes`:  
+    - Extract and/or reformulate a concise and focused subset of the given `notes` that directly relate to verifying or supporting the claim’s assertions.  
+    - Emphasize key facts, clear evidence, or authoritative information confirming, refuting, or leaving the claim unverified.  
+    - Remove redundant, irrelevant, or speculative information unrelated to claim verification.  
+    - If the claim has multiple assertions, address each assertion distinctly, ensuring relevant notes are included for all parts.  
+    - Carefully handle temporal data (e.g., establishment dates, release years), naming variations, and entity relationships to ensure factual accuracy.  
+    - If evidence is insufficient to fully verify the claim, indicate this clearly in the `new_notes`, but include all accurate partial support or definitive negatives available.   
+
+2. `titles`:  
+    - Provide a list of document titles from the `context` representing the most relevant and authoritative documents for fact verification of the claim.  
+    - Include titles of key documents that directly address the claim topic(s), especially "gold standard" or source documents known to be highly relevant (e.g., official film pages, artist discographies, species descriptions, biographical entries).  
+    - Distinguish between multiple similarly named titles to select the precise matches covering the claim’s entities or events.  
+    - For multi-part claims, ensure the titles collectively cover all aspects raised.  
+
+Additional domain and reasoning considerations:  
+
+- Claims often refer to specific works (films, albums, songs), their attributes (e.g., screenplay source, number of tracks, recording order), or individuals and their accolades (e.g., Nobel Prize winners, Grammy Awards). Precise identification and verification are essential.  
+
+- Notes/context may clarify or contradict the claim and can include nuanced details like location distinctions between similar parks or variant names of species or works.  
+
+- Recognize entity relationships such as a song originally recorded by one artist before being a hit for another, or a plant subspecies endemic to a particular national park and island.  
+
+- Temporal context (release years, establishment years, award dates) can be crucial to interpret and verify the claim parts correctly.  
+
+- When evidence in notes and context is lacking or ambiguous, indicate incomplete verification rather than assuming untrue or true.   
+
+- Prioritize eliminating speculative or unverified assertions from `new_notes` and select titles that best maximize factual coverage rather than breadth alone.  
+
+Output format must be strictly:  
+- `new_notes`: a list of concise factual sentences directly tied to verifying the claim.  
+- `titles`: a list of strings containing document titles selected from the `context` most relevant and authoritative for claim verification.  
+
+This task supports precise fact verification and aids retrieval of critical supporting documents, so accuracy, specificity, and clear linkage between claim parts, evidence, and source documents are paramount.  
+```

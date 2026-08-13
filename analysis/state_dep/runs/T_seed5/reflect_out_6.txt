@@ -1,0 +1,40 @@
+``` 
+Task Description:  
+You will be provided with three inputs:  
+- `claim`: a sentence or set of sentences making an assertion or statement involving entities such as people, places, films, bands, or institutions.  
+- `notes`: a list of candidate supporting or related sentences (extracted document snippets) that may contain relevant factual information supporting or contradicting the claim. These notes often contain partial or overlapping details from different sources.  
+- `context`: a list of full document descriptions or summaries (e.g., Wikipedia-style descriptions) corresponding to entities relevant to the claim. These contain detailed factual information, often including dates, attributes, relations, and descriptive metadata.
+
+Your task is:  
+Using the `claim`, `notes`, and `context`, synthesize and produce two outputs:  
+1. `new_notes`: a concise, high-quality subset of the `notes` that best support or contextualize the claim, filtered and summarized for relevance and precision. Remove duplicates or redundant information, keeping the clearest and most pertinent sentences.  
+2. `titles`: a list of document or entity titles selected from the `context` that are the most relevant to the claim and the selected notes — these represent key knowledge sources backing your reasoning.
+
+Key Domain-Specific and Task-Specific Considerations:  
+- Entities involved are often specific to niche domains such as geography (counties, colleges), sports (players, teams), music (bands, albums, songs, members), and movies (films, characters, genres, production information).  
+- Claims typically involve verifying or clarifying factual relationships, memberships, character roles, or comparisons between entities based on the provided information.  
+- The context can include detailed biographical data, film descriptions, band lineups, and institutional overviews; all are valuable for verifying the claim's details.  
+- Notes may contain subtle variations or partially redundant information; select those that are factually accurate, precise, and best aligned with the claim.  
+- Titles should include all major relevant documents/entities (e.g., people, place, institution, film titles) necessary to understand or support the claim fully.  
+- If some relevant gold-standard (expected) documents are missing, include them if evident from the context and claim to improve coverage.  
+- Clearly identify and exclude irrelevant or unsupported information (e.g., when none of the context concerns a particular entity in the claim).  
+
+Recommended Strategy:  
+- Read the claim carefully to identify all key entities and relationships.  
+- Review the `notes` to find and select those notes that directly support or refute these entities or their relationships as stated in the claim. Summarize or deduplicate where needed.  
+- Scan the `context` to identify documents (articles) about key entities mentioned in the claim or notes, ensuring comprehensive coverage of relevant information.  
+- Include these document titles in the `titles` output.  
+- Be cautious of incomplete or missing information about mentioned entities; reflect this in `new_notes` if necessary by noting the lack of information.  
+- The goal is to create a factually accurate and relevant set of notes and titles to support verifying or understanding the claim thoroughly.  
+- The outputs are intended to support further validation, so clarity, relevance, and completeness with respect to the claim are paramount.
+
+Output Format Requirements:  
+Produce JSON-like outputs with two fields:  
+- `new_notes`: list of strings (concise, factually accurate, non-duplicative notes selected or synthesized from the input `notes`)  
+- `titles`: list of strings (document/entity titles from the `context` that are essential to support or understand the claim)  
+
+Example:  
+If the claim involves a baseball player and colleges in a county, the `new_notes` should succinctly say which colleges are in the county and which colleges the player attended; `titles` should include the player's bio, the colleges, and the county.
+
+This precise and domain-aware approach best reflects your role in synthesizing and filtering relevant information for claim verification or knowledge retrieval tasks.  
+```

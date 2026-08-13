@@ -1,4 +1,4 @@
-# State-Dependent Novelty Selection — Live Experiment Design (v2.1, frozen pre-registration)
+# State-Dependent Novelty Selection — Live Experiment Design (v2.2, frozen pre-registration)
 
 *Direction A of the GEPA SI-curriculum project. Repo: `gepa-si-curriculum`. Supersedes
 `state-dependent-design-v1.md` (sha256 `8079c52c…d936`) after the external adversarial review
@@ -35,6 +35,53 @@ prior document specifies and CC must not improvise them. Both must be resolved b
 ---
 
 ## Amendment log
+
+**2026-08-03 — v2.1.1 → v2.2, tag `state-dep-design-v2.2-frozen`.** One scientific amendment,
+**§11-0 only**, made *before any dose result exists*. Nothing about the hypothesis, the arms, the
+endpoint, the splits, the statistic or the §11-2 timing changes; the liverun is untouched.
+
+*What changed.* The dose's six novelties `x6` were to be **3 texts persisted on 2026-07-09 plus 3
+re-derived**, licensed by a determinism control requiring **90/90 byte-exact** re-derivation of the
+persisted blocks. Under v2.2, **all six are re-derived from one fresh execution**, and no
+cross-run byte comparison is made.
+
+*Why, reason 1 — the old control could only ever have returned STOP.* Three independent temp-0
+re-executions of the same parent candidate, in the same venv, hours apart, are already on disk
+(`analysis/ablation/hover_swap/pairs/`, `pairs_pre_mmap/`, `pairs_mmap_check/`). They agree on
+**15 of 24** rendered feedback blocks. Temp-0 is not a bitwise contract at the API level, and this
+3-hop program amplifies it: one differing token in the hop-1 query changes the BM25 hits, the
+notes, and every hop after. At that rate P(90/90) ≈ 4e-19. The bar was unmeetable, so the
+"licence" it was supposed to grant could never have been granted.
+
+*Why, reason 2 — the mix it licensed was unsound anyway.* The 3 persisted blocks are the `B_e`
+subset, and `B_e` was **selected** by `multiset_match` to match the parent's score profile on
+`A_e` (`hover_swap_run.py:192-195`). They are therefore not an exchangeable half of the six, yet
+`gap_e = x_(4) − (1/20)Σ min(x_S)` sits exactly on that boundary. Re-deriving all six from one
+execution removes the asymmetry as well as the cross-run comparison.
+
+*The control is replaced, not deleted.* It now measures the quantity that actually threatens `D` —
+this program's own re-execution noise — on the actual dose data: re-derive the same seeded
+30-event sample **twice in one session**, compute `D_30` on each pass, and require
+
+> **|D_30(pass 1) − D_30(pass 2)| ≤ mean(D_30)**
+
+i.e. the noise must not exceed the signal. The bar is fixed here, before any result. A failure
+carries the unchanged pre-registered response: **drop the dose**, never the biased 3-candidate
+shrink, and `results.md` takes the estimation-only framing. The 30-event sample is **not re-drawn**
+— it stays the `random.Random(20260709)` draw frozen on 2026-07-09 — and
+`dose_control_expected.json`'s 90 hashes remain on disk as the record of the superseded bar.
+
+*Cost.* 235 × 6 = 1410 re-derivation calls plus 30 × 6 × 2 = 360 control calls, repriced at the
+smoke's measured §8b rate ($0.006121/call, against the superseded $0.004543 fit): **~$8.6**, up
+from $3.61. `APPROVED-dose` is unchanged as a gate and remains off the launch critical path under
+§11-2's amended timing.
+
+*Acknowledged consequence.* This removes an unconditional STOP and replaces it with a conditional
+one. That is a weakening of a guard and is ratified here explicitly rather than allowed to happen
+as a side effect. It is defensible only because the removed STOP guarded against a mix that no
+longer occurs.
+
+---
 
 **2026-07-22 — v2 → v2.1, tag `state-dep-design-v2.1-frozen`.** Amends the frozen v2
 (sha256 `66e49e4c36d72219c5bb768869028652a0e681bbf465c44dbb6c1c143943afb1`) in four places, ratified

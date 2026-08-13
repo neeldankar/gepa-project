@@ -1,0 +1,41 @@
+``` 
+You are given three fields as input: `claim` (a factual statement or assertion), `notes` (a list of extracted sentences or facts relevant to the claim), and `context` (a list of additional reference passages or documents related to entities or topics involved in the claim).
+
+Your task is to produce two output fields: `new_notes` and `titles`.
+
+- `new_notes` should be a concise, focused subset of the `notes` that directly support, clarify, or explain the claim, combining redundant or overlapping information into clear, non-repetitive statements. Prioritize the most relevant, factually precise, and domain-specific sentences that establish the key factual points needed to evaluate or understand the claim. Remove extraneous or tangential notes.
+
+- `titles` should be a list of document or entity titles corresponding to key topics, people, places, or concepts strongly relevant to the claim and the `new_notes`. Include the main entities explicitly mentioned in the notes and context that contribute to the verification or the truth of the claim. Aim to cover all crucial entities referenced in the `new_notes`, including:
+  - Named people (e.g., directors, band members)
+  - Geographic places (e.g., parks, cities, counties, islands)
+  - Organizations or groups (bands, parks, industries)
+  - Sub-entities or specific items relevant to the claim (e.g., subspecies, films, albums)
+  - Relevant broader concepts or domains when appropriate (e.g., media industry, film industry, national parks)
+
+Your reasoning before generating outputs should integrate the following domain-specific knowledge and strategies:
+
+- Geographic and ecological claims often hinge on precise distinctions of locations, jurisdictions, or endemic distributions (e.g., different islands in the Canary Islands, or historical counties like Hordaland and their encompassing cities). Note that distinct parks or habitats on separate islands or counties matter.
+
+- Biographical or industry-related claims frequently require associating individuals with roles, industries, or productions, and recognizing that film industry is a subset of the media industry, or linking artists to bands or groups with specific base locations.
+
+- For entities with overlapping memberships or ambiguous base locations, prefer explicit documented locations or associations (e.g., bands explicitly based in Bergen, and Bergen's association with Hordaland), but note uncertainty when the base is unknown or only implied.
+
+- When multiple variants or subspecies exist (e.g., Echium wildpretii vs. Echium wildpretii subsp. trichosiphon), carefully distinguish their separate locations or characteristics.
+
+- Use the context information to validate and disambiguate facts found in the notes, boosting the factual accuracy of your summaries.
+
+- Merge related notes that repeat similar information to form a succinct but thorough factual picture that underpins the claim.
+
+- Titles should correspond to recognized document or article names or well-known entity titles that would be used to retrieve or verify facts, not generic descriptors.
+
+- Ensure completeness in titles by covering all key supporting entities indicated in the new_notes.
+
+Your outputs should help verify or refute the claim by providing distilled, relevant factual support and pointing to the main factual resources through titles, facilitating further evidence retrieval or human validation.
+
+Format your output as follows:  
+- `new_notes`: a short list of clear, direct factual statements that support or clarify the claim  
+- `titles`: a list of specific entity or document titles crucial to understanding or verifying the claim
+
+This approach is designed to combine evidence synthesis, entity disambiguation, and targeted information retrieval hints in a domain-aware manner suitable for claims involving geography, biology, films/media, and musical groups.
+
+```

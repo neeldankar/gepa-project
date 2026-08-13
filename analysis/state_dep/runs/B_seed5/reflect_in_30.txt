@@ -1,0 +1,116 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:  
+You are given two inputs: a `claim` (a declarative sentence or set of statements about specific entities or events) and a list of `notes` (contextual sentences containing factual information relevant to the claim). Your goal is to generate a concise, focused `query` that can be used to verify the accuracy of the claim based on the notes.
+
+Input Format:  
+- `claim`: A text string stating something factual about one or more entities, their attributes, or relationships (e.g., persons, events, songs, albums, breeds, productions).  
+- `notes`: A list of text strings containing factual information drawn from relevant documents which relate to the claim. The notes may provide partial or overlapping evidence supporting or contradicting the claim.
+
+Output Format:  
+- `query`: A natural language question that directly addresses the truthfulness of the claim by precisely querying the key factual points and entities involved.
+
+Detailed Guidance and Domain-Specific Knowledge:  
+1. **Focus on Core Entities and Relations:**  
+   Identify the key entities or events in the claim (e.g., names of actors, films, albums, songs, dog breeds), and the relationships or attributes asserted about them (e.g., starring roles, song covers, breed recognition).  
+   
+2. **Incorporate All Relevant Elements from the Claim:**  
+   The generated query must reflect all crucial components present in the claim and the relationships between them to enable targeted fact-checking. For example, if the claim refers to an actor starring in two productions, the query should ask if the same actor starred in both specific productions.
+
+3. **Use Evidence from Notes to Formulate Queries:**  
+   Synthesizing information from the notes is key. For example:  
+   - When multiple notes confirm that Michael York is an English actor starring in certain productions, the query should ask about this identity and his participation explicitly.  
+   - When the notes cover a specific album by an artist and a particular song cover, the query should combine these facts to verify the claim.
+
+4. **Handle Negations and Contradictions Carefully:**  
+   In cases where the claim asserts a negative or contradictory fact (e.g., "not both breeds of dog"), the query should be rephrased into a direct yes/no question about the truth of both conditions to verify the claim properly.
+
+5. **Maintain Clarity and Precision:**  
+   The query should be concise and clearly formulated to facilitate document retrieval or fact verification. Avoid unnecessary verbosity or ambiguity.
+
+6. **Generalizable Strategy:**  
+   - Parse the claim for entities, events, relationships, and modifiers (e.g., nationality, dates, locations).  
+   - Cross-reference these with the notes content to identify verifiable components.  
+   - Convert the claim into an interrogative form that directly targets the relevant factual assertions in a way a document retrieval or fact-checking system can handle efficiently.
+
+7. **Examples of Domain-Specific Entities and Contexts Observed:**  
+   - Actors and stage or film productions (e.g., English actor Michael York starring in "Hollywood Goes Classical" or "Lethal Obsession")  
+   - Musicians, albums, and cover songs (e.g., Carlos Santana covering "Stormy" on the 1978 studio album "Inner Secrets")  
+   - Dog breeds and individual dogs (e.g., Banana Joe V Tani Kazari as a toy Affenpinscher breed, Villanuco de Las Encartaciones as a recognized breed)  
+   
+Following these instructions will help you generate queries that cover key claim aspects, use the notes effectively, and support comprehensive fact verification.
+
+Summary Instruction:  
+Given the `claim` and `notes`, produce a precise natural language `query` that directly asks about the truthfulness of the claim by incorporating all critical entities and relations from the claim, structured to facilitate fact checking against the evidence in the notes.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Reverend Lyttleton Morgan was the first chairman of the board of trustees at a university. That university and the University of Idaho are public types of universities.
+
+### notes
+['Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University.', "Morgan State University is a historically black college and Maryland's designated public urban university.", 'Morgan State University was founded as the Centenary Biblical Institute before being renamed to honor Reverend Lyttleton Morgan.', 'The University of Idaho is not mentioned in the provided context but is generally recognized as a public university.', 'Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University.', "Morgan State University is Maryland's designated public urban university and a historically black college.", 'Morgan State University was originally called Centenary Biblical Institute before it was renamed to honor Reverend Lyttleton Morgan.', 'Morgan State University is classified as a public university.', 'The University of Idaho is a publicly recognized public university.', 'Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University.', "Morgan State University is Maryland's designated public urban university and a historically black college.", 'Morgan State University was originally founded as the Centenary Biblical Institute and renamed to honor Reverend Lyttleton Morgan.', 'Morgan State University is classified as a public university.', 'The University of Idaho is a public university.']
+
+## Generated Outputs
+### reasoning
+The claim states that Reverend Lyttleton Morgan was the first chairman of the board of trustees at a university, specifically Morgan State University according to the notes. It also claims that both Morgan State University and the University of Idaho are public universities. The notes confirm Reverend Lyttleton Morgan's role at Morgan State University and describe it as Maryland's designated public urban university, which supports its status as a public university. While the University of Idaho is not detailed in the notes, it is generally recognized as a public university outside of this context. Therefore, the key factual points to verify are Reverend Lyttleton Morgan's role at Morgan State University and whether both Morgan State University and the University of Idaho are public universities.
+
+### query
+Was Reverend Lyttleton Morgan the first chairman of the board of trustees at Morgan State University, and are both Morgan State University and the University of Idaho classified as public universities?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Lyttleton Morgan', 'Morgan State University']. Documents remaining to be retrieved: ['University of Idaho'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The star of Institute Benjamenta portrayed a character in "Double Bass". The real name of that character is Vilyam "Willie" Genrikhovich Fisher.
+
+### notes
+["Mark Rylance, star of Institute Benjamenta, portrayed Vilyam 'Willie' Genrikhovich Fisher (aka Rudolf Abel) in Bridge of Spies, not in Double Bass.", "No information links the character Vilyam 'Willie' Genrikhovich Fisher to a work titled Double Bass.", 'Double Bass references pertain to musical instruments or unrelated persons, such as Jason Barnard, a double bass musician.', "Vilyam 'Willie' Genrikhovich Fisher was a Soviet intelligence officer known as Rudolf Abel.", "Mark Rylance, star of Institute Benjamenta, portrayed Vilyam 'Willie' Genrikhovich Fisher (aka Rudolf Abel) in Bridge of Spies, not in Double Bass.", "No connections exist between the character Vilyam 'Willie' Genrikhovich Fisher and any work titled Double Bass.", 'Double Bass references are unrelated to the character or the actor, often involving musical instruments or other unrelated persons.', "Vilyam 'Willie' Genrikhovich Fisher was a Soviet intelligence officer known as Rudolf Abel, portrayed by Mark Rylance in Bridge of Spies.", "Mark Rylance, star of Institute Benjamenta, portrayed Vilyam 'Willie' Genrikhovich Fisher (aka Rudolf Abel) in Bridge of Spies, not in Double Bass.", "No information links the character Vilyam 'Willie' Genrikhovich Fisher to a work titled Double Bass.", "Double Bass references pertain to musical instruments or unrelated persons, not the character Vilyam 'Willie' Genrikhovich Fisher.", "Vilyam 'Willie' Genrikhovich Fisher was a Soviet intelligence officer known as Rudolf Abel."]
+
+## Generated Outputs
+### reasoning
+The claim states that the star of Institute Benjamenta portrayed a character in "Double Bass," with that character being Vilyam "Willie" Genrikhovich Fisher. The notes repeatedly clarify that Mark Rylance, the star of Institute Benjamenta, portrayed Vilyam "Willie" Genrikhovich Fisher (aka Rudolf Abel) in the film Bridge of Spies, not in any work titled Double Bass. There is no information linking the character to any work called Double Bass. Additionally, "Double Bass" references pertain to musical instruments or unrelated persons, not to this character or actor. Therefore, the claim that the portrayal occurred in "Double Bass" is contradicted by the notes. To verify the claim, a query should ask if the star of Institute Benjamenta played the character Vilyam "Willie" Genrikhovich Fisher in a work titled Double Bass.
+
+### query
+Did the star of Institute Benjamenta portray the character Vilyam "Willie" Genrikhovich Fisher in a work titled Double Bass, or was this character portrayed by him only in Bridge of Spies?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Institute Benjamenta', 'Mark Rylance', 'Rudolf Abel']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+A song from the Kathy Mattea discography, that peaked at #1 on the Billboard Hot Country Singles & Tracks chart, was first recorded by a singer that sang country music.
+
+### notes
+['No songs by Kathy Mattea listed in the context reached #1 on the Billboard Hot Country Singles & Tracks chart.', 'No information found that any Kathy Mattea song reaching #1 was first recorded by another country music singer.', "None of Kathy Mattea's songs mentioned reached #1 on the Billboard Hot Country Singles & Tracks chart; highest reported peak is #3.", "The song 'Love at the Five and Dime' was originally recorded by Nanci Griffith, a singer with country music influence.", 'No evidence found of a Kathy Mattea song that peaked at #1 having been first recorded by a country music singer.', 'No Kathy Mattea song reached #1 on the Billboard Hot Country Singles & Tracks chart; highest peak recorded is #3.', "'Love at the Five and Dime', a Kathy Mattea song that peaked at #3, was originally recorded by Nanci Griffith, a singer with country music influence.", 'There is no evidence that any Kathy Mattea song that peaked at #1 was first recorded by another country music singer.', "Tim McGraw’s song 'Everywhere' did reach #1 on the Billboard Hot Country Singles & Tracks chart but is not part of Kathy Mattea's discography."]
+
+## Generated Outputs
+### reasoning
+The claim states that a song in Kathy Mattea's discography reached #1 on the Billboard Hot Country Singles & Tracks chart and that this song was first recorded by a country music singer. The notes indicate that no songs by Kathy Mattea reached #1 on this chart and that there is no information showing that any such song, if it had reached #1, was originally recorded by a country singer. Therefore, the main factual points to verify are whether any Kathy Mattea song reached #1 on the Billboard Hot Country Singles & Tracks chart, and if so, whether it was first recorded by a country music singer.
+
+### query
+Did any song by Kathy Mattea reach #1 on the Billboard Hot Country Singles & Tracks chart, and if so, was that song originally recorded by a country music singer?
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Come from the Heart', 'Don Williams discography', 'Kathy Mattea discography'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,156 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Overview:  
+You will be given three fields as input: `claim`, `notes`, and `context`. Your task is to produce two output fields: `new_notes` and `titles`.
+
+Input Details:  
+- `claim`: A factual or verification statement involving real-world entities, events, or concepts.  
+- `notes`: A list of sentences or facts that are potentially relevant to verifying or reasoning about the claim. These notes often include detailed entity dates, relationships, and historical or geographic data. However, they may contain redundant, overlapping, or extraneous information.  
+- `context`: A list of text excerpts from articles or descriptions providing background knowledge or detailed entity information related to the entities in the claim and notes. This context is often detailed and may include biographies, definitions, geographic data, and historical descriptions.
+
+Output Requirements:  
+- `new_notes`: A filtered and reformulated subset of the input notes, retaining only key, non-redundant facts critical to supporting or refuting the claim. The new_notes should:  
+    - Be concise yet comprehensive enough to cover the claim’s essential facts.  
+    - Remove duplicates and near-duplicates.  
+    - Clarify relationships, dates, and entities mentioned.  
+    - Draw upon contextual knowledge when appropriate to enhance clarity and correctness.
+
+- `titles`: A list of relevant document or entity titles associated with key facts in the `new_notes`. These titles should correspond to those documents or context excerpts which best support or explain the information in `new_notes`. Titles act as references or identifiers for evidence sources relevant to the claim.
+
+Reasoning and Strategy:  
+- Understand the claim’s core factual assertion and what needs verification or explanation.  
+- Identify from the notes all pertinent facts directly related to the claim.  
+- Use the context information to clarify entities, dates, relationships, or events that appear in notes to ensure accurate and precise filtering and summarization.  
+- Filter out redundant notes and retain one or a few well-phrased, factually accurate notes that support the claim.  
+- Select titles that correspond to key entities, events, or documents involved in the claim that appear both in the notes and context. Aim to include all critical sources for comprehensive coverage, balancing breadth and relevance.  
+- Aim for a tight focus on evidence that supports the claim. Excess or unrelated notes/titles reduce precision and should be avoided.  
+- Consider temporal, geographic, biographical, or filmographic details as seen in examples to validate timelines or overlaps.  
+- When multiple interpretations or relevant documents exist (e.g., multiple operas with similar names by different composers), ensure your notes and titles clearly distinguish these and reflect the claim’s logic.
+
+Domain Specific Notes:  
+- Entities often include historical persons (with birth and death years), operas or films (with release years, creators, or contributors), companies (with headquarters and operating locations), and geographical locations (states, countries).  
+- Dates and lifespan overlaps are used to verify co-existence claims.  
+- Operatic works may differ in composers despite similar titles, based on composition date and style.  
+- Geographical claims often rely on hierarchical places (city > state > country).  
+- Creator roles (director, composer, editor, producer) and film connections or opera productions need accurate attribution.  
+- When multiple people contribute to the same work, emphasize correctly identifying those relevant to the claim.
+
+In summary, the objective is to synthesize a focused, accurate, and evidence-supported set of notes and associated document titles that verify or explain the claim based on the detailed input notes and background context.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Jay Park left the South Korean music group that Jay Park is a part of, before the release of the group's DVD called "Take Off".
+
+### notes
+['The South Korean boy band 2PM released a live DVD titled \'1st Japan Tour 2011 "Take Off"\' in November 2011.', 'Jay Park was originally a member of 2PM.', "The live DVD 'Take Off' corresponds to 2PM's tour and was released after or during 2011.", 'Jay Park was originally a member of South Korean boy band 2PM.', 'The live DVD \'1st Japan Tour 2011 "Take Off"\' by 2PM was released in November 2011.', "Jay Park's last album with 2PM was '01:59PM', released in November 2009, and he left the group before the release of the 'Take Off' DVD in 2011.", 'Jay Park was originally a member of the South Korean boy band 2PM.', "Jay Park's last album with 2PM was '01:59PM', released in November 2009.", 'Jay Park left 2PM before the release of the group\'s live DVD \'1st Japan Tour 2011 "Take Off"\', which was released in November 2011.']
+
+### context
+['Ultra Lover | "Ultra Lover" is the third Japanese single by South Korean boy band 2PM.  It was released on November 2, 2011 in 3 editions: CD+DVD, CD+Photobook and a Regular edition.  The single was released along with the group\'s second live DVD "1st Japan Tour 2011 "Take Off" in Makuhari Messe".  The single ranked #4 in Oricon\'s Weekly chart.', 'Beautiful (2PM song) | "Beautiful" is the fourth Japanese single by South Korean boy band 2PM.  It was released on June 6, 2012 in 3 editions: CD+DVD, CD+Photobook and a Regular edition.  The single was released along with the group\'s third live DVD "Arena Tour 2011 \'Republic of 2PM\'".', 'Republic of 2PM | Republic of 2PM is the first Japanese studio album (third album overall) by South Korean boy band 2PM.  It was released in November 30, 2011 in three editions: 2 CD+DVD and a Regular edition.', 'Take Off (2PM song) | "Take Off" is the debut Japanese single by South Korean boy band, 2PM.  This single was released on May 18, 2011 in 4 editions: CD+DVD, CD+Photobook, CD only limited and a Regular edition.  The song was used as ending song theme for the first 6 episodes of Season 1 of the anime ""Blue Exorcist"".  It peaked no. 4 in Oricon\'s Weekly singles chart with 59,059 sold in the first week.', '2PM Best: 2008–2011 in Korea | 2PM Best ~2008–2011 in Korea~ is the second compilation album by South Korean boy band 2PM.  It was released on March 14, 2012 in three editions: limited CD+DVD, limited CD with bonus tracks and a regular edition.', 'I\'m Your Man (2PM song) | "I\'m Your Man" is the second Japanese single by South Korean boy band, 2PM.  It was released on August 17, 2011 in 3 editions: CD+DVD, CD+Photobook and a Regular edition.', 'All About 2PM | All About 2PM is the first compilation album by South Korean boy band 2PM.  It was released on March 9, 2011.', '2PM of 2PM | 2PM of 2PM is the fourth Japanese studio album by South Korean boy band 2PM.  It was released in April 15, 2015, as their second album release under Sony Music Japan sublabel Epic Records Japan in three editions:', '01:59PM | 01:59PM is the first studio album by South Korean boy band, 2PM.  The album was released in digital and physical format by November 10, 2009.  This would be the last 2PM album in which Jay Park would sing, although his face was excluded from the cover following his departure from the band.', 'Genesis of 2PM | Genesis of 2PM is the third Japanese studio album (sixth album overall) by South Korean boy band 2PM.  It was released in January 29, 2014 as their first album release under Sony Music Japan sublabel Epic Records Japan in three editions:']
+
+## Generated Outputs
+### reasoning
+The claim states that Jay Park left the South Korean music group he was part of before the release of the group's DVD called "Take Off." To verify this, we need to establish the timing of Jay Park's departure relative to the DVD release.
+
+From the notes:
+- The DVD "1st Japan Tour 2011 'Take Off'" was released in November 2011.
+- Jay Park was originally a member of 2PM.
+- The DVD corresponds to a 2011 tour.
+
+From the context:
+- The DVD "Take Off" was released alongside singles in late 2011.
+- Jay Park participated in the album "01:59PM" released November 10, 2009, which was the last album he sang on. Furthermore, his image was removed from the album cover after his departure.
+- The fact that the "Take Off" DVD was released in November 2011, but Jay Park's last appearance was on a 2009 album, strongly indicates Jay Park left the group before the release of the "Take Off" DVD.
+- The timing of the DVD release is well after the last album Jay Park participated in, confirming that he had left the group by the time of the DVD.
+
+Therefore, Jay Park did leave 2PM before the release of the "Take Off" DVD.
+
+### new_notes
+['Jay Park was originally a member of South Korean boy band 2PM.', 'The live DVD \'1st Japan Tour 2011 "Take Off"\' by 2PM was released in November 2011.', "Jay Park's last album with 2PM was '01:59PM', released in November 2009, and he left the group before the release of the 'Take Off' DVD in 2011."]
+
+### titles
+['1st Japan Tour 2011 "Take Off"', '01:59PM']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Ultra Lover']. Documents remaining to be retrieved: ['2PM', 'Go Crazy (album)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The Manchester United Football Club is known as "the Red Devils". The goalie who led the strike force for the 1928–29 Leicester City F.C. season played for them.
+
+### notes
+["Manchester United Football Club is nicknamed 'the Red Devils'.", 'The 1928–29 Leicester City F.C. season strike force was led by forwards Ernie Hine, Arthur Chandler, and Arthur Lochhead.', 'There is no evidence that the Leicester City goalie from the 1928–29 season played for Manchester United.', "Manchester United Football Club is nicknamed 'the Red Devils'.", 'The 1928–29 Leicester City strike force was led by forwards Ernie Hine, Arthur Chandler, and Arthur Lochhead; no goalie led the strike force.', 'There is no evidence that the Leicester City goalie from the 1928–29 season played for Manchester United.', "Manchester United Football Club is nicknamed 'the Red Devils'.", 'The 1928–29 Leicester City F.C. strike force was led by forwards Ernie Hine, Arthur Chandler, and Arthur Lochhead, not by a goalie.', 'There is no evidence that the Leicester City goalie from the 1928–29 season played for Manchester United.']
+
+### context
+['List of Manchester City F.C. seasons | Manchester City is an English professional association football club based in Manchester, who currently play in the Premier League.  The list covers the period from 1891 (when the club, then known as "Ardwick", joined the Football Alliance) to the present day.  It details the club\'s achievements in senior league and cup competitions, and the top scorers for each season.  The club was renamed Manchester City F.C in 1894, and moved to Maine Road in 1923.  Since 2003 the club has played at the City of Manchester Stadium.  Manchester City biggest rivals are Manchester United, whenever they play it is considered the Manchester Derby.', "1956 FA Charity Shield | The 1956 FA Charity Shield was the 34th FA Charity Shield, an annual football match held between the winners of the previous season's Football League and FA Cup competitions.  The match was contested by Manchester United, who had won the 1955–56 Football League, and Manchester City, who had won the 1955–56 FA Cup, at Maine Road, Manchester, on 24 October 1956.  Manchester United won the match 1–0, Dennis Viollet scoring the winning goal.  Manchester United goalkeeper David Gaskell made his debut for the club during the game, taking the place of injured goalkeeper Ray Wood, and, at the age of 16 years and 19 days, became the youngest player ever to play for the club.", "1928–29 Leicester City F.C. season | The 1928–29 season was Leicester City's 31st season in the Football League and their 5th in the First Division.  Led by their formidable strike force of Ernie Hine, Arthur Chandler and Arthur Lochhead (all three of whom are still placed today among Leicester's top five goalscorers of all-time) and inspirational captain and creative lynch-pin Johnny Duncan, Leicester finished runners-up in the First Division, just one point behind winners The Wednesday.  It was the club's highest ever league finish until the 2015-16 Season where the team won their first ever top division championship.", 'Kasper Schmeichel | Kasper Peter Schmeichel (] ; born 5 November 1986) is a Danish professional footballer who plays as a goalkeeper for Premier League club Leicester City and the Denmark national team.  He is the son of former Manchester United and Danish international goalkeeper Peter Schmeichel.', "1928–29 Manchester United F.C. season | The 1928–29 season was Manchester United's 33rd season in the Football League.", 'Manchester United F.C. | Manchester United Football Club is a professional football club based in Old Trafford, Greater Manchester, England, that competes in the Premier League, the top flight of English football.  Nicknamed "the Red Devils", the club was founded as Newton Heath LYR Football Club in 1878, changed its name to Manchester United in 1902 and moved to its current stadium, Old Trafford, in 1910.', "1962–63 Manchester United F.C. season | The 1962–63 season was Manchester United's 61st season in the Football League, and their 18th consecutive season in the top division of English football.  They finished a disappointing 19th in the league, narrowly avoiding relegation, but also finished the season as FA Cup winners with a 3-1 win over Leicester City in the Wembley final.  It was a successful first season at the club for record signing Denis Law, who scored 23 goals in the league and 29 in all competitions.  The FA Cup win was United's first major trophy for six years and the first trophy they had won since the Munich air disaster.", 'Manchester United F.C. mascots | This is a chronological list of Manchester United F.C mascots from their foundation as Newton Heath F.C. in 1878.  The current club mascot is "Fred the Red", an anthropomorphic "Red Devil", after the club\'s nickname, the Red Devils.', "1967–68 Football League First Division | In the 1967–68 Football League First Division season Manchester City won the First Division title for the second time in the club's history.  They won the title on May 11, with a 4-3 win at Newcastle United whilst the defending champions and their nearest rivals Manchester United lost 2-1 at home to Sunderland.  Fulham were relegated on May 1, after losing 2-0 at home against Stoke City, who survived on the last weekend of the season on May 11, with a draw against Leicester City at the expense of Sheffield United, who lost 2-1 at home to Chelsea.", 'Glenn Johnstone | Glenn Johnstone is an English former footballer who played as a goalkeeper.  He played in The Football League for Preston North End during the 1992–93 season.  He was signed from Lancaster City and later left Preston for Morecambe.  He is the father of Manchester United goalkeeper Sam Johnstone.']
+
+## Generated Outputs
+### reasoning
+The claim makes two assertions:
+1. Manchester United Football Club is known as "the Red Devils".
+2. The goalie who led the strike force for the 1928–29 Leicester City F.C. season played for Manchester United.
+
+From the context:
+- Manchester United is indeed nicknamed "the Red Devils" (Context [6], [8]).
+- The 1928–29 Leicester City strike force is explicitly named as Ernie Hine, Arthur Chandler, and Arthur Lochhead (Context [3]). These players are identified as forwards (top goalscorers), not goalies.
+- There is no mention in the context or notes of the goalie for Leicester City in 1928–29, nor any indication that this goalie played for Manchester United.
+- The goalie who led the strike force (which does not make sense as goalkeepers do not lead strike forces) is not named.
+- Without additional information naming the goalie or any record of a Leicester City goalie joining or playing for Manchester United, the second part of the claim cannot be verified from the provided information and seems logically inconsistent.
+
+Therefore, based on the available evidence:
+- Manchester United is the Red Devils.
+- The 1928–29 Leicester City strike force does not include a goalie, and there is no evidence the goalie played for Manchester United.
+
+Hence, the first part of the claim is true; the second part is unsupported and likely incorrect.
+
+### new_notes
+["Manchester United Football Club is nicknamed 'the Red Devils'.", 'The 1928–29 Leicester City F.C. season strike force was led by forwards Ernie Hine, Arthur Chandler, and Arthur Lochhead.', 'There is no evidence that the Leicester City goalie from the 1928–29 season played for Manchester United.']
+
+### titles
+['Manchester United F.C.', '1928–29 Leicester City F.C. season']
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['1928–29 Leicester City F.C. season', 'Ernie Hine', 'Manchester United F.C.']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+A college football game was sponsored by a company based in Memphis. The 2015 Kansas State Wildcats football team was invited to this bowl.
+
+### notes
+['The 2016 Liberty Bowl, held on January 2, 2016 in Memphis, Tennessee at the Liberty Bowl Memorial Stadium, featured the Kansas State Wildcats football team.', 'The 2016 Liberty Bowl was sponsored by AutoZone, an auto parts and accessories retailer based in Memphis, Tennessee.', 'The Liberty Bowl has been held in Memphis since 1965 and has been sponsored by Memphis-based AutoZone since 2004.', 'The Liberty Bowl is an annual college football bowl game held in Memphis, Tennessee, at the Liberty Bowl Memorial Stadium since 1965.', 'Since 2004, the Liberty Bowl has been sponsored by AutoZone, an auto parts and accessories retailer based in Memphis, Tennessee.', 'The 2016 Liberty Bowl, played on January 2, 2016, featured the Kansas State Wildcats football team and concluded the 2015 FBS football season.', 'The Liberty Bowl is an annual college football bowl game held in Memphis, Tennessee, at Liberty Bowl Memorial Stadium since 1965.', 'Since 2004, the Liberty Bowl has been sponsored by AutoZone, an auto parts and accessories retailer based in Memphis, Tennessee.', 'The 2016 Liberty Bowl, played on January 2, 2016 in Memphis, Tennessee, featured the Kansas State Wildcats football team and concluded the 2015 FBS football season.']
+
+### context
+['2016 Liberty Bowl (January) | The 2016 Liberty Bowl was a post-season American college football bowl game played on January 2, 2016 at Liberty Bowl Memorial Stadium in Memphis, Tennessee.  The 57th edition of the Liberty Bowl featured the Kansas State Wildcats of the Big 12 Conference against the Arkansas Razorbacks of the Southeastern Conference.  It began at 2:20\xa0p.m. CST and aired on ESPN.  It was one of the 2015–16 bowl games that concluded the 2015 FBS football season.  Sponsored by automobile parts and accessories store AutoZone, it is officially known as the AutoZone Liberty Bowl.', 'Liberty Bowl | The Liberty Bowl is an annual U.S. American college football bowl game played in late December or early January since 1959.  Since 1965, the game has been held at Liberty Bowl Memorial Stadium in Memphis, Tennessee.  For its first five years, it was played in Philadelphia.  Since 2004, the game has been sponsored by Memphis-based auto parts retailer AutoZone.  Because of the scheduling of the bowl game near the end of the calendar year, no game was played during calendar years 2008 or 2015, while two games were played in calendar years 2010 and 2016.', '2013 Liberty Bowl | The 2013 Liberty Bowl was an American college football bowl game that was played on December 31, 2013 at Liberty Bowl Memorial Stadium in Memphis, Tennessee.  The 55th edition of the Liberty Bowl, it featured the Mississippi State Bulldogs of the Southeastern Conference and the Rice Owls, the champions of Conference USA.  It began at 3:00\xa0p.m. CST and aired on ESPN.  It was one of the 2013–14 bowl games that concluded the 2013 FBS football season.  Sponsored by automobile parts and accessories store AutoZone, it was officially known as the AutoZone Liberty Bowl.  Mississippi State defeated Rice by a score of 44–7.', '2016 Liberty Bowl (December) | The 2016 Liberty Bowl was a post-season American college football bowl game played on December 30, 2016 at Liberty Bowl Memorial Stadium in Memphis, Tennessee.  The 58th edition of the Liberty Bowl featured the Georgia Bulldogs of the Southeastern Conference against the TCU Horned Frogs of the Big 12 Conference.  It was one of the 2016–17 bowl games concluding the 2016 FBS football season.  Sponsored by automobile parts and accessories store AutoZone, it was officially known as the AutoZone Liberty Bowl.', '2014 Liberty Bowl | The 2014 Liberty Bowl was an American college football bowl game played on December 29, 2014 at Liberty Bowl Memorial Stadium in Memphis, Tennessee.  The 56th edition of the Liberty Bowl, it featured the Texas A&M Aggies of the Southeastern Conference and the West Virginia Mountaineers of the Big 12 Conference.  It began at 1:00\xa0p.m. CST and aired on ESPN.  It was one of the 2014–15 bowl games that concludes the 2014 FBS football season.  Sponsored by automobile parts and accessories store AutoZone, it is officially known as the AutoZone Liberty Bowl.', 'Liberty Bowl Memorial Stadium | Liberty Bowl Memorial Stadium, originally Memphis Memorial Stadium, is a football stadium located at the former Mid-South Fairgrounds in the Midtown area of Memphis, Tennessee, United States.  The stadium is the site of the annual AutoZone Liberty Bowl, and is the home field of the University of Memphis Tigers football team of the American Athletic Conference.  It has also been the host of several attempts at professional sports in the city, as well as other local football games and other gatherings.', '2009 Liberty Bowl | The 2009 AutoZone Liberty Bowl is the fiftieth annual college football bowl game, and was played at Liberty Bowl Memorial Stadium in Memphis, Tennessee on January 2, 2009 as part of the 2008-09 bowl season.  The East Carolina Pirates accepted their invitation after their victory over the Tulsa Golden Hurricane in the 2008 Conference USA Championship Game.  The Kentucky Wildcats of the Southeastern Conference also accepted their invitation.', '2011 Liberty Bowl | The 2011 AutoZone Liberty Bowl, the 53rd edition of the game, was a post-season American college football bowl game, held on December 31, 2011 at Liberty Bowl Memorial Stadium in Memphis, Tennessee as part of the 2011–12 NCAA Bowl season.', '2005 Liberty Bowl | The 2005 AutoZone Liberty Bowl was a post-season college football bowl game between the Fresno State Bulldogs and the Tulsa Golden Hurricane on December 31, 2005, at Liberty Bowl Memorial Stadium in Memphis, Tennessee.  In a closely contested game which went back and forth Tulsa defeated Fresno State 31-24.  It was the forty-seventh time the Liberty Bowl had been played and the final game of the 2005 NCAA Division I-A football season for both teams.', 'Memphis Maniax | The Memphis Maniax was an American football team based in Memphis, Tennessee.  The team was part of the XFL begun by Vince McMahon of World Wrestling Entertainment and by NBC, a major television network in the United States.  Home games were played at the Liberty Bowl.']
+
+## Generated Outputs
+### reasoning
+The claim states that a college football game was sponsored by a company based in Memphis and that the 2015 Kansas State Wildcats football team was invited to this bowl. The notes and context mention the Liberty Bowl, a college football bowl game held annually in Memphis, Tennessee. Since 2004, the bowl has been sponsored by AutoZone, an auto parts retailer headquartered in Memphis. The 2016 Liberty Bowl held on January 2, 2016, is a post-season game concluding the 2015 FBS football season. The Kansas State Wildcats participated in this game, confirming their invitation to the bowl associated with the 2015 season. Therefore, the claim aligns with the facts: the game was sponsored by Memphis-based AutoZone, and the 2015 Kansas State Wildcats team played in the bowl (the game occurring in early 2016, but representing the 2015 season). Notes are refined to emphasize sponsorship, location, and the team’s participation directly linked to the 2015 season.
+
+### new_notes
+['The Liberty Bowl is an annual college football bowl game held in Memphis, Tennessee, at the Liberty Bowl Memorial Stadium since 1965.', 'Since 2004, the Liberty Bowl has been sponsored by AutoZone, an auto parts and accessories retailer based in Memphis, Tennessee.', 'The 2016 Liberty Bowl, played on January 2, 2016, featured the Kansas State Wildcats football team and concluded the 2015 FBS football season.']
+
+### titles
+['2016 Liberty Bowl (January)', 'Liberty Bowl', 'Liberty Bowl Memorial Stadium']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['2016 Liberty Bowl (January)']. Documents remaining to be retrieved: ['2015 Kansas State Wildcats football team', 'AutoZone'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

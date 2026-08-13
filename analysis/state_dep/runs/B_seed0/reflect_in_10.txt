@@ -1,0 +1,151 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given a concise, factual claim and a list of notes containing factual sentences or snippets extracted from documents relevant to verifying the claim. Your task is to generate one or more precise, natural-language search queries that effectively target the key facts, entities, events, attributes, and relationships in the claim. These queries will be used to retrieve or verify documents that confirm or refute each core assertion of the claim.
+
+Input Format:
+- `claim`: A short, fact-based statement or assertion that may include multiple related facts or relationships.
+- `notes`: A list of factual sentences or short information pieces extracted from one or more documents. These notes serve as supporting evidence, conflicting information, or contextual background pertinent to the claim.
+
+Detailed Instructions:
+1. Understand and decompose the claim:
+   - Identify the main entities (people, places, works, products), attributes (birthdates, roles, flavors, release years), and relationships (acted alongside, voiced, produced by, release order).
+   - Break down compound or multi-part claims into atomic factual units for targeted verification.
+   - Resolve indirect or inferential references in the claim into direct factual relationships; for example, instead of "born in the birthplace of X," identify the birthplace of both entities explicitly.
+
+2. Leverage the notes to enrich and clarify:
+   - Extract relevant factual information about entities, dates, film titles, roles, productions, or relationships present in the notes.
+   - Use notes to identify corrections, disambiguations, or missing facts that affect claim verification.
+   - Detect contradictions or gaps revealed in the notes to guide formulation of verification queries.
+
+3. Formulate precise verification queries:
+   - Queries should explicitly ask about each atomic fact or relationship necessary to verify the claim.
+   - Address each part of the claim separately if multiple assertions are present.
+   - Incorporate entity disambiguation, e.g., specify full names, film years, or production companies to avoid ambiguity.
+   - Include relational queries such as "Did Actor X star alongside Actor Y in Film Z?", "Was Film A produced by Company B?", or "Was Person C born before Person D?"
+   - When notes reveal contradictions or uncertainty, include queries explicitly designed to confirm or refute those uncertainties.
+
+4. Contextual specificity and domain knowledge:
+   - Use exact names, spellings, and titles as found in the notes (e.g., full names of actors, exact film titles with release years).
+   - Apply domain-specific knowledge where relevant:
+     * Biographical facts: birthplaces, birthdates, occupations.
+     * Filmography: actors’ roles, co-stars, directors, production companies, film genres, release years.
+     * Product facts: flavors, advertising relationships.
+   - Time-related facts (e.g., release dates, birth years) should be explicitly addressed to verify chronological claims.
+
+5. Generalizable verification strategy:
+   - Parse the claim into clear, discrete factual units.
+   - Cross-reference these units with the notes to identify which facts are supported, contradicted, or missing.
+   - Develop natural, targeted, and fact-specific queries that foster retrieval or verification of all relevant supporting or refuting documents.
+   - This ensures maximal evidence coverage and accurate verification of each assertion.
+
+Examples of types of queries to generate:
+- Verification of roles:  
+  "Did Travis Oates voice Piglet in the 2011 Winnie the Pooh movie?"  
+  "Did Gary Oldman star alongside Demi Moore and Meryl Streep in a 1995 American romantic drama?"
+- Verification of production or release details:  
+  "Was the 1995 film 'The Scarlet Letter' produced by Cinergi Pictures?"  
+  "Was 'The Jungle Book' released before the 2011 Winnie the Pooh movie?"
+- Verification of birthdates or birthplaces:  
+  "Was Darren Stanley Hayes born before Darren Middleton, lead guitarist of Powderfinger?"
+- Verification of compound or relationship claims by breaking into individual factual queries to cover each aspect explicitly.
+
+Purpose:
+These queries are intended to guide information retrieval systems to fetch documents that either substantiate or refute the claim comprehensively. Precision, disambiguation, and coverage of all factual units in the claim maximize verification effectiveness and retrieval success.
+
+Summary:
+Given a claim and related factual notes, output fact-specific, verification-focused natural language queries targeting key entities, relationships, and temporal facts. Use domain-specific insights, clarifications, and corrections from the notes to structure queries that uncover complete and accurate evidence for claim validation.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Meesha Shafi, Strings, Ali Azmat and Junaid Khan are judges on the show Music Icons. The producer and singer of Aaina joined them.
+
+### notes
+['Meesha Shafi, Strings, Ali Azmat, and Shahzad Hasan were judges on the show Music Icons as per April 2013 information.', 'Junaid Khan was not a judge on Music Icons but was a host for the 4th Lux Style Awards.', 'No mention of the producer and singer of Aaina joining the judges on Music Icons is found in the provided context.', 'Meesha Shafi, Strings, Ali Azmat, and Shahzad Hasan were judges on Music Icons in April 2013, not Junaid Khan.', 'Junaid Khan was a host for the 4th Lux Style Awards but not a judge on Music Icons.', 'There is no mention or evidence that the producer and singer of Aaina joined the judges on Music Icons in the provided context.', 'As of April 2013, the judges on Music Icons were Meesha Shafi, Strings, Ali Azmat, and Shahzad Hasan, not Junaid Khan.', 'Junaid Khan was a host for the 4th Lux Style Awards, not a judge on Music Icons.', 'There is no evidence that the producer and singer of Aaina joined the judges on Music Icons.', 'The context does not support the claim that Junaid Khan and the producer and singer of Aaina were judges on Music Icons.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that Meesha Shafi, Strings, Ali Azmat, and Junaid Khan serve as judges on the show Music Icons and further states that the producer and singer of Aaina joined them as another judge. To verify this claim, we need to confirm each individual or group’s role as a judge on the show. Specifically, verification requires checking:
+1) Whether Meesha Shafi, the band Strings, Ali Azmat, and Junaid Khan were judges on Music Icons.
+2) Identification of the producer and singer associated with Aaina who joined as a judge on Music Icons.
+3) Confirmation that this producer and singer indeed joined the aforementioned judges on the show.
+
+Since no supporting details or corrections are provided in the notes, queries should explicitly verify the judgeship of each named entity and the association between the producer/singer of Aaina and the show Music Icons.
+
+### query
+"Who are the judges on the show Music Icons? Is Meesha Shafi a judge on Music Icons? Was the band Strings a judging member on Music Icons? Did Ali Azmat serve as a judge on Music Icons? Was Junaid Khan a judge on Music Icons? Who is the producer and singer of Aaina? Did the producer and singer of Aaina join as a judge on Music Icons alongside Meesha Shafi, Strings, Ali Azmat, and Junaid Khan?"
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Alamgir (pop singer)']. Documents remaining to be retrieved: ['Aaina (album)', 'Ali Azmat'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Somebody's Daughter's star, who was in D.C. Cab, was most widely known for his role in the television show "Barney Miller".
+
+### notes
+["Max Gail starred in the 1992 TV film Somebody's Daughter and is best known for his role in the TV show Barney Miller.", "Jim Moody acted in the 1983 comedy film D.C. Cab but is not associated with Somebody's Daughter or Barney Miller.", "No actor is noted in the provided context to have been in both Somebody's Daughter and D.C. Cab while also being widely known for Barney Miller.", "Max Gail starred in the 1992 TV film Somebody's Daughter and is best known for Barney Miller, but there's no evidence he appeared in D.C. Cab.", "Jim Moody acted in the 1983 comedy film D.C. Cab but is not associated with Somebody's Daughter or Barney Miller.", "No actor is confirmed to have appeared in both Somebody's Daughter and D.C. Cab while also being best known for Barney Miller.", "Actors known for Barney Miller in the context (Ron Carey, Buddy Lester, Mario Roccuzzo, Will Seltzer) are not linked to both Somebody's Daughter and D.C. Cab.", "Max Gail starred in the 1992 TV film Somebody's Daughter and is best known for Barney Miller, but did not appear in D.C. Cab.", "Jim Moody appeared in D.C. Cab but is not associated with Somebody's Daughter or Barney Miller.", "No actor is known to have starred in Somebody's Daughter and D.C. Cab and also be best known for Barney Miller.", "Actors known for Barney Miller such as Ron Carey, Buddy Lester, Mario Roccuzzo, and Will Seltzer are not linked to both Somebody's Daughter and D.C. Cab."]
+
+## Generated Outputs
+### reasoning
+The claim states that an actor who starred in Somebody's Daughter and was also in D.C. Cab is most widely known for Barney Miller. The notes indicate that Max Gail starred in Somebody's Daughter and is best known for Barney Miller, but there is no evidence that he appeared in D.C. Cab. Jim Moody acted in D.C. Cab but is not associated with Somebody's Daughter or Barney Miller. Other actors known for Barney Miller are not linked to both Somebody's Daughter and D.C. Cab. No actor is confirmed to have appeared in both Somebody's Daughter and D.C. Cab while also being best known for Barney Miller. Therefore, the claim that there exists an actor satisfying all three conditions (starred in Somebody's Daughter, appeared in D.C. Cab, and best known for Barney Miller) is questionable and needs verification.
+
+The query will need to target:
+1. Whether Max Gail appeared in D.C. Cab.
+2. Whether any actor appeared in Somebody's Daughter.
+3. Whether any actor appeared in D.C. Cab.
+4. Whether any actor who appeared in both Somebody's Daughter and D.C. Cab is best known for Barney Miller.
+5. Full cast lists of Somebody's Daughter and D.C. Cab to find overlapping actors.
+6. The best known roles of any actors who appear in both films.
+
+### query
+Did Max Gail appear in the 1983 film D.C. Cab?  
+Who were the actors in the 1992 TV film Somebody's Daughter?  
+Who were the actors in the 1983 film D.C. Cab?  
+Did any actor appear in both Somebody's Daughter and D.C. Cab?  
+Which actors known for Barney Miller appeared in either Somebody's Daughter or D.C. Cab?  
+What is the best known television or film role of any actor who acted in both Somebody's Daughter and D.C. Cab?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['D.C. Cab', 'Max Gail', "Somebody's Daughter"]. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Disney animated film with the character Cruella de Vil and G-Force are American family comedy action  adventure type of movies.
+
+### notes
+["The Disney animated '101 Dalmatians' (1961) is primarily an animated adventure film.", "The live-action '101 Dalmatians' (1996) is an American family comedy adventure film featuring Cruella de Vil.", "'G-Force' is a 2009 American family comedy action adventure film involving secret agent guinea pigs.", "'Cruella de Vil' is the main antagonist in the '101 Dalmatians' Disney films.", "'101 Dalmatians' and its live-action remakes are family-friendly films blending adventure and comedy.", "'G-Force' fits the description of an American family comedy action adventure film.", 'The 1961 Disney animated film "101 Dalmatians" is primarily an animated adventure film with family-friendly appeal.', 'The 1996 live-action "101 Dalmatians" film is classified as an American family comedy adventure film featuring Cruella de Vil.', '"G-Force" (2009) is an American family comedy action adventure film involving secret agent guinea pigs.', '"Cruella de Vil" is the main antagonist in Disney\'s "101 Dalmatians" franchise, linking her to these family-oriented films.', 'The "101 Dalmatians" franchise includes family-friendly adventure and comedy themes across animated and live-action adaptations.', "The 1961 Disney animated film '101 Dalmatians' is primarily an animated adventure film with family-friendly appeal.", "The 1996 live-action '101 Dalmatians' film is an American family comedy adventure film featuring Cruella de Vil.", "'G-Force' (2009) is an American family comedy action adventure film involving secret agent guinea pigs.", "'Cruella de Vil' is the main antagonist in both the animated and live-action '101 Dalmatians' films.", "'101 Dalmatians' franchise blends adventure and comedy themes suitable for family audiences.", "'G-Force' fits the description of an American family comedy action adventure film."]
+
+## Generated Outputs
+### reasoning
+The claim states that two specific films, one a Disney animated film with the character Cruella de Vil, and the other titled G-Force, are American family comedy action adventure movies. To verify this, the queries should confirm: 1) whether the film featuring Cruella de Vil is a Disney animated movie and its genre classification; 2) that G-Force is an American movie; 3) the genre classification of G-Force as family, comedy, action, and adventure; and 4) the general description of both films as fitting into the family comedy action adventure category. Since Cruella de Vil is a distinctive character from the Disney animated film "101 Dalmatians," the query should specify that. For G-Force, the query should ask about its production origin and genre. These discrete queries will establish if both films fit the claimed categories.
+
+### query
+Is "101 Dalmatians" a Disney animated film featuring the character Cruella de Vil?  
+What are the genre classifications of "101 Dalmatians"?  
+Is the movie G-Force an American film?  
+What genres are assigned to the movie G-Force?  
+Are both "101 Dalmatians" and "G-Force" categorized as family comedy action adventure movies?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['101 Dalmatians (1996 film)', 'Cruella de Vil']. Documents remaining to be retrieved: ['G-Force (film)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

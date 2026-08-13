@@ -1,0 +1,132 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two fields as input: `claim` and `notes`. Your task is to produce a new field called `query`.
+
+- The `claim` is a statement that makes one or more factual assertions involving people, films, awards, professions, or other related domain-specific entities.
+- The `notes` contain a collection of relevant factual information, corrections, contradictions, confirmations, or clarifications related to the claim, often extracted from various documents or knowledge sources.
+  
+Your goal is to generate one or more concise, precise, and well-formulated questions in the `query` field that break down the claim into atomic factual verification sub-questions. These queries should:
+1. Identify the core fact(s) being asserted in the claim that need verification.
+2. Reflect all critical parts of the claim that require evidence from external sources or the knowledge base.
+3. Address any ambiguity, contradictory details, or multiple entities involved in the claim as surfaced by the `notes`.
+4. Be designed to retrieve the necessary documents or pieces of evidence that can confirm or refute the claim.
+5. Use domain-specific terminology and relevant entity names exactly as presented or alluded to in the input data.
+
+Guidelines and Key Points:
+- Focus on decomposing complex claims involving multiple entities or nested relations (e.g., who starred with whom, who directed which film).
+- Incorporate correction or contradiction information from `notes` to guide the construction of queries that explicitly cover those aspects (e.g., when a director’s name is disputed, ask about the director’s identity).
+- Ensure your queries cover all parts of the claim, especially when multiple factual assertions are made (e.g., listing all relevant persons involved, cross-referencing their roles).
+- Use precise and natural language questions that are answerable by retrieving factual documents or authoritative sources.
+- Consider queries that will retrieve missing documents not yet obtained if feedback is provided.
+- When entities are mentioned both positively and negatively in the notes (confirmed or denied roles), reflect these distinctions in the queries to disambiguate.
+- Avoid broad vague questions; focus on retrieval of documents or facts that directly address the truthfulness or falsehood of the claim's components.
+- If a claim involves multiple parts (e.g., two different people’s statuses or achievements), produce queries that can verify each part independently.
+
+Example of reasoning behind queries:
+- A claim about an actor appearing in two films and one film’s director is challenged by notes showing different directors and no evidence the actor appeared in the second film -> queries should ask precisely "Who starred in film X alongside [actor]?" and "Who directed film Y?" and "Did [actor] appear in film Y?"
+- A claim about co-direction between two films referencing specific directors, where notes provide details confirming or denying involvement, should produce queries about "Did [director] co-direct film A?" and "Did [director] co-direct film B?" to clarify overlaps.
+- A claim involving multiple people’s professions or awards (e.g., an Austrian poet-diplomat Nobel laureate and a noted writer) requires queries checking "Are there any Austrian poet-diplomats who won Nobel Prize in Literature?" and "Is [person] a writer?" separately to verify each fact.
+
+In summary, your output `query` must be a well-crafted set of fact-checking questions grounded in the claim’s assertions and the contradictions, confirmations, or omissions presented in the notes. This will maximize document retrieval effectiveness and enable thorough claim verification.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The TV show aired on KidsClick's programming block on a Sunday. A song from La La Land, a Wax Fung album, contained a song featured on an American Dad episode of the same name as the show.
+
+### notes
+["Wax Fang's 'La La Land' album features songs 'Majestic' and 'At Sea' featured on 'American Dad!' episode 'Lost In Space' (151st episode).", "No 'American Dad!' episode titled 'La La Land' was found in the context.", "No evidence that a 'La La Land' TV show aired on KidsClick's programming block on Sunday.", "American Dad! episode 'Lost In Space' aired in 2013, featuring Wax Fang songs.", "No direct relation between KidsClick programming block and TV show named 'La La Land' found.", "Wax Fang's 'La La Land' album songs 'Majestic' and 'At Sea' were featured on the 'American Dad!' episode 'Lost In Space', not an episode named 'La La Land'.", "No evidence exists of an 'American Dad!' episode titled 'La La Land'.", "The 'La La Land' TV series aired on Showtime, BBC Three, and SBS One, not on KidsClick.", "No record of a TV show named 'La La Land' airing on KidsClick's programming block on Sunday.", "KidsClick's programming block has no documented association with a show named 'La La Land'.", "Wax Fang's 'La La Land' album songs 'Majestic' and 'At Sea' were featured on 'American Dad!' episode 'Lost In Space', not an episode named 'La La Land'.", "'La La Land' TV show aired on Showtime, BBC Three, and SBS One, not on KidsClick programming block.", "No record found of a 'La La Land' TV show airing on KidsClick on Sunday or any day.", "No 'American Dad!' episode titled 'La La Land' exists.", "No association between KidsClick programming block and a show named 'La La Land'."]
+
+## Generated Outputs
+### reasoning
+The claim asserts two main points: first, that a TV show titled "La La Land" aired on KidsClick's programming block on a Sunday; second, that a song from Wax Fang's album "La La Land" was featured in an episode of "American Dad!" that shares its name with the show "La La Land." 
+
+The notes consistently report no evidence of a TV show named "La La Land" airing on KidsClick, nor any episode of "American Dad!" titled "La La Land." Instead, Wax Fang's songs from the "La La Land" album were featured in the "American Dad!" episode titled "Lost In Space." Furthermore, the "La La Land" TV series aired on different networks (Showtime, BBC Three, SBS One), not KidsClick. 
+
+Therefore, verification queries should focus on (1) whether a show named "La La Land" aired on KidsClick, especially on Sundays, (2) the titles of "American Dad!" episodes featuring songs from Wax Fang’s "La La Land" album, (3) whether any "American Dad!" episode shares the name "La La Land," and (4) the relationship between the Wax Fang album songs and "American Dad!" episodes.
+
+### query
+Did a TV show titled "La La Land" air on KidsClick's programming block, specifically on Sundays?  
+Is there an episode of "American Dad!" named "La La Land"?  
+Which songs from Wax Fang's "La La Land" album were featured in any "American Dad!" episode, and what is the title of that episode?  
+On which networks did the TV series "La La Land" air?  
+Is there any documented association between "La La Land" and KidsClick’s programming block?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['La La Land (Wax Fang album)']. Documents remaining to be retrieved: ['Animation Domination', 'Lost in Space (American Dad!)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+An actor in a musical film was also a United States Navy Combat veteran in World War II. This film was awarded The Golden Bear at the 50th Berlin International Film Festival.
+
+### notes
+["The 50th Berlin International Film Festival Golden Bear winner was 'Magnolia,' an American film by Paul Thomas Anderson, which is not a musical.", 'First Motion Picture Unit included WWII U.S. military veterans who were actors, such as Clark Gable and Ronald Reagan.', 'Context does not provide evidence that a musical film featuring a U.S. Navy combat veteran from WWII won the Golden Bear at the 50th Berlin International Film Festival.', "The 50th Berlin International Film Festival awarded the Golden Bear to 'Magnolia', an American non-musical film by Paul Thomas Anderson.", 'Historical records show some actors who were U.S. Navy WWII veterans participated in films, but no clear link to a musical film winning the Golden Bear at the 50th festival is found.', 'No evidence in the provided context or notes supports a musical film starring a U.S. Navy WWII combat veteran winning the Golden Bear at the 50th Berlin International Film Festival.', "Previous festivals featured categories like musical films and veterans in film, but the 50th festival's winner and key films do not match the claim's criteria.", "The 50th Berlin International Film Festival awarded the Golden Bear to 'Magnolia', an American film that is not a musical.", "No evidence links 'Magnolia' or any other film at the 50th festival to a U.S. Navy WWII combat veteran as an actor in a musical film.", 'Historical data confirm some WWII US Navy veterans were actors, but none starred in a musical that won the Golden Bear at the 50th Berlin festival.', 'Other Berlin International Film Festivals have awarded musical films, but not at the 50th festival where the Golden Bear was awarded to a non-musical film.']
+
+## Generated Outputs
+### reasoning
+The claim involves two key factual assertions that need to be verified: first, that an actor featured in a musical film was a United States Navy combat veteran during World War II; second, that this musical film won the Golden Bear at the 50th Berlin International Film Festival. From the notes:
+
+- The winner of the Golden Bear at the 50th Berlin International Film Festival was "Magnolia," an American film directed by Paul Thomas Anderson that is not a musical.
+- There is evidence that several U.S. WWII military veterans (actors) existed, including Clark Gable and Ronald Reagan, some of whom served in the First Motion Picture Unit.
+- There is no provided evidence that a musical film featuring a U.S. Navy combat veteran won the Golden Bear at this event.
+
+Therefore, the queries need to be structured to confirm or refute these points, specifically: identifying musical films that won the Golden Bear at the 50th Berlin International Film Festival, the actors in those films, whether any of those actors were U.S. Navy combat veterans in WWII, and finally, verifying the award-winning films at that festival.
+
+### query
+1. Which film won the Golden Bear at the 50th Berlin International Film Festival, and was it a musical?
+2. Were there any musical films awarded the Golden Bear at the 50th Berlin International Film Festival?
+3. Who were the actors in the musical films that participated in or won awards at the 50th Berlin International Film Festival?
+4. Did any actor who starred in a musical film and was recognized at the 50th Berlin International Film Festival serve as a United States Navy combat veteran during World War II?
+5. Which World War II U.S. Navy combat veterans were known to have acted in musical films?
+6. Did any musical films featuring these veterans win the Golden Bear at any Berlin International Film Festival?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['50th Berlin International Film Festival']. Documents remaining to be retrieved: ['Jason Robards', 'Magnolia (film)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+An actor that was in the Wonder Woman (2017 film) of the action adventure genre, performed in Anomalisa after the premier of Fargo.
+
+### notes
+['David Thewlis acted in Wonder Woman (2017).', 'David Thewlis voiced a character in Anomalisa, released in December 2015.', 'David Thewlis played antagonist V.M. Varga in the third season of Fargo.', 'Fargo season 3 premiered in April 2017, after the release of Anomalisa.', 'No actor from Wonder Woman (2017) performed in Anomalisa after the premiere of Fargo.', 'David Thewlis acted in Wonder Woman (2017), released after Anomalisa (2015).', 'David Thewlis voiced a character in Anomalisa (2015), before Fargo season 3 premiered in April 2017.', 'Fargo season 3 premiered in April 2017, after the release of Anomalisa.', 'No actor who acted in Wonder Woman (2017) performed in Anomalisa after the premiere of Fargo.', 'David Thewlis performed in Anomalisa (2015) before Fargo season 3 premiered in April 2017.', 'Fargo season 3 premiered in April 2017, after the release of Anomalisa (2015).', 'David Thewlis acted in Wonder Woman (2017), which was released after both Anomalisa and the Fargo season 3 premiere.', "No actor from Wonder Woman performed in Anomalisa after Fargo's premiere."]
+
+## Generated Outputs
+### reasoning
+The claim states that an actor who appeared in Wonder Woman (2017) performed in Anomalisa after the premiere of Fargo. The notes clarify several key chronological and casting points that contradict this claim: David Thewlis, who acted in Wonder Woman (2017), voiced a character in Anomalisa, but Anomalisa was released in December 2015, which is before Fargo season 3 premiered in April 2017. Additionally, no actor from Wonder Woman (2017) performed in Anomalisa after Fargo’s premiere. The claim's core factual assertion is temporally inconsistent with the given timeline and casting data.
+
+The claim involves several factual components that need verification: 
+1. Whether any actor from Wonder Woman (2017) also performed in Anomalisa.
+2. The release/premiere dates of Anomalisa and Fargo season 3 to establish the timeline.
+3. Confirming if the performance in Anomalisa occurred after the Fargo premiere.
+
+Thus, the queries should separately establish each of these key facts, focusing on the cast overlap and chronology between these productions.
+
+### query
+1. Which actors appeared in both Wonder Woman (2017) and Anomalisa?
+2. When was Anomalisa released, and when did Fargo season 3 premiere?
+3. Did any actor from Wonder Woman (2017) perform in Anomalisa after the Fargo season 3 premiere date?
+4. Specifically, did David Thewlis perform in Anomalisa before or after the Fargo season 3 premiere?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['David Thewlis', 'Wonder Woman (2017 film)']. Documents remaining to be retrieved: ['Fargo (TV series)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

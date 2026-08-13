@@ -1,0 +1,38 @@
+``` 
+Your task is: Given a `claim` and a set of `notes` containing factual statements about entities, events, and dates related to the claim, produce an appropriate `query` that can be used in a knowledge base or document retrieval system to verify and support the claim.
+
+The `query` should be formulated to retrieve the remaining critical information needed to confirm or refute the claim, especially focusing on entities, dates, relationships, or facts explicitly mentioned or implied in the `claim`. It often helps to phrase the query as a natural language question or a structured query (e.g., SPARQL) that aims to find specific missing evidence.
+
+Key domain- and task-specific considerations:
+
+1. **Identify all entities and key facts in the claim:** These can include people (actors, musicians), bands, albums, movies/films, events (e.g., performances), or dates (e.g., formation or release years).
+   
+2. **Cross-check extracted entities/facts with the `notes`:** The notes often contain partial or contradictory information about formation years, album releases, actor roles, or event participants. Your goal is to pinpoint what crucial piece of information is missing or needs verification to support/refute the claim.
+
+3. **Focus the query on unresolved information:** For example, if the formation year of a band in the claim is disputed according to the notes, the query should be about the verified formation year of that band. If an actor's participation in a film or a performance is uncertain, the query should find which actors starred in those productions. If the timeline order of two films is in question, the query should request their release dates or the actor's filmography chronologically.
+
+4. **Use domain-specific identifiers and terminology:** Use common entity types such as "band," "album," "actor," "film," "performance," "release date," "formation year," and their relations like "starred in," "released by," "performed at," and "formed in."
+
+5. **Avoid overly broad queries:** The query should be narrowly tailored to fill the precise gap in evidence that the notes fail to address, rather than just generally retrieving information about entities already well-supported.
+
+6. **Query format flexibility:** The output query can be a precise natural language question that targets the missing data or a structured semantic query (e.g., SPARQL) that explicitly encodes constraints and relations needed to find the fact.
+
+Summary of approach:
+- Extract claims and entities.
+- Analyze notes for confirmations or contradictions.
+- Identify what fact is not yet confirmed to validate the claim.
+- Formulate a concise, targeted query aimed at retrieving that fact.
+
+Example:
+If the claim says "Band X and Band Y both formed in 2002," and notes say Band X formed in 2002 but Band Y formed earlier, then the query should be:  
+**"In what year was Band Y formed?"**
+
+If the claim says "Actor A starred in Performance P and Film F," but notes confirm the actor starred in Performance P, but not Film F, the query should be:  
+**"Which English actor(s) starred in Film F?"** or a SPARQL query searching for an English actor starring in both productions.
+
+If the claim involves sequencing of films starring an actor and notes show contradictory or lacking information, the query should be:  
+**"What films did Actor A star in, and what are their release dates?"** or specifically,  
+**"Was Film X released before Film Y?"**
+
+This method ensures that the queries will retrieve the specific evidence needed to conclusively verify or refute the claim.
+```

@@ -1,0 +1,74 @@
+``` 
+You will be given three inputs:
+
+1. `claim`: A factual statement asserting relationships about entities, such as locations, persons, organizations, events, or works (e.g., films, albums, sports seasons). The claim may include ambiguous or partially incorrect information that needs verification.
+
+2. `notes`: A list of extracted snippets or statements relevant to the claim. These notes may contain duplicates, slightly varying phrasings, or contradicting details. They represent raw extracted data primarily relevant to validating or invalidating the claim.
+
+3. `context`: A list of background documents or articles related to the entities mentioned in the claim. These are authoritative or descriptive sources containing detailed information supporting or refuting elements of the claim and notes.
+
+Your overall task is to produce two outputs:
+
+1. `new_notes`:
+   - A concise, precise, and non-redundant set of factual sentences that directly support, clarify, or refute the claim.
+   - Extract or synthesize these from the provided `notes` prioritized by strong support from the `context`.
+   - Each note should be a standalone factual statement with no speculative or unsupported content.
+   - Remove duplicate or contradictory information.
+   - Explicitly exclude misinformation or inaccuracies present in the claim based on evidence.
+   - When multiple similar facts appear, merge or select the clearest and most context-supported version.
+   - Clarify any ambiguity or disambiguate entities/facts if multiple similar entities exist (e.g., distinguishing solo albums versus band albums, specific airports versus similarly named airports, nationality versus ethnic background).
+   - Focus on relationships or factual assertions relevant to verifying the claim, such as:
+       * Organizational headquarters or locations,
+       * Biographical data (e.g., name, nationality, career span),
+       * Specific event outcomes or timelines (e.g., winner of a season, date ranges),
+       * Roles and professions (e.g., confirming if a person is a film director or actor associated with a film),
+       * Clarification of entity attributes or involvement (e.g., who directed a particular film),
+       * Avoid introducing new facts not supported by notes/context.
+
+2. `titles`:
+   - Provide a minimal, short list of document or article titles from the `context` that most authoritatively cover the facts used in `new_notes`.
+   - Titles should closely correspond to the specific subjects/entities central to the claim and notes—not generic or tangential sources.
+   - If multiple documents cover key facts, include all relevant titles to ensure completeness.
+   - The goal is to identify the key sources justifying the factual synthesis in `new_notes`, to enable verification of the output.
+   - Avoid inferring or fabricating document titles; use titles as given or clearly derivable from the context data.
+
+Domain-specific considerations and best practices:
+
+- Claims often focus on verifying precise factual relationships. Pay attention to details such as:
+    * Geographical location hierarchies (city, state, country),
+    * Temporal ranges (e.g., years active),
+    * Correct identity matching in cases of similar names,
+    * Attribution of creative works (film directors, album credits),
+    * Sporting event outcomes including season numbering and competitor participation.
+
+- Use the `context` to validate and disambiguate the information in `notes`. Discard facts in notes unsupported or contradicted by context.
+
+- Carefully avoid carrying forward misinformation from the claim text. If a claim element is unsupported or contradicted, explicitly exclude or correct it in `new_notes`.
+
+- Where notes contain redundant or repeated facts, distill them into the most clear, accurate, and supported statements.
+
+- Summarize your reasoning implicitly in the structure and content of `new_notes` by choosing and phrasing evidence carefully.
+
+- Never introduce personal opinions, guesswork, or unverifiable information.
+
+- Each output `new_notes` entry should be brief yet sufficiently informative for verifying the claim's validity.
+
+- The quality of your output is judged on factual accuracy, clarity, non-redundancy, and appropriate source referencing through `titles`.
+
+Example general strategy:
+
+- Identify key factual elements of the claim requiring verification.
+
+- Locate corresponding facts in notes that address these elements.
+
+- Confirm these facts against the detailed `context` documents.
+
+- Remove duplicates and contradictions from notes, prioritizing contextual support.
+
+- Write clear, standalone factual sentences for `new_notes`.
+
+- Select document titles from the `context` best representing those facts as `titles`.
+
+By following this methodology and the above considerations, produce a factual, precise, and well-documented validation or refutation of the claim using the given notes and context.
+
+```

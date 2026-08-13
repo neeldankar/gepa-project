@@ -1,0 +1,119 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given input fields: `claim` (a factual assertion or statement) and `notes` (a list of factual sentences, observations, or evidence snippets related to the claim). Your task is to produce the output field `query`, which should be an information-seeking question (or a set of concise search queries) that can be used to verify or investigate the truthfulness of the claim by retrieving relevant evidence or documents.
+
+Instructions and background details:
+
+1. **Input format:**
+   - `claim`: a statement that asserts a fact or relationship between entities, events, or characteristics.
+   - `notes`: a list of extracted factual notes or knowledge snippets which may provide partial, ambiguous, or confirming/contradicting evidence about the claim.
+
+2. **Goal:**
+   - Generate one or more precise, information-seeking queries that could guide a retrieval system or a fact-checker to find relevant documents, evidence, or data that confirm or refute the claim.
+   - The queries should be focused, specific, and formulated based on the key entities, relationships, attributes, and temporal or categorical constraints implied by the claim and supported or challenged by the notes.
+
+3. **Guidelines for formulating queries:**
+   - Identify all pivotal entities (people, places, works, organizations) and their roles or actions in the claim.
+   - Recognize relationships or attributes whose truthfulness is to be determined (e.g., "X acted in movie Y and also in movie Z," "The main flavor of drink A and drink B," "The type/status of universities associated with individual C").
+   - Extract key qualifiers such as dates, roles, nationalities, product flavors, types, or statuses that are relevant to validating the claim.
+   - If notes indicate ambiguity, absence, or partial information, include queries that could resolve these unknowns (e.g., "Who is the Welsh actor in [movie]?", "What is the flavor of the drink advertised with X?", "Is the university associated with Y public or private?").
+   - Frame queries that retrieve entities or attributes in a way that facilitates comparison or cross-validation related to the claim’s two or more components.
+
+4. **Domain-specific considerations observed from examples:**
+   - Movie-related claims often require querying film titles, actor nationalities, or co-acting in sequels and original movies.
+   - Beverage claims may involve flavor profiles tied to geographic origin or advertisements linked to songs.
+   - University claims involve historical roles of individuals (chairmanship) and classification of universities (public/private).
+   - When a claim spans multiple entities or attributes (e.g., actor nationality plus roles in multiple films), the queries should request that information to be able to corroborate or refute the claim holistically.
+   - Queries may be natural language questions or structured query language snippets (SPARQL-like) where appropriate, reflecting the structured nature of the underlying data or knowledge base.
+
+5. **Generalizable strategy:**
+   - Use the claim to identify discrete factual assertions.
+   - Consult the notes to detect gaps or confirmatory evidence.
+   - Formulate queries that target retrieval of evidence to fill gaps or verify key facts.
+   - Aim for queries that can yield grounded evidence for verification steps such as: identifying actors and their nationality, matching role appearances in films, verifying flavor profiles and ad campaigns, or confirming institutional affiliations and classifications.
+
+In summary:  
+Given a `claim` and supporting or conflicting `notes`, produce a precise, clear, and information-rich query or series of queries that a fact-checking system or search retrieval process can execute to gather the evidence needed to verify the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The writer of the metal song "Veteran of the Psychic Wars" is a lyricist, not Otep Shamaya.
+
+### notes
+["The song 'Veteran of the Psychic Wars' by Blue Öyster Cult was written by Eric Bloom and British author Michael Moorcock.", 'Michael Moorcock is known as a writer/author, supporting the claim that a lyricist wrote the song.', 'There is no mention or evidence that Otep Shamaya is a writer or lyricist of this song.', 'Thus, the claim that the writer is a lyricist and not Otep Shamaya is supported.', "'Veteran of the Psychic Wars' is a song by Blue Öyster Cult, written by Eric Bloom and British author Michael Moorcock, who is a recognized lyricist and author.", "Otep Shamaya is known as the lead vocalist of the nu metal band Otep, with no evidence or mention of her involvement as a lyricist or writer of 'Veteran of the Psychic Wars'.", "The claim that the song's writer is a lyricist (Michael Moorcock) and not Otep Shamaya is well supported by the context and notes.", "The song 'Veteran of the Psychic Wars' was written by Eric Bloom and Michael Moorcock, both associated with Blue Öyster Cult.", 'Michael Moorcock is a recognized author and lyricist, supporting that the writer is a lyricist.', 'Otep Shamaya is known as the lead vocalist of the band Otep and is not credited as a writer or lyricist of this song.', "There is no evidence or mention of Otep Shamaya's involvement in writing or lyricizing 'Veteran of the Psychic Wars'.", "Hence, the claim that the song's writer is a lyricist and not Otep Shamaya is supported by the available information."]
+
+## Generated Outputs
+### reasoning
+The claim asserts that the writer of the song "Veteran of the Psychic Wars" is a lyricist, specifically not Otep Shamaya. The notes confirm that the song was written by Eric Bloom and Michael Moorcock, where Michael Moorcock is recognized as a writer/author, which aligns with the notion of a lyricist writing the song. There is no evidence connecting Otep Shamaya to writing or lyricism for this song. Verifying this claim requires confirming (1) the official credited writers of the song "Veteran of the Psychic Wars" and their roles, and (2) whether Otep Shamaya has any writing or lyricist credit for the song.
+
+### query
+Who are the credited writers and lyricists of the song "Veteran of the Psychic Wars"?  
+Is Otep Shamaya credited as a writer or lyricist for "Veteran of the Psychic Wars"?  
+What are the professional roles of Eric Bloom and Michael Moorcock with respect to this song?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Otep Shamaya', 'Veteran of the Psychic Wars']. Documents remaining to be retrieved: ['Eric Bloom'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Goodbye Mr. Mackenzie is a country band with more members than the band that recorded "Make Them Gold".
+
+### notes
+['Goodbye Mr. Mackenzie is a Scottish alternative rock group, not a country band.', 'The lineup of Goodbye Mr. Mackenzie at their commercial peak consisted of six members.', '"Make Them Gold" is a song by Chvrches, a Scottish synthpop band known to have three members.', 'Therefore, Goodbye Mr. Mackenzie has more members than the band that recorded "Make Them Gold", but the genre classification in the claim is incorrect.', 'Goodbye Mr. Mackenzie is a Scottish alternative rock group, not a country band.', 'At their commercial peak, Goodbye Mr. Mackenzie had six members.', '"Make Them Gold" is a song by Chvrches, a Scottish synthpop band with three members.', 'Goodbye Mr. Mackenzie has more members than the band that recorded "Make Them Gold", but the classification of Goodbye Mr. Mackenzie as a country band is incorrect.', 'Goodbye Mr. Mackenzie is a Scottish alternative rock group, not a country band.', 'At their commercial peak, Goodbye Mr. Mackenzie had six members.', '"Make Them Gold" is a song by Chvrches, a Scottish synthpop band with three members.', 'Goodbye Mr. Mackenzie has more members than the band (Chvrches) that recorded "Make Them Gold", but the genre classification as country is incorrect.']
+
+## Generated Outputs
+### reasoning
+The claim states two assertions: (1) Goodbye Mr. Mackenzie is a country band, and (2) Goodbye Mr. Mackenzie has more members than the band that recorded "Make Them Gold." The notes clarify that Goodbye Mr. Mackenzie is a Scottish alternative rock group, not a country band, so the first part of the claim is incorrect. The notes also indicate Goodbye Mr. Mackenzie has six members at their commercial peak, while Chvrches, the band that recorded "Make Them Gold," has three members. This confirms the second part of the claim is correct. To verify the overall claim, queries should confirm the genre and membership count of Goodbye Mr. Mackenzie and confirm the members of Chvrches relative to the song "Make Them Gold."
+
+### query
+- What is the musical genre of Goodbye Mr. Mackenzie?  
+- How many members are or were in Goodbye Mr. Mackenzie during their commercial peak?  
+- Which band recorded the song "Make Them Gold"?  
+- How many members does the band that recorded "Make Them Gold" have?  
+- Is Goodbye Mr. Mackenzie classified as a country band?  
+- Compare the membership count between Goodbye Mr. Mackenzie and the band that recorded "Make Them Gold."
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Goodbye Mr. Mackenzie', 'Make Them Gold']. Documents remaining to be retrieved: ['Chvrches'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The company owning Quaker Ridge (NYW&B station) has a terminus at the New York city in the county of Westchester.
+
+### notes
+['Quaker Ridge station was on the New York, Westchester and Boston Railway located in New Rochelle, Westchester County, New York.', 'The New York, Westchester and Boston Railway connected Manhattan and the Bronx (New York City) with Westchester County.', 'The railway’s southern terminus was in the South Bronx, part of New York City, which is separate from Westchester County.', 'New York City is not located within Westchester County, but is adjacent and to the south of it.', 'Therefore, the company owning Quaker Ridge had a terminus in New York City (Bronx), but New York City is not in Westchester County.', 'Quaker Ridge station was on the New York, Westchester and Boston Railway in New Rochelle, Westchester County, New York.', 'The NYW&B Railway connected Manhattan and the Bronx (New York City) with Westchester County.', 'The southern terminus of the NYW&B Railway was located in the South Bronx, part of New York City, not Westchester County.', 'New York City is adjacent to but distinct from Westchester County and not located within it.', 'Therefore, the company owning Quaker Ridge had a terminus in New York City but not within Westchester County.', 'Quaker Ridge station was located in New Rochelle, Westchester County, New York.', 'The New York, Westchester and Boston Railway connected New York City (Manhattan and the Bronx) with Westchester County.', 'The southern terminus of this railway was in the South Bronx, part of New York City, but not located within Westchester County.', 'New York City is adjacent to but separate from Westchester County.', 'Therefore, while the railway company owning Quaker Ridge had a terminus in New York City, that terminus was not within Westchester County.']
+
+## Generated Outputs
+### reasoning
+The claim asserts two key pieces of information: (1) that Quaker Ridge (NYW&B station) is owned by a certain company, and (2) that this company operates a terminus at New York City in Westchester County. To verify this, it is necessary to identify which company owns the Quaker Ridge station associated with the NYW&B (New York, Westchester and Boston Railway) and determine the locations of any termini operated by that company. Specifically, confirming whether the company has a terminus in New York City located within Westchester County is critical. As "New York City" is a well-defined municipality primarily within New York County and surrounding boroughs, it is important to clarify if there is a terminus described as New York City within Westchester County, or if the claim confuses terminus location or name. Therefore, a search should investigate the owning company of Quaker Ridge station, the operational lines related to this company, and the geography of their termini to verify the claim.
+
+### query
+Who owns the Quaker Ridge station on the New York, Westchester and Boston Railway?  
+What termini did the New York, Westchester and Boston Railway company operate?  
+Is there a terminus of this company located in New York City within Westchester County?  
+Where is the Quaker Ridge station geographically located relative to Westchester County and New York City?  
+Does the company owning Quaker Ridge station have any terminus in Westchester County considered part of New York City?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['New York, Westchester and Boston Railway', 'Quaker Ridge (NYW&amp;B station)']. Documents remaining to be retrieved: ['Mount Vernon, New York'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

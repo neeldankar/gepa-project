@@ -1,0 +1,129 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You are given three input fields: `claim`, `notes`, and `context`.
+
+- `claim`: A factual assertion or statement involving specific entities such as people, bands, songs, or places.
+- `notes`: A list of concise textual fact snippets relevant to verifying or understanding the claim. These often include direct statements about membership in bands, song authorship, nationality, or geographic location.
+- `context`: A list of longer encyclopedic or reference-style paragraphs or document abstracts that provide detailed background information about entities mentioned in the claim and notes. These often come from music-related domains, including biographies of musicians, band histories, song descriptions, and geographic info related to places connected to the entities.
+
+Your task is to produce two output fields:
+
+1. `new_notes`: a distilled, concise list of key fact statements that support and verify the claim. Select notes that directly relate to the critical fact components of the claim, removing redundancy and focusing on the most relevant and unambiguous facts. Use both the given `notes` and relevant information inferred from the `context` to form these. Avoid including irrelevant or overly detailed information not related to the claim verification.
+
+2. `titles`: a list of titles of relevant source documents or entities (e.g., Wikipedia article titles or authoritative reference titles) drawn from the provided `context` that correspond to the factual evidence used to support the claim. These should cover all major entities referenced in the claim and `new_notes`, including persons, bands, songs, and geographic places, as well as any specific articles clarifying attributes like nationality or membership. Aim for comprehensive yet precise coverage of all key supporting documents.
+
+Detailed domain-specific knowledge to incorporate:
+- Music bands, their members, and their geographic origins (e.g., bands formed in specific counties or cities).
+- Individual musicians, their roles (e.g., frontman, bassist), and associations with multiple bands.
+- Song authorship and performance details, including which musician sings or wrote a particular song related to a band.
+- Nationalities of musicians and the distinction between artists based on their countries.
+- Geographic knowledge linking cities (e.g., Bergen) to counties (e.g., Hordaland) in Norway or other countries relevant to the claim.
+- Attention to disambiguation: many musicians or bands may have similar names, so exact match to the entity discussed is important.
+- Avoid irrelevant tangential context (e.g., information about unrelated albums or artists not linked directly to the claim).
+
+Suggested approach:
+- Read the claim carefully to identify key entities and factual assertions.
+- Review the provided notes for direct statements relevant to the claim; distill and filter these into the minimal set that supports or refutes the claim.
+- Consult the context paragraphs to confirm and supplement missing factual connections, particularly for geographic or membership verification.
+- Produce `new_notes` that are concise and factual, avoiding repetitions.
+- Extract from the context the titles of the documents or articles that best correspond to the evidence used, ensuring all key entities referenced in the `new_notes` are represented.
+- Strive to cover all gold documents if applicable, not missing key relevant knowledge sources.
+- Clearly separate the two outputs as `new_notes` (list of fact statements) and `titles` (list of source document titles).
+
+This task requires concise factual verification, identifying and selecting key evidence from multiple inputs, and associating those facts to authoritative source titles to support the claim assessment.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The actor who starred in a main role on A Lua Me Disse received the Golden Globe nomination for playing the lead role of "The King of Cocaine".
+
+### notes
+['"A Lua Me Disse" is a 2005 Brazilian telenovela starring Adriana Esteves and Wagner Moura in the main roles.', "There is no information linking Adriana Esteves or Wagner Moura to a Golden Globe nomination for the role 'The King of Cocaine'.", 'Actors who have received Golden Globe nominations for notable roles include Eric Roberts, Shelley Long, Richard Thomas, Regina King, Sam Waterston, Stathis Giallelis, William Hurt, and James Caan.', 'None of these actors are listed as main roles in "A Lua Me Disse."', '"A Lua Me Disse" is a 2005 Brazilian telenovela starring Adriana Esteves and Wagner Moura in the main roles.', "There is no information linking Adriana Esteves or Wagner Moura to a Golden Globe nomination for the role 'The King of Cocaine'.", 'Eric Roberts received a Golden Globe nomination for a lead role called \'King of the Gypsies\' but did not star in "A Lua Me Disse".', 'None of the Golden Globe-nominated actors for roles similar to \'The King of Cocaine\' starred in "A Lua Me Disse".']
+
+### context
+['Eric Roberts | Eric Anthony Roberts (born April 18, 1956) is an American actor.  His career began with a well-received performance in "King of the Gypsies" (1978), for which he earned his first Golden Globe Award nomination.  His second Golden Globe nomination came for his portrayal of Paul Snider in "Star 80" (1983), followed by Globe and Academy Award nominations for his supporting role in "Runaway Train" (1985).', 'Sam Waterston | Samuel Atkinson Waterston (born November 15, 1940) is an American actor, producer and director.  Among other roles, he is noted for his portrayal of Sydney Schanberg in "The Killing Fields" (1984), for which he received an Academy Award nomination, and his starring role as Jack McCoy on the long-running NBC television series "Law & Order" (1994–2010), which brought him Golden Globe and Screen Actors Guild Awards.  He has been nominated for multiple Golden Globe, Screen Actors Guild, BAFTA and Emmy awards, having starred in over eighty film and television productions during his fifty-year career.  He has also starred in numerous stage productions.  AllMovie historian Hal Erickson characterized Waterston as having "cultivated a loyal following with his quietly charismatic, unfailingly solid performances."', 'A Lua Me Disse | A Lua Me Disse (English: Once in a Blue Moon) is a 2005 Brazilian telenovela created by Miguel Falabella and Maria Carmem Barbosa.  Starring Adriana Esteves and Wagner Moura in the main roles.', 'Richard Thomas (actor) | Richard Earl Thomas (born June 13, 1951) is an American actor.  He is best known for his leading role as budding author John-Boy Walton in the CBS drama "The Waltons", for which he won one Emmy Award and received nominations for another Emmy Award and two Golden Globe Awards.  He also played Special Agent Frank Gaad on FX\'s crime drama series "The Americans" (2013–2016), appeared in Stephen King\'s mini series "IT" (1990), and had a supporting role in the comedy-drama film "Wonder Boys" (2000).', 'Stathis Giallelis | Stathis Giallelis (Greek: Στάθης Γιαλελής ; born January 21, 1941) is a Greek actor.  He won brief international renown in the early 1960s as the star of Elia Kazan\'s Academy Award-nominated epic "America, America", a role which brought him the Golden Globe Award for New Star of the Year – Actor, as well as a nomination for Golden Globe Award for Best Actor – Motion Picture Drama.', 'Timothy Spall filmography | English actor Timothy Spall OBE (born 27 February 1957) has made over 100 appearances in film and television.  Having made his cinematic debut in the 1979 film "Quadrophenia", Spall first rose to fame for playing boorish Barry Spencer Taylor in the sitcom "Auf Wiedersehen, Pet" (1983–2004), a role that won him popularity and critical praise.  He has gone on to become a highly paid Hollywood actor featuring in a vast number of cinematic roles, among them the starring role of Maurice Purley in "Secrets & Lies" (1996), for which he received nominations for a BAFTA Award for Best Actor in a Leading Role and a London Film Critics Circle Award for Actor of the Year.', 'Michael O\'Keefe | Michael O\'Keefe (born Raymond Peter O\'Keefe, Jr.; April 24, 1955) is an American film and television actor, known for his roles as Danny Noonan in "Caddyshack" and Ben Meechum in "The Great Santini" — for which he received a Golden Globe Award for New Star of the Year, as well as a nomination for the Academy Award for Best Supporting Actor.', 'Wentworth Miller | Wentworth Earl Miller III (born June 2, 1972) is a British-American actor, model, and screenwriter.  He rose to prominence following his role as Michael Scofield in the five seasons of the Fox series "Prison Break", for which he received a Golden Globe Award nomination for Best Actor in a Leading Role.  He made his screenwriting debut with the 2013 thriller film "Stoker".  In 2014, he began playing Leonard Snart/Captain Cold in a recurring role on The CW series "The Flash" before becoming a series regular on the spin-off "Legends of Tomorrow".  Miller reprised his role as Michael Scofield for the fifth season of the limited-run "Prison Break" revival, which aired on April 4, 2017 and concluded on May 30, 2017.', 'James Caan | James Edmund Caan (born March 26, 1940) is an American actor.  After early roles in "The Glory Guys" (1965), for which he received a Golden Globe nomination, "El Dorado" (1966), and "The Rain People" (1969), he came to prominence in the 1970s with significant roles in films such as "Brian\'s Song" (1971), "Cinderella Liberty" (1973), "The Gambler" (1974), "Freebie and the Bean" (1974), "Rollerball" (1975), "Funny Lady" (1975), "A Bridge Too Far" (1977), "1941" (1979), and "Chapter Two" (1979).  For his signature role in "The Godfather" (1972), that of hot-tempered Sonny Corleone, Caan was nominated for the Academy Award for Best Supporting Actor and the corresponding Golden Globe.', 'Shelley Long | Shelley Lee Long (born August 23, 1949) is an American actress.  She is best known for her role as Diane Chambers on the sitcom "Cheers", for which she received five Emmy nominations, winning in 1983 for Outstanding Lead Actress in a Comedy Series.  She won two Golden Globe Awards for the role.  Long reprised her role as Diane Chambers in four episodes of the spinoff "Frasier", for which she received an additional guest star Emmy nomination.  In 2009, she began playing a recurring role as DeDe Pritchett on the ABC comedy series "Modern Family".']
+
+## Generated Outputs
+### reasoning
+The claim states that an actor who starred in a main role on the Brazilian telenovela "A Lua Me Disse" received a Golden Globe nomination for playing the lead role of "The King of Cocaine." The context provided lists the main actors in "A Lua Me Disse" as Adriana Esteves and Wagner Moura (context [3]), but there is no mention of Adriana Esteves or Wagner Moura receiving a Golden Globe nomination for a role referenced as "The King of Cocaine." 
+
+Additionally, none of the actors mentioned in the context are connected both to "A Lua Me Disse" and a Golden Globe nomination for portraying "The King of Cocaine." The actors discussed in the notes have Golden Globe nominations, but for different roles in different productions, and none have a known connection to "A Lua Me Disse." 
+
+Therefore, without explicit information linking an actor from "A Lua Me Disse" to a Golden Globe nomination for the "King of Cocaine" role, the claim cannot be verified or supported from the provided context.
+
+### new_notes
+[]
+
+### titles
+['A Lua Me Disse']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['A Lua Me Disse']. Documents remaining to be retrieved: ['Pablo Escobar', 'Wagner Moura'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The director of Finding Dory co-directed the film A Bug's Life.
+
+### notes
+['Andrew Stanton directed Finding Dory alongside co-director Angus MacLane.', "Andrew Stanton co-directed the film A Bug's Life.", 'Finding Dory was directed by Andrew Stanton.', 'Andrew Stanton directed Finding Dory alongside co-director Angus MacLane.', "Andrew Stanton co-directed the film A Bug's Life.", 'Andrew Stanton directed Finding Dory alongside co-director Angus MacLane.', "Andrew Stanton co-directed the film A Bug's Life."]
+
+### context
+['Andrew Stanton | Andrew Stanton (born December 3, 1965) is an American film director, screenwriter, producer and voice actor based at Pixar.  His film work includes writing and directing Pixar\'s "A Bug\'s Life" (1998) (as co-director), "Finding Nemo" (2003), and "WALL-E" (2008), and the live-action film, Disney\'s "John Carter" (2012).  He also co-wrote all three "Toy Story" films and "Monsters, Inc." (2001)', 'Finding Dory | Finding Dory is a 2016 American 3D computer-animated comedy adventure film produced by Pixar Animation Studios and released by Walt Disney Pictures.  Directed by Andrew Stanton with co-direction by Angus MacLane, the screenplay was written by Stanton and Victoria Strouse.  The film is a sequel/spinoff to 2003\'s "Finding Nemo" and features the returning voices of Ellen DeGeneres and Albert Brooks, with Hayden Rolence (replacing Alexander Gould), Ed O\'Neill, Kaitlin Olson, Ty Burrell, Diane Keaton and Eugene Levy joining the cast.  The film focuses on the amnesiac fish Dory, who journeys to be reunited with her parents.', 'Colin Brady | Colin Brady is an American animator and film director.  He graduate of the California Institute of the Arts (CalArts), has worked as lead animator, animation director, supervising animator and co-director with animated film powerhouses Pixar and Industrial Light & Magic.  His credits have included "Toy Story", "Toy Story 2", "A Bug\'s Life", "Men in Black II", "Lemony Snicket\'s A Series of Unfortunate Events", and many others.', 'Peter Shin | Peter Shin is an American animator who served as supervising director of "", the director of "Big Bug Man", the director of "Family Guy" episodes "Death Has a Shadow", "Emission Impossible", "North by North Quahog", "It\'s a Trap! " and "The Simpsons Guy" and was a character layout artist "The Simpsons" for several episodes between 1990 and 1995.  He directed the first ever episode of Family Guy.', 'Manoj Amarnani | Manoj Amrnani is an Indian film actor and director who directed and starred in "Life Is Beautiful".  The film was released in India on 22 August 2014 and stars Nancy Brunetta as Amarnani\'s co-star.', 'Abdiel Colberg (director) | Abdiel Colberg (born December 20, 1957) is a Puerto Rican television producer and movie director.  Among the movies which he directed and co-wrote is "Los Dias de Doris" (1999), a drama starring Cordelia González, Braulio Castillo, Jr., Raul Davila and Alba Raquel Barros.', 'I Want a Divorce | I Want a Divorce is a 1940 Paramount film directed by Ralph Murphy.  The screenplay was written by Frank Butler (based on a story by Adela Rogers St. Johns).  The film starred then-married actors Joan Blondell and Dick Powell, who would later divorce in real life.  Co-star Gloria Dickson and director Murphy were also later married to one another and divorced.', 'Newport Restoration Foundation | The Newport Restoration Foundation was founded by Doris Duke in 1968 in Newport, Rhode Island to preserve early housing stock including 18th century colonial homes.  It is the largest collection of vernacular architecture in the Northeastern United States.  In the 1960s, structures in Newport were threatened by redevelopment.  Doris Duke purchased and restored over 83 individual houses under her direction.  The entire project represents one of the largest preservation efforts undertaken in modern times and is currently run by Executive Director Pieter Roos, who started in 1999.', 'Elles (film) | Elles is a 2011 European film, directed and co-written by Polish director Małgoska Szumowska.  It shows an episode in the life of Anne (Juliette Binoche), a journalist in Paris for French "Elle" who is writing an article about female student prostitution.', 'Find the Lady (1936 film) | Find the Lady is a 1936 British comedy film directed by Roland Grillette and starring Jack Melford, Althea Henley and George Sanders.  Its plot involves an American confidence trickster who pretends to be a spiritual healer.  The film was made at Wembley Studios by the British subsidiary of 20th Century Fox.  The sets were designed by art director William Hemsley.']
+
+## Generated Outputs
+### reasoning
+The claim is that the director of Finding Dory co-directed the film A Bug's Life. From the context, we see that Andrew Stanton directed Finding Dory, alongside co-director Angus MacLane. Additionally, Andrew Stanton is credited as co-director of A Bug's Life. Therefore, the director of Finding Dory (Andrew Stanton) did co-direct A Bug's Life, confirming the claim. Other directors are mentioned but none links Finding Dory with A Bug's Life as Andrew Stanton does. Thus, the claim is verified.
+
+### new_notes
+['Andrew Stanton directed Finding Dory alongside co-director Angus MacLane.', "Andrew Stanton co-directed the film A Bug's Life.", 'Finding Dory was directed by Andrew Stanton.']
+
+### titles
+['Andrew Stanton', 'Finding Dory', "A Bug's Life"]
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Andrew Stanton', 'Finding Dory']. Documents remaining to be retrieved: ["A Bug's Life"].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Austrian Poet-Dliplomat who also won the Nobel Prize in Literature, and Alan Sillitoe were both writers.
+
+### notes
+['Alan Sillitoe was a writer.', 'The Nobel Prize in Literature is awarded annually to an author who has produced outstanding literary work.', 'An Austrian poet-diplomat who won the Nobel Prize in Literature is recognized as a writer.', 'Alan Sillitoe was a writer.', 'The Nobel Prize in Literature is awarded annually to an author who has produced outstanding literary work.', 'An Austrian poet-diplomat who won the Nobel Prize in Literature is recognized as a writer.', 'Alan Sillitoe was a writer.', 'The Nobel Prize in Literature is awarded annually to authors recognized for outstanding literary work.', 'An Austrian poet-diplomat who won the Nobel Prize in Literature is recognized as a writer.']
+
+### context
+['João Cabral de Melo Neto | João Cabral de Melo Neto(] ), (January 9, 1920 – October 9, 1999) was a Brazilian poet and diplomat, and one of the most influential writers in late Brazilian modernism.  He was awarded the 1990 Camões Prize and the 1992 Neustadt International Prize for Literature, the only Brazilian poet to receive such award to date.  He was considered until his death a perennial competitor for the Nobel Prize in Literature.', 'Poet-diplomat | Poet-diplomats are poets who have also served their countries as diplomats.  The best known poet-diplomats are perhaps Geoffrey Chaucer and Thomas Wyatt; the category also includes recipients of the Nobel Prize in Literature: Ivo Andrić, Gabriela Mistral, Saint-John Perse, Miguel Ángel Asturias, Pablo Neruda, George Seferis, Czesław Miłosz and Octavio Paz.  Contemporary poet-diplomats include Abhay K, Indran Amirthanayagam, Kofi Awoonor, Philip McDonagh and Yiorgos Chouliaras.', 'Pablo Neruda | Pablo Neruda ( ; ] ) was the pen name and, later, legal name of the Chilean poet-diplomat and politician Ricardo Eliécer Neftalí Reyes Basoalto (July 12, 1904\xa0– September 23, 1973).  He derived his pen name from the Czech poet Jan Neruda.  Pablo Neruda won the Nobel Prize for Literature in 1971.', 'French literature | French literature is, generally speaking, literature written in the French language, particularly by citizens of France; it may also refer to literature written by people living in France who speak traditional languages of France other than French.  Literature written in French language, by citizens of other nations such as Belgium, Switzerland, Canada, Senegal, Algeria, Morocco, etc. is referred to as Francophone literature.  As of 2006, French writers have been awarded more Nobel Prizes in Literature than novelists, poets and essayists of any other country.  France itself ranks first in the list of Nobel Prizes in literature by country.', 'Ivo Andrić | Ivo Andrić (Serbian Cyrillic: , ] ; born Ivan Andrić; 9 October 1892\xa0– 13 March 1975) was a Yugoslav novelist, poet and short story writer who won the Nobel Prize in Literature in 1961.  His writings dealt mainly with life in his native Bosnia under Ottoman rule.', 'Salvador de Madariaga | Salvador de Madariaga y Rojo (23 July 1886 in A Coruña, Spain – 14 December 1978 in Locarno, Switzerland) was a Spanish diplomat, writer, historian and pacifist.  He was nominated for the Nobel Prize in Literature, and the Nobel Peace Prize.', 'Edwin Arlington Robinson | Edwin Arlington Robinson (December 22, 1869 – April 6, 1935) was an American poet who won three Pulitzer Prizes for his work.  He was nominated for the Nobel Prize in Literature four times.', 'Alan Sillitoe | Alan Sillitoe (4 March 192825 April 2010) was an English writer and one of the so-called "angry young men" of the 1950s.  He disliked the label, as did most of the other writers to whom it was applied.  He is best known for his debut novel "Saturday Night and Sunday Morning" and early short story "The Loneliness of the Long Distance Runner", both of which were adapted into films.', 'List of Danish Nobel laureates | This is a list of Danish Nobel laureates.  Since the Nobel Prize was established per the will of Swedish inventor Alfred Nobel in 1895, 12 of the prize winners have been from Denmark.  The first Danish Nobel laureate was Niels Ryberg Finsen, who won a Nobel Prize for medicine in 1903 for his work in using light therapy to treat diseases.  The most recent Danish Nobel Prize winner was Jens Skou who won the prize in chemistry for his discovery over the enzyme, Na+/K+-ATPase in 1997.  To date, of the 13 Nobel Prizes won by Danish people, 5 have been for medicine, 3 have been for physics, 3 have been for literature, 1 has been for chemistry and one has been for peace.', 'Erwin Guido Kolbenheyer | Erwin Guido Kolbenheyer (December 30, 1878, Budapest – April 12, 1962, Munich) was an Austrian novelist, poet and playwright.  Later based in Germany, he belonged to a group of writers that included the likes of Hans Grimm, Rudolf G. Binding, Emil Strauß, Agnes Miegel and Hanns Johst, all of whom found favour under the Nazis.  He was nominated for the Nobel Prize in Literature five times.']
+
+## Generated Outputs
+### reasoning
+The claim states that both the Austrian poet-diplomat who won the Nobel Prize in Literature and Alan Sillitoe were writers. From the notes, we know: Alan Sillitoe was a writer, the Nobel Prize in Literature is awarded to authors who produce outstanding literary work, and an Austrian poet-diplomat who won the Nobel Prize in Literature is recognized as a writer. The context provides multiple examples of poet-diplomats who won the Nobel Prize in Literature but does not explicitly name an Austrian poet-diplomat laureate. However, the closest related figure is Erwin Guido Kolbenheyer, an Austrian novelist, poet, and playwright who was nominated multiple times but did not win the Nobel Prize. Since the claim refers specifically to an Austrian poet-diplomat who won the Nobel Prize in Literature, no direct named example appears in the context, but the notes assume the existence of at least one such figure. Alan Sillitoe is confirmed as a writer.
+
+Therefore, the essential facts to confirm the claim are that Alan Sillitoe was a writer and that any poet-diplomat from Austria who won the Nobel Prize in Literature would have to be a writer, as the Nobel Prize in Literature only goes to authors. While the exact person is not named in the context, the assertion is consistent with facts about the prize and the literary roles of poet-diplomats.
+
+### new_notes
+['Alan Sillitoe was a writer.', 'The Nobel Prize in Literature is awarded annually to an author who has produced outstanding literary work.', 'An Austrian poet-diplomat who won the Nobel Prize in Literature is recognized as a writer.']
+
+### titles
+['Alan Sillitoe', 'Nobel Prize in Literature', 'Erwin Guido Kolbenheyer', 'Poet-diplomat']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Alan Sillitoe', 'Poet-diplomat']. Documents remaining to be retrieved: ['Gabriela Mistral'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

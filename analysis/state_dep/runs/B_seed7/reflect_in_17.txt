@@ -1,0 +1,132 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:  
+You will be provided with two input fields: `claim` and `notes`. Your objective is to generate a single, clear, and focused output field named `query`.
+
+- The `claim` is a factual statement involving one or more entities, events, relationships, or comparisons that require verification or further evidence.  
+- The `notes` consist of extracted observations, facts, or contextual information relevant to the claim. These notes often reveal critical knowledge gaps, ambiguities, or missing details necessary to validate or assess the claim effectively. Notes may also highlight contradictions, incomplete entity identification, or ambiguity in relationships or roles.
+
+Your main task is to formulate a precise, targeted query that will retrieve exactly the key missing information needed to confirm or refute the claim. This query will serve as a focused request designed to gather authoritative evidence or documents that fill the informed knowledge gaps or clarify ambiguities noted.
+
+---
+
+Detailed Guidelines:  
+
+1. **Identify Key Entities, Roles, and Relationships**  
+   - Extract all critical entities from the claim (persons, films, books, countries, awards, etc.).  
+   - Recognize roles or attributes tied to these entities (e.g., composer nationality and gender, director origin and filmography, actor debut films and roles).  
+   - Pay attention to relationships or connections between entities mentioned in the claim (e.g., comparison between two directors’ countries by size, a person’s involvement in two distinct films, co-directors, or authorship).
+
+2. **Incorporate Ambiguities and Knowledge Gaps from Notes**  
+   - Notes often highlight missing, contradictory, or uncertain information. Use these to shape and focus the query on exactly what is unknown or unclear (e.g., confirming the true composer of a piece, the nationality of a director, or the debut film and its director for an actress).  
+   - Disambiguate entities when necessary, especially if multiple candidates exist (e.g., clarifying which “German Frank Sinatra” is referenced).  
+   - Address details such as exact titles, opus or numbering conventions, and proper identification of creative works.
+
+3. **Handle Comparative or Relational Claims Precisely**  
+   - For claims involving comparisons (award counts, country sizes, career overlaps), explicitly query all involved entities on the attribute compared.  
+   - Request statistics, rankings, or ordered lists as needed to establish relative standings.
+
+4. **Be Explicit About Domain-Specific Entities and Context**  
+   - When claims mention creative works (films, books, musical compositions), explicitly reference these titles in the query to target relevant documents.  
+   - Confirm directors’ involvement and their recognition status (e.g., confirming if a co-director is officially recognized as a director).  
+   - For actors, verify their roles in multiple films separately and whether those films relate to the claim (including the directors and geographic origins involved).  
+   - For composers and musical works, confirm opus numbers, nationalities, and male/female identifications.
+
+5. **Formulate a Concise but Complete Query**  
+   - Avoid overly broad or vague questions; focus on retrieving the specific missing facts or evidence critical for verification.  
+   - If multiple documents are needed to fully assess the claim, combine questions logically to retrieve all relevant information in one query.
+
+6. **Generalizable Strategy Recap**:  
+   - Use notes to pinpoint exactly what information is missing or uncertain needed to verify the claim.  
+   - Construct the query to explicitly request these missing facts (names, countries, dates, roles, counts, titles).  
+   - Incorporate both the entities and their relevant relationships or comparisons mentioned in the claim.  
+   - Avoid redundant phrasing; keep queries precise but sufficiently descriptive.  
+   - When multiple key entities appear, ensure the query asks about all in a connected logical way to retrieve comprehensive evidence (e.g., award counts for both persons, cross-casting details, geographic comparisons).
+
+---
+
+Examples:  
+- If the claim involves a composer of a musical piece titled "Rhapsody, Op. 1," and notes indicate ambiguity about who composed it and their nationality, the query should ask:  
+  *Who composed "Rhapsody, Op. 1"? Was the composer male and Hungarian? Is Johann Christoph Pepusch associated with this work?*  
+
+- For a claim comparing directors’ geographic origins and final films directed, the query might be:  
+  *What are the countries of origin and geographic sizes of directors Robert Stevenson and Éric Rohmer? Which director directed the final film "Romance of Astree and Celadon"?*  
+
+- For a claim about an actress who debuted in a film by an American director and also starred in a Canadian film:  
+  *Which actresses starred in "The Death and Life of John F. Donovan"? For each, what was their debut film, and which debut films were directed by American directors? Identify the actress fitting both criteria.*  
+
+---
+
+By following these instructions, you will generate queries that efficiently retrieve critical evidence, resolving ambiguities and filling knowledge gaps essential for thorough claim verification in specialized knowledge domains such as film, music, and biographical data.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The trainer, who named Eddie Mahan "the greatest football player of all time", coached the Indians and was the first Native American to win a metal in his home country.
+
+### notes
+["Eddie Mahan was an American football player widely regarded as one of the greatest in the sport's first 50 years.", 'Jim Thorpe named Eddie Mahan the greatest football player of all time.', 'Eddie Mahan was elected to the College Football Hall of Fame in 1951 as part of the first group of inductees.', 'Jim Thorpe named Eddie Mahan the greatest football player of all time.', 'Jim Thorpe coached the Oorang Indians, a professional football team composed only of Native Americans.', 'Jim Thorpe was the first Native American to win a gold medal for his home country at the 1912 Olympics.', 'The Oorang Indians were based in LaRue, Ohio and played in the National Football League in 1922 and 1923.', 'Jim Thorpe named Eddie Mahan the greatest football player of all time.', 'Jim Thorpe coached the Oorang Indians, a professional football team composed only of Native Americans.', 'Jim Thorpe was the first Native American to win a gold medal for his home country at the 1912 Olympics.']
+
+## Generated Outputs
+### reasoning
+The claim refers to a trainer who named Eddie Mahan "the greatest football player of all time," coached the Indians, and was the first Native American to win a medal in his home country. Notes state Jim Thorpe named Eddie Mahan the greatest football player, indicating Jim Thorpe is the trainer in question. Additionally, the notes do not explicitly confirm whether Jim Thorpe coached the Indians or if he was the first Native American to win a medal in his home country. The key unknowns are whether Jim Thorpe coached "the Indians" team and if he was the first Native American to win a medal in his home country (likely relating to the Olympics). Clarification of these points is necessary to verify the full claim precisely.
+
+### query
+Did Jim Thorpe serve as a coach for the Indians football team, and was he the first Native American to win a medal in his home country? Additionally, did Jim Thorpe refer to Eddie Mahan as "the greatest football player of all time"?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Eddie Mahan', 'Jim Thorpe']. Documents remaining to be retrieved: ['Eagle Feather'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The sport of tennis is played by both Texas native Angelique Kerber and the player who was the defending champion, who competed, for the 2005 China Open – Men's Doubles.
+
+### notes
+['Angelique Kerber is a German professional tennis player and former world No. 1.', 'Kerber has won multiple WTA singles titles including grand slam singles titles at the 2016 Australian Open and 2016 US Open.', "There is no available information in the context about the defending champion or participants of the 2005 China Open – Men's Doubles.", 'Angelique Kerber is a German professional tennis player and former world No. 1.', 'Kerber has won multiple WTA singles titles including Grand Slam singles titles at the 2016 Australian Open and 2016 US Open.', "There is no available information about the defending champion or participants of the 2005 China Open – Men's Doubles in the provided context.", 'Angelique Kerber is a German professional tennis player and former world No. 1.', 'Angelique Kerber has won multiple WTA singles titles including Grand Slam singles titles at the 2016 Australian Open and 2016 US Open.', "There is no available information in the context about the defending champion or participants of the 2005 China Open – Men's Doubles."]
+
+## Generated Outputs
+### reasoning
+The claim states that tennis is played by both Angelique Kerber, who is a Texas native, and by the defending champion of the 2005 China Open – Men's Doubles. The notes clarify that Angelique Kerber is a German professional tennis player, not a Texas native, which directly contradicts the claim. Furthermore, there is no information about the defending champion or participants of the 2005 China Open – Men's Doubles in the notes, nor is there any indication of their identity or nationality. To verify the claim, two key pieces of information are needed: confirmation of Angelique Kerber's place of birth or origin (is she truly a Texas native or German as stated?), and identification of the defending champion of the 2005 China Open – Men's Doubles, including whether that player competes in tennis and has any connection to Texas.
+
+### query
+What is the birthplace and nationality of Angelique Kerber? Who was the defending champion of the 2005 China Open – Men's Doubles, and what is the nationality or origin of that player? Did both Angelique Kerber and the 2005 China Open – Men's Doubles defending champion compete in tennis?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Angelique Kerber']. Documents remaining to be retrieved: ["2005 China Open – Men's Doubles", 'Justin Gimelstob'].
+
+
+
+# Example 3
+## Inputs
+### claim
+His screenplay of the film The Night Hunter was based on a novel. the writer and Nelly Sachs have not both won a Nobel Prize in Literature.
+
+### notes
+["The film The Night Hunter's screenplay has no explicit evidence found to confirm it was based on a novel.", 'Nelly Sachs was a Nobel Prize in Literature laureate.', 'There is no indication that the screenplay writer of The Night Hunter has won the Nobel Prize in Literature.', 'There is no explicit evidence that the screenplay for the film The Night Hunter was based on a novel.', 'Nelly Sachs was awarded the Nobel Prize in Literature.', 'There is no indication that the writer of the screenplay for The Night Hunter has won the Nobel Prize in Literature.', 'There is no explicit evidence that the screenplay for the film The Night Hunter was based on a novel.', 'Nelly Sachs was awarded the Nobel Prize in Literature.', 'There is no indication that the writer of the screenplay for The Night Hunter has won the Nobel Prize in Literature.']
+
+## Generated Outputs
+### reasoning
+To assess the claim, it is necessary to verify two key points: (1) whether the screenplay of the film The Night Hunter was indeed based on a novel, and (2) whether both the writer of that screenplay and Nelly Sachs have won the Nobel Prize in Literature. The notes reveal no explicit confirmation that The Night Hunter's screenplay was adapted from a novel, and there is no evidence that its writer won the Nobel Prize, whereas Nelly Sachs is confirmed as a Nobel laureate. Therefore, the query should request authoritative information about the source material of the screenplay for The Night Hunter and the Nobel Prize status of its writer compared to Nelly Sachs.
+
+### query
+Was the screenplay of the film The Night Hunter based on a novel? Who wrote the screenplay for The Night Hunter, and has that writer ever won the Nobel Prize in Literature? Has Nelly Sachs won the Nobel Prize in Literature?
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['James Agee', 'Nelly Sachs', 'The Night of the Hunter (film)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

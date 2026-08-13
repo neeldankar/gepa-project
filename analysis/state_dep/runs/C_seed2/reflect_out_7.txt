@@ -1,0 +1,64 @@
+```
+Task Description:  
+You are given two fields of input:  
+
+- `claim`: a factual statement or assertion that involves specific entities such as people, groups, events, creative works (e.g., operas, albums), or concepts. The claim typically posits a relationship, attribute, comparison, or identity involving these entities, which requires factual verification.  
+- `notes`: a collection of extracted factual fragments, pieces of evidence, or metadata related to the entities mentioned in the claim. These notes may contain confirmations, partial information, denials, ambiguities, or context about the entities or their attributes.
+
+Your goal is to generate a `query` field consisting of one or more precise, fact-seeking questions designed to retrieve exactly the critical factual information needed to verify or refute the claim.
+
+---
+
+Detailed instructions:
+
+1. **Focus on Key Verifiable Facts:**  
+   The query must specifically target the essential facts necessary to determine the claim's truthfulness. This means identifying the minimal set of clear, concrete facts (e.g., who composed a work, when and where an event occurred, the native habitat of a species, or the exact roles of individuals) that resolve any uncertainty in the claim.
+
+2. **Decompose Claims if Needed:**  
+   - If the claim involves multiple entities or contains multiple assertions (e.g., one part about a person’s involvement, another about two universities' status), break it down and generate focused questions covering each part.  
+   - When the claim entails comparisons (e.g., "X has twice as many albums as Y"), generate queries asking for the counts or relevant comparative attributes for all entities involved.
+
+3. **Disambiguate and Clarify Ambiguities:**  
+   If the claim or notes raise ambiguity—such as whether two names refer to the same entity or whether two composers are identical—formulate explicit questions to clarify the ambiguity (e.g., "Is X the same person as Y?" or "Are composer A and composer B identical?").
+
+4. **Address Each Named Entity Explicitly:**  
+   When multiple entities appear in the claim, your queries should explicitly include all of those entities to ensure that validation encompasses every relevant participant or item.
+
+5. **Leverage Provided Notes to Identify Knowledge Gaps:**  
+   - Review the notes to determine what facts are already known or confirmed and which critical facts are unaddressed or ambiguous.  
+   - Craft queries that focus only on retrieving missing or uncertain information blocking verification rather than repeating facts clearly stated in notes.
+
+6. **Craft Specific, Narrow, and Unambiguous Queries:**  
+   Avoid vague or broad questions. Instead, write questions that target a concrete piece of factual knowledge, such as:  
+   - The precise native habitat or geographical distribution of a species.  
+   - The composer(s) of a specified opera or work with correct timeframes.  
+   - The official title or role held by a person in an institution, and the public/private status of the institution.  
+   - The presence or participation of a named individual in a given event or media.
+
+7. **Formatting and Style:**  
+   - Output the `query` as natural language question(s).  
+   - Use clear, concise wording to allow easy retrieval of factual information from external sources or documents.  
+   - When multiple questions are required, list them separately but cohesively.
+
+---
+
+Domain-Specific Considerations and Examples from Task Context:  
+
+- When verifying claims about **botanical native habitats**, confirm specific habitat types (arid, semi-desert, temperate, etc.) for each species mentioned, especially if habitats differ or lack confirmation in notes.  
+- When verifying claims about **historical persons and institutional roles**, ask explicitly about the person's role (e.g., first chairman of the board of trustees) and the public or private status of the associated institution(s).  
+- When verifying claims about **composers and operas**, clarify the composer(s) of each mentioned work, including relevant dates and production versions if applicable, to confirm whether they share the same creators or not.  
+- When dealing with **potentially ambiguous entity names**, distinguish between person names and character or role names (e.g., "mezzo soprano Manon Lescaut" vs. the opera "Manon Lescaut") and ask whether these refer to the same individuals or different entities.  
+- When claims involve **appearance or involvement of people in works/events**, verify the specific roles and whether persons participated in given productions or events.
+
+---
+
+Generalizable Strategy for Generating the Query:  
+
+- Analyze the claim to extract core factual assertions or comparisons requiring verification.  
+- Cross-reference with notes to identify which facts are well-established and which remain unclear or unsupported.  
+- Formulate explicit fact-seeking questions to close the information gaps identified.  
+- For multi-entity or multi-part claims, generate separate but cohesive queries covering each crucial fact corresponding to each entity or segment of the claim.  
+- When ambiguity or uncertainty arises, include clarifying questions to disambiguate.
+
+By following these domain-aware and precision-driven principles, your query output will efficiently isolate the necessary knowledge to confirm or refute the claim with minimal information noise or redundancy.
+```

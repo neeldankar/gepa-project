@@ -1,0 +1,53 @@
+```  
+Task Description:  
+You will receive three inputs:  
+- `claim`: a sentence or sentences asserting a factual relationship or statement involving one or more entities, typically drawn from niche domains such as geography (counties, colleges), sports (players, teams), music (bands, albums, songs, members), movies (films, directors, characters, genres, production details), or institutions. The claim often relates to verifying or clarifying factual attributes, memberships, roles, or relational links between these entities.  
+- `notes`: a list of candidate sentences or document snippets related to the entities or relationships in the claim. These notes may have overlapping, duplicate, or partial information extracted from varied textual sources and may contain subtle variations on facts.  
+- `context`: a list of full document descriptions or summaries (e.g., Wikipedia-style entries) about entities relevant to the claim. These detailed texts include biographical data, production information, historical facts, and metadata useful for fact verification and support.
+
+Your Objective:  
+Using the `claim`, `notes`, and `context`, synthesize and produce two outputs:  
+1. `new_notes`: a concise, high-quality, and factually precise subset of the `notes` that best support or contextualize the claim. This involves:  
+   - Selecting only those notes that directly support or conclusively relate to the claim’s factual assertions.  
+   - Removing duplicates and redundancies, preferring the clearest, most informative, and most relevant sentences.  
+   - Summarizing or merging notes when beneficial for clarity and completeness without losing factual accuracy.  
+   - Explicitly excluding notes that do not contribute to verifying or contextualizing the claim or contain unsupported info.  
+   - Including explicit notes reflecting the absence of crucial information if relevant to explain what cannot be confirmed.  
+
+2. `titles`: a list of document/entity titles from the `context` representing the essential knowledge sources backing the reasoning. These must:  
+   - Cover all key entities involved in the claim and the chosen notes (such as the relevant persons, films, bands, institutions, geographic entities, or other concepts).  
+   - Include documents necessary to understand all factual aspects pertinent to the claim’s verification, including biographical profiles, film descriptions, band lineups, institutional overviews, or geographical data.  
+   - If evident from the claim and context, add relevant high-authority sources even if they were not explicitly flagged in the notes or initially present.  
+   - Exclude unrelated or unsupported entities to maintain focus and precision.
+
+Domain-Specific Considerations:  
+- Entities often belong to niche knowledge areas, and domain expertise matters. Examples include:  
+  * Film domain: directors, co-directors, actors, production years, genres, sequels, character roles  
+  * Music domain: band members, album release years, song credits, genre classification  
+  * Geography domain: counties, towns, colleges located within specific regions, sports teams or players’ colleges  
+  * Sports domain: player lineups, birthdates, team membership histories  
+  * Institutional domain: organizational roles, legislative or governmental positions  
+- Claims frequently hinge on subtle factual relationships, such as whether one person co-directed versus directed, dates of birth or death, confirmation of teaching or affiliations, or membership in a group. Precision and exactness are critical.  
+- Notes often contain overlapping or repetitive facts; your role is to filter and synthesize factually consistent and non-redundant sets.  
+- Context documents provide authoritative, detailed background for each entity and are essential for grounding factual accuracy and identifying missing but relevant entities.
+
+Recommended Reasoning and Strategy:  
+- Carefully parse the claim, noting all entities, relationships, and key assertions.  
+- Review the notes to identify all candidate facts supporting or contradicting the claim’s components. Prioritize factually correct, precise, and relevant notes.  
+- Cross-reference the context documents to corroborate facts from notes, confirm entity roles and attributes, and detect any additional relevant information or missing entities not covered by the notes.  
+- Select notes that directly lead to verification or understanding of the claim, merging or condensing redundancies. If any part of the claim lacks available support, consider indicating this explicitly in the notes if context confirms absence of data.  
+- Compile a minimal yet comprehensive set of titles covering all involved entities, ensuring the coverage is sufficient to support the selected notes and overall reasoning.  
+- Avoid including irrelevant or unrelated documents.
+
+Output Format:  
+Provide a JSON-like structured response with two fields:  
+- `new_notes`: a list of concise, factual, de-duplicated sentences directly supporting or clarifying the claim.  
+- `titles`: a list of strings representing document/entity titles from the `context` essential to the claim and notes.
+
+Purpose:  
+These outputs are intended as a distilled, domain-aware factual backbone to verify or understand the claim. Clarity, comprehensiveness with respect to the claim, and factual precision are paramount. The output should empower downstream validation or knowledge retrieval processes by providing clean, relevant evidence and authoritative sources succinctly.
+
+Example Summary (from given samples):  
+If the claim involves a film director and two films, the notes should clearly state the director’s role(s) in each film, avoiding repetitive notes, and the titles should include the director’s bio and both film articles. If a claim involves a date of birth and place, the notes should list only the definitive facts supporting those and the titles should cover the person and the relevant institutions or locations.
+
+This detailed instruction reflects best practices and domain-specific requirements for effective fact verification and knowledge synthesis in specialized domains.

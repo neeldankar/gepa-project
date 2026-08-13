@@ -1,0 +1,136 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:  
+You will be provided with three inputs:  
+- `claim`: a sentence or set of sentences making an assertion or statement involving entities such as people, places, films, bands, or institutions.  
+- `notes`: a list of candidate supporting or related sentences (extracted document snippets) that may contain relevant factual information supporting or contradicting the claim. These notes often contain partial or overlapping details from different sources.  
+- `context`: a list of full document descriptions or summaries (e.g., Wikipedia-style descriptions) corresponding to entities relevant to the claim. These contain detailed factual information, often including dates, attributes, relations, and descriptive metadata.
+
+Your task is:  
+Using the `claim`, `notes`, and `context`, synthesize and produce two outputs:  
+1. `new_notes`: a concise, high-quality subset of the `notes` that best support or contextualize the claim, filtered and summarized for relevance and precision. Remove duplicates or redundant information, keeping the clearest and most pertinent sentences.  
+2. `titles`: a list of document or entity titles selected from the `context` that are the most relevant to the claim and the selected notes — these represent key knowledge sources backing your reasoning.
+
+Key Domain-Specific and Task-Specific Considerations:  
+- Entities involved are often specific to niche domains such as geography (counties, colleges), sports (players, teams), music (bands, albums, songs, members), and movies (films, characters, genres, production information).  
+- Claims typically involve verifying or clarifying factual relationships, memberships, character roles, or comparisons between entities based on the provided information.  
+- The context can include detailed biographical data, film descriptions, band lineups, and institutional overviews; all are valuable for verifying the claim's details.  
+- Notes may contain subtle variations or partially redundant information; select those that are factually accurate, precise, and best aligned with the claim.  
+- Titles should include all major relevant documents/entities (e.g., people, place, institution, film titles) necessary to understand or support the claim fully.  
+- If some relevant gold-standard (expected) documents are missing, include them if evident from the context and claim to improve coverage.  
+- Clearly identify and exclude irrelevant or unsupported information (e.g., when none of the context concerns a particular entity in the claim).  
+
+Recommended Strategy:  
+- Read the claim carefully to identify all key entities and relationships.  
+- Review the `notes` to find and select those notes that directly support or refute these entities or their relationships as stated in the claim. Summarize or deduplicate where needed.  
+- Scan the `context` to identify documents (articles) about key entities mentioned in the claim or notes, ensuring comprehensive coverage of relevant information.  
+- Include these document titles in the `titles` output.  
+- Be cautious of incomplete or missing information about mentioned entities; reflect this in `new_notes` if necessary by noting the lack of information.  
+- The goal is to create a factually accurate and relevant set of notes and titles to support verifying or understanding the claim thoroughly.  
+- The outputs are intended to support further validation, so clarity, relevance, and completeness with respect to the claim are paramount.
+
+Output Format Requirements:  
+Produce JSON-like outputs with two fields:  
+- `new_notes`: list of strings (concise, factually accurate, non-duplicative notes selected or synthesized from the input `notes`)  
+- `titles`: list of strings (document/entity titles from the `context` that are essential to support or understand the claim)  
+
+Example:  
+If the claim involves a baseball player and colleges in a county, the `new_notes` should succinctly say which colleges are in the county and which colleges the player attended; `titles` should include the player's bio, the colleges, and the county.
+
+This precise and domain-aware approach best reflects your role in synthesizing and filtering relevant information for claim verification or knowledge retrieval tasks.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Candlelight Red the musical group has released twice as many albums as the band who also performs as One Unique Signal.
+
+### notes
+['No information is provided regarding the number of albums released by Candlelight Red or the band that also performs as One Unique Signal. Therefore, the claim cannot be verified from the given data.', 'No information is provided regarding the number of albums released by Candlelight Red or the band that also performs as One Unique Signal. Therefore, the claim cannot be verified from the given data.', 'No information is provided regarding the number of albums released by Candlelight Red or the band that also performs as One Unique Signal. Therefore, the claim cannot be verified from the given data.']
+
+### context
+['How Many Fucks | "How Many Fucks" (censored as "How Many F**ks") is a song recorded by American singer Erika Jayne for her upcoming second studio album.  Released as the album\'s lead single, the song was first distributed digitally on April 19, 2016, accompanied by the simultaneous release of a music video.  In the video, Jayne performed "seductive" dance moves and wore "risqué" costumes.', 'How Many Kings: Songs for Christmas | How Many Kings: Songs for Christmas is the fifth official album release from Christian rock band Downhere released in 2009.', 'How Many Words | "How Many Words" is the official second single by the singer-songwriter Blake Lewis, from his debut album "A.D.D. (Audio Day Dream)".  The song was expected to be followed by "Know My Name", and then "Without You".  However, due to being dropped by Arista Records, "How Many Words" is the final single from his debut album.  He is expected to release a single from his second album at the end of 2009.  The single was released to mainstream radio format on March 10, 2008.  Also, an EP featuring remixes of the song was released onto iTunes on May 13, 2008.  Lewis performed the song live on the March 6, 2008 results show of the seventh season of "American Idol".', "Explode a Bombshell | Explode a Bombshell is the first mini-album CD release by punk rock band Bomb Factory.  The album was an independent release and is extremely rare.  It is unknown how many pressings were produced.  References to the album on the band's official website are also obscure and often omitted.", "No Matter How Narrow | No Matter How Narrow is the second album by the Long Island indie rock band The Republic of Wolves.  It was originally released on iTunes and physically on their web store on December 17, 2013.  It has also been released on vinyl record by Simple Stereo.  The album was recorded in the band's home studio and was mixed by band member Mason Maggio.  The album was mastered by Alex Saltz (APS Mastering, NYC).", 'Watchtower (band) | Watchtower is an American progressive metal band based in Austin, Texas.  The band was influenced by late 1970s progressive rock acts, such as Rush and U.K., as well as the burgeoning new wave of British heavy metal scene.  While Watchtower never reached mainstream success, they have been cited as an influence by many other progressive metal bands, such as Dream Theater, Death, Atheist, Sieges Even and Spiral Architect.  The band is also notable for featuring vocalist Jason McMaster, who left after the release of their debut album to form Dangerous Toys.  Watchtower has released two studio albums (of which the last was released in 1989), one compilation album, four digital singles, one and three demo cassettes, and has been featured on many compilation albums.', 'Neuthrone | Neuthrone is the third full-length album by the Polish Blackened death metal band Crionics.  The album was originally released under Candlelight Records, but it was also released under Mystic Production.  The album was released as an enhanced audio disc with a video of "Humanmeat Cargo" and bonus track "Black Warriors" and was recorded at "Zed Studio" 2006 till 2007 and was produced, engineered and mastered by Tomasz Zalewski who also recorded the last albums of Thy Disease, Totem, Horrorscope and many others.', 'How Many Drinks? | "How Many Drinks?"  is a song by American recording artist Miguel, taken from his critically acclaimed second studio album, "Kaleidoscope Dream".  The song was produced by Salaam Remi.  A remixed single featuring Kendrick Lamar on an added third verse was released as the album\'s third single on March 3, 2013.  It received a nomination for Best R&B Performance at the 56th Grammy Awards held in January 2014.', 'I Belong to You/How Many Ways | "I Belong to You"/"How Many Ways", alternatively "How Many Ways"/"I Belong to You" in vinyl edition, is a single from American R&B singer Toni Braxton\'s 1993 self-titled debut album, "Toni Braxton".  The single was released in 1994 as the album\'s fifth and final single in the United States with both songs as double-sided songs.', 'Buckethead | Brian Patrick Carroll (born May 13, 1969), known professionally as Buckethead, is an American musician who has worked within many genres of music.  He has released 300 studio albums, four special releases, and one EP.  He has also performed on more than 50 other albums by other artists.  His music spans many diverse areas such as progressive metal, funk, blues, bluegrass, ambient, and avant-garde music.']
+
+## Generated Outputs
+### reasoning
+The claim states that the musical group Candlelight Red has released twice as many albums as the band who also performs as One Unique Signal. The notes explicitly mention that there is no information available about the number of albums released by either Candlelight Red or the band that performs as One Unique Signal, so the claim cannot be verified based on the given data.
+
+The context provided does not contain any information about Candlelight Red, One Unique Signal, or their discographies. Some context entries mention other bands or albums but none that relate to Candlelight Red or One Unique Signal specifically. Thus, there is no factual basis in the notes or context to support or refute the claim.
+
+Therefore, the only new note that can be reasonably extracted is that there is no information available, and the relevant titles from context are none regarding the claim. Since no relevant context is found about Candlelight Red or One Unique Signal, no titles are selected.
+
+### new_notes
+['No information is provided regarding the number of albums released by Candlelight Red or the band that also performs as One Unique Signal. Therefore, the claim cannot be verified from the given data.']
+
+### titles
+[]
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Candlelight Red', 'One Unique Signal', 'The Telescopes'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Echeveria is native to arid or semi-desert areas, while Alopecurus creticus is.
+
+### notes
+['Echeveria is a large genus of flowering plants in the Crassulaceae family, native to semi-desert areas of Central America, Mexico and northwestern South America.', 'Echeveria elegans is a species native to semi-desert habitats in Mexico.', 'Echeveria setosa is native to semi-desert areas of Mexico and common throughout Puebla.', 'Echeveria strictiflora is native to Texas and grows in desert regions.', 'Alopecurus creticus is a species of foxtail grass, but its native habitat is not specified in the provided information.', 'Echeveria is a large genus of flowering plants in the Crassulaceae family, native to semi-desert areas of Central America, Mexico and northwestern South America.', 'Echeveria elegans is a species native to semi-desert habitats in Mexico.', 'Echeveria setosa is native to semi-desert areas of Mexico and common throughout Puebla.', 'Echeveria strictiflora is native to Texas and grows in desert regions.', 'Alopecurus creticus is a species of foxtail grass, but its native habitat is not specified in the provided information.', 'Echeveria is a large genus of flowering plants in the Crassulaceae family, native to semi-desert areas of Central America, Mexico and northwestern South America.', 'Echeveria elegans is a species native to semi-desert habitats in Mexico.', 'Echeveria setosa is native to semi-desert areas of Mexico and common throughout Puebla.', 'Echeveria strictiflora is native to Texas and grows in desert regions.', 'Alopecurus creticus is a species of foxtail grass, but its native habitat is not specified in the provided information.']
+
+### context
+['Kazakh semi-desert | The Kazakh semi-desert is an ecoregion in the deserts and xeric shrublands biome, located in Kazakhstan.  The climate is semi-arid and continental, with a total annual precipitation of 160 mm , and mean temperatures in January averaging -15 °C and in July 23 °C .  It is a transitional area between the steppes and the deserts of Central Asia and supports flora found in both biomes, predominantly grasses, particularly "Stipa" species, and shrubs such as "Artemisia" species.  A number of mammals and birds are found in this ecoregion but the habitat is threatened by overgrazing and fragmentation from human encroachment.  However, a recent reduction in livestock numbers in Kazakhstan is allowing the native plants a greater opportunity to regenerate.', 'Alopecurus creticus | Alopecurus creticus, the Cretan meadow foxtail, is a species of foxtail grass.', 'Alkali bee | The alkali bee, Nomia melanderi, is a ground-nesting bee native to deserts and semi-arid desert basins of the western United States.', 'Aizoanthemum hispanicum | Aizoanthemum hispanicum, or Spanish aizoon, is a species of plant in the family Aizoaceae.  It is native to northern Africa, the Mediterranean region and the Middle East where it grows on arid sandy plains, saline areas and in semi-arid habitats.  It was first described as "Aizoon hispanicum" by the Swedish naturalist Carl Linnaeus in 1753 and was in 2002 placed in the genus "Aizoanthemum" by the German botanist Heidrun Hartmann.', 'Alopecurus aequalis | Alopecurus aequalis is a common species of grass known as shortawn foxtail or orange foxtail.  It is native to much of the temperate Northern Hemisphere from Eurasia to North America, where it can be found in many types of habitat.', 'Oscularia | Oscularia is a genus of succulent flowering plants in the family Aizoaceae, native to semi-arid and rocky habitats in the Western Cape of South Africa.', 'Antlered thorny katydid | The antlered thorny katydid (Acanthoproctus cervinus) is a species of katydid that is found in South Africa and Namibia.  It can be found in semi-arid and arid habitats, including the Kalahari Desert, the Namib Desert, and in the Karoo and Fynbos biomes.', 'Acanthoplus longipes | The long-legged armoured katydid (Acanthoplus longipes) is a species of katydid found in Namibia, and also in the northern portion of Northern Cape Province, South Africa, and southern Angola.  It may possibly occur in Botswana.  It is found in semi-arid and arid habitats, including the Kalahari Desert and the Namib Desert.  It is threatened by habitat destruction, but is widespread and is not considered to be endangered.', 'Tugay | Tugay, also spelt tugai, is a form of riparian forest or woodland associated with fluvial and floodplain areas in arid climates.  These wetlands are subject to periodic inundation, and largely dependent on floods and groundwater rather than directly from rainfall.  Tugay habitats occur in semi-arid and desert climates in central Asia.  Because Tugay habitat is usually linear, following the courses of rivers in arid landscapes, Tugay communities often function as wildlife corridors.  They have disappeared or become fragmented over much of their former range.', "Okanagan Desert | The Okanagan Desert is the common name for a semi-arid area located in the South Okanagan region of British Columbia, Canada, primarily around Osoyoos Lake.  Part of the area is called the Nk'mip Desert by the Osoyoos Indian Band, though the entire region, like other similar parts of the British Columbia Interior, is technically only semi-arid shrub-steppe."]
+
+## Generated Outputs
+### reasoning
+The claim states that Echeveria is native to arid or semi-desert areas, which is supported by multiple notes indicating Echeveria species are native to semi-desert areas of Mexico, Central America, and northwestern South America, and that some species grow in desert regions. For Alopecurus creticus, the claim is left unfinished, but the available notes and context indicate that its native habitat is not specified. Therefore, the claim about Alopecurus creticus's nativity to arid or semi-desert areas cannot be directly supported or confirmed with the provided information.
+
+The filtering should thus focus on notes about Echeveria's native habitats being semi-desert or desert-like, while acknowledging that there is no information on Alopecurus creticus’s native habitat in the notes. The context shows Alopecurus creticus is just identified as a foxtail grass species, with no habitat detail.
+
+### new_notes
+['Echeveria is a large genus of flowering plants in the Crassulaceae family, native to semi-desert areas of Central America, Mexico and northwestern South America.', 'Echeveria elegans is a species native to semi-desert habitats in Mexico.', 'Echeveria setosa is native to semi-desert areas of Mexico and common throughout Puebla.', 'Echeveria strictiflora is native to Texas and grows in desert regions.', 'Alopecurus creticus is a species of foxtail grass, but its native habitat is not specified in the provided information.']
+
+### titles
+['Alopecurus creticus']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Alopecurus creticus', 'Echeveria']. Documents remaining to be retrieved: ['Alopecurus'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The TV series where the actor played the character Gaius Baltar joined in 2010. premiered on July 18, 2006. The serie was premiered on July 18, 2006.
+
+### notes
+["James Callis is an English actor best known for playing Dr. Gaius Baltar in the re-imagined 'Battlestar Galactica' TV series, which premiered on July 18, 2006.", "James Callis joined the cast of the TV series 'Eureka' on Syfy in 2010.", "James Callis is an English actor best known for playing Dr. Gaius Baltar in the re-imagined 'Battlestar Galactica' TV series, which premiered on July 18, 2006.", "James Callis joined the cast of the TV series 'Eureka' on Syfy in 2010.", "James Callis is an English actor best known for playing Dr. Gaius Baltar in the re-imagined 'Battlestar Galactica' TV series, which premiered on July 18, 2006.", "James Callis joined the cast of the TV series 'Eureka' on Syfy in 2010."]
+
+### context
+['Gaius Baltar | Dr. Gaius Baltar is a fictional character in the TV series "Battlestar Galactica" played by James Callis, a reimagining of Count Baltar from the 1978 "Battlestar Galactica" series.  He is one of the show\'s primary characters.', 'James Callis | James Nicholas Callis (born 4 June 1971) is an English actor.  He is best known for playing Dr. Gaius Baltar in the re-imagined "Battlestar Galactica" miniseries and television series, and Bridget Jones\' best friend in "Bridget Jones\'s Diary" and "".  He later reprised the role in 2016, in "Bridget Jones\'s Baby."  He joined the cast of the TV Series "Eureka", on Syfy, in 2010.  In 2017 he voiced the character Alucard on the Netflix series "Castlevania", based on the video game of the same name.', 'Cally Henderson Tyrol | Callandra "Cally" Tyrol ("née" Callandra Henderson) (also known as Cally or Crewman Cally, Deckhand Cally, or Specialist Cally) is a fictional character from the re-imagined "Battlestar Galactica" series.  She is played by actress Nicki Clyne.', 'Battlestar Galactica (2004 TV series) | Battlestar Galactica (BSG) is an American military science fiction television series, and part of the "Battlestar Galactica" franchise.  The show was developed by Ronald D. Moore and executive produced by Moore and David Eick as a re-imagining of the 1978 "Battlestar Galactica" television series created by Glen A. Larson.  The series first aired as a three-hour miniseries (comprising four broadcast hours) in December 2003 on the Sci-Fi Channel, and ran for four seasons thereafter, ending its run on March 20, 2009.  The series features Edward James Olmos and Mary McDonnell, and garnered a wide range of critical acclaim, which included a Peabody Award, the Television Critics Association\'s Program of the Year Award, a placement inside "Time"\' s 100 Best TV Shows of All-Time, and Emmy nominations for its writing, directing, costume design, visual effects, sound mixing, and sound editing, with Emmy wins for both visual effects and sound editing.', 'Baltar (Battlestar Galactica) | Baltar is a fictional character in the "Battlestar Galactica" universe who betrays the human race, through willing treachery in the original 1978 series, and as the inadvertent result of arrogance and self-interest in the 2003 miniseries and following TV series.', 'Nicki Clyne | Nicki Clyne (born February 11, 1983) is a Canadian actress.  She played Cally Henderson Tyrol on the Sci-Fi Channel television program "Battlestar Galactica".', 'Battlestar Galactica (miniseries) | Battlestar Galactica is a three-hour miniseries (comprising four broadcast hours) starring Edward James Olmos and Mary McDonnell, written and produced by Ronald D. Moore and directed by Michael Rymer.  It was the first part of the "Battlestar Galactica" remake based on the 1978 "Battlestar Galactica" television series, and served as a backdoor pilot for the 2004 television series.  The miniseries aired originally on the Sci Fi Channel in the United States starting on December 8, 2003.  The two parts of the miniseries attracted 3.9 and 4.5 million viewers, making the miniseries the third-most-watched program on Syfy.', 'List of Caprica episodes | "Caprica" is an American science fiction television series.  It is a prequel spin-off to the Syfy channel\'s series "Battlestar Galactica" which ran from 2003 to 2009.  Set 58 years before the events seen in "Battlestar Galactica", "Caprica" depicts life in Colonial society and shows how humanity first created the robotic Cylons who would later plot to destroy the human race.', 'Battlestar Galactica (1978 TV series) | Battlestar Galactica is an American science fiction television series, created by Glen A. Larson, that began the "Battlestar Galactica" franchise.  Starring Lorne Greene, Richard Hatch and Dirk Benedict, it ran for the 1978–79 season before being canceled.  Afterward, a write-in campaign revived the show as "Galactica 1980" with 10 episodes in 1980.', 'Fragged (Battlestar Galactica) | "Fragged" is the third episode of the second season of the reimagined "Battlestar Galactica" television series.  It aired originally on the Sci Fi Channel on July 29, 2005.  It is the first episode in which Starbuck does not appear.']
+
+## Generated Outputs
+### reasoning
+The claim states that the TV series in which the actor played Gaius Baltar premiered on July 18, 2006, and this actor joined a series in 2010. From the notes, James Callis is identified as the actor who played Dr. Gaius Baltar in the re-imagined Battlestar Galactica TV series, which premiered on July 18, 2006. Additionally, James Callis joined the cast of the TV series "Eureka" on Syfy in 2010. While the claim mentions the series premiering on July 18, 2006, and the actor joining a series in 2010, these refer to two different series: "Battlestar Galactica" and "Eureka," respectively. The "premiered on July 18, 2006" date corresponds to "Battlestar Galactica," although the context suggests that the initial miniseries aired in December 2003 and the series ran until 2009. However, the exact premiere date of the 2006 season is noted as July 18, 2006, confirming the claim about the premiere date for that season. Thus, the notes clarifying the actor and character, the premiere date of Battlestar Galactica, and the actor's joining of Eureka in 2010 support the claim when properly interpreted as two different series.
+
+### new_notes
+["James Callis is an English actor best known for playing Dr. Gaius Baltar in the re-imagined 'Battlestar Galactica' TV series, which premiered on July 18, 2006.", "James Callis joined the cast of the TV series 'Eureka' on Syfy in 2010."]
+
+### titles
+['Gaius Baltar', 'James Callis', 'Battlestar Galactica (2004 TV series)']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Gaius Baltar', 'James Callis']. Documents remaining to be retrieved: ['Eureka (U.S. TV series)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

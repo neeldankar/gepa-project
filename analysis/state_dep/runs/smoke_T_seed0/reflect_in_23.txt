@@ -1,0 +1,110 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You are provided with an input claim (a factual statement or assertion) and a list of notes that contain related information extracted from various sources. Your objective is to produce a precise and focused search query (or set of queries) that can effectively verify or refute the claim by retrieving relevant documents or sources not currently included in the notes.
+
+Input Format:
+- claim: a single sentence or phrase representing a factual claim that requires verification.
+- notes: a list of strings containing evidence, facts, or information snippets related to the claim. These notes may confirm, deny, or be insufficient to fully verify the claim.
+
+Output Requirements:
+- Produce only the field "query" containing one or more natural language questions or keyword phrases tailored to retrieving authoritative and specific documents that would help conclusively verify the claim.
+- Focus on queries that directly address any gaps or unresolved elements indicated by the notes.
+- Queries should target definitive facts such as identities, roles, relationships, attributes, specific dates, affiliations, or key details mentioned or alluded to by the claim.
+- If the claim combines multiple sub-claims or elements, break down the query into parts that can independently verify each critical component.
+- Write queries in clear, concise, grammatically correct natural language that can be used as search inputs to retrieve relevant documents or passages.
+
+Reasoning Strategy (implicit in query construction):
+- Compare the claim’s components with the notes to identify which parts are confirmed and which are uncertain or lack sufficient evidence.
+- Identify key entities, events, dates, or relationships referenced in the claim and absent or ambiguous in the notes.
+- Formulate queries explicitly designed to find authoritative sources or documents that confirm these missing or ambiguous pieces.
+- Avoid irrelevant or overly broad queries that do not focus on the claim verification.
+- When relevant, specify precise time periods, persons' full names, event names, titles, and identifiers to ensure retrieval of correct documents.
+- If a claim involves matching multiple attributes (e.g., a person’s role at multiple points in time), frame queries that separate these attributes clearly.
+
+Additional Domain-Specific Details:
+- For claims involving people (e.g., directors, coaches), queries should include full names, roles, and time frames.
+- For claims involving products, brands, or media (e.g., drinks, films), queries should clarify geography, versions, or related media (e.g., songs, co-directors).
+- For claims related to organizations or events, specify seasons, conferences, or group memberships precisely to avoid ambiguity.
+- Incorporate knowledge from notes about what is missing, e.g., official titles, historical leadership in a season, or flavor profiles not documented.
+
+Overall, the task is to create targeted and effective search queries that help complete the verification process of a factual claim by retrieving missing source documents, based on the discrepancy or absence of evidence in the given notes.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+American film director and actor Eli Roth, famous for his role as Donny "The Bear Jew" Donowitz, wrote the 2012 film that was directed by the founder of Soul Temple Records.
+
+### notes
+["Eli Roth co-wrote 'The Man with the Iron Fists' (2012), which was directed by RZA, the founder of Soul Temple Records.", "Eli Roth is known for his role as Donny 'The Bear Jew' Donowitz in Inglourious Basterds.", "Eli Roth co-wrote the 2012 film 'The Man with the Iron Fists,' which was directed by RZA, founder of Soul Temple Records.", "Eli Roth is known for his role as Donny 'The Bear Jew' Donowitz in the film 'Inglourious Basterds.'", "Eli Roth co-wrote the 2012 film 'The Man with the Iron Fists,' which was directed by RZA, who founded Soul Temple Records.", "Eli Roth is known for his role as Donny 'The Bear Jew' Donowitz in 'Inglourious Basterds'.", "RZA, founder of Soul Temple Records, directed 'The Man with the Iron Fists' and produced its soundtrack.", "'The Man with the Iron Fists' is a 2012 martial arts film set in 19th century China, featuring a cast led by RZA and written by RZA and Eli Roth."]
+
+## Generated Outputs
+### reasoning
+The claim states that Eli Roth, an American film director and actor known for his role as Donny "The Bear Jew" Donowitz, wrote a 2012 film directed by the founder of Soul Temple Records. To verify this claim, several key pieces of information are needed: (1) which 2012 film did Eli Roth write? (2) was this film directed by the founder of Soul Temple Records? (3) who is the founder of Soul Temple Records, and did they direct any film in 2012? The notes provide no information, so all these details must be verified. The queries should focus on identifying Eli Roth's screenwriting credits in 2012 and the director of that film, as well as the identity and filmography of Soul Temple Records' founder.
+
+### query
+Which films did Eli Roth write in 2012? Who directed the 2012 film(s) that Eli Roth wrote? Who is the founder of Soul Temple Records? Has the founder of Soul Temple Records directed any films, specifically in 2012? What is the relationship between the 2012 film written by Eli Roth and the founder of Soul Temple Records as director?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Eli Roth', 'Soul Temple Records', 'The Man with the Iron Fists']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+The person from Albania who is known for the 1980 film Cannibal Holocaust and Mexican Alejandro Springall, are both film directors.
+
+### notes
+['Alejandro Springall is a Mexican film director and producer.', '"Cannibal Holocaust" (1980) is an Italian horror film directed by Ruggero Deodato, not an Albanian director.', 'Alejandro Springall is a Mexican film director and producer.', "The 1980 film 'Cannibal Holocaust' was directed by Italian director Ruggero Deodato, not by any Albanian person.", "Ruggero Deodato is well-known for directing 'Cannibal Holocaust.'", "There is no notable Albanian film director associated with 'Cannibal Holocaust.'", 'Alejandro Springall is a Mexican film director and producer.', "The 1980 film 'Cannibal Holocaust' was directed by Italian director Ruggero Deodato.", "There is no notable Albanian film director associated with 'Cannibal Holocaust'.", "Ruggero Deodato is well-known for directing 'Cannibal Holocaust' and is Italian, not Albanian."]
+
+## Generated Outputs
+### reasoning
+The claim states that the person from Albania is known for the 1980 film Cannibal Holocaust, implying that this Albanian individual directed or was otherwise the notable figure connected to the film, and that Mexican Alejandro Springall is also a film director. Notes confirm that Alejandro Springall is a Mexican film director, so that part is verified. However, all notes consistently report that the 1980 film Cannibal Holocaust was directed by Italian Ruggero Deodato, and there is no association with any Albanian director. Therefore, the claim regarding the Albanian person's connection to Cannibal Holocaust is false or at least unsupported by the notes.
+
+To conclusively verify or refute the claim about the Albanian figure, we need authoritative sources confirming if any Albanian person is credited with directing Cannibal Holocaust in any capacity or associated closely with the film, and detailed information on any Albanian film directors linked to that film or their roles. Additionally, verifying Alejandro Springall as a director is already supported but can be reconfirmed.
+
+Thus the key queries should focus on:
+1. Who is the director of the 1980 film Cannibal Holocaust? Is there any Albanian national officially recognized in that role?
+2. Is there any Albanian film director known for Cannibal Holocaust?
+3. Confirm Alejandro Springall's profession and nationality.
+
+### query
+Who directed the 1980 film Cannibal Holocaust? Are there any Albanian nationals credited as directors or notable contributors to Cannibal Holocaust? List any Albanian film directors associated with Cannibal Holocaust. Is Alejandro Springall a Mexican film director?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Alejandro Springall', 'Cannibal Holocaust']. Documents remaining to be retrieved: ['Ruggero Deodato'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The actress made her debut in the film by the director who was American. She also starred in The Death and Life of John F. Donovan.
+
+### notes
+["Holly Marie Combs made her acting debut in the 1992 American film 'Simple Men' directed by American director Hal Hartley.", "'Simple Men' was entered into the 1992 Cannes Film Festival.", "Holly Marie Combs also starred in 'The Death and Life of John F. Donovan.'", "Holly Marie Combs made her acting debut in the 1992 American film 'Simple Men' directed by American director Hal Hartley.", "'Simple Men' was entered into the 1992 Cannes Film Festival.", "Holly Marie Combs also starred in 'The Death and Life of John F. Donovan.'", "Holly Marie Combs made her acting debut in the 1992 American film 'Simple Men' directed by American director Hal Hartley.", "'Simple Men' was entered into the 1992 Cannes Film Festival.", "Holly Marie Combs also starred in 'The Death and Life of John F. Donovan.'"]
+
+## Generated Outputs
+### reasoning
+The notes confirm that the actress (Holly Marie Combs) made her acting debut in the 1992 American film "Simple Men," which was directed by American director Hal Hartley. They also confirm that she starred in "The Death and Life of John F. Donovan." Therefore, the claim that she made her debut in a film by an American director and that she starred in "The Death and Life of John F. Donovan" is supported by the notes. However, to fully verify the first part of the claim, it is important to confirm that Hal Hartley was indeed American at the time of directing "Simple Men" and that it was indeed her acting debut.
+
+### query
+Was Hal Hartley an American director at the time he directed the 1992 film "Simple Men"? Was "Simple Men" the acting debut of Holly Marie Combs? Did Holly Marie Combs star in the film "The Death and Life of John F. Donovan"?
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Amara Karan', 'The Death and Life of John F. Donovan', 'Wes Anderson'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

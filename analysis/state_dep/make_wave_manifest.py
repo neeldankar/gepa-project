@@ -11,7 +11,10 @@
   carry no analysis meaning -- but a seed's three arms are spread across different waves rather
   than run together, so a wave-level disturbance cannot hit one seed's three arms alone.
 
-Emitted order within a wave is the launch order; the supervisor takes them at width 8.
+Emitted order is the launch order. The supervisor flattens all three waves into one pending list
+and runs a ROLLING POOL at WIDTH concurrency with no wave barrier (supervisor.py:250-266), so the
+wave grouping need not equal WIDTH -- since the 2026-07-28 smoke it does not (3 waves of 8, width
+6). Both constraints above are properties of the ORDERING and are unaffected by WIDTH.
 
   python3 analysis/state_dep/make_wave_manifest.py [--print]
 """
@@ -27,7 +30,7 @@ OUT = os.path.join(HERE, "wave_manifest.json")
 ARMS = ("B", "C", "T")
 SEEDS = tuple(range(8))
 WAVES = 3
-WIDTH = 8
+WIDTH = 6
 
 
 def build() -> dict:
@@ -56,8 +59,11 @@ def build() -> dict:
         "arms": list(ARMS),
         "seeds": list(SEEDS),
         "width": WIDTH,
-        "width_note": "8 is the proven floor (swap ran width 8 at ~0.93 GB/process). Raise only if "
-                      "the live smoke shows RSS headroom AND zero backoffs. Never 16 untested.",
+        "width_note": "6, re-decided on the 2026-07-28 live smoke: 1460.3 MB/process and 0 "
+                      "backoffs. Zero rate-limit pressure, but 57% above the ~0.93 GB/process the "
+                      "old width-8 default rested on -- 8x = 11.4 GB on a 16 GB machine, 6x = "
+                      "8.6 GB. Raising it again needs a new RSS measurement. Never 16 untested. "
+                      "WIDTH is concurrency only; it does not partition the waves.",
         "smoke": {"arm": "T", "seed": 0, "excluded_from_analysis": True,
                   "note": "v2.1 §13-5: runs first, measured, excluded; T/seed0 is rerun in wave 1 "
                           "like every other cell"},

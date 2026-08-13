@@ -1,0 +1,109 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields:
+- `claim`: a factual statement or assertion that may require verification or further factual support.
+- `notes`: a list of textual snippets containing partial information relevant to verifying the claim. These notes might include facts, contradictions, or missing information about entities or topics in the claim.
+
+Your goal is to produce the output field `query` — a precise and focused question (or set of questions) aimed at retrieving the key missing or uncertain factual information needed to verify the claim. The `query` should target specific entities, attributes, relationships, or facts that have not been confirmed or sufficiently covered in the provided notes.
+
+Key Points and Domain-Specific Knowledge:
+- The claim involves named entities such as people, films, bands, roles (e.g., director, bassist), birthdates, nationalities, professions, and works (e.g., films, songs).
+- Notes often contain partial or confirmatory information about these entities, but sometimes lack critical data required to verify the claim fully.
+- Your query should be designed to retrieve authoritative documents or data specifically covering the missing or ambiguous elements mentioned or implied by the claim.
+- The query should reflect recognition of domain-specific facts, such as:
+   * Individuals’ roles and contributions (e.g., “bass player and lead vocalist who created Cobra Starship” refers to Gabe Saporta).
+   * Nationality or origin of persons associated with cultural works (e.g., nationality of film directors related to 'Cannibal Holocaust').
+   * Dates of birth or ages when claims relate to relative age.
+   * Professional associations or occupations that confirm or refute the claim.
+   * Connections between named works and their creators or contributors.
+
+Generalizable Strategy:
+1. Analyze the claim and identify the factual assertions that require verification.
+2. Review the notes to establish which parts of the claim are already supported and which parts are missing, contradictory, or uncertain.
+3. Formulate concise, targeted queries that seek the minimal yet sufficient data required to resolve remaining ambiguities.
+4. When multiple pieces of missing information exist, combine them efficiently in the query, balancing completeness and precision.
+5. Focus on retrieving documents or facts about:
+   - Specific named entities not covered or unclear in the notes.
+   - Attributes or relationships critical to verifying the claim.
+6. Avoid overly broad or generic questions; tailor queries to close specific knowledge gaps evident from the notes.
+
+Example:
+If the claim is about the relative age of two persons, and only one birthdate is known, the query should be:  
+   "What is the birthdate or age of [Person with missing info]?"
+
+If the claim involves multiple nationalities or roles, and only partial info is available, the query should ask specifically about the identities, nationalities, or professions of the key persons involved.
+
+By following this approach, you will help retrieve the essential documents needed to verify complex claims effectively.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+1969 saw the founding of the Canadian baseball team where the future manager played from 1973-87. He managed the Tampa Bay Devil Rays season.
+
+### notes
+['The Tampa Bay Devil Rays baseball franchise was awarded in 1995 and began play in 1998 as an MLB expansion team based in St. Petersburg, Florida, not Canada.', 'No Canadian baseball team founded in 1969 is mentioned in the provided context, nor is there any mention of a future Tampa Bay Devil Rays manager playing from 1973 to 1987 with such a team.', 'Tampa Bay Devil Rays managers have included Larry Rothschild (appointed 1997, first manager) and Lou Piniella (managed up to 2005 season), with no record of a manager who played 1973-1987 for a Canadian team.', 'John McLaren served as a coach for the Tampa Bay Devil Rays but managed the Seattle Mariners; no evidence he managed the Tampa Bay Devil Rays.', "The claim’s attribution of the founding of a Canadian baseball team in 1969 related to the future Tampa Bay Devil Rays manager is unsubstantiated and contradicted by the team's founding and location.", 'The Tampa Bay Devil Rays franchise name changed officially to Tampa Bay Rays in 2007, confirming the timeline and foundation distinct from the claim.', 'The Tampa Bay Devil Rays franchise was founded in 1995 in St. Petersburg, Florida, and began MLB play in 1998, not in Canada.', 'There is no record of any Canadian baseball team founded in 1969 connected to the Tampa Bay Devil Rays or their managers.', 'No known Tampa Bay Devil Rays manager played for a Canadian baseball team during 1973-1987.', 'Known Tampa Bay Devil Rays managers, including Larry Rothschild, Lou Piniella, Joe Maddon, and Hal McRae, do not match the described career path.', 'The claim associating the founding of a Canadian team and a future Tampa Bay Devil Rays manager playing there is contradicted by franchise history and managerial records.', "There is insufficient evidence to verify the claim's assertions about the Canadian team's founding date, the player's tenure, or management of the Devil Rays.", 'The Tampa Bay Devil Rays franchise was awarded in 1995 and began MLB play in 1998 based in St. Petersburg, Florida, not Canada.', 'No Canadian baseball team founded in 1969 is connected to the Tampa Bay Devil Rays or its managers in the provided information.', 'No Tampa Bay Devil Rays manager is recorded as having played for a Canadian team from 1973 to 1987.', 'Known Devil Rays managers (Larry Rothschild, Lou Piniella, Joe Maddon, Hal McRae) do not match the described career path.', "The claim's assertion about the founding date of a Canadian team, the player's tenure, and managing the Devil Rays is contradicted by franchise history and lacks supporting evidence."]
+
+## Generated Outputs
+### reasoning
+The claim asserts that a Canadian baseball team was founded in 1969 and that a future Tampa Bay Devil Rays manager played for this team from 1973 to 1987 before managing the Devil Rays. The notes provide conflicting or absent information regarding both the Canadian team and the managerial connection. Specifically, the Tampa Bay Devil Rays were an expansion team founded in 1995, starting play in 1998 in Florida, not Canada, negating the first part of the claim. There is no mention of a Canadian team founded in 1969 in the notes, nor any linked player/manager fitting the described timeline. Further, the identities and player histories of managers who have led the Tampa Bay Devil Rays do not match the claim. To verify or refute the claim conclusively, key information is missing: the identity and founding details of any Canadian baseball team established in 1969, the playing career of any of its players between 1973 and 1987 who later managed the Tampa Bay Devil Rays, and confirmation of their managerial tenure with the Devil Rays.
+
+### query
+What Canadian baseball team was founded in 1969, who were its notable players during 1973-1987, and did any of those players later become a manager of the Tampa Bay Devil Rays? Additionally, what is the complete list of Tampa Bay Devil Rays managers and their playing histories before managing the team?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['2002 Tampa Bay Devil Rays season']. Documents remaining to be retrieved: ['Hal McRae', 'Kansas City Royals'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Il trovatore has more acts than the 1994 Hungarian-Swiss-Italian fantasy film which was loosely inspired by. This Hungarian-Swiss-Italian fantasy film was directed by Ildikó Enyedi and called Magic Hunter.
+
+### notes
+['Magic Hunter is a 1994 Hungarian-Swiss-French fantasy film directed by Ildikó Enyedi and is loosely inspired by the opera Der Freischütz.', 'The claim that Magic Hunter is Hungarian-Swiss-Italian conflicts with the context indicating it is Hungarian-Swiss-French.', 'There is no available evidence on the number of acts in the film Magic Hunter or in Il trovatore from the provided data.', 'Verification of whether Il trovatore has more acts than Magic Hunter cannot be concluded based on provided information.', 'Magic Hunter is a 1994 Hungarian-Swiss-French fantasy film directed by Ildikó Enyedi, not Hungarian-Swiss-Italian as claimed.', "Magic Hunter is loosely inspired by the opera 'Der Freischütz,' not 'Il trovatore.'", 'Il trovatore is an opera by Giuseppe Verdi and traditionally contains multiple acts, but no specific number of acts is provided in the data.', 'There is no evidence in the provided data about the division of acts in the film Magic Hunter or a direct quantitative comparison of acts between Il trovatore and Magic Hunter.', 'Verification of the claim that Il trovatore has more acts than Magic Hunter cannot be concluded based on the available information.', 'Magic Hunter is a 1994 fantasy film directed by Ildikó Enyedi and produced as a Hungarian-Swiss-French collaboration, not Hungarian-Swiss-Italian as claimed.', 'Magic Hunter is loosely inspired by the opera Der Freischütz, not Il trovatore.', 'Il trovatore is an opera by Giuseppe Verdi traditionally performed in multiple acts, although the exact number of acts is not specified here.', 'No information is available on the number or structure of acts in Magic Hunter.', 'As a result, it is not possible to verify or compare the number of acts in Il trovatore and Magic Hunter based on the provided data.']
+
+## Generated Outputs
+### reasoning
+The claim compares the number of acts in "Il trovatore" to the number of acts in the 1994 Hungarian-Swiss-Italian fantasy film "Magic Hunter," directed by Ildikó Enyedi. To verify this, we need to know how many acts "Il trovatore" contains as well as how many acts (or equivalent structural divisions) the film "Magic Hunter" is divided into. Typically, operas like "Il trovatore" have clearly defined acts, while films generally do not use "acts" in the same formal way; however, some films are structured in acts or parts. Since the notes do not provide any information, a query is needed to acquire the number of acts in "Il trovatore" and to determine whether "Magic Hunter" has any acts or comparable divisions.
+
+### query
+How many acts does the opera "Il trovatore" have? How many acts or distinct structural parts does the 1994 film "Magic Hunter," directed by Ildikó Enyedi, have?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Magic Hunter']. Documents remaining to be retrieved: ['Der Freischütz', 'Il trovatore'].
+
+
+
+# Example 3
+## Inputs
+### claim
+An English actor starred in "Hollywood Goes Classical", which was performed at the Dorothy Chandler Pavilion. He also starred in "Lethal Obsession".
+
+### notes
+["Michael York is an English actor who starred in the stage performance 'Hollywood Goes Classical' at the Dorothy Chandler Pavilion alongside Mickey Rooney and others.", "'Hollywood Goes Classical' was written and performed by Terry Ray, an American actor, at the Dorothy Chandler Pavilion.", "Michael York also starred in the 1987 German crime-thriller film 'Lethal Obsession' (also known as 'Der Joker').", 'The Dorothy Chandler Pavilion is part of the Los Angeles Music Center and is a major performing arts venue in the United States.', "Michael York is an English actor who starred in the stage performance 'Hollywood Goes Classical' at the Dorothy Chandler Pavilion, alongside Mickey Rooney and others.", "'Hollywood Goes Classical' was written and performed by American actor Terry Ray at the Dorothy Chandler Pavilion, but Terry Ray is not English and did not star in 'Lethal Obsession'.", "Michael York also starred in the 1987 German crime-thriller film 'Lethal Obsession' (also known as 'Der Joker').", 'The Dorothy Chandler Pavilion is a major performing arts venue in Los Angeles, part of the Los Angeles Music Center.', "Michael York is an English actor who starred in the stage performance 'Hollywood Goes Classical' at the Dorothy Chandler Pavilion alongside Mickey Rooney and others.", "'Hollywood Goes Classical' was written and performed by American actor Terry Ray, but Michael York also performed in it, confirming his involvement at the Dorothy Chandler Pavilion.", "Michael York also starred in the 1987 German crime-thriller film 'Lethal Obsession' (also known as 'Der Joker').", 'The Dorothy Chandler Pavilion is a major performing arts venue in Los Angeles and part of the Los Angeles Music Center.']
+
+## Generated Outputs
+### reasoning
+The claim states that an English actor starred both in "Hollywood Goes Classical" performed at the Dorothy Chandler Pavilion and in "Lethal Obsession." The notes provide that Michael York is an English actor who starred in the stage performance "Hollywood Goes Classical" at the Dorothy Chandler Pavilion [1], and that he also starred in "Lethal Obsession" [3]. This supports the claim. However, note [2] introduces Terry Ray, an American actor who also wrote and performed in "Hollywood Goes Classical," suggesting more than one lead actor. To fully verify the claim's accuracy regarding the English actor starring in both, it is important to confirm any other English actor(s) involved in "Hollywood Goes Classical" to ensure Michael York was indeed a star as opposed to another actor, and to confirm the lead actors in "Lethal Obsession" in case there could be confusion. Therefore, the query should seek specific cast information for both "Hollywood Goes Classical" at the Dorothy Chandler Pavilion and "Lethal Obsession," focusing on identifying the English actor(s) involved and their roles.
+
+### query
+Who were the lead actors in the stage performance "Hollywood Goes Classical" at the Dorothy Chandler Pavilion? Specifically, did English actor Michael York star in this performance? Additionally, who were the lead actors in the film "Lethal Obsession," and was Michael York among them?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Lethal Obsession', 'Michael York', 'Terry Ray (actor)']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

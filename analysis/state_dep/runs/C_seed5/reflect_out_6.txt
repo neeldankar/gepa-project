@@ -1,0 +1,63 @@
+``` 
+Task Description:
+
+You will be provided with three fields as input:
+
+1. `claim` - A declarative statement that makes a factual assertion involving entities, events, dates, genres, professions, or other specific attributes.
+
+2. `notes` - A list of relevant extracted sentences or facts that provide supporting, contradictory, or contextual information related to the claim. These often come from various sources and together contain key pieces of evidence needed to evaluate the claim.
+
+3. `context` - A list of document summaries or content snippets from relevant documents that give broader background information about the entities, events, or topics involved in the claim.
+
+Your task is to process these inputs and generate two output fields:
+
+1. `new_notes` - A concise distilled list of key facts extracted or summarized from the input `notes` and `context` that are most pertinent to assessing the truth or accuracy of the claim. The `new_notes` should:
+   - Highlight core factual details that directly bear on the claim.
+   - Remove redundancies and less relevant information.
+   - Emphasize precise data such as dates, professions, album names, genres, formation years, or other domain-specific facts.
+   - Include clarifications when information is missing or not verifiable.
+   - Support a reliable evaluation of the claim.
+
+2. `titles` - A list of document or entity titles that correspond to the main topics or key references used to obtain evidence within `new_notes`. These represent important documents or entries whose content was instrumental in reasoning about the claim.
+
+Detailed Guidance and Domain-Specific Considerations:
+
+- The `claim` may refer to complex domain-specific facts, for example:
+    * Musical bands and artists (formation years, critical discography details, genre classification).
+    * Films or TV shows (release years, cast, genre classification, character inclusion).
+    * Songs and co-writers (authorship, professional affiliations).
+    * Other cultural or biographical data involving named entities.
+
+- The assistant should carefully disambiguate entities with similar names and ensure the correct entity is identified (e.g., distinguishing between different bands with similar names or different films with related titles).
+
+- The assistant should infer from both `notes` and `context` when verifying specific claims such as formation years, genre classifications, professional roles, or collaboration details.
+
+- When information necessary to verify the claim is missing from the supplied `context`, explicitly note that in `new_notes` to highlight the inability to confirm or refute the claim fully.
+
+- Summarize information in a manner that supports logical reasoning about the claim in the `reasoning` field (though the user does not explicitly require it in this task, the logic should underpin the contents of `new_notes`).
+
+- The `titles` should correspond closely to the documents or entries referenced in the notes that provide the pivotal factual information used in summarization or verification.
+
+- Maintain factual accuracy and avoid introducing unsupported information.
+
+- Emphasize clarity in the presentation of facts to facilitate future users or models in quickly understanding the evidence base regarding the claim.
+
+- The output is meant to support downstream fact-checking and evidence retrieval tasks by highlighting concise, accurate, and relevant factual snippets and their originating documents.
+
+Generalizable Strategy:
+
+- Identify the entities or topics referenced in the claim.
+
+- Extract from `notes` and `context` all relevant details about these entities, particularly focusing on attributes or facts that the claim hinges upon.
+
+- Cross-check for consistency or contradictions.
+
+- Distill this information into brief, non-redundant factual notes to populate `new_notes`.
+
+- List the source document/entity titles most tightly connected to these facts for `titles`.
+
+- When evidence is incomplete, explicitly acknowledge this.
+
+Input and output format remains strictly as defined, with `claim`, `notes`, and `context` as inputs, and only `new_notes` and `titles` as outputs.
+
+``

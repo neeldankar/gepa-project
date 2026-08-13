@@ -1,0 +1,54 @@
+``` 
+Task Description:
+
+You are given three input fields: `claim`, `notes`, and `context`.
+
+- `claim` is a factual statement or compound factual statement(s) asserting relationships between named entities such as persons, creative works, organizations, or events. The claim may contain multiple distinct assertions.
+  
+- `notes` is a list of textual snippets that may be partially overlapping, redundant, incomplete, or tangential but generally associated with the claim’s key entities or facts. They serve as a preliminary raw source of evidence about the claim’s components.
+
+- `context` is a collection of encyclopedia-style or document-style short articles or snippets, each focused on a specific entity or topic (e.g., a person, film, band, historical event). These provide authoritative background knowledge or detailed factual information that can verify, validate, clarify, or refute the claim.
+
+Your task is to produce two output fields:
+
+1. `new_notes`:  
+   - Select and curate a concise, non-redundant subset of the input `notes`.  
+   - Keep only notes that are *directly relevant* to the claim or one of its key components, and especially those that provide factual support, evidence, or useful context for evaluating the claim’s truthfulness.  
+   - Remove irrelevant, off-topic, duplicate, or uninformative snippets.  
+   - Prioritize notes that clarify or confirm specific relationships mentioned in the claim (such as who did what, when, or where), as well as key attributes or identifying data (e.g., names, dates, titles).  
+   - The `new_notes` should *factually support* or guide verification of the claim, without introducing unrelated information.
+
+2. `titles`:  
+   - Identify and list the minimal set of context document titles (i.e., the entity or topic names associated with the relevant context snippets) that together provide authoritative information essential to understand and verify the claim and the chosen `new_notes`.  
+   - Each chosen title must correspond to a context snippet that contains important facts about the claim’s main entities or relationships.  
+   - Avoid including context documents that are marginally related or only share keywords without contributing critical factual support.  
+   - Examples of relevant entities commonly include persons (composers, directors, politicians), creative works (films, albums, documentaries), organizations (teams, bands), and major events (tournaments, award ceremonies).
+
+Important Domain-Specific Details and Guidelines:
+
+- Claims often involve specific relationships between named entities — for example, a composer and a film soundtrack, or a football club and its home stadium. Pay careful attention to verifying every entity’s identity, roles, and attributes mentioned in the claim. This includes correctly matching person names, organizations, and place names.
+
+- Notes may be repetitive or contain conflicting information. Use context to rigorously confirm or reject assertions found in notes.
+
+- Context snippets may contain disambiguation or detailed background that helps establish timelines, attributions, or clarify ambiguous entities. Use them to cross-verify the correctness of information in notes and the claim.
+
+- Some claims may consist of multiple factual assertions (e.g., claim about a person’s death date and a related teacher-student relationship). Each distinct part should be evaluated separately. It is acceptable to only confirm part of a claim if other parts lack support.
+
+- When constructing `new_notes`, ensure that notes are concise and focused on facts — avoid verbose or redundant texts that do not add incremental factual value.
+
+- The selected context `titles` should together provide sufficient factual evidence or context to verify all parts of the claim supported by the `new_notes`. Avoid over-selection or including irrelevant context based purely on keyword overlap.
+
+Generalizable Strategy:
+
+1. Parse the claim carefully to extract its key entities and the relationships or facts asserted.
+
+2. Review the `notes` to identify statements that mention these key entities or facts and serve as direct evidence or context for verifying the claim.
+
+3. Remove duplicate or irrelevant notes; keep a concise set that factually supports or clarifies the claim’s assertions.
+
+4. Analyze the `context` snippets to find those that best correspond to the important entities or relationships in the claim and that support the selected `new_notes`.
+
+5. Output the filtered `new_notes` and a minimal relevant list of `titles` (the document names from the context) that collectively enable verification.
+
+Your outputs will provide a focused, easily verifiable set of fact-checking evidence to confirm or evaluate the claim using both the notes and the authoritative background context.
+```

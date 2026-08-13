@@ -1,0 +1,119 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You are given a textual claim and a list of notes that provide factual information related to the claim. Your goal is to generate an effective search query (or a set of queries) that can be used to verify the claim using the information contained in the notes or to retrieve relevant documents needed for verification.
+
+Input Format:
+- `claim`: A concise, fact-based statement or assertion that may combine multiple facts or relationships.
+- `notes`: A list of factual sentences or short snippets extracted from one or more documents. These provide evidence, context, or refutations related to the claim.
+
+Output:
+- `query`: One or more natural language questions designed to verify the truthfulness of the claim by querying the content and relationships mentioned in the notes. The queries should focus on the key entities, events, attributes, and relationships explicitly or implicitly stated in the claim and cross-checked against the notes.
+
+Detailed Instructions:
+1. **Understand the claim carefully**: Identify the main entities, attributes, and relationships described in the claim. In cases where the claim contains indirect references (e.g., “born in the birthplace of X”), resolve these to direct facts that can be checked (e.g., birthplaces of both entities).
+
+2. **Use notes to clarify and expand the claim**: Analyze the notes to identify relevant facts that relate directly to the claim’s key assertions. These often include:
+   - Names of persons, places, or works referenced.
+   - Temporal information (e.g., years, release dates).
+   - Relationships such as birthplaces, roles (actor, director), attributes (flavor, ranking).
+   - Disambiguations or corrections from the notes (e.g., corrections of director or actor roles).
+
+3. **Formulate verification-focused queries**:
+   - Queries should ask directly about the key facts or relationships necessary to verify the claim.
+   - When the claim contains multiple assertions or compound facts, break them into separate but related questions.
+   - Include entity disambiguation and relationship verification, such as confirming if two people share the same birthplace, if a person directed a film, or if a product has a given feature.
+   - If the notes show contradictions or lack of evidence, include queries that test these points explicitly, e.g., “Did Actor X appear in Film Y?” or “Is Film Z directed by Person A?”
+
+4. **Be precise and contextual**:
+   - Use the exact names and terms found in the notes for entities and works.
+   - Include relevant qualifiers like dates, nationalities, or versions to avoid ambiguity.
+   - Avoid generating overly broad or generic queries that do not focus on key claim assertions.
+
+5. **Generalizable strategy**:
+   - Parse the claim into atomic factual units.
+   - Cross-reference with the notes to identify which facts are supported, contradicted, or missing.
+   - Generate natural-language queries that aim at resolving the truthfulness or factual status of each atomic fact.
+   - This approach ensures maximum retrieval of relevant evidence documents for claim verification.
+
+Domain-specific Insights:
+- Claims often involve biographical details (birthplaces, dates, occupations).
+- Claims may relate to filmography: actors starring in films, directors of films, film release years.
+- Claims can concern product attributes like flavors of soft drinks or advertising associations.
+- Notes may explicitly correct or refute claim elements, or indicate absence of evidence.
+- The resulting queries must reflect these factual domains and relationships with precision to guide retrieval systems effectively.
+
+Summary:
+Given `claim` and `notes`, produce verification-oriented, fact-specific queries that directly target the core assertions of the claim using the contextual and factual information in the notes. These queries enable retrieval or verification of all relevant documents and help confirm or refute each part of the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The  genus of flowering plants whose  generic name is Caesalpinioideae has more species than Achimenes.
+
+### notes
+['Caesalpinioideae is a subfamily, not a genus.', 'Senna is a genus within Caesalpinioideae with about 260 to 350 species.', 'Calliandra is a genus within Caesalpinioideae with about 140 species.', 'Achimenes is a genus not detailed in the given context but is generally smaller in species count.', 'Species counts within Caesalpinioideae genera exceed those typical of Achimenes.', 'The claim incorrectly refers to Caesalpinioideae as a genus.', 'Caesalpinioideae is a subfamily, not a genus.', 'Several genera within Caesalpinioideae, including Senna and Calliandra, have many species.', 'Senna contains approximately 260 to 350 species, far exceeding the approximately 25 species in Achimenes.', 'Achimenes is a genus within Gesneriaceae, distinct from those in the Fabaceae family and subfamily Caesalpinioideae.', 'The claim mistakenly identifies Caesalpinioideae as a genus, leading to confusion.', 'Genera within Caesalpinioideae can have more species than Achimenes, but Caesalpinioideae itself is a higher taxonomic level.', 'Caesalpinioideae is a subfamily, not a genus.', 'Genera such as Senna (260-350 species) and Calliandra (about 140 species) within Caesalpinioideae have more species than Achimenes.', 'Achimenes is a genus in the family Gesneriaceae with fewer species than large Caesalpinioideae genera.', 'The claim incorrectly compares a subfamily (Caesalpinioideae) to a genus (Achimenes).', 'Senna, within Caesalpinioideae, exemplifies a genus with significantly more species than Achimenes.']
+
+## Generated Outputs
+### reasoning
+The claim states that the genus with the generic name Caesalpinioideae has more species than Achimenes. However, note [1] clarifies that Caesalpinioideae is not a genus but a subfamily. Thus, the claim contains a fundamental error in classification. There are genera within Caesalpinioideae, such as Senna (about 260-350 species) and Calliandra (about 140 species), which are mentioned to have more species than Achimenes. Since Achimenes is generally smaller in species count (notes [4] and [5]), the claim's intent might be comparing species count between Achimenes and genera within Caesalpinioideae rather than Caesalpinioideae itself. The correct verification queries should clarify that Caesalpinioideae is a subfamily, identify species counts of Achimenes, and compare those counts to species numbers in genera such as Senna and Calliandra within Caesalpinioideae.
+
+### query
+Is Caesalpinioideae a genus or a subfamily of flowering plants? How many species does the genus Achimenes have? What are the species counts of genera such as Senna and Calliandra within the subfamily Caesalpinioideae? Do these genera have more species than Achimenes?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Achimenes']. Documents remaining to be retrieved: ['Caesalpinia', 'Caesalpinioideae'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The sport of tennis is played by both Texas native Angelique Kerber and the player who was the defending champion, who competed, for the 2005 China Open – Men's Doubles.
+
+### notes
+['Angelique Kerber is a German tennis player, not a Texas native.', "Justin Gimelstob and Graydon Oliver were the defending champions of the 2005 China Open – Men's Doubles.", 'Graydon Oliver did not participate in 2005; Gimelstob partnered with Nathan Healey and defended the title.', "Angelique Kerber did not participate in the 2005 China Open – Men's Doubles.", "No evidence links Angelique Kerber to the 2005 China Open – Men's Doubles defending champions.", 'Angelique Kerber is a German tennis player and not a Texas native.', "Angelique Kerber did not participate in the 2005 China Open – Men's Doubles.", "Justin Gimelstob and Graydon Oliver were the defending champions of the 2005 China Open – Men's Doubles; Oliver did not participate in 2005.", 'Gimelstob partnered with Nathan Healey to defend the title in 2005.', "There is no evidence linking Angelique Kerber to the 2005 China Open – Men's Doubles or its defending champions.", 'Angelique Kerber is a German tennis player and has no association with being a Texas native.', "Kerber did not participate in the 2005 China Open – Men's Doubles event.", 'Justin Gimelstob and Graydon Oliver were the defending champions in 2005, but Oliver did not participate that year.', 'Gimelstob partnered with Nathan Healey in 2005 to defend their doubles title successfully.', "There is no link between Angelique Kerber and the defending champions of the 2005 China Open – Men's Doubles."]
+
+## Generated Outputs
+### reasoning
+The claim contains multiple factual components: (1) Angelique Kerber is a Texas native who plays tennis, (2) the defending champion in the 2005 China Open – Men’s Doubles competed in that event, and (3) both of these persons played the sport of tennis. To verify this claim, we need to check whether Angelique Kerber is from Texas and if she is a tennis player, as well as identify who the defending champions of the 2005 China Open – Men’s Doubles were, confirm whether that player played tennis, and whether he competed in the 2005 China Open – Men’s Doubles. Since the notes provide no information, the queries must address these points explicitly.
+
+### query
+Is Angelique Kerber a tennis player and is she a native of Texas? Who was the defending champion of the 2005 China Open – Men’s Doubles? Did that defending champion compete in the 2005 China Open – Men’s Doubles event? Does the defending champion play tennis?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ["2005 China Open – Men's Doubles"]. Documents remaining to be retrieved: ['Angelique Kerber', 'Justin Gimelstob'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The actor who starred in a main role on A Lua Me Disse received the Golden Globe nomination for playing the lead role of "The King of Cocaine".
+
+### notes
+['A Lua Me Disse stars Adriana Esteves and Wagner Moura in the main roles.', 'No information links these actors to a Golden Globe nomination.', "No mention of a role titled 'The King of Cocaine' related to A Lua Me Disse or its actors.", 'Golden Globe nominations mentioned pertain to other actors unrelated to A Lua Me Disse.', 'Adriana Esteves and Wagner Moura star in A Lua Me Disse but have no Golden Globe nominations.', "No actor from A Lua Me Disse is related to a role called 'The King of Cocaine'.", 'Golden Globe nominations mentioned for other actors do not connect to A Lua Me Disse.', 'Adriana Esteves and Wagner Moura starred in main roles on A Lua Me Disse.', 'Wagner Moura received a Golden Globe nomination for his role as Pablo Escobar in the Netflix series Narcos.', "There is no role called 'The King of Cocaine' associated with A Lua Me Disse or its actors.", "No actor from A Lua Me Disse received a Golden Globe nomination for a role titled 'The King of Cocaine'."]
+
+## Generated Outputs
+### reasoning
+The claim involves two key assertions: (1) an actor starred in a main role on the film or show "A Lua Me Disse," and (2) the same actor received a Golden Globe nomination for playing the lead role of "The King of Cocaine." To verify this claim, it is necessary to know who starred in "A Lua Me Disse," and then whether any of those actors were nominated for a Golden Globe specifically for portraying "The King of Cocaine." Since there are no notes given to provide relevant information, the search query should aim to identify the starring actor(s) of "A Lua Me Disse" and cross-check their Golden Globe nomination history and roles played, especially if any are referred to as "The King of Cocaine."
+
+### query
+Who starred in a main role in "A Lua Me Disse"? Did any actor from "A Lua Me Disse" receive a Golden Globe nomination? Was the Golden Globe nomination for playing the lead role of "The King of Cocaine"?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['A Lua Me Disse', 'Wagner Moura']. Documents remaining to be retrieved: ['Pablo Escobar'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

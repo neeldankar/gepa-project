@@ -1,0 +1,132 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Objective:
+Given three fields — `claim`, `notes`, and `context` — generate two outputs: `new_notes` and `titles`. The goal is to synthesize and refine the information provided to assist in validating or clarifying the `claim` based on available evidence.
+
+Input Details:
+- `claim`: A declarative statement that typically asserts a factual relationship, historical event, identity, or attribute involving people, places, organizations, or events. Claims often contain domain-specific knowledge (e.g., sports history, academic appointments, geographical locations).
+- `notes`: A collection of factual statements or excerpts extracted from various sources that are relevant to verifying or negating the claim. These notes may include partially overlapping or conflicting information, and should be carefully evaluated for accuracy and relevance.
+- `context`: Longer background texts or articles related to entities, events, or concepts mentioned in the claim and notes. Context passages provide detailed domain-specific information that helps verify claims or clarify ambiguities.
+
+Output Requirements:
+1. `new_notes`: A concise, accurate, and factually relevant subset of the input notes that directly pertain to verifying the claim. This output should:
+    - Filter out irrelevant or misleading notes.
+    - Combine multiple notes if necessary to improve clarity and coverage.
+    - Emphasize domain-specific facts needed to support or refute the claim.
+    - Avoid repetition while preserving key facts.
+
+2. `titles`: A list of relevant Wikipedia-style article titles or named entities derived from the context or notes that would help a user understand or verify the claim. This should include:
+    - Titles of articles directly referenced or alluded to in notes or context that contain evidence.
+    - Related titles that fill knowledge gaps or contextualize important information (e.g., team names, person biographies, event titles).
+    - Prioritize retrieval of gold-standard or strongly relevant documents related to the claim.
+
+Detailed Domain-Specific Considerations:
+- Sports-related claims often require understanding of player roles, match outcomes, team nicknames, and historical event details. For example, distinguishing “football” as American football vs. association football (soccer), identifying goal scorers in specific tournaments, or understanding coaching roles within defined seasons or conferences.
+- Academic or professional claims relating to people’s roles (e.g., coaching positions, administrative titles) should respect timeline nuances (such as tenure years) and official positions held at precise times.
+- Geographic or organizational claims about location-based relationships must consider administrative subdivisions (states, cities, countries) and specific place-based entities like airports or headquarters, verifying hierarchical relationships (e.g., states being part of a country).
+- Claims involving colloquial names or nicknames should be treated cautiously; ensure no conflation between person names and team or organization names unless supported by clear evidence.
+
+Generalizable Reasoning Strategy:
+- Closely cross-reference claim elements with facts in notes and deeper context to identify contradictions or confirmations.
+- Identify and exclude irrelevant or contradictory information that does not directly address the claim.
+- Use context snippets to disambiguate similar or potentially confusing terms (e.g., identical names in different domains).
+- Select note excerpts that best support or refute the claim and summarize them effectively in `new_notes`.
+- Extract article or entity titles that a knowledgeable user or researcher would consult to validate or deepen understanding of the claim.
+
+Formatting and Clarity:
+- Provide outputs in clear, succinct text.
+- Use quotation marks for person nicknames or specific official names to maintain clarity.
+- When creating `titles`, use consistent, canonical Wikipedia-style naming conventions.
+- Avoid unnecessary verbosity; focus on factual precision and relevance.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The TV show aired on KidsClick's programming block on a Sunday. A song from La La Land, a Wax Fung album, contained a song featured on an American Dad episode of the same name as the show.
+
+### notes
+['La La Land is the second LP by Louisville-based band Wax Fang, originally released in 2007 and reissued in 2010.', 'Songs "Majestic" and "At Sea" from Wax Fang’s album La La Land were featured on the 151st episode of American Dad! titled "Lost In Space" in 2013.', 'La La Land is the second LP by Louisville-based band Wax Fang, released in 2007 and reissued in 2010.', "The songs 'Majestic' and 'At Sea' from Wax Fang’s album La La Land were featured on the 151st episode of American Dad! titled 'Lost In Space' in 2013.", 'La La Land is the second LP by Louisville-based band Wax Fang, originally released in 2007 and reissued in 2010.', "Songs 'Majestic' and 'At Sea' from Wax Fang’s album La La Land were featured on the 151st episode of American Dad! titled 'Lost In Space' in 2013."]
+
+### context
+['La La Land (Wax Fang album) | La La Land is the second LP by the Louisville-based band Wax Fang.  It was originally released on November 17, 2007 by Don\'t Panic Records.  It was re-issued by Absolutely Kosher on May 11, 2010 for vinyl.  The songs "Majestic" and "At Sea", both from this album, were featured on the 151st episode of "American Dad! " entitled \'"Lost In Space\'" in 2013.', 'The Churchills (American band) | The Churchills are an indie pop/rock foursome from the New York/New Jersey area.  They are probably most commonly known for their appearance on the television show Spin City, during season 3 in the episode titled "Internal Affairs".  They performed their song "Everybody Gets What They Deserve" at the end of the show in front of the Flatiron Building in Manhattan.  This same song is also featured in the TV show Scrubs, in the episode titled My Lips Are Sealed.  Meadow Soprano wears a band T-shirt in Episode 3 of Season 2 of The Sopranos, and again in Episode 3 of Season 3.', 'Music of La Femme Nikita | "This Article is about the music of each episode of La Femme Nikita (TV series).  Each song listed appears under its relevant episode according to air date.', 'La Fureur (Canada) | La Fureur was a French-language Canadian game show broadcast live on the Radio-Canada network from 1998 to 2007.  It was based on the game show of the same name that was televised in France.  As with the original version, the program featured two gender-segregated teams of celebrities answering questions and completing stunts pertaining to music.  In addition, each episode had a special musical guest from the Québécois or international music scene, such as Annie Brocoli, Nana Mouskouri, Celine Dion and Ricky Martin, among others.  All songs on the program were accompanied by karaoke-style on-screen lyrics, enabling viewers to sing along at home.', 'Mr. Hankey\'s Christmas Classics | "Mr. Hankey\'s Christmas Classics" is episode 46 of Comedy Central\'s animated television series "South Park".  An album of the same name consisting of versions of songs from the show as well as a number of additional songs was released the week prior to the episode\'s original air date, December 1, 1999.', 'List of Rove LA episodes | The following is a list of episodes for the Australian television talk show programme "Rove LA", hosted by Rove McManus.  s of 22 2011 , 10 episodes of "Rove LA" have aired.', 'Blagsnarst, a Love Story | "Blagsnarst, a Love Story" is the third episode and season finale of the eleventh season of "American Dad! " The episode aired on September 21, 2014, and is the final show to air on Fox\'s Animation Domination lineup, as well as the final episode of the series to be aired on Fox as the show moved to TBS from the twelfth season onwards, which started a month later in October 2014.  The episode was written by Wes Lukey and directed by series regular Chris Bennett.', 'La Hora Chanante | La Hora Chanante ("The Whamming Hour" or "The Amazing Hour") is a Spanish comedy television show aired through the cable/satellite local version of the Paramount Comedy channel.  Each episode is a half hour long and consists of a series of unrelated sketches (both acted out and animated) and a story featuring some celebrity which helps keep continuity throughout the program.  Episodes used to be released on a monthly basis until 2006, when the show was discontinued.  However, reruns are aired frequently through Paramount Comedy as well as Localia, and in December 2007, Paramount Comedy Spain and Universal Pictures launched a pack of two DVDs with the best moments of "La Hora Chanante" and some extras, an unreleased (episode 51), deleted scenes, stickers and a comic drawn by Joaquín Reyes.', 'American Dad! (season 1) | "American Dad! "\'s first season aired from February 6 to June 19, 2005, and consisted of seven episodes.  The season is included within the Volume One DVD box set, which was released on April 25, 2006.  Nineteen episodes were produced during the first production cycle with production numbers 1AJNxx.  However, to continue running episodes for the full season (23 episodes) that began earlier than normal (May versus September) four episodes from the second production cycle (2AJNxx episodes) were aired.', 'The Hurricane! | "The Hurricane!"  is the second episode of the third season of the animated comedy series "The Cleveland Show", an episode produced for season 2.  It is the first part of the Night of the hurricane block with "Family Guy" and "American Dad!" , the first such event in the animated television line-up of Fox.  The episode first aired on Fox in the United States on October 2, 2011.']
+
+## Generated Outputs
+### reasoning
+The claim involves two main assertions: one about a TV show airing on a Sunday on KidsClick's programming block, and another involving a song from the Wax Fang album "La La Land" featured on an American Dad! episode that supposedly shares the same name as the show. The notes consistently indicate that two songs from Wax Fang’s "La La Land" album ("Majestic" and "At Sea") were featured on the American Dad! episode titled "Lost In Space" (the 151st episode in 2013). There is no supporting information about a show named "Lost In Space" airing on KidsClick on Sundays, nor about a song from Wax Fang’s album being featured in an American Dad! episode that shares the same name as that show. The two songs from "La La Land" are confirmed to be on American Dad!, but the episode title "Lost In Space" does not match the claim's implication that the episode shares its name with the TV show (which is unspecified). The context provides detailed information about the album and the episode but no mention of KidsClick programming or a show named "Lost In Space" airing on KidsClick Sundays.
+
+Thus, the claim is only partially supported: the songs from the album did feature in an American Dad! episode, but the details about KidsClick and the episode sharing the name of the show are not substantiated.
+
+### new_notes
+['La La Land is the second LP by Louisville-based band Wax Fang, originally released in 2007 and reissued in 2010.', "Songs 'Majestic' and 'At Sea' from Wax Fang’s album La La Land were featured on the 151st episode of American Dad! titled 'Lost In Space' in 2013."]
+
+### titles
+['American Dad! (season 7)', 'La La Land (Wax Fang album)', 'Lost In Space (American Dad! episode)', 'KidsClick']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['La La Land (Wax Fang album)', 'Lost in Space (American Dad!)']. Documents remaining to be retrieved: ['Animation Domination'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The player who was defeated by Johan Kriek in the 1982 Australian Open – Men's Singles and Albert Costa are both sportsmen, and one of them, Costa, began competing at the age of five.
+
+### notes
+["Johan Kriek defeated Steve Denton 6–3, 6–3, 6–2 in the final to win the Men's Singles title at the 1982 Australian Open.", 'Albert Costa is a Spanish former professional male tennis player who began playing tennis at the age of five.', "Johan Kriek defeated Steve Denton 6–3, 6–3, 6–2 in the final to win the Men's Singles title at the 1982 Australian Open.", 'Albert Costa is a Spanish former professional male tennis player who began playing tennis at the age of five.', "Johan Kriek defeated Steve Denton 6–3, 6–3, 6–2 in the final to win the Men's Singles title at the 1982 Australian Open.", 'Steve Denton was a professional male tennis player.', 'Albert Costa is a Spanish former professional male tennis player who began playing tennis at the age of five.']
+
+### context
+["1982 Australian Open – Men's Singles | Johan Kriek was the defending champion, and successfully defended his title, defeating Steve Denton 6–3, 6–3, 6–2 in the final to win the Men's Singles title at the 1982 Australian Open, what was the rematch of the previous year.", "1982 US Open – Men's Doubles | The Men's Doubles tournament at the 1982 US Open was held from August 31 to September 12, 1982, on the outdoor hard courts at the USTA National Tennis Center in New York City, United States.  Kevin Curren and Steve Denton won the title, defeating Victor Amaya and Hank Pfister in the final.", "Johan Kriek | Johan Kriek (born April 5, 1958) is a South African-American professional male tennis player and founder of the Global Water Foundation, a non-profit organization dedicated to delivering clean water to the world's neediest communities.  Kriek won two Australian Opens and reached the semifinals at the French Open and US Open, as well as the quarterfinals of Wimbledon.  He won 14 professional singles and 8 doubles titles, reaching a career-high singles ranking of World No. 7.  Kriek's most memorable wins include victories over Andre Agassi, Jimmy Connors, John McEnroe, Guillermo Vilas, Stefan Edberg, Michael Chang, Vitas Gerulaitis and Björn Borg.", '1984 Livingston Open – Singles | Johan Kriek won the title, defeating Michael Westphal 6–2, 6–4 in the final.', "1983 Australian Open – Men's Singles | Johan Kriek was the defending champion, but lost in the quarterfinals to Mats Wilander.", "2012 Australian Open – Men's singles final | The 2012 Australian Open Men's Singles final was the championship tennis match of the Men's Singles tournament at the 2012 Australian Open between two of the best players of their generation.  In the final, Novak Djokovic defeated Rafael Nadal 5–7, 6–4, 6–2, 6–7, 7–5 to win the tournament.  It was the Grand Slam final match with the longest duration in history, lasting 5 hours 53 minutes, overtaking the record previously set by the 1988 US Open Final between Mats Wilander and Ivan Lendl.  The match is considered to be one of the best matches in modern tennis.  With both players playing at their highest levels, the match is memorable for being a war of attrition and for the impeccable quality and duration of play between Djokovic and Nadal.  Before this final, Novak Djokovic played his semifinal match against Andy Murray in a match lasting 4 hours and 50 minutes.", "1983 Australian Open – Men's Doubles | The Men's Doubles tournament at the 1983 Australian Open was held from 29 November through 11 December 1983 on the outdoor grass courts at the Kooyong Stadium in Melbourne, Australia.  Mark Edmondson and Paul McNamee won the title, defeating Steve Denton and Sherwood Stewart in the final.", "1983 South African Open (tennis) | The 1983 South African Open was a men's tennis tournament played on indoor hard courts in Johannesburg, South Africa that was part of the 1983 Volvo Grand Prix.  It was the 80th edition of the tournament and was held from 22 November through 27 November 1983.  Johan Kriek won the singles title.", "1995 Australian Open – Men's Singles | Andre Agassi defeated defending champion Pete Sampras 4–6, 6–1, 7–6, 6–4 in the final to win the Men's Singles tennis title at the 1995 Australian Open.", "1975 Australian Open – Men's Singles | John Newcombe defeated defending champion Jimmy Connors 7–5, 3–6, 6–4, 7–6 in the final to win the Men's Singles tennis title at the 1975 Australian Open."]
+
+## Generated Outputs
+### reasoning
+The claim states that the player defeated by Johan Kriek in the 1982 Australian Open Men's Singles final and Albert Costa are both sportsmen and that Costa began competing at age five. From the notes and context, Johan Kriek defeated Steve Denton in the 1982 Australian Open Men's Singles final. Both Steve Denton and Albert Costa are male tennis players, which qualifies them as sportsmen. Additionally, Albert Costa is confirmed to have begun playing tennis at age five. Therefore, the claim is supported by the facts.
+
+### new_notes
+["Johan Kriek defeated Steve Denton 6–3, 6–3, 6–2 in the final to win the Men's Singles title at the 1982 Australian Open.", 'Albert Costa is a Spanish former professional male tennis player who began playing tennis at the age of five.']
+
+### titles
+["1982 Australian Open – Men's Singles", 'Johan Kriek', 'Steve Denton', 'Albert Costa']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ["1982 Australian Open – Men's Singles", 'Albert Costa']. Documents remaining to be retrieved: ['Steve Denton'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Fàn County falls under the jurisdiction of a city in  Henan Province. That city and Pu'er City are located in the same country.
+
+### notes
+['Fàn County or Fànxian falls under the jurisdiction of Puyang, Henan Province, China.', "Pu'er City is located in Yunnan Province, China.", "Both Puyang city in Henan Province and Pu'er City in Yunnan Province are located in China.", 'Fàn County (Fànxian) is under the jurisdiction of Puyang, a prefecture-level city in Henan Province, China.', "Pu'er City is a prefecture-level city in Yunnan Province, China.", "Both Puyang and Pu'er City are located in China.", 'Fàn County (Fànxian) falls under the jurisdiction of Puyang, a prefecture-level city in Henan Province, China.', "Pu'er City is a prefecture-level city in Yunnan Province, China.", "Both Puyang city in Henan Province and Pu'er City in Yunnan Province are located in China."]
+
+### context
+["Pu'er Simao Airport | Pu'er Simao Airport (IATA: SYM,\xa0ICAO: ZPSM) is an airport serving the city of Pu'er in Yunnan Province, China.", "Pu'er City | Pu'er () is a prefecture-level city in southern Yunnan Province, China.  The name Pu'er dates back to 1729, but was changed to Simao () in 1950 after the Communist Revolution.  In 2007, the original name of Pu'er was restored.  This change had an effect on the size of the official Pu'er tea production area, a major regional product.  The urban administrative center of Pu'er is Simao District, which is also the former name of the prefecture-level city itself.  A major downturn in the price of tea in 2007 caused severe economic distress in the area.  The price of Pu'er has since recovered and Pu'er tea still contributes much to the income of the area.", "Puyang | Puyang is a prefecture-level city in northeastern Henan province, People's Republic of China.  Located on the northern shore of the Yellow River, it borders Anyang in the west, Xinxiang in the southwest, and the provinces of Shandong and Hebei in the east and north respectively.", 'Pu\'er tea | Pu\'er or pu-erh is a variety of fermented tea produced in Yunnan province, China, and named after the town of Pu\'er.  Fermentation in the context of tea production involves microbial fermentation and oxidation of the tea leaves, after they have been dried and rolled.  This process is a Chinese specialty and produces tea known as "hēichá" (黑茶), commonly translated as dark, or black tea.  This type of tea is different from what in the West is known as "black tea", which in China is called "hóngchá" (红茶) i.e. "red tea".  The best known variety of this category of tea is pu\'er from Yunnan Province, named after the trading post for dark tea during imperial China.', "Điện Biên Province | Điện Biên (\xa0 ) is a province in the Northwest region of Vietnam.  It is bordered by Lai Châu to the north east, Sơn La provinces of Vietnam to the south east, Pu'er City, Yunnan, China, to the northwest, and Phongsaly Province in Laos to the west.", "Mojiang Hani Autonomous County | Mojiang Hani Autonomous County () is an autonomous county under the jurisdiction of Pu'er City, Yunnan Province, China.", 'Anyang | Anyang (; ] ) is a prefecture-level city in Henan province, China.  The northernmost city in Henan, Anyang borders Puyang to the east, Hebi and Xinxiang to the south, and the provinces of Shanxi and Hebei to its west and north respectively.', "Jiangcheng Hani and Yi Autonomous County | Jiangcheng Hani and Yi Autonomous County () is an autonomous county under the jurisdiction of Pu'er City, in southern Yunnan, China, bordering Laos and Vietnam to the south, making it the only county in the province to border more than one country.  By road, its seat, the town of Menglie (勐烈镇 ), is 520 km from Kunming and 145 km from Simao District, the municipal seat of Pu'er.", "Ning'er Hani and Yi Autonomous County | The Ning'er Hani and Yi Autonomous County () is an autonomous county under the jurisdiction of Pu'er Prefecture, Yunnan Province, China.", "Yayangshan Dam | The Yayangshan Dam (崖羊山) is a concrete-face rock-fill dam on the Lixian River, bordering the counties of Ning'er and Mojiang in Yunnan Province, China.  It is located 56 km from Pu'er City.  The primary purpose of the dam is hydroelectric power generation and it supports a 120 MW power station.  Construction began in 2003, the river was diverted in 2004 and the two 60 MW generators were commissioned in 2006.  It is the first dam in the Lixian River cascade."]
+
+## Generated Outputs
+### reasoning
+The claim states that Fàn County is under the jurisdiction of a city in Henan Province, that city and Pu'er City are both located in the same country. From the notes, Fàn County (or Fànxian) falls under the jurisdiction of Puyang in Henan Province, China. Furthermore, Pu'er City is located in Yunnan Province, China. Both Puyang and Pu'er City are clearly stated to be in China. The context supports these facts, confirming that Puyang is a prefecture-level city in Henan Province, China, and Pu'er City is a prefecture-level city in Yunnan Province, China, also in China. Thus, the claim is supported by the evidence: Fàn County is under Puyang city in Henan Province, which along with Pu'er City is located in China.
+
+### new_notes
+['Fàn County (Fànxian) is under the jurisdiction of Puyang, a prefecture-level city in Henan Province, China.', "Pu'er City is a prefecture-level city in Yunnan Province, China.", "Both Puyang and Pu'er City are located in China."]
+
+### titles
+['Fàn County', 'Puyang', 'Henan Province', "Pu'er City", 'Yunnan Province', 'China']
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Fan County', "Pu'er City", 'Puyang']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

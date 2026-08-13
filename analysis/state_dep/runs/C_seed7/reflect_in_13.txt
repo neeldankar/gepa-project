@@ -1,0 +1,143 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given three input fields: `claim`, `notes`, and `context`. Your task is to produce two output fields: `new_notes` and `titles`.
+
+- The `claim` is a factual statement that may be accurate or inaccurate.
+- The `notes` are an unordered collection of relevant factual statements, clarifications, corrections, and evidence related to the claim.
+- The `context` consists of excerpts or summarized descriptions of relevant entities, topics, or documents connected to the claim.
+
+Your goal is to process these inputs to:
+
+1. **Synthesize and distill** the information from `notes` (and optionally `context`) into an informative and concise list called `new_notes`. This list should:
+   - Correct or clarify the claim by highlighting relevant factual points.
+   - Remove redundant or contradictory notes to improve clarity.
+   - Emphasize important taxonomic, historical, organizational, or other domain-specific factual details.
+   - Support or refute the claim with clear reasoning reflected in the notes.
+   - Include critical details such as taxonomic ranks (e.g., genus, subfamily), entity relationships, dates (e.g., founding years), sponsorship facts, and membership data when applicable.
+   - Integrate relevant facts from the context when `notes` lack sufficient detail to fully understand or verify the claim.
+
+2. **Produce a list of concise and descriptive `titles`** representing the key topics or documents connected to the `new_notes`. These should:
+   - Reflect the main entities, concepts, or subtopics addressed in the `new_notes`.
+   - Match the relevant knowledge domains such as taxonomy (e.g., genera, subfamilies), institutional histories (founding dates, affiliations), organizations (clubs, leagues), or other named entities.
+   - Aim to cover all significant subjects necessary for verifying or understanding the claim.
+   - Follow naming conventions consistent with typical article or document titles (e.g., "University of Washington", "West Cheshire Association Football League").
+
+Additional domain-specific knowledge and best practices for the task:
+
+- Taxonomic details:
+  - Understand and distinguish taxonomic ranks such as genus, subfamily, tribe, family, and species counts.
+  - Clarify when a taxonomic rank is misidentified in the claim (e.g., "Caesalpinioideae" is a subfamily, not a genus).
+  - Recognize that entities at higher taxonomic levels (e.g., subfamily) often contain multiple genera and therefore more species than a single genus.
+
+- Institutional histories:
+  - Accurately note establishment or founding years and compare them when required.
+  - Link individuals to institutions based on education/training histories.
+  
+- Sports leagues:
+  - Identify correct club names and affiliations.
+  - Verify league membership and sponsorship details.
+  - Clarify when claims about sponsorship or league membership are incorrect or unsupported.
+
+- General strategy:
+  - Use the `context` to supplement or confirm information found in `notes`.
+  - Explicitly address factual inaccuracies or ambiguities in the claim.
+  - Summarize complex, redundant, or overlapping notes into a coherent narrative.
+  - Provide output notes and titles that would help a human judge or researcher independently verify or refute the original claim.
+  - Ensure completeness and precision, avoiding extraneous or irrelevant details.
+
+Format your output exactly as follows:
+
+- `new_notes`: a list of concise, factually precise notes that directly address the claim and incorporate context and notes as needed.
+- `titles`: a list of succinct titles representing the key articles/entities/concepts referenced or required to understand these notes and the claim’s validity.
+
+This careful and domain-aware synthesis will help produce high-quality, usable evidence summaries and knowledge topics relevant to claims verification and fact-checking.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The football ground that held The UEFA Euro 2012 Final is in this multi-use sports and recreation facility in England that currently houses professional football club Dynamo Kyiv.
+
+### notes
+['The UEFA Euro 2012 Final was held at the Olympic Stadium in Kiev, Ukraine, not in England.', 'Dynamo Kyiv is a professional football club based in Kiev, Ukraine.', 'The Olympic Stadium in Kiev is a multi-use sports and recreation facility.', 'There is no evidence that Dynamo Kyiv is based in or plays home games in England.', 'The football ground that held the UEFA Euro 2012 Final does not house a professional football club in England.', 'The UEFA Euro 2012 Final was held at the Olympic Stadium (NSC Olimpiyskiy) in Kiev, Ukraine.', 'The Olympic Stadium in Kiev is a multi-use sports and recreation facility.', 'Dynamo Kyiv is a professional football club based in Kiev, Ukraine.', "Dynamo Kyiv's home stadium is the Olympic Stadium in Kiev.", 'There is no evidence that Dynamo Kyiv is based in or plays home games in England.', 'The football ground that hosted the UEFA Euro 2012 Final is not located in England.', 'The UEFA Euro 2012 Final was held at the Olympic Stadium (NSC Olimpiyskiy) in Kiev, Ukraine, not England.', 'The Olympic Stadium in Kiev is a multi-use sports and recreation facility.', 'Dynamo Kyiv is a professional football club based in Kiev, Ukraine.', "Dynamo Kyiv's home stadium is the Olympic Stadium in Kiev.", 'There is no evidence that Dynamo Kyiv is based in or plays home games in England.', 'The football ground that hosted the UEFA Euro 2012 Final does not house a professional football club in England.']
+
+### context
+["2008–09 FC Dynamo Kyiv season | Following are the results of the 2008–09 FC Dynamo Kyiv season.  FC Dynamo Kyiv (Ukrainian: ФК «Динамо» Київ ) is a professional football club based in the Ukrainian capital city of Kyiv.  Founded in 1927, the club currently participates in the Ukrainian Premier League and has spent its entire history in the top league of Soviet and later Ukrainian football.  Dynamo Kyiv has won thirteen league titles, nine Ukrainian Cups, one UEFA Super Cup and two UEFA Cup Winners' Cups, and played three times in the semi-final of the UEFA Champions League.", 'Leigh Sports Village | Leigh Sports Village is a £50 million multi-use sports, retail and housing development in Leigh, Greater Manchester, England.  The centrepiece of the development is a 12,000-capacity stadium which is home to professional Super League team Leigh Centurions.  The complex also plays host to amateur rugby league club Leigh East and amateur athletics club Leigh Harriers, who both occupy dedicated facilities on the site.  Other facilities on site include the Leigh campus of Wigan and Leigh College, Leigh Sports Centre, which includes a gym, multi-use sports hall and swimming pool, and the Park Inn Hotel.', 'FC Dynamo Kyiv | Football Club Dynamo Kyiv (Ukrainian: Футбольний клуб «Динамо» Київ , ] ) is a Ukrainian professional football club based in Kiev.  Founded in 1927 as part of the Soviet Dynamo Sports Society, the club plays in the Ukrainian Premier League, and has never been relegated to a lower division.  Their home is the 70,050 capacity Olimpiyskiy National Sports Complex.', "UEFA Euro 2012 | The 2012 UEFA European Championship, commonly referred to as UEFA Euro 2012 or simply Euro 2012, was the 14th European Championship for men's national football teams organised by UEFA.  The final tournament, held between 8 June and 1 July 2012, was co-hosted for the first time by Poland and Ukraine, and was won by Spain, who beat Italy 4–0 in the final at the NSC Olimpiyskiy in Kiev, Ukraine.", 'UEFA Euro 2012 knockout phase | The knockout phase of UEFA Euro 2012 began with the quarter-finals on 21 June 2012, and was completed on 1 July 2012 with the final at the Olympic Stadium in Kiev, won by Spain 4–0 against Italy.  After the completion of the group stage on 19 June 2012, eight teams qualified for the quarter-finals (two from each group), which are to be played from 21 to 24 June 2012.  Host nations Poland and Ukraine failed to qualify for the quarter-finals, making it only the third time in European Championship history that the host nation(s) failed to make it out of the group stage; at Euro 2000, co-host Belgium were eliminated at the group stage, and at Euro 2008, co-hosts Austria and Switzerland also failed to qualify for the quarter-finals.', 'Mardan Sports Complex | Mardan Sports Complex is a multi-purpose stadium in Aksu, Antalya, Turkey.  It is currently used mostly for football matches and hosted matches during the 2008 UEFA European Under-17 Football Championship, including the final.  The stadium has a seating capacity of 7,428.', 'Valyantsin Byalkevich | Valyantsin Byalkevich (Belarusian: Валянцін Бялькевіч ; 27 January 1973 – 1 August 2014), also sometimes spelled "Valiantsin Bialkevich") was a Belarusian football player.  He was most notably a member of the Ukrainian club Dynamo Kyiv from 1996 to 2008.  During the late 1990s, he was a playmaker for Dynamo Kyiv of the UEFA Champions League, and helped them reach the semi-finals of 1998–99 competition.', "2018 UEFA Women's Champions League Final | The 2018 UEFA Women's Champions League Final will be the final match of the 2017–18 UEFA Women's Champions League, the 17th season of Europe's premier women's club football tournament organised by UEFA, and the ninth season since it was renamed from the UEFA Women's Cup to the UEFA Women's Champions League.  It will be played at the Valeriy Lobanovskyi Dynamo Stadium in Kiev, Ukraine, on 24 May 2018.  This is the last time that a host city for the Women's Champions League final is automatically assigned by which city won the bid to host the men's Champions League final.", 'S.C. Farense | Sporting Clube Farense, simply known as Farense, is a Portuguese professional football club based in Faro in the district of Faro, who play in the LigaPro after promotion.  They were promoted from the Segunda Divisão at the end the 2012–13 season.  The "Leões de Faro" played at the Estádio de São Luís for 94 years from 1910.  The club moved stadium in 2004 to the newly constructed Estádio Algarve which was built for the purpose of hosting matches at UEFA Euro 2004.  The Faro side moved back to the Estádio de São Luís in 2013 after it gained promotion to the Segunda Liga.  As a result of their promotion, the Estádio de São Luís underwent major renovations to improve its facilities.', "UEFA Euro 1996 Final | The UEFA Euro 1996 Final was a football match played on 30 June 1996 at Wembley Stadium in London, England, to determine the winner of UEFA Euro 1996.  The match featured tournament favourites Germany, who knocked out hosts England in the previous round, and Czech Republic, playing in only their first European Championship since the break-up of Czechoslovakia.  Both teams had qualified for the knockout stage from Group C of the tournament's group stage, with Germany winning 2–0 in the teams' earlier meeting."]
+
+## Generated Outputs
+### reasoning
+The claim is incorrect because the UEFA Euro 2012 Final was held at the Olympic Stadium (NSC Olimpiyskiy) in Kiev, Ukraine, not in England. This stadium is a multi-use sports and recreation facility located in Ukraine, and it serves as the home ground for the professional football club Dynamo Kyiv, which is also based in Kiev, Ukraine. There is no evidence that Dynamo Kyiv is based in or plays home games in England, and the football ground that hosted the final is not located in England. The claim mistakenly associates the football ground and Dynamo Kyiv with England, which is factually inaccurate.
+
+### new_notes
+['The UEFA Euro 2012 Final was held at the Olympic Stadium (NSC Olimpiyskiy) in Kiev, Ukraine.', 'The Olympic Stadium in Kiev is a multi-use sports and recreation facility.', 'Dynamo Kyiv is a professional football club based in Kiev, Ukraine.', "Dynamo Kyiv's home stadium is the Olympic Stadium in Kiev.", 'There is no evidence that Dynamo Kyiv is based in or plays home games in England.', 'The football ground that hosted the UEFA Euro 2012 Final is not located in England.']
+
+### titles
+['UEFA Euro 2012 Final', 'Olympic Stadium, Kiev', 'FC Dynamo Kyiv', 'Multi-use Sports Facilities in Kiev']
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['FC Dynamo Kyiv', 'Olimpiyskiy National Sports Complex', 'UEFA Euro 2012 Final']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+John S. Hall is younger than the former Midtown bassist and lead vocalist who created Cobra Starship.
+
+### notes
+['Gabe Saporta, former Midtown bassist and lead vocalist, was born on October 11, 1979.', 'Gabe Saporta created the band Cobra Starship in 2006.', "There is no available data in the provided context about John S. Hall's birth year or age to compare with Gabe Saporta.", "Without John S. Hall's age information, it is not possible to verify the claim that John S. Hall is younger than Gabe Saporta.", 'Gabe Saporta, former Midtown bassist and lead vocalist, was born on October 11, 1979.', 'Gabe Saporta created the band Cobra Starship in 2006.', 'No birth date or age information is available for John S. Hall in the provided notes or context.', "Without John S. Hall's age data, the claim that he is younger than Gabe Saporta cannot be verified.", 'Gabe Saporta, former Midtown bassist and lead vocalist, was born on October 11, 1979.', 'Gabe Saporta created the band Cobra Starship in 2006.', "There is no available information about John S. Hall's birth year or age to compare with Gabe Saporta.", "Without John S. Hall's age data, the claim that he is younger than Gabe Saporta cannot be verified."]
+
+### context
+["Whipple's index | Whipple's index (or index of concentration), invented by American demographer George Chandler Whipple (1866–1924), is a method to measure the tendency for individuals to inaccurately report their actual age or date of birth.  Respondents to a census or other survey sometimes report their age or date of birth as a round number (typically ending in 0 and 5), or to be more culturally favorable, for example, so that they appear younger or to have been born on a date considered luckier than their actual date of birth.", 'List of South African Presidents by age | This is a list of Presidents of South Africa by age.  This table can display the president by name, date of birth and date of death, and age at inauguration.', "John Borrer | John Hamlin Borrer (date of birth unknown – 1854) was an English cricketer.  Borrer's batting style is unknown.  Though his date of birth is unknown, it is known he was christened at Henfield, Sussex on 2 March 1817.", 'John Barnard (supporter of James II) | Barnard was the son of Dr. John Barnard, fellow of Lincoln College, Oxford, and sometime rector of Waddington, near Lincoln, by Lettice, daughter of Dr. Peter Heylyn.  He became a student of Lincoln College (matriculating 17 November 1676 at the age of fifteen), and was elected fellow of Brasenose College (being then B.A.) in 1682.  This date (which we learn from Anthony à Wood) gives us 1661–2 for the date of his birth.  He proceeded afterwards to holy orders in the church of England.', 'Everything Your Heart Desires | "Everything Your Heart Desires" is a song by the American duo Hall & Oates, released as the lead single from their thirteenth studio album, "Ooh Yeah! " (1988).  The song peaked at number three in the United States.  It was their sixteenth and last Top 10 song to date.  The 45 version was later included on their greatest hits album (2008) while the video mix was included on "" (2002) and on the box set "Do What You Want, Be What You Are: The Music of Daryl Hall & John Oates" (2009).', 'John Harris (Surrey cricketer) | John Harris (dates of birth and death unknown) and his brother Joseph (Joe) Harris (dates of birth and death unknown) were English cricketers in the 1740s and 1750s.  They both played for the Addington Cricket Club which had one of the strongest teams in England at the time and for Surrey.', 'W. Hall (Hampshire cricketer) | W. Hall (full name and dates of birth and death unknown) was an English cricketer who played for Hampshire county cricket teams organised by the Hambledon Club.', 'List of Presidents of Turkey by age | This is a list of Presidents of Turkey by age.  This table can be sorted to display Turkish Presidents by name, order of office, date of birth, age at inauguration, length of retirement, or lifespan.', 'List of Ghana heads of state by age | This is a list of Ghanaian Presidents by age.  This table can be sorted to display Ghanaian Presidents by name, order of office, date of birth, age at inauguration, length of retirement, or lifespan.', 'List of heads of state of Greece by age | This is a list of Greek Presidents by age.  This table can be sorted to display Greek Presidents by name, order of office, date of birth, age at inauguration, length of retirement, or lifespan.']
+
+## Generated Outputs
+### reasoning
+The claim compares the ages of John S. Hall and Gabe Saporta, stating that John S. Hall is younger. Gabe Saporta's birth date is documented as October 11, 1979, and he is known as the former Midtown bassist and lead vocalist who created Cobra Starship. However, there is no birth date or age information available for John S. Hall in the provided notes or context. Without this information, the claim cannot be confirmed or refuted, as we lack the necessary data to assess the comparative ages of the two individuals.
+
+### new_notes
+['Gabe Saporta, former Midtown bassist and lead vocalist, was born on October 11, 1979.', 'Gabe Saporta created the band Cobra Starship in 2006.', 'No birth date or age information is available for John S. Hall in the provided notes or context.', "Without John S. Hall's age data, the claim that he is younger than Gabe Saporta cannot be verified."]
+
+### titles
+['Gabe Saporta', 'Cobra Starship', 'John S. Hall']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Cobra Starship', 'Gabe Saporta']. Documents remaining to be retrieved: ['John S. Hall'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Clark County in Nevada contains both Las Vegas and another college. Craig Heyer played baseball at that college.
+
+### notes
+['Clark County, Nevada includes the city of Las Vegas and surrounding areas.', 'Craig Heyer played college baseball at the University of Nevada, Las Vegas (UNLV), which is located in Las Vegas, Clark County.', 'Craig Heyer also played college baseball at the College of Southern Nevada, another institution in Clark County.', 'Clark County, Nevada includes the city of Las Vegas and surrounding areas.', 'Craig Heyer played college baseball at two colleges in Clark County: the University of Nevada, Las Vegas (UNLV) and the College of Southern Nevada (CSN).', 'The College of Southern Nevada is a separate institution from UNLV, located in Clark County, and is the largest public higher education institution in Nevada.', 'Clark County, Nevada includes the city of Las Vegas and surrounding areas.', 'The University of Nevada, Las Vegas (UNLV) is located in Clark County, in the Las Vegas area.', 'The College of Southern Nevada (CSN) is a separate institution within Clark County and is the largest public higher education institution in Nevada.', 'Craig Heyer played college baseball at both UNLV and the College of Southern Nevada, both located in Clark County.']
+
+### context
+['Craig Heyer | Craig D. Heyer (born November 15, 1985) is an American professional baseball pitcher.  Prior to becoming a professional, Heyer played college baseball at the College of Southern Nevada and University of Nevada, Las Vegas (UNLV).', 'Stan Stolte | Stan Stolte is an American baseball coach, currently serving as the head baseball coach at the University of Nevada, Las Vegas.  Stolte attended college at Muscatine Community College and St. Ambrose University, where he played college baseball.  Stolte served as an assistant baseball coach at the University of Nevada, Las Vegas, the University of Nevada, Reno, the University of the Pacific, Muscatine Community College, and Northwest Missouri State University.  Stolte served as interim head coach at the University of Nevada, Las Vegas for the 2016 season, before being named permanent head baseball coach at UNLV on June 1, 2016.', 'Las Vegas Motor Speedway | Las Vegas Motor Speedway, located in Clark County, Nevada in Las Vegas, Nevada about 15 miles northeast of the Las Vegas Strip, is a 1200 acre complex of multiple tracks for motorsports racing.  The complex is owned by Speedway Motorsports, Inc., which is headquartered in Charlotte, North Carolina.', 'North Las Vegas, Nevada | North Las Vegas is a city in Clark County, Nevada, United States, located in the Las Vegas Valley.  As of the 2010 census it had a population of 216,961, with an estimated population of 226,877 in 2013.  The city was incorporated on May 16, 1946.  It is located in the Las Vegas–Paradise, NV MSA and is the fourth largest city in the state of Nevada.', 'Clark County Commission | The Clark County Board of County Commissioners is the governmental organization that runs the unincorporated areas of Clark County, Nevada which is located in Downtown Las Vegas.  The commission is considered by many to be the most powerful governmental body in the state of Nevada.', 'Jean, Nevada | Jean is a small commercial town in Clark County, Nevada, located approximately 12 mi north of the Nevada-California state line along Interstate 15.  Las Vegas is located about 30 mi to the north.  There are no residents of Jean, but many people in nearby communities like Primm and Sandy Valley have Jean listed in their mailing address because it is the location of the main post office for the 89019 ZIP code.  Las Vegas Boulevard South ends about 2 mi south of Jean, and it contiguously runs northbound past Las Vegas, ending near the I-15-US 93 Junction.', 'Clark County Wetlands Park | The Clark County Wetlands Park is the largest park in the Clark County, Nevada park system.  The park is located on the east side of the Las Vegas valley and runs from the various water treatment plants near the natural beginning of the Las Vegas Wash to where the wash flows under Lake Las Vegas and later into Lake Mead.', 'Clark County Shooting Complex | The Clark County Shooting Complex, located on the northern outskirts of Las Vegas, Nevada, is the largest shooting facility in the United States.  The 2900 acre park is being built in stages by Clark County, Nevada.  At full build out is anticipated that only 900 acre will be developed with the rest of the site serving as a buffer for the surrounding community.  The park is located at the northern end of Decatur Blvd in unincorporated Clark County, just north of the City of Las Vegas boundary.', 'Las Vegas Art Museum | The Las Vegas Art Museum (LVAM) is a 30000 sqft facility located Las Vegas, Nevada in a building shared with the Sahara West Library branch of the Las Vegas-Clark County Library District.', 'Las Vegas Valley | The Las Vegas Valley is a major metropolitan area located in the southern part of the U.S. state of Nevada.  The largest urban agglomeration in the state, it is the heart of the Las Vegas–Paradise-Henderson, NV MSA.  The Valley is largely defined by the Las Vegas Valley landform, a 600 sqmi basin area surrounded by mountains to the north, south, east and west of the metropolitan area.  The Valley is home to the three largest incorporated cities in Nevada: Las Vegas, Henderson and North Las Vegas.  Five unincorporated towns governed by the Clark County government are part of the Las Vegas Township and constitute the largest community in the state of Nevada.']
+
+## Generated Outputs
+### reasoning
+The claim suggests that Clark County in Nevada contains Las Vegas and another college where Craig Heyer played baseball. The context confirms that Clark County includes Las Vegas and other areas. Craig Heyer played college baseball at two institutions: the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV). Both are located in Clark County. Therefore, it is accurate to say Clark County contains both Las Vegas (specifically UNLV) and another college (College of Southern Nevada) where Heyer played baseball.
+
+### new_notes
+['Clark County, Nevada includes the city of Las Vegas and surrounding areas.', 'Craig Heyer played college baseball at the University of Nevada, Las Vegas (UNLV), which is located in Las Vegas, Clark County.', 'Craig Heyer also played college baseball at the College of Southern Nevada, another institution in Clark County.']
+
+### titles
+['Clark County, Nevada', 'University of Nevada, Las Vegas', 'College of Southern Nevada', 'Craig Heyer']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['College of Southern Nevada', 'Craig Heyer']. Documents remaining to be retrieved: ['Clark County, Nevada'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

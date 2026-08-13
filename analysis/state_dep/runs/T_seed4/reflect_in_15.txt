@@ -1,0 +1,108 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given input fields: `claim` (a factual assertion or statement) and `notes` (a list of factual sentences, observations, or evidence snippets related to the claim). Your task is to produce the output field `query`, which should be an information-seeking question (or a set of concise search queries) that can be used to verify or investigate the truthfulness of the claim by retrieving relevant evidence or documents.
+
+Instructions and background details:
+
+1. **Input format:**
+   - `claim`: a statement that asserts a fact or relationship between entities, events, or characteristics.
+   - `notes`: a list of extracted factual notes or knowledge snippets which may provide partial, ambiguous, or confirming/contradicting evidence about the claim.
+
+2. **Goal:**
+   - Generate one or more precise, information-seeking queries that could guide a retrieval system or a fact-checker to find relevant documents, evidence, or data that confirm or refute the claim.
+   - The queries should be focused, specific, and formulated based on the key entities, relationships, attributes, and temporal or categorical constraints implied by the claim and supported or challenged by the notes.
+
+3. **Guidelines for formulating queries:**
+   - Identify all pivotal entities (people, places, works, organizations) and their roles or actions in the claim.
+   - Recognize relationships or attributes whose truthfulness is to be determined (e.g., "X acted in movie Y and also in movie Z," "The main flavor of drink A and drink B," "The type/status of universities associated with individual C").
+   - Extract key qualifiers such as dates, roles, nationalities, product flavors, types, or statuses that are relevant to validating the claim.
+   - If notes indicate ambiguity, absence, or partial information, include queries that could resolve these unknowns (e.g., "Who is the Welsh actor in [movie]?", "What is the flavor of the drink advertised with X?", "Is the university associated with Y public or private?").
+   - Frame queries that retrieve entities or attributes in a way that facilitates comparison or cross-validation related to the claim’s two or more components.
+
+4. **Domain-specific considerations observed from examples:**
+   - Movie-related claims often require querying film titles, actor nationalities, or co-acting in sequels and original movies.
+   - Beverage claims may involve flavor profiles tied to geographic origin or advertisements linked to songs.
+   - University claims involve historical roles of individuals (chairmanship) and classification of universities (public/private).
+   - When a claim spans multiple entities or attributes (e.g., actor nationality plus roles in multiple films), the queries should request that information to be able to corroborate or refute the claim holistically.
+   - Queries may be natural language questions or structured query language snippets (SPARQL-like) where appropriate, reflecting the structured nature of the underlying data or knowledge base.
+
+5. **Generalizable strategy:**
+   - Use the claim to identify discrete factual assertions.
+   - Consult the notes to detect gaps or confirmatory evidence.
+   - Formulate queries that target retrieval of evidence to fill gaps or verify key facts.
+   - Aim for queries that can yield grounded evidence for verification steps such as: identifying actors and their nationality, matching role appearances in films, verifying flavor profiles and ad campaigns, or confirming institutional affiliations and classifications.
+
+In summary:  
+Given a `claim` and supporting or conflicting `notes`, produce a precise, clear, and information-rich query or series of queries that a fact-checking system or search retrieval process can execute to gather the evidence needed to verify the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+This publication is published more often than Bookmarks. Keith Moon was inducted into its Hall of Fame in the early 'eighties.
+
+### notes
+['The UK Music Hall of Fame began in 2004, so Keith Moon could not have been inducted in the early 1980s.', "No provided context mentions Keith Moon's induction in any Hall of Fame during the early 1980s.", 'No information is available regarding the publication frequency comparison with Bookmarks.', 'The claim is unsupported by the given contextual information.', 'There is no information in the context regarding the publication frequency of any publication relative to Bookmarks.', 'Keith Moon was not inducted into the UK Music Hall of Fame in the early 1980s, as it was established only in 2004.', 'No other Hall of Fame mentioned in the context references Keith Moon or music inductions during the early 1980s.', "Overall, the claim about the publication frequency and Keith Moon's early 1980s Hall of Fame induction is unsupported by the available information.", 'The UK Music Hall of Fame was established in 2004, so Keith Moon could not have been inducted in the early 1980s.', 'No contextual information confirms Keith Moon’s induction into any Hall of Fame in the early 1980s.', 'No data is available to verify if the mentioned publication is published more frequently than Bookmarks.', 'Overall, the claim about Keith Moon’s early 1980s induction and the publication frequency relative to Bookmarks is unsupported.']
+
+## Generated Outputs
+### reasoning
+The claim involves two assertions related to a "publication" and Keith Moon. First, it states that the unnamed publication is published more frequently than "Bookmarks." We need to identify which publication is being referred to and determine its publication frequency relative to Bookmarks. Second, the claim states that Keith Moon was inducted into the publication's Hall of Fame in the early 1980s. To verify this, we must find out if this publication has a Hall of Fame, whether Keith Moon was inducted, and specifically during the early 1980s. Since the notes do not provide any information, queries should aim to retrieve data about Bookmarks’ publication frequency, the other publication’s frequency compared to Bookmarks, and Keith Moon's inclusion in any Hall of Fame associated with that publication in the early 1980s.
+
+### query
+What is the publication frequency of Bookmarks magazine? Which publications related to Bookmarks are published more frequently than it? Does the publication identified as being more frequent than Bookmarks have a Hall of Fame? Was Keith Moon inducted into this publication's Hall of Fame, and if so, in what year or decade? Specifically, was Keith Moon inducted into any publication’s Hall of Fame in the early 1980s?
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Bookmarks (magazine)', 'Keith Moon', 'Modern Drummer'].
+
+
+
+# Example 2
+## Inputs
+### claim
+John S. Hall is younger than the former Midtown bassist and lead vocalist who created Cobra Starship.
+
+### notes
+['Gabe Saporta was born on October 11, 1979, and is the former Midtown bassist and lead vocalist who created Cobra Starship.', "There is no available information on John S. Hall's age or birth date in the provided context.", "Due to the lack of data on John S. Hall's age, it is not possible to verify whether John S. Hall is younger than Gabe Saporta.", 'Gabe Saporta, former Midtown bassist and lead vocalist who created Cobra Starship, was born on October 11, 1979.', "No available information exists on John S. Hall's date of birth or age, preventing age comparison with Gabe Saporta.", "Due to lack of data on John S. Hall's age, it is not possible to verify whether John S. Hall is younger than Gabe Saporta.", 'Gabe Saporta was born on October 11, 1979, and is the former Midtown bassist and lead vocalist who created Cobra Starship.', "There is no available information on John S. Hall's age or birth date in the provided context, preventing verification of whether he is younger than Gabe Saporta."]
+
+## Generated Outputs
+### reasoning
+The claim compares the ages of John S. Hall and Gabe Saporta, specifying that John S. Hall is younger than Gabe Saporta. From the notes, Gabe Saporta's birth date is known (October 11, 1979), but John S. Hall's birth date or age is not provided, making it currently impossible to verify the claim. To confirm or refute the claim, we need to find John S. Hall's birth date or age to compare it to Gabe Saporta's known birth date.
+
+### query
+What is the birth date or age of John S. Hall? Additionally, verify Gabe Saporta's birth date as October 11, 1979.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Cobra Starship', 'Gabe Saporta']. Documents remaining to be retrieved: ['John S. Hall'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Disney animated film with the character Cruella de Vil and G-Force are American family comedy action  adventure type of movies.
+
+### notes
+["The Disney animated film featuring Cruella de Vil, '101 Dalmatians' (1961), is an American animated adventure film.", "The live-action adaptations '101 Dalmatians' (1996) and '102 Dalmatians' (2000), which also feature Cruella de Vil, are described as American comedy adventure films.", 'The context confirms these films are family-friendly and fit within the comedy adventure genre.', "There is no information in the provided context about the film 'G-Force' or its genre.", 'Thus, the claim that the Disney animated film with Cruella de Vil is an American family comedy adventure is supported, but the classification of G-Force as such cannot be verified here.', "The 1961 Disney animated film '101 Dalmatians' featuring Cruella de Vil is classified as an American animated adventure film.", "The live-action adaptations '101 Dalmatians' (1996) and '102 Dalmatians' (2000) are American comedy adventure films featuring Cruella de Vil.", "'G-Force' (2009) is a 3-D American family comedy adventure film produced by Walt Disney Pictures.", "Both '101 Dalmatians' and 'G-Force' fit within the American family comedy adventure genre.", "The 1961 Disney animated film '101 Dalmatians' featuring Cruella de Vil is an American animated adventure film with family-friendly and comedy adventure elements.", "The live-action adaptations '101 Dalmatians' (1996) and '102 Dalmatians' (2000) featuring Cruella de Vil are American comedy adventure films.", "'G-Force' (2009) is a 3-D American family comedy adventure film produced by Walt Disney Pictures.", "Overall, both '101 Dalmatians' and 'G-Force' fit within the American family comedy action adventure genre, supporting the claim."]
+
+## Generated Outputs
+### reasoning
+The claim combines two parts: first, that the Disney animated film featuring Cruella de Vil is an American family comedy adventure movie, and second, that G-Force is also an American family comedy action adventure movie. The notes confirm that the Disney animated film "101 Dalmatians" (1961) and its live-action sequels featuring Cruella de Vil are American, family-friendly, and fit the comedy adventure genre. However, the information provided does not address the genre, nationality, or family-friendliness of G-Force. Therefore, additional information is needed specifically about the movie G-Force to verify whether it belongs to the claimed genre categories.
+
+### query
+What is the genre of the movie "G-Force"? Is "G-Force" an American film? Does "G-Force" qualify as a family-friendly comedy action adventure movie? What are the genre classifications and production details for "G-Force"? Also, confirm the genre and nationality details for the Disney animated film featuring Cruella de Vil, specifically "101 Dalmatians" (animated and live-action versions).
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['101 Dalmatians (1996 film)', 'Cruella de Vil', 'G-Force (film)']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

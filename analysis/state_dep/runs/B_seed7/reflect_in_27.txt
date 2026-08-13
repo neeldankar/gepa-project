@@ -1,0 +1,147 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be provided with three fields as input: 
+1. `claim` - a factual statement that may contain multiple subclaims or assertions. 
+2. `notes` - a list of extracted sentences or statements related to the claim, possibly overlapping or redundant and at varying levels of detail or correctness.
+3. `context` - a list of encyclopedic-style paragraphs or document snippets relevant to entities or topics mentioned in the claim and notes. These contain detailed background information and help verify or refute subclaims in the claim.
+
+Your output should contain two fields:
+- `new_notes`: a cleaned, concise, and factual subset list of notes that directly support, refine, correct, or clarify the original claim. This should:
+  - Include information drawn from both the `notes` and `context`.
+  - Remove redundancies and outdated or inaccurate information found among the notes.
+  - Incorporate corrections or clarifications based on authoritative contextual information.
+  - Explicitly identify and rectify any factual errors or inaccuracies in the claim based on the evidence.
+  - Focus on distinct, verified facts that are relevant to the claim’s core assertions.
+
+- `titles`: a list of the names or titles of relevant documents or entities from the context that substantiate or provide essential background for the claim and your chosen notes. These should be:
+  - Specific and correctly formatted, usually matching the titles or entities as referenced in the context.
+  - Comprehensive enough to cover all crucial elements of the claim.
+  - Reflective of gold standard references typically expected for complete claim validation.
+
+General strategy to solve task:
+- Break down the claim into constituent factual subclaims.
+- Cross-check each subclaim with both the provided notes and the richer contextual documents.
+- Identify inconsistencies, correct erroneous details (e.g., date errors or misattributed roles), and confirm facts that are fully supported.
+- Aggregate the validated facts into new_notes, summarizing the relevant evidence.
+- Select titles of the most relevant, authoritative documents from the context that cover the validated evidence.
+- Avoid including irrelevant or unsupported notes or titles.
+- Your response should be formatted cleanly and be concise while comprehensive, reflecting critical thinking on the veracity and completeness of the claim.
+
+Domain-specific considerations:
+- Claims often involve people, films, songs, or other entertainment industry entities; verifying authorship, starring roles, production details, and timelines is crucial.
+- Precise name spellings, dates, and relationships (e.g., familial, professional) are often critical for verification.
+- Claims about membership in bands or contributions to songs require identifying accurate credits and affiliations.
+- When multiple sources conflict on details (such as premiere years), preference should be given to authoritative contextual evidence.
+- Notes may contain duplicates, minor variations, and explicit corrections; synthesize these carefully.
+- Titles should reflect actual documents or knowledge base entries referenced in the context, not invented or generalized terms.
+
+Formatting:
+- Use the exact field names `new_notes` and `titles` for outputs.
+- Provide the output as lists (array format), with each item a string concise enough to be a standalone fact or title.
+- Ensure factual accuracy and clarity in all provided notes and titles.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The  Vines' frontman wrote the song "Get Free". He and Boy George are not both from the same country.
+
+### notes
+['Get Free is a song by Australian garage rock band The Vines from their debut album Highly Evolved, written by their frontman Craig Nicholls.', 'Craig Nicholls, the frontman of The Vines, and Boy George are not both from the same country; Nicholls is Australian, while Boy George is British.', 'The song "Get Free" by The Vines was written by their frontman, Craig Nicholls.', 'Craig Nicholls is Australian, and Boy George is British; they are not from the same country.', 'Get Free is a song by Australian garage rock band The Vines from their debut album Highly Evolved, written by their frontman Craig Nicholls.', 'Craig Nicholls, the frontman of The Vines, is Australian, while Boy George is British; they are not from the same country.']
+
+### context
+['Get Free | "Get Free" is a song by the garage rock band The Vines from their debut album "Highly Evolved".  The song was released in mid 2002, and remains the Vines\' highest charting single (#7 Billboard Modern Rock, #24 UK Singles Chart).  The song was written by Vines\' frontman Craig Nicholls.  It was covered by "Weird Al" Yankovic in his polka medley "Angry White Boy Polka" from his 2003 album "Poodle Hat".  It was featured in the pilot episodes of "Fastlane" and "Shameless", as well as the 2006 movie "School for Scoundrels".  The song can be heard in several video games including the introduction video for "Topspin", the Nintendo DS version of "Band Hero" and as a playable track on "Rock Band 3" and "".  "Get Free" along with "Ride" appeared in the documentary "Warren Miller\'s Impact".', 'Nobody Gonna Tell Me What to Do | "Nobody Gonna Tell Me What to Do" is a song recorded by American country music duo Van Zant.  It was released in September 2005 as the second single from their album "Get Right with the Man".  The song was written by Tony Mullins, Tim Nichols and Craig Wiseman.', 'Craig Nicholls | Craig Robert Nicholls (born 31 August 1977) is an Australian musician, best known as the lead singer, songwriter, and guitarist of the Australian alternative rock band The Vines, of which he is the only mainstay member.', 'Ride (The Vines song) | "Ride" was the second official single from The Vines\' second album, "Winning Days".  Although it wasn\'t a big chart success, "Ride" is one of the band\'s best known songs because it was featured in a number of advertisements, including commercials for Apple\'s iPod, Nissan, "American Chopper", "NASCAR Hot Pass", "WKCF", The WB, and .  Written by Craig Nicholls.', "Wicked Nature | Wicked Nature is the sixth studio album by Australian alternative rock band The Vines.  It was released on 2 September 2014.  The double album is the band's first release under their own label Wicked Nature Music.  The release marks a few milestones for The Vines, with frontman Craig Nicholls taking on the role of producer for the first time, as well as introducing a completely new rhythm section with drummer Lachlan West and bassist Tim John.  Much of the funding for the album came from music funding website PledgeMusic.", 'Anysound | "Anysound" is a rock song by The Vines from their 2006 album "Vision Valley".  The song is famous for its video, directed by Michel Gondry, involving puppets.  It was first released on YouTube, and eventually made it to television.  Some of the lyrics deal with the inner turmoil felt by the lead singer, Craig Nicholls, in 2004 due to an incident at a hotel, in the opening line "I am a Vine, all twisted and frayed."  It was played in episode 21 in season 3 of The O.C. It has also appeared in .', 'Winning Days (song) | "Winning Days" was the third and final single from the album of the same name by the Vines.  It came out in May 2004, the same week as the Annandale Hotel incident took place in Sydney, in which Craig Nicholls, the song\'s writer and the group\'s lead singer-guitarist, assaulted a photographer, and charges were pressed.', 'Highly Evolved (song) | "Highly Evolved" is the opening track and first Australian single from The Vines\' debut album of the same name (see "Highly Evolved").  The song was written by the group\'s lead guitarist and vocalist, Craig Nicholls.  It was issued as a single via Capitol Records, in April 2002, ahead of the album, which appeared in August.', 'This Ole Boy (song) | "This Ole Boy" is a song written by Rhett Akins, Dallas Davidson and Ben Hayslip.  Originally recorded by Joe Nichols for his 2011 album "It\'s All Good", it was also recorded by Craig Morgan.  His version of the song was released in July 2011 as the first single and title track from his album "This Ole Boy", released by Black River Entertainment in early 2012.', "The Vines (band) | The Vines are an Australian rock band formed in 1994 in Sydney.  Their sound has been described as a musical hybrid of 1960s garage rock and 1990s alternative rock.  The band's current line-up consists of vocalist and guitarist Craig Nicholls, bass guitarist Tim John and drummer Lachlan West."]
+
+## Generated Outputs
+### reasoning
+The claim makes two assertions: first, that the frontman of The Vines wrote the song "Get Free," and second, that he and Boy George are not both from the same country. From the provided notes and context, it is clear that Craig Nicholls is the frontman of the Australian rock band The Vines and that he wrote the song "Get Free." This is directly supported by the context describing the song and his role.
+
+Regarding the second assertion, Craig Nicholls is Australian, and Boy George is British, so they are indeed from different countries, confirming the claim as accurate.
+
+The claim is thus fully supported and factual according to the context and notes.
+
+### new_notes
+['The song "Get Free" by The Vines was written by their frontman, Craig Nicholls.', 'Craig Nicholls is Australian, and Boy George is British; they are not from the same country.']
+
+### titles
+['Get Free', 'Craig Nicholls', 'The Vines (band)']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Craig Nicholls', 'Get Free']. Documents remaining to be retrieved: ['Boy George'].
+
+
+
+# Example 2
+## Inputs
+### claim
+On October 1st a Canadian politician born January 2, 1979, succeeded as leader of this political party in Canada. This is the same party that the Ontario New Democratic Youth is affiliated.
+
+### notes
+['On October 1, 2017, Jagmeet Singh won the leadership election of the federal New Democratic Party (NDP) in Canada.', 'The New Democratic Party (NDP) is a social democratic political party in Canada.', 'The Ontario New Democratic Youth is the youth wing of the Ontario New Democratic Party, which is affiliated with the federal New Democratic Party.', 'Jagmeet Singh, born January 2, 1979, succeeded as leader of the federal New Democratic Party (NDP) of Canada on October 1, 2017.', 'The New Democratic Party (NDP) is a social democratic political party in Canada.', 'The Ontario New Democratic Youth is the youth wing of the Ontario New Democratic Party, which is affiliated with the federal New Democratic Party.', 'The Ontario New Democratic Party is a provincial section of the federal New Democratic Party.', 'Jagmeet Singh, born January 2, 1979, succeeded as leader of the federal New Democratic Party (NDP) of Canada on October 1, 2017.', 'The New Democratic Party (NDP) is a social democratic political party in Canada.', 'The Ontario New Democratic Youth is the youth wing of the Ontario New Democratic Party, which is a provincial section affiliated with the federal New Democratic Party.']
+
+### context
+['New Democratic Party | The New Democratic Party (NDP; French: "Nouveau Parti démocratique" , "NPD") is a social democratic political party in Canada.  The leader of the federal wing of the NDP is Thomas Mulcair, who was elected in the 2012 leadership election.  He led the party through the 2015 federal election, and then lost a party leadership review on April 10, 2016.  He was suceeded as leader by Jagmeet Singh, who won the 2017 leadership election on October 1st, with 53.8% of the vote.', "Ontario CCF/NDP leadership elections | The Ontario New Democratic Party elects its leaders by secret ballot of the party members and/or their delegates at leadership elections, as did its predecessor, the Co-operative Commonwealth Federation (Ontario Section).  The party leader can be challenged for the leadership at the party's biennial convention.  The Ontario New Democratic Party is a social democratic political party in Ontario, Canada.", "Ontario New Democratic Youth | The Ontario New Democratic Youth (ONDY) is the youth wing of the Ontario New Democratic Party which is in turn affiliated with the federal New Democratic Party.  Any party member, aged 25 or under is automatically a member of ONDY and is eligible to attend and vote in the youth wing's yearly convention, known as ONDYCON.", 'New Party (Canada) | New Party was the interim name used by the new political party being established in Canada from 1958 to 1961 by the Co-operative Commonwealth Federation (CCF) and the Canadian Labour Congress (CLC), which eventually defined itself as a social democratic party.  In 1958 a joint CCF-CLC committee, the National Committee for the New Party (NCNP), was formed and spent the next three years laying down the foundations of the "New Party".  During the process of founding the party, the New Party name was used in the October 1960 Peterborough, Canadian federal by-election; which was won by its candidate, Walter Pitman.  In August 1961, at the end of a five-day-long convention, the New Democratic Party (NDP) was born and Tommy Douglas was elected its first leader.  Once the NDP was formed, the New Party clubs, and affiliates automatically ceased, and became part of newly formed party.', 'Socialist Party of Lithuania | Socialist Party of Lithuania (Lithuanian: "Lietuvos socialistų partija" ) was a Marxist political party in Lithuania.  It was formed on March 26, 1994, The principal creators of the LSP were J.Sakalauskas, Albinas Visockas, who was to be elected leader of the newly formed party at the LSP 1st party congress, and Michailas Bugakovas.  In 1997, former member of the Democratic Labour Party of Lithuania Mindaugas Stakvilevičius was elected leader and remained so until 2006 when the 7th party Congress of the LSP on October 28, 2006 elected the new leader of the party, Giedrius Petružis, who was leader until merger with the Front Party.  The highest organ of the party was the Congress of the LSP.  It elected the Council of the party and the management board.', 'Andrea Horwath | Andrea Horwath, {\'1\': ", \'2\': ", \'3\': ", \'4\': "} (pronounced "Horvath"; born October 24, 1962) is a Canadian politician.  She is the leader of the Ontario New Democratic Party in Canada.  She is a member of the Legislative Assembly of Ontario, representing the riding of Hamilton Centre, and was chosen as the party\'s leader at its 2009 leadership convention.', 'Donald C. MacDonald | Donald Cameron MacDonald, {\'1\': ", \'2\': ", \'3\': ", \'4\': "} (December 7, 1913 – March 8, 2008) was a long time Canadian politician and political party leader and had been referred to as the "Best premier Ontario never had."  He represented the provincial riding of York South in the Legislative Assembly of Ontario from 1955 to 1982.  From 1953 to 1970 he was the leader of the social democratic Co-operative Commonwealth Federation (Ontario Section) and its successor, the Ontario New Democratic Party.', 'Nicole Sarauer | Nicole Sarauer is a Canadian politician, who was elected to the Legislative Assembly of Saskatchewan in the 2016 provincial election.  She represents the electoral district of Regina Douglas Park as a member of the Saskatchewan New Democratic Party.  On June 20, 2017, she was selected to succeed Trent Wotherspoon as Leader of the Opposition and interim leader of the Saskatchewan New Democratic Party.', "New Democratic Party leadership election, 1971 | The 1971 New Democratic Party leadership election was a leadership convention held in Ottawa from April 21 to 24 to elect a leader of the New Democratic Party of Canada.  Tommy Douglas retired as federal leader, and David Lewis was elected as his successor.  At this convention the Waffle faction was at the zenith of its popularity and power.  Donald C. MacDonald, the former Ontario NDP leader, was elected as the party's president.  The major non-leadership issue was what stance would the party take in terms of Quebec sovereignty and whether policy initiatives calling for the nationalization of the oil, gas and mining industries would pass.", '23rd Parliament of Ontario | The 23rd Legislative Assembly of Ontario was in session from June 2, 1948, until October 6, 1951, just prior to the 1951 general election.  The majority party was the Ontario Progressive Conservative Party, however its leader, George Drew, lost his seat in the 1948 general election and soon after resigned as party leader to enter federal politics and take the leadership of the Progressive Conservative Party of Canada.  He was replaced on October 19, 1948, by Thomas Laird Kennedy who served as premier and interim Progressive Conservative leader until Leslie Frost became party leader and succeeded Kennedy as premier on May 4, 1949.']
+
+## Generated Outputs
+### reasoning
+The claim can be broken down into two subclaims: first, that on October 1st, a Canadian politician born January 2, 1979, became leader of a political party in Canada; second, that this party is the same party affiliated with the Ontario New Democratic Youth.
+
+From the context, the only leadership change mentioned on October 1st is Jagmeet Singh winning the New Democratic Party (NDP) leadership election in 2017. The NDP is a social democratic party in Canada. While the claim states the politician was born on January 2, 1979, the context does not provide birthdate details for Jagmeet Singh, so this particular detail cannot be confirmed or refuted based on the given information.
+
+The second part of the claim says the party that this politician leads is the same party affiliated with the Ontario New Democratic Youth (ONDY). According to the context, ONDY is the youth wing of the Ontario New Democratic Party, which in turn is affiliated with the federal New Democratic Party. Therefore, ONDY is indirectly affiliated with the NDP, supporting the claim's assertion about party affiliation.
+
+No contradictory information is presented in the notes or context. The political party leadership change on October 1 matches Jagmeet Singh's 2017 NDP leadership win, and the connection between the federal NDP and ONDY is confirmed.
+
+Hence, the factual core supported is: On October 1, 2017, Jagmeet Singh succeeded as leader of the federal New Democratic Party (NDP) in Canada, and the Ontario New Democratic Youth is affiliated with the Ontario New Democratic Party, which is affiliated with the federal NDP.
+
+Since the claim’s birthdate of the politician cannot be verified or falsified here, it is appropriate to omit or flag it as unconfirmed in notes.
+
+### new_notes
+['On October 1, 2017, Jagmeet Singh won the leadership election of the federal New Democratic Party (NDP) in Canada.', 'The New Democratic Party (NDP) is a social democratic political party in Canada.', 'The Ontario New Democratic Youth is the youth wing of the Ontario New Democratic Party, which is affiliated with the federal New Democratic Party.']
+
+### titles
+['New Democratic Party', 'Ontario New Democratic Youth']
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Jagmeet Singh', 'New Democratic Party', 'Ontario New Democratic Youth']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+Between this plant and Darwinia, the genus with more species is Darwinia. This plant is called Saule in French.
+
+### notes
+['Darwinia is a genus of about 70 species of evergreen shrubs in the family Myrtaceae, endemic to Australia.', 'Saule is the French common name for the genus Salix, which includes willows and has more species than Darwinia.', "Therefore, between 'Saule' (Salix) and Darwinia, the genus with more species is Saule (Salix), not Darwinia.", 'Darwinia is a genus of about 70 species of evergreen shrubs in the family Myrtaceae, endemic to Australia.', 'Saule is the French common name for the genus Salix, which includes willows and has around 400 species.', 'Between Salix (Saule) and Darwinia, Salix has more species, not Darwinia.', 'Darwinia is a genus of about 70 species of evergreen shrubs in the family Myrtaceae, endemic to Australia.', 'Saule is the French common name for the genus Salix, which includes willows and has around 400 species.', 'Salix (Saule) has more species than Darwinia.']
+
+### context
+['Willow | Willows, also called sallows, and osiers, form the genus Salix, around 400 species of deciduous trees and shrubs, found primarily on moist soils in cold and temperate regions of the Northern Hemisphere.  Most species are known as willow, but some narrow-leaved shrub species are called osier, and some broader-leaved species are referred to as sallow (from Old English "sealh", related to the Latin word "salix", willow).  Some willows (particularly arctic and alpine species) are low-growing or creeping shrubs; for example, the dwarf willow ("Salix herbacea") rarely exceeds 6 cm in height, though it spreads widely across the ground.', 'Pussy willow | Pussy willow is a name given to many of the smaller species of the genus "Salix" (willows and sallows) when their furry catkins are young in early spring.  These species include (among many others):', 'Salix sitchensis | Salix sitchensis is a species of willow known by the common name Sitka willow.', "Salix boothii | Salix boothii is a species of willow known by the common name Booth's willow.", 'Salix delnortensis | Salix delnortensis is a species of willow known by the common name Del Norte willow.', 'Salix warburgii | Salix warburgii is a plant of the genus "Salix", the willows, endemic to Taiwan.  It can be found among shrubs near water.  growing 15 m tall.  Liliaceae is the most fortunate plant in the vascular plant.  It can live the most northern where is in the polar environment.  In the tropical edge of the formation of endemic species in Taiwan is the reason for the rapid evolution of species in a special environment.  The evolution of the results of the time and space, In addition to water willow outside the southeastern China\'s other multi-stamens willow and the four sub-Liu will have a similar situation, and these special willow plants are also known as tropical willow.  Salix warburgii in Taiwan\'s distribution is low Elevation of the shrub and the river bank, because the cutting method is easy to survive so there is no artificial introduction of cultivation.', 'Willow (disambiguation) | A willow is any of the several hundred species of deciduous trees and shrubs in the genus "Salix".', "Salix jepsonii | Salix jepsonii is a species of willow known by the common name Jepson's willow.  it is named for renowned California botanist Willis Linn Jepson.", 'Salix (disambiguation) | Salix is a genus of deciduous trees and shrubs.', "Salix eastwoodiae | Salix eastwoodiae is a species of willow known by the common names mountain willow, Eastwood's willow, and Sierra willow."]
+
+## Generated Outputs
+### reasoning
+The claim states that between the plant referred to as "Saule" in French and Darwinia, the genus with more species is Darwinia, and that this plant is called Saule in French. From the notes and context, "Saule" corresponds to the genus Salix, commonly known as willows, which has around 400 species. Darwinia, in contrast, has about 70 species. Therefore, Salix (Saule) has more species than Darwinia, contradicting the original claim. The French common name "Saule" indeed refers to the genus Salix and not to Darwinia. The claim incorrectly states that Darwinia has more species. The corrected information is that Salix (Saule) has more species than Darwinia.
+
+### new_notes
+['Darwinia is a genus of about 70 species of evergreen shrubs in the family Myrtaceae, endemic to Australia.', 'Saule is the French common name for the genus Salix, which includes willows and has around 400 species.', 'Salix (Saule) has more species than Darwinia.']
+
+### titles
+['Salix', 'Darwinia']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Darwinia (plant)', 'Willow']. Documents remaining to be retrieved: ['Saule'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

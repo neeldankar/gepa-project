@@ -1,0 +1,114 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given input fields: `claim` (a factual assertion or statement) and `notes` (a list of factual sentences, observations, or evidence snippets related to the claim). Your task is to produce the output field `query`, which should be an information-seeking question (or a set of concise search queries) that can be used to verify or investigate the truthfulness of the claim by retrieving relevant evidence or documents.
+
+Instructions and background details:
+
+1. **Input format:**
+   - `claim`: a statement that asserts a fact or relationship between entities, events, or characteristics.
+   - `notes`: a list of extracted factual notes or knowledge snippets which may provide partial, ambiguous, or confirming/contradicting evidence about the claim.
+
+2. **Goal:**
+   - Generate one or more precise, information-seeking queries that could guide a retrieval system or a fact-checker to find relevant documents, evidence, or data that confirm or refute the claim.
+   - The queries should be focused, specific, and formulated based on the key entities, relationships, attributes, and temporal or categorical constraints implied by the claim and supported or challenged by the notes.
+
+3. **Guidelines for formulating queries:**
+   - Identify all pivotal entities (people, places, works, organizations) and their roles or actions in the claim.
+   - Recognize relationships or attributes whose truthfulness is to be determined (e.g., "X acted in movie Y and also in movie Z," "The main flavor of drink A and drink B," "The type/status of universities associated with individual C").
+   - Extract key qualifiers such as dates, roles, nationalities, product flavors, types, or statuses that are relevant to validating the claim.
+   - If notes indicate ambiguity, absence, or partial information, include queries that could resolve these unknowns (e.g., "Who is the Welsh actor in [movie]?", "What is the flavor of the drink advertised with X?", "Is the university associated with Y public or private?").
+   - Frame queries that retrieve entities or attributes in a way that facilitates comparison or cross-validation related to the claim’s two or more components.
+
+4. **Domain-specific considerations observed from examples:**
+   - Movie-related claims often require querying film titles, actor nationalities, or co-acting in sequels and original movies.
+   - Beverage claims may involve flavor profiles tied to geographic origin or advertisements linked to songs.
+   - University claims involve historical roles of individuals (chairmanship) and classification of universities (public/private).
+   - When a claim spans multiple entities or attributes (e.g., actor nationality plus roles in multiple films), the queries should request that information to be able to corroborate or refute the claim holistically.
+   - Queries may be natural language questions or structured query language snippets (SPARQL-like) where appropriate, reflecting the structured nature of the underlying data or knowledge base.
+
+5. **Generalizable strategy:**
+   - Use the claim to identify discrete factual assertions.
+   - Consult the notes to detect gaps or confirmatory evidence.
+   - Formulate queries that target retrieval of evidence to fill gaps or verify key facts.
+   - Aim for queries that can yield grounded evidence for verification steps such as: identifying actors and their nationality, matching role appearances in films, verifying flavor profiles and ad campaigns, or confirming institutional affiliations and classifications.
+
+In summary:  
+Given a `claim` and supporting or conflicting `notes`, produce a precise, clear, and information-rich query or series of queries that a fact-checking system or search retrieval process can execute to gather the evidence needed to verify the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The Scottish punk band that worked 3 years with Young American Recordings and Sleeper, are both from Britain.
+
+### notes
+['Young American Recordings was an American record label based in New York City.', 'Scottish punk band APB worked with Young American Recordings.', 'Sleeper is a British band signed to Indolent Records, a British record label.', 'There is no evidence that APB worked with Sleeper or that Sleeper is a record label.', 'Young American Recordings and Sleeper are not both British; Young American Recordings is American and Sleeper is a British band.', 'Young American Recordings is an American record label based in New York City.', 'Scottish punk band APB worked with Young American Recordings but not with Sleeper.', 'Sleeper is a British band, not a record label.', 'There is no evidence that APB collaborated with Sleeper.', 'Young American Recordings and Sleeper are not both British; only Sleeper is British.', 'Young American Recordings is an American record label based in New York City.', 'APB is a Scottish punk band that worked with Young American Recordings but not with Sleeper.', 'Sleeper is a British band signed to the British record label Indolent Records, not a record label itself.', 'There is no evidence that APB collaborated with Sleeper.', 'Thus, Young American Recordings and Sleeper are not both British; only Sleeper is British.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that a Scottish punk band worked three years with Young American Recordings and Sleeper, and that both Young American Recordings and Sleeper are from Britain. From the notes, it is clear that Young American Recordings is an American record label based in New York City, so it is not British. Sleeper is a British band, not a record label. It is also evident that the Scottish band APB worked with Young American Recordings but not with Sleeper. There is no evidence that APB collaborated with Sleeper. Therefore, two main assertions need verification: 1) did the Scottish punk band work with both Young American Recordings and Sleeper? 2) are both Young American Recordings and Sleeper British?
+
+### query
+1. Did the Scottish punk band APB work with both Young American Recordings and Sleeper, and for how long?  
+2. What are the national origins and types (band or record label) of Young American Recordings and Sleeper?  
+3. Is Sleeper a record label or a band?  
+4. Has APB collaborated with Sleeper or is there any record of such collaboration?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Young American Recordings']. Documents remaining to be retrieved: ['APB (band)', 'Sleeper (band)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Il trovatore has more acts than the 1994 Hungarian-Swiss-Italian fantasy film which was loosely inspired by. This Hungarian-Swiss-Italian fantasy film was directed by Ildikó Enyedi and called Magic Hunter.
+
+### notes
+['Il trovatore is an opera in four acts by Giuseppe Verdi.', 'Magic Hunter is a 1994 fantasy film directed by Ildikó Enyedi and is loosely inspired by the opera Der Freischütz.', 'Magic Hunter is a film and not structured in acts like an opera.', 'Il trovatore is an opera in four acts by Giuseppe Verdi.', 'Magic Hunter is a 1994 fantasy film directed by Ildikó Enyedi and is loosely inspired by an opera but is a film and not structured in acts.', 'Films can be conceptually divided into acts by screenwriters and critics, but they do not have formal acts like operas.', 'Since Magic Hunter is a film and not an opera, it has no formal acts comparable to the four acts of Il trovatore.', 'Il trovatore is an opera structured into four formal acts.', 'Magic Hunter is a film and not divided into formal acts like an opera.', 'Films are occasionally divided conceptually into acts by screenwriters and critics, but these are not formal acts like in operas.', 'Hence, Il trovatore has more formal acts than Magic Hunter, which has none.']
+
+## Generated Outputs
+### reasoning
+The claim compares the number of acts in the opera "Il trovatore" to the number of acts in the 1994 Hungarian-Swiss-Italian fantasy film "Magic Hunter," directed by Ildikó Enyedi, which the film was loosely inspired by. To verify this, we need to confirm the number of acts in "Il trovatore" and determine how "Magic Hunter" is structured in terms of acts or segments, if applicable, since films are not typically divided into acts in the same manner as operas or plays. Additionally, it is necessary to confirm the director and origin of the film "Magic Hunter" and clarify whether it was truly inspired by "Il trovatore," setting the basis for comparison.
+
+### query
+1. How many acts does the opera "Il trovatore" have?  
+2. What is the number of acts or narrative divisions in the 1994 film "Magic Hunter" directed by Ildikó Enyedi?  
+3. Is "Magic Hunter" loosely inspired by the opera "Il trovatore"?  
+4. Confirm that "Magic Hunter" is a Hungarian-Swiss-Italian fantasy film directed by Ildikó Enyedi released in 1994.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Il trovatore', 'Magic Hunter']. Documents remaining to be retrieved: ['Der Freischütz'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Teide National Park, established in 1943, is located in Spain's Canary Islands. So is the park where you would find the plant Echium wildpretii subsp. trichosiphon.
+
+### notes
+['Teide National Park is located on Tenerife in the Canary Islands, Spain.', 'Echium wildpretii is endemic to Tenerife and occurs mainly in Las Cañadas del Teide within Teide National Park.', 'The subspecies Echium wildpretii subsp. trichosiphon is found at high altitudes on La Palma, not Tenerife.', 'Therefore, Echium wildpretii subsp. trichosiphon is not found in Teide National Park but on La Palma island.', 'Teide National Park is located on Tenerife in the Canary Islands.', 'Echium wildpretii is endemic to Tenerife and occurs mainly in Las Cañadas del Teide within Teide National Park.', 'Echium wildpretii subsp. trichosiphon is found at high altitudes on La Palma, not Tenerife.', 'Therefore, Echium wildpretii subsp. trichosiphon is not found in Teide National Park but on La Palma island.', 'Teide National Park is located on Tenerife in the Canary Islands, Spain.', 'Echium wildpretii is endemic to Tenerife and occurs mainly in Las Cañadas del Teide within Teide National Park.', 'Echium wildpretii subsp. trichosiphon is found at high altitudes on La Palma, not Tenerife.', 'Therefore, Echium wildpretii subsp. trichosiphon is not found in Teide National Park but in a different park or natural area on La Palma island.']
+
+## Generated Outputs
+### reasoning
+The claim states that Teide National Park, located in Spain's Canary Islands since 1943, is the park where the plant Echium wildpretii subsp. trichosiphon can be found. The notes confirm that Teide National Park is indeed in Tenerife in the Canary Islands and that Echium wildpretii (species level) is endemic to Tenerife and mainly occurs within Teide National Park. However, the subspecies Echium wildpretii subsp. trichosiphon specifically occurs at high altitudes on La Palma, a different island in the Canary Islands, not Tenerife. Therefore, the subspecies is not found in Teide National Park. To verify this fully, we need to check the location of Echium wildpretii subsp. trichosiphon and confirm the geographical and park locations of the plant and the park mentioned.
+
+### query
+What is the geographic distribution of Echium wildpretii subsp. trichosiphon? On which Canary Islands and in which protected areas or national parks is it found? Is Echium wildpretii subsp. trichosiphon present in Teide National Park on Tenerife or only on La Palma? What is the establishment year and location of Teide National Park?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Echium wildpretii subsp. trichosiphon', 'Teide National Park']. Documents remaining to be retrieved: ['Caldera de Taburiente National Park'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

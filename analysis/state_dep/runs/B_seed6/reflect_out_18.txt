@@ -1,0 +1,69 @@
+``` 
+Task Description for Generating Precise Search Queries for Fact-Checking Claims:
+
+You will be provided with two primary inputs:  
+- `claim`: A factual statement that requires verification or fact-checking.  
+- `notes`: Extracted or summarized contextual information relevant to the claim, which may confirm, refute, partially support, or provide neutral background to the claim.
+
+Your task is to generate a single, concise, yet comprehensive *search query* that can be used by downstream retrieval systems to find authoritative sources that verify or falsify the claim.
+
+---
+
+Detailed Guidelines:
+
+1. **Analyze the Claim Thoroughly**  
+   - Extract **key entities** such as persons, organizations, events, places, titles of works (films, songs), championships, and dates.  
+   - Identify the **core factual assertions**, including those with specific dates, awards, roles, competition results, locations, or other unique identifiers.  
+   - Understand the **relationships** between entities (e.g., who acted in which film, who won which event, what are franchise timelines).  
+   - Note any **temporal bounds** or ranges (years, seasons, decades).  
+   - Include **aliases, nicknames, or alternate names** wherever relevant (e.g., "The King of Cocaine" for Pablo Escobar).
+
+2. **Incorporate Domain-Specific Context from the Notes**  
+   - Extract domain-relevant facts that clarify or refine the claim (e.g., actual birthplaces, debut years, championship winners, original recording artists).  
+   - Determine if any elements of the claim are contradicted or unsupported in the notes.  
+   - Recognize when claim elements are partially false or mixing facts and include explicit terms to confirm or deny these points.  
+   - Pay close attention to nuanced domain facts, such as:  
+     - **Sports**: Start/end years of participation, season numbering equivalences (e.g., "28th season = 2000"), competitor nationalities, defending champions, team founding or relocation history.  
+     - **Film and TV**: Leading actors in films, familial or biographical relationships between actors, award nominations or wins (Golden Globes, Oscars), debut roles, breakout roles.  
+     - **Music**: Original recording artists vs. cover artists, chart history references (e.g., Billboard Hot Country Singles & Tracks), song genre and chart performance context.  
+     - **Geography**: Administrative divisions, hierarchical jurisdictional relationships, place naming accuracy.  
+
+3. **Formulate a Targeted, Fact-Checking Search Query**  
+   - Construct the query as a **focused natural language question** or a **targeted keyword phrase** that zeroes in on the core claim elements necessary for verification.  
+   - Include all essential named entities, dates, and unique factual anchors to disambiguate and maximize precision.  
+   - When applicable, use **logical connectors** (AND, OR) or phrasing that directly asks the fact-check question (e.g., "Who won X in year Y?", "Was person A born in location B?", "Did person A star in film C and win award D?").  
+   - Incorporate alternative names or aliases when deducible or mentioned.  
+   - Avoid overly broad or vague terms that would produce noisy or irrelevant results.
+
+4. **Use Notes to Address Ambiguities or Contradictions**  
+   - Explicitly include or test questionable or contradictory elements found in the notes (e.g., if an actress’s nationality is disputed, include that nationality and film roles in the query).  
+   - Rule out impossibilities by explicitly querying key facts that are challenged.  
+   - Balance the query between specificity (to avoid irrelevant results) and breadth (to include all relevant verification points).
+
+5. **Domain-Specific Nuances and Examples**  
+   - **Sports (Motorsports, Baseball, Tennis, etc.):**  
+       - Verify event participation years, season numbering, defending champions, player origins, roster changes.  
+       - Check start/end seasons and critical career milestones.  
+   - **Film and TV:**  
+       - Verify casting, debut roles, co-star relationships, award nominations/wins, film release years.  
+       - Confirm biographical facts linking actors and roles.  
+   - **Music:**  
+       - Confirm original recording vs. cover versions, chart positions, genre classifications, recording artists’ nationalities or identities.  
+   - **Geography:**  
+       - Confirm administrative location details, jurisdictional hierarchy, and place-related claims.
+
+6. **General Strategy**  
+   - Target **fact-verification queries instead of broad questions** to retrieve highly relevant documents that confirm or refute the claim in one or few hits.  
+   - The query should aim to surface multiple key documents simultaneously when possible, rather than narrowly focusing on one aspect.  
+   - Avoid including the full claim verbatim if it contains unsupported or contradictory elements; instead, create queries that systematically check those detailed points.
+
+7. **Desired Output Format**  
+   - Provide only the field `query` containing a **single search query string**.  
+   - Do not include reasoning, explanations, or other text.  
+   - Make the query as **concise yet comprehensive as possible** to maximize retrieval effectiveness.
+
+---
+
+Summary: Your output will be a precise and domain-attuned search query designed to retrieve authoritative evidence that confirms or disproves the claim by focusing on the claim’s main factual elements, incorporating clarifications and contradictions from the notes, and applying domain-specific nuances as appropriate.
+
+```

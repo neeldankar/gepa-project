@@ -1,0 +1,118 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You are given two input fields:  
+- `claim`: a factual statement that may mention one or more entities, events, relationships, or attributes.  
+- `notes`: a list of relevant factual sentences or pieces of information from a knowledge base or context related to the entities or topics mentioned in the claim.
+
+Your goal is to produce the output field `query`, a focused, precise, natural language question that would help retrieve missing or verifying information necessary to validate or further examine the claim.
+
+Key details and constraints for generating the `query`:
+
+1. **Purpose:** The main aim of the `query` is to identify the specific unknown or uncertain facts needed to assess the truth or validity of the `claim` given the `notes`.
+
+2. **Analyze the claim:**  
+   - Identify the claim’s core components: the entities involved (people, films, dates, places), their attributes, and the relationships asserted.  
+   - Determine what critical fact(s) are missing or uncertain from the `notes` to verify the claim.
+
+3. **Use the notes carefully:**  
+   - Extract relevant information or evidence from the `notes` that partially address aspects of the claim.  
+   - Identify the remaining knowledge gaps or entities not sufficiently covered by the notes.
+
+4. **Formulating the query:**  
+   - The query should specifically ask for the missing attribute(s), fact(s), or entity-related information needed to fully confirm or refute the claim.  
+   - Use clear, concise, and precise natural language.  
+   - If multiple facts are missing, include all relevant questions within a single coherent query, phrased naturally (e.g., “Who is X? Does Y have Z attribute?”).  
+   - Focus the query on retrieving knowledge about the entities or facts that remain unknown or ambiguous after considering the notes.  
+   - Avoid restating facts already present and verified in the notes, unless asking for further detail or confirmation about disputed points.
+
+5. **Generalizable approach:**  
+   - Parse the claim to identify what it asserts.  
+   - Cross-check against the notes to see what corroborates the claim and what is still unknown.  
+   - Formulate a minimal but comprehensive question that can extract the missing data needed to confirm or deny the claim.
+
+6. **Domain-specific considerations:**  
+   - Common entities include people (with attributes like birthdates, professions, nationality), films (with directors, release years), and industry roles (e.g., film director, musician).  
+   - Familiarity with typical biographical facts is useful, e.g., birthdates for age comparisons, nationality for verifying origins, profession or film credits for attribution claims.  
+   - Queries must often seek specific missing entity attributes such as birthdates, professions, or relationships between people and works.
+
+Summary: Given a claim and supporting notes, generate a precise natural language query that targets the missing factual information required to verify the claim, leveraging all evidence available to exclude known facts and focus on gaps.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Fàn County falls under the jurisdiction of a city in  Henan Province. That city and Pu'er City are located in the same country.
+
+### notes
+['Fàn County is within Henan Province, China.', "Pu'er City is a prefecture-level city in Yunnan Province, China.", "Both Henan Province and Yunnan Province are parts of China, confirming that the city administering Fàn County and Pu'er City are in the same country.", 'Fàn County is under the jurisdiction of Puyang city in Henan Province, China.', "Pu'er City is a prefecture-level city in Yunnan Province, China.", "Both Puyang city (Henan Province) and Pu'er City (Yunnan Province) are located within the country of China.", 'Fàn County is under the jurisdiction of Puyang city in Henan Province, China.', "Pu'er City is a prefecture-level city in Yunnan Province, China.", "Both Puyang city (Henan Province) and Pu'er City (Yunnan Province) are located within China.", "Henan Province and Yunnan Province are both part of the People's Republic of China."]
+
+## Generated Outputs
+### reasoning
+The claim asserts that Fàn County is administered by a city in Henan Province, and that this city and Pu'er City are in the same country. The notes confirm that Fàn County is in Henan Province, China, and Pu'er City is in Yunnan Province, China. Both provinces are part of China, so both cities are located in the same country. However, the specific city that governs Fàn County is not named in the notes. To fully verify the claim, it would be helpful to confirm the exact city in Henan Province that has jurisdiction over Fàn County and verify that this city is within China.
+
+### query
+What is the name of the city in Henan Province that has jurisdiction over Fàn County, and is it located in China, the same country as Pu'er City?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Fan County', "Pu'er City", 'Puyang']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+Jay Park left the South Korean music group that Jay Park is a part of, before the release of the group's DVD called "Take Off".
+
+### notes
+["No information about Jay Park or a DVD called 'Take Off' in the provided context.", "The DVD 'Take Off' is related to the South Korean boy band 2PM, not explicitly linked to Jay Park.", "No context confirms Jay Park's membership in 2PM or his departure timing relative to 'Take Off' DVD release.", 'Jay Park is mentioned as leader of AOMG label, but no link to a DVD release or group departure.', "The claim about Jay Park leaving a group before releasing 'Take Off' DVD is unsupported by the context.", 'Jay Park was the former leader of 2PM and officially left the group in early 2010.', "The DVD 'Take Off' is a live DVD by 2PM from their 1st Japan Tour in 2011.", "Jay Park left 2PM before the release of the 'Take Off' DVD in 2011.", "The claim that Jay Park left his South Korean music group before the release of 'Take Off' DVD is supported by timeline evidence."]
+
+## Generated Outputs
+### reasoning
+The claim states that Jay Park left a South Korean music group before the release of a specific DVD titled "Take Off." The key components to verify include: 
+1. Whether Jay Park was a member of any South Korean music group.
+2. The existence of a DVD called "Take Off" associated with that group.
+3. The timing of Jay Park’s departure relative to the release of the DVD.
+The notes provide no information about Jay Park, any group he might belong to, or a DVD named "Take Off." To verify the claim, we need to identify which group Jay Park was part of, confirm if the group released a DVD called "Take Off," and establish whether Jay Park left the group before the DVD’s release.
+
+### query
+Which South Korean music group was Jay Park a member of, did that group release a DVD titled "Take Off," and did Jay Park leave the group before the release of that DVD?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['2PM', 'Ultra Lover']. Documents remaining to be retrieved: ['Go Crazy (album)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Veyyil was the first film scored by the man who composed the soundtrack for the film in which Ashrita Shetty had a part.
+
+### notes
+["G. V. Prakash Kumar is an Indian film composer whose first film score was for the Tamil film 'Veyyil' (2006).", "Ashrita Shetty acted in the Tamil film 'Udhayam NH4' (2013).", "'Udhayam NH4' soundtrack was composed by G. V. Prakash Kumar.", "This confirms that the composer of the film featuring Ashrita Shetty also scored his first film with 'Veyyil'.", 'G. V. Prakash Kumar composed the soundtrack for Udhayam NH4, which featured Ashrita Shetty.', 'Veyyil (2006) was the first film scored by G. V. Prakash Kumar.', "G. V. Prakash Kumar's first film score was for the Tamil film 'Veyyil' (2006).", "Ashrita Shetty acted in the Tamil film 'Udhayam NH4' (2013).", "'Udhayam NH4' soundtrack was composed by G. V. Prakash Kumar.", "G. V. Prakash Kumar composed the soundtrack for both 'Veyyil' and 'Udhayam NH4', linking his debut to the film starring Ashrita Shetty."]
+
+## Generated Outputs
+### reasoning
+The claim states that "Veyyil" was the first film scored by the man who composed the soundtrack for the film in which Ashrita Shetty had a part. The notes confirm that G. V. Prakash Kumar composed the soundtrack for both "Veyyil" (his first film score) and "Udhayam NH4," the film in which Ashrita Shetty acted. Therefore, the notes already fully support and verify the claim.
+
+No missing or uncertain facts remain regarding the composer's identity, the films he scored, or Ashrita Shetty's participation in the film scored by him. The claim is fully corroborated by the notes.
+
+### query
+Is G. V. Prakash Kumar the composer who scored both the Tamil film "Veyyil" as his first film and also composed the soundtrack for "Udhayam NH4," which featured Ashrita Shetty?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Ashrita Shetty', 'G. V. Prakash Kumar', 'Udhayam NH4']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

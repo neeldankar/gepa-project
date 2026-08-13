@@ -1,0 +1,109 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields:
+- `claim`: a factual statement or assertion that may require verification or further factual support.
+- `notes`: a list of textual snippets containing partial information relevant to verifying the claim. These notes might include facts, contradictions, or missing information about entities or topics in the claim.
+
+Your goal is to produce the output field `query` — a precise and focused question (or set of questions) aimed at retrieving the key missing or uncertain factual information needed to verify the claim. The `query` should target specific entities, attributes, relationships, or facts that have not been confirmed or sufficiently covered in the provided notes.
+
+Key Points and Domain-Specific Knowledge:
+- The claim involves named entities such as people, films, bands, roles (e.g., director, bassist), birthdates, nationalities, professions, and works (e.g., films, songs).
+- Notes often contain partial or confirmatory information about these entities, but sometimes lack critical data required to verify the claim fully.
+- Your query should be designed to retrieve authoritative documents or data specifically covering the missing or ambiguous elements mentioned or implied by the claim.
+- The query should reflect recognition of domain-specific facts, such as:
+   * Individuals’ roles and contributions (e.g., “bass player and lead vocalist who created Cobra Starship” refers to Gabe Saporta).
+   * Nationality or origin of persons associated with cultural works (e.g., nationality of film directors related to 'Cannibal Holocaust').
+   * Dates of birth or ages when claims relate to relative age.
+   * Professional associations or occupations that confirm or refute the claim.
+   * Connections between named works and their creators or contributors.
+
+Generalizable Strategy:
+1. Analyze the claim and identify the factual assertions that require verification.
+2. Review the notes to establish which parts of the claim are already supported and which parts are missing, contradictory, or uncertain.
+3. Formulate concise, targeted queries that seek the minimal yet sufficient data required to resolve remaining ambiguities.
+4. When multiple pieces of missing information exist, combine them efficiently in the query, balancing completeness and precision.
+5. Focus on retrieving documents or facts about:
+   - Specific named entities not covered or unclear in the notes.
+   - Attributes or relationships critical to verifying the claim.
+6. Avoid overly broad or generic questions; tailor queries to close specific knowledge gaps evident from the notes.
+
+Example:
+If the claim is about the relative age of two persons, and only one birthdate is known, the query should be:  
+   "What is the birthdate or age of [Person with missing info]?"
+
+If the claim involves multiple nationalities or roles, and only partial info is available, the query should ask specifically about the identities, nationalities, or professions of the key persons involved.
+
+By following this approach, you will help retrieve the essential documents needed to verify complex claims effectively.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Orange is the main flavor of both soft drinks, Solo from Norway, and the drink advertised with Krupa (song).
+
+### notes
+['No information on Solo (Norwegian soft drink) or the drink advertised with Krupa (song) in the provided context.', 'The flavor profile of Solo or any association with orange as the main flavor is not mentioned.', 'Context includes details about other soft drinks but none relevant to the claim.', 'No supporting information found in the given context about Solo (Norwegian soft drink) or the drink advertised with Krupa (song).', 'The flavor orange is not mentioned in connection with Solo or the Krupa-advertised drink within the provided context.', 'Context includes descriptions of other soft drinks but none relevant to the claim regarding Solo or the Krupa drink.', 'No information on Solo (Norwegian soft drink) or the drink advertised with Krupa (song) in the provided context.', 'No mention of orange as the main flavor for Solo or the Krupa-advertised drink in the available sources.', 'Claim cannot be verified with the given context as it lacks details on these specific drinks.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that orange is the main flavor of two specific soft drinks: Solo from Norway, and a drink advertised with the song "Krupa." The notes explicitly state there is no information about the flavor profile of Solo or any connection of the color orange to either drink in the provided context. To verify this claim, it is necessary to find authoritative information on the flavor of Solo (a Norwegian soft drink) and to identify the drink advertised using the song "Krupa," then confirm its main flavor. Without such data, the claim cannot be confirmed or refuted.
+
+### query
+What is the main flavor of Solo, the Norwegian soft drink? Which soft drink or beverage is advertised using the song "Krupa," and what is its main flavor?
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['Krupa (song)', 'Solo (Norwegian soft drink)', 'Sunkist (soft drink)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The actor who starred, along with Go Ah-sung, in the South-Korean film, Office,  appeared in The Deal. The Deal was directed by Choi Woo-shik.
+
+### notes
+['Office (2015 South Korean film) stars Go Ah-sung and Park Sung-woong, directed by Hong Won-chan.', 'The Deal (2015 South Korean film) is directed by Son Yong-ho, not Choi Woo-shik.', "Choi Woo-shik is an actor in the upcoming film 'Monster' but not linked to 'Office' or 'The Deal'.", 'Office (2015 South Korean film) stars Go Ah-sung and Park Sung-woong, directed by Hong Won-chan.', 'Park Sung-woong appeared in The Deal (2015), playing a serial killer.', 'The Deal (2015) was directed by Son Yong-ho, not Choi Woo-shik.', 'Choi Woo-shik is an actor not linked to directing The Deal; he stars in other films like Monster (2017).', 'Office (2015 South Korean film) stars Go Ah-sung and Park Sung-woong, directed by Hong Won-chan.', 'Park Sung-woong appeared in The Deal (2015) playing a serial killer.', 'The Deal (2015 South Korean film) is directed by Son Yong-ho, not Choi Woo-shik.', 'Choi Woo-shik is an actor but not linked to directing The Deal or starring in Office or The Deal.']
+
+## Generated Outputs
+### reasoning
+The claim is that the actor who starred alongside Go Ah-sung in the South Korean film Office also appeared in The Deal, and that The Deal was directed by Choi Woo-shik. The notes clarify that Office stars Go Ah-sung and Park Sung-woong, and that The Deal was directed by Son Yong-ho, not Choi Woo-shik. Also, it is stated that Park Sung-woong appeared in The Deal, but Choi Woo-shik is an actor, not the director of The Deal. Therefore, the inaccuracy is about the director of The Deal and potentially the identity of the actor in Office who appeared in The Deal. To verify the claim fully, we need to confirm the director of The Deal and clarify whether Choi Woo-shik has any role related to either film, and confirm which actors from Office appeared in The Deal.
+
+### query
+Who directed the South Korean film The Deal (2015)? Did Choi Woo-shik have any involvement as director or actor in The Deal or the film Office (2015)? Which actor(s) from Office (2015) appeared in The Deal (2015)?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Office (2015 South Korean film)', 'Park Sung-woong', 'The Deal (2015 film)']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+Veyyil was the first film scored by the man who composed the soundtrack for the film in which Ashrita Shetty had a part.
+
+### notes
+["Ashrita Shetty acted in 'Udhayam NH4'.", "'Udhayam NH4' was scored by G. V. Prakash Kumar.", "G. V. Prakash Kumar's first film as a composer was 'Veyyil'.", "Ashrita Shetty acted in the film 'Udhayam NH4'.", "'Udhayam NH4' was scored by G. V. Prakash Kumar.", "G. V. Prakash Kumar's first film as a composer was 'Veyyil'.", "Ashrita Shetty acted in the film 'Udhayam NH4'.", "'Udhayam NH4' was scored by G. V. Prakash Kumar.", "G. V. Prakash Kumar's first film as a composer was 'Veyyil'."]
+
+## Generated Outputs
+### reasoning
+The claim states that "Veyyil" was the first film scored by the composer who created the soundtrack for the film featuring Ashrita Shetty. From the notes, we know Ashrita Shetty acted in "Udhayam NH4" and that film was scored by G. V. Prakash Kumar. Additionally, it is noted that G. V. Prakash Kumar's first film as a composer was "Veyyil." This information supports the claim. However, the claim specifically connects three points: Ashrita Shetty's involvement in a film, the composer of that film's soundtrack, and the composer's first film. To fully verify the claim, it is essential to confirm that G. V. Prakash Kumar indeed composed the soundtrack for the film "Udhayam NH4," and that "Veyyil" was his first project as a composer. Since the notes already affirm these points, the claim appears verified. Still, a query confirming these details from authoritative sources would be appropriate to conclusively verify the claim.
+
+### query
+What is the name of the composer who scored the film "Udhayam NH4," and was "Veyyil" the first film he composed the soundtrack for?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Ashrita Shetty', 'G. V. Prakash Kumar', 'Udhayam NH4']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,73 @@
+``` 
+Task Description:
+
+You are given three inputs related to a factual claim that may contain multiple components or subclaims:
+
+- **claim**: One or more factual assertions that need to be verified or discussed.
+- **notes**: A collection of factual snippets or extracted data points that may support, refute, or be unrelated to the claim. These notes often contain redundancies, overlaps, partial information, and domain-specific details (e.g., sports statistics, biographical facts, event sponsorships, venues).
+- **context**: A set of longer, more detailed documents or entries (e.g., Wikipedia-style articles, event reports, biographies) relevant to the claim. These provide authoritative background and fuller evidence.
+
+Your goal is to produce two outputs:
+
+1. **new_notes**  
+   - A distilled, concise, and non-redundant synthesis of facts extracted and merged from the input `notes` and `context`.
+   - These facts should directly support or contradict individual parts of the claim.
+   - Exclude irrelevant or tangential details.
+   - Clearly indicate when particular claim components lack supporting evidence or when evidence is contradictory or ambiguous.
+   - When multiple notes overlap on the same fact, summarize them into a single, clear statement.
+   - Facts may relate to domain-specific knowledge such as sports seasons, tournament dates, participant roles, sponsorships, biographical timelines, venue ownership, or specific event details.
+   - Maintain strict factual correctness and avoid speculation beyond source evidence.
+
+2. **titles**  
+   - A list of authoritative document or article titles from the `context` that underpin the factual basis of the claim or clarify missing evidence.
+   - Titles should specifically correspond to key documents that verify or explain each claim subcomponent.
+   - Include multiple titles if different parts of the claim are supported by different context documents.
+   - If some likely relevant context documents remain unused or unreferenced, note this to indicate incomplete retrieval.
+
+---
+
+Detailed Task and Domain Considerations:
+
+- **Parsing the claim**: Break down compound claims into discrete assertions to verify each part distinctly.
+- **Cross-referencing facts**:  
+  - Identify matching or opposing evidence from the notes.  
+  - Validate or refine these with detailed information from the context documents.  
+  - Use domain knowledge to interpret entities, dates, venues, relationships, roles, or historical events.
+- **Domain-specific facts**:  
+  - Sports domain: seasonal records, bowl game invitation and outcome details, sponsorships, event dates and locations, ownership of venues/hotels/casinos.  
+  - Entertainment domain: residency show venues, hotel associations, owner corporations, event dates.  
+  - Biographical domain: individuals’ careers, accomplishments, relationships, teacher affiliations, and death notices.  
+  - Others as appearing in claim (e.g., music releases, novels, political offices).  
+- **Evidence gaps**:  
+  - Explicitly note when no evidence is found for a claim component, neither in notes nor context.  
+  - Mention if evidence contradicts the claim or is ambiguous.
+- **Redundancy and synthesis**:  
+  - Multiple notes often repeat the same fact in various wording; synthesize into one succinct new_note.  
+  - Avoid listing duplicate or trivial restatements.
+- **Titles selection**:  
+  - The titles chosen should relate specifically to extracted facts.  
+  - Ideal is “gold documents,” i.e., those that would be considered authoritative references supporting the claim.  
+  - If the context includes related but unused documents, acknowledge their absence from final references.
+
+---
+
+Generalizable Strategy for Solving the Task:
+
+1. **Decompose the claim** into individual factual assertions or subclaims.
+2. **Inspect notes** for direct factual statements that address the claim’s parts.
+3. **Cross-validate notes with context**, extracting precise facts that confirm, refine, or refute the claim parts.
+4. **Synthesize overlapping or duplicate notes** into concise, clear factual statements for `new_notes`.
+5. **Explicitly state evidence absence or contradiction** when no conclusive support is found.
+6. **Compile a list of `titles`** from the context documents that contain the main supporting information.
+7. **Flag when some expected authoritative documents remain unreferenced** as an indicator of missing evidence or incomplete retrieval.
+
+---
+
+Outcome Expectations:
+
+- `new_notes` should be factually accurate, precise, and non-redundant, directly supporting or disputing claim parts.
+- `titles` should represent key context documents used to derive `new_notes` and verify the claim.
+- The output demonstrates detailed validation of all claim components, with explicit notes on evidentiary gaps.
+- The response should be domain-aware and sensitive to nuanced factual details in diverse knowledge areas such as sports, entertainment, biography, and events.
+
+```

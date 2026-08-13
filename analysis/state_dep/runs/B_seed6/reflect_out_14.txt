@@ -1,0 +1,44 @@
+``` 
+You will be given three fields as input: `claim`, `notes`, and `context`.
+
+- The `claim` is a factual assertion that may require verification, comparison, or explanation using the given information.
+- The `notes` field contains extracted facts or snippets from relevant sources that relate to the claim; these may include repeated or slightly varied information.
+- The `context` field is a list of longer documents or article excerpts from which the notes were derived; these provide detailed background and authoritative content relevant to the claim.
+
+Your task is to produce two output fields: `new_notes` and `titles`.
+
+1. **new_notes**:  
+   Carefully synthesize and consolidate the essential, accurate, and relevant facts from the provided `notes` to directly support the analysis or verification of the `claim`. In doing so:  
+   - Retain all critical and unique information that contributes substantially to understanding or evaluating the claim (e.g., dates, names, relationships, numeric data).  
+   - Remove redundancy and near-duplicate facts, ensuring a concise but comprehensive set of notes.  
+   - Clearly highlight explicit data points crucial for resolving the claim (such as birth/death dates, membership counts, ownership, or roles).  
+   - Where the claim cannot be conclusively verified from the provided data (e.g., missing birth date, no info on connection between persons), explicitly acknowledge this limitation.  
+   - Include clarifications about ambiguities or partial information to aid a clear evaluation.  
+   - Avoid introducing any unsupported claims or extraneous information not backed by the `notes` or `context`.  
+   - Keep the summaries sufficiently detailed to enable an informed assessment without unnecessary verbosity.
+
+2. **titles**:  
+   Identify and list the titles (entities, documents, or topics) from the `context` that are necessary and sufficient to understand and verify the claim. Specifically:  
+   - Include all entities explicitly mentioned or central to the claim (e.g., persons, organizations, works, films, venues).  
+   - Include related concepts or articles critical for contextual background or factual grounding (e.g., a band associated with a song, a film connected to an actor).  
+   - Avoid including unrelated or tangential titles.  
+   - Use proper Wikipedia-style or well-recognized article/entity titles as they appear in the `context`.  
+   - Ensure comprehensive coverage of principal subjects mentioned in the claim and any entities necessary to interpret them fully.
+
+**Domain-specific guidance and reasoning approach:**  
+- The claims often involve verification of personal data (birth/death dates, roles, and relationships), historical facts (film release dates, band members, ownership), or nuanced relational information (e.g., teacher-student connections, membership counts compared across bands).  
+- Names may appear with variations or incomplete identifiers; use context clues from the documents and notes to correctly disambiguate and identify entities referenced.  
+- Be alert for subtle distinctions, such as genre differences (e.g., alternative rock vs. country band), or membership counts significance (e.g., comparing band sizes).  
+- When comparing persons or entities, establish clear, explicit numeric or categorical facts to support the comparison (e.g., number of band members, birth months, or academic credentials).  
+- If the claim refers to an entity not directly covered in the context or notes, explicitly state the inability to verify.  
+- When notes contain duplicates or overlapping facts, merge them into single, clear formulations preserving all unique and relevant details.  
+- Anchor every factual evaluation in explicit evidence from notes and context, avoiding assumptions.
+
+**Output format:**  
+Return only the following two fields in JSON or a structured response:  
+- `new_notes`: a list of concise, non-redundant, factual notes directly relevant to supporting or refuting the claim.  
+- `titles`: a list of key document or entity titles from the context necessary to understand and verify the claim.
+
+This structured, evidence-based approach ensures clear, precise factual claim assessments supported by relevant documents and synthesized evidence.
+
+```

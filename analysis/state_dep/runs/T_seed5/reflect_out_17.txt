@@ -1,0 +1,46 @@
+```
+Task Description:  
+You will be given three inputs:  
+- `claim`: a sentence or set of sentences making a factual assertion or statement involving specific entities such as people (e.g., writers, composers, athletes), places (counties, cathedrals, institutions), films (titles, characters), bands (albums, members), or institutions (colleges, organizations). Claims often test the relationships or attributes of these entities, such as membership, nationality, authorship, location, or notable achievements (e.g., Nobel Prize winners, composers of specific works).  
+- `notes`: a list of candidate supporting or related sentences extracted from various sources that may contain relevant factual information that either supports, clarifies, contradicts, or contextualizes the claim. These notes may have some overlap, minor redundancy, or partial information.  
+- `context`: a list of detailed full document descriptions, entity biographies, Wikipedia-style articles, or summaries of entities relevant to the claim. These provide comprehensive factual background such as dates, biographical details, titles of works, attributes, roles, relationships, and other metadata relevant for verifying or understanding the claim fully.
+
+Your task is to synthesize these inputs and produce two outputs:  
+1. `new_notes`: a concise, high-quality subset of the provided `notes` that best supports, contextualizes, or clarifies the claim. You should:  
+   - Select notes that are factually accurate, precise, and most relevant to the claim and the entities involved.  
+   - Remove duplicates or highly overlapping notes. Summarize if needed without losing key factual details.  
+   - Exclude less relevant or tangential notes that do not directly corroborate or clarify the claim.  
+   - Where appropriate, combine or synthesize facts from multiple notes to improve clarity and completeness.  
+
+2. `titles`: a list of document or entity titles from the `context` that are the essential knowledge sources needed to understand, verify, or support the claim and the selected notes. These titles:  
+   - Should cover all key entities in the claim and those in the selected notes (people, places, institutions, works, etc.).  
+   - May include closely related or gold-standard authoritative entities known to be relevant (e.g., specific individuals, key works, landmark institutions) even if they are not explicitly given in the notes but are evident from context or claim needs.  
+   - Exclude unrelated or unsupported entities not connected to the claim or selected notes.
+
+Domain-Specific and Task-Specific Details:  
+- Entities and claims often come from specialized domains such as geography (counties, cathedrals, colleges), literature (poets, writers, Nobel laureates), music (composers, songs, bands, albums), film (movies, characters, actors), and institutions (universities, churches).  
+- Claims often involve validating attributes (e.g., nationality, occupation, membership), relationships (e.g., works composed by a certain composer, locations of buildings, award recipients), or comparisons between entities.  
+- Precision matters: minor discrepancies such as mixing up similarly named works or different people (e.g., a composer named Bartók vs. Pepusch) must be clarified.  
+- Contextual knowledge includes detailed entity descriptions with birth/death dates, works, affiliations, awards, and locations. Notes may partially overlap and require filtering for best factual support.  
+- Often, the task requires differentiating entities with similar names and clarifying subtleties, such as a composer’s nationality, or the location of a building among places with similar names.  
+- The quality of notes is paramount: prioritize notes that directly and clearly connect the claim’s subject and predicate, while removing redundant or low-quality statements.  
+
+Recommended Strategy:  
+- Carefully read and analyze the `claim` to identify all entities and the explicit factual statement(s) or relationships involved.  
+- Review all `notes` and identify those that provide the strongest factual support, clear descriptive facts, or pertinent clarifications related to the claim’s assertions and entities.  
+- Remove duplicates and overlapping notes while preserving important information; sometimes synthesizing multiple notes into a more comprehensive sentence is beneficial.  
+- Examine the `context` to select entity titles that fully cover all key entities in the claim and the chosen notes. Include any obviously missing but relevant entities referenced or necessary for complete understanding.  
+- Avoid including irrelevant or unsubstantiated titles.  
+- Keep clarity, relevance, and factual accuracy as primary guiding principles. The outputs must enable a human or system to verify the claim thoroughly with minimal ambiguity or information gaps.  
+
+Output Format:  
+Produce a JSON-like output with two fields:  
+- `new_notes`: a list of concise, factually accurate, non-duplicative strings selected or synthesized from the input `notes`.  
+- `titles`: a list of strings with document/entity titles selected from the input `context` that sufficiently cover the information needed to understand or verify the claim.
+
+Example Guidance:  
+- If the claim involves a composer and his work, your notes should state the composer's name, nationality, and connection to the work; your titles should include their biography and the work's article.  
+- If the claim involves locations and a person connected to them (e.g., where works or sculptures are located), select notes that identify the locations clearly and titles covering those places and the person.
+
+This detailed, domain-aware, and factually rigorous approach will enhance the relevance and quality of your synthesized notes and knowledge source titles, facilitating accurate claim verification or knowledge retrieval.
+```

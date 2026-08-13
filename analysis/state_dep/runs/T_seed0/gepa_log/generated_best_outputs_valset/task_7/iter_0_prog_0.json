@@ -1,0 +1,92 @@
+{
+    "titles": [
+        "Autozam Scrum",
+        "Benz 10/30 PS",
+        "Cornell Brown",
+        "Gene Cichowski",
+        "George Kokinis",
+        "HT PS UAV",
+        "John Hudson (American football)",
+        "Ken Strong",
+        "Lem Barney",
+        "List of Iowa State Cyclones in the NFL Draft",
+        "Marketing mix",
+        "Ozzie Newsome",
+        "PS Alfred (1863)",
+        "PS Magna Charta",
+        "PS Medway Queen",
+        "PS Slieve Donard",
+        "PS/2 port",
+        "Phil Savage",
+        "Positive Slovenia",
+        "T. J. McCreight",
+        "Vince Newsome"
+    ],
+    "notes": [
+        "Philip Savage served as Director of Player Personnel for the Baltimore Ravens.",
+        "Ozzie Newsome was the Baltimore Ravens general manager during part of Savage's tenure.",
+        "Ozzie Newsome was inducted into both the College Football Hall of Fame and the Pro Football Hall of Fame.",
+        "Steve Little was drafted 15th overall in the 1978 NFL Draft.",
+        "Ozzie Newsome was drafted 23rd overall in the 1978 NFL Draft.",
+        "Steve Little was drafted higher than Ozzie Newsome.",
+        "Philip Savage served as Director of Player Personnel for the Baltimore Ravens under General Manager Ozzie Newsome from 2003 to 2004.",
+        "Ozzie Newsome was drafted in the 23rd overall pick in the 1978 NFL Draft and was inducted into both College and Pro Football Halls of Fame.",
+        "Steve Little was drafted 15th overall in the 1978 NFL Draft, which is higher than Ozzie Newsome's draft position.",
+        "Philip Savage's tenure under Ozzie Newsome connects the draft relationship and Hall of Fame induction status.",
+        "Philip Savage served as Director of Player Personnel for the Baltimore Ravens under General Manager Ozzie Newsome from 2003 to 2004.",
+        "Ozzie Newsome was inducted into both the College Football Hall of Fame and the Pro Football Hall of Fame.",
+        "Ozzie Newsome was drafted 23rd overall in the 1978 NFL Draft.",
+        "Steve Little was drafted 15th overall in the 1978 NFL Draft, higher than Ozzie Newsome's draft position.",
+        "The general manager under whom Philip Savage served was Ozzie Newsome, who was drafted lower than Steve Little but is in both College and Pro Football Halls of Fame."
+    ],
+    "per_hop": [
+        {
+            "hop": 1,
+            "query": "SELECT \n  ps.name AS person_name,\n  ps.position,\n  ps.team,\n  d.year AS draft_year,\n  d.round AS draft_round,\n  d.pick AS draft_pick,\n  p.name AS general_manager,\n  h_college.hall_of_fame_status AS college_hof,\n  h_pro.hall_of_fame_status AS pro_hof\nFROM \n  personnel ps\nLEFT JOIN \n  draft d ON ps.name = d.player_name\nLEFT JOIN \n  teams t ON ps.team = t.name\nLEFT JOIN \n  general_managers gm ON t.name = gm.team AND gm.tenure_start <= d.year AND gm.tenure_end >= d.year\nLEFT JOIN \n  persons p ON gm.name = p.name\nLEFT JOIN \n  hall_of_fame h_college ON p.name = h_college.person_name AND h_college.hall_type = 'College Football Hall of Fame'\nLEFT JOIN \n  hall_of_fame h_pro ON p.name = h_pro.person_name AND h_pro.hall_type = 'Pro Football Hall of Fame'\nWHERE \n  ps.name IN ('Philip Savage', 'Steve Little')\n  AND ps.position = 'Director of Player Personnel'\n  AND ps.team = 'Baltimore Ravens'\n\nORDER BY \n  d.year;",
+            "retrieved_titles": [
+                "Benz 10/30 PS",
+                "HT PS UAV",
+                "Positive Slovenia",
+                "Autozam Scrum",
+                "PS Slieve Donard",
+                "PS/2 port",
+                "PS Magna Charta",
+                "PS Medway Queen",
+                "PS Alfred (1863)",
+                "Marketing mix"
+            ]
+        },
+        {
+            "hop": 2,
+            "query": "Did Philip Savage serve as Director of Player Personnel for the Baltimore Ravens under Ozzie Newsome, who was inducted into both the College and Pro Football Halls of Fame and was drafted lower than Steve Little?",
+            "retrieved_titles": [
+                "Ozzie Newsome",
+                "Phil Savage",
+                "T. J. McCreight",
+                "List of Iowa State Cyclones in the NFL Draft",
+                "Vince Newsome",
+                "Cornell Brown",
+                "John Hudson (American football)",
+                "Gene Cichowski",
+                "Ken Strong",
+                "Lem Barney"
+            ]
+        },
+        {
+            "hop": 3,
+            "query": "Did Philip Savage serve as Director of Player Personnel for the Baltimore Ravens under general manager Ozzie Newsome, who was drafted lower than Steve Little and inducted into both the College and Pro Football Halls of Fame?",
+            "retrieved_titles": [
+                "Ozzie Newsome",
+                "Phil Savage",
+                "T. J. McCreight",
+                "List of Iowa State Cyclones in the NFL Draft",
+                "Vince Newsome",
+                "Cornell Brown",
+                "John Hudson (American football)",
+                "Gene Cichowski",
+                "Ken Strong",
+                "George Kokinis"
+            ]
+        }
+    ]
+}

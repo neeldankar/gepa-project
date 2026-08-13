@@ -1,0 +1,54 @@
+```
+Task Description:
+
+You will be provided with three input fields:
+
+- `claim`: A factual statement or assertion involving one or more entities, events, or relationships.
+- `notes`: A list of extracted relevant factual statements or snippets that pertain to the claim, often summarizing or supporting/refuting parts of the claim.
+- `context`: A list of documents or document excerpts (titles and text) that provide detailed background information about the entities, events, or concepts mentioned in the claim.
+
+Your goal is to produce two output fields:
+
+- `new_notes`: A concise, accurate subset of the given `notes` that best supports or disputes the claim based on the provided context. These notes should be directly relevant and factually correct according to the context, avoiding redundant or irrelevant information.
+- `titles`: A list of document titles from the `context` that contain information necessary to verify the claim and support the chosen `new_notes`. This list should include all key documents referenced in `new_notes`, reflect comprehensive coverage of crucial facts, and omit irrelevant or unrelated documents.
+
+Detailed requirements and domain-specific knowledge:
+
+1. **Entity and Relationship Identification**:  
+   The `claim` will often involve multiple entities (people, organizations, events, publications) and relationships between them (e.g., coining a term, professional affiliation, authorship, competition results). The `notes` and `context` will contain overlapping and sometimes repeated factual assertions regarding these entities and their connections.
+
+2. **Cross-verification of Facts**:  
+   The `notes` serve as candidate fact claims to be supported or refuted against the `context`. Your output should consolidate relevant facts, validated and confirmed by the `context`, while excluding unsupported, incorrect, or ambiguous notes.
+
+3. **Precision in Retrieval**:  
+   The `titles` in your output represent the exact documents from the `context` that allow verification of the facts in `new_notes`. Titles should correspond exactly to the relevant context entries and cover all evidence for the facts in `new_notes`. Partial or incomplete document retrieval reduces accuracy.
+
+4. **Handling Redundancies and Contradictions in Notes**:  
+   Duplicate facts or contradictory notes may appear. Select the most accurate, concise, and context-supported notes. Remove duplicates and clearly represent the verified facts.
+
+5. **Summarizing Complex Claims**:  
+   Claims may involve compound facts (e.g., two entities sharing a profession, one entity having a specific characteristic). Your reasoning should dissect the claim into factual components, verify each component, and retain notes and documents relevant to all parts of the claim.
+
+6. **Domain-Specific Contextual Knowledge**:  
+   - Professionals referenced may include scientists (e.g., paleontologists such as Elisabeth Vrba and Stephen Jay Gould), writers, athletes (professional tennis players with tournament results), designers, and journalists.  
+   - Publications and artistic works (books, magazines, journals, essays) appear frequently; it is essential to distinguish authorship, publication venue (book vs. magazine article), and the nature of periodicals.  
+   - Events like sports tournaments, professional achievements, and historical occurrences frequently provide verification points.  
+   - Namesake ambiguity is possible (e.g., different individuals named Gould); confirm identity using contextual career and biographical details.
+
+7. **Reasoning and Fact-Checking Strategy (Generalizable)**:  
+   - Map entities and relationships mentioned in the claim to those referenced in `notes` and `context`.  
+   - Crosscheck each factual assertion in `notes` against the detailed information in `context`.  
+   - Discard or modify notes unsupported by context or contradicted by it.  
+   - Identify and include all documents whose content is essential to verify or refute the claim, ensuring completeness.  
+   - Produce a concise set of newly filtered notes (`new_notes`) that reflect the validated facts.  
+   - Provide the precise titles of relevant context documents that underpin these notes.
+
+Your final outputs must be factually accurate, focused, and traceable to the cited documents in the `context`.
+
+Format:
+- `new_notes`: List of succinct, verified factual notes derived from the input `notes` and supported by the `context`.
+- `titles`: List of exact document titles from the `context` that contain the evidence for these notes.
+
+Use clear reasoning to cover all components of the claim and disambiguate entities where necessary.
+
+```

@@ -1,0 +1,109 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields:
+- `claim`: a factual statement or assertion that may require verification or further factual support.
+- `notes`: a list of textual snippets containing partial information relevant to verifying the claim. These notes might include facts, contradictions, or missing information about entities or topics in the claim.
+
+Your goal is to produce the output field `query` — a precise and focused question (or set of questions) aimed at retrieving the key missing or uncertain factual information needed to verify the claim. The `query` should target specific entities, attributes, relationships, or facts that have not been confirmed or sufficiently covered in the provided notes.
+
+Key Points and Domain-Specific Knowledge:
+- The claim involves named entities such as people, films, bands, roles (e.g., director, bassist), birthdates, nationalities, professions, and works (e.g., films, songs).
+- Notes often contain partial or confirmatory information about these entities, but sometimes lack critical data required to verify the claim fully.
+- Your query should be designed to retrieve authoritative documents or data specifically covering the missing or ambiguous elements mentioned or implied by the claim.
+- The query should reflect recognition of domain-specific facts, such as:
+   * Individuals’ roles and contributions (e.g., “bass player and lead vocalist who created Cobra Starship” refers to Gabe Saporta).
+   * Nationality or origin of persons associated with cultural works (e.g., nationality of film directors related to 'Cannibal Holocaust').
+   * Dates of birth or ages when claims relate to relative age.
+   * Professional associations or occupations that confirm or refute the claim.
+   * Connections between named works and their creators or contributors.
+
+Generalizable Strategy:
+1. Analyze the claim and identify the factual assertions that require verification.
+2. Review the notes to establish which parts of the claim are already supported and which parts are missing, contradictory, or uncertain.
+3. Formulate concise, targeted queries that seek the minimal yet sufficient data required to resolve remaining ambiguities.
+4. When multiple pieces of missing information exist, combine them efficiently in the query, balancing completeness and precision.
+5. Focus on retrieving documents or facts about:
+   - Specific named entities not covered or unclear in the notes.
+   - Attributes or relationships critical to verifying the claim.
+6. Avoid overly broad or generic questions; tailor queries to close specific knowledge gaps evident from the notes.
+
+Example:
+If the claim is about the relative age of two persons, and only one birthdate is known, the query should be:  
+   "What is the birthdate or age of [Person with missing info]?"
+
+If the claim involves multiple nationalities or roles, and only partial info is available, the query should ask specifically about the identities, nationalities, or professions of the key persons involved.
+
+By following this approach, you will help retrieve the essential documents needed to verify complex claims effectively.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Candi Kubeck was the captain of a plane. That plane was operated by the Swiss company headquartered in Clayton County, Georgia.
+
+### notes
+['Candi Kubeck was the captain of ValuJet Flight 592 which crashed in 1996.', 'ValuJet Airlines was an American airline headquartered in unincorporated Clayton County, Georgia.', 'There is no evidence that ValuJet Airlines or the plane were operated by a Swiss company.', 'Candi Kubeck was the captain of ValuJet Flight 592, an American airline headquartered in Clayton County, Georgia.', 'ValuJet Airlines was an American airline, not a Swiss company.', 'PrivatAir is a Swiss airline headquartered in Geneva, Switzerland, and not connected to ValuJet.', 'No information supports the claim that the plane was operated by a Swiss company headquartered in Clayton County, Georgia.', 'Candi Kubeck was captain of ValuJet Flight 592, an American airline headquartered in Clayton County, Georgia.', 'ValuJet Airlines was American, not Swiss, and operated out of Clayton County, Georgia.', 'No evidence supports the claim that the plane was operated by a Swiss company headquartered in Clayton County, Georgia.', 'Swiss airlines, such as PrivatAir, are headquartered in Switzerland, not Georgia.']
+
+## Generated Outputs
+### reasoning
+The claim states that Candi Kubeck was the captain of a plane operated by a Swiss company headquartered in Clayton County, Georgia. The notes confirm that Candi Kubeck was the captain of ValuJet Flight 592 and that ValuJet Airlines was headquartered in Clayton County, Georgia, but was American, not Swiss. Additionally, the notes explicitly say there is no evidence that ValuJet Airlines or the plane were operated by a Swiss company. To verify the claim, it is essential to determine whether any Swiss company was involved in operating the plane credited to Candi Kubeck or whether there is any Swiss company headquartered in Clayton County, Georgia related to this context. Essentially, the key missing piece is whether a Swiss company operated ValuJet Flight 592 or any other plane captained by Candi Kubeck, or if any Swiss company is headquartered in Clayton County, Georgia that could be linked to the operation of the plane.
+
+### query
+Was there any Swiss company headquartered in Clayton County, Georgia that operated the plane captained by Candi Kubeck, specifically ValuJet Flight 592 or any other flight? Additionally, did any Swiss company operate ValuJet Airlines or its aircraft in the 1990s?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Candi Kubeck', 'ValuJet Airlines', 'ValuJet Flight 592']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+John S. Hall is younger than the former Midtown bassist and lead vocalist who created Cobra Starship.
+
+### notes
+['Gabe Saporta was born on October 11, 1979, and is the former Midtown bassist and lead vocalist who created Cobra Starship.', "No information about John S. Hall's birthdate or age is available in the provided context.", 'Gabe Saporta, the former Midtown bassist and lead vocalist who created Cobra Starship, was born on October 11, 1979.', "No available information about John S. Hall's birthdate or age to compare with Gabe Saporta.", 'Gabe Saporta was born on October 11, 1979, and is the former Midtown bassist and lead vocalist who created Cobra Starship.', "No information about John S. Hall's birthdate or age is available in the provided context or notes, so his age relative to Gabe Saporta cannot be determined."]
+
+## Generated Outputs
+### reasoning
+The claim compares the relative ages of two individuals: John S. Hall and the former Midtown bassist and lead vocalist who created Cobra Starship. To verify this claim, we need to determine the birthdates or ages of both John S. Hall and the former Midtown bassist and lead vocalist who founded Cobra Starship. The key missing information is the birthdate of John S. Hall and the identification and birthdate of the former Midtown bassist and lead vocalist who created Cobra Starship.
+
+### query
+What is the birthdate of John S. Hall? Who is the former Midtown bassist and lead vocalist who created Cobra Starship, and what is their birthdate?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Cobra Starship', 'Gabe Saporta']. Documents remaining to be retrieved: ['John S. Hall'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Disney animated film with the character Cruella de Vil and G-Force are American family comedy action  adventure type of movies.
+
+### notes
+['One Hundred and One Dalmatians (1961) is an American animated adventure film with family elements and some comedic tone.', "Cruella de Vil is the villainous antagonist in the 1961 Disney animated film 'One Hundred and One Dalmatians'.", "'G-Force' is an American family comedy action-adventure film about spy guinea pigs, released in 2009.", "'101 Dalmatians' and '102 Dalmatians' are Disney films involving Cruella de Vil and are considered family-oriented adventure films.", "Comedy is a common element in many Disney family films including '101 Dalmatians', supporting the claim of 'family comedy adventure' genre.", 'One Hundred and One Dalmatians (1961) is an American animated family adventure film with comedic elements, featuring the villain Cruella de Vil.', "'G-Force' (2009) is an American family comedy action-adventure film about spy guinea pigs.", "Both films fit within the broader family-oriented comedy adventure genre, with G-Force explicitly including 'action' as a key genre element.", "The Disney animated film 'One Hundred and One Dalmatians' (1961) is an American animated family adventure film with comedic elements, featuring the villain Cruella de Vil.", "'G-Force' (2009) is an American family comedy action-adventure film about spy guinea pigs.", "Both films fit within the broader family-oriented comedy adventure genre, with 'G-Force' explicitly including 'action' as a key genre element."]
+
+## Generated Outputs
+### reasoning
+The claim involves verifying if two specific films—the Disney animated film featuring the character Cruella de Vil and the movie G-Force—are categorized as American family comedy action adventure movies. To confirm this, the essential information needed includes the national origin (whether they are American productions), the genre classifications for both films (specifically family, comedy, action, and adventure), and confirmation that Cruella de Vil appears in the Disney animated film in question. Since notes do not provide any information on these points, the query should precisely ask for the origin and genre details of both movies, and the association of Cruella de Vil with the Disney animated film.
+
+### query
+What is the nationality and genre classification of the Disney animated film featuring the character Cruella de Vil? Additionally, what is the nationality and genre classification of the movie G-Force?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['101 Dalmatians (1996 film)', 'Cruella de Vil']. Documents remaining to be retrieved: ['G-Force (film)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

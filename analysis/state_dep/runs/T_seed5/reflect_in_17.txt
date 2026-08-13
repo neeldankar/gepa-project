@@ -1,0 +1,130 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:  
+You will be provided with three inputs:  
+- `claim`: a sentence or set of sentences making an assertion or statement involving entities such as people, places, films, bands, or institutions.  
+- `notes`: a list of candidate supporting or related sentences (extracted document snippets) that may contain relevant factual information supporting or contradicting the claim. These notes often contain partial or overlapping details from different sources.  
+- `context`: a list of full document descriptions or summaries (e.g., Wikipedia-style descriptions) corresponding to entities relevant to the claim. These contain detailed factual information, often including dates, attributes, relations, and descriptive metadata.
+
+Your task is:  
+Using the `claim`, `notes`, and `context`, synthesize and produce two outputs:  
+1. `new_notes`: a concise, high-quality subset of the `notes` that best support or contextualize the claim, filtered and summarized for relevance and precision. Remove duplicates or redundant information, keeping the clearest and most pertinent sentences.  
+2. `titles`: a list of document or entity titles selected from the `context` that are the most relevant to the claim and the selected notes — these represent key knowledge sources backing your reasoning.
+
+Key Domain-Specific and Task-Specific Considerations:  
+- Entities involved are often specific to niche domains such as geography (counties, colleges), sports (players, teams), music (bands, albums, songs, members), and movies (films, characters, genres, production information).  
+- Claims typically involve verifying or clarifying factual relationships, memberships, character roles, or comparisons between entities based on the provided information.  
+- The context can include detailed biographical data, film descriptions, band lineups, and institutional overviews; all are valuable for verifying the claim's details.  
+- Notes may contain subtle variations or partially redundant information; select those that are factually accurate, precise, and best aligned with the claim.  
+- Titles should include all major relevant documents/entities (e.g., people, place, institution, film titles) necessary to understand or support the claim fully.  
+- If some relevant gold-standard (expected) documents are missing, include them if evident from the context and claim to improve coverage.  
+- Clearly identify and exclude irrelevant or unsupported information (e.g., when none of the context concerns a particular entity in the claim).  
+
+Recommended Strategy:  
+- Read the claim carefully to identify all key entities and relationships.  
+- Review the `notes` to find and select those notes that directly support or refute these entities or their relationships as stated in the claim. Summarize or deduplicate where needed.  
+- Scan the `context` to identify documents (articles) about key entities mentioned in the claim or notes, ensuring comprehensive coverage of relevant information.  
+- Include these document titles in the `titles` output.  
+- Be cautious of incomplete or missing information about mentioned entities; reflect this in `new_notes` if necessary by noting the lack of information.  
+- The goal is to create a factually accurate and relevant set of notes and titles to support verifying or understanding the claim thoroughly.  
+- The outputs are intended to support further validation, so clarity, relevance, and completeness with respect to the claim are paramount.
+
+Output Format Requirements:  
+Produce JSON-like outputs with two fields:  
+- `new_notes`: list of strings (concise, factually accurate, non-duplicative notes selected or synthesized from the input `notes`)  
+- `titles`: list of strings (document/entity titles from the `context` that are essential to support or understand the claim)  
+
+Example:  
+If the claim involves a baseball player and colleges in a county, the `new_notes` should succinctly say which colleges are in the county and which colleges the player attended; `titles` should include the player's bio, the colleges, and the county.
+
+This precise and domain-aware approach best reflects your role in synthesizing and filtering relevant information for claim verification or knowledge retrieval tasks.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The Austrian Poet-Dliplomat who also won the Nobel Prize in Literature, and Alan Sillitoe were both writers.
+
+### notes
+['Poet-diplomats are poets who have also served their countries as diplomats and include recipients of the Nobel Prize in Literature such as Pablo Neruda and Ivo Andrić, indicating that poet-diplomats who won the Nobel Prize are recognized writers.', 'Alan Sillitoe is recognized as a writer (noted external knowledge beyond the given notes).', 'Poet-diplomats are poets who have also served their countries as diplomats and include recipients of the Nobel Prize in Literature such as Pablo Neruda and Ivo Andrić, indicating that poet-diplomats who won the Nobel Prize are recognized writers.', 'Alan Sillitoe is recognized as a writer.', 'Poet-diplomats are poets who have also served their countries as diplomats and include recipients of the Nobel Prize in Literature such as Pablo Neruda and Ivo Andrić, indicating that poet-diplomats who won the Nobel Prize are recognized writers.', 'Alan Sillitoe is recognized as a writer.']
+
+### context
+['Poet-diplomat | Poet-diplomats are poets who have also served their countries as diplomats.  The best known poet-diplomats are perhaps Geoffrey Chaucer and Thomas Wyatt; the category also includes recipients of the Nobel Prize in Literature: Ivo Andrić, Gabriela Mistral, Saint-John Perse, Miguel Ángel Asturias, Pablo Neruda, George Seferis, Czesław Miłosz and Octavio Paz.  Contemporary poet-diplomats include Abhay K, Indran Amirthanayagam, Kofi Awoonor, Philip McDonagh and Yiorgos Chouliaras.', 'João Cabral de Melo Neto | João Cabral de Melo Neto(] ), (January 9, 1920 – October 9, 1999) was a Brazilian poet and diplomat, and one of the most influential writers in late Brazilian modernism.  He was awarded the 1990 Camões Prize and the 1992 Neustadt International Prize for Literature, the only Brazilian poet to receive such award to date.  He was considered until his death a perennial competitor for the Nobel Prize in Literature.', 'Ivo Andrić | Ivo Andrić (Serbian Cyrillic: , ] ; born Ivan Andrić; 9 October 1892\xa0– 13 March 1975) was a Yugoslav novelist, poet and short story writer who won the Nobel Prize in Literature in 1961.  His writings dealt mainly with life in his native Bosnia under Ottoman rule.', 'French literature | French literature is, generally speaking, literature written in the French language, particularly by citizens of France; it may also refer to literature written by people living in France who speak traditional languages of France other than French.  Literature written in French language, by citizens of other nations such as Belgium, Switzerland, Canada, Senegal, Algeria, Morocco, etc. is referred to as Francophone literature.  As of 2006, French writers have been awarded more Nobel Prizes in Literature than novelists, poets and essayists of any other country.  France itself ranks first in the list of Nobel Prizes in literature by country.', 'Edwin Arlington Robinson | Edwin Arlington Robinson (December 22, 1869 – April 6, 1935) was an American poet who won three Pulitzer Prizes for his work.  He was nominated for the Nobel Prize in Literature four times.', 'List of Danish Nobel laureates | This is a list of Danish Nobel laureates.  Since the Nobel Prize was established per the will of Swedish inventor Alfred Nobel in 1895, 12 of the prize winners have been from Denmark.  The first Danish Nobel laureate was Niels Ryberg Finsen, who won a Nobel Prize for medicine in 1903 for his work in using light therapy to treat diseases.  The most recent Danish Nobel Prize winner was Jens Skou who won the prize in chemistry for his discovery over the enzyme, Na+/K+-ATPase in 1997.  To date, of the 13 Nobel Prizes won by Danish people, 5 have been for medicine, 3 have been for physics, 3 have been for literature, 1 has been for chemistry and one has been for peace.', 'Nadine Gordimer | Nadine Gordimer (20 November 1923 – 13 July 2014) was a South African writer, political activist and recipient of the 1991 Nobel Prize in Literature.  She was recognized as a woman "who through her magnificent epic writing has – in the words of Alfred Nobel – been of very great benefit to humanity".', 'Pablo Neruda | Pablo Neruda ( ; ] ) was the pen name and, later, legal name of the Chilean poet-diplomat and politician Ricardo Eliécer Neftalí Reyes Basoalto (July 12, 1904\xa0– September 23, 1973).  He derived his pen name from the Czech poet Jan Neruda.  Pablo Neruda won the Nobel Prize for Literature in 1971.', 'List of Indian Nobel laureates | The Nobel Prize is a set of annual international awards bestowed on "those who conferred the greatest benefit on mankind" in the fields of Physics, Chemistry, Physiology or Medicine, Literature, Peace and Economics.  Instituted by Alfred Nobel\'s last will, which specified that his fortune be used to create a series of prizes, now known as the Nobel Prizes.  They are widely recognized as one of the most prestigious honors awarded in the aforementioned fields.', 'Salvador de Madariaga | Salvador de Madariaga y Rojo (23 July 1886 in A Coruña, Spain – 14 December 1978 in Locarno, Switzerland) was a Spanish diplomat, writer, historian and pacifist.  He was nominated for the Nobel Prize in Literature, and the Nobel Peace Prize.']
+
+## Generated Outputs
+### reasoning
+The claim states that an Austrian poet-diplomat who also won the Nobel Prize in Literature, and Alan Sillitoe were both writers. From the context, poet-diplomats are defined as poets who have served as diplomats, and several Nobel Prize in Literature winners are listed as poet-diplomats (e.g., Pablo Neruda and Ivo Andrić). Although the claim refers to an Austrian poet-diplomat Nobel laureate, the context lists several Nobel-winning poet-diplomats but does not explicitly mention any Austrian among them. However, the general category of poet-diplomats that includes Nobel Prize winners supports that such individuals are recognized writers. Additionally, Alan Sillitoe is noted externally as a writer. Therefore, both parties mentioned in the claim are writers, supporting the claim's statement.
+
+### new_notes
+['Poet-diplomats are poets who have also served their countries as diplomats and include recipients of the Nobel Prize in Literature such as Pablo Neruda and Ivo Andrić, indicating that poet-diplomats who won the Nobel Prize are recognized writers.', 'Alan Sillitoe is recognized as a writer.']
+
+### titles
+['Poet-diplomat', 'Ivo Andrić', 'Pablo Neruda']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Poet-diplomat']. Documents remaining to be retrieved: ['Alan Sillitoe', 'Gabriela Mistral'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The building that Dennis Huntley provided sculptures for, and St Paul's Cathedral, are both located in England.
+
+### notes
+['Dennis Huntley created sculptures for Guildford Cathedral, a cathedral located in England.', "St Paul's Cathedral is a prominent cathedral located in England.", 'Dennis Huntley created sculptures for Guildford Cathedral, a cathedral located in England.', "St Paul's Cathedral is a prominent cathedral located in England.", 'Dennis Huntley created sculptures for Guildford Cathedral, a cathedral located in England.', "St Paul's Cathedral is a prominent cathedral located in England."]
+
+### context
+['Exterior sculpture of Guildford Cathedral | The Exterior sculpture of Guildford Cathedral provides many artistic features, including sculptures, engravings and more by some of England’s finest sculptors and craftsmen of the 1950s and 1960s.  The people who worked on the cathedral include: Edward Maufe, Alan Collins, Vernon Hill, Eric Gill, John Hutton, Dennis Huntley and others.', 'Dennis Huntley | Dennis Huntley, born in Weybridge in Surrey, England, is a British sculptor, furniture designer and author.  A Fellow of the Royal British Society of Sculptors, he has completed works for cathedrals, individual collectors and other organisations.  Among his most notable works are his sculptures for Guildford Cathedral.', "St Paul's Church, Bedford | St Paul's Church is a Church of England parish church located on St Paul's Square in the town centre of the market and county town of Bedford, Bedfordshire, England.  Formerly a medieval collegiate church, the large building of cathedral proportions with its later additions and iconic spire dominates the town, and the church exercises a ministry of welcome to thousands of visitors and pilgrims from far and wide each year.", 'St. Peter and St. Paul Cathedral, Abeokuta | The St. Peter and St. Paul Cathedral is the name given to a religious building belonging to the Catholic Church and serves as the cathedral of Abeokuta, a city in the southwest African country of Nigeria, Ogun State capital, located on the river of the same name.', 'Sts. Peter and Paul Cathedral, Lubumbashi | The Sts.  Peter and Paul Cathedral (French: "Cathédrale Saints Pierre et Paul de Lubumbashi" ) or simply Cathedral of Lubumbashi, is the name given to a religious building belonging to the Catholic Church and is located between the Kapenda and Kasa Vubu avenues of the city of Lubumbashi in southern part of African country of the Democratic Republic of the Congo, specifically in High Katanga province.  Nearby is the Convent of St. Peter and St. Paul and several provincial government buildings.', "St. Paul's Cathedral, Incheon | The St. Paul's Cathedral (Korean: 답동 주교좌 성당 ) or simply Cathedral of Incheon, is the name given to a religious building belonging to the Catholic Church and is located in the city of Incheon, the third largest in South Korea.", "Cathedral Church of Saint Paul (Des Moines, Iowa) | The Cathedral Church of St. Paul, is located in downtown Des Moines, Iowa, United States.  It is the cathedral church of the Episcopal Diocese of Iowa.  The building was listed on the National Register of Historic Places in 2010 as St. Paul's Episcopal Church.", "Sheffield Cathedral | The Cathedral Church of St Peter and St Paul, Sheffield, usually called simply Sheffield Cathedral, is the cathedral church for the Church of England diocese of Sheffield, England.  Originally a parish church, it was elevated to cathedral status when the diocese was created in 1914.  Sheffield Cathedral is one of five Grade I listed buildings in the city, along with Town Hall, Abbeydale Industrial Hamlet, and the parish churches at Ecclesfield and Bradfield.  It is located in the city centre on Church Street and served by Sheffield Supertram's Cathedral stop.  It is one of three stops to be served by all tram lines.", "Saints Peter and Paul Cathedral, Saint Petersburg | The Peter and Paul Cathedral (Russian: Петропавловский собор ) is a Russian Orthodox cathedral located inside the Peter and Paul Fortress in St. Petersburg, Russia.  It is the first and oldest landmark in St. Petersburg, built between 1712 and 1733 on Zayachy Island along the Neva River.  Both the cathedral and the fortress were originally built under Peter the Great and designed by Domenico Trezzini.  The cathedral's bell tower is the world's tallest Orthodox bell tower.  Since the belfry is not standalone, but an integral part of the main building, the cathedral is sometimes considered the highest Orthodox Church in the world.  There is another Cathedral of Saints Peter and Paul Church in St. Petersburg, located in Petergof.", "St. Paul's Church, Abu Dhabi | The St. Paul's Church is a religious building affiliated with the Catholic Church which is located in the area of Mussafah in Abu Dhabi, the United Arab Emirates.  Its importance is that it is the second Catholic church to be built in the emirate since 1965 when the St. Joseph Cathedral was built."]
+
+## Generated Outputs
+### reasoning
+The claim involves two locations: the building that Dennis Huntley provided sculptures for, and St Paul's Cathedral, both being situated in England. According to the provided contexts, Dennis Huntley contributed sculptures for Guildford Cathedral, which is specified as a cathedral in England. Additionally, St Paul's Cathedral is one of the most notable cathedrals in London, England. There is also mention of St Paul's Church, Bedford, England, but since the claim is about St Paul's Cathedral, the well-known St Paul's Cathedral in London, England is the relevant subject. Therefore, both the building Dennis Huntley worked on (Guildford Cathedral) and St Paul's Cathedral are located in England, supporting the claim.
+
+### new_notes
+['Dennis Huntley created sculptures for Guildford Cathedral, a cathedral located in England.', "St Paul's Cathedral is a prominent cathedral located in England."]
+
+### titles
+['Dennis Huntley', 'Exterior sculpture of Guildford Cathedral']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Dennis Huntley', 'Guildford Cathedral']. Documents remaining to be retrieved: ["St Paul's Cathedral"].
+
+
+
+# Example 3
+## Inputs
+### claim
+Rhapsody, Op. 1 was written by a male composer. This composer was Hungarian, not Johann Christoph Pepusch.
+
+### notes
+['Johann Christoph Pepusch was a German-born composer who spent most of his working life in England.', 'Hungarian Rhapsody No. 5 is part of a set of 19 Hungarian Rhapsodies by composer Franz Liszt, a Hungarian male composer.', 'Hungarian Rhapsody No. 17 and No. 16 were composed by Franz Liszt, a Hungarian male composer.', 'Franz Liszt composed multiple Hungarian Rhapsodies for solo piano, indicating he was a male composer creating rhapsodies associated with Hungary.', 'Johann Christoph Pepusch was a German-born composer who spent most of his working life in England.', 'Hungarian Rhapsody No. 5 is part of a set of 19 Hungarian Rhapsodies by composer Franz Liszt, a Hungarian male composer.', 'Hungarian Rhapsody No. 17 and No. 16 were composed by Franz Liszt, a Hungarian male composer.', 'Franz Liszt composed multiple Hungarian Rhapsodies for solo piano, indicating he was a male composer creating rhapsodies associated with Hungary.', 'Johann Christoph Pepusch was a German-born composer who spent most of his working life in England.', '"Rhapsody", Op.  1, Sz.  26, BB 36, is a composition for piano by Hungarian composer Béla Bartók.', 'The composer of Rhapsody, Op. 1 (Bartók) was male and Hungarian, not Johann Christoph Pepusch.']
+
+### context
+['Johann Christoph Pepusch | Johann Christoph Pepusch (1667 – 20 July 1752), also known as John Christopher Pepusch and Dr Pepusch, was a German-born composer who spent most of his working life in England.', 'Alto Rhapsody | The Alto Rhapsody, Op.  53, is a composition for contralto, male chorus, and orchestra by Johannes Brahms, a setting of verses from Johann Wolfgang von Goethe\'s "".  It was written in 1869, as a wedding gift for Robert and Clara Schumann\'s daughter, Julie.  Brahms scholars have long speculated that the composer may have had romantic feelings for Julie, which he may have integrated into the text and music of the "Alto Rhapsody".  The text, with its metaphysical portrayal of a misanthropic soul who is urged to find spiritual sustenance and throw off the shackles of his suffering, has powerful parallels in Brahms\'s life and character.', "John Travers (composer) | John Travers (ca. 1703 – June 1758) was an English composer who held the office of Organist to the Chapel Royal from 1737 to 1758.  Before filling several parochial posts in London he had been a choir boy at St. George's Chapel, Windsor and a pupil of Johann Christoph Pepusch.", 'Rhapsodies, Op. 79 (Brahms) | The Rhapsodies, Op. 79, for piano were written by Johannes Brahms in 1879 during his summer stay in Pörtschach, when he had reached the maturity of his career.  They were inscribed to his friend, the musician and composer Elisabeth von Herzogenberg.  At the suggestion of the dedicatee, Brahms reluctantly renamed the sophisticated compositions from "Klavierstücke" (piano pieces) to "rhapsodies".', 'Hungarian Rhapsody No. 17 | Hungarian Rhapsody No. 17, S.244/17, in D minor, is the seventeenth Hungarian Rhapsody composed by Franz Liszt for solo piano.  Being one of the later Hungarian Rhapsodies, it was composed and published in 1882.  This piece and the eighteenth rhapsody are the shortest of the Hungarian Rhapsodies, each having a duration of just over three minutes.', 'Hungarian Rhapsody No. 5 | Hungarian Rhapsody No. 5, S.244/5, in E minor, is the fifth in a set of 19 Hungarian Rhapsodies by composer Franz Liszt.  It is marked "Lento, con duolo".  The piece was given the nickname "Héroïde-élégiaque" by the composer himself.  It is very different from his other Hungarian Rhapsodies, as it does not follow the "intro" - "lassan" - "friska" structure and is perhaps the darkest and most melancholic of the set.  It was later arranged for orchestra.', 'Hungarian Rhapsody No. 16 | Hungarian Rhapsody No. 16, S.244/16, in A minor, is the sixteenth Hungarian Rhapsody composed by Franz Liszt for solo piano.  Being one of the later Hungarian Rhapsodies, it was composed and published in 1882.  The rhapsody, subtitled "Budapest Munkácsy-Festlichkeiten", has a duration of approximately five minutes and is dedicated to Mihály Munkácsy.', 'Rhapsody, Op. 1 (Bartók) | "Rhapsody", Op.  1, Sz.  26, BB 36, is a composition for piano by Hungarian composer Béla Bartók.  It was finished in 1904.  A year later, he wrote a version for piano and orchestra.  The catalogue number of this composition is Op. 1, Sz.  26.  The initial full-length composition for piano eventually received a catalogue number BB 36a, whereas the second version, with piano and orchestra, received a catalogue number BB 36b.', 'Hungarian Rhapsody No. 4 | Hungarian Rhapsody No. 4, S.244/4, in E-flat major, is the fourth in a set of nineteen Hungarian Rhapsodies composed by Franz Liszt for solo piano.  It was composed in 1847 and published in 1853.', 'Frederic Austin | Frederic Austin (30 March 187210 April 1952) was an English baritone singer, a musical teacher and composer in the period 1905–30.  He is best remembered for his restoration and production of "The Beggar\'s Opera" by John Gay and Johann Christoph Pepusch, and its sequel, "Polly", in 1920–23.  Austin was the older brother of the composer Ernest Austin (1874–1947).']
+
+## Generated Outputs
+### reasoning
+The claim states that "Rhapsody, Op. 1" was written by a male composer who was Hungarian, and explicitly not by Johann Christoph Pepusch, who was German-born. The context provides that "Rhapsody, Op. 1" is a piano composition by Hungarian composer Béla Bartók, confirming the composer is male and Hungarian. Notes about Franz Liszt's Hungarian Rhapsodies, while relevant to Hungarian male composers, refer to different compositions (Hungarian Rhapsodies, not Rhapsody, Op. 1). Johann Christoph Pepusch was German-born and unrelated to "Rhapsody, Op. 1". Hence, the composer of Rhapsody, Op. 1 is indeed a Hungarian male composer, Béla Bartók, distinct from Pepusch. The best supporting notes focus on the nationality and gender of the composer linked to "Rhapsody, Op. 1" and the distinction from Pepusch. The relevant context titles relate to Béla Bartók and Johann Christoph Pepusch.
+
+### new_notes
+['Johann Christoph Pepusch was a German-born composer who spent most of his working life in England.', '"Rhapsody", Op.  1, Sz.  26, BB 36, is a composition for piano by Hungarian composer Béla Bartók.', 'The composer of Rhapsody, Op. 1 (Bartók) was male and Hungarian, not Johann Christoph Pepusch.']
+
+### titles
+['Johann Christoph Pepusch', 'Rhapsody, Op. 1 (Bartók)']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Johann Christoph Pepusch', 'Rhapsody, Op. 1 (Bartók)']. Documents remaining to be retrieved: ['Béla Bartók'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

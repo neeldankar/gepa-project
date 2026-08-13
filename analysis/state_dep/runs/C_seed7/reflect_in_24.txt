@@ -1,0 +1,110 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given the inputs `claim` (a factual statement or set of statements that need verification or exploration) and `notes` (a list of extracted or retrieved evidence snippets relevant to the claim), produce the output field `query`.
+
+The `query` should be a precise, clear, and focused natural language question or set of questions that would guide further document retrieval or fact-checking research to validate the claim. The goal of the query is to retrieve documents or evidence that together can comprehensively verify every factual component or sub-claim within the original claim.
+
+When generating the `query`, follow these detailed guidelines:
+
+1. **Understand the Claim in Depth:**  
+   - Identify each distinct factual assertion or entity relationship in the claim. For example, if the claim involves multiple entities (people, places, species, events), or complex relationships (e.g., "X is a breed" vs. "X is an individual dog"), break these down and address them explicitly in the query.  
+   - Capture temporal, spatial, or categorical qualifiers (e.g., dates, locations, types) mentioned or implied in the claim.
+
+2. **Leverage the Provided Notes to Identify Supporting and Missing Information:**  
+   - Use the notes as a preliminary knowledge base to confirm which parts of the claim are already supported or contradicted.  
+   - Highlight specific knowledge gaps or unresolved sub-claims—i.e., any key fact that is not sufficiently addressed in the notes and requires further verification or retrieval.  
+   - If the notes reveal partial evidence or ambiguous results, the query should be designed to resolve those uncertainties with targeted, clarifying questions.
+
+3. **Formulate the Query Precisely:**  
+   - The query must be scoped so that its answers will directly support verification of the claim or its critical components.  
+   - Include relevant named entities (persons, locations, species, events, organizations, or documents) and attributes that appear in the claim or notes.  
+   - Use terminology consistent with the domain implied by the claim (e.g., dog breeds and individual dogs in the first example, composer lifespans and teachers in the second, national parks and plant species distribution in the third).  
+   - Avoid overly broad queries; instead, aim for multiple specific sub-questions if the claim contains multiple factually distinct components.
+
+4. **Incorporate Domain-Specific Nuances:**  
+   - If the claim contrasts categories (e.g., individual vs. breed, teacher-student relationships, geographic ranges within archipelagos), explicitly incorporate these distinctions in the query.  
+   - If temporal facts are relevant (e.g., dates of death or establishment), include these as part of the query especially when the claim’s temporal assertions need confirmation.
+
+5. **Purpose and Use of the Query:**  
+   - The generated `query` will inform document retrieval modules or human researchers on what to look for next. It should thus be tailored to help retrieve missing gold-standard evidence documents or knowledge sources necessary to fully verify all components of the claim.
+
+Example template for generating queries:
+- Single entity verification: "Did [Entity] have [Property/Relationship]?"  
+- Multiple entities or relationships: "Are [Entity1] and [Entity2] both [Category], or is only one classified as such?"  
+- Location and temporal confirmation: "Is [Place] located in [Region], and was it established in [Year]? Are [Entities] found there or elsewhere?"
+
+By following these guidelines, your generated queries will enable precise and comprehensive retrieval of necessary evidence to verify complex factual claims with domain-specific details and relationships accounted for.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The writer Norman Alfred Norman Lindsay enjoyed boxing, but the author of The Hundred Secret Senses did not.
+
+### notes
+[]
+
+## Generated Outputs
+### reasoning
+The claim contains two distinct factual assertions about two different writers: Norman Alfred Norman Lindsay and the author of The Hundred Secret Senses. First, it asserts that Norman Alfred Norman Lindsay enjoyed boxing. Second, it asserts that the author of The Hundred Secret Senses did not enjoy boxing. To verify this claim, it is necessary to confirm whether Norman Alfred Norman Lindsay was indeed a writer who engaged in or enjoyed boxing. Secondly, it is necessary to identify the author of The Hundred Secret Senses and determine whether this author had any known interest or enjoyment in boxing. Both parts must be verified independently to validate the entire claim. Since there are no supporting notes, the query must focus on retrieving biographical and interest-related information about both Norman Alfred Norman Lindsay and the author of The Hundred Secret Senses, especially regarding their relationship to boxing.
+
+### query
+Who was Norman Alfred Norman Lindsay, and is there evidence that he enjoyed boxing? Who is the author of The Hundred Secret Senses, and are there records or statements indicating whether this author enjoyed or did not enjoy boxing?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['The Hundred Secret Senses']. Documents remaining to be retrieved: ['Amy Tan', 'Norman Lindsay'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Californian Theodore Garland, Jr. completed postdoctoral training at the institution which was established before Texas Christian University.
+
+### notes
+['Theodore Garland, Jr., a Californian biologist, completed postdoctoral training at the University of Washington.', 'The University of Washington was established in 1861.', 'Texas Christian University was established in 1873, after the founding of the University of Washington.', 'Therefore, Theodore Garland, Jr. completed postdoctoral training at an institution established before Texas Christian University.', 'Theodore Garland, Jr., a Californian biologist, completed postdoctoral training at the University of Washington.', 'The University of Washington was established in 1861.', 'Texas Christian University was established in 1873, after the founding of the University of Washington.', 'Therefore, Theodore Garland, Jr. completed postdoctoral training at an institution established before Texas Christian University.', 'Theodore Garland, Jr., a Californian biologist, completed postdoctoral training at the University of Washington.', 'The University of Washington was established in 1861.', 'Texas Christian University was established in 1873, after the founding of the University of Washington.', 'Therefore, Theodore Garland, Jr. completed postdoctoral training at an institution established before Texas Christian University.']
+
+## Generated Outputs
+### reasoning
+The claim states that Theodore Garland, Jr., a Californian, completed postdoctoral training at an institution established before Texas Christian University (TCU). From the notes, we see that Theodore Garland, Jr. completed his postdoctoral training at the University of Washington, which was established in 1861. Texas Christian University was established later, in 1873. Hence, the institution where Garland trained (University of Washington) was indeed established before TCU. The notes provide direct support for every component of the claim: Garland's Californian identity, his postdoctoral training at the University of Washington, the founding years of both universities, and the chronological order of their establishment.
+
+There is no apparent missing information or uncertainty in the notes regarding the claim. The verification can be completed with direct confirmation of each fact: Garland's postdoctoral training institution, its establishment date, and TCU's establishment date.
+
+### query
+Did Theodore Garland, Jr., a Californian biologist, complete postdoctoral training at the University of Washington? Was the University of Washington established in 1861? Was Texas Christian University established in 1873, after the founding of the University of Washington? Did Theodore Garland, Jr. complete postdoctoral training at an institution established before Texas Christian University?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Theodore Garland, Jr.', 'University of Washington']. Documents remaining to be retrieved: ['Texas Christian University'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The grandfather of Rainer Hoss conducted the negotiations with the owners and was the longest serving resident-commandant of Auschwitz concentration and extermination camp.
+
+### notes
+['Rudolf Höss was the longest-serving commandant of Auschwitz concentration and extermination camp during World War II.', 'Rudolf Höss introduced methods to accelerate the systematic extermination of Jews at Auschwitz.', 'There is no information about Rainer Hoss or his grandfather conducting negotiations or being connected to the commandant role at Auschwitz in the provided context.', 'The claim about the grandfather conducting negotiations and being the longest-serving resident-commandant aligns with the known fact that Rudolf Höss was the longest-serving commandant.', 'Rudolf Höss was the longest-serving commandant of Auschwitz concentration and extermination camp during World War II.', 'Rudolf Höss introduced methods to accelerate the systematic extermination of Jews at Auschwitz.', "The Gerstein Report states that Kurt Gerstein conducted the negotiations with the owners of Zyklon B and supplied it to Rudolf Höss, not Höss or Rainer Hoss' grandfather.", 'There is no information connecting Rainer Hoss or his grandfather to the role of commandant or negotiations at Auschwitz.', 'Rudolf Höss was the longest-serving commandant of Auschwitz concentration and extermination camp during World War II.', 'Rainer Höss is the grandson of Rudolf Höss.', 'Kurt Gerstein, not Rudolf Höss or his ancestors, conducted the negotiations with the owners of Zyklon B, according to the Gerstein Report.', "There is no evidence that Rainer Höss's grandfather conducted negotiations with the owners or had any role beyond being the commandant at Auschwitz."]
+
+## Generated Outputs
+### reasoning
+The claim posits two key facts: first, that the grandfather of Rainer Hoss conducted the negotiations with the owners related to Auschwitz, and second, that the same person was the longest-serving resident-commandant of the Auschwitz concentration and extermination camp. The notes confirm that Rudolf Höss was indeed the longest-serving commandant of Auschwitz and was responsible for accelerating the extermination process there. However, there is no information linking Rainer Hoss or his grandfather to this role or to negotiations with owners. Furthermore, the Gerstein Report attributes the negotiations with the owners and Zyklon B supply to Kurt Gerstein, not Rudolf Höss or any family member of Rainer Hoss. Therefore, to verify the claim fully, it is necessary to clarify if Rainer Hoss' grandfather was Rudolf Höss, and whether he conducted negotiations with owners in any capacity related to Auschwitz. The key gaps are the familial relationship between Rainer Hoss and Rudolf Höss, and the specific role of the grandfather regarding negotiations.
+
+### query
+Was Rudolf Höss the grandfather of Rainer Hoss? Did Rudolf Höss, as the longest-serving resident-commandant of Auschwitz concentration and extermination camp, engage in negotiations with the owners involved in the camp's operation? Alternatively, did any grandfather or ancestor of Rainer Hoss participate in negotiations related to Auschwitz, separate from the role of commandant? Specifically, what are the documented negotiations related to ownership or supply chains associated with Auschwitz, and who conducted them?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Gerstein Report', 'Rainer Höss', 'Rudolf Höss']. Documents remaining to be retrieved: [].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

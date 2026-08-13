@@ -1,0 +1,153 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given two fields, `claim` and `notes`, your task is to generate a concise, precise, and focused `query` to verify or investigate the truthfulness of the `claim` based on the information contained in the `notes`.
+
+---
+
+### Input Fields
+
+- **claim**: A factual statement or set of factual assertions about entities such as people, works (movies, books, bands, etc.), places, events, dates, or their interrelations.
+- **notes**: A list of factual details or contextual snippets extracted from various documents. These often include biographical data, geographic information, career involvement, dates, affiliations, and clarifications that relate to or overlap with the claim.
+
+---
+
+### Output Field
+
+- **query**: A targeted question or information request formulated to:
+  - Explicitly address any ambiguous, missing, contradictory, or unsupported elements in the claim.
+  - Focus on retrieving discrete domain facts critical for confirming or refuting the claim.
+  - Reference the key entities (people, works, organizations, places) mentioned or implied by the claim and supported or contradicted by the notes.
+  - Enable guided retrieval or fact-checking from relevant documents or knowledge bases associated with these entities.
+
+---
+
+### Task Details and Domain-Specific Considerations
+
+1. **Entity Identification and Coverage**
+   - Extract all relevant entities from both the claim and the notes, including:
+     - Persons (by full name or alias)
+     - Works (films, books, albums, bands)
+     - Locations (counties, towns, natural landmarks)
+     - Organizations (councils, record labels)
+   - Ensure the query explicitly references these entities to maximize retrieval of all relevant supporting documents.
+
+2. **Fact Categories to Address**
+   The query should seek verification or details on core fact types regarding the claim's entities:
+   - **Biographical Data:** birth and death dates, nationality, education, teachers or mentors.
+   - **Professional/Artistic Involvement:** roles (director, actor, member, author), affiliations with works or organizations, formation or base location of bands/works.
+   - **Geographic Relationships:** administrative jurisdictions, locations relative to landmarks or other places.
+   - **Existence and Linkage:** whether the entities or connections claimed exist or are documented.
+   
+3. **Handling Missing or Contradictory Information**
+   - If the claim asserts a connection or fact absent or contradicted in the notes, the query must explicitly address verification of that missing or ambiguous element.
+   - If some entities referenced in the claim (e.g., a teacher, a location) do not appear in the notes, the query should ask for their identity, existence, or connection regarding the claim.
+   - Avoid queries that are overly broad or generic; instead, focus tightly on the specific missing or uncertain elements that determine the truthfulness of the claim.
+
+4. **Guiding Principles for Query Construction**
+   - Formulate queries as clear, direct questions. They should be easily interpretable as requests for pertinent, factual information.
+   - When multiple entities and/or works are involved, explicitly list them within the query to help target all relevant documents.
+   - Queries should enable retrieval of all missing or disputed facts necessary to assess the entire claim, not just parts already confirmed.
+   - Avoid vague phrasing or general thematic questions.
+   
+5. **Examples of Effective Queries**
+   - When a claim involves education and mentorship relations:
+     > "What is the identity of Ariel Ramírez's science teacher, and is there documentation that this teacher also taught Marta Lambertini?"
+   - When verifying geographic and membership claims about bands:
+     > "Are the bands God Seed, Sahg, Ov Hell, and Gorgoroth all based in Bergen or the Norwegian county of Hordaland, and what is King ov Hell’s membership and association with each?"
+   - When clarifying administrative jurisdictions and geographic proximity:
+     > "Which town is administered by the Eurobodalla Shire council and is located near Higgin's Creek and Deua National Park?"
+
+---
+
+### Generalizable Strategy
+
+1. **Parse the Claim:**
+   - Identify factual assertions and involved entities.
+   - Break complex claims into subcomponents if practical (e.g., date of death and teacher connection).
+
+2. **Cross-Reference the Notes:**
+   - Confirm what is supported, contradicted, or missing.
+   - Note which entities or facts appear or are absent.
+
+3. **Formulate the Query:**
+   - Target the ambiguous, missing, or contradictory facts in the claim.
+   - Explicitly include all key entities and works tied to these facts.
+   - Phrase as a clear, focused question requiring factual data.
+
+---
+
+### Summary
+
+Your output query should be a direct, specific, and entity-rich question that addresses the core factual gaps or verification points for the claim, informed by the notes. This ensures retrieval or fact-checking uncovers all pertinent documents and facilitates accurate validation or refutation of the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Ellesmere Port Town Football Club are currently members of the league, whose current principal sponsor is the Football Conference, that Ford Motors F.C. is a part of.
+
+### notes
+['Ellesmere Port Town Football Club currently competes in the West Cheshire League Division Two.', 'The West Cheshire Association Football League is currently sponsored by Carlsberg.', 'There is no mention of a Football Conference sponsorship of the West Cheshire League.', "No evidence exists of a football club named 'Ford Motors F.C.' in the context or linked to the West Cheshire League.", 'Vauxhall Motors F.C. is a separate club in Ellesmere Port playing in West Cheshire League Division One.', 'Ellesmere Port Town Football Club currently competes in the West Cheshire League Division Two.', 'The West Cheshire Association Football League is currently sponsored by Carlsberg, not the Football Conference.', 'There is no evidence of a football club named "Ford Motors F.C." in the context or linked to the West Cheshire League.', 'Vauxhall Motors F.C. is a separate club in Ellesmere Port playing in West Cheshire League Division One.', 'Ellesmere Port Town Football Club currently competes in the West Cheshire League Division Two.', 'Ford Motors F.C. competes in the West Cheshire Association Football League.', 'The West Cheshire Association Football League is currently sponsored by Carlsberg, not the Football Conference.', 'The Football Conference is a separate national league and does not sponsor the West Cheshire Association Football League.', 'There is no connection between Football Conference sponsorship and the leagues in which Ellesmere Port Town FC and Ford Motors FC compete.']
+
+## Generated Outputs
+### reasoning
+The claim makes several specific assertions: Ellesmere Port Town Football Club is a member of a league sponsored currently by the Football Conference, and that the club Ford Motors F.C. is part of that same league. The notes indicate that Ellesmere Port Town Football Club competes in the West Cheshire League Division Two, which is sponsored by Carlsberg, not the Football Conference. Additionally, there is no evidence of a club named Ford Motors F.C. in the context of the West Cheshire League or similar local competitions. Therefore, the key elements to verify are (1) the identity and current league membership of Ellesmere Port Town Football Club, (2) the current principal sponsor of that league, and (3) the existence and league membership of Ford Motors F.C., particularly its connection to the Football Conference or any other league related to Ellesmere Port Town FC.
+
+### query
+Is Ellesmere Port Town Football Club currently a member of the West Cheshire League Division Two, and if so, who is the current principal sponsor of that league? Additionally, does a football club named Ford Motors F.C. exist in this region or league structure, and is Ford Motors F.C. a member of the Football Conference or any league affiliated with Ellesmere Port Town Football Club?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Ellesmere Port Town F.C.', 'Ford Motors F.C.', 'West Cheshire Association Football League']. Documents remaining to be retrieved: [].
+
+
+
+# Example 2
+## Inputs
+### claim
+The star of Institute Benjamenta portrayed a character in "Double Bass". The real name of that character is Vilyam "Willie" Genrikhovich Fisher.
+
+### notes
+['Vilyam "Willie" Genrikhovich Fisher is the real name of Soviet intelligence officer Rudolf Ivanovich Abel.', 'There is no mention in the context of a film titled "Double Bass" or any actor from "Institute Benjamenta" portraying a character named Vilyam "Willie" Genrikhovich Fisher.', '"Institute Benjamenta" and its star are not referenced in the provided context.', 'The name Vilyam "Willie" Genrikhovich Fisher relates to a historical figure, not a fictional film character.', 'Vilyam "Willie" Genrikhovich Fisher is the real name of Soviet intelligence officer Rudolf Ivanovich Abel.', 'There is no mention in the context of a film titled "Double Bass" or any actor from "Institute Benjamenta" portraying a character named Vilyam "Willie" Genrikhovich Fisher.', '"Institute Benjamenta" and its star are not referenced in the provided context.', 'The name Vilyam "Willie" Genrikhovich Fisher relates to a historical figure, not a fictional film character.', 'Vilyam "Willie" Genrikhovich Fisher is the real name of Soviet intelligence officer Rudolf Ivanovich Abel.', 'There is no mention in the context of a film titled "Double Bass" or any actor from "Institute Benjamenta" portraying a character named Vilyam "Willie" Genrikhovich Fisher.', '"Institute Benjamenta" and its star are not referenced in the provided context.', 'The name Vilyam "Willie" Genrikhovich Fisher relates to a historical figure, not a fictional film character.']
+
+## Generated Outputs
+### reasoning
+The claim states that the star of the film "Institute Benjamenta" portrayed a character named Vilyam "Willie" Genrikhovich Fisher in a film titled "Double Bass." However, the notes clarify that Vilyam "Willie" Genrikhovich Fisher is the real name of the Soviet intelligence officer Rudolf Ivanovich Abel, a historical figure, rather than a fictional character. Additionally, there is no mention of a film called "Double Bass," nor any connection between "Institute Benjamenta" or its star and a character named Vilyam "Willie" Genrikhovich Fisher. The notes further indicate that "Institute Benjamenta" and its star are not referenced in the sources provided. Therefore, key points requiring verification are whether the film "Double Bass" exists, if it features a character named Vilyam "Willie" Genrikhovich Fisher, and whether the star of "Institute Benjamenta" acted in it or portrayed this character.
+
+### query
+Does a film titled "Double Bass" exist, and if so, does it feature a character named Vilyam "Willie" Genrikhovich Fisher? Additionally, who is the star of the film "Institute Benjamenta," and is there any record of this actor portraying Vilyam "Willie" Genrikhovich Fisher or appearing in "Double Bass"?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Rudolf Abel']. Documents remaining to be retrieved: ['Institute Benjamenta', 'Mark Rylance'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The 1935 propaganda documentary, on which Karl Attenberger worked with Leni Riefenstahl, and The End of America were not both made in the same year.
+
+### notes
+['Karl Attenberger worked with Leni Riefenstahl on the 1935 propaganda documentary "Triumph of the Will."', '"Triumph of the Will" is identified as a 1935 propaganda film directed by Leni Riefenstahl.', 'There is no information in the context provided about the production year of "The End of America."', "Karl Attenberger worked with Leni Riefenstahl on the 1935 propaganda documentary 'Triumph of the Will.'", "'Triumph of the Will' is a 1935 propaganda film directed by Leni Riefenstahl.", "There is no information available about the production year of 'The End of America.'", "Karl Attenberger worked with Leni Riefenstahl on the 1935 propaganda documentary 'Triumph of the Will'.", "'Triumph of the Will' is a 1935 propaganda film directed by Leni Riefenstahl.", "There is no information in the context provided about the production year or details of 'The End of America'."]
+
+## Generated Outputs
+### reasoning
+The claim posits that the 1935 propaganda documentary "Triumph of the Will," on which Karl Attenberger worked with Leni Riefenstahl, and the film "The End of America" were not both made in the same year. The notes confirm that "Triumph of the Will" is a 1935 propaganda documentary involving Karl Attenberger and Leni Riefenstahl, but there is no information regarding the production year of "The End of America." To verify the claim, it is essential to identify the production year of "The End of America" and compare it with 1935 to determine if both films were indeed not made in the same year.
+
+### query
+What is the production year of the film "The End of America," and is it the same as or different from the 1935 production year of the propaganda documentary "Triumph of the Will" that Karl Attenberger worked on with Leni Riefenstahl?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Karl Attenberger', 'Triumph of the Will']. Documents remaining to be retrieved: ['The End of America (film)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

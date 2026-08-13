@@ -1,0 +1,133 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given three input fields: `claim` (a factual statement or set of statements), `notes` (a list of supporting or related factual snippets), and `context` (a list of longer documents or entries relevant to the claim), produce two output fields:
+
+1. `new_notes`: a distilled, concise set of factual notes extracted, merged, or summarized from the input `notes` and `context` that directly support or refute the claim parts. These should exclude redundant or irrelevant details, focusing on verifiable facts that address the claim components. If some parts of the claim lack evidence, explicitly note the absence of supporting evidence in the new notes.
+
+2. `titles`: a list of relevant document or article titles from the input `context` that underpin the factual basis of the claim. This list ideally corresponds to “gold documents” or key references that validate the claim or clarify missing elements. Titles should be accurate and reflect the main supporting source(s) of information.
+
+---
+
+Task details and domain-specific considerations:
+
+- The `claim` may contain multiple factual assertions or subclaims that need to be separately verified or discussed.
+- The `notes` represent extracted facts, often duplicated or partially overlapping, sometimes mentioning relationships, events, dates, or biographical details.
+- The `context` is a broader background containing longer entries (e.g., Wikipedia-style articles) that provide detailed factual evidence.
+- The assistant’s role is to carefully cross-reference `notes` and `context` to identify consistent, reliable information confirming or refuting parts of the claim.
+- The assistant should reason about ambiguities or where evidence is lacking by explicitly acknowledging missing information or contradictory evidence.
+- Summarize or synthesize overlapping `notes` into fewer, clearer `new_notes` that directly support claim verification.
+- The titles in `titles` should represent sources from the context that the assistant implies or explicitly used as authoritative support.
+- This task involves domain knowledge across various fields (e.g., sports history, music biographies, tennis tournaments, academic careers), requiring recognition of domain-specific entities (e.g., player names, team names, event years, professional roles).
+- Maintain focus on factual correctness, detailed validation of claim components, and clarity in presenting evidence.
+- If the claim references specific events (e.g., sports competitions in a given year), ensure the titles include relevant event or season articles.
+- If claim components relate to people’s careers, deaths, or relationships, include both biographical entries and any specialized references to their teachers or affiliations.
+- The assistant should aim to retrieve all critical supporting documents from the context and note when some expected documents remain unreferenced.
+
+---
+
+Recommended generalizable strategy:
+
+- Parse the claim into discrete assertions.
+- Identify matching, supportive, or contradictory facts from `notes`.
+- Cross-validate these facts against the detailed `context` documents.
+- Aggregate and synthesize extracted facts into a set of clear, non-repetitive `new_notes`.
+- List the titles of context documents that best correspond to these core facts in the `titles` field.
+- Explicitly note gaps in evidence or contradictions.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The actor who starred in a main role on A Lua Me Disse received the Golden Globe nomination for playing the lead role of "The King of Cocaine".
+
+### notes
+["The main actors in the Brazilian telenovela 'A Lua Me Disse' (2005) are Adriana Esteves and Wagner Moura.", "None of the actors listed as Golden Globe nominees in the given context played a main role in 'A Lua Me Disse'.", "There is no evidence that any actor from 'A Lua Me Disse' has received a Golden Globe nomination for portraying 'The King of Cocaine'.", "The Golden Globe nominations mentioned pertain to roles unrelated to 'A Lua Me Disse' or to the title 'The King of Cocaine'.", "The main actors in the Brazilian telenovela 'A Lua Me Disse' (2005) are Adriana Esteves and Wagner Moura.", "Wagner Moura received a Golden Globe nomination for his lead role as Pablo Escobar in the Netflix series 'Narcos,' not for a role called 'The King of Cocaine.'", "There is no evidence that any actor from 'A Lua Me Disse' received a Golden Globe nomination for playing a character titled 'The King of Cocaine.'", "Golden Globe nominations referenced for actors with no connection to 'A Lua Me Disse' involve other roles and productions.", "The main actors in the Brazilian telenovela 'A Lua Me Disse' (2005) are Adriana Esteves and Wagner Moura.", "Wagner Moura received a Golden Globe nomination for his lead role as Pablo Escobar in the Netflix series 'Narcos' (2015-2016), not for a role called 'The King of Cocaine'.", "There is no evidence that any actor from 'A Lua Me Disse' was nominated for a Golden Globe for playing a character titled 'The King of Cocaine'.", "Golden Globe nominations mentioned in the context pertain to roles unrelated to 'A Lua Me Disse' and do not include any role identified as 'The King of Cocaine'."]
+
+### context
+['A Lua Me Disse | A Lua Me Disse (English: Once in a Blue Moon) is a 2005 Brazilian telenovela created by Miguel Falabella and Maria Carmem Barbosa.  Starring Adriana Esteves and Wagner Moura in the main roles.', 'Eric Roberts | Eric Anthony Roberts (born April 18, 1956) is an American actor.  His career began with a well-received performance in "King of the Gypsies" (1978), for which he earned his first Golden Globe Award nomination.  His second Golden Globe nomination came for his portrayal of Paul Snider in "Star 80" (1983), followed by Globe and Academy Award nominations for his supporting role in "Runaway Train" (1985).', 'Richard Thomas (actor) | Richard Earl Thomas (born June 13, 1951) is an American actor.  He is best known for his leading role as budding author John-Boy Walton in the CBS drama "The Waltons", for which he won one Emmy Award and received nominations for another Emmy Award and two Golden Globe Awards.  He also played Special Agent Frank Gaad on FX\'s crime drama series "The Americans" (2013–2016), appeared in Stephen King\'s mini series "IT" (1990), and had a supporting role in the comedy-drama film "Wonder Boys" (2000).', 'Shelley Long | Shelley Lee Long (born August 23, 1949) is an American actress.  She is best known for her role as Diane Chambers on the sitcom "Cheers", for which she received five Emmy nominations, winning in 1983 for Outstanding Lead Actress in a Comedy Series.  She won two Golden Globe Awards for the role.  Long reprised her role as Diane Chambers in four episodes of the spinoff "Frasier", for which she received an additional guest star Emmy nomination.  In 2009, she began playing a recurring role as DeDe Pritchett on the ABC comedy series "Modern Family".', 'William Hurt | William McChord Hurt (born March 20, 1950) is an American actor.  He received his acting training at the Juilliard School and began acting on stage in the 1970s.  Hurt made his film debut in 1980 as a troubled scientist in Ken Russell\'s science-fiction feature "Altered States", for which he received a Golden Globe nomination for New Star of the Year.  He subsequently played a leading role, as a lawyer who succumbs to the temptations of Kathleen Turner, in the neo-noir "Body Heat" (1981), and, as Arkady Renko, in Gorky Park (1983).', 'Regina King | Regina Rene King (born January 15, 1971) is an American actress and television director.  She became known for her role as Brenda Jenkins on the NBC sitcom "227" (1985–90) and a supporting role in the feature film "Jerry Maguire", then for her roles in the television shows "The Boondocks" and "Southland".  Her role in "Southland" earned her two Critics\' Choice Award nominations for Best Supporting Actress in a Drama Series in 2012 and 2013.  From 2015 to 2017, she starred in the ABC anthology series "American Crime", for which she has received three nominations for Emmy Awards with two wins and was also nominated for a Golden Globe Award.  From 2015 to 2017, she also played Erika Murphy on the critically acclaimed HBO drama, "The Leftovers", for which she has received a Critics\' Choice Television Award nomination.', 'Eric Roberts filmography | Eric Anthony Roberts (born April 18, 1956) is an American actor.  His career began with "King of the Gypsies" (1978), earning a Golden Globe Award nomination for Best Actor Debut.  He earned both a Golden Globe and Academy Award nomination for his supporting role in "Runaway Train" (1985).', 'Michael Shannon | Michael Corbett Shannon (born August 7, 1974) is an American actor and musician.  He has been nominated twice for the Academy Award for Best Supporting Actor for his roles in "Revolutionary Road" (2008) and "Nocturnal Animals" (2016), further earning Screen Actors Guild Award and Golden Globe Award nominations for his role in "99 Homes" (2014).  He received a Tony Award nomination for Best Featured Actor in a Play for "Long Day\'s Journey into Night" (2016).', 'Rupert Everett | Rupert James Hector Everett ( ; born 29 May 1959) is an English actor and writer.  He first came to public attention in 1981, when he was cast in Julian Mitchell\'s play and subsequent film "Another Country" (1984) as an openly gay pupil at an English public school in the 1930s; the role earned him his first BAFTA Award nomination.  He went on to receive a second BAFTA Award nomination and his first Golden Globe Award nomination for his role in "My Best Friend\'s Wedding" (1997), followed by a second Golden Globe nomination for "An Ideal Husband" (1999).', 'Stathis Giallelis | Stathis Giallelis (Greek: Στάθης Γιαλελής ; born January 21, 1941) is a Greek actor.  He won brief international renown in the early 1960s as the star of Elia Kazan\'s Academy Award-nominated epic "America, America", a role which brought him the Golden Globe Award for New Star of the Year – Actor, as well as a nomination for Golden Globe Award for Best Actor – Motion Picture Drama.']
+
+## Generated Outputs
+### reasoning
+The claim states that the actor who starred in a main role on the Brazilian telenovela "A Lua Me Disse" received a Golden Globe nomination for playing the lead role of "The King of Cocaine". From the context, we know the main actors of "A Lua Me Disse" are Adriana Esteves and Wagner Moura. There is no mention of either Adriana Esteves or Wagner Moura receiving a Golden Globe nomination, nor any mention that either played a role titled "The King of Cocaine". The Golden Globe nominations referenced in the context pertain to actors such as Eric Roberts, Richard Thomas, Shelley Long, William Hurt, Regina King, Michael Shannon, Rupert Everett, and Stathis Giallelis, but none of these actors are linked to "A Lua Me Disse" or a role called "The King of Cocaine." Therefore, the claim cannot be substantiated with the provided information: the actor from "A Lua Me Disse" receiving a Golden Globe nomination for "The King of Cocaine" is not supported by any evidence in the notes or context.
+
+### new_notes
+["The main actors in the Brazilian telenovela 'A Lua Me Disse' (2005) are Adriana Esteves and Wagner Moura.", "None of the actors listed as Golden Globe nominees in the given context played a main role in 'A Lua Me Disse'.", "There is no evidence that any actor from 'A Lua Me Disse' has received a Golden Globe nomination for portraying 'The King of Cocaine'.", "The Golden Globe nominations mentioned pertain to roles unrelated to 'A Lua Me Disse' or to the title 'The King of Cocaine'."]
+
+### titles
+['A Lua Me Disse']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['A Lua Me Disse', 'Wagner Moura']. Documents remaining to be retrieved: ['Pablo Escobar'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Director Robert Stevenson was from a geographically smaller country than another director. That director directed his final film Romance of Astree and Celadon.
+
+### notes
+['Robert Stevenson was an English film director from England, which is geographically smaller than France.', "Éric Rohmer was a French film director who directed the final film 'Romance of Astree and Celadon', released in 2007.", 'Robert Stevenson was an English film director from England.', 'England is geographically smaller than France.', 'Éric Rohmer was a French film director.', 'Éric Rohmer directed the final film Romance of Astree and Celadon, released in 2007.', 'Robert Stevenson was an English film director from England, which is geographically smaller than France.', "Éric Rohmer was a French film director who directed the final film 'Romance of Astree and Celadon', released in 2007."]
+
+### context
+['Romance of Astree and Celadon | Romance of Astrea and Celadon (French: "Les Amours d\'Astrée et de Céladon" ) is the final film directed by Éric Rohmer.  It was released September 5, 2007.', 'Maestro (2014 film) | Maestro is a 2014 French comedy-drama film directed by Léa Fazer.  The idea of the film came from co-writer Jocelyn Quivrin\'s experience of working with director Éric Rohmer in 2006 on Rohmer\'s last film "Romance of Astree and Celadon".  It stars Pio Marmaï, Michael Lonsdale, Déborah François and Alice Belaïdi.', 'Tribute to Eric Rohmer | Tribute to Éric Rohmer (French: "Hommage à Éric Rohmer" ) (a.k.a. "Maurice Schérer") is a short 2010 video commissioned by Les Films du Losange as a tribute to Éric Rohmer by his friend and former colleague Jean-Luc Godard, and is the work that directly precedes the release of the 2010 feature "Film Socialisme" in Godard\'s filmography.  It was first presented at the Soirée en hommage à Éric Rohmer on February 8, 2010 at the Cinémathèque Française.  The short film consists of various titles of articles that Rohmer wrote for "Cahiers du Cinema" appearing on a black background as Godard\'s narration muses about brief, fragmented memories of Rohmer.  It ends with a shot of Godard looking directly into the camera, the 16:9 image\'s aspect ratio suddenly squished into 4:3, as he finishes his monologue.', 'Éric Rohmer filmography | This is a list of films by the French director Éric Rohmer.', 'Éric Rohmer | Jean Marie Maurice Schérer or Maurice Henri Joseph Schérer, known as Éric Rohmer (] , 21 March 192011 January 2010), was a French film director, film critic, journalist, novelist, screenwriter and teacher.', 'Love in the Afternoon (1972 film) | Love in the Afternoon (original title: "L\'Amour l\'après-midi" and released in North America as "Chloe in the Afternoon") is a 1972 film by Éric Rohmer.  It is the sixth and final movie in Rohmer\'s "" series.', 'Perceval le Gallois | Perceval le Gallois is a 1978 French film directed by Éric Rohmer.  It was inspired by Chrétien de Troyes\'s 12th-century Arthurian romance "Perceval, the Story of the Grail".', 'Les films du losange | Les films du losange is a film production company founded by Barbet Schroeder and Éric Rohmer in 1962.  The company funds and distributes many films from the French nouvelle vague era, directed by Rohmer, Schroeder, Roger Planchon, Jacques Rivette, and later on Michael Haneke and Jacques Doillon.', 'Pauline at the Beach | Pauline at the Beach (French: "Pauline à la plage" ) is a 1983 French film directed by Éric Rohmer.  The film stars Amanda Langlet, Arielle Dombasle, Pascal Greggory and Féodor Atkine.  It is the third in the 1980s series "Comedies and Proverbs" by Rohmer.', 'Autumn Tale | Autumn Tale (French: Conte d\'automne ) is a 1998 French film, directed by Éric Rohmer, starring Béatrice Romand, Marie Rivière, Alain Libolt, Didier Sandre, Alexia Portal, and Aurélia Alcaïs.  It is the final film of Rohmer\'s "Contes des quatre saisons" (Tales of the Four Seasons), which also includes "A Tale of Springtime" (1990), "A Tale of Winter" (1992) and "A Summer\'s Tale" (1996).']
+
+## Generated Outputs
+### reasoning
+The claim has two parts: first, that director Robert Stevenson was from a geographically smaller country than another director; second, that the other director directed the final film "Romance of Astree and Celadon." 
+
+From the notes, it is established that Robert Stevenson was an English film director from England, and England is geographically smaller than France. The notes also state that Éric Rohmer was a French film director who directed the final film "Romance of Astree and Celadon," released in 2007.
+
+The context supports these notes: multiple entries confirm that "Romance of Astree and Celadon" is the final film directed by Éric Rohmer, a French director, and that he was active until this film's release. While the context does not provide specific geographical size comparisons, it is well known and accepted that England is geographically smaller than France, supporting the claim's first part.
+
+Thus, the claim is supported by the notes and context: Robert Stevenson (English) is from a geographically smaller country than Éric Rohmer (French), who directed the final film "Romance of Astree and Celadon."
+
+### new_notes
+['Robert Stevenson was an English film director from England, which is geographically smaller than France.', "Éric Rohmer was a French film director who directed the final film 'Romance of Astree and Celadon', released in 2007."]
+
+### titles
+['Romance of Astree and Celadon', 'Éric Rohmer']
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Robert Stevenson (director)', 'Romance of Astree and Celadon', 'Éric Rohmer']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+The platform, for which the fixed shooter Proof of Destruction was developed, and Prológica CP-400 were not from the same country.
+
+### notes
+['Proof of Destruction is a fixed shooter video game developed for the Commodore 64 and Commodore 16 platforms, which were American-made computers.', 'Prológica CP-400 is a personal computer produced by the Brazilian company Prológica and marketed in Brazil.', 'Since the Commodore platforms and Prológica CP-400 originate from different countries (USA and Brazil respectively), they are not from the same country.', 'Proof of Destruction was developed for the Commodore 64 and Commodore 16 platforms, which were produced by Commodore International, a North American company.', 'Prológica CP-400 is a personal computer produced and marketed in Brazil by the Brazilian company Prológica.', 'Commodore International is based in North America (USA/Canada), while Prológica is based in Brazil, confirming that the two platforms originate from different countries.', 'Proof of Destruction was developed for the Commodore 64 and Commodore 16 platforms made by Commodore International, a North American company.', 'Prológica CP-400 is a personal computer produced and marketed by the Brazilian company Prológica in Brazil.', 'Commodore International is based in North America (USA), while Prológica is based in Brazil, confirming that their platforms are from different countries.']
+
+### context
+['Prológica CP-400 | In the middle of 1984 a Brazilian company called Prológica, which made its own versions of 8 bits US computers, brought to the Brazilian market a new equipment for its personal computer series called "CP" (shorten of Personal Computer in Portuguese).', "Commodore PET | The Commodore PET (Personal Electronic Transactor) is a line of home/personal computers produced starting in 1977 by Commodore International.  A top-seller in the Canadian and United States educational markets, it was Commodore's first full-featured computer, and formed the basis for their entire 8-bit product line, including the Commodore 64.  The first model, which was named the PET 2001, was the third personal computer ever made available to retail consumers, after the Apple II and TRS-80.", 'Xetec | Xetec was founded in 1983 by Jon Flickinger, and was located in Salina, Kansas, United States.  Before closing in 1995, the company produced many third-party products for the Commodore 64, Commodore 128, Amiga, Macintosh, Atari ST and PC computers.', 'Commodore 64 demos | The Commodore 64 (C64) demos are demonstrations of what can be done to push the limits of the Commodore 64 computer, made by programmers, musicians and artists.', "Rabbit Software | Rabbit Software was an English company which produced home computer games for machines such as the Commodore VIC-20, Sinclair ZX Spectrum, and Commodore 64 in the early to mid-1980s.  Rabbit's later software packaging was slightly different from that of the other software houses of the time, as the cassettes were encased within an outer red box which made them more distinctive on the shop shelves.", 'Commodore D9060 | The Commodore D9090 Hard Disk was the only family of hard drives that Commodore made for both the home and business market.  The electronics are identical in the D9090 and the D9060 unit; the only difference is the size of the installed hard drive, with a jumper set to distinguish between 4 or 6 disk heads.  Originally intended for the metal-cased PET series of computers, they were also usable with the Commodore 64 and later models with an adapter.', 'CARDCO | CARDCO was a computer peripheral company during the 1980s in Wichita, Kansas, United States.  CARDCO was well known in the Commodore 64 and Commodore VIC-20 community because of advertisements in numerous issues of Compute!  magazine and availability of their products at large retailers.', "Commodore International | Commodore International (or Commodore International Limited) was a North American home computer and electronics manufacturer.  Commodore International (CI), along with its subsidiary Commodore Business Machines (CBM), participated in the development of the home–personal computer industry in the 1970s and 1980s.  The company developed and marketed the world's best-selling desktop computer, the Commodore 64 (1982), and released its Amiga computer line in July 1985.", 'Commodore MAX Machine | The Commodore MAX Machine, also known as Ultimax in the United States and VC-10 in Germany, was a home computer designed and sold by Commodore International in Japan, beginning in early 1982, a predecessor to the popular Commodore 64.  The Commodore 64 manual mentions the machine by name, suggesting that Commodore intended to sell the machine internationally; however, it is unclear whether the machine was ever actually sold outside Japan.  It is considered a rarity.', 'Commodore 1351 | The Commodore 1351 is a computer mouse made by Commodore in 1986, which can be directly plugged into the 9-pin control port of a Commodore 64 or 128.']
+
+## Generated Outputs
+### reasoning
+The claim states that the platform for which the game "Proof of Destruction" was developed and the Prológica CP-400 computer were not from the same country. From the notes and context, "Proof of Destruction" was developed for the Commodore 64 and Commodore 16 platforms, which are American-made computers produced by Commodore International, a North American company. Meanwhile, the Prológica CP-400 is a personal computer produced by the Brazilian company Prológica and marketed in Brazil. The contexts confirm that Commodore International was a North American company producing computers like the Commodore 64, while Prológica was a Brazilian company producing its own personal computer called CP-400.
+
+Therefore, the Commodore 64 (platform for "Proof of Destruction") originated from the USA (North America), and the Prológica CP-400 originated from Brazil, making them from different countries. This supports the claim.
+
+### new_notes
+['Proof of Destruction was developed for the Commodore 64 and Commodore 16 platforms, which were produced by Commodore International, a North American company.', 'Prológica CP-400 is a personal computer produced and marketed in Brazil by the Brazilian company Prológica.', 'Commodore International is based in North America (USA/Canada), while Prológica is based in Brazil, confirming that the two platforms originate from different countries.']
+
+### titles
+['Prológica CP-400', 'Commodore PET', 'Commodore International']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Prológica CP-400', 'Proof of Destruction']. Documents remaining to be retrieved: ['Commodore 16'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

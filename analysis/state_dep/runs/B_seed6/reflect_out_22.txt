@@ -1,0 +1,58 @@
+```  
+You are provided with three input fields: `claim`, `notes`, and `context`. Your task is to evaluate, verify, or explain the `claim` by synthesizing, consolidating, and analyzing the factual information contained in the `notes` and supported by the longer `context` documents.
+
+### Input Fields:
+- **Claim**: A factual assertion that requires verification or explanation. Claims often involve:
+  - Personal data verification (birth/death dates, nationality, professions, roles, and relationships)
+  - Historical facts (film release dates, band memberships, events, works)
+  - Relational or comparative facts (teacher-student relationships, number of band members, connections between persons/entities)
+
+- **Notes**: Extracted facts or snippets from relevant authoritative sources related to the claim. These may be repetitive or slightly varied but contain the essential factual data needed to assess the claim.
+
+- **Context**: Longer, detailed documents or article excerpts that serve as the authoritative source from which the notes were derived. The context provides necessary background and can clarify ambiguities in notes.
+
+---
+
+### Your Outputs:
+You must produce exactly two output fields:  
+
+1. **new_notes**:  
+   - Generate a concise, synthesized list of factual notes that directly support the verification or explanation of the claim.  
+   - Merge duplicate or near-duplicate facts into single clear statements while preserving critical, unique details (such as dates, numbers, names, relationships, roles, and film release years).  
+   - Explicitly highlight key data points that are crucial for evaluating the claim.  
+   - If the claim cannot be fully verified due to missing or ambiguous information, explicitly state this limitation.  
+   - Do not introduce any unsupported facts, assumptions, or info not clearly contained in the notes or context.  
+   - Include clarifications about ambiguities or partial information to aid transparent assessment.  
+   - Maintain sufficient detail to allow an informed judgment without unnecessary verbosity or redundancy.
+
+2. **titles**:  
+   - Identify all and only the Wikipedia-style or recognized entity/document titles from the `context` necessary and sufficient for understanding and verifying the claim.  
+   - Titles must include:  
+     - All entities explicitly mentioned or central to the claim (people, works, films, organizations, venues, bands).  
+     - Related entities critical for contextual background to interpret the claim (e.g., a band related to a member, a venue hosting a performance).  
+   - Avoid including unrelated, tangential, or insufficiently relevant titles.  
+   - Use precise and authoritative titles as they appear in the context.
+
+---
+
+### Domain-Specific Guidance and Reasoning Approach:  
+- Carefully resolve name variants and disambiguations using clues from both notes and context (e.g., differentiating persons with the same first name, or film sequels vs originals).  
+- When claims involve comparative or numeric data (e.g., number of band members, birth months, premiere dates), ensure you extract explicit, concrete numbers or dates from the notes/context.  
+- Recognize subtle genre distinctions (e.g., alternative rock vs country band).  
+- Avoid speculative linking—if a connection between entities cannot be established from the data, explicitly note that verification is impossible.  
+- Always tether evaluation strictly to the factual evidence presented; do not infer beyond the data.  
+- If the claim references an entity or topic not covered in notes or context, acknowledge the inability to verify rather than speculate.  
+- Consolidate duplicated facts and remove redundancy rigorously to keep new_notes focused and precise.
+
+---
+
+### Output Format:  
+Return only a structured response in JSON or similar, containing:  
+- `"new_notes"`: an array/list of clear, concise, factual statements supporting or refuting the claim based on input data.  
+- `"titles"`: an array/list of authoritative document or entity titles from the context needed for full understanding and verification of the claim.
+
+---
+
+### Summary:  
+Your goal is to provide a well-reasoned, clean, and comprehensive factual synthesis from the provided data, enabling clear verification or refutation of the claim without extraneous or unsupported information. Precision in disambiguation, careful consolidation, explicit acknowledgment of gaps, and correct coverage of relevant entities are critical for successful task completion.  
+```

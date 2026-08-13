@@ -1,0 +1,47 @@
+``` 
+Task Description for Query Generation from Claim and Notes:
+
+You will receive two input fields:  
+- `claim`: A factual statement involving people, films, awards, professions, organizations, biological taxa, historical entities, or other domain-specific entities. The claim often combines multiple factual assertions, some potentially ambiguous or disputed.  
+- `notes`: A compilation of relevant extracted facts, corrections, confirmations, contradictions, or clarifications from various knowledge sources relating to the claim. These notes may confirm or deny parts of the claim, indicate missing evidence, or highlight ambiguity.
+
+Your output must be a new field called `query` composed of one or more concise, focused, and domain-specific fact-checking questions designed to verify every individual factual assertion the claim makes, grounded in the content of the notes.
+
+Key objectives and strategies to produce the `query` field:
+
+1. **Atomic Fact Decomposition:**  
+   Break complex or compound claims into multiple atomic factual assertions that can each be verified independently. For instance, if a claim involves an actor’s role and a film’s director, generate separate queries for the actor's role and for the film’s direction.
+
+2. **Domain-Specific Terminology and Entities:**  
+   Use exactly the terminology, names, and entities as provided or alluded to in the input. For example, use the precise football club names, airline names, genus names, or film titles as in the claim or notes.
+
+3. **Addressing Ambiguity, Conflicts, and Corrections in Notes:**  
+   - If notes contradict the claim or provide corrections (e.g., denying an actor starred in a film, or that a company is Swiss vs. American), explicitly include these points as separate queries to resolve those contradictions.  
+   - If multiple entities or details are entangled (e.g., multiple players leading a strike force, multiple people’s professions, or company headquarters nationality), generate queries that distinctly cover each relevant entity or detail to avoid ambiguity.  
+   - When the claim references entities vaguely (e.g., “this plant”), use the notes to generate queries identifying or clarifying these unresolved entities.
+
+4. **Comprehensive Verification Coverage:**  
+   Ensure that every factual assertion is captured by at least one question. For example, if the claim states a nickname, a role, and a nationality, queries must check all three separately. Avoid broad general questions and instead produce precise, evidence-targeted queries like:  
+   - “Who was the goalie for Leicester City F.C. in the 1928–29 season?”  
+   - “Did that goalie ever play for Manchester United Football Club?”  
+   - “Is Darwinia a genus of about 70 species?”  
+   - “Is ‘Saule’ the French name for the genus Salix?”  
+   - “Was ValuJet Airlines headquartered in Clayton County, Georgia?”
+
+5. **Preparing for Document or Evidence Retrieval:**  
+   Frame queries so that each retrieves documents or facts directly addressing truthfulness or falsehood of claim parts. Good queries usually reference specific entities, dates, roles, or attributes rather than broad categories.
+
+6. **Independent Verification of Multi-Part Claims:**  
+   When claims combine facts about multiple people, entities, or roles (e.g., a pilot’s captaincy and the airline’s nationality), produce separate queries for each fact to detect partial truth or deception.
+
+7. **Handle Missing or Implicit Information:**  
+   When the claim or notes hint at missing data (e.g., no record found), include queries that help retrieve that information to close the verification loop.
+
+Domain-Specific Details and Context from Examples:  
+- Sports domain: Distinguish offensive players (strike force) from goalies; verify leadership of specific groups and player transfers among clubs.  
+- Biology domain: Accurately identify botanical genera, species counts, and common names in different languages—e.g., "Saule" relates to genus Salix not Darwinia.  
+- Aviation domain: Confirm pilot roles, flight identity, airline company names, headquarters location, and nationality distinctions (American vs Swiss).  
+- Use exact entity names like "Manchester United Football Club," "Leicester City F.C.," "Darwinia," "Saule," "ValuJet Airlines," "Candi Kubeck," and "ValuJet Flight 592."
+
+In summary, your queries should systematically and precisely unpack each factual claim element, reference domain-specific terms accurately, and heed contradictions or ambiguities surfaced in notes. This approach maximizes the relevance and effectiveness of document retrieval to verify the original claim fully and correctly.
+```

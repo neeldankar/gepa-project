@@ -1,0 +1,109 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:  
+You will be given two input fields: `claim` and `notes`. Your goal is to produce a single output field called `query`.  
+
+- The `claim` is a factual statement that may involve multiple entities, events, or comparisons.  
+- The `notes` are observations and extracted information relevant to the claim. These notes often highlight missing data, ambiguities, or context needed to verify or assess the claim. They may also reference specific entities, works (e.g., films, books, bands), or people relevant to the claim.  
+
+Your primary job is to generate a clear, focused, and precise `query` that will retrieve the necessary evidence or sources to verify the claim. The query should:  
+
+1. Identify the key entities, roles, or relationships in the claim that require further information to confirm or refute.  
+2. Address ambiguities noted in the `notes` — for example, unclear identities, missing award counts, missing cast information, or unclear film adaptation connections.  
+3. Include comparative elements if the claim involves comparisons (e.g., number of awards won by two persons).  
+4. Target the retrieval of documents or information that will help establish the truthfulness of the claim by filling knowledge gaps noted in the `notes`.  
+5. Avoid redundant or overly broad questions; focus on the missing critical pieces of information needed for verification.  
+
+Niche or domain-specific information to consider:  
+- When the claim involves titles (films, books, bands), ensure these are explicitly mentioned in the query if relevant.  
+- When multiple persons could fit a role (e.g., "German Frank Sinatra" could refer to multiple people), the query should seek disambiguation.  
+- When claims involve connecting roles (e.g., an actor who starred in one film also portraying a character in another), the query should retrieve actor names, roles, and film adaptation connections.  
+- When verifying director roles or similar, queries should explicitly ask for a person's involvement and their professional recognition.  
+- Data such as award counts or comparisons require explicit delineation in the query to retrieve statistics or lists.  
+
+Generalizable Strategy:  
+- Use the `notes` to identify knowledge gaps or ambiguities critical to assessing the claim.  
+- Construct queries that directly request the missing key information, including names, roles, relationships, or data points needed for verification.  
+- Incorporate both entities and relationships or attributes mentioned in the claim to produce effective retrieval queries.  
+- Keep the query concise but sufficiently descriptive to retrieve documents that can fully support or challenge the claim.  
+- When multiple key entities appear, the query should connect them logically in the question (e.g., by comparison or by their joint involvement).  
+
+Example approach:  
+If the claim compares award wins between two ambiguous figures, the query should identify the figures clearly and seek award counts for each.  
+If the claim states an actor starred in a film and played a specific role in another film, the query should request actor names in the first film and any link to the specified role or film connected to the novel mentioned.  
+If the claim involves co-directors, the query should seek the identity of the co-director(s) and whether they have directorial recognition.  
+
+Summary:  
+Produce a targeted, fact-seeking query that retrieves key missing information needed to verify the factual claim, utilizing the insights and knowledge gaps identified in the notes, ensuring precise entity reference and relevant relationships or comparisons.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The town is administered by the Eurobodalla Shire council. It is located near Higgin's Creek and Deua National Park.
+
+### notes
+['The town is administered by the Eurobodalla Shire council, as confirmed by multiple towns in the region such as Moruya, Mogo, Batemans Bay, Bodalla, and Potato Point.', 'Deua National Park is located near coastal towns in the Eurobodalla Shire such as Batemans Bay, Moruya, and Narooma.', "Higgin's Creek is not mentioned in the context and cannot be confirmed as a nearby feature.", 'The town is administered by the Eurobodalla Shire council, consistent with multiple towns in the region such as Moruya, Mogo, Batemans Bay, Bodalla, and Potato Point.', 'Deua National Park is located near coastal towns in the Eurobodalla Shire such as Batemans Bay, Moruya, and Narooma, indicating that towns in this shire can be near the park.', "Higgin's Creek is not mentioned in the context or notes and therefore cannot be confirmed as a nearby geographic feature.", 'The town is confirmed to be administered by the Eurobodalla Shire council, consistent with multiple towns in the region such as Moruya, Batemans Bay, Mogo, Bodalla, and Potato Point.', 'Deua National Park is near coastal towns in Eurobodalla Shire such as Batemans Bay and Moruya, indicating towns in the shire can be near this park.', "Higgin's Creek is not mentioned in the context or notes, so its proximity to the town cannot be confirmed."]
+
+## Generated Outputs
+### reasoning
+The claim consists of two assertions: first, that a certain town is administered by the Eurobodalla Shire council; second, that the town is located near Higgin's Creek and Deua National Park. From the notes, the town's administration by Eurobodalla Shire council is well-supported as this applies to multiple towns in that region. However, while Deua National Park is known to be near several coastal towns within Eurobodalla Shire, Higgin's Creek is not referenced, leaving its proximity to the town unclear. To verify the claim fully, it is necessary to confirm the town's name, its administration under Eurobodalla Shire council, and establish its geographic proximity to both Higgin's Creek and Deua National Park.
+
+### query
+Which town(s) administered by the Eurobodalla Shire council are located near Higgin's Creek and Deua National Park? Specifically, provide the town's name, confirmation of administration by Eurobodalla Shire council, and details about its geographical proximity to Higgin's Creek and Deua National Park.
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Batemans Bay', 'Deua National Park']. Documents remaining to be retrieved: ['Cortinarius kioloensis'].
+
+
+
+# Example 2
+## Inputs
+### claim
+An actor in a musical film was also a United States Navy Combat veteran in World War II. This film was awarded The Golden Bear at the 50th Berlin International Film Festival.
+
+### notes
+["The 50th Berlin International Film Festival awarded the Golden Bear to the film 'Magnolia' by Paul Thomas Anderson.", 'No musical film is mentioned as having won the Golden Bear at the 50th festival.', "The First Motion Picture Unit (FMPU) included WWII veterans who were actors, but none are connected to 'Magnolia' or a musical film awarded at the 50th festival.", 'No evidence shows an actor who was a US Navy combat veteran in WWII starred in a musical film awarded the Golden Bear at the 50th Berlin International Film Festival.', "The 50th Berlin International Film Festival's Golden Bear winner was 'Magnolia', a non-musical film by Paul Thomas Anderson.", 'No musical films won the Golden Bear at the 50th Berlin International Film Festival.', 'There is no evidence of a US Navy combat veteran actor from WWII starring in a musical film that won the Golden Bear at the 50th Berlin International Film Festival.', "The 50th Berlin International Film Festival's Golden Bear winner was 'Magnolia', a non-musical film by Paul Thomas Anderson.", 'No musical film won the Golden Bear at the 50th Berlin International Film Festival.', 'No evidence supports that an actor who was a US Navy combat veteran in WWII starred in a musical film that won the Golden Bear at the 50th Berlin International Film Festival.', "'Magnolia' is not a musical film and does not have an actor documented as a US Navy combat veteran in WWII."]
+
+## Generated Outputs
+### reasoning
+The claim states that a musical film awarded the Golden Bear at the 50th Berlin International Film Festival featured an actor who was a US Navy combat veteran in World War II. The notes indicate that the Golden Bear at that festival went to "Magnolia," which is not a musical film. There is no record of any musical film winning the Golden Bear at the 50th festival, nor is there evidence of an actor who served as a US Navy combat veteran appearing in such a musical film awarded at that event. Therefore, to verify the claim, it is necessary to identify all films awarded the Golden Bear at the 50th Berlin International Film Festival, determine if any were musical films, and then find if any actors in those films were US Navy combat veterans in WWII.
+
+### query
+Which films won the Golden Bear at the 50th Berlin International Film Festival? Among these, were any musical films? If so, who were the actors in those musical films, and did any of these actors serve as United States Navy combat veterans during World War II?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['50th Berlin International Film Festival']. Documents remaining to be retrieved: ['Jason Robards', 'Magnolia (film)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Il trovatore has more acts than the 1994 Hungarian-Swiss-Italian fantasy film which was loosely inspired by. This Hungarian-Swiss-Italian fantasy film was directed by Ildikó Enyedi and called Magic Hunter.
+
+### notes
+['Magic Hunter is a 1994 Hungarian-Swiss-French fantasy film loosely inspired by the opera Der Freischütz, directed by Ildikó Enyedi.', 'Il trovatore is an opera composed by Giuseppe Verdi, consisting of four acts.', 'Magic Hunter is a 1994 Hungarian-Swiss-French fantasy film directed by Ildikó Enyedi and loosely inspired by the opera Der Freischütz.', 'Il trovatore is an opera composed by Giuseppe Verdi consisting of four acts.', 'Magic Hunter is a film and does not have acts like an opera.', 'Il trovatore is an opera composed by Giuseppe Verdi that consists of four acts.', 'Magic Hunter is a 1994 Hungarian-Swiss-French fantasy film directed by Ildikó Enyedi and loosely inspired by the opera Der Freischütz.', 'Magic Hunter, being a film, does not have acts as an opera does.']
+
+## Generated Outputs
+### reasoning
+The claim compares the number of acts in the opera "Il trovatore" with that in the film "Magic Hunter" (1994), directed by Ildikó Enyedi. To verify, it is necessary to confirm: 1) the number of acts in "Il trovatore," and 2) the structure of "Magic Hunter," specifically how many acts or segments it contains. Since "Magic Hunter" is a film, it may not be traditionally divided into acts like operas are, so it is important to check if it has a defined act structure or comparable divisions and how many. This will allow a direct comparison of the number of acts, affirming or refuting the claim.
+
+### query
+What is the number of acts in the opera Il trovatore? How many acts or comparable segments does the 1994 Hungarian-Swiss-Italian fantasy film Magic Hunter directed by Ildikó Enyedi have? Does Magic Hunter have an act structure, and how does it compare to Il trovatore in terms of the number of acts?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Il trovatore', 'Magic Hunter']. Documents remaining to be retrieved: ['Der Freischütz'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

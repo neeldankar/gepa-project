@@ -1,0 +1,117 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given two input fields:
+- `claim`: a factual statement or assertion that may require verification or further factual support.
+- `notes`: a list of textual snippets containing partial information relevant to verifying the claim. These notes might include facts, contradictions, or missing information about entities or topics in the claim.
+
+Your goal is to produce the output field `query` — a precise and focused question (or set of questions) aimed at retrieving the key missing or uncertain factual information needed to verify the claim. The `query` should target specific entities, attributes, relationships, or facts that have not been confirmed or sufficiently covered in the provided notes.
+
+Key Points and Domain-Specific Knowledge:
+- The claim involves named entities such as people, films, bands, roles (e.g., director, bassist), birthdates, nationalities, professions, and works (e.g., films, songs).
+- Notes often contain partial or confirmatory information about these entities, but sometimes lack critical data required to verify the claim fully.
+- Your query should be designed to retrieve authoritative documents or data specifically covering the missing or ambiguous elements mentioned or implied by the claim.
+- The query should reflect recognition of domain-specific facts, such as:
+   * Individuals’ roles and contributions (e.g., “bass player and lead vocalist who created Cobra Starship” refers to Gabe Saporta).
+   * Nationality or origin of persons associated with cultural works (e.g., nationality of film directors related to 'Cannibal Holocaust').
+   * Dates of birth or ages when claims relate to relative age.
+   * Professional associations or occupations that confirm or refute the claim.
+   * Connections between named works and their creators or contributors.
+
+Generalizable Strategy:
+1. Analyze the claim and identify the factual assertions that require verification.
+2. Review the notes to establish which parts of the claim are already supported and which parts are missing, contradictory, or uncertain.
+3. Formulate concise, targeted queries that seek the minimal yet sufficient data required to resolve remaining ambiguities.
+4. When multiple pieces of missing information exist, combine them efficiently in the query, balancing completeness and precision.
+5. Focus on retrieving documents or facts about:
+   - Specific named entities not covered or unclear in the notes.
+   - Attributes or relationships critical to verifying the claim.
+6. Avoid overly broad or generic questions; tailor queries to close specific knowledge gaps evident from the notes.
+
+Example:
+If the claim is about the relative age of two persons, and only one birthdate is known, the query should be:  
+   "What is the birthdate or age of [Person with missing info]?"
+
+If the claim involves multiple nationalities or roles, and only partial info is available, the query should ask specifically about the identities, nationalities, or professions of the key persons involved.
+
+By following this approach, you will help retrieve the essential documents needed to verify complex claims effectively.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Clark County in Nevada contains both Las Vegas and another college. Craig Heyer played baseball at that college.
+
+### notes
+['Craig Heyer played college baseball at the College of Southern Nevada and University of Nevada, Las Vegas (UNLV).', 'Both the College of Southern Nevada and UNLV are located in Clark County, Nevada, which includes the city of Las Vegas.', 'Craig Heyer played college baseball at the College of Southern Nevada and University of Nevada, Las Vegas (UNLV), both located in Clark County, Nevada, which includes Las Vegas.', 'Craig Heyer played college baseball at both the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).', 'Clark County, Nevada includes Las Vegas and hosts both the College of Southern Nevada and UNLV.', 'The College of Southern Nevada is another college in Clark County besides UNLV, and Craig Heyer played baseball at both.']
+
+## Generated Outputs
+### reasoning
+The claim states that Clark County in Nevada contains both Las Vegas and another college, and that Craig Heyer played baseball at that college. The notes confirm that Clark County includes Las Vegas and that the College of Southern Nevada and UNLV are both located within Clark County. They also specify that Craig Heyer played baseball at both the College of Southern Nevada and UNLV. The claim implies there is more than one college in Clark County besides UNLV, and Craig Heyer played at one of them.
+
+To fully verify the claim, it is necessary to confirm: 
+1. Which colleges are in Clark County besides UNLV—specifically, that the College of Southern Nevada is another college in Clark County separate from UNLV.
+2. That Craig Heyer played baseball at one of these colleges in addition to UNLV, particularly the College of Southern Nevada.
+
+Since notes already indicate Craig Heyer played baseball at both the College of Southern Nevada and UNLV, and both colleges are in Clark County, the claim appears supported. However, a precise confirmation of the locations of these colleges relative to Las Vegas and Clark County is essential.
+
+### query
+Which colleges are located in Clark County, Nevada, other than the University of Nevada, Las Vegas?  
+Did Craig Heyer play baseball at the College of Southern Nevada and/or any other colleges apart from UNLV?  
+Is the College of Southern Nevada situated within the city limits of Las Vegas or elsewhere in Clark County?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Craig Heyer']. Documents remaining to be retrieved: ['Clark County, Nevada', 'College of Southern Nevada'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Teide National Park, established in 1943, is located in Spain's Canary Islands. So is the park where you would find the plant Echium wildpretii subsp. trichosiphon.
+
+### notes
+['Teide National Park is located on Tenerife in the Canary Islands and was established in 1943.', 'Echium wildpretii subsp. trichosiphon is endemic to high altitudes of La Palma, particularly in La Caldera de Taburiente.', 'La Caldera de Taburiente is located on La Palma, a different island from Tenerife.', 'Teide National Park is not the habitat for Echium wildpretii subsp. trichosiphon; it is found in a park on La Palma.', 'Teide National Park is located on Tenerife in the Canary Islands and was established in 1943.', 'Echium wildpretii subsp. trichosiphon is endemic to high altitudes of La Palma, particularly in La Caldera de Taburiente.', 'La Caldera de Taburiente National Park on La Palma was designated as a national park in 1954.', 'Echium wildpretii subsp. trichosiphon is not found in Teide National Park but in Caldera de Taburiente National Park on La Palma.', 'Tenerife and La Palma are separate islands in the Canary Islands.', 'Teide National Park is the habitat of the nominal subspecies Echium wildpretii subsp. wildpretii, whereas Echium wildpretii subsp. trichosiphon occurs on La Palma.', 'Teide National Park is located on Tenerife, Canary Islands, and was established in 1943.', 'Echium wildpretii subsp. trichosiphon is endemic to high altitudes of La Palma, particularly in La Caldera de Taburiente.', 'La Caldera de Taburiente National Park, established in 1954, is located on the island of La Palma.', 'Echium wildpretii subsp. trichosiphon is found only in Caldera de Taburiente National Park and not in Teide National Park.']
+
+## Generated Outputs
+### reasoning
+The claim states that Teide National Park, established in 1943 and located in the Canary Islands, and another park where Echium wildpretii subsp. trichosiphon is found, are both in the Canary Islands. From the notes, it is confirmed that Teide National Park is on Tenerife, established in 1943. However, Echium wildpretii subsp. trichosiphon is endemic to high altitudes of La Palma, specifically in La Caldera de Taburiente, which is a different island. La Caldera de Taburiente is also a national park designated in 1954. Therefore, the claim that both parks are located in the Canary Islands is correct, but it implies or could be misread as the same park or that the plant is found in Teide National Park, which is false. The plant's habitat is in a different park on a different island. Verification is needed on the precise locations (islands) and whether both parks are in the Canary Islands, and confirmation about the habitat of Echium wildpretii subsp. trichosiphon.
+
+### query
+Are both Teide National Park and Caldera de Taburiente National Park located in the Canary Islands? On which specific islands are these parks located? Which park is the natural habitat of Echium wildpretii subsp. trichosiphon?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Caldera de Taburiente National Park', 'Echium wildpretii subsp. trichosiphon', 'Teide National Park']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+Both Elisabeth Vrba's colleague, who she coined the word exaptation with, and Ann Beattie have a profession in common.
+
+### notes
+['Elisabeth Vrba and Stephen Jay Gould are colleagues in paleontology.', "Elisabeth Vrba and Stephen Jay Gould coined the word 'exaptation' together.", 'Ann Beattie is widely known as a writer, not mentioned in the provided context but commonly recognized as such.', "The professions of Elisabeth Vrba's colleague and Ann Beattie are different.", 'Elisabeth Vrba and Stephen Jay Gould are colleagues in paleontology.', "Elisabeth Vrba and Stephen Jay Gould coined the word 'exaptation' together.", 'Ann Beattie is known as a writer, not a paleontologist.', "Stephen Jay Gould's profession is paleontology.", "Ann Beattie's profession is writing, thus different from paleontology.", "Stephen Jay Gould is a paleontologist and collaborated with Elisabeth Vrba to coin the term 'exaptation'.", 'Ann Beattie is known primarily as a writer, not linked to paleontology or related fields.', "Elisabeth Vrba's colleague and Ann Beattie have different professions; one in paleontology and the other in writing."]
+
+## Generated Outputs
+### reasoning
+The claim states that Elisabeth Vrba's colleague, with whom she coined the word "exaptation," and Ann Beattie share a profession. The notes clarify that Elisabeth Vrba's colleague in this context is Stephen Jay Gould, both of whom are paleontologists. The notes also clearly state that Ann Beattie is a writer, which is a different profession from paleontology. Therefore, the professions of Stephen Jay Gould and Ann Beattie are not the same, directly contradicting the claim. To verify this fully, the specific professions of both Stephen Jay Gould and Ann Beattie must be confirmed.
+
+### query
+What are the professions of Stephen Jay Gould and Ann Beattie?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Elisabeth Vrba', 'Stephen Jay Gould']. Documents remaining to be retrieved: ['Ann Beattie'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

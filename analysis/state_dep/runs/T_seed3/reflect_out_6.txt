@@ -1,0 +1,67 @@
+```
+Task Overview:
+
+You will be given three inputs:
+- `claim`: A factual assertion or statement involving one or more entities (e.g., people, organizations, events, artifacts), their attributes, or relationships (e.g., professional roles, affiliations, achievements). Claims often combine multiple related facts into compound statements.
+- `notes`: A list of factual notes or candidate claims derived from external data, which may support, partially support, or contradict the `claim`. Notes often overlap, sometimes repeat, or contradict each other.
+- `context`: A set of detailed documents or document excerpts (including titles and text) providing background, definitions, biographies, event descriptions, and other relevant information that can verify or refute the notes in relation to the claim.
+
+Your goal is to produce two outputs:
+
+- `new_notes`: A precise, concise subset of the input `notes` that are factually accurate and directly relevant to the claim—these must be verifiable and supported by the supplied `context`. Exclude unsupported, irrelevant, ambiguous, redundant, or conflicting notes.
+- `titles`: A list of the exact document titles from the `context` that contain the evidence needed to verify all `new_notes`. The titles must cover all the supporting or refuting information used in `new_notes` and no extraneous documents.
+
+Detailed Instructions and Domain-Specific Guidance:
+
+1. Entity & Relationship Disambiguation:
+   - Identify all key entities (persons, groups, films, books, teams, species, events) mentioned in the claim.
+   - Resolve ambiguities by using contextual biographical, professional, or thematic details to distinguish entities sharing names (e.g., multiple persons named Gould).
+   - Map relationships in the claim (e.g., authorship, competition winners, native habitat, military service) to those represented in notes and context.
+
+2. Comprehensive Cross-Verification:
+   - Systematically verify each factual assertion in the notes against the detailed context passages.
+   - Retain only those notes fully supported or directly corroborated by the context.
+   - Discard, modify, or disregard notes contradicted or unsupported by context.
+   - Be wary of partial or ambiguous support; preference is for full, unambiguous verification.
+
+3. Handling Redundancy and Contradictions:
+   - Eliminate duplicates or near-duplicates among notes.
+   - When conflicting notes appear, select the one best corroborated by context.
+   - Summarize compound facts in "new_notes" with precision and clarity, based on verified information.
+
+4. Precision in Document Retrieval:
+   - The `titles` list must precisely reflect the minimal set of context documents that substantiate all facts in `new_notes`.
+   - Include all documents that provide necessary verification; exclude unrelated ones.
+   - The titles must match exactly the titles of context documents supplied.
+
+5. Compound and Complex Claims:
+   - Break down the claim into constituent factual components.
+   - Verify each component across notes and context.
+   - Ensure your `new_notes` and `titles` together cover every component to comprehensively verify or refute the entire claim.
+
+6. Domain-Specific Knowledge and Contextual Nuances:
+
+   - Scientists and academics often appear (e.g., paleontologists like Elisabeth Vrba and Stephen Jay Gould). Know their specialties and typical affiliations.
+   - Publications can be books, articles, essays, or periodicals; carefully distinguish authorship, publication type (journal vs magazine), and publication venue.
+   - For athletes, especially tennis players, tournament results, years, and titles are frequently relevant; contextualize player names and seasons carefully.
+   - Films and festivals demand attention to award names and years (e.g., Golden Bear winners and corresponding Berlin International Film Festival editions).
+   - Species and biology-related claims focus on taxonomy, native habitats, and scientific classification; note that common names can be ambiguous.
+   - Namesakes frequency: Confirm identity by matching across multiple data points (e.g., career timeline, specialty, awards).
+
+7. General Reasoning and Fact-Checking Strategy:
+
+   - Map all entities and relationships from the claim to those in notes and context.
+   - For each note, find corroboration in the relevant context document(s).
+   - Remove unsupported, irrelevant, or ambiguous notes.
+   - Use the minimal necessary subset of context documents that collectively support all new notes.
+   - Use clear, logical reasoning in distilling notes to ensure your output is a faithful, accurate reflection of verified knowledge.
+
+Formatting Requirements:
+
+- Output `new_notes` as a list of concise, verified factual sentences or phrase fragments.
+- Output `titles` as a list of document titles exactly matching those in `context`.
+- Avoid introducing information not present in the inputs.
+- Each `new_note` should be independently verifiable within the referenced documents.
+
+By adhering to these instructions, your output will be both reliable and traceable, helping users confidently assess the truth of the given claim.
+```

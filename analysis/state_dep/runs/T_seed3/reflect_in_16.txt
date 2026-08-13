@@ -1,0 +1,168 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be provided with three input fields:
+
+- `claim`: A factual statement or assertion involving one or more entities, events, or relationships.
+- `notes`: A list of extracted relevant factual statements or snippets that pertain to the claim, often summarizing or supporting/refuting parts of the claim.
+- `context`: A list of documents or document excerpts (titles and text) that provide detailed background information about the entities, events, or concepts mentioned in the claim.
+
+Your goal is to produce two output fields:
+
+- `new_notes`: A concise, accurate subset of the given `notes` that best supports or disputes the claim based on the provided context. These notes should be directly relevant and factually correct according to the context, avoiding redundant or irrelevant information.
+- `titles`: A list of document titles from the `context` that contain information necessary to verify the claim and support the chosen `new_notes`. This list should include all key documents referenced in `new_notes`, reflect comprehensive coverage of crucial facts, and omit irrelevant or unrelated documents.
+
+Detailed requirements and domain-specific knowledge:
+
+1. **Entity and Relationship Identification**:  
+   The `claim` will often involve multiple entities (people, organizations, events, publications) and relationships between them (e.g., coining a term, professional affiliation, authorship, competition results). The `notes` and `context` will contain overlapping and sometimes repeated factual assertions regarding these entities and their connections.
+
+2. **Cross-verification of Facts**:  
+   The `notes` serve as candidate fact claims to be supported or refuted against the `context`. Your output should consolidate relevant facts, validated and confirmed by the `context`, while excluding unsupported, incorrect, or ambiguous notes.
+
+3. **Precision in Retrieval**:  
+   The `titles` in your output represent the exact documents from the `context` that allow verification of the facts in `new_notes`. Titles should correspond exactly to the relevant context entries and cover all evidence for the facts in `new_notes`. Partial or incomplete document retrieval reduces accuracy.
+
+4. **Handling Redundancies and Contradictions in Notes**:  
+   Duplicate facts or contradictory notes may appear. Select the most accurate, concise, and context-supported notes. Remove duplicates and clearly represent the verified facts.
+
+5. **Summarizing Complex Claims**:  
+   Claims may involve compound facts (e.g., two entities sharing a profession, one entity having a specific characteristic). Your reasoning should dissect the claim into factual components, verify each component, and retain notes and documents relevant to all parts of the claim.
+
+6. **Domain-Specific Contextual Knowledge**:  
+   - Professionals referenced may include scientists (e.g., paleontologists such as Elisabeth Vrba and Stephen Jay Gould), writers, athletes (professional tennis players with tournament results), designers, and journalists.  
+   - Publications and artistic works (books, magazines, journals, essays) appear frequently; it is essential to distinguish authorship, publication venue (book vs. magazine article), and the nature of periodicals.  
+   - Events like sports tournaments, professional achievements, and historical occurrences frequently provide verification points.  
+   - Namesake ambiguity is possible (e.g., different individuals named Gould); confirm identity using contextual career and biographical details.
+
+7. **Reasoning and Fact-Checking Strategy (Generalizable)**:  
+   - Map entities and relationships mentioned in the claim to those referenced in `notes` and `context`.  
+   - Crosscheck each factual assertion in `notes` against the detailed information in `context`.  
+   - Discard or modify notes unsupported by context or contradicted by it.  
+   - Identify and include all documents whose content is essential to verify or refute the claim, ensuring completeness.  
+   - Produce a concise set of newly filtered notes (`new_notes`) that reflect the validated facts.  
+   - Provide the precise titles of relevant context documents that underpin these notes.
+
+Your final outputs must be factually accurate, focused, and traceable to the cited documents in the `context`.
+
+Format:
+- `new_notes`: List of succinct, verified factual notes derived from the input `notes` and supported by the `context`.
+- `titles`: List of exact document titles from the `context` that contain the evidence for these notes.
+
+Use clear reasoning to cover all components of the claim and disambiguate entities where necessary.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Between this plant and Darwinia, the genus with more species is Darwinia. This plant is called Saule in French.
+
+### notes
+['Darwinia is a genus of about 70 species of evergreen shrubs in the family Myrtaceae, endemic to Australia.', 'Darwinia is a genus of about 70 species of evergreen shrubs in the family Myrtaceae, endemic to Australia.', 'Darwinia is a genus of about 70 species of evergreen shrubs in the family Myrtaceae, endemic to Australia.']
+
+### context
+['Darwinia (plant) | Darwinia, sometimes commonly known as mountain bells or simply bells, is a genus of about 70 species of evergreen shrubs in the family Myrtaceae, endemic to southeastern and southwestern Australia.  The majority are native to southern Western Australia, but a few species occur in South Australia, New South Wales and Victoria.  The genus was named in honour of Erasmus Darwin, grandfather of Charles Darwin by Edward Rudge in 1816.  Most darwinias grow to a height of between 0.2 and 3 m and many are prostrate shrubs.  Most have small, simple leaves and the flowers are often grouped together, each flower with five red, white or greenish petals and ten stamens.  In many species, the flowers are surrounded by large, colourful bracts, giving rise to their common names.', 'Privet as an invasive plant | Privet refers to any of a number of shrubs or trees in the genus Ligustrum.  The genus contains about 50 species native to the Old World and Australasia.  Many members of the genus are grown as ornamental plants in parts of the world.', 'Silene | Silene is a genus of flowering plants in the family Caryophyllaceae.  Containing approximately 700 species, it is the largest genus in the family.  Common names include campion (which is shared with the related genus "Lychnis") and catchfly.  Many "Silene" species are widely distributed, particularly in the northern hemisphere.', 'List of Solanum species | This is a list of species in the plant genus "Solanum".  There may be up to approximately 1500 species worldwide.  With some 800 accepted specific and infra-specific taxa of the more than 4,000 described, the genus "Solanum" contains more species than any other genus in the Solanaceae family and it is one of the largest among the angiosperms.', 'Meconopsis | Meconopsis is a genus of flowering plants in the family Papaveraceae.  It was first described by French botanist Viguier in 1814 who named it as poppy-like (from Greek "mekon" poppy, "opsis" alike).  The species have attractive flowers and have two distinct ranges.  A single species, "Meconopsis cambrica" (Welsh poppy), is indigenous to England, Wales, Ireland, and the fringes of Western Europe, although recent studies suggest that it does not belong in the genus.  The other 40 or so (depending on classification) species are found in the Himalayas.  Within the Himalayan types there is much debate as to what constitutes a particular species as many readily hybridise with each other and produce viable seed.  It is likely that some individually named species are in fact a single species but with an under-appreciated morphological diversity.', 'Philodendron | Philodendron is a large genus of flowering plants in the Araceae family.  s of September 2015 , the World Checklist of Selected Plant Families accepted 489 species; other sources accept different numbers.  Regardless of number of species, the genus is the second-largest member of the Araceae family.  Taxonomically, the genus "Philodendron" is still poorly known, with many undescribed species.  Many are grown as ornamental and indoor plants.  The name derives from the Greek words "philo-" or "love, affection" and "dendron" or "tree".  They are commonly called by their generic name.', 'Horvathinia | Horvathinia is a small genus in the family Belostomatidae, and the only genus in its subfamily.  Though it was originally thought to contain eleven species, upon recent reexamination, the number of species was reduced to two.  "Horvathinia" are incredibly rare and found only in a small part of South America in the border region of Brazil and Argentina.  Fewer than 100 specimens of the genus have been collected to date, always at lights at night.  It remains unknown what their habits are, where they can be found in the water (though there is some evidence that they may lurk in the muck at the bottom of ponds), what their position in the phylogeny of the water bugs is, or whether they brood their eggs as all other giant water bugs do.  Some of these questions are currently being addressed by Argentinian and American entomologists.', 'Securigera | The genus Securigera contains a number of plant species commonly referred to as crownvetch.  It is a segregate of the genus "Coronilla".  The name "Securigera" was first published by A. P. de Candolle in 1805 with the single species "Securigera coronilla", which is now considered to be a synonym of "Securigera securidaca" , based on the earlier publication of the same taxon as "Coronilla securidaca" in 1753.', 'Gonipterus | Gonipterus is a genus of weevils in the Curculionidae family.  There are approximately 20 described species in the genus, most of which are native to Australia.  They are all plant feeders and many are specific to a single host species. " Gonipterus gibberus" and "Gonipterus scutellatus" infest a number of species of "Eucalyptus" and have spread to other parts of the world where these trees have been planted.', 'Rotheca | Rotheca is a genus of flowering plants in the family Lamiaceae.  Estimates of the number of species in the genus vary from about 35 to as many as 60.  Three of the species are native to tropical Asia, with the rest occurring in Sub-Saharan Africa.  The type species for the genus is "Rotheca serrata".  It had originally been named "Rotheca ternifolia", but this name is now considered illegitimate.']
+
+## Generated Outputs
+### reasoning
+The claim compares the number of species between "this plant" (called Saule in French) and the genus Darwinia, stating that Darwinia has more species. The notes provide that Darwinia has about 70 species. The contexts regarding Darwinia confirm it has approximately 70 species.
+
+To verify the comparison, we need to identify "this plant" mentioned as Saule in French. "Saule" in French refers to plants known as willows, which belong to the genus Salix, a genus with many species. However, the provided context does not specifically mention Salix or its number of species, nor does it link Saule directly with any genus listed in the context.
+
+Since the claim also requires verification of the French name "Saule" for this plant and a comparison that Darwinia has more species, the only verifiable part is that Darwinia has about 70 species. Without a species count for "this plant," especially identified as Saule (likely Salix but not confirmed by the context), we cannot confirm the comparative claim. Additionally, no context relates directly to "Saule" or confirms the number of species for that genus.
+
+Therefore, only the note about Darwinia having about 70 species is supported by the context. There is insufficient information to verify that "Saule" is the name in French for the plant or to compare species counts conclusively.
+
+### new_notes
+['Darwinia is a genus of about 70 species of evergreen shrubs in the family Myrtaceae, endemic to Australia.']
+
+### titles
+['Darwinia (plant) | Darwinia, sometimes commonly known as mountain bells or simply bells, is a genus of about 70 species of evergreen shrubs in the family Myrtaceae, endemic to southeastern and southwestern Australia.  The majority are native to southern Western Australia, but a few species occur in South Australia, New South Wales and Victoria.  The genus was named in honour of Erasmus Darwin, grandfather of Charles Darwin by Edward Rudge in 1816.  Most darwinias grow to a height of between 0.2 and 3 m and many are prostrate shrubs.  Most have small, simple leaves and the flowers are often grouped together, each flower with five red, white or greenish petals and ten stamens.  In many species, the flowers are surrounded by large, colourful bracts, giving rise to their common names.']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Darwinia (plant)']. Documents remaining to be retrieved: ['Saule', 'Willow'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Basil Dean and a creator of Godfather Part II were both alive at some point in time.
+
+### notes
+['Basil Dean lived from 1888 to 1978.', 'The Godfather Part II was released in 1974.', "Barry Malkin, a film editor who worked on The Godfather Part II, was born in 1938 and thus was alive during Basil Dean's lifetime.", 'Basil Dean lived from 1888 to 1978.', 'The Godfather Part II was released in 1974.', "Barry Malkin, a film editor who worked on The Godfather Part II, was born in 1938 and thus was alive during Basil Dean's lifetime.", 'Carmine Coppola, a composer who contributed to The Godfather Part II, was born in 1910 and died in 1991.', 'Peter Zinner, a film editor for The Godfather Part II, was born in 1919 and died in 2007.', 'Basil Dean lived from 1888 to 1978.', 'The Godfather Part II was released in 1974.', 'Carmine Coppola, a composer who contributed to The Godfather Part II, was born in 1910 and died in 1991.', "Barry Malkin, a film editor who worked on The Godfather Part II, was born in 1938 and thus was alive during Basil Dean's lifetime.", 'Peter Zinner, a film editor for The Godfather Part II, was born in 1919 and died in 2007.']
+
+### context
+['Basil Dean | Basil Herbert Dean CBE (27 September 1888 – 22 April 1978) was an English actor, writer, film producer/film director and theatrical producer/director.  He is perhaps best remembered for the Entertainments National Service Association or ENSA, an organisation set up in 1939 by Dean and Leslie Henson to provide entertainment for British armed forces personnel during World War II.', 'The Godfather Part II (soundtrack) | The Godfather Part II is the soundtrack from the movie of the same name, released in 1974 by ABC, and 1991 on compact disc by MCA.  The original score was composed by Nino Rota and conducted by Carmine Coppola, who also provided source music for the film.  Rota expands upon two of the three main themes from the first film: "The Godfather Waltz" and "Michael\'s Theme", while "The Love Theme" from the first film makes a brief appearance during a flashback sequence ("Remember Vito Andolini").  There are several new themes, including one for Kay (Diane Keaton), and two for young Vito (Robert De Niro): "The Immigrant Theme" and "The Tarantella", introduced in "A New Carpet".', 'Aldo Trapani | Aldo Trapani is the main protagonist of the video game "", based on the film "The Godfather".  He also briefly appears in the sequel, "The Godfather II", which is based on "The Godfather Part II".', 'The Godfather Part III | The Godfather Part III is a 1990 American crime film written by Mario Puzo and Francis Ford Coppola, and directed by Coppola.  A sequel to "The Godfather" (1972) and "The Godfather Part II" (1974), it completes the story of Michael Corleone, a Mafia kingpin who attempts to legitimize his criminal empire.  The film also includes fictionalized accounts of two real-life events: the 1978 death of Pope John Paul I and the Papal banking scandal of 1981–82, both linked to Michael Corleone\'s business affairs.  The film stars Al Pacino, Diane Keaton, Talia Shire, and Andy García, and features Eli Wallach, Joe Mantegna, George Hamilton, Bridget Fonda, and Sofia Coppola.', 'List of Presidents of the United States by age | This is a list of presidents of the United States by age.  The first table charts the age of each United States president at the time of presidential inauguration (first inauguration if elected to multiple and consecutive terms), upon leaving office, and at the time of death.  Each president\'s lifespan (age at death) is measured in two ways, to allow for the differing number of leap days that each experienced.  The first figure is the number of days between the president\'s date of birth and date of death, allowing for leap days; in parentheses, the same period is given in years and days, with the years being the number of whole years that the president lived, and the days being the number of days since the last birthday.  Where the president is still living, their lifespan is calculated up to .  The second table includes those presidents who had the distinction among their peers of being the oldest living president, and charts both when they became and ceased to be "oldest living".', 'Salvatore Tessio | Salvatore "Sal" Tessio is a fictional character in Mario Puzo\'s 1969 novel "The Godfather", as well as two of the films based on it: "The Godfather" and "The Godfather Part II" (1974).  His given name was created for the films; in the novel he is referred to only as "Tessio".  In the film "The Godfather", Tessio was portrayed by Abe Vigoda.  In "The Godfather Part II", John Aprea portrayed the younger Tessio, while Vigoda reprised the role in a flashback, set in late 1941, at the end of the film.', 'John Cazale | John Holland Cazale ( ; ] ; August 12, 1935 – March 13, 1978) was an American actor.  He appeared in five films over a period of six years, all of which were nominated for the Academy Award for Best Picture: "The Godfather", "The Conversation", "The Godfather Part II", "Dog Day Afternoon", and "The Deer Hunter."  He appeared in archival footage in "The Godfather Part III", also nominated for Best Picture, making him the only actor to have this multi-film distinction.  From his start as a theater actor, he became one of Hollywood\'s premier character actors, starting with his role as the doomed, weak-minded Fredo Corleone opposite longtime friend Al Pacino in Francis Ford Coppola\'s film "The Godfather" and its 1974 sequel.  Cazale chose to continue acting despite being diagnosed with lung cancer.  He died in New York City on March 13, 1978, shortly after completing his role in "The Deer Hunter".', 'Barry Malkin | Barry M. Malkin (born October 26, 1938) is an American film editor with about 30 film credits.  He is noted for his extended collaboration with director Francis Ford Coppola, having edited most of Coppola\'s films from 1969-1997.  In particular, Malkin worked with Coppola on four of the component and compilation films of the "Godfather Trilogy", although he was not involved in the original 1972 film.  Roger Ebert has written of "The Godfather Part II", which Malkin edited, "... why is it a "great movie"?  Because it must be seen as a piece with the unqualified greatness of "The Godfather."  The two can hardly be considered apart ("Part III" is another matter).  When the characters in a film take on a virtual reality for us, when a character in another film made 30 years later can say "The Godfather" contains all the lessons in life you need to know, when an audience understands why that statement could be made, a film has become a cultural bedrock."', 'Bill Finger | Milton "Bill" Finger (February 8, 1914 – January 18, 1974) was an American comic strip and comic book writer best known as the co-creator, with Bob Kane, of the DC Comics character Batman, and the co-architect of the series\' development.  Although Finger did not receive contemporaneous credit for his hand in the development of Batman, Kane acknowledged Finger\'s contributions years after Finger\'s death.', 'Vito Corleone | Vito Corleone is a fictional character in Mario Puzo\'s novel "The Godfather" and in the first two of Francis Ford Coppola\'s three Godfather films, in which he was portrayed by Marlon Brando in "The Godfather" and then, as a young man, by Robert De Niro in "The Godfather Part II".  He is an orphaned Sicilian immigrant who builds a mafia empire.  Upon his death, Michael, his youngest son, succeeds him as the mafia don of the Corleone crime family.']
+
+## Generated Outputs
+### reasoning
+The claim asserts that Basil Dean and a creator of The Godfather Part II were both alive at some point in time. To verify this, we need to establish the lifespan of Basil Dean and at least one creator related to The Godfather Part II.
+
+From context [1], Basil Dean lived from September 27, 1888, to April 22, 1978. Regarding The Godfather Part II, which was released in 1974, the key creators involved include director and co-writer Francis Ford Coppola, original composer Nino Rota, and editor Barry Malkin (who edited The Godfather Part II). Also, Mario Puzo is recognized as the author of the original novel and involved in the film series as a writer. 
+
+Among these, Barry Malkin was born October 26, 1938, making him alive during Basil Dean's lifetime, since Dean died in 1978. Francis Ford Coppola was born in 1939 (though not specified explicitly in the context, it is well known), so most likely alive too during Dean's lifetime. Similarly, Nino Rota and Mario Puzo were active around the same period; however, their birth and death dates are not given in the context, so direct verification from context is limited.
+
+Given that Basil Dean died in 1978 and The Godfather Part II was released in 1974, the creators involved (such as Barry Malkin) were alive at least during the mid-1970s, overlapping with Dean’s life span. Thus, we conclude that Basil Dean and a creator of The Godfather Part II were indeed both alive simultaneously.
+
+### new_notes
+['Basil Dean lived from 1888 to 1978.', 'The Godfather Part II was released in 1974.', "Barry Malkin, a film editor who worked on The Godfather Part II, was born in 1938 and thus was alive during Basil Dean's lifetime."]
+
+### titles
+['Basil Dean', 'The Godfather Part II (soundtrack)', 'Barry Malkin']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Basil Dean']. Documents remaining to be retrieved: ['Francis Ford Coppola', 'The Godfather Part II'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Nathaniel "Nate" Jacks is the colloquial name of the professional football team in which this striker, who scored in Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final, played.
+
+### notes
+[]
+
+### context
+["2013 FIFA Confederations Cup Final | The 2013 FIFA Confederations Cup Final was a football match to determine the winners of the 2013 FIFA Confederations Cup.  The match was held at the Estádio do Maracanã, Rio de Janeiro, Brazil, on 30 June 2013 and was contested by the winners of the semi-finals, Brazil and Spain.  Brazil defeated Spain 3–0 with goals from Fred and Neymar, thus breaking Spain's record of 29 games without a defeat.", "Dunga | Carlos Caetano Bledorn Verri (born 31 October 1963 in Ijuí, Rio Grande do Sul), commonly known as Dunga (] ), is a Brazilian football manager and former professional footballer of Italian and German descent, who played as a defensive midfielder.  Under Dunga's captaincy, Brazil won the 1994 FIFA World Cup.  Along with Xavi, he is one of only two men to have played in a World Cup, Olympic Games, Confederations Cup and continental championship final.  He was head coach of Brazil twice.  In his first spell from 2006 to 2010, he led them to victory in the 2007 Copa América and the 2009 FIFA Confederations Cup, and to the quarter-finals of the 2010 FIFA World Cup, after which he was dismissed by the Brazilian Football Confederation.  He was appointed in 2014 for a second time, but Brazil's early exit from the Copa América Centenario led to his dismissal in June 2016.  He was also head coach of Internacional in 2013.", '2009 FIFA Confederations Cup Final | The 2009 FIFA Confederations Cup Final was a football match to determine the winners of the 2009 FIFA Confederations Cup.  The match was held at Coca-Cola Park, Johannesburg, South Africa, on 28 June 2009 and was contested by the United States and Brazil.  Despite being two goals down at half-time, Brazil won the match 3–2, with Lúcio scoring the winning goal six minutes from full-time.', 'List of international goals scored by Luis Suárez | Luis Suárez is the all-time top scorer for the Uruguay national football team, with 47 goals in 91 games from his debut in 2007.  He scored twice as a substitute in an 8–0 win over Tahiti at the 2013 FIFA Confederations Cup, bringing him to 35 goals, surpassing the national record held by his teammate Diego Forlán.', 'Italy–Spain football rivalry | The Italy–Spain football rivalry is a football rivalry between the national football teams of Italy and Spain, having achieved five FIFA World Cups between the two countries.  They have played against each other three times in the World Cup and six times in the UEFA European Championship.  Most notably, the two met at the UEFA Euro 2012 Final, which Spain won 4–0.  They have also met at the 2013 FIFA Confederations Cup.', '2001 FIFA Confederations Cup | The 2001 FIFA Confederations Cup was the fifth FIFA Confederations Cup and the third to be organised by FIFA.  It was also the first in which the original hosts, Saudi Arabia, did not participate (they were the nation who founded the tournament, previously known as the King Fahd Cup).  The tournament was played from 30 May to 10 June 2001, and co-hosted by South Korea and Japan, who were also hosts for the 2002 FIFA World Cup finals.  It was won by France, beating hosts Japan 1–0, with a goal from Patrick Vieira.', 'List of FIFA Confederations Cup hat-tricks | This is a list of all hat-tricks scored during FIFA Confederations Cups; that is, the occasions when a footballer has scored three or more goals in a single football FIFA Confederations Cup Finals match.  Scoring a hat-trick in a FIFA Confederations Cup is a relatively rare event: only 9 hat-tricks have been scored in 108 matches in the 8 editions of the FIFA Confederations Cup tournament.  As FIFA is the governing body of football, official hat-tricks are only noted when FIFA recognises that at least three goals were scored by one player in one match.', "2003 FIFA Confederations Cup | The 2003 FIFA Confederations Cup football tournament was the sixth FIFA Confederations Cup, held in France in June 2003.  France retained the title they had won in 2001, but the tournament was overshadowed by the death of Cameroon player Marc-Vivien Foé, who died of heart failure in his side's semi-final against Colombia.  Foé's death united the France and Cameroon teams in the final match, which was played even though team players from both sides had explicitly stated that the match should not be played out of respect for Foé.  France went on to win the trophy with a golden goal from Thierry Henry.", "2013 FIFA Confederations Cup squads | The following is a list of squads for each nation who competed at the 2013 FIFA Confederations Cup in Brazil from 15 to 30 June 2013, as a prelude to the 2014 FIFA World Cup.  Each squad consisted of 23 players, three of which had to be goalkeepers.  Replacement of injured players was permitted until 24 hours before the team's game.  Players marked (c) were named as captain for their national team.", "List of FIFA Confederations Cup finals | The FIFA Confederations Cup is an international association football competition established in 1992 as the King Fahd Cup and changed to FIFA Confederations Cup in 1997.  It is contested by the men's national teams of the members of Fédération Internationale de Football Association (FIFA), the sport's global governing body.  The Confederations Cup final matches are the last of the competition, and the results determine which country's team is declared champions.  If after 90 minutes of regular play the score is a draw, an additional 30-minute period of play, called extra time, is added.  If such a game is still tied after extra time it is decided by kicks from the penalty mark, commonly called a penalty shoot-out.  The winning penalty shoot-out team are then declared champions."]
+
+## Generated Outputs
+### reasoning
+The claim states that "Nathaniel 'Nate' Jacks" is the colloquial name of a professional football team for which a striker who scored in Brazil's 3-0 victory over Spain in the 2013 FIFA Confederations Cup Final played. To verify this, we need to confirm several details:
+
+1. The 2013 FIFA Confederations Cup Final ended with Brazil defeating Spain 3-0.
+2. A striker scored in this match.
+3. The name "Nathaniel 'Nate' Jacks" is associated as a colloquial name for a professional football team to which that striker belonged.
+
+From the provided context:
+
+- Source [1] confirms Brazil won the 2013 FIFA Confederations Cup Final 3-0 against Spain, with goals from Fred and Neymar.
+- Source [9] mentions the squad lists for the 2013 FIFA Confederations Cup.
+- No context mentions the name "Nathaniel 'Nate' Jacks" as a team name or nickname.
+- The context clearly identifies the goal scorers as Fred and Neymar, without any reference to a person or team named Nathaniel or Nate Jacks.
+
+Therefore, the claim contains an ad hoc name ("Nathaniel 'Nate' Jacks") not supported by the context as any colloquial or official name of a professional football team involved in the 2013 FIFA Confederations Cup Final, or as linked to the goal scorers. Hence, the claim is not supported by the context.
+
+### new_notes
+[]
+
+### titles
+['2013 FIFA Confederations Cup Final', '2013 FIFA Confederations Cup squads']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['2013 FIFA Confederations Cup Final']. Documents remaining to be retrieved: ['Clube Atlético Mineiro', 'Fred (footballer)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

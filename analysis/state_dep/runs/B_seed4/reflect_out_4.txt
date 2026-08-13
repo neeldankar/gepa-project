@@ -1,0 +1,53 @@
+```
+You will be given three inputs:
+
+- `claim`: a factual assertion or set of assertions that needs to be verified or supported.
+- `notes`: a set (list) of extracted sentences summarizing relevant information from various documents; these sentences may include direct facts, clarifications, contradictions, or missing information relevant to the claim.
+- `context`: a set (list) of document summaries, excerpts, or metadata (including titles) related to the topic areas of the claim; documents may have overlapping or nuanced information concerning entities, works, dates, or events referenced in the claim.
+
+Your task is to carefully analyze the claim in conjunction with the notes and context, then produce two outputs:
+
+1. `new_notes`: A concise, focused subset and/or reformulation of the original `notes` that directly relate to verifying or supporting the claim. These should:
+
+   - Emphasize key facts or evidence confirming, refuting, or leaving unverified each component of the claim.
+   - Exclude redundant, speculative, ambiguous, irrelevant, or off-topic information.
+   - Clarify or consolidate repeated information.
+   - When the claim has multiple parts or assertions (e.g., about multiple individuals, works, or events), address all parts with respective relevant facts.
+   - Pay close attention to domain-specific details such as:
+     - Identification of works (films, albums, operas, teams) by precise titles and dates.
+     - Attribution of roles or attributes (e.g., voice actor for a character, composer of an opera, coach of a team).
+     - Relationships between entities (e.g., an album by a band formed by a musician, involvement in a particular event or game).
+     - Temporal information including years or periods to discriminate between similarly named works or events.
+     - Naming variations or alternate titles.
+     - Accolades or achievements (e.g., Nobel prizes, medals won) and their context such as nationality or event.
+   - If evidence is insufficient to verify the full claim, explicitly indicate this with accurate partial support or definitive negatives.
+
+2. `titles`: A list of document titles from the `context` that are most relevant and authoritative to verify or support the claim. Selection should be based on:
+
+   - Direct factual relevance to the entities, events, or topics in the claim.
+   - Covering all crucial elements of the claim, especially when it references multiple topics or assertions.
+   - Prioritizing so-called "gold standard" or key documents known to be fundamentally connected to the claim if they are present.
+   - Precision in picking exact titles when multiple overlapping or similar documents are present (e.g., distinguishing operas with the same name by different composers).
+   - Including documents that clarify or resolve contradictory or ambiguous claims in notes.
+
+Additional domain-specific and strategic considerations:
+
+- Claims often involve creative works (films, operas, albums), individuals (actors, musicians, athletes) with notable achievements, or specific teams and events. Associate claims with corresponding domains precisely.
+- Avoid selecting extraneous or background documents unless they directly contribute to claim verification.
+- Use relationships and hierarchies between entities (e.g., a composer’s family members, team coaches, or actors’ nationalities) to confirm or disprove assertions.
+- Track temporal distinctions carefully to avoid conflating similarly named works or events from different eras.
+- When claims combine multiple independent facts (e.g., an accolade and a team affiliation), support or refute each with appropriate notes and ensure titles cover all these facets.
+- Clearly signal when verification cannot be completed due to lack of supporting evidence, but still provide the best possible partial or contradicting facts.
+- Repetitive notes should be merged or deduplicated.
+- Employ logical deduction based on domain-specific knowledge present in notes/context to validate or refute premises inherent in the claim.
+
+Your final output format must be:
+
+- `new_notes`: a list of concise, directly pertinent sentences supporting your fact-checking analysis.
+- `titles`: a list of strings containing the document titles from `context` best suited for verifying the claim.
+
+The purpose is to assist in accurate, evidence-based claim verification along with retrieval of the most critical source documents to support or refute the claim.
+
+Be precise, factual, and ensure your selections trace clearly back to the claim components and supplied evidence.
+
+```

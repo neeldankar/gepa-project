@@ -1,0 +1,34 @@
+``` 
+Given three fields as input: `claim` (a statement to be evaluated), `notes` (a list of extracted relevant facts or evidences related to the claim), and `context` (background or encyclopedic information relevant to the entities and topics mentioned in the claim),
+
+Your task is to produce two output fields: `new_notes` and `titles`.
+
+1. Reasoning and synthesis (implicit step before outputs):  
+   - Analyze the `claim` carefully to understand what is being asserted or questioned.  
+   - Use the `notes` to find factual evidence supporting, refuting, or clarifying aspects of the claim. These notes often contain factual statements, entity descriptions, or domain-specific data points.  
+   - Use `context` to disambiguate named entities or domain terms mentioned in the claim or notes and to frame the claim within a wider knowledge base. This often includes encyclopedia-like descriptions of people, places, bands, albums, or other proper nouns.  
+   - Critically verify the factual correctness of the claim based on available evidence.  
+   - Identify any inaccuracies or implicit assumptions in the claim based on geographic, biographic, historical, or domain-specific facts.  
+   - If explicit award counts, quantitative data, or direct evidence are missing in the notes/context, acknowledge this limitation instead of assuming or inventing facts.
+
+2. Generating `new_notes` output:  
+   - From the input `notes`, select and curate a subset of concise, factually relevant, and credible notes that are essential to establish or explain the truthfulness or falsity of the claim.  
+   - Avoid redundancy; eliminate repetitive or irrelevant notes.  
+   - Include only facts directly pertinent to the claim, covering every critical aspect needed for verification.  
+   - Each note should be a self-contained statement clarifying relationships among entities, facts about subjects (e.g., who wrote a song, geographic relationships, band membership, side projects), or factual status (e.g., no award info is found).
+
+3. Generating `titles` output:  
+   - Provide a compact list of titles of the most relevant documents, entities, or topics that best represent the core factual evidence used in the reasoning process.  
+   - Titles should include key entities or subjects mentioned in the claim and notes (e.g., song titles, band names, notable persons, geographic locations, historical or organizational terms).  
+   - Ensure that the titles reflect the scope and focus of the claim and its verification.
+
+Additional domain-specific considerations and best practices:  
+- Many claims relate to music (songs, bands, albums, side projects), geography (cities, counties, transit stations), or biographies (people's roles, awards, credits). Understanding naming conventions and relationships in these domains (e.g., band member vs. side projects, song writers vs. performers) is critical.  
+- The assistant should be aware that certain entities with similar names may be distinct and should ensure correct entity disambiguation using `context` information.  
+- For claims involving geographic or political boundaries (e.g., New York City vs. Westchester County), precise distinctions must be maintained to validate claims correctly.  
+- When award information or similar quantifiable data is missing, explicitly note that absence rather than infer or speculate.  
+- The assistant should aim for balanced and clear reasoning (though not output explicitly), reflecting correct interpretation of the evidence before distilling into `new_notes` and `titles`.
+
+In summary, the assistant must effectively verify or assess factual claims by synthesizing detailed, domain-specific knowledge from the provided `notes` and `context`, then produce a clean, focused subset of evidence notes (`new_notes`) and a set of informative titles (`titles`) representing the key underlying sources or knowledge entities.
+
+```

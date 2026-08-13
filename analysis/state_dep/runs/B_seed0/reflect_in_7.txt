@@ -1,0 +1,128 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You are given a textual claim and a list of notes that provide factual information related to the claim. Your goal is to generate an effective search query (or a set of queries) that can be used to verify the claim using the information contained in the notes or to retrieve relevant documents needed for verification.
+
+Input Format:
+- `claim`: A concise, fact-based statement or assertion that may combine multiple facts or relationships.
+- `notes`: A list of factual sentences or short snippets extracted from one or more documents. These provide evidence, context, or refutations related to the claim.
+
+Output:
+- `query`: One or more natural language questions designed to verify the truthfulness of the claim by querying the content and relationships mentioned in the notes. The queries should focus on the key entities, events, attributes, and relationships explicitly or implicitly stated in the claim and cross-checked against the notes.
+
+Detailed Instructions:
+1. **Understand the claim carefully**: Identify the main entities, attributes, and relationships described in the claim. In cases where the claim contains indirect references (e.g., “born in the birthplace of X”), resolve these to direct facts that can be checked (e.g., birthplaces of both entities).
+
+2. **Use notes to clarify and expand the claim**: Analyze the notes to identify relevant facts that relate directly to the claim’s key assertions. These often include:
+   - Names of persons, places, or works referenced.
+   - Temporal information (e.g., years, release dates).
+   - Relationships such as birthplaces, roles (actor, director), attributes (flavor, ranking).
+   - Disambiguations or corrections from the notes (e.g., corrections of director or actor roles).
+
+3. **Formulate verification-focused queries**:
+   - Queries should ask directly about the key facts or relationships necessary to verify the claim.
+   - When the claim contains multiple assertions or compound facts, break them into separate but related questions.
+   - Include entity disambiguation and relationship verification, such as confirming if two people share the same birthplace, if a person directed a film, or if a product has a given feature.
+   - If the notes show contradictions or lack of evidence, include queries that test these points explicitly, e.g., “Did Actor X appear in Film Y?” or “Is Film Z directed by Person A?”
+
+4. **Be precise and contextual**:
+   - Use the exact names and terms found in the notes for entities and works.
+   - Include relevant qualifiers like dates, nationalities, or versions to avoid ambiguity.
+   - Avoid generating overly broad or generic queries that do not focus on key claim assertions.
+
+5. **Generalizable strategy**:
+   - Parse the claim into atomic factual units.
+   - Cross-reference with the notes to identify which facts are supported, contradicted, or missing.
+   - Generate natural-language queries that aim at resolving the truthfulness or factual status of each atomic fact.
+   - This approach ensures maximum retrieval of relevant evidence documents for claim verification.
+
+Domain-specific Insights:
+- Claims often involve biographical details (birthplaces, dates, occupations).
+- Claims may relate to filmography: actors starring in films, directors of films, film release years.
+- Claims can concern product attributes like flavors of soft drinks or advertising associations.
+- Notes may explicitly correct or refute claim elements, or indicate absence of evidence.
+- The resulting queries must reflect these factual domains and relationships with precision to guide retrieval systems effectively.
+
+Summary:
+Given `claim` and `notes`, produce verification-oriented, fact-specific queries that directly target the core assertions of the claim using the contextual and factual information in the notes. These queries enable retrieval or verification of all relevant documents and help confirm or refute each part of the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Darren Stanley Hayes was born before this lead guitarist of the band that recorded Playin' Around.
+
+### notes
+['Darren Middleton is lead guitarist of Powderfinger and Drag, born 4 October 1971.', 'Darren Hayes was the lead singer of Savage Garden, born 1972.', "No information found about the band or lead guitarist of 'Playin' Around'.", "'Playin' Around' not referenced in the provided context.", "Multiple lead guitarists mentioned but none linked to 'Playin' Around'.", "Playin' Around is a CD/DVD by the band Play, with no lead guitarist named.", 'Darren Middleton is lead guitarist for Powderfinger and Drag, born in 1971.', 'Darren Stanley Hayes was born in 1972 and was lead singer of Savage Garden.', "No birth date or guitarist information found for Play's members.", "Unable to verify birth order between Darren Hayes and Play's lead guitarist due to lack of info.", "No information found about the band or lead guitarist of 'Playin' Around'.", "'Playin' Around' is not referenced in the provided context or known bands with lead guitarists named Darren.", 'Darren Middleton, lead guitarist of Powderfinger, was born in 1971, older than Darren Hayes (1972).', 'Darren Hayes is lead singer of Savage Garden, born in 1972, not a guitarist.', "Unable to verify birth order or identity of 'Playin' Around' lead guitarist due to lack of information.", "No direct link between 'Playin' Around' and any lead guitarist mentioned in the context."]
+
+## Generated Outputs
+### reasoning
+The claim compares the birth dates of Darren Stanley Hayes and a lead guitarist of the band that recorded the album or track "Playin' Around." To verify this, we need to identify the band that recorded "Playin' Around," find out who the lead guitarist of that band is, and then obtain the birth dates of both Darren Stanley Hayes and this lead guitarist. Since there are no notes provided, the query must focus on discovering these relationships and birth dates to verify the chronological birth order stated in the claim.
+
+### query
+Who is the lead guitarist of the band that recorded "Playin' Around"? What is the birth date of Darren Stanley Hayes? What is the birth date of that lead guitarist? Was Darren Stanley Hayes born before that lead guitarist?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Darren Hayes', "Playin' Around"]. Documents remaining to be retrieved: ['Anaïs Lameche'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Travis Oates voiced Piglet in the 2011 movie. The Jungle Book was released before this movie.
+
+### notes
+["Travis Oates voiced Piglet in the 2011 'Winnie the Pooh' film.", "'The Jungle Book 2' was released in 2003, before the 2011 'Winnie the Pooh' movie.", "Travis Oates and Jim Cummings were the only original voice actors to return for the 2011 'Winnie the Pooh' movie.", 'Travis Oates voiced Piglet in the 2011 Winnie the Pooh film.', 'The Jungle Book 2, a sequel to The Jungle Book, was released in 2003, before the 2011 Winnie the Pooh movie.', 'The original The Jungle Book movie was released decades before 2011, making it earlier than the 2011 Winnie the Pooh film.', "Travis Oates voiced Piglet in the 2011 'Winnie the Pooh' movie, continuing the role after John Fiedler's death.", "'The Jungle Book' original movie was released decades before 2011, making it earlier than the 2011 'Winnie the Pooh' film.", "'The Jungle Book 2', a sequel to the original, was released in 2003, also before the 2011 'Winnie the Pooh' movie."]
+
+## Generated Outputs
+### reasoning
+The claim involves two factual assertions: that Travis Oates voiced Piglet in the 2011 movie, and that The Jungle Book was released before this movie. The notes confirm that Travis Oates did indeed voice Piglet in the 2011 "Winnie the Pooh" film. However, the notes mention "The Jungle Book 2" was released in 2003, before the 2011 movie, but do not explicitly state when the original "The Jungle Book" film was released. To fully verify the second part of the claim, we need to confirm the release date of the original "The Jungle Book" relative to the 2011 "Winnie the Pooh" movie.
+
+### query
+Did Travis Oates voice Piglet in the 2011 "Winnie the Pooh" movie? Was the original "The Jungle Book" movie released before the 2011 "Winnie the Pooh" movie?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Travis Oates', 'Winnie the Pooh (2011 film)']. Documents remaining to be retrieved: ['The Jungle Book (1994 film)'].
+
+
+
+# Example 3
+## Inputs
+### claim
+English actor Gary Oldman starred in the 1995 american romantic drama film, made by Cinergi Pictures, 
+alongside Demi Moore and Meryl Streep.
+
+### notes
+["Gary Oldman starred with Demi Moore in the 1995 film 'The Scarlet Letter', an American romantic drama.", "'The Scarlet Letter' was not confirmed to be produced by Cinergi Pictures.", "Meryl Streep starred in the 1995 romantic drama 'The Bridges of Madison County', but not alongside Gary Oldman or Demi Moore.", 'No 1995 film found starring Gary Oldman, Demi Moore, and Meryl Streep together.', "'Color of Night' (1994) was produced by Cinergi Pictures but starred Bruce Willis and Jane March, not Gary Oldman or Meryl Streep.", "Gary Oldman starred with Demi Moore in the 1995 film 'The Scarlet Letter', an American romantic drama, but Meryl Streep was not in this film.", "'The Scarlet Letter' was directed by Roland Joffé and its production company does not appear to be Cinergi Pictures.", "Meryl Streep starred in romantic dramas around 1995, such as 'The Bridges of Madison County' (1995), but not alongside Gary Oldman or Demi Moore.", 'No 1995 film found starring Gary Oldman, Demi Moore, and Meryl Streep together.', "Cinergi Pictures produced films like 'Color of Night' (1994), which starred Bruce Willis and Jane March, not Gary Oldman or Meryl Streep.", "Gary Oldman starred with Demi Moore in 'The Scarlet Letter' (1995), an American romantic drama directed by Roland Joffé.", "Meryl Streep did not star in 'The Scarlet Letter' (1995).", "'The Scarlet Letter' was not produced by Cinergi Pictures.", "Meryl Streep starred in 'The Bridges of Madison County' (1995), a romantic drama, but not alongside Gary Oldman or Demi Moore.", "Cinergi Pictures produced 'Color of Night' (1994), which did not star Gary Oldman, Demi Moore, or Meryl Streep.", 'No 1995 film featuring Gary Oldman, Demi Moore, and Meryl Streep together, produced by Cinergi Pictures, is found.']
+
+## Generated Outputs
+### reasoning
+The claim states that Gary Oldman starred in a 1995 American romantic drama film made by Cinergi Pictures alongside Demi Moore and Meryl Streep. The notes clarify several points relevant to this claim: Gary Oldman starred with Demi Moore in "The Scarlet Letter" (1995), which is an American romantic drama, but Meryl Streep was not in this film. Meryl Streep starred in another 1995 romantic drama, "The Bridges of Madison County," but not with Gary Oldman or Demi Moore. There is no record of a 1995 film featuring all three actors together. Additionally, "The Scarlet Letter" was not produced by Cinergi Pictures. Cinergi Pictures produced other films like "Color of Night" (1994), but neither Gary Oldman nor Meryl Streep starred in those films. Therefore, the claim contains multiple inaccuracies: the presence of Meryl Streep in the same film with Gary Oldman and Demi Moore in 1995 is false, and the film was likely not made by Cinergi Pictures.
+
+To verify the claim, key factual inquiries should address: the existence of a 1995 American romantic drama starring Gary Oldman, Demi Moore, and Meryl Streep together; whether Cinergi Pictures produced this film; and the individual filmographies of the actors in 1995 relative to these films and production companies.
+
+### query
+Did Gary Oldman star alongside Demi Moore and Meryl Streep in a 1995 American romantic drama film?  
+Was the 1995 film "The Scarlet Letter" produced by Cinergi Pictures?  
+Did Meryl Streep act in the 1995 film "The Scarlet Letter"?  
+Did Gary Oldman, Demi Moore, and Meryl Streep ever star together in a 1995 film?  
+Which films did Cinergi Pictures produce around 1995, and who were the main actors in those films?  
+In which films did Gary Oldman and Demi Moore appear together in 1995?  
+In which 1995 romantic drama films did Meryl Streep star, and who were her co-stars?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['The Scarlet Letter (1995 film)']. Documents remaining to be retrieved: ['Cinergi Pictures', 'Gary Oldman'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

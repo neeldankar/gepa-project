@@ -1,0 +1,149 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will be given three inputs: a `claim` (a factual statement to be verified or analyzed), a list of `notes` (extracted relevant pieces of information from documents or sources related to the claim), and a `context` (background information and detailed documents or snippets related to entities or events mentioned in the claim). Your goal is to produce two outputs: `new_notes` and `titles`.
+
+Detailed Instructions:
+
+1. Understand the Claim:
+   - Carefully read and analyze the `claim`.
+   - Identify key entities, relationships, facts, and temporal or contextual information relevant to the claim.
+
+2. Leverage the Notes:
+   - Review the `notes` which are pre-extracted supporting or contradictory statements related to the claim.
+   - Integrate and synthesize these notes to form a concise, informative summary (`new_notes`) that directly addresses the claim by confirming, refuting, or qualifying it.
+   - The `new_notes` should be coherent, factual, and reflect the strongest evidence found within the notes and context.
+   - Avoid repetition or unnecessary verbosity—focus on clarity and relevance.
+
+3. Use the Context to Validate and Expand:
+   - Use the `context` documents to corroborate or disconfirm information found in the notes.
+   - Identify which documents or passages are most pertinent to the claim and the information in the notes.
+   - Ensure factual accuracy regarding details such as dates, names, affiliations, and roles.
+   - Pay special attention to domain-specific facts related to entities (e.g., historical dates, biographical details, organizational roles, affiliations, genre or membership numbers in music bands, factual confirmations about scientific training, or historical positions).
+
+4. Generate Titles:
+   - Derive a list of concise and descriptive titles (`titles`) corresponding to the key documents, entities, or concepts strongly related to the claim and the refined notes.
+   - Titles should be specific, reflect the content focus, and help identify the most relevant pieces of evidence or sources supporting or contesting the claim.
+   - Include titles that cover all main entities or facts addressed in the notes, including any missing but required documents identified from the feedback analysis.
+   
+5. Address Incompleteness:
+   - In cases where evidence is missing or the claim cannot be fully verified, explicitly note that status in `new_notes`.
+   - Include references to documents or aspects where evidence is lacking, indicating the limits of support for the claim.
+
+6. Generalizable Strategy:
+   - Systematically verify chronological order, biographical details, and entity relationships from context and notes relative to the claim.
+   - Synthesize evidence into a factual, logically consistent summary representing the claim’s support status.
+   - Identify missing or unreferenced but necessary documents or facts to fulfill a comprehensive verification, as seen in feedback for retrieval completeness.
+
+7. Factual and Domain-Specific Knowledge:
+   - When relevant, include:
+     * Precise establishment years for institutions or organizations.
+     * Biographical details about persons (e.g., postdoctoral training institutions, faculty positions, or familial relations).
+     * Specific roles held by individuals (e.g., commandant of concentration camps).
+     * Accurate genre classification and membership counts for musical groups.
+     * Specific song titles linked to bands.
+     * Historical or factual clarifications about events or roles.
+   - Ensure the output reflects these details factually and clearly.
+
+Format of Outputs:
+
+- `new_notes`: A list of one or more well-formed sentences accurately summarizing or clarifying the claim with reference to the evidence.
+- `titles`: A list of succinct, relevant document or concept titles that represent key sources or focal points used in supporting or refuting the claim.
+
+Example considerations (drawn from examples):
+
+- For chronological claims, confirm dates of establishment and training.
+- For personal role claims, confirm familial relationships and roles with documentation.
+- For comparative membership claims in music, verify group genres and number of members from context.
+- Explicitly state gaps or lack of evidence when supporting details cannot be found.
+- Titles should cover individual people, organizations, events, and key concepts related to the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+A college football game was sponsored by a company based in Memphis. The 2015 Kansas State Wildcats football team was invited to this bowl.
+
+### notes
+['The Liberty Bowl is held annually in Memphis, Tennessee, and since 2004 has been sponsored by Memphis-based AutoZone.', 'The 2016 Liberty Bowl, played on January 2, 2016, which concludes the 2015 college football season, featured the Kansas State Wildcats.', 'AutoZone is a Memphis-based company that sponsored the 2016 Liberty Bowl game inviting the 2015 Kansas State Wildcats football team.', 'The Liberty Bowl is an annual college football bowl game held in Memphis, Tennessee, and has been sponsored by AutoZone, a Memphis-based company, since 2004.', 'The 2016 Liberty Bowl, which took place on January 2, 2016, concluded the 2015 college football season and featured the Kansas State Wildcats football team.', 'Therefore, the 2015 Kansas State Wildcats football team was invited to the Liberty Bowl, a game sponsored by the Memphis-based company AutoZone.', 'The Liberty Bowl, held annually in Memphis, Tennessee, has been sponsored by Memphis-based AutoZone since 2004.', 'The 2016 Liberty Bowl, played on January 2, 2016, concluded the 2015 college football season and featured the Kansas State Wildcats football team.', 'AutoZone, a Memphis-based company, sponsored the 2016 Liberty Bowl game which included the 2015 Kansas State Wildcats.', 'Thus, the 2015 Kansas State Wildcats football team was invited to a bowl game sponsored by a Memphis-based company.']
+
+### context
+['2016 Liberty Bowl (January) | The 2016 Liberty Bowl was a post-season American college football bowl game played on January 2, 2016 at Liberty Bowl Memorial Stadium in Memphis, Tennessee.  The 57th edition of the Liberty Bowl featured the Kansas State Wildcats of the Big 12 Conference against the Arkansas Razorbacks of the Southeastern Conference.  It began at 2:20\xa0p.m. CST and aired on ESPN.  It was one of the 2015–16 bowl games that concluded the 2015 FBS football season.  Sponsored by automobile parts and accessories store AutoZone, it is officially known as the AutoZone Liberty Bowl.', '2016 Liberty Bowl (December) | The 2016 Liberty Bowl was a post-season American college football bowl game played on December 30, 2016 at Liberty Bowl Memorial Stadium in Memphis, Tennessee.  The 58th edition of the Liberty Bowl featured the Georgia Bulldogs of the Southeastern Conference against the TCU Horned Frogs of the Big 12 Conference.  It was one of the 2016–17 bowl games concluding the 2016 FBS football season.  Sponsored by automobile parts and accessories store AutoZone, it was officially known as the AutoZone Liberty Bowl.', '2009 Liberty Bowl | The 2009 AutoZone Liberty Bowl is the fiftieth annual college football bowl game, and was played at Liberty Bowl Memorial Stadium in Memphis, Tennessee on January 2, 2009 as part of the 2008-09 bowl season.  The East Carolina Pirates accepted their invitation after their victory over the Tulsa Golden Hurricane in the 2008 Conference USA Championship Game.  The Kentucky Wildcats of the Southeastern Conference also accepted their invitation.', 'Liberty Bowl | The Liberty Bowl is an annual U.S. American college football bowl game played in late December or early January since 1959.  Since 1965, the game has been held at Liberty Bowl Memorial Stadium in Memphis, Tennessee.  For its first five years, it was played in Philadelphia.  Since 2004, the game has been sponsored by Memphis-based auto parts retailer AutoZone.  Because of the scheduling of the bowl game near the end of the calendar year, no game was played during calendar years 2008 or 2015, while two games were played in calendar years 2010 and 2016.', '2013 Liberty Bowl | The 2013 Liberty Bowl was an American college football bowl game that was played on December 31, 2013 at Liberty Bowl Memorial Stadium in Memphis, Tennessee.  The 55th edition of the Liberty Bowl, it featured the Mississippi State Bulldogs of the Southeastern Conference and the Rice Owls, the champions of Conference USA.  It began at 3:00\xa0p.m. CST and aired on ESPN.  It was one of the 2013–14 bowl games that concluded the 2013 FBS football season.  Sponsored by automobile parts and accessories store AutoZone, it was officially known as the AutoZone Liberty Bowl.  Mississippi State defeated Rice by a score of 44–7.', '2014 Liberty Bowl | The 2014 Liberty Bowl was an American college football bowl game played on December 29, 2014 at Liberty Bowl Memorial Stadium in Memphis, Tennessee.  The 56th edition of the Liberty Bowl, it featured the Texas A&M Aggies of the Southeastern Conference and the West Virginia Mountaineers of the Big 12 Conference.  It began at 1:00\xa0p.m. CST and aired on ESPN.  It was one of the 2014–15 bowl games that concludes the 2014 FBS football season.  Sponsored by automobile parts and accessories store AutoZone, it is officially known as the AutoZone Liberty Bowl.', '2005 Liberty Bowl | The 2005 AutoZone Liberty Bowl was a post-season college football bowl game between the Fresno State Bulldogs and the Tulsa Golden Hurricane on December 31, 2005, at Liberty Bowl Memorial Stadium in Memphis, Tennessee.  In a closely contested game which went back and forth Tulsa defeated Fresno State 31-24.  It was the forty-seventh time the Liberty Bowl had been played and the final game of the 2005 NCAA Division I-A football season for both teams.', 'List of Kansas State Wildcats bowl games | The Kansas State Wildcats football team competes as part of the NCAA Division I Football Bowl Subdivision (FBS), representing the Kansas State University in the Big 12 Conference.  Since the establishment of the team in 1896, Kansas State has been invited to 20 bowl games.  This total includes six appearances in the current "New Year\'s Six" major bowl games (the Rose, Sugar, Fiesta, Orange, Cotton, and Peach Bowl).  The team played in two Fiesta Bowls during the Bowl Championship Series (BCS) era, and one Fiesta Bowl during the Bowl Alliance era.', '2011 Liberty Bowl | The 2011 AutoZone Liberty Bowl, the 53rd edition of the game, was a post-season American college football bowl game, held on December 31, 2011 at Liberty Bowl Memorial Stadium in Memphis, Tennessee as part of the 2011–12 NCAA Bowl season.', "2012 Liberty Bowl | The 2012 AutoZone Liberty Bowl was a post-season American college football bowl game held on December 31, 2012 at the Liberty Bowl Memorial Stadium in Memphis, Tennessee in the United States.  The 54th edition of the Liberty Bowl began at 2:30 p.m. CST and aired on ESPN.  It featured the Iowa State Cyclones from the Big 12 Conference against the Conference USA champion Tulsa Golden Hurricane and was the final game of the 2012 NCAA Division I FBS football season for both teams.  The Golden Hurricane advanced to the game by virtue of winning the 2012 Conference USA Football Championship Game, while the Cyclones were also eligible for the bowl game due to their 6–6 regular-season record.  The bowl was a rematch as the two teams had previously met on September 1 at the Cyclones' home of Jack Trice Stadium in Ames, Iowa; Iowa State won that game, 38–23."]
+
+## Generated Outputs
+### reasoning
+The claim states that there was a college football game sponsored by a Memphis-based company, and the 2015 Kansas State Wildcats football team was invited to this bowl. The notes confirm that the Liberty Bowl has been sponsored by AutoZone, a Memphis-based company, since 2004. The 2016 Liberty Bowl, played on January 2, 2016, which concluded the 2015 college football season, featured the Kansas State Wildcats. The context further confirms that the Liberty Bowl game is held annually in Memphis, Tennessee, at the Liberty Bowl Memorial Stadium and has been sponsored by AutoZone, a Memphis-based company. The timing and participants align perfectly with the claim about the 2015 Kansas State Wildcats football team being invited to a bowl sponsored by a Memphis company. Thus, the claim is supported and accurate.
+
+### new_notes
+['The Liberty Bowl is an annual college football bowl game held in Memphis, Tennessee, and has been sponsored by AutoZone, a Memphis-based company, since 2004.', 'The 2016 Liberty Bowl, which took place on January 2, 2016, concluded the 2015 college football season and featured the Kansas State Wildcats football team.', 'Therefore, the 2015 Kansas State Wildcats football team was invited to the Liberty Bowl, a game sponsored by the Memphis-based company AutoZone.']
+
+### titles
+['Liberty Bowl', '2016 Liberty Bowl (January)', 'AutoZone', 'Kansas State Wildcats Football']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['2016 Liberty Bowl (January)']. Documents remaining to be retrieved: ['2015 Kansas State Wildcats football team', 'AutoZone'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The sport of tennis is played by both Texas native Angelique Kerber and the player who was the defending champion, who competed, for the 2005 China Open – Men's Doubles.
+
+### notes
+['Angelique Kerber is a German professional tennis player, not a Texas native.', "The defending champions of the 2005 China Open Men's Doubles were Justin Gimelstob and Graydon Oliver; Oliver did not compete that year, but Gimelstob defended the title with Nathan Healey.", 'There is no evidence that Justin Gimelstob or Graydon Oliver are Texas natives or that they have any direct connection to Angelique Kerber other than playing tennis.', "The claim that both a Texas native Angelique Kerber and the defending champion competed at the 2005 China Open Men's Doubles is incorrect regarding Kerber's origin and unsupported regarding the defending champion's relationship to Texas.", 'Angelique Kerber is a German professional tennis player, not a Texas native.', 'The defending champions of the 2005 China Open Men’s Doubles were Justin Gimelstob and Graydon Oliver; Oliver did not compete in 2005, but Gimelstob defended the title with Nathan Healey.', 'There is no evidence that either Kerber or the defending champion Justin Gimelstob is a Texas native or that they share a direct connection beyond playing tennis.', 'Thus, the claim that both a Texas native Angelique Kerber and the defending champion competed at the 2005 China Open Men’s Doubles is incorrect and unsupported.', 'Angelique Kerber is a German professional tennis player, not a Texas native.', "The defending champions of the 2005 China Open Men's Doubles were Justin Gimelstob and Graydon Oliver; Oliver did not compete that year, but Gimelstob defended the title with Nathan Healey.", 'There is no evidence that either Angelique Kerber or Justin Gimelstob is a Texas native or that they share any affiliation beyond playing tennis.', "The claim that both a Texas native Angelique Kerber and the defending champion competed at the 2005 China Open Men's Doubles is factually incorrect and unsupported by available evidence."]
+
+### context
+["2005 China Open – Men's Doubles | Justin Gimelstob and Graydon Oliver were the defending champions, but Oliver did not participate this year.  Gimelstob partnered Nathan Healey and successfully defended his title.", "2003 Dubai Duty Free Women's Open – Doubles | Barbara Rittner and María Vento-Kabchi were the defending champions, but Rittner did not compete this year.  Vento-Kabchi teamed up with Angelique Widjaja and lost in semifinals to tournament winners Svetlana Kuznetsova and Martina Navratilova.", '2013 Open GDF Suez – Singles | Angelique Kerber was the defending champion, but she decided not to participate this year. <br>', "2016 Australian Open – Women's Singles | Serena Williams was the defending champion, and attempting for the second time to equal Steffi Graf's career record of 22 major singles titles.  She lost in the final to Angelique Kerber, 4–6, 6–3, 4–6.  Kerber became the first woman to win a singles major title after having saved a match point in the first round, which she did against Misaki Doi.  She is also the first German of either sex to win a major since Graf at the 1999 French Open.", '2016 Angelique Kerber tennis season | The 2016 Angelique Kerber tennis season officially began on 5 January with the start of the 2016 Brisbane International.  Kerber entered the season as the number 10 ranked player and the defending champion at four tournaments.', "2017 US Open – Women's Singles | Angelique Kerber was the defending champion, but lost in the first round to Naomi Osaka.  This loss would cause Kerber to fall outside the top ten in the WTA rankings for the first time since 2015.", '2017 Monterrey Open – Singles | Heather Watson was the defending champion, but lost in the quarterfinals to Angelique Kerber.', '2012 e-Boks Open – Singles | Caroline Wozniacki was the defending champion, but lost to Angelique Kerber 6–4, 6–4 in the final.', '2011 HP Open – Singles | Tamarine Tanasugarn was the defending champion, but lost to Angelique Kerber in the quarterfinals.', "2017 Australian Open – Women's Singles | Angelique Kerber was the defending champion, but lost in the fourth round to Coco Vandeweghe."]
+
+## Generated Outputs
+### reasoning
+The claim states that tennis is played by Texas native Angelique Kerber and the defending champion player who competed in the 2005 China Open Men's Doubles. Reviewing the notes and context shows that Angelique Kerber is actually a German professional tennis player, not from Texas. Moreover, the defending champions for the 2005 China Open Men's Doubles were Justin Gimelstob and Graydon Oliver; Oliver did not compete that year, but Gimelstob defended the title with Nathan Healey. There is no evidence that either Angelique Kerber or Justin Gimelstob is a Texas native, nor is there any direct connection between them besides playing tennis. Therefore, the claim is incorrect about Angelique Kerber’s origin and lacks evidence for the Texas native defending champion. The claim conflates unrelated facts and should be corrected to reflect Angelique Kerber’s German nationality and to clarify the defending champions' identities without implying Texas origin.
+
+### new_notes
+['Angelique Kerber is a German professional tennis player, not a Texas native.', "The defending champions of the 2005 China Open Men's Doubles were Justin Gimelstob and Graydon Oliver; Oliver did not compete that year, but Gimelstob defended the title with Nathan Healey.", 'There is no evidence that either Angelique Kerber or Justin Gimelstob is a Texas native or that they share any affiliation beyond playing tennis.', "The claim that both a Texas native Angelique Kerber and the defending champion competed at the 2005 China Open Men's Doubles is factually incorrect and unsupported by available evidence."]
+
+### titles
+['Angelique Kerber - Professional Tennis Player', "2005 China Open Men's Doubles - Defending Champions and Participants", 'Justin Gimelstob - Tennis Career and 2005 China Open', 'Texas Native Tennis Players - No Evidence for Kerber or Gimelstob']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ["2005 China Open – Men's Doubles", 'Angelique Kerber']. Documents remaining to be retrieved: ['Justin Gimelstob'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The Costa Rican star of Crimes of Fashion debuted in the 2004 American teen musical comedy film Confessions of a Teenage Drama Queen. She went on to co-star in the 2007 blockbuster action film Transformers.
+
+### notes
+['The actress who debuted in the 2004 film "Confessions of a Teenage Drama Queen" and co-starred in the 2007 blockbuster "Transformers" is Megan Fox, an American actress.', 'Megan Fox is not Costa Rican, and there is no evidence she starred in a film called "Crimes of Fashion."', '"Confessions of a Teenage Drama Queen" starred Lindsay Lohan and was a 2004 American teen musical comedy film.', 'Megan Fox\'s breakout role was as Mikaela Banes in "Transformers" (2007) following her debut role in "Confessions of a Teenage Drama Queen."', 'Megan Fox, an American actress, is the one who debuted in the 2004 film "Confessions of a Teenage Drama Queen" and co-starred in the 2007 blockbuster "Transformers."', 'Megan Fox is not Costa Rican, and there is no evidence she starred in any film called "Crimes of Fashion."', '"Confessions of a Teenage Drama Queen" (2004) was a teen musical comedy starring Lindsay Lohan, not Megan Fox.', 'Megan Fox\'s breakout role was as Mikaela Banes in "Transformers" (2007), following her early career roles.', "Megan Fox is an American actress who debuted with a role in the 2004 film 'Confessions of a Teenage Drama Queen' and went on to co-star in the 2007 blockbuster action film 'Transformers'.", "Megan Fox is not Costa Rican, and there is no evidence she starred in a film called 'Crimes of Fashion'.", "'Confessions of a Teenage Drama Queen' (2004) was a teen musical comedy starring Lindsay Lohan as the lead.", "The claim's description of a 'Costa Rican star of Crimes of Fashion' does not align with known records about Megan Fox or the stated films."]
+
+### context
+['Confessions of a Teenage Drama Queen (soundtrack) | Confessions of a Teenage Drama Queen is the soundtrack album for the 2004 American teen comedy film: "Confessions of a Teenage Drama Queen", released on February 17, 2004.  The film\'s lead actress Lindsay Lohan recorded four songs written for the film, including "Drama Queen (That Girl)", that was released as a promotional single in January of that year.', 'Megan Fox | Megan Denise Fox (born May 16, 1986) is an American actress and model.  She began her acting career in 2001, with several minor television and film roles, and played a regular role on the "Hope & Faith" television sitcom.  In 2004, she made her film debut with a role in the teen comedy "Confessions of a Teenage Drama Queen".  In 2007, she co-starred as Mikaela Banes, the love interest of Shia LaBeouf\'s character, in the blockbuster action film "Transformers", which became her breakout role.  Fox reprised her role in the 2009 sequel, "".  Later in 2009, she starred as the eponymous lead in the black comedy horror film "Jennifer\'s Body".', 'Confessions of a Teenage Drama Queen | Confessions of a Teenage Drama Queen is a 2004 American teen musical comedy film directed by Sara Sugarman and produced by Robert Shapiro and Matthew Hart for Walt Disney Pictures.  It stars Lindsay Lohan as an aspiring teenaged actress whose family moves from New York City to New Jersey, Adam Garcia as her favorite rock musician, Glenne Headly as her mother, and Alison Pill as her best friend.  The screenplay was written by Gail Parent and is based on the novel of the same name by Dyan Sheldon.', 'Sara Sugarman | Sara Sugarman (born 13 October 1962) is a Welsh actress and film director whose work includes Disney\'s "Confessions of a Teenage Drama Queen" (2004) and "Very Annie Mary" (2001).  She has also appeared in films including "Dealers" (1989) and "Those Glory Glory Days" (1983).', 'Confessions of a Teenage Drama Queen (novel) | Confessions of a Teenage Drama Queen is a young adult novel by Dyan Sheldon.  Originally released in 1999 through Candlewick Press, it was later turned into a Disney motion picture of the same name in 2004 starring Lindsay Lohan and was made one of the ALA book picks for 2006.  A sequel, "My Perfect Life", was released in 2002.', 'Last One Picked | Last One Picked is the second studio album by the Christian rock band Superchic[k].  The song, "Hero", appeared in the film, "To Save a Life".  "Na Na" appeared on the Disney film, "Confessions of a Teenage Drama Queen".', 'Lindsay Lohan filmography | Lindsay Lohan is an American actress and singer-songwriter who began her acting career as a child actor in the late-1990s.  At age 11, Lohan made her motion picture debut in Disney\'s commercially and critically successful 1998 remake of "The Parent Trap".  She continued her acting career by appearing in a number of Disney films, including "Life-Size" (2000), "Get a Clue" (2002), "Freaky Friday" (2003), "Confessions of a Teenage Drama Queen" (2004) and "" (2005), along with her first non-Disney film "Mean Girls" (2004), which became a massive success by grossing over $129 million and later becoming a cult classic film.  Lohan also did smaller, more mature roles in independent movies, receiving positive reviews on her acting, including Robert Altman\'s "A Prairie Home Companion" (2005), Emilio Estevez\'s "Bobby" (2006) and Jarrett Schaefer\'s "Chapter 27" (2007).  Between 2006 and 2007, Lohan continued her career by starring in films like "Just My Luck" (2006), "Georgia Rule" (2007), and "I Know Who Killed Me" (2007).  Lohan\'s career had faced many interruptions from legal and personal troubles during the mid to late 2000s and 2010s, but she has still been able to appear in 26 films (including 6 as a personality), 12 television appearances, 1 play and 5 music videos.', 'Mana Ashida | Mana Ashida (芦田 愛菜 , Ashida Mana , born 23 June 2004) is a Japanese child actress, "tarento" and singer.  Ashida\'s first appearance was in Asahi Broadcasting Corporation\'s "ABC Short Movie 2", though she rose to prominence after acting in the television drama "Mother".  She became the youngest lead star in Japanese drama history when she starred in "Sayonara Bokutachi no Youchien".  She was the youngest lead actress in a television serial drama by appearing in the serial drama "Marumo no Okite" in the spring of 2011.  She also appeared in Japanese films such as "Confessions" and "Usagi Drop".', 'Jism (2016 film) | Jism is a 2016 Nepalese romantic drama film directed by Raju Giri.  The lead roles are played by Nepalese teenage actress Archana Paneru, who aspires to a career as a porn star, and Surendra Budhathoki; it was the first film role for both.', 'Lisa Haydon | Lisa Haydon (born Elisabeth Marie Haydon; 17 June 1986) is an Indian supermodel, fashion designer, and actress, who mainly appears in Hindi films.  Haydon made her acting debut with a supporting role in the 2010 romantic comedy "Aisha" and received critical praise for her performance in the comedy-drama "Queen", which garnered wide recognition and a Best Supporting Actress nomination at Filmfare, among other accolades.  Haydon later starred in the commercially successful romantic comedy "Housefull 3" and had a brief role in the Karan Johar-directed romantic drama "Ae Dil Hai Mushkil" (both 2016).']
+
+## Generated Outputs
+### reasoning
+The claim states that a Costa Rican star of "Crimes of Fashion" debuted in the 2004 film "Confessions of a Teenage Drama Queen" and co-starred in the 2007 blockbuster "Transformers." The notes confirm that the actress who debuted in the 2004 film "Confessions of a Teenage Drama Queen" and co-starred in 2007's "Transformers" is Megan Fox. However, Megan Fox is American, not Costa Rican, and there is no evidence that she starred in a film called "Crimes of Fashion." The 2004 film "Confessions of a Teenage Drama Queen" starred Lindsay Lohan, with no indication Megan Fox had a leading role there. Megan Fox's first significant breakout was in "Transformers." Therefore, the details about the actress being Costa Rican and starring in "Crimes of Fashion" are incorrect or unsubstantiated. The accurate information is that Megan Fox, an American actress, debuted around this time and rose to fame in "Transformers."
+
+### new_notes
+['Megan Fox, an American actress, is the one who debuted in the 2004 film "Confessions of a Teenage Drama Queen" and co-starred in the 2007 blockbuster "Transformers."', 'Megan Fox is not Costa Rican, and there is no evidence she starred in any film called "Crimes of Fashion."', '"Confessions of a Teenage Drama Queen" (2004) was a teen musical comedy starring Lindsay Lohan, not Megan Fox.', 'Megan Fox\'s breakout role was as Mikaela Banes in "Transformers" (2007), following her early career roles.']
+
+### titles
+['Megan Fox', 'Confessions of a Teenage Drama Queen', 'Transformers (2007 film)', 'Lindsay Lohan filmography']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Confessions of a Teenage Drama Queen', 'Megan Fox']. Documents remaining to be retrieved: ['Crimes of Fashion'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

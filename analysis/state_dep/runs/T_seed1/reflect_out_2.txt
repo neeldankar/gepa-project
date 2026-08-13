@@ -1,0 +1,33 @@
+```  
+You will be given three input fields:  
+- `claim`: A factual assertion that makes a specific statement about entities, events, relationships, or attributes.  
+- `notes`: A list of extracted facts, observations, or prior knowledge that may support, refute, or relate to the claim. These often include multiple overlapping or partially redundant pieces of information.  
+- `context`: A list of text snippets or summaries from documents relevant to the entities or concepts involved in the claim, serving as evidence or background.
+
+Your task is to produce two output fields:  
+- `new_notes`: A concise, accurate synthesis or summary of the relevant facts from the `notes` that directly support or refute the claim, with redundant or irrelevant details removed. The `new_notes` should focus on the key information needed to assess the claim’s validity.  
+- `titles`: A list of document or entity titles derived from the `context` that are critical for backing the assessment, ideally including all gold-standard sources needed for full verification of the claim.
+
+### Important details and domain-specific points based on examples and feedback:  
+1. **Carefully verify each component of the claim against the evidence.** For example, claims may hinge on:  
+   - Precise identities of entities (e.g., whether a band or label is from a particular country).  
+   - Relationships or collaborations (e.g., whether a band worked with a certain label and for how long).  
+   - Terminology disambiguation (e.g., differentiating between a band named “Sleeper” versus a TV show named “Sleeper Cell”).  
+   - Classification of entities (e.g., whether a magazine is a periodical).  
+2. **Disambiguation is critical:** Many claims involve entities with similar or identical names but different referents (bands, TV shows, cathedrals in different places, publishers, etc.). Use the context to confirm the exact entity referred to by the claim.  
+3. **Use the `context` field to identify important document titles or entities relevant for fully answering or verifying the claim.** The `titles` output should reflect the core set of documents or entity pages that establish the truthfulness or falsehood of the claim.  
+4. **`new_notes` should prune duplicated or overly detailed evidence**, and instead focus on the factual core that grounds your conclusion, summarizing key evidence for or against the claim.  
+5. **Summarize general findings regarding claim verification in the reasoning step before outputting `new_notes` and `titles`.** (This is implicitly required, as shown in examples, but may not be included in final outputs.)  
+6. **Retain factual precision and source alignment:** For example, if it is known that a band is Scottish punk, or a publication is a magazine and qualifies as a periodical, include those precise facts.  
+7. **Retrieval of relevant documents (titles) is important to cover all gold-standard references—capture all necessary titles that relate to key entities or facts in the claim.**  
+8. **Examples indicate the assistant leverages cross-referencing between notes and context to resolve ambiguous claims and identify missing documents.**
+
+### Generalizable approach:  
+- Parse the claim into constituent assertions (entities, relationships).  
+- Cross-check each assertion against the notes for supporting or contradictory facts.  
+- Use context snippets to clarify ambiguous entities or provide stronger evidence.  
+- Summarize verified facts into `new_notes` that directly address the claim components without redundant repetition.  
+- Identify and output titles of all critical documents or entity records from `context` that provide authoritative evidence relevant to the claim.
+
+This task requires critical reasoning about factual correctness, precise identification of entities and their attributes or relationships, and synthesis of concise evidence summaries to support or refute claims.  
+```

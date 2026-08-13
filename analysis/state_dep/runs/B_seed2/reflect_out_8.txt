@@ -1,0 +1,42 @@
+```  
+You are given two input fields:  
+- `claim`: A textual claim that relates two or more entities (people, films, songs, professions, roles, etc.) and states a factual relationship or set of relationships between them.  
+- `notes`: A list of factual statements or evidence extracted from relevant documents that provide partial or complete information about the entities and relationships involved in the claim.
+
+Your task is to generate a `query` field to use for information retrieval or knowledge base lookup to verify or support the factual claim. The `query` should be a structured natural language question or a formal query (e.g., SPARQL) that comprehensively encodes the key verification needs expressed in the claim. This query will be used to retrieve documents or database entries that can confirm or refute the claim.
+
+### Detailed Task Description and Guidelines:  
+
+1. **Understand the claim's components:**  
+   - Identify all entities mentioned (people, songs, movies, roles, producers, directors, professions).  
+   - Identify the relationships and facts to verify (e.g., "X is the vocalist of band Y," "X co-wrote song Z," "Person A and Person B share profession P," "Actor starred with Actor B in Movie C," "Director of Movie D is Person E," "Producer of Movie F also produced Movie G").  
+   - Recognize that some claims contain multiple related verification points linked by conjunctive (“and”) or disjunctive logic within a complex fact.  
+
+2. **Use the notes input effectively:**  
+   - The notes contain factual, domain-specific information that helps break down the claim accurately.  
+   - Leverage the notes to clarify ambiguous or erroneous claims (e.g., identifying when a claim confuses actors or roles, or when a given director is actually known as an actor).  
+   - Identify key factual entities and roles supported by the notes that should appear or be checked in the query.
+
+3. **Generate a query that:**
+   - Precisely reflects the claim's fact-checking needs, including all entities and relationships that must be verified.  
+   - Covers all verification points from the claim and any necessary domain-specific context to retrieve the relevant knowledge.  
+   - Explicitly links these entities and relationships—e.g., specifying shared professions, co-writing roles, acting relationships in films, directorial credits, producer credits, appearances in films alongside certain actors, or involvement in production of multiple films.  
+   - Is specific enough to retrieve the precise subset of documents or database entries supporting or refuting the claim.  
+   - Can be expressed as a natural language question or as a structured database query (e.g., a SPARQL query with appropriate ontology prefixes, variables, and filters).  
+   - Uses domain-specific vocabulary, such as `dbo:occupation`, `dbo:band`, `dbo:writer` for music-related facts; `dbo:starring`, `dbo:director`, `dbo:producer` for film-related facts; proper disambiguation of entities by resources like DBpedia URIs.
+
+4. **Consider domain-specific nuances:**
+   - Musical roles (vocalist, songwriter) imply musician profession.  
+   - Actor relationships in films may involve starring roles or co-starring roles, which should be captured.  
+   - Film credits extend to producers and directors, who can be cross-checked across films.  
+   - Recognize common exceptions or contradicted claims found in notes (e.g., identifying when a known actor is not a director).  
+   - Film and person label disambiguation is commonly required, along with language filtering for labels.
+
+5. **Formulate reasoning or explanation explicitly (when applicable):**
+   - Explain which entities and factual relations must be checked, based on the claim and notes, as an intermediate reasoning step before or alongside query generation.
+
+### Summary:  
+Given a `claim` and supporting/fact-checking `notes`, generate a detailed, precise retrieval query that reflects all the fact-checking dimensions of the claim. The query should be explicit about the key entities, their relationships (roles, productions, professions, appearances), and incorporate domain knowledge from the notes to ensure ambiguity is resolved and relevant evidence is retrieved effectively.
+
+This task requires deep understanding of the domains involved (music, film), entity linking, and relationship extraction for accurate query formulation to enable evidence retrieval for complex multi-entity claims.
+```

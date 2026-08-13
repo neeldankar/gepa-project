@@ -1,0 +1,165 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be provided with three input fields:
+
+- `claim`: A factual statement or assertion involving one or more entities, events, or relationships.
+- `notes`: A list of extracted relevant factual statements or snippets that pertain to the claim, often summarizing or supporting/refuting parts of the claim.
+- `context`: A list of documents or document excerpts (titles and text) that provide detailed background information about the entities, events, or concepts mentioned in the claim.
+
+Your goal is to produce two output fields:
+
+- `new_notes`: A concise, accurate subset of the given `notes` that best supports or disputes the claim based on the provided context. These notes should be directly relevant and factually correct according to the context, avoiding redundant or irrelevant information.
+- `titles`: A list of document titles from the `context` that contain information necessary to verify the claim and support the chosen `new_notes`. This list should include all key documents referenced in `new_notes`, reflect comprehensive coverage of crucial facts, and omit irrelevant or unrelated documents.
+
+Detailed requirements and domain-specific knowledge:
+
+1. **Entity and Relationship Identification**:  
+   The `claim` will often involve multiple entities (people, organizations, events, publications) and relationships between them (e.g., coining a term, professional affiliation, authorship, competition results). The `notes` and `context` will contain overlapping and sometimes repeated factual assertions regarding these entities and their connections.
+
+2. **Cross-verification of Facts**:  
+   The `notes` serve as candidate fact claims to be supported or refuted against the `context`. Your output should consolidate relevant facts, validated and confirmed by the `context`, while excluding unsupported, incorrect, or ambiguous notes.
+
+3. **Precision in Retrieval**:  
+   The `titles` in your output represent the exact documents from the `context` that allow verification of the facts in `new_notes`. Titles should correspond exactly to the relevant context entries and cover all evidence for the facts in `new_notes`. Partial or incomplete document retrieval reduces accuracy.
+
+4. **Handling Redundancies and Contradictions in Notes**:  
+   Duplicate facts or contradictory notes may appear. Select the most accurate, concise, and context-supported notes. Remove duplicates and clearly represent the verified facts.
+
+5. **Summarizing Complex Claims**:  
+   Claims may involve compound facts (e.g., two entities sharing a profession, one entity having a specific characteristic). Your reasoning should dissect the claim into factual components, verify each component, and retain notes and documents relevant to all parts of the claim.
+
+6. **Domain-Specific Contextual Knowledge**:  
+   - Professionals referenced may include scientists (e.g., paleontologists such as Elisabeth Vrba and Stephen Jay Gould), writers, athletes (professional tennis players with tournament results), designers, and journalists.  
+   - Publications and artistic works (books, magazines, journals, essays) appear frequently; it is essential to distinguish authorship, publication venue (book vs. magazine article), and the nature of periodicals.  
+   - Events like sports tournaments, professional achievements, and historical occurrences frequently provide verification points.  
+   - Namesake ambiguity is possible (e.g., different individuals named Gould); confirm identity using contextual career and biographical details.
+
+7. **Reasoning and Fact-Checking Strategy (Generalizable)**:  
+   - Map entities and relationships mentioned in the claim to those referenced in `notes` and `context`.  
+   - Crosscheck each factual assertion in `notes` against the detailed information in `context`.  
+   - Discard or modify notes unsupported by context or contradicted by it.  
+   - Identify and include all documents whose content is essential to verify or refute the claim, ensuring completeness.  
+   - Produce a concise set of newly filtered notes (`new_notes`) that reflect the validated facts.  
+   - Provide the precise titles of relevant context documents that underpin these notes.
+
+Your final outputs must be factually accurate, focused, and traceable to the cited documents in the `context`.
+
+Format:
+- `new_notes`: List of succinct, verified factual notes derived from the input `notes` and supported by the `context`.
+- `titles`: List of exact document titles from the `context` that contain the evidence for these notes.
+
+Use clear reasoning to cover all components of the claim and disambiguate entities where necessary.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The auditorium where Backstreet Boys: Larger Than Life residency show perfomed at is located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada. This auditorium is located at a hotel and casino owned by Caesars Entertainment Corporation.
+
+### notes
+['Backstreet Boys: Larger Than Life is performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada.', 'Planet Hollywood Las Vegas is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada, owned and operated by Caesars Entertainment Corporation.', 'Backstreet Boys: Larger Than Life is performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada.', 'Planet Hollywood Las Vegas is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada, owned and operated by Caesars Entertainment Corporation.', 'Backstreet Boys: Larger Than Life is performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada.', 'Planet Hollywood Las Vegas is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada, owned and operated by Caesars Entertainment Corporation.']
+
+### context
+['Backstreet Boys: Larger Than Life | Backstreet Boys: Larger Than Life is the first residency show by American vocal group Backstreet Boys, performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada.  The show had its opening night on March 1, 2017 and is currently scheduled to run through February 17, 2018.', "Planet Hollywood Las Vegas | Planet Hollywood Las Vegas (formerly Tally-Ho, King's Crown and Aladdin) is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada.  It is owned and operated by Caesars Entertainment Corporation.", 'Jennifer Lopez: All I Have | Jennifer Lopez: All I Have is the first residency show by American entertainer Jennifer Lopez.  Performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada, the residency show began on January 20, 2016.', 'Britney: Piece of Me | Britney: Piece of Me is the first residency show by American singer Britney Spears, performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada.  The show had its opening night on December 27, 2013.  In 2015, Spears extended her contract with Planet Hollywood through 2017.', "Planet Hollywood Goa | Planet Hollywood Beach Resort, (stylized as planet hollywood) is a luxury 5 star hotel based in Goa, India inspired by the popular Las Vegas’s casino hotel Planet Hollywood and it is launched in Goa December 2014, It is India's 1st Hollywood themed Beach Resort in Goa.  Sachiin Joshi is the founder and Voice chairman of this beach resort, who is an Indian film actor, producer and son of JMJ Group owner Jagdish Mohanlal Joshi.", 'Otakon Vegas | Otakon Vegas ( ) is a three-day anime convention held during January at the Planet Hollywood Resort and Casino in Las Vegas, Nevada.  The convention is organized by Otakorp, the group behind Otakon.', 'Rio All Suite Hotel and Casino | Rio Las Vegas is a hotel and casino near the Las Vegas Strip in Paradise, Nevada, United States.  It is owned and operated by Caesars Entertainment Corporation.  The Rio was the first all suite resort in the Las Vegas area.  It was named after the city of Rio de Janeiro and is influenced by Brazilian culture.  It is the host casino for the World Series of Poker.', 'Robert Earl | Robert Earl (born May 29, 1951) is the founder and CEO of Planet Hollywood, Chairman of the Planet Hollywood Resort & Casino in Las Vegas, and host of "Robert Earl\'s Be My Guest" television program which airs weekly on the Cooking Channel.', 'Steve Wyrick | Steve Wyrick (born May 12, 1970) is an American magician from Garland, Texas who is currently headlining in Branson, Missouri at the 2,000-seat The White House Theatre where his new $10 million production opened in June 2015.  Wyrick is best known for performing as a headliner in Las Vegas, Nevada for more than 15 years, having starred at Planet Hollywood Resort/Casino, Aladdin Casino, Sahara Casino, and at the Las Vegas Hilton.  He was featured in "The World\'s Greatest Magic" series on NBC in the 1990s.  Awards include the prestigious Merlin Award as Magician of the Year for the International Magicians Society, the world\'s largest magic organization.  Wyrick also headlined for multi-month perfrmances in Atlantic City at Harrah\'s Casino and at the Golden Nugget Resort', 'The Palazzo | The Palazzo is a luxury hotel and casino resort located on the Las Vegas Strip in Paradise, Nevada.  It is the tallest completed building in Nevada.  Designed by the Dallas based HKS, Inc., the hotel offers luxury in an Italian Renaissance ambiance.  The hotel and casino are part of a larger complex (operated as one hotel) comprising the adjoining Venetian Resort and Casino and the Sands Convention Center, all of which are owned and operated by the Las Vegas Sands Corporation.']
+
+## Generated Outputs
+### reasoning
+The claim states that the auditorium hosting the Backstreet Boys residency show is located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada, and that this hotel and casino is owned by Caesars Entertainment Corporation. According to the context:
+
+- The Backstreet Boys' "Larger Than Life" residency show is performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino, Las Vegas, Nevada [Context 1].
+- Planet Hollywood Las Vegas is a hotel and casino located on the Las Vegas Strip, Paradise, Nevada, owned and operated by Caesars Entertainment Corporation [Context 2].
+
+The context directly supports both components of the claim: the location of the auditorium and the ownership of the hotel and casino. Therefore, the claim is fully verified by the contextual information.
+
+### new_notes
+['Backstreet Boys: Larger Than Life is performed at The AXIS auditorium located in the Planet Hollywood Resort & Casino in Las Vegas, Nevada.', 'Planet Hollywood Las Vegas is a hotel and casino located on the Las Vegas Strip in Paradise, Nevada, owned and operated by Caesars Entertainment Corporation.']
+
+### titles
+['Backstreet Boys: Larger Than Life', 'Planet Hollywood Las Vegas']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Backstreet Boys: Larger Than Life', 'Planet Hollywood Las Vegas']. Documents remaining to be retrieved: ['The AXIS'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Reverend Lyttleton Morgan was the first chairman of the board of trustees at a university. That university and the University of Idaho are public types of universities.
+
+### notes
+['Reverend Lyttleton Morgan was the first chairman of the Board of Trustees of Morgan State University, which was renamed in his honor; it was originally founded as the Centenary Biblical Institute.', 'Morgan State University is Maryland’s designated public urban university and the largest historically black college in Maryland.', 'The University of Idaho is associated with the Idaho State Board of Education, a state agency, implying it is a public university.', 'Reverend Lyttleton Morgan was the first chairman of the Board of Trustees of Morgan State University, which was renamed in his honor; it was originally founded as the Centenary Biblical Institute.', 'Morgan State University is Maryland’s designated public urban university and the largest historically black college in Maryland.', 'The University of Idaho is associated with the Idaho State Board of Education, a state agency, implying it is a public university.', 'Reverend Lyttleton Morgan was the first chairman of the Board of Trustees of Morgan State University, which was renamed in his honor; it was originally founded as the Centenary Biblical Institute.', 'Morgan State University is Maryland’s designated public urban university and the largest historically black college in Maryland.', "The University of Idaho is the state's oldest public university, a flagship, land-grant and primary research university."]
+
+### context
+['Lyttleton Morgan | Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, which was renamed in his honor (it was founded as the Centenary Biblical Institute).', 'Morgan State University | Morgan State University (commonly referred to as MSU, Morgan State, or Morgan) is a historically black college (HBCU) in Baltimore, Maryland, United States.  Morgan is Maryland\'s designated public urban university and the largest HBCU in Maryland.  In 1890 the university, formerly known as the "Centenary Biblical Institute", changed its name to Morgan College to honor Reverend Lyttleton Morgan, the first chairman of its Board of Trustees who had donated land to the college.  It became a university in 1975.  MSU is a member of Thurgood Marshall College Fund.', 'Gilbert Morgan | Reverend Dr. Gilbert Morgan is generally numbered as the second chancellor of the University of Pittsburgh, then called the Western University of Pennsylvania, serving only one year from 1835 to 1836, although Morgan\'s official title at the time was "Principal", a holdover from the institution\'s academy days.  Morgan was appointed by the University Board of Trustees in 1835 following recommendations from his associates at Union College.  His short tenure as President was considered mostly unsuccessful and he resigned only a year later to accept a position in North Carolina at a school for young ladies. ', "List of Morgan State University alumni | This is a list of notable alumni which includes graduates, non-graduate former students, and current students of Centenary Biblical Institute (1867–1890), Morgan College (1890–1938), Morgan State College (1938–1975), and Morgan State University (1975–present).  Located in residential Baltimore, Maryland, Morgan State is a historically black university and Maryland's designated public urban university.  The Morgan State University National Alumni Association is the official alumni organization of the university.", "Dianna Fuller Morgan | Dianna Fuller Morgan currently serves on the Board of Directors of CNL Bancshares, Inc., Marriott Vacations Worldwide Corporation, and the Board of Trustees for Hersha Hospitality Trust.  In addition, she is a member of the Board of Directors of Orlando Health.  Morgan served as past Chair of the national board for the Children's Miracle Network, as well as the University of Florida Board of Trustees.  Morgan retired in 2001 from a long career with the Walt Disney World where she served as Senior Vice President of Public Affairs and Human Resources.", 'David Wilson (university administrator) | David Wilson, Ed.D has been president of Morgan State University in Baltimore, Maryland since July 1, 2010.  Dr. David Wilson is the 12th president of Morgan State University and has a long record of accomplishments and more than 30 years of experience in higher education administration.  Dr. Wilson holds four academic degrees: a B.S. in political science and an M.S. in education from Tuskegee University; an Ed.M.  in educational planning and administration from Harvard University and an Ed.D. in administration, planning and social policy, also from Harvard.  He came to Morgan from the University of Wisconsin, where he was chancellor of both the University of Wisconsin Colleges and the University of Wisconsin–Extension.  Before that, he held numerous other administrative posts in academia, including: vice president and associate provost at Auburn University, and associate provost of Rutgers, the State University of New Jersey.', "Wayne Morgan | Wayne Morgan (born October 7, 1950) was the Iowa State University men's basketball coach from 2003 to 2006.  He was Iowa State University’s first African American head basketball coach.", 'List of Morgan State University Athletic Hall of Fame members | List of Morgan State University Athletic Hall of Fame members', 'Flying Four Morgan State University Track Team 1951-1955 | Flying Four Morgan State University Track Team 1951-1955', "University of Vermont Morgan Horse Farm | The Morgan Horse Farm is a historic horse breeding facility at 74 Battell Drive (off Morgan Horse Farm Road) in Weybridge, Vermont.  Since 1907, it has been an official breeding site for the Morgan horse, one of the first American-bred horse breeds, and Vermont's official state animal.  The breeding program was established in Burlington in 1905, and moved to this site in 1907 by the United States Department of Agriculture, and is now run by the University of Vermont.  The farm is listed on the National Register of Historic Places."]
+
+## Generated Outputs
+### reasoning
+The claim consists of two parts: first, that Reverend Lyttleton Morgan was the first chairman of the board of trustees at a university; second, that this university and the University of Idaho are public universities.
+
+The context confirms that Reverend Lyttleton Morgan was indeed the first chairman of the Board of Trustees of Morgan State University, which was originally founded as the Centenary Biblical Institute and renamed in his honor. The university is Maryland’s designated public urban university, indicating that Morgan State University is a public university.
+
+Additionally, the University of Idaho is associated with the Idaho State Board of Education, a state agency, which implies it is a public university.
+
+Thus, the notes that confirm these elements are supported by the context and accurately represent the details of the claim.
+
+### new_notes
+['Reverend Lyttleton Morgan was the first chairman of the Board of Trustees of Morgan State University, which was renamed in his honor; it was originally founded as the Centenary Biblical Institute.', 'Morgan State University is Maryland’s designated public urban university and the largest historically black college in Maryland.', 'The University of Idaho is associated with the Idaho State Board of Education, a state agency, implying it is a public university.']
+
+### titles
+['Lyttleton Morgan', 'Morgan State University']
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Lyttleton Morgan', 'Morgan State University', 'University of Idaho']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+The sport of tennis is played by both Texas native Angelique Kerber and the player who was the defending champion, who competed, for the 2005 China Open – Men's Doubles.
+
+### notes
+['Angelique Kerber is a professional tennis player with multiple titles, including Grand Slam wins.', 'Angelique Kerber is a professional tennis player with multiple titles, including Grand Slam wins.', 'Angelique Kerber is a professional tennis player with multiple titles, including Grand Slam wins.', "Justin Gimelstob was a defending champion player who competed in the 2005 China Open – Men's Doubles and successfully defended his title."]
+
+### context
+['2016 Angelique Kerber tennis season | The 2016 Angelique Kerber tennis season officially began on 5 January with the start of the 2016 Brisbane International.  Kerber entered the season as the number 10 ranked player and the defending champion at four tournaments.', '2010 Copa BBVA-Colsanitas – Singles | María José Martínez Sánchez was the defending champion, but chose to compete in the 2010 Dubai Tennis Championships instead. Mariana Duque Mariño won in the final 6–4, 6–3, against Angelique Kerber.', '2016 Porsche Tennis Grand Prix – Singles | Angelique Kerber was the defending champion and successfully defended her title, defeating Laura Siegemund in the final, 6–4, 6–0.', "2013 Sony Open Tennis – Men's Doubles | Leander Paes and Radek Štěpánek were the defending champions, but did not compete as a team this year.", '2015 Porsche Tennis Grand Prix – Singles | Maria Sharapova started the tournament as the three-time defending champion, but lost in the second round to Angelique Kerber. <br>', 'Angelique Kerber | Angelique Kerber (] ; born 18 January 1988) is a German professional tennis player and former world No. 1.  Having made her professional debut in 2003, Kerber rose to prominence upon reaching the semifinals of the 2011 US Open as the no. 92 ranked player in the world.  She ascended to the top of the rankings on 12 September 2016, thus becoming the twenty-second and oldest player to achieve the number one ranking for the first time and the first new number one player since Victoria Azarenka in 2012.', 'Angelique Kerber career statistics | This is a list of the main career statistics of German professional tennis player, Angelique Kerber.  To date, Kerber has won ten WTA singles titles including two grand slam singles titles at the 2016 Australian Open and 2016 US Open and at least one title on each playing surface (hard, clay and grass).  She was also the runner-up at the 2016 Wimbledon Championships and a Silver medalist at the 2016 Rio de Janeiro Olympics.  Kerber became the world No. 1 for the first time in her career on 12 September 2016.', 'Torben Beltz | Torben Beltz (born 27 November 1976) is a German tennis coach, best known for his work with 2016 Australian Open and 2016 US Open champion Angelique Kerber.', "2005 Pilot Pen Tennis – Men's Doubles | Antony Dupuis and Michaël Llodra were the defending champions, but Dupuis did not compete this year.  Llodra partnered with Fabrice Santoro and lost in Quarterfinals to Gastón Etlis and Martín Rodríguez.", '2005 Heineken Open – Doubles | Mahesh Bhupathi and Fabrice Santoro were the defending champions of the doubles event of the Heineken Open tennis tournament, held in Auckland, New Zealand, but did not participate this year.']
+
+## Generated Outputs
+### reasoning
+The claim has two parts: 1) Angelique Kerber plays tennis and 2) the player who was the defending champion for the 2005 China Open – Men's Doubles also competed in that tournament.
+
+From the context, Angelique Kerber is clearly identified as a professional tennis player with multiple titles and achievements, so the first part is verified.
+
+Regarding the defending champion for the 2005 China Open – Men's Doubles, the context does not mention the China Open – Men's Doubles or its defending champions. However, information about defending champions and participation in other 2005 men's doubles tournaments is given: 
+
+- The 2005 Pilot Pen Tennis – Men's Doubles defending champions were Antony Dupuis and Michaël Llodra, but Dupuis did not compete; Llodra partnered with Santoro.
+- The 2005 Heineken Open – Doubles defending champions were Mahesh Bhupathi and Fabrice Santoro, who did not participate.
+
+None of the provided context mentions either the defending champion for the 2005 China Open – Men's Doubles or any player competing in that specific tournament. Without specific context on the 2005 China Open – Men's Doubles defending champion competing there, this part of the claim cannot be confirmed or refuted.
+
+Therefore, the supported note is that Angelique Kerber is a professional tennis player and has competed in tennis tournaments. There is no information provided in the context to verify the defending champion's participation in the 2005 China Open men's doubles event.
+
+### new_notes
+['Angelique Kerber is a professional tennis player with multiple titles, including Grand Slam wins.']
+
+### titles
+['2016 Angelique Kerber tennis season', 'Angelique Kerber', 'Angelique Kerber career statistics']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ["2005 China Open – Men's Doubles", 'Angelique Kerber']. Documents remaining to be retrieved: ['Justin Gimelstob'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

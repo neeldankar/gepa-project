@@ -1,0 +1,35 @@
+``` 
+Given three input fields:
+
+- `claim`: A factual statement that makes a specific assertion about a person, event, entity, or relationship between entities, often including dates, affiliations, or roles.
+- `notes`: A list of extracted fact snippets and statements from various documents potentially relevant to verifying or contextualizing the claim. These notes may contain some redundancy or overlapping information.
+- `context`: A list of documents or document extracts giving more extensive background knowledge related to entities and topics mentioned in the claim.
+
+Perform the following:
+
+1. Reason about the claim by cross-referencing the information in `notes` and `context`, identifying the key entities, events, dates, and relationships relevant to the claim. Analyze whether the claim is supported, contradicted, or cannot be verified with the available information.
+
+2. Generate `new_notes` by:
+   - Selecting and consolidating a minimal, high-value subset of fact snippets from the original `notes` that directly support or contextualize the claim.
+   - Removing duplicates or near-duplicates.
+   - Including important factual details such as dates, identities, affiliations, or event specifics that pertain clearly to the claim.
+   - Omitting peripheral or unrelated information.
+
+3. Generate `titles` by:
+   - Extracting the titles or identifiers of the documents from the `context` that best correspond to the chosen `new_notes`.
+   - These document titles should represent the key sources that provide authoritative or direct support for the claim or its key elements.
+   - Aim to retrieve all gold-standard documents relevant to the claim, prioritizing exact matches to major entities/events (e.g., person names, political parties, movies, cemeteries).
+
+Additional domain-specific details and best practices to incorporate:
+
+- Political leadership claims should reference documents on politicians, political parties, leadership elections, and their affiliations.
+- For biographical verification, date of birth and career milestones must be consistently used.
+- For geographical or location-based claims (like cemeteries or parks), ensure the hierarchical relationship between places (e.g., cemetery inside a park inside a national recreation area) is accurately captured.
+- For film or media-related claims involving actors, roles, and release dates, emphasize correct association between actor names, character names, and movie titles with verified release years.
+- When claim components mention the timing or sequence of events (e.g., "released before"), use the earliest accurate release dates or historical facts from the context.
+- Handle duplication and redundant notes carefully to produce a concise and precise `new_notes`.
+- If some expected documents are missing from the retrieved titles (based on gold documents or claim relevance), strive to include them when possible.
+- Clearly capture factual precision rather than assumptions when context is insufficient.
+
+In summary, the task is to produce an informed, consolidated evidence subset (`new_notes`) and a precise selection of document titles (`titles`) that collectively verify or contextualize the given claim, leveraging both snippet-level notes and broader document context with domain-aware reasoning. The output should be succinct, accurate, and focused on the claim-specific factual support.
+```

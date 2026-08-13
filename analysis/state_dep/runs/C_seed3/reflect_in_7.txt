@@ -1,0 +1,111 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You are given two inputs: a textual claim and a set of notes (structured as an array of relevant factual statements and evidences). Your task is to produce a corresponding `query` that can be used to search authoritative sources or knowledge bases to verify or refute the claim. The `query` should be formed as precise and focused natural language questions that target the key entities and factual relationships involved in the claim.
+
+Inputs:
+- `claim` (string): A factual or semi-factual statement that needs to be verified.
+- `notes` (list of strings): A collection of relevant evidence snippets, extracted facts, or context related to the claim. These notes provide supporting or contradicting information, often with specific entities (e.g., people, films, dates) and relations.
+
+Outputs:
+- `query` (string): One or more natural language questions designed to retrieve documents that confirm or deny the claim. The queries should explicitly mention the key entities (e.g., names of people, films, years) and relationships to verify. The formulation should be as focused as possible to maximize retrieval of gold documents that determine the claim’s truthfulness.
+
+Key Points and Domain Knowledge:
+- Claims frequently involve relationships between people, films, and years (e.g., actors, composers, film titles, release or production years).
+- Important domain-specific concepts include:
+    - Filmography and familial relationships: identifying actors, their family members (e.g., father), and their respective credits.
+    - Composer’s career milestones: first film scored by a composer, soundtracks for specific films.
+    - Documentary film production years and collaborations between individuals.
+    - Multiple entities and temporal constraints may be involved in verifying claims.
+- The notes provide factual context and evidence that should be used to identify key entities and relationships to be queried.
+- The queries should explicitly address these key entities and their relevant relationships to allow for retrieval of specific supporting documents.
+- When multiple entities or claims are involved, queries may be formed as multiple questions or compound questions targeting all essential parts needed for verification.
+
+Generalizable Strategy:
+1. Parse the claim and identify the main entities (people, films, years, events).
+2. Review the notes to confirm or find which entities and relations are relevant and supported.
+3. Formulate focused natural language questions that direct retrieval tools to documents linking those entities and facts, such as:
+    - Identification questions (“Who is the star of film X?”)
+    - Relationship verification (“Did person A compose film Y?”)
+    - Temporal verification (“Was film A released before film B?”)
+4. Make queries comprehensive enough to cover all verification points, but concise to avoid redundancy.
+5. Include temporal, role-based, or familial constraints when relevant to clarify ambiguous or multi-step claims.
+
+Examples of generated query types include:
+- “Did [Person A] compose the soundtrack for [Film X], and was [Film Y] their first scored film?”
+- “Who is the star of [Film X]? Who is their father? Did the father star in [Film Y] released in [Year]?”
+- “What year was the documentary [Film X] produced or released?” 
+
+Your goal is to produce queries optimized for retrieving the most relevant and sufficient information to verify the claim's validity, guided by detailed contextual notes and the claim’s key components.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Christopher B. Landon wrote a 2007 movie that stars Shia Saide LaBeouf, an American actor who starred in the Disney Channel series Even Stevens that premiered in 2004.
+
+### notes
+["Christopher Landon co-wrote the 2007 film 'Disturbia' starring Shia LaBeouf.", "Shia LaBeouf starred in the Disney Channel series 'Even Stevens'.", 'Even Stevens was a Disney Channel series involving Shia LaBeouf, but the exact premiere year is not clearly stated in the context.', "The 2007 film 'Disturbia' was directed by D. J. Caruso and written by Christopher Landon and Carl Ellsworth and stars Shia LaBeouf.", "Christopher B. Landon co-wrote the 2007 film 'Disturbia' starring Shia LaBeouf.", "Shia LaBeouf starred in the Disney Channel series 'Even Stevens'.", "The Disney Channel series 'Even Stevens' premiered before 2004, with the related movie premiering in 2003.", "Shia LaBeouf won a Young Artist Award nomination in 2001 and a Daytime Emmy Award in 2003 for his role in 'Even Stevens'.", "Christopher B. Landon co-wrote the 2007 film 'Disturbia' starring Shia LaBeouf.", "Shia LaBeouf starred in the Disney Channel series 'Even Stevens', which ran from June 17, 2000, to June 2, 2003.", "The Disney Channel series 'Even Stevens' did not premiere in 2004 but in 2000.", "Shia LaBeouf received a Young Artist Award nomination in 2001 and a Daytime Emmy Award in 2003 for his role in 'Even Stevens'."]
+
+## Generated Outputs
+### reasoning
+The claim states that Christopher B. Landon wrote a 2007 movie starring Shia Saide LaBeouf (likely meaning Shia LaBeouf), who also starred in the Disney Channel series Even Stevens, which reportedly premiered in 2004. The notes confirm that Christopher Landon co-wrote the 2007 film "Disturbia," which starred Shia LaBeouf. It is also confirmed that Shia LaBeouf starred in Even Stevens, but the precise premiere year of Even Stevens is not clear from the notes. Therefore, to fully verify the claim, it is necessary to confirm: (1) Christopher B. Landon wrote (or co-wrote) the 2007 movie starring Shia LaBeouf; (2) Shia LaBeouf starred in Even Stevens; and (3) Even Stevens premiered in 2004.
+
+### query
+Did Christopher B. Landon write or co-write the 2007 movie Disturbia starring Shia LaBeouf? Did Shia LaBeouf star in the Disney Channel series Even Stevens? In what year did Even Stevens premiere on the Disney Channel?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Disturbia (film)', 'Shia LaBeouf']. Documents remaining to be retrieved: ['Christopher B. Landon'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The building that Dennis Huntley provided sculptures for, and St Paul's Cathedral, are both located in England.
+
+### notes
+['Dennis Huntley provided sculptures for Guildford Cathedral, which is located in England.', "St Paul's Cathedral, commonly known and located in London, is in England.", "Other St Paul's cathedrals mentioned are outside England (Korea, USA), so the claim likely refers to the one in London.", 'Dennis Huntley provided sculptures for Guildford Cathedral located in Guildford, Surrey, England.', "St Paul's Cathedral commonly refers to the cathedral in London, England.", 'Guildford Cathedral is an Anglican cathedral in Surrey, England.', "St Paul's Cathedral in London is distinct from other cathedrals of the same name in other countries.", "Both Guildford Cathedral and St Paul's Cathedral are located within England.", 'Dennis Huntley provided sculptures for Guildford Cathedral located in Guildford, Surrey, England.', 'Guildford Cathedral is an Anglican cathedral in Surrey, England.', "St Paul's Cathedral commonly refers to the cathedral in London, England.", "St Paul's Cathedral in London is distinct from those of the same name in other countries.", "Both Guildford Cathedral and St Paul's Cathedral are located within England."]
+
+## Generated Outputs
+### reasoning
+The claim states that Dennis Huntley provided sculptures for a building, and both that building and St Paul's Cathedral are located in England. The notes specify that Dennis Huntley provided sculptures for Guildford Cathedral, which is located in Guildford, Surrey, England. Multiple notes confirm that St Paul's Cathedral, typically referring to the one in London, is indeed in England. There is a clear agreement in the notes that Guildford Cathedral and St Paul's Cathedral are both located in England. Thus, verifying if the building Dennis Huntley contributed sculptures to is Guildford Cathedral and checking St Paul's Cathedral's location will confirm the claim.
+
+### query
+Did Dennis Huntley provide sculptures for Guildford Cathedral? Is Guildford Cathedral located in England? Is St Paul's Cathedral located in England, specifically the one in London?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Dennis Huntley', 'Guildford Cathedral']. Documents remaining to be retrieved: ["St Paul's Cathedral"].
+
+
+
+# Example 3
+## Inputs
+### claim
+Goodbye Mr. Mackenzie is a country band with more members than the band that recorded "Make Them Gold".
+
+### notes
+['Goodbye Mr. Mackenzie is a Scottish alternative rock group, not a country band.', "The band's commercial peak lineup had six members: Martin Metcalfe, John Duncan, Fin Wilson, Shirley Manson, Rona Scobie, and Derek Kelly.", "The band that recorded 'Make Them Gold' is unknown based on the current context.", "No data is available to compare the number of members between Goodbye Mr. Mackenzie and the band that recorded 'Make Them Gold'.", 'Goodbye Mr. Mackenzie is a Scottish alternative rock group, not a country band.', 'Goodbye Mr. Mackenzie had six members at its commercial peak.', "'Make Them Gold' is recorded by Chvrches, a Scottish synthpop band.", 'No information is provided on the number of members in Chvrches for member count comparison.', 'Goodbye Mr. Mackenzie is an alternative rock group, not a country band.', 'At its commercial peak, Goodbye Mr. Mackenzie had six members.', '"Make Them Gold" was recorded by Chvrches, a Scottish synthpop band.', 'Chvrches generally consists of three members.', 'Goodbye Mr. Mackenzie has more members than Chvrches.']
+
+## Generated Outputs
+### reasoning
+The claim involves two bands: Goodbye Mr. Mackenzie and the band that recorded the song "Make Them Gold." To verify it, we need to establish the genre of Goodbye Mr. Mackenzie (to see if it is indeed a country band), identify all members of Goodbye Mr. Mackenzie, and identify the band that recorded "Make Them Gold" along with its members. Finally, compare the membership counts of both bands to see if Goodbye Mr. Mackenzie has more members. Since no notes were provided, the query should aim to find these key pieces of information directly.
+
+### query
+What is the music genre of the band Goodbye Mr. Mackenzie? How many members does Goodbye Mr. Mackenzie have? Which band recorded the song "Make Them Gold," and how many members does that band have?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Goodbye Mr. Mackenzie', 'Make Them Gold']. Documents remaining to be retrieved: ['Chvrches'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

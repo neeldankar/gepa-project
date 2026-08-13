@@ -1,0 +1,74 @@
+``` 
+You will be given three input fields:
+
+- `claim`: A factual statement or assertion that needs to be evaluated as true or false based on the provided evidence.
+- `notes`: A list of textual snippets extracted from various documents, containing facts related to the claim. These may be overlapping, redundant, or vary in detail.
+- `context`: A list of concise summaries or descriptions of source documents potentially relevant to the claim. Each context entry includes a document title and a brief description or snippet.
+
+Your task is to generate two output fields:
+
+- `new_notes`: A carefully distilled, concise, and non-redundant subset or synthesis of the input `notes`. This selection should isolate the most relevant factual information that directly supports or refutes the claim, eliminating duplicates and unrelated details. When appropriate, merge closely related facts into unified statements for clarity and precision.
+- `titles`: A list of the exact document titles from the `context` that contain essential background, biographical, event-related, or organizational information directly tied to the key facts in `new_notes`. Select all titles necessary to cover the critical facts relevant to verifying the claim.
+
+---
+
+Detailed guidelines and domain-specific considerations:
+
+1. **Precise Claim Comprehension:**
+   - Identify the core factual relationships or attributes asserted in the claim. These often involve:
+     - Dates (e.g., birthdates, event dates)
+     - Locations or geopolitical hierarchies (e.g., whether a venue is in a city, a city in a state, etc.)
+     - Organizational ownership or affiliations (e.g., a venue owned by a company)
+     - Event participants (e.g., players, teams, shows)
+     - Taxonomic ranks and relationships (e.g., genus, subfamily, species counts)
+   - Distinguish nuanced terms such as "generic name" versus "taxonomic rank" and confirm entities’ identities precisely.
+
+2. **Thorough Analysis and Synthesis of Notes:**
+   - Extract and highlight only the core factual statements essential for verifying or falsifying the claim.
+   - Remove redundant notes containing near-duplicate information.
+   - Exclude notes irrelevant to the claim’s components.
+   - When facts overlap (e.g., multiple genera under a subfamily with species counts), consider summarizing them strategically to clarify comparisons.
+   - Avoid adding any information not explicitly present in the `notes` or context.
+
+3. **Accurate Matching to Context Documents:**
+   - Select document titles whose content includes crucial facts or context that validate or invalidate the claim.
+   - Titles should correspond to core entities or facts identified in `new_notes` (e.g., key individuals, events, venues, organizations).
+   - Include all necessary documents—partial inclusion can hinder comprehensive verification.
+   - Exclude context documents irrelevant to verifying any aspect of the claim.
+
+4. **Fact Coverage and Verification Focus:**
+   - For claims concerning quantitative comparisons (like number of species), ensure notes include explicit counts or summons as per evidence.
+   - For claims involving locations or ownership, prioritize notes detailing exact geographical hierarchy and ownership relations.
+   - For events and participants, include notes specifying where, when, and by whom events took place.
+   - In taxonomy-related claims, note the exact taxonomic rank and clarifications about name origins or classifications.
+
+5. **Maintain Clarity, Specificity, and Factual Integrity:**
+   - Each note in `new_notes` should stand alone as a clear, verifiable factual statement linked to the claim.
+   - Do not fabricate or speculate beyond the given data.
+   - Your outputs should implicitly reflect reasoning by supporting straightforward verification or rebuttal.
+
+---
+
+**Generalizable Strategy:**
+
+- Begin by identifying all claim-relevant entities and attributes.
+- Filter and refine `notes` by removing redundancy and unrelated information while synthesizing overlapping facts into crisp, concrete statements.
+- Cross-reference the refined notes with `context` titles to ensure relevant, supporting sources are included.
+- Check for any gaps in fact coverage and confirm all necessary facets of the claim are addressed in `new_notes` and covered by `titles`.
+- Prioritize document titles and notes that confirm or contradict the claim directly.
+
+---
+
+**Additional Domain Niche Information Derived from Examples:**
+
+- For taxonomic claims: understand that a "generic name" may relate to genus or subfamily level names, and that species counts are often associated with genus-level entities within those.
+- For entertainment/events claims: venues may have multiple names (e.g. The AXIS auditorium at Planet Hollywood Resort & Casino), and venue ownership by parent corporations may be relevant.
+- For sports claims: player nationality or origin claims must be supported by exact biographical info; defending champions in sports events are identified by event and year; ensure players and events are linked.
+- Precision about geographical descriptions is important—e.g., whether a location in a claim is named as 'Las Vegas' but the actual venue lies in a census-designated place like 'Paradise, Nevada' matters.
+- Multiple repeated notes should be collapsed into single definitive statements.
+- When a claim mixes multiple entities or events, verify each component distinctly and include evidence accordingly.
+
+---
+
+Follow these instructions to produce output that is coherent, focused, and sufficient to verify or refute the claim based solely on the provided notes and context.
+```

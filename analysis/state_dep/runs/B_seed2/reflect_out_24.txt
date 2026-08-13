@@ -1,0 +1,66 @@
+```
+You will receive three input fields:
+
+- `claim`: A factual assertion or statement whose truthfulness or accuracy must be evaluated.
+- `notes`: A list of text snippets extracted from various documents relevant to the claim. These notes may contain redundant, overlapping, or partial information, and may vary in detail and relevance.
+- `context`: A list of brief summaries or descriptions of source documents that provide background or additional information connected to the entities, people, events, or facts relevant to the claim.
+
+Your goal is to produce two output fields:
+
+- `new_notes`: A distilled, precise, and non-redundant subset or synthesis of the input `notes` that directly contain key factual information supporting or refuting the claim. These should avoid repetition, irrelevant details, or extraneous facts unrelated to verifying the claim. If multiple notes contain closely related facts, combine or consolidate them into clear standalone statements. Focus exclusively on facts that allow straightforward verification or falsification of the claim components.
+- `titles`: A list of the exact document titles from the `context` whose contents are directly relevant and critical to assessing the claim, especially those related to the core entities, key facts, dates, or relationships mentioned in the `new_notes`.
+
+Detailed guidelines and domain-specific considerations:
+
+1. **Claim comprehension and fact extraction:**
+   - Carefully analyze the claim to identify its core factual elements, such as:
+     - named people, their roles or relationships (e.g., voice roles, family relations, director credits);
+     - dates or chronological assertions (e.g., release years, birth years, event dates);
+     - geographical or organizational affiliations (e.g., studios, countries, locations);
+     - participation in or connection to specific events, productions, or organizations.
+   - Understand common claim types in this domain:
+     - Voice acting roles connected to specific films and release years.
+     - Film release dates and sequencing relative to other known films.
+     - Identifying directors or producers associated with films.
+     - Family relationships in film actors and their debut films.
+     - Distinguishing between similarly named films, production studios, or sequels.
+     - Clarifying ambiguity about entities with similar or overlapping names or events.
+
+2. **Analyzing and refining `notes`:**
+   - Extract from `notes` only the facts that directly enable verification of the claim’s components.
+   - De-duplicate repeated notes.
+   - Remove notes irrelevant to core claim facts (e.g., irrelevant biographical trivia, tangential details, or unrelated productions).
+   - Where `notes` duplicate or overlap on a fact, consolidate into a singular clear statement.
+   - Preserve critical specifics: names of individuals, exact titles of films or events, years, and direct relationships.
+   - Do not invent or infer new information not explicit in the provided `notes` or `context`.
+
+3. **Selecting relevant document `titles`:**
+   - Identify document titles in the `context` that correspond to:
+     - Entities or individuals named in the refined facts (e.g., the voice actor, director, main actor, family members).
+     - Films, shows, or productions central to the claim.
+     - Production studios, film franchises, or events that contain key referenced facts.
+   - Include all titles necessary to cover the essential facts distilled in `new_notes`.
+   - Do not include tangential or unrelated documents.
+   - Titles should be exactly as given in the `context` field.
+
+4. **Factual precision and clarity:**
+   - Each note in `new_notes` should be factually precise and standalone understandable.
+   - When dates or chronological assertions are involved, emphasize exact years or date ranges when available.
+   - For cast or crew claims, clarify the role and work title explicitly.
+   - For familial or relational claims (e.g., “father of star”), explicitly state those relations as found in notes.
+   - For claims involving entities with similar or confusing names, clearly disambiguate using the provided information.
+   - Avoid any language that hedges or speculates beyond the explicit factual content given.
+
+5. **No fabrication or external knowledge usage:**
+   - Work strictly within the facts extracted from the `notes` and `context`.
+   - Do not add any information from outside sources or knowledge not contained in the inputs.
+
+6. **Why this approach:**
+   - The goal is to synthesize the most relevant, precise evidence to either support or refute the claim efficiently.
+   - The selection of document titles enables quick sourcing back to authoritative or original sources.
+   - Distilling notes removes redundancies and distractions, focusing attention on verifiable facts.
+   - Thorough interpretation of claim components and focused extraction ensures high-quality fact checking in domains like film, voice acting, and production history.
+
+Use these instructions to generate outputs that enable straightforward, verifiable assessment of the claim based solely on the provided evidence.
+
+```

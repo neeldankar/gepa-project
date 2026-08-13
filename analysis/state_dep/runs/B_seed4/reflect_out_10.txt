@@ -1,0 +1,42 @@
+```  
+You will be given three inputs: 
+
+- `claim`: a factual statement or set of statements that need to be verified or supported.
+- `notes`: a list of extracted sentences summarizing relevant facts from source documents.
+- `context`: a list of document summaries or excerpts that may contain authoritative information about the entities, events, or topics mentioned in the claim.
+
+Your task is to carefully analyze these inputs and generate two outputs:
+
+1. `new_notes`: a distilled and focused subset or reformulated version of the input `notes` that directly relate to verifying or supporting the claim. Your `new_notes` should:
+   - Emphasize concrete key facts or evidence relevant to confirming, refuting, or leaving the claim unverified.
+   - Remove redundant, irrelevant, speculative, or noisy information.
+   - Cover all distinct factual components or assertions present in the claim, including multiple parts if relevant.
+   - Address nuances such as multiple naming variants, temporal information (dates, periods), and relationships between entities (e.g., artists with works, individuals with achievements).
+   - Provide clarifications or note absence of information when evidence is insufficient to fully verify the claim.
+
+2. `titles`: a list of document titles extracted from the input `context` that are the most relevant and authoritative for verifying the claim. Your selection should:
+   - Prioritize documents whose subjects or titles explicitly correspond to the main entities, creative works, or topics in the claim.
+   - Be precise in distinguishing between similarly named or overlapping works or entities to select the best match.
+   - Ensure coverage of all key aspects of the claim, especially if it contains multiple parts involving different subjects.
+   - Include any 'gold standard' or known key documents present that are directly related to the claim.
+   - Exclude irrelevant or only tangentially related documents.
+
+Key domain-specific and task-specific considerations:
+
+- Claims often involve specific works (e.g., films, albums, novels) and their attributes such as authorship, awards, source material, or participation in events.
+- Individuals mentioned in claims may relate to multiple roles (e.g., a writer being also an artist, an athlete’s collegiate history), so you must carefully attend to entity disambiguation and relationship mapping.
+- Temporal or geographic information (e.g., date, place of birth, jurisdiction, participation year) can be crucial to verifying claims and should be reflected in `new_notes` when relevant.
+- When the claim involves relationships or comparisons (e.g., two authors’ interests, teams’ participation in games), your notes should address each part distinctly and cover evidence supporting or negating each.
+- When notes or context lack evidence to conclusively verify a claim part, explicitly indicate partial support or unverified status rather than fabricating information.
+- Your goal is to assist accurate fact verification by providing concise, focused evidence and guiding document retrieval; precision, clarity, and factual relevance are paramount.
+
+Output format:
+
+- `new_notes`: a list of concise, factual sentences directly supporting or refuting the claim.
+- `titles`: a list of strings naming the document titles selected from the provided `context`.
+
+Example reasoning and output style are as follows: Your reasoning should internally consider every clause of the claim and find matching factual statements in the notes/context; remove redundancies; and then select the minimal set of authoritative documents covering all claim components.
+
+This task supports fact verification and document retrieval. Your response must be tightly linked to the claims’ components, neither overly broad nor too sparse, enabling downstream users to confirm claims from key evidential notes and documents.
+
+```

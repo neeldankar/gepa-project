@@ -1,0 +1,119 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You will receive an input containing two fields: `claim` and `notes`. Your task is to generate an appropriate `query` field based on these inputs.
+
+- The `claim` is a statement or set of statements that assert certain facts or relationships involving specific entities, events, or attributes.
+- The `notes` field is a list of sentences or short paragraphs providing factual information, context, or supporting evidence related to the claim. These notes may contain overlapping, repeated, or partially contradictory information.
+
+Your objective is to formulate a concise, clear, and factually precise **search query** or **information request** that would help verify the claim or retrieve the missing important details necessary to fully evaluate the claim.
+
+Key points and domain-specific knowledge to consider when constructing the query:
+
+1. Identify the key entities, dates, events, and relationships mentioned or implied in the claim. These often include:
+   - Names of people (athletes, actors, designers, etc.)
+   - Titles of works (TV series, games, tournaments)
+   - Dates of events (premieres, competitions)
+   - Roles or character names (e.g., "Gaius Baltar")
+   - Specific achievements or attributes (e.g., "started competing at age five")
+   
+2. Use the notes to:
+   - Clarify ambiguous or missing details in the claim (e.g., identifying the exact opponent who lost a competition)
+   - Highlight any contradictions or uncertain facts in the claim that need resolution (e.g., conflicting premiere dates)
+   - Identify which key entity or fact from the claim is not yet verified or is deficient in the notes
+
+3. The query should be formulated as a natural language question or a clear factual query aiming to retrieve information that:
+   - Confirms or denies the main factual points in the claim
+   - Gathers key missing data or the most critical information needed to comprehensively evaluate the claim
+   - Specifically targets the missing supporting documents or evidence traces as identified by the feedback (e.g., some entities or facts remain unretrieved)
+
+4. Avoid redundancy in the query; focus on the most relevant sub-claims or facts that remain unverified or unclear.
+
+5. The query should be comprehensive enough to cover multiple related facts if they are closely linked and pivotal for the claim's validity.
+
+Generalizable Strategy:
+- Break down the claim into its core factual components.
+- Cross-check these components with the provided notes to detect which supporting information is present and which is missing or ambiguous.
+- Formulate a query designed to retrieve the missing or ambiguous facts explicitly.
+- Where multiple sub-claims or entities are involved, combine related queries into one clear question when possible, to efficiently retrieve multiple missing facts.
+- Maintain clarity, relevance, and focus on fact-verification in your queries.
+
+Example considerations based on prior examples:
+- If the claim involves an event and a person’s involvement (e.g., “Who did Johan Kriek defeat in 1982 Australian Open?”), the query should explicitly ask for this fact.
+- If there are conflicting dates or ambiguous phrases (e.g., “joined in 2010” vs “premiered in 2006”), the query should request clear confirmation of premiere dates or join dates of people or series.
+- If the claim compares popularity or recognition (e.g., chess vs game designer’s games), the query should request evidence or metrics illustrating these comparisons.
+- Queries should request precise entity-level details (full names, event titles, premiere dates, roles played) to help retrieve the exact documents needed.
+
+In summary, your instruction is: Given the `claim` and supportive `notes`, generate a focused, fact-seeking `query` that aims to fill in the evidence gaps, resolve contradictions, or clarify ambiguous details necessary for full claim verification.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The Manchester United Football Club is known as "the Red Devils". The goalie who led the strike force for the 1928–29 Leicester City F.C. season played for them.
+
+### notes
+["Leicester City's 1928–29 season was led in attack by strike force players Ernie Hine, Arthur Chandler, and Arthur Lochhead and captain Johnny Duncan; no mention of a goalie leading the strike force.", 'Ben Davies was a goalkeeper who played for Leicester City but no evidence he played for Manchester United.', 'There is no information indicating that the goalie for Leicester City in 1928–29 played for Manchester United.', "Manchester United Football Club is commonly known as 'the Red Devils' but this is not explicitly confirmed in the provided context.", "Manchester United Football Club is commonly known as 'the Red Devils'.", 'The 1928–29 Leicester City strike force was led by attackers Ernie Hine, Arthur Chandler, Arthur Lochhead, and Johnny Duncan; no goalie led the strike force.', "No goalie from Leicester City's 1928-29 season is documented as having played for Manchester United.", "Manchester United Football Club is commonly known as 'the Red Devils'.", "Leicester City's 1928–29 strike force was led by attackers Ernie Hine, Arthur Chandler, Arthur Lochhead, and Johnny Duncan; no goalie led the strike force.", 'There is no evidence that any Leicester City goalie from the 1928–29 season played for Manchester United.']
+
+## Generated Outputs
+### reasoning
+The claim involves two parts: first, that Manchester United Football Club is known as "the Red Devils," and second, that the goalie who led the strike force for Leicester City in the 1928–29 season played for Manchester United. From the notes, "the Red Devils" nickname for Manchester United is mentioned but not explicitly confirmed with direct evidence in the provided context. The goalies for Leicester City's 1928–29 season and their involvement in leading the strike force are contradicted; the strike force was led by outfield players Ernie Hine, Arthur Chandler, and Arthur Lochhead, not a goalie. Additionally, there is no evidence that the Leicester City goalie from that season played for Manchester United. Therefore, to verify the full claim, we need to confirm the nickname "the Red Devils" for Manchester United and also determine who was the goalie for Leicester City in 1928–29, whether that goalie led the strike force, and if that goalie ever played for Manchester United.
+
+### query
+Is Manchester United Football Club officially and commonly known as "the Red Devils"? Who was the goalkeeper for Leicester City during the 1928–29 season, did that goalkeeper lead the strike force for Leicester City that season, and did that goalkeeper ever play for Manchester United Football Club?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['1928–29 Leicester City F.C. season']. Documents remaining to be retrieved: ['Ernie Hine', 'Manchester United F.C.'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The actress made her debut in the film by the director who was American. She also starred in The Death and Life of John F. Donovan.
+
+### notes
+['Diane Keaton is an American actress who made her screen debut in 1970 and worked with American director Woody Allen on several early films.', 'The Death and Life of John F. Donovan is a Canadian drama film featuring actors Kit Harington, Natalie Portman, and Jessica Chastain, but Diane Keaton is not listed among its cast.', 'Diane Keaton is an American actress who made her screen debut in 1970.', 'Diane Keaton worked with American director Woody Allen on several early films.', 'Woody Allen is an American director.', 'The Death and Life of John F. Donovan features actors Kit Harington, Natalie Portman, and Jessica Chastain but does not include Diane Keaton in its cast.', 'Diane Keaton is an American actress who made her screen debut in 1970 and worked with American director Woody Allen on several early films.', 'Woody Allen is an American director.', 'The Death and Life of John F. Donovan is a Canadian drama film featuring actors Kit Harington, Natalie Portman, and Jessica Chastain, but Diane Keaton is not listed among its cast.']
+
+## Generated Outputs
+### reasoning
+The claim states that the actress made her debut in a film by an American director and also starred in The Death and Life of John F. Donovan. The notes indicate that Diane Keaton, an American actress, made her screen debut in 1970 with American director Woody Allen, but she is not listed among the cast of The Death and Life of John F. Donovan, a Canadian film. Therefore, the claim about starring in The Death and Life of John F. Donovan contradicts the notes. To verify the claim, it is necessary to clarify the identity of the actress who made her debut under an American director and confirm whether or not she also starred in The Death and Life of John F. Donovan.
+
+### query
+Did Diane Keaton star in the film The Death and Life of John F. Donovan, and who is the actress that made her debut under an American director and starred in this film?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['The Death and Life of John F. Donovan']. Documents remaining to be retrieved: ['Amara Karan', 'Wes Anderson'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Meesha Shafi, Strings, Ali Azmat and Junaid Khan are judges on the show Music Icons. The producer and singer of Aaina joined them.
+
+### notes
+['Meesha Shafi, Strings, Ali Azmat, and Shahzad Hasan were judges on the show Music Icons as of April 2013.', 'Meesha Shafi, Strings, Ali Azmat, and Shahzad Hasan were judges on the show Music Icons as of April 2013.', 'In April 2013, Alamgir, the producer and singer of Aaina, joined Meesha Shafi, Strings, Ali Azmat, and Shahzad Hasan as a judge on Music Icons.', 'Junaid Khan was a host at the 4th Lux Style Awards but is not confirmed as a judge on Music Icons.', 'Meesha Shafi, Strings, Ali Azmat, and Shahzad Hasan were judges on the show Music Icons as of April 2013.', 'In April 2013, Alamgir, the producer and singer of Aaina, joined Meesha Shafi, Strings, Ali Azmat, and Shahzad Hasan as a judge on Music Icons.', 'Junaid Khan was a host at the 4th Lux Style Awards but is not confirmed as a judge on Music Icons.']
+
+## Generated Outputs
+### reasoning
+The claim states that Meesha Shafi, Strings, Ali Azmat, and Junaid Khan are judges on the show Music Icons, and that the producer and singer of Aaina (Alamgir) joined them as a judge. The notes confirm that Meesha Shafi, Strings, Ali Azmat, and Shahzad Hasan were judges on Music Icons as of April 2013, and that Alamgir joined as a judge that same month. However, there is no confirmation that Junaid Khan is a judge; instead, he is noted as a host for the Lux Style Awards, not Music Icons. Therefore, it is necessary to verify whether Junaid Khan was indeed a judge on Music Icons to fully confirm the claim.
+
+### query
+Was Junaid Khan ever a judge on the show Music Icons, and did Alamgir join Meesha Shafi, Strings, Ali Azmat, and Shahzad Hasan as judges on this show?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Alamgir (pop singer)']. Documents remaining to be retrieved: ['Aaina (album)', 'Ali Azmat'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

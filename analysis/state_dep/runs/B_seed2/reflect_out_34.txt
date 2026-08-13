@@ -1,0 +1,67 @@
+``` 
+You will be given the following input fields:
+
+- `claim`: A factual statement or assertion whose truthfulness needs to be evaluated.
+- `notes`: A list of textual snippets extracted from various documents relevant to evaluating the claim. These notes may contain overlapping, redundant, or only partially relevant information, and vary in specificity and detail.
+- `context`: A list of concise summaries or descriptions of source documents that may provide additional factual information related to the claim. Each description includes the exact document title.
+
+Your task is to produce two output fields:
+
+- `new_notes`: A refined, concise, and de-duplicated subset or synthesis of the original `notes` that focuses solely on the core factual content necessary to verify or refute the claim. These notes should:
+  - Emphasize key factual elements directly related to the entities, dates, attributes, events, and relationships asserted in the claim.
+  - Remove near-duplicates, redundant statements, and irrelevant or speculative information.
+  - Combine closely related facts into clear, standalone factual statements.
+  - Avoid adding or inferring any information beyond what the inputs provide.
+
+- `titles`: A list of the most relevant document titles from the `context` that contain essential information supporting the verification of the claim.  
+  - Select titles whose content contains critical factual data about the entities, dates, events, organizations, or relationships referenced in `new_notes`.  
+  - Every selected title must be directly tied to key factual points used to verify the claim.  
+  - If multiple documents support different parts of your refined notes, include all those titles.  
+
+---
+
+**Detailed guidelines and best practices:**
+
+1. **Comprehend the claim thoroughly:**  
+   - Identify the precise factual assertions within the claim—these commonly include entities (people, organizations, bands), their attributes (e.g., nationality, headquarters location, membership status), actions (e.g., participation in events, singing specific songs), and relationships between them (e.g., company operated a plane, musician was a band member).  
+   - Understand implicit contrasts or negations in the claim (e.g., "are not both members").
+
+2. **Analyze and refine `notes`:**  
+   - Extract core facts relevant to verifying key parts of the claim.  
+   - Remove exact and near-duplicate notes.  
+   - Discard notes that do not contribute factual information relevant to evaluating the claim or only restate facts without adding detail.  
+   - Synthesize closely related facts into single clear statements (e.g., combine a band’s composition and a member’s non-membership into one note).  
+   - Include clarifying facts that directly support the verification or falsification, such as explicit statements denying membership or confirming location.
+
+3. **Map facts to document titles in the `context`:**  
+   - Match key entities and factual elements from your `new_notes` with the document titles provided in `context`.  
+   - Include all document titles that are necessary to cover and substantiate every significant fact in the refined notes.  
+   - Prioritize comprehensive coverage of primary facts needed to resolve the claim rather than peripheral or background topics.  
+   - Use exact document titles as given, ensuring no fabrication or modification.
+
+4. **Maintain factual integrity and avoid fabrication:**  
+   - Do not add information not present in `notes` or `context`.  
+   - If certain facts are unavailable or evidence is negative (e.g., "no evidence found that..."), incorporate that explicitly in the refined notes.
+
+5. **Clarity, precision, and standalone nature of `new_notes`:**  
+   - Ensure each note is self-contained and understandable without needing external context.  
+   - Notes should be concise yet sufficiently detailed to provide clear factual support for evaluating the claim.
+
+6. **Common claim themes and typical fact types to focus on:**  
+   - Biographical details (birth/death dates, nationalities).  
+   - Organizational facts (company headquarters location, country, nationality).  
+   - Relationships (e.g., who operated what, who was a member of which band or organization).  
+   - Event participation (e.g., sports teams in events, airline flights).  
+   - Song or album details and performer involvement relevant to composers or musicians.  
+   - Denials or absence of evidence that are critical to claim evaluation (e.g., explicitly no record of membership).
+
+7. **Approach to negations and contradictions in claims:**  
+   - Highlight factual contradictions or confirmations from reliable notes.  
+   - Include notes that explicitly refute incorrect or unsupported parts of the claim.
+
+---
+
+**Summary:**  
+Your role is to distill a potentially noisy and overlapping set of notes into a factually crisp and minimal set of statements that directly bear on the claim’s truthfulness, then identify exactly which document titles from `context` underpin those facts. This facilitates clear, precise verification or refutation of the claim using supported evidence without redundancy or omission.
+
+```

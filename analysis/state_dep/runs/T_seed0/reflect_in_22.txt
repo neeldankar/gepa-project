@@ -1,0 +1,124 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:  
+You will be given a factual claim—a specific statement or assertions involving entities (such as people, locations, species, organizations, events, or dates)—and a set of detailed notes containing verified, contextual, or contrasting information related to the claim. Your task is to generate a precise, well-formed natural language query or set of queries. These queries should be designed to efficiently retrieve authoritative and relevant evidence that can verify or refute the claim.
+
+Input Format:  
+- `claim`: A short sentence or paragraph asserting one or more factual points.  
+- `notes`: A list of bullet points containing verified facts, clarifications, corrections, or relevant background information pertaining to the entities, dates, places, relationships, or events referenced in the claim.
+
+Output:  
+- `query`: One or more clear and concise natural language questions that explicitly target the key factual elements of the claim and incorporate important context or corrections from the notes. The query should be compact but comprehensive enough to support retrieval of all relevant authoritative documents or data needed to validate or refute the claim.
+
+Detailed Instructions:
+
+1. Decompose the Claim:  
+   - Identify all critical factual components: names of people, groups, bands, or species; places including cities, counties, parks, and islands; dates or date ranges; relationships between entities (e.g., band membership, actor roles); and specific assertions (such as formation dates, scoring events, or native habitats).  
+   - When multiple facts or subclaims exist, consider each independently and how they connect logically.
+
+2. Analyze the Notes Carefully:  
+   - Use the notes to understand the verified background and domain-specific facts, e.g.:  
+     - Taxonomy distinctions between species and subspecies (e.g., Echium wildpretii subspecies native to specific Canary Islands with unique corresponding national parks).  
+     - Precise Norwegian administrative geography, e.g., that a band based in Bergen falls within Hordaland county.  
+     - Film or actor specifics, such as actor birthdates, nationalities, character roles, and associated commercial appearances.  
+   - Identify any contradictions, corrections, or clarifications in the notes relative to the claim, and reflect these nuances in the query to prevent ambiguity or conflation of facts.
+
+3. Construct the Query:  
+   - Explicitly mention all key entities and their relevant factual attributes needed to check the claim (e.g., "Nathaniel 'Nate' Jacks" vs a football team name, or who scored in a particular FIFA match).  
+   - Incorporate corrections or finer domain distinctions from the notes (e.g., clarify if a regiment began in a year different from the claim, or separate similarly named films and the involvement of specific composers).  
+   - Combine all related factual verification questions into a minimal set of precise, logically ordered natural language questions.  
+   - Avoid vagueness or extraneous details; aim for specificity ensuring the query leads directly to retrieval of the minimal sufficient body of authoritative fact sources.  
+   - Use question formats understandable by retrieval or fact-checking systems (e.g., "When was X established?", "Did Y score in match Z?").
+
+4. Example Domain-Specific Knowledge and Nuances to Embed:  
+   - Sports and players: Distinctions between indoor American football and international soccer; verifying player participation and scoring in specific historical matches.  
+   - Military history and films: Correct regiment names (e.g., 100th Infantry Battalion/442nd Regimental Combat Team), accurate formation dates vs combat timelines, and confirming film representations and directors.  
+   - Films and music scores: Accurate movie release years, composer assignments, distinguishing unrelated films with similar names, confirming sequel or related film statuses.  
+   - Geography: Norwegian counties and cities; Canary Islands national parks and native species distributions.  
+   - Actor biographies: Birthdates, nationalities, credited roles, and commercial appearances linked to specific TV series or characters.
+
+5. Generalizable Strategy:  
+   - Break down the claim into elemental fact assertions.  
+   - Cross-reference each fact with the notes to identify confirmations, contradictions, or additional clarifying data.  
+   - Formulate natural language questions that explicitly include all key entities, dates, relationships, and corrections necessary to verify or refute each component.  
+   - Combine questions succinctly when they verify interconnected facts in the claim, ensuring logical flow and minimal redundancy.  
+   - Ensure queries are suitable for targeted evidence retrieval and downstream rigorous fact-checking.
+
+6. Avoid:  
+   - Ambiguity or overly broad/general phrasing that might retrieve irrelevant or excessive information.  
+   - Mixing unrelated domains or conflating entities that the notes specify as distinct.  
+   - Inclusion of commentary or reasoning in the output—only output the final query in natural language question form.
+
+By faithfully applying these instructions, you will create queries that enable efficient and precise retrieval of all relevant authoritative documents or evidence required to assess the truthfulness of the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The French star of The Cutting Edge voiced a character in an animated 1994 film. She voiced the character named Nala.
+
+### notes
+["Moira Kelly is an American actress known for starring in The Cutting Edge and voicing adult Nala in Disney's 1994 film The Lion King.", 'No evidence suggests that a French star of The Cutting Edge voiced Nala or any character in the 1994 animated film.', "Nala's voice was provided by multiple American voice actresses: Moira Kelly (adult speaking voice), Niketa Calame (young speaking voice), and others for singing voices.", "Moira Kelly, an American actress, starred in The Cutting Edge and voiced the adult Nala in Disney's 1994 animated film The Lion King.", 'No records or evidence support that a French star of The Cutting Edge provided the voice for Nala or any character in The Lion King (1994).', 'The character Nala in The Lion King was voiced by American actresses including Moira Kelly (adult speaking voice) and Niketa Calame (young speaking voice).', "Moira Kelly is an American actress who starred in The Cutting Edge and voiced adult Nala in Disney's 1994 film The Lion King.", 'There is no evidence to support that a French star of The Cutting Edge voiced Nala or any character in The Lion King (1994).', "Nala's voice was provided by American actresses including Moira Kelly (adult speaking voice) and Niketa Calame (young speaking voice)."]
+
+## Generated Outputs
+### reasoning
+The claim asserts that a French star of The Cutting Edge voiced Nala in a 1994 animated film. The notes clarify that Moira Kelly, an American actress, starred in The Cutting Edge and voiced adult Nala in Disney's 1994 film The Lion King. There is no evidence that a French actress from The Cutting Edge voiced Nala or any character in the 1994 animated film. Nala's voice was provided by American actresses. Therefore, the essential elements to verify are whether any French star of The Cutting Edge voiced Nala in the 1994 animated film and to confirm who actually voiced Nala.
+
+### query
+Did any French actress who starred in the film The Cutting Edge voice the character Nala or any character in the 1994 Disney animated film The Lion King? Who provided the voice for Nala in that film, including the adult speaking voice, young speaking voice, and singing voices? What is the nationality of Moira Kelly, the actress who starred in The Cutting Edge and voiced Nala?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Moira Kelly']. Documents remaining to be retrieved: ['The Cutting Edge', 'The Lion King'].
+
+
+
+# Example 2
+## Inputs
+### claim
+The trainer, who named Eddie Mahan "the greatest football player of all time", coached the Indians and was the first Native American to win a metal in his home country.
+
+### notes
+["Eddie Mahan was a celebrated football player named by Jim Thorpe as 'the greatest football player of all time', but he was not a trainer nor a Native American.", 'No evidence suggests Eddie Mahan coached the Indians or was the first Native American to win a medal.', 'Jim Thorpe was a Native American athlete who won medals and was associated with the Carlisle Indians football team, possibly leading to confusion.', "The claim conflates Eddie Mahan's recognition by Jim Thorpe with Thorpe's own achievements as a Native American athlete and trainer.", 'Jim Thorpe, a Native American athlete and coach, called Eddie Mahan the greatest football player of all time.', 'Eddie Mahan was a Harvard football player, not a coach or Native American.', 'Jim Thorpe coached the Oorang Indians, a Native American professional football team, not the Carlisle Indians college team.', 'No evidence shows Eddie Mahan coached the Indians or won a medal as a Native American athlete.', "The claim conflates Eddie Mahan's football acclaim with Jim Thorpe's accomplishments as a Native American coach and athlete.", "Eddie Mahan was named 'the greatest football player of all time' by Jim Thorpe but was not a trainer or coach.", 'Jim Thorpe was a Native American athlete who coached the Oorang Indians, an NFL team of Native Americans.', 'Jim Thorpe won Olympic medals in the United States, making him a notable Native American medalist.', 'Eddie Mahan did not coach the Indians nor did he win an Olympic medal.', "The claim incorrectly conflates Eddie Mahan's football acclaim and Jim Thorpe's Native American achievements."]
+
+## Generated Outputs
+### reasoning
+The claim attributes the title "greatest football player of all time" to Eddie Mahan from a trainer who also coached the Indians and was the first Native American to win a medal in his home country. The notes clarify that Jim Thorpe, a Native American athlete and coach, is the person who named Eddie Mahan "the greatest football player of all time." Eddie Mahan himself was not a trainer, was not Native American, nor did he coach Indian teams. Furthermore, Jim Thorpe coached the Oorang Indians team (not the Carlisle Indians) and was the Native American athlete who won medals. The claim confuses Eddie Mahan's recognition with Jim Thorpe's athletic and coaching achievements. Therefore, the key factual components to verify or refute are: who called Eddie Mahan "the greatest football player of all time," who coached the Indians (specifically the Oorang Indians), and who was the first Native American to win a medal in his home country.
+
+### query
+Who named Eddie Mahan "the greatest football player of all time"? Did Eddie Mahan ever coach any Native American football teams such as the Indians? Who coached the Oorang Indians football team? Was Eddie Mahan Native American, and did he win any medal as a Native American athlete? Was Jim Thorpe a Native American athlete and coach of a Native American football team, and did he win medals in his home country?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Eagle Feather', 'Eddie Mahan']. Documents remaining to be retrieved: ['Jim Thorpe'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Ettore Scola was a film director. Che strano chiamarsi Federico" co-writer on Yes Minister is also a director.
+
+### notes
+["Ettore Scola was the director of the 2013 documentary 'Che strano chiamarsi Federico.'", "'Che strano chiamarsi Federico' documents the relationship between Ettore Scola and Federico Fellini.", "Jonathan Lynn co-created and co-wrote the TV series 'Yes Minister' and is also a director.", "There is no link between 'Che strano chiamarsi Federico' and the TV series 'Yes Minister.'", "Ettore Scola directed the 2013 documentary 'Che strano chiamarsi Federico,' which explores his relationship with Federico Fellini.", "'Che strano chiamarsi Federico' has no connection to the TV series 'Yes Minister.'", "Jonathan Lynn co-created and co-wrote 'Yes Minister' and is also a director, but is unrelated to Ettore Scola or the documentary 'Che strano chiamarsi Federico.'", "Ettore Scola was the director of the 2013 documentary 'Che strano chiamarsi Federico'.", "'Che strano chiamarsi Federico' documents the relationship between Ettore Scola and Federico Fellini.", "Jonathan Lynn co-created and co-wrote the TV series 'Yes Minister' and is also a director.", "There is no connection between 'Che strano chiamarsi Federico' and the TV series 'Yes Minister' or its creators.", "The co-writers/directors of 'Che strano chiamarsi Federico' and 'Yes Minister' are different people with no overlap."]
+
+## Generated Outputs
+### reasoning
+The claim contains two separate assertions: first, that Ettore Scola was a film director, and second, that "Che strano chiamarsi Federico" co-writer on Yes Minister is also a director. The notes clarify that Ettore Scola directed the 2013 documentary "Che strano chiamarsi Federico," confirming his role as a film director and the connection between Scola and the documentary. However, the claim appears to conflate the documentary "Che strano chiamarsi Federico" with the co-writer of the TV series "Yes Minister." The notes reveal that Jonathan Lynn co-created and co-wrote "Yes Minister" and is also a director, but he is unrelated to the documentary "Che strano chiamarsi Federico." Further, the documentary has no connection to the "Yes Minister" series or its creators. Therefore, the query should seek to confirm Ettore Scola's status as a director and his directing of the documentary "Che strano chiamarsi Federico," clarify Jonathan Lynn's involvement with "Yes Minister" and his directorial career, and establish explicitly that the documentary and the "Yes Minister" series are unrelated, to address any potential conflation in the claim.
+
+### query
+Was Ettore Scola a film director, and did he direct the 2013 documentary "Che strano chiamarsi Federico"? Who co-wrote the TV series "Yes Minister," and is that person also a director? Is there any connection between the documentary "Che strano chiamarsi Federico" and the TV series "Yes Minister" or its co-writers?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Jonathan Lynn']. Documents remaining to be retrieved: ['Ettore Scola', 'Yes Minister'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

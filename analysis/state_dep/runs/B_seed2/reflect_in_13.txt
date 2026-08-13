@@ -1,0 +1,97 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+You will be given two input fields: 
+
+- `claim`: a statement that makes one or more factual assertions involving named entities, events, or relationships. 
+- `notes`: a list of textual snippets (facts, partial evidences, or contextual details) relevant to the claim, often including information about people, places, dates, titles of works, or other related entities.
+
+Your task is to produce a single output field: 
+
+- `query`: a natural-language question (or set of questions) designed to retrieve or verify the factual correctness of the `claim`.  
+
+The `query` must:  
+1. Target the key factual elements necessary to verify or refute the claim, often by referencing named entities, specific dates or time frames, titles, roles, geographic comparisons, or event orderings as they appear in the claim and notes.  
+2. Reflect precise relationships and temporal sequencing implied or stated in the claim (e.g., "Did actor X perform in work A after event B?", or "Is director Y from a country geographically smaller than director Z's country and did Z direct film W?").  
+3. Combine multiple parts of the claim into a concise yet complete question or set of related questions that if answered would confirm or deny all claim elements.  
+4. Use information extracted from `notes` to ground the query terms in known entities and to ensure the query focuses on relevant concepts (e.g., specific versions of film titles, exact roles or positions held, named seasons or events, and geographic comparisons).  
+5. Exclude unnecessary or extraneous information to maintain clarity and specificity in the questioning.
+
+General reasoning approach:  
+- Identify the main entities and assertions in the claim (persons, events, time frames, roles, geographies, works of art, etc.).  
+- Use the notes to clarify potential ambiguities in entity names, temporal orderings, or contexts.  
+- Formulate queries that link these elements logically to confirm key properties (e.g., "Who coached team X in year Y?", "Did actor A appear in film B after event C?", "Did director D originate from country E smaller than country F?").  
+- When the claim contains compound assertions, reflect them in the query as multiple coordinated or sequential questions.
+
+Remember, the `query` is intended as an evidence-seeking question to validate the claim through targeted information retrieval or fact-checking.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Echeveria is native to arid or semi-desert areas, while Alopecurus creticus is.
+
+### notes
+['Echeveria species are native to semi-desert or arid areas in Central America, Mexico, and northwestern South America.', 'Alopecurus creticus is identified as a species of foxtail grass without specified habitat in the current sources.', 'The habitat of Alopecurus creticus is not explicitly described as arid or semi-desert in available references.', 'Echeveria species are native to semi-desert or arid areas in Central America, Mexico, and northwestern South America.', 'Alopecurus creticus is a species of foxtail grass with no specified habitat in current references.', 'No sources explicitly describe Alopecurus creticus as native to arid or semi-desert areas.', 'Echeveria species are native to semi-desert or arid areas in Central America, Mexico, and northwestern South America.', 'No sources explicitly state that Alopecurus creticus is native to arid or semi-desert regions.', 'Alopecurus creticus is a species of foxtail grass, but its native habitat is not clearly defined in current references.']
+
+## Generated Outputs
+### reasoning
+The claim states that Echeveria is native to arid or semi-desert areas, which is supported by multiple notes confirming Echeveria species are native to semi-desert or arid regions in Central America, Mexico, and northwestern South America. The claim also includes "while Alopecurus creticus is" but does not complete the comparison. From the notes, Alopecurus creticus is identified as a species of foxtail grass, but there is no information or indication that it is native to arid or semi-desert areas. Several notes explicitly state the habitat of A. creticus is unspecified and that no sources describe it as native to arid or semi-desert areas. Therefore, to verify the claim, it is necessary to confirm the native habitat of both species and clarify whether Alopecurus creticus is native or associated with arid or semi-desert areas or not.
+
+### query
+Is Echeveria native to arid or semi-desert areas in Central America, Mexico, and northwestern South America? What is the native habitat of Alopecurus creticus? Specifically, is Alopecurus creticus native to arid or semi-desert areas, or does it inhabit different types of environments?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Alopecurus creticus', 'Echeveria']. Documents remaining to be retrieved: ['Alopecurus'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Reverend Lyttleton Morgan was the first chairman of the board of trustees at a university. That university and the University of Idaho are public types of universities.
+
+### notes
+['Reverend Lyttleton Morgan was the first chairman of the board of trustees at Morgan State University, which was previously named Centenary Biblical Institute.', "Morgan State University is Maryland's designated public urban university, indicating it is a public university.", "The University of Idaho operates within a public university system, as implied by the Idaho State Board of Education's involvement.", 'Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, originally known as Centenary Biblical Institute.', "Morgan State University is Maryland's designated public urban university, confirming its status as a public university.", 'The University of Idaho is a public university, as it operates within a public university system overseen by the Idaho State Board of Education.', 'Reverend Lyttleton Morgan was the first chairman of the board of trustees of Morgan State University, which was originally named Centenary Biblical Institute.', "Morgan State University is Maryland's designated public urban university, confirming it is a public institution.", 'The University of Idaho is a public university operating under the oversight of the Idaho State Board of Education.']
+
+## Generated Outputs
+### reasoning
+The claim asserts two primary facts: (1) Reverend Lyttleton Morgan was the first chairman of the board of trustees at a particular university, and (2) that university and the University of Idaho are public universities. To verify this, I need to identify which university Reverend Lyttleton Morgan was associated with as the first chairman of its board of trustees. Then I need to verify the public or private status of that university compared to the University of Idaho, which is known to be a public university. This requires confirming Morgan's role and the nature of the university associated with him, as well as confirming that both the university in question and the University of Idaho are public institutions.
+
+### query
+Who was Reverend Lyttleton Morgan the first chairman of the board of trustees for? Is this university a public university? Is the University of Idaho a public university?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Lyttleton Morgan', 'Morgan State University']. Documents remaining to be retrieved: ['University of Idaho'].
+
+
+
+# Example 3
+## Inputs
+### claim
+Clark County in Nevada contains both Las Vegas and another college. Craig Heyer played baseball at that college.
+
+### notes
+['Craig Heyer played college baseball at the College of Southern Nevada and University of Nevada, Las Vegas (UNLV).', 'Clark County in Nevada includes the city of Las Vegas and other areas with colleges like the College of Southern Nevada.', 'UNLV is located in Las Vegas, Clark County, Nevada.', 'Clark County, Nevada contains Las Vegas and other areas including the College of Southern Nevada.', 'Craig Heyer played college baseball at both the College of Southern Nevada and University of Nevada, Las Vegas (UNLV).', 'Craig Heyer played college baseball at two colleges in Clark County, Nevada: the College of Southern Nevada and the University of Nevada, Las Vegas (UNLV).', 'Clark County contains Las Vegas and multiple colleges, including the College of Southern Nevada and UNLV.', 'The College of Southern Nevada is a distinct institution from UNLV and is located in Clark County, Nevada.']
+
+## Generated Outputs
+### reasoning
+The claim states that Clark County in Nevada contains both Las Vegas and another college (besides the University of Nevada, Las Vegas), and that Craig Heyer played baseball at that other college. From the notes, Clark County encompasses Las Vegas and includes the College of Southern Nevada, which is a different college from UNLV, both located within Clark County. Craig Heyer played baseball at both UNLV and the College of Southern Nevada. Therefore, to verify the claim, we need to confirm that Clark County contains Las Vegas and another college (the College of Southern Nevada), and that Craig Heyer played baseball at that other college.
+
+### query
+Does Clark County in Nevada contain both the city of Las Vegas and the College of Southern Nevada as a separate college? Did Craig Heyer play baseball at the College of Southern Nevada in addition to playing at the University of Nevada, Las Vegas?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['College of Southern Nevada', 'Craig Heyer']. Documents remaining to be retrieved: ['Clark County, Nevada'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

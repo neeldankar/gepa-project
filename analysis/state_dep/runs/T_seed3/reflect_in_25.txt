@@ -1,0 +1,205 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+
+You will be given three input fields:
+
+- `claim`: A statement involving one or more entities (such as people, organizations, events, or works) and specific factual relationships or attributes connecting them.
+- `notes`: A list of factual snippets or candidate fact claims extracted from various sources that relate in some way to the claim. These notes may contain redundancies or contradictions.
+- `context`: A list of documents or excerpts (including their titles and texts) that provide detailed, authoritative background about the entities, events, or concepts mentioned in the claim.
+
+Your Outputs:
+
+You must produce the following two fields:
+
+- `new_notes`: A concise, accurate subset of the input `notes` that best supports or refutes the `claim` when cross-checked against the given `context`. These notes must be (a) factually validated by the context, (b) directly relevant to the claim’s components, (c) free of redundancy, and (d) exclude any unsupported or contradicting notes.
+  
+- `titles`: A list of **exact** document titles from the `context` that contain all necessary information to verify the truthfulness of your chosen `new_notes`. Include all documents referenced by your `new_notes` and no unrelated ones.
+
+Key Requirements and Domain-Specific Knowledge:
+
+1. **Entity and Relationship Mapping**  
+   - Identify all entities and key relationships mentioned in the claim (e.g., authorship, sponsorship, roles, event participation).  
+   - Disambiguate entities with identical or similar names by cross-referencing contextual career, biographical, or domain details (e.g., multiple professionals named Gould must be distinguished by occupation or known works).
+
+2. **Cross-Verification Using Context**  
+   - Use the `context` documents as ground truth to confirm or refute each claim component.  
+   - Do not rely solely on `notes`; verify every fact against the context and remove or revise any note not fully supported.  
+   - When context is silent on a point, treat it as unsupported.
+
+3. **Precision and Completeness**  
+   - Select only the minimal necessary notes that comprehensively support or dispute the entire claim—including all subclaims if the claim is compound.  
+   - Correspondingly, retrieve all and only those context documents that contain evidence for these notes. Partial or incomplete retrieval reduces answer accuracy.
+
+4. **Handling Redundancies and Contradictions**  
+   - Remove duplicated notes.  
+   - In case of contradictions among notes, keep only those verified by the context and discard unsupported or contradicted notes.
+
+5. **Summarizing Compound Claims**  
+   - Break down complex claims into parts (e.g., entity A did X, entity B did Y) and verify each individually.  
+   - Ensure `new_notes` and `titles` cover all parts fully.
+
+6. **Domain-Specific Contextual Knowledge**  
+   - Recognize domain-specific professional roles and terminology:
+     * Scientists (e.g., paleontologists like Elisabeth Vrba and Stephen Jay Gould).  
+     * Writers, journalists, and other creative professionals.  
+     * Athletes, especially professional tennis players and football teams, with relevant results and tournament information.  
+     * Musical works and artistic productions—distinguish accurately between authorship, performance roles, venue of publication (e.g., book vs. magazine article), and periodical type.  
+     * Events such as sports tournaments, film productions, or historical occurrences that serve as facts to verify claims.  
+   - Consider naming ambiguities; for instance, various individuals named Gould must be verified by career context.  
+   - Use historical and cultural knowledge embedded in provided context (e.g., typical act structures in operas and films, standard practices in sports seasons and bowl games).
+
+7. **Reasoning and Fact-Checking Strategy (Generalizable Approach)**  
+   - Parse the claim to extract discrete factual assertions and involved entities.  
+   - Map notes to these assertions and cross-check each note with the context.  
+   - Discard unsupported or contradicted notes; refine facts as needed to align strictly with context.  
+   - Collect the minimal, full set of context documents that validate the chosen notes completely.  
+   - Generate succinct, precise `new_notes` and the corresponding `titles` for full coverage of the claim.
+
+8. **Output Format and Quality**  
+   - `new_notes`: An array of factually accurate, relevant notes derived from the input `notes` but strictly filtered and verified by the context.  
+   - `titles`: An array of exact titles of all context documents that underpin the facts in `new_notes`.  
+   - Ensure clarity, factual accuracy, and traceability of each fact back to one or more cited context documents.
+
+Summary:
+
+Your primary goal is to produce a factually sound, concise evidence set (`new_notes`) that reliably supports or refutes the `claim` by validating each fact against the provided `context`. Alongside, provide complete and exact `titles` from the context to allow independent verification. Balance thoroughness and conciseness, applying domain-specific understanding and rigorous cross-verification to resolve entity ambiguities, contradictions, and to capture compound claims fully.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+Sunrise Avenue and the band, who released the album "You Could Have It So Much Better ", were both formed in 2002.
+
+### notes
+['"You Could Have It So Much Better" is the second studio album by Scottish indie rock band Franz Ferdinand.', '"You Could Have It So Much Better" is the second studio album by Scottish indie rock band Franz Ferdinand, released in 2005.', 'Sunrise Avenue is a Finnish rock band originally formed in 2002 in Helsinki, Finland.', '"You Could Have It So Much Better" is the second studio album by Scottish indie rock band Franz Ferdinand, released in 2005.']
+
+### context
+['Tonight: Franz Ferdinand | Tonight: Franz Ferdinand (also known simply as Tonight) is the third studio album by Scottish indie rock band Franz Ferdinand.  It was released on 26 January 2009 through Domino Records in the UK and Epic Records in the US.  It is the band\'s first studio album since "You Could Have It So Much Better", which was released on 3 October 2005, roughly three and a half years earlier.  The album was recorded in a span of two years at Mr. Dan\'s Studio in Buckeye, Arizona and the old town hall of Govan, Scotland.  It has been described as a concept album loosely based around a night of partying and the morning effects after.  The album has more of a dance-oriented sound, featuring styles of dance-punk, new wave, and electropop, marking a departure from the band\'s post-punk sound, which was featured on their past two albums.', 'Walk Away (Franz Ferdinand song) | "Walk Away" is a song by Scottish rock band Franz Ferdinand and is featured on their second album, "You Could Have It So Much Better".  It was released 5 December 2005 as the second single from that album in the UK, entering the UK Singles Chart at #13 a week later (see 2005 in British music).  The riff of the song is similar to the Kraftwerk song "Das Model".', 'You Could Have It So Much Better | You Could Have It So Much Better is the second studio album by Scottish indie rock band Franz Ferdinand.  It was first released on 28 September 2005 in Japan, and later on 3 October in the UK, through the Domino Recording Company.  Recorded in both the United States and their own studio in Glasgow with producer Rich Costey, the album spawned four UK top 30 singles: "Do You Want To" on 23 August 2005, "The Fallen", "Walk Away" and "Eleanor Put Your Boots On."', 'The Fallen (song) | "The Fallen" is a song by Scottish indie rock band Franz Ferdinand.  It was released as the third single from their second studio album, "You Could Have It So Much Better", on 3 April 2006.  The song peaked at number 4 on the Scottish Singles Chart and number 14 on the UK Singles Chart.', 'Do You Want To | "Do You Want To" is the lead single for Franz Ferdinand\'s second album, "You Could Have It So Much Better".  It was released 19 September 2005 and charted at number four in the UK Singles Chart (see 2005 in British music).  In the U.S., the song had the most success on the Modern Rock chart, where it peaked at number nine, while reaching number 76 on the "Billboard" Hot 100.  It also reached the top spot in the UK Indie Chart.  In February 2006, the single was certified Gold by the RIAA.', 'Eleanor Put Your Boots On | "Eleanor Put Your Boots On" is a song by Scottish indie rock band Franz Ferdinand.  It was released as the fourth single from their second album, "You Could Have It So Much Better", on 17 July 2006.  The single version of the song is a new version that was recorded in Benton Harbor, Michigan during their 2006 tour with Death Cab for Cutie.  Promotion for the single included two videos: one for "Eleanor Put Your Boots On" and one for B-side Wine in the Afternoon (recorded at Trama Studios, São Paulo, Brazil), making the B-side a video-clip-only single.', 'What She Came For | "What She Came For" is the fourth single from the album "" by Franz Ferdinand.  It was remixed as "Feel the Pressure" for the band\'s remix album, "".', 'Rade Malobabić | Rade Malobabić (d. June 26, 1917) was a Serbian government operative.  He was best known for helping the Black Hand in the assassination of Archduke Franz Ferdinand.  The assassination of Archduke Franz Ferdinand is what initiated World War I.', 'Late Night Tales: Franz Ferdinand | Late Night Tales: Franz Ferdinand is a mix album compiled by Scottish band Franz Ferdinand, released on 15 September 2014 as part of the "Late Night Tales" series.  The mix includes tracks from artists such as R. Stevie Moore, Lee "Scratch" Perry, James Brown, Paul McCartney & Wings and Boards of Canada.  It also features an exclusive Franz Ferdinand cover version of Jonathan Halper’s "Leaving My Old Life Behind".', "FFS (band) | FFS (an abbreviation of Franz Ferdinand and Sparks) is a supergroup formed by Scottish indie rock band Franz Ferdinand and American rock-pop band Sparks, signed to the Domino Recording Company.  Their formation was announced on 9 March 2015, but the two bands had been recording since at least the mid-2000s.  The group's eponymous debut studio album was recorded in late 2014 and released in the UK on 8 June and in the U.S. on 9 June 2015."]
+
+## Generated Outputs
+### reasoning
+The claim states that both Sunrise Avenue and the band who released "You Could Have It So Much Better" were formed in 2002. From the context, "You Could Have It So Much Better" is the second studio album by the Scottish indie rock band Franz Ferdinand. The context specifies the album's release dates and some details about the band but does not mention the formation year of Franz Ferdinand nor anything about Sunrise Avenue. 
+
+Given the context:
+- It is clear the album is by Franz Ferdinand.
+- There is no information on when Franz Ferdinand was formed.
+- There is no information about Sunrise Avenue at all.
+- The notes incorrectly attribute the album "You Could Have It So Much Better" to Franz Ferdinand, not Sunrise Avenue.
+
+Therefore,
+- The part of the claim that the album was released by a band formed in 2002 cannot be verified from the context.
+- The identity of the band that released the album is confirmed to be Franz Ferdinand, not Sunrise Avenue.
+- The formation year of either band is not stated in the given context.
+  
+Hence,
+- The claim that Sunrise Avenue released the album in 2002 is incorrect based on the note and context.
+- The claim that the band who released the album "You Could Have It So Much Better" was formed in 2002 cannot be validated here.
+
+The best we can do is to keep the corrected note identifying Franz Ferdinand as the band releasing "You Could Have It So Much Better" and note the formation year is unsupported.
+
+### new_notes
+['"You Could Have It So Much Better" is the second studio album by Scottish indie rock band Franz Ferdinand, released in 2005.']
+
+### titles
+['You Could Have It So Much Better']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Sunrise Avenue', 'You Could Have It So Much Better']. Documents remaining to be retrieved: ['Franz Ferdinand (band)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Meesha Shafi, Strings, Ali Azmat and Junaid Khan are judges on the show Music Icons. The producer and singer of Aaina joined them.
+
+### notes
+["In April 2013, Alamgir joined Meesha Shafi, Strings, Ali Azmat and Shahzad Hasan as a judge on the immensely popular singing talent show 'Music Icons' which aired on ARY Digital TV channel.", "In April 2013, Alamgir joined Meesha Shafi, Strings, Ali Azmat and Shahzad Hasan as a judge on the immensely popular singing talent show 'Music Icons' which aired on ARY Digital TV channel.", "In April 2013, Alamgir joined Meesha Shafi, Strings, Ali Azmat and Shahzad Hasan as a judge on the immensely popular singing talent show 'Music Icons' which aired on ARY Digital TV channel."]
+
+### context
+['Alamgir (pop singer) | Alamgir is a Pakistani singer and is considered one of the pioneers of the Urdu pop music.  His versatile style of singing is inspired by playback singer Ahmed Rushdi and Elvis Presley.  In April 2013, Alamgir joined Meesha Shafi, Strings, Ali Azmat and Shahzad Hasan as a judge on the immensely popular singing talent show "Music Icons" which aired on ARY Digital TV channel.', '4th Lux Style Awards | The 4th Lux Style Awards ceremony was held in Expo Center in Karachi, Pakistan.  The show was hosted by Junaid Khan and Aamina Sheikh and from the members of BNN.  The show had the performances by Humayun Saeed, Zara Sheikh, Veena Malik, Ali Zafar, Meesha Shafi and Sadia Imam.  Some of the film and music categories were removed from the award.', 'Waar | Waar ("Wār" <nowiki>;</nowiki> , meaning "The Strike") is a 2013 Pakistani action-thriller film directed by Bilal Lashari and written and produced by Hassan Rana.  The film features Shaan Shahid, Meesha Shafi, Ali Azmat, Shamoon Abbasi, Ayesha Khan, Suhaib Rana and Kamran Lashari.  It is the second highest-grossing Pakistani film after "Jawani Phir Nahi Ani".  It is a stylized depiction of events surrounding Pakistan\'s efforts to conduct a war on terror, which resulted in warfare among tribal units in North-West Pakistan.  One incident included a terrorist attack on a Police Academy at Lahore in 2009.', 'Meesha Shafi | Meesha Shafi (Urdu: میشا شفیع\u200e ) is a Pakistani actress, model and a singer.', 'Judge Karen | Judge Karen is an American arbitration-based reality court show that aired in first-run syndication and debuted on September 8, 2008 in 48 of the top 50 U.S. markets.  As with other court shows, such as "The People\'s Court" and "Judge Judy", a retired real-life judge presides over small claims court cases.  On this show, the judge is Karen Mills-Francis, an American woman twice elected Miami-Dade County Court judge, who claims that "justice isn\'t always black and white".  She did not wear the traditional black robe, but instead a burgundy one.  The introductory sequence showed her presiding over cases, with the announcer saying "She\'s tough, she\'s fair, and she cares".  The show was produced and distributed by Sony Pictures Television.', 'Mor Mahal | Mor Mahal (Urdu: \u200e , English: Peacock Palace ) is a 2016 Pakistani historical fiction television fantasy series created by Sarmad Khoosat which premiered on Geo Entertainment and PTV Home on 28 April 2016.  It is directed by Sarmad Khoosat, produced by Babar Javed and was originally conceptualized by Imran Aslam in 2002 and written by Sarmad Sehbai in 2004.  "Mor Mahal" is known as one of the biggest television projects in Asia.  The serial stars Umair Jaswal, Meesha Shafi Hina Khawaja Bayat, Sania Saeed and Fiza Ali in the lead roles.  The cast also includes Shah Fahad, Jana Malik, Sonia Nazir, Kinza Hashmi and Ali Saleem.  Umair Jaswal who will play the role of a nawab alongside Meesha Shafi will be making is television debut.', 'Rasam (Geo TV) | Rasam (English: "Custom") is a 2014 Pakistani social drama serial directed by "Asim Ali" aired on Geo TV.  First episode was aired on 1 May 2014 on Thursday at 8:00 p.m. Serial is written by "Samina Aijaz" and produced by "Gold Bridge Media and Habib Jaan".  Serial stars Sumbul Iqbal, Junaid Khan (singer), Hassan Niazi and Javaid Sheikh. The Show also reruns on Geo Kahani.', 'Carlos Mamery | Carlos "Topy" Mamery ( \u20091960 – December 2, 2014) was a Puerto Rican music producer, television personality and executive at Mega TV and Spanish Broadcasting System\'s Puerto Rico division.  Mamery was a judge on the reality music competition show "Idol Puerto Rico" from its launch in 2011 until his death in 2014.  Mamery served as a judge on "Idol Puerto Rico" for seasons 1 through 3.  His fellow "Idol Puerto Rico" judges included his wife, singer and actress Yolandita Monge.', 'Eesti talent | " Eesti talent " is the Estonian version of the "Got Talent" series.  It was launched on TV3 on 9 October 2010.  Singers, dancers, comedians, variety acts, and other performers compete against each other for audience support.  The winner of the show receives 250 000 kroons (c 16 000 EUR, c 20 500 USD).  It is hosted by singers Eda-Ines Etti and Tanel Padar.  The judges are music critic and journalist Mihkel Raud, who is known by being judges of many other TV shows; musician, enterpriser and politician Valdo Randpere, model and dancer Kristiina Heinmets-Aigro.  The show is produced by RUUT productions and FremantleMedia.', 'Factor X (Spanish TV series) | Factor X was the Spanish version of the British television music competition "The X Factor", created by Simon Cowell.  The show, which aired on Cuatro, followed series 2-3 of the British format, with three categories, mentored by one judge each, whom choose the acts to represent the category in the live shows.  The judges were singer and DJ Miqui Puig, headhunter Eva Perales and music radio producer Jorge Flo.  Nuria Roca hosted the show.  The first series was won by María Villalón.  The second series was won by Vocal Tempo.']
+
+## Generated Outputs
+### reasoning
+The claim states that Meesha Shafi, Strings, Ali Azmat, and Junaid Khan are judges on the show "Music Icons," and that the producer and singer of "Aaina" joined them.
+
+From the context:
+- Note [1] confirms that Meesha Shafi, Strings, Ali Azmat, and Alamgir joined as judges on "Music Icons." Junaid Khan is not mentioned as a judge there.
+- Note [7] mentions Junaid Khan as an actor/singer starring in the drama "Rasam" but does not say he was a judge on "Music Icons."
+- There is no mention of a "producer and singer of Aaina" in the context.
+- The closest mention of Alamgir (who joined as a judge) does not link him as producer or singer of "Aaina."
+- Therefore, the claim that the producer and singer of Aaina joined the judges may be incorrectly conflating Alamgir's role or unsubstantiated.
+
+Hence, the accurate, supported facts are:
+- Meesha Shafi, Strings, Ali Azmat, and Alamgir were judges on Music Icons.
+- Junaid Khan is not listed as a judge on Music Icons.
+- No evidence that the producer and singer of Aaina joined as a judge.
+
+Thus, the only validated part of the claim is the identification of judges Meesha Shafi, Strings, Ali Azmat, and Alamgir on Music Icons.
+
+### new_notes
+["In April 2013, Alamgir joined Meesha Shafi, Strings, Ali Azmat and Shahzad Hasan as a judge on the immensely popular singing talent show 'Music Icons' which aired on ARY Digital TV channel."]
+
+### titles
+['Alamgir (pop singer)']
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Alamgir (pop singer)']. Documents remaining to be retrieved: ['Aaina (album)', 'Ali Azmat'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The sport of tennis is played by both Texas native Angelique Kerber and the player who was the defending champion, who competed, for the 2005 China Open – Men's Doubles.
+
+### notes
+['Angelique Kerber is a German professional tennis player and has entered multiple tennis seasons and tournaments as a defending champion, such as in 2016.', 'Angelique Kerber has won multiple WTA singles titles and grand slam singles titles.', "There is no information provided about the 2005 China Open – Men's Doubles defending champion in the context.", 'Angelique Kerber is a German professional tennis player who competed as a defending champion in multiple tournaments, including during the 2016 season.', "Justin Gimelstob was the defending champion who competed and successfully defended his title at the 2005 China Open – Men's Doubles.", 'Angelique Kerber is a German professional tennis player who competed in multiple tournaments as a defending champion, including during the 2016 season.', "Justin Gimelstob was the defending champion who competed and successfully defended his title at the 2005 China Open – Men's Doubles."]
+
+### context
+['2016 Angelique Kerber tennis season | The 2016 Angelique Kerber tennis season officially began on 5 January with the start of the 2016 Brisbane International.  Kerber entered the season as the number 10 ranked player and the defending champion at four tournaments.', '2016 Porsche Tennis Grand Prix – Singles | Angelique Kerber was the defending champion and successfully defended her title, defeating Laura Siegemund in the final, 6–4, 6–0.', '2010 Copa BBVA-Colsanitas – Singles | María José Martínez Sánchez was the defending champion, but chose to compete in the 2010 Dubai Tennis Championships instead. Mariana Duque Mariño won in the final 6–4, 6–3, against Angelique Kerber.', '2015 Porsche Tennis Grand Prix – Singles | Maria Sharapova started the tournament as the three-time defending champion, but lost in the second round to Angelique Kerber. <br>', 'Angelique Kerber career statistics | This is a list of the main career statistics of German professional tennis player, Angelique Kerber.  To date, Kerber has won ten WTA singles titles including two grand slam singles titles at the 2016 Australian Open and 2016 US Open and at least one title on each playing surface (hard, clay and grass).  She was also the runner-up at the 2016 Wimbledon Championships and a Silver medalist at the 2016 Rio de Janeiro Olympics.  Kerber became the world No. 1 for the first time in her career on 12 September 2016.', 'Angelique Kerber | Angelique Kerber (] ; born 18 January 1988) is a German professional tennis player and former world No. 1.  Having made her professional debut in 2003, Kerber rose to prominence upon reaching the semifinals of the 2011 US Open as the no. 92 ranked player in the world.  She ascended to the top of the rankings on 12 September 2016, thus becoming the twenty-second and oldest player to achieve the number one ranking for the first time and the first new number one player since Victoria Azarenka in 2012.', 'Torben Beltz | Torben Beltz (born 27 November 1976) is a German tennis coach, best known for his work with 2016 Australian Open and 2016 US Open champion Angelique Kerber.', '2017 Porsche Tennis Grand Prix – Singles | Angelique Kerber was the two-time defending champion, but lost in the second round to Kristina Mladenovic.  The tournament marked the return of Maria Sharapova, after serving a 15-month suspension.', '2011 HP Open – Singles | Tamarine Tanasugarn was the defending champion, but lost to Angelique Kerber in the quarterfinals.', '2012 e-Boks Open – Singles | Caroline Wozniacki was the defending champion, but lost to Angelique Kerber 6–4, 6–4 in the final.']
+
+## Generated Outputs
+### reasoning
+The claim has two parts: 1) Angelique Kerber, a Texas native, plays tennis and 2) the player who was the defending champion competed in the 2005 China Open – Men's Doubles.
+
+1) About Angelique Kerber: The context clearly shows Angelique Kerber is a German professional tennis player, with no indication she is from Texas. Multiple contextual documents confirm her nationality as German and list her accomplishments in tennis. Therefore, the part of the claim labeling her as a Texas native is false; however, it is true that Angelique Kerber plays tennis.
+
+2) For the 2005 China Open – Men's Doubles defending champion who competed: The only note related to the defending champion at that event is that Justin Gimelstob was the defending champion who successfully defended his title in the 2005 China Open – Men's Doubles. There is no indication or mention that Angelique Kerber was involved in men's doubles or that she has any connection there.
+
+Therefore:
+- The claim that Angelique Kerber is a Texas native is disproven.
+- The claim that Angelique Kerber plays the sport tennis is supported.
+- The defending champion of the 2005 China Open – Men's Doubles who competed and defended the title was Justin Gimelstob.
+- There is no link between Angelique Kerber and the 2005 China Open – Men's Doubles defending champion.
+
+Given these conclusions, the claim is partly false (incorrect on Kerber’s nativity and conflating women's tennis player Kerber with a men's doubles champion), but these points can be separated and made accurate.
+
+The new notes should therefore:
+- State Angelique Kerber is a German professional tennis player.
+- Confirm Justin Gimelstob as the defending champion who competed at the 2005 China Open – Men's Doubles.
+
+The supporting context documents are those related to Angelique Kerber's career and the note about the 2005 China Open – Men's Doubles defending champion.
+
+### new_notes
+['Angelique Kerber is a German professional tennis player who competed in multiple tournaments as a defending champion, including during the 2016 season.', "Justin Gimelstob was the defending champion who competed and successfully defended his title at the 2005 China Open – Men's Doubles."]
+
+### titles
+['2016 Angelique Kerber tennis season', '2016 Porsche Tennis Grand Prix – Singles']
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ["2005 China Open – Men's Doubles", 'Angelique Kerber']. Documents remaining to be retrieved: ['Justin Gimelstob'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

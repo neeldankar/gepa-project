@@ -1,0 +1,42 @@
+```
+You will be given three input fields: `claim`, `notes`, and `context`.
+
+- `claim` is a factual assertion or statement needing verification or explanation.
+- `notes` is a list of sentence-level factual statements extracted (often redundantly) that relate to elements involved in the claim.
+- `context` is a list of longer, richly detailed textual passages or document excerpts providing encyclopedic or background information relevant to the claim and notes.
+
+Your task is to use the `claim`, `notes`, and `context` to produce two output fields: `new_notes` and `titles`.
+
+1. **Reasoning and synthesis** (not an output field but necessary for your process):
+   - Carefully analyze the claim and identify its key components or entities (e.g., people, places, events, dates).
+   - Cross-reference these components with information in both `notes` and `context`.
+   - Confirm or refute the factual content of the claim based on evidence explicitly or implicitly contained in the inputs.
+   - Filter and distill the long list of `notes` down to a concise, relevant set (`new_notes`) that directly support or are necessary to understand the claim’s veracity. Remove redundant, irrelevant, or unsupported facts.
+   - Select relevant document titles or entities from the `context` that correspond to important subjects, locations, people, or events in the claim and your distilled notes. Include all key documents that are foundational to understanding or verifying the claim; this typically means the main entities mentioned in the claim plus key related entities that provide support or context.
+   - Avoid including unrelated or tangential topic titles. Prioritize documents that represent the factual backbone of the claim verification.
+
+2. **Output fields:**
+
+   - `new_notes` (list of strings): A streamlined and factually verified subset of the input `notes`. These notes should form a minimal but sufficient evidence base that supports or explains the claim, derived by corroborating with the `context`. Paraphrasing is allowed to improve clarity but avoid changing meaning.
+
+   - `titles` (list of strings): The titles/names of the primary reference documents or encyclopedia entries from the `context` that are most relevant to or foundational for the claim and the `new_notes`. These often correspond to Wikipedia page titles or similar knowledge base article titles for key concepts, people, locations, or events central to the claim.
+
+3. **Additional domain-specific insights:**
+
+   - Claims often involve relationships among people (e.g., family relations, professional associations), specific events (e.g., sports matches, film releases), and locations (e.g., counties, cities, institutions). Be mindful to find notes and titles that directly verify or clarify those relationships.
+   - When the claim involves timelines or historical facts (such as "who starred in what movie when" or "who defeated whom in what tournament"), ensure your new_notes factually confirm these and that titles reference the correct edition/year/entity.
+   - Pay special attention to similarly named items (e.g., different films or events with the same or similar names but from different years). Use `context` to disambiguate and select the correct entities to support or refute the claim.
+   - Redundancy in notes is common; consolidate repetitive evidence to a clear, singular fact.
+   - Context entries often contain richly detailed background that can be used to identify key entities or clarify ambiguous references in the claim and notes.
+   - Titles should reflect the most authoritative and specific documents needed to confirm the claim rather than overly general or unrelated entries.
+
+4. **General strategy to apply:**
+
+   - Extract relevant supporting facts: Identify factual claims within notes that align with and support/refute the input claim.
+   - Verify and corroborate using context: Use the context passages to check accuracy and provide authoritative backing.
+   - Prune and refine notes to a minimal but sufficient set.
+   - Identify and output document titles that correspond to the critical entities for evidence traceability.
+
+By following these instructions, the output allows a human or automated system to trace and validate the claim's truthfulness through a focused set of evidence and directly relevant knowledge base entries, avoiding clutter or irrelevant information.
+
+```

@@ -1,0 +1,126 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Task Description:
+You are given two input fields:  
+- `claim`: a factual statement or assertion that may reference people, groups, events, works (e.g., films, albums), or concepts.  
+- `notes`: a list of extracted factual fragments, evidence, or metadata related to entities mentioned in the claim. These notes can include confirmations, denials, ambiguities, or relevant domain knowledge.
+
+Your goal is to generate a `query` field, which should be one or more concise, clear, fact-seeking questions designed to retrieve the key pieces of information necessary to verify or refute the claim.
+
+Detailed instructions and domain-specific considerations:
+
+1. **Purpose of the Query:**  
+   The query must explicitly target the critical factual elements needed to validate the claim. This usually means asking about specific attributes, counts, relationships, professions, dates, or appearances related to the entities mentioned in the claim.
+
+2. **Scope and Granularity:**  
+   - If the claim compares quantities or attributes (e.g., "twice as many albums"), generate queries that ask for the relevant counts or comparative data for each entity involved.  
+   - If the claim concerns professions or shared roles, ask about the precise professions or occupations of the named individuals.  
+   - If the claim links appearances, roles, or participation in events/media, query the identity and relevant credits (e.g., did person X appear in show Y at time Z).  
+   - Avoid vague or overly broad queries; each query must be focused on retrieving the specific fact(s) that would confirm or disprove the claim.
+
+3. **Multiple Entities:**  
+   When multiple entities are involved (e.g., bands, people, works), generate queries that explicitly retrieve information for each entity mentioned, especially when comparative or relational facts are concerned.
+
+4. **Handling Ambiguities:**  
+   If the claim or notes reveal ambiguity (e.g., uncertainty about whether two names refer to the same entity), encode this into the query by asking clarifying questions, e.g., "Is entity A also known as entity B?"
+
+5. **Use of Notes:**  
+   Use the notes to identify what is known and what is missing. The query should target the missing or uncertain knowledge that blocks verification. For example, if notes state one entity's facts are known but not the other's, the query should focus on the latter.
+
+6. **Example strategy:**  
+   - Break down the claim logically (e.g., entity attributes, relations, timeframes).  
+   - From the notes, identify which assertions are already supported or refuted, and which knowledge gaps remain.  
+   - Construct precise questions aimed solely at the remaining gaps.  
+   - When applicable, include multiple questions to cover all required information for full verification.
+
+7. **Query Format:**  
+   Output the query as a natural language question or set of questions, which can be used to retrieve or look up factual documents or knowledge snippets relevant to verifying the claim.
+
+---
+
+Summary:  
+Transform the `claim` and `notes` inputs into one or more tightly focused, clear, fact-seeking questions that efficiently identify the necessary information to verify the claim, by querying the relevant entities, attributes, and relationships indicated by the claim and unresolved by the notes.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The movie Sacred Planet came out after another film. Award winning actor Damion Poitier had a role in this other film.
+
+### notes
+['Sacred Planet is a 2004 documentary film.', 'Damion Poitier is known for roles in films such as Hunter Prey (2010) and The Avengers (2012).', 'Hunter Prey, featuring Damion Poitier, was released in 2010, which is after 2004.', 'No evidence that Damion Poitier acted in any film prior to 2004 from the provided context.', 'Sacred Planet was released in 2004.', "Damion Poitier's films, including Hunter Prey (2010) and The Avengers (2012), were released after 2004.", 'There is no record of Damion Poitier acting in films prior to 2004.', 'Damion Dietz is an award-winning filmmaker but not the same as Damion Poitier.', 'Therefore, Damion Poitier did not have a role in any film released before Sacred Planet.', 'Sacred Planet (2004) is a documentary film with no connection to Damion Poitier.', "Damion Poitier's earliest known films are from 2010 onwards.", "There is no evidence that Damion Poitier acted in any film before Sacred Planet's 2004 release.", 'Damion Dietz, an award-winning filmmaker, is a different person and not an actor associated with Sacred Planet or Damion Poitier.', 'Hunter Prey (2010) featuring Damion Poitier was released after Sacred Planet (2004).']
+
+## Generated Outputs
+### reasoning
+The claim implies that Sacred Planet was released after another unidentified film and that Damion Poitier, an award-winning actor, had a role in this other film. The notes establish that Sacred Planet was released in 2004 (note [1]) and that Damion Poitier acted in films such as Hunter Prey (2010) and The Avengers (2012) (note [2]). Hunter Prey’s release date is 2010, which is after the release of Sacred Planet (note [3]). There is no evidence from the notes that Damion Poitier acted in any film before 2004 (note [4]). Therefore, the information contradicts the claim that Sacred Planet came out after another film featuring Damion Poitier. To verify or refute the claim conclusively, it is necessary to identify the specific other film referenced and its release date relative to Sacred Planet. Also, it is important to confirm whether Damion Poitier had a role in any film released before Sacred Planet (2004).
+
+### query
+What film is referred to as "another film" that allegedly came out before Sacred Planet (2004)? Did Damion Poitier have a role in any film released before 2004? If yes, what is the title and release date of that film? Is Damion Poitier an award-winning actor?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['Damion Poitier', 'Sacred Planet']. Documents remaining to be retrieved: ['Snow Dogs'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Christopher B. Landon wrote a 2007 movie that stars Shia Saide LaBeouf, an American actor who starred in the Disney Channel series Even Stevens that premiered in 2004.
+
+### notes
+['Christopher Landon wrote the 2007 film "Disturbia" starring Shia LaBeouf.', 'Shia LaBeouf starred in the Disney Channel series "Even Stevens" as Louis Stevens.', '"Even Stevens" premiered before 2004, but its follow-up movie "The Even Stevens Movie" premiered in 2003.', "Christopher Landon wrote the 2007 film 'Disturbia' starring Shia LaBeouf.", "Shia LaBeouf starred as Louis Stevens in the Disney Channel series 'Even Stevens'.", "'Even Stevens' premiered before 2004, with its movie finale, 'The Even Stevens Movie,' premiering in 2003.", "Shia LaBeouf is an American actor known for 'Even Stevens' and 'Disturbia'.", "Christopher B. Landon is the son of actor Michael Landon and is best known for writing 'Disturbia' (2007).", "Christopher B. Landon wrote the 2007 film 'Disturbia' starring Shia LaBeouf.", "Shia LaBeouf starred as Louis Stevens in the Disney Channel series 'Even Stevens'.", "'Even Stevens' premiered before 2004; the series finale movie 'The Even Stevens Movie' was released in 2003.", "Shia LaBeouf is an American actor known for his roles in 'Even Stevens' and the movie 'Disturbia'."]
+
+## Generated Outputs
+### reasoning
+The claim involves multiple factual components that need verification: 
+
+1. Whether Christopher B. Landon wrote a movie released in 2007.
+2. Whether that 2007 movie stars Shia Saide LaBeouf.
+3. Confirmation that Shia Saide LaBeouf is an American actor.
+4. Whether Shia Saide LaBeouf starred in the Disney Channel series Even Stevens.
+5. Whether the series Even Stevens premiered in 2004.
+
+To confirm the full claim, all these elements must be validated. Since no notes are provided, all these points remain unconfirmed.
+
+### query
+Did Christopher B. Landon write a movie released in 2007?  
+Does the 2007 movie written by Christopher B. Landon star Shia Saide LaBeouf?  
+Is Shia Saide LaBeouf an American actor?  
+Did Shia Saide LaBeouf star in the Disney Channel series Even Stevens?  
+Did the Disney Channel series Even Stevens premiere in 2004?
+
+## Feedback
+Correctly retrieved 3/3 gold documents: ['Christopher B. Landon', 'Disturbia (film)', 'Shia LaBeouf']. Documents remaining to be retrieved: [].
+
+
+
+# Example 3
+## Inputs
+### claim
+This publication is published more often than Bookmarks. Keith Moon was inducted into its Hall of Fame in the early 'eighties.
+
+### notes
+['The UK Music Hall of Fame started in 2004; Keith Moon could not have been inducted there in the early 1980s.', 'No mention of Bookmarks or its publication frequency in the context.', 'No mention in the context of a publication with a Hall of Fame that inducted Keith Moon in the early 1980s.', 'The Rialto poetry magazine is published 3 times a year; no comparison with Bookmarks available.', "Keith Moon was inducted into the Modern Drummer Hall of Fame in 1982, which fits the 'early eighties' timeframe.", "No information is present about the publication frequency of Bookmarks or Modern Drummer to confirm the 'published more often' part of the claim.", "No direct mention or comparison involving Bookmarks, nor any publisher's Hall of Fame linked to Bookmarks, is found in the context.", 'Keith Moon was inducted into the Modern Drummer Hall of Fame in 1982, aligning with the early 1980s timeframe.', "No mention or comparison involving Bookmarks' publication frequency is present.", 'The context does not reference a publication with a Hall of Fame that inducted Keith Moon in the early 1980s.', 'No evidence is present in the context to confirm a publication is published more often than Bookmarks.']
+
+## Generated Outputs
+### reasoning
+The claim makes two key assertions about a certain publication and Keith Moon. First, that this publication's frequency of publication exceeds that of another publication named "Bookmarks." Second, that Keith Moon was inducted into this publication's Hall of Fame in the early 1980s. To verify the claim, it's necessary to identify which publication is "this publication" and then determine its publication frequency relative to Bookmarks. Additionally, we must verify whether Keith Moon was indeed inducted into this publication's Hall of Fame, and the timing of this induction, specifically if it occurred in the early 1980s. Since no additional context or notes are provided, these two points remain unresolved.
+
+### query
+What is the name of the publication referred to as "this publication"? How often is this publication published compared to the publication named "Bookmarks"? Was Keith Moon inducted into this publication's Hall of Fame, and if so, in what year did this induction occur?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['Keith Moon']. Documents remaining to be retrieved: ['Bookmarks (magazine)', 'Modern Drummer'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

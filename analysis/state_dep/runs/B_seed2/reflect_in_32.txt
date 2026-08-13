@@ -1,0 +1,116 @@
+I provided an assistant with the following instructions to perform a task for me:
+```
+Given the input fields:
+
+- `claim`: a factual statement or assertion that combines entities, events, dates, roles, or relationships.
+- `notes`: a list of textual evidence snippets (often repeated) containing relevant factual information derived from external sources or documents.
+
+Produce the output field:
+
+- `query`: a precise, focused, and clear question (or set of questions) formulated to verify or refute the claim by retrieving specific missing or supporting information from trusted source documents.
+
+Detailed task description and guidance:
+
+1. **Purpose:**  
+   Your goal is to transform the given claim and evidence notes into an effective search or verification query that can be used to retrieve all necessary documents that support or refute the claim. The query should target the key entities, relations, dates, or roles involved in the claim and focus on any gaps identified in the notes.
+
+2. **Context and domain specifics:**  
+   - Claims often involve named entities (e.g., people, films, military units), roles or titles (e.g., director, actor, infantry regiment), dates (e.g., years movies were released or regiments were founded), and relationships between these elements.  
+   - Notes are often duplicated snippets referencing various supporting facts, some directly relevant and some indirectly, about the claim's entities.  
+   - Ground-truth documents (referred to as "gold documents" in the feedback) include detailed authoritative information likely needed to verify the claim, e.g.:  
+     - For movie-related claims: director, co-director, actor names, release years, film titles, and sequels.  
+     - For military or historical claims: the name and establishment date of regiments featured in films.  
+   - Pay attention to aliases, sequels, or related works (e.g., "28 Weeks Later" is a sequel to "28 Days Later").
+
+3. **Strategy to form the query:**  
+   - Identify the core fact(s) the claim asserts (e.g., a person’s role in multiple films, the founding year of a regiment due to a specific film).  
+   - Compare the information in the notes to the claim to find which key detail or document is not yet retrieved or remains unconfirmed.  
+   - Frame the query specifically to target that missing piece, often in the form of a direct question about:  
+     - The roles and involvement of named individuals in certain movies or events.  
+     - The relationship or timeline between films, actors, or units mentioned.  
+     - Founding dates, identities, or attributes of named entities.  
+   - Use precise and unambiguous wording in the query to improve retrieval accuracy, including titles, years, and proper names.
+
+4. **Additional considerations:**  
+   - Avoid vague or overly broad queries; focus on what is essential to confirm or deny the claim.  
+   - When multiple entities or data points are involved, ensure the query captures their connection as expressed in the claim.  
+   - Reflect the complexity of claims involving multiple related facts by combining them in a single query when appropriate.
+
+By following this approach, the assistant ensures that the generated query will efficiently lead to retrieval of all necessary factual evidence needed to verify or refute the claim.
+```
+
+The following are examples of different task inputs provided to the assistant along with the assistant's response for each of them, and some feedback on how the assistant's response could be better:
+```
+# Example 1
+## Inputs
+### claim
+The Scottish punk band that worked 3 years with Young American Recordings and Sleeper, are both from Britain.
+
+### notes
+['Young American Recordings was an American record label based in New York City that worked with the Scottish punk band APB and the British rock band South.', 'APB is a Scottish punk band, which means it is from Britain.', 'Sleeper is mentioned as a band name associated with Australian band Rail initially called Sleeper but this Sleeper was Australian, not British.', 'No explicit information confirms Sleeper (band) is from Britain in the provided notes or context.', 'Young American Recordings was an American record label based in New York City that worked with the Scottish punk band APB and the British rock band South.', 'APB is a Scottish punk band, therefore from Britain.', 'The Australian band Rail was originally called Sleeper but changed its name to avoid confusion with a UK band named Sleeper.', 'There is no explicit information confirming that the Sleeper band is from Britain in the provided notes or context.', 'Young American Recordings was an American record label based in New York City that worked with the Scottish punk band APB and the British rock band South.', 'APB is a Scottish punk band, thus from Britain.', 'There is no explicit information confirming that the Sleeper band is from Britain in the provided notes or context.', 'An Australian band Rail was originally called Sleeper, but this Sleeper was Australian, not British.']
+
+## Generated Outputs
+### reasoning
+The claim states that a Scottish punk band worked for 3 years with Young American Recordings and that Sleeper, presumably another band, along with Young American Recordings, are both from Britain. The notes clarify that Young American Recordings is an American record label based in New York City, not British. The Scottish punk band APB is from Britain (Scotland). The band Sleeper is ambiguous: there is a mention of an Australian band Rail initially named Sleeper but this Sleeper is Australian, not British; however, it is also mentioned that there is a UK band named Sleeper but no explicit confirmation in the notes that this Sleeper is the one that worked with Young American Recordings or that it is from Britain in the relevant context. Key gaps remain: confirmation of which Sleeper band is referenced, whether it is British, and the exact duration of the Scottish punk band’s (APB’s) work with Young American Recordings (whether it was indeed 3 years). Also, Young American Recordings is American, contradicting the claim it is British.
+
+Hence, to verify or refute the claim, the query should seek clear information about: 
+1. The duration and nature of APB's (the Scottish punk band) work relationship with Young American Recordings.
+2. The origin of the band Sleeper mentioned in the claim (whether it is British or Australian).
+3. The nationality of Young American Recordings, to confirm it is American or British.
+
+### query
+What is the nationality of Young American Recordings? Which band named Sleeper is associated with Young American Recordings or the Scottish punk band APB, and is this Sleeper band British or Australian? For how long did the Scottish punk band APB work with Young American Recordings?
+
+## Feedback
+Correctly retrieved 2/3 gold documents: ['APB (band)', 'Young American Recordings']. Documents remaining to be retrieved: ['Sleeper (band)'].
+
+
+
+# Example 2
+## Inputs
+### claim
+Star of American neo-western film The Far Horizons was born in August and was a professor.
+
+### notes
+[]
+
+## Generated Outputs
+### reasoning
+The claim states two facts: (1) the star of the American neo-western film "The Far Horizons" was born in August, and (2) this person was a professor. Currently, there are no notes or evidence provided to confirm any part of this claim. To verify or refute it, we need to identify who the star of "The Far Horizons" is, determine that person’s birth month (whether August), and check if that individual was ever a professor. The query should be structured to obtain biographical details about the lead actor of "The Far Horizons," specifically their birth date and professional background regarding being a professor.
+
+### query
+Who was the star of the American neo-western film "The Far Horizons"? What is the birth month of this actor? Has this actor ever held a position as a professor?
+
+## Feedback
+Correctly retrieved 1/3 gold documents: ['The Far Horizons']. Documents remaining to be retrieved: ['Fred MacMurray', 'The Absent-Minded Professor'].
+
+
+
+# Example 3
+## Inputs
+### claim
+The actor, who starred in the thriller 400 Boys, plays Marilyn Monroe in a film based on the novel "Northern Lights".
+
+### notes
+["Several actresses have portrayed Marilyn Monroe in films, including Ashley Judd and Mira Sorvino in 'Norma Jean & Marilyn' (1996), Misty Rowe in 'Goodnight, Sweet Marilyn,' Michelle Williams in 'My Week with Marilyn' (2011), and Poppy Montgomery in 'Blonde' (2001), which was based on a novel of the same name.", "'My Week with Marilyn' is a 2011 British drama depicting the making of the 1957 film 'The Prince and the Showgirl,' starring Marilyn Monroe.", "'Blonde' is a 2001 made-for-television film about Marilyn Monroe's life adapted from Joyce Carol Oates's novel.", "Marilyn Monroe appeared in a series of films between 1946 and 1961, including early roles in 'The Asphalt Jungle' (1950).", "The context does not provide any information linking an actor from the thriller '400 Boys' to playing Marilyn Monroe or a film based on the novel 'Northern Lights.'", 'Several actresses have portrayed Marilyn Monroe in films, including Ashley Judd, Mira Sorvino, Misty Rowe, Michelle Williams, and Poppy Montgomery.', "'Blonde' (2001) is a made-for-television film about Marilyn Monroe's life adapted from Joyce Carol Oates's novel.", "'My Week with Marilyn' (2011) is a British drama depicting the making of the 1957 film 'The Prince and the Showgirl,' starring Marilyn Monroe, and is based on books by Colin Clark.", "There is no information linking an actor from the thriller '400 Boys' to playing Marilyn Monroe or to a film based on the novel 'Northern Lights.'"]
+
+## Generated Outputs
+### reasoning
+The claim connects two specific facts involving an actor: one who starred in the thriller "400 Boys" and who also played Marilyn Monroe in a film based on the novel "Northern Lights." To verify this, I need to identify the actor who starred in "400 Boys," the film in which this actor portrayed Marilyn Monroe, and whether that film was indeed based on the novel "Northern Lights." Since no notes are provided, the essential missing information involves the name of the actor in "400 Boys," confirmation of a role as Marilyn Monroe, and the existence of a film adaptation of "Northern Lights" featuring this performance. Therefore, the query must ask for information linking the actor from "400 Boys" to a portrayal of Marilyn Monroe in a "Northern Lights" adaptation.
+
+### query
+Who starred in the thriller film "400 Boys"? Is there a film based on the novel "Northern Lights" in which this actor portrayed Marilyn Monroe? Please provide details about the actor's roles in both films and confirm whether the "Northern Lights" adaptation exists and includes a portrayal of Marilyn Monroe.
+
+## Feedback
+Correctly retrieved 0/3 gold documents: []. Documents remaining to be retrieved: ['400 Boys', 'Charlie Rowe', 'The Golden Compass (film)'].
+
+
+```
+
+Your task is to write a new instruction for the assistant.
+
+Read the inputs carefully and identify the input format and infer detailed task description about the task I wish to solve with the assistant.
+
+Read all the assistant responses and the corresponding feedback. Identify all niche and domain specific factual information about the task and include it in the instruction, as a lot of it may not be available to the assistant in the future. The assistant may have utilized a generalizable strategy to solve the task, if so, include that in the instruction as well.
+
+Provide the new instructions within ``` blocks.

@@ -1,0 +1,64 @@
+```
+You will be given three input fields: `claim`, `notes`, and `context`.
+
+- `claim` is a factual assertion that may involve named entities such as films, operas, actors, directors, or other domain-specific entities.
+- `notes` is a list of extracted facts or statements that potentially support or refute the claim, often including domain-specific details like film release years, cast members, act structures of operas, director names, and biographical snippets.
+- `context` is a collection of structured textual data entries or short knowledge snippets about relevant entities, including films (with details like country, genre, director, cast), operas (number of acts, composer), actors and actresses (roles, appearances, awards), directors (filmography), and other pertinent topics that aid in validating or clarifying the claim.
+
+Your task is to process these inputs and produce:
+
+1. **new_notes**: a concise, carefully curated subset of the `notes` that directly pertains to verifying the claim and removing redundant or irrelevant points. This subset should be factually accurate, focused only on evidence that supports or refutes the claim, or contextualizes key named entities mentioned.
+
+2. **titles**: a list of the most relevant entity titles (such as film titles, opera titles, persons’ names, or thematic document topics) derived from the `context` that are essential to understanding or verifying the claim. The selected titles should include core subjects referenced explicitly or implicitly in the claim and those providing crucial background information, such as works referenced in the claim, their creators, or related entities. Include the official or commonly recognized titles, including disambiguating years or country if supplied (e.g., 'Office (2015 South Korean film)'). Titles should not include unrelated or marginally relevant entities.
+
+---
+
+**Domain-specific considerations and nuances:**
+
+- Opera works often have formal acts explicitly defined (e.g., Il trovatore has four acts), while films typically do not have formal act divisions, generally considered to have a single "act" or no defined acts. This distinction is important when claims involve comparing structural components of works from different domains (opera vs. film).
+
+- Film-related claims often reference actors and directors with exact filmographies and roles. Notable domain details include that actors might appear in multiple films across different years, and directors are identified separately from actors even when similarly named.
+
+- When actors or directors are mentioned, cross-check that the role (actor/director) is correctly assigned to the individual to avoid conflating their professions.
+
+- Pay attention to correctly identifying and retrieving relevant documents/entities with disambiguation terms, especially when films or persons have common names or multiple entries (e.g., 'The Deal (2015 South Korean film)').
+
+- For television series and films, consider including key actors and relevant shows or series in the `titles` if they help verify the claim.
+
+---
+
+**Reasoning and strategy:**
+
+- Examine the `claim` carefully: identify named entities, relationships, and assertions.
+
+- Use the `notes` to filter and keep only those statements that directly relate to the entities or facts needed to verify the claim.
+
+- From the `context`, infer which entity documents offer the most direct evidence or background to the claim. Prioritize official titles of works (with years and countries if given) and prominent persons (actors, directors) related to the claim.
+
+- Avoid including unrelated or marginally related entities from the context or notes.
+
+- Your output should enable a clear and focused verification of the claim, supporting research, or fact-checking by highlighting only the most pertinent facts and references.
+
+---
+
+**Input format:**
+
+- `claim`: a string containing the factual claim.
+
+- `notes`: a list of strings, each a factual statement related to the claim or entities.
+
+- `context`: a list of strings, each a brief entity or document overview that may include titles, biographical info, or categorical details.
+
+---
+
+**Output format:**
+
+- `new_notes`: a list of strings, extracted and summarized from `notes` to contain only relevant, precise evidence supporting or refuting the claim.
+
+- `titles`: a list of strings, representing the most relevant entity titles from `context`, formatted according to their official or most specific designations (including disambiguators).
+
+---
+
+Use this approach to maximize factually accurate, precise, and relevant outputs to support claim verification and to identify the key documents or entities necessary for deeper investigation or retrieval.
+
+```

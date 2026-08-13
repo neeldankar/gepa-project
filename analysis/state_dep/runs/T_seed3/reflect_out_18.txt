@@ -1,0 +1,69 @@
+``` 
+Task Description:
+
+You will be provided with three input fields:
+
+- `claim`: A factual statement or assertion involving one or more entities, events, or relationships. This claim may involve multiple components such as identities, affiliations, authorships, chronological orders, professional roles, or event results.
+
+- `notes`: A list of extracted factual statements or snippets relevant to the claim. These notes often summarize, support, or refute parts of the claim. They may include duplicate or conflicting information.
+
+- `context`: A list of detailed documents or document excerpts with titles and text, providing comprehensive background information about the entities, events, or relationships mentioned in the claim. These may include biographies, organizations, publications, events, artworks, sports results, and other domain-specific data.
+
+Your goal is to produce two output fields:
+
+- `new_notes`: A concise, accurate subset of the given `notes`, reflecting only those facts that are directly supported or refuted by the provided `context`. These notes should be factually correct, non-redundant, and cover all factual components of the claim, including complex or compound elements. Remove duplicates and eliminate unsupported or ambiguous notes.
+
+- `titles`: A list of exact document titles from the `context` that provide the evidence needed to verify or dispute the facts in `new_notes`. Include all documents referenced in the selected notes, ensuring comprehensive and precise coverage of key facts. Exclude irrelevant or tangential documents.
+
+Detailed requirements and domain-specific knowledge:
+
+1. **Entity and Relationship Identification**  
+   Analyze the claim to identify all entities (e.g., individuals, bands, companies, films, sports players) and the relationships between them (e.g., authorship, membership, chronological order, leadership, geographic headquarters). Map these precisely to notes and context.
+
+2. **Cross-Verification of Facts**  
+   Each note must be verified or invalidated against the detailed `context`. Only include notes fully supported by context. If contradiction exists, prefer the most accurate and supported fact. If evidence for a fact is absent from the context, do not include it.
+
+3. **Precision and Completeness in Retrieval**  
+   - Extract only the minimal necessary notes that collectively cover all aspects of the claim’s factual assertions.  
+   - The `titles` list must contain exactly those context entries critical for verifying the new notes — no omissions or extraneous entries.  
+   - Correct retrieval improves accuracy and trustworthiness.
+
+4. **Handling Redundancies and Contradictions**  
+   - Identify and discard duplicate notes.  
+   - When conflicting notes appear, select the one supported by context and consistent with other facts.  
+   - Ensure that the final notes are concise and unambiguous.
+
+5. **Summarizing Complex Claims**  
+   - Claims often contain multiple distinct assertions (e.g., entity A’s profession, entity B’s geographic location, temporal sequences of events).  
+   - Validate and include notes supporting or disputing each component, preventing partial or incomplete evaluation.
+
+6. **Domain-Specific Contextual Knowledge**  
+   To accurately interpret the entities and relationships, utilize the following domain details embedded in context and notes:  
+   - **Professionals**: Paleontologists (such as Elisabeth Vrba and Stephen Jay Gould), professional tennis players and their tournament results, composers (like David Shire), professional pilots (e.g., Candi Kubeck), journalists, artists, and other specialists.  
+   - **Publications and Creative Works**: Distinguish between authorship and publication venues (magazine article vs. book vs. essay). Artworks, films, albums, and songs should be identified by release date, production companies, and credited creators.  
+   - **Organizations and Companies**: Company headquarters (city, country), nationality, subsidiaries, and affiliations are crucial for verifying claims about geographic or corporate relationships.  
+   - **Events**: Sporting tournaments, crashes, urban games, and other events provide chronological and relational fact checks.  
+   - **Name Ambiguity**: Different people or entities may share names (e.g., various individuals named Gould); disambiguate with career details, associated works, or context descriptions.
+
+7. **Generalizable Reasoning and Fact-Checking Strategy**  
+   - Decompose the claim into atomic factual assertions and map them to corresponding notes.  
+   - For each note, find direct confirmation or refutation in context — quotes, data points, and official statements.  
+   - Exclude notes unsupported by context or contradicted by stronger evidence.  
+   - Assemble a minimal set of notes that collectively validate or invalidate the entire claim.  
+   - List all relevant context documents necessary to verify these notes, ensuring traceability and completeness.  
+   - Make sure the final output is focused, unambiguous, and factually accurate.
+
+Output Format:
+
+- `new_notes`: List of succinct, verified factual notes derived from the input `notes` and supported by the `context`.  
+- `titles`: List of document titles from the `context` that contain the evidence for these notes.
+
+Additional guidance:
+
+- Avoid introducing new facts not present in the `context`.  
+- When the context lacks information to verify certain comparisons or claims, clearly reflect that by selecting notes stating the absence of information.  
+- Inclusion of notes addressing disproven or incorrect parts of the claim is essential if those parts are directly refuted by the context.  
+- Ensure the titles exactly match those in the `context` with precise spelling and punctuation.
+
+By following these instructions, you will produce outputs that are factually accurate, thoroughly verified, comprehensive for all claim components, and traceable to precise source documents.
+```

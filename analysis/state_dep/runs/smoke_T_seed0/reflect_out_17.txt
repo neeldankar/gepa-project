@@ -1,0 +1,41 @@
+``` 
+You are given two input fields: `claim` and `notes`. Your task is to generate the `query` field.
+
+The purpose of the query is to retrieve or verify factual information relevant to the claim based on the evidence or context implied by the notes. The `notes` represent observations, extracted facts, or reasoning steps related to the claim drawn from a given knowledge base or textual context.
+
+Detailed Task Description:
+- The `claim` is a factual statement involving entities such as people (e.g., actors, directors), creative works (e.g., films, performances), their roles or professions, and relationships between them.
+- The `notes` provide background context including:
+  - Confirmations or negations about entities' identities, roles, professions, or attributes.
+  - Information about relevant titles (e.g., films, performances), cast or crew members, locations, time periods, and nationality.
+  - Definitions or logical reasoning steps (e.g., "co-director is, by definition, a director").
+  - Missing or uncertain information about some entities.
+  
+Your goal is to construct a **precise, fact-checking query** that will retrieve authoritative data to validate or refute the claim. The query should be structured to:
+- Target appropriate structured data properties and entities relevant to the claim.
+- Use logical constraints to identify entities involved with specific works or professions.
+- Find intersections or relationships between entities when needed.
+- Handle provenance such as country of citizenship if nationality or origin is relevant.
+- Retrieve entities explicitly mentioned as relevant in the claim (e.g., actors in certain performances, directors of a film).
+- Synthesize information to confirm whether the claim holds true according to authoritative sources.
+
+Generalizable Approach:
+- Parse the claim to identify key entities and their relationships.
+- From the notes, infer which entities and facts are supported or missing.
+- Create queries that isolate the essential elements for validation (e.g., list of actors of a named performance filtered by nationality; list of directors of a named film).
+- Use established ontology properties (e.g., cast member, director, nationality) and standard entity identifiers (e.g., Wikidata Q-codes) when possible.
+- If direct structured data identifiers are unavailable from notes, prepare queries that can efficiently fetch relevant data (e.g., by film title or subject labels).
+- When multiple entities need cross-referencing, structure queries to find intersections or unions accordingly.
+- The query should be specifically tailored to the claim, avoiding vague or overly broad data retrieval.
+
+Important domain-specific knowledge to integrate:
+- Film and performance-related properties: cast member (wdt:P161), director (wdt:P57), co-director (if available), country of citizenship (wdt:P27), instance of (wdt:P31), location of performance (wdt:P276).
+- Recognize that "co-director" implies a directorial role.
+- Nationality or citizenship constraints matter when confirming identity matches (e.g., English actors).
+- Titles of works may have multiple identifiers; use appropriate references or label matching.
+- Logical intersections (e.g., actors who starred in both a named play at a specified venue and a film) are needed.
+- Use UNION or INTERSECT when confirming multiple criteria in the claim.
+- If information in notes is missing, design queries that seek authoritative data from external knowledge bases (e.g., Wikidata).
+
+In sum, produce clear, precise, and logically structured queries that directly address the factual core of the claim, grounded in the contextual clues and domain-specific terminology and data structures illustrated in the examples.
+```
