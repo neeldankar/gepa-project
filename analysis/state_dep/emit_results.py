@@ -27,6 +27,7 @@ import hashlib
 import itertools
 import json
 import os
+import statistics as st
 import sys
 
 import numpy as np
@@ -141,6 +142,69 @@ def boot_ci_python(diffs, idx) -> tuple[float, float]:
     return pct(2.5), pct(97.5)
 
 
+def bca_ci_numpy(diffs, idx) -> tuple[float, float]:
+    """Bias-corrected and accelerated bootstrap CI. §10 M2 requires this ALONGSIDE percentile.
+
+    z0 from the fraction of bootstrap means below the observed mean; acceleration from a
+    leave-one-seed-out jackknife over the 8 paired differences. M2's own caveat stands and is
+    restated in the emitted file: with n=8 the jackknife that produces `a` is unstable, which is
+    exactly why the design asks for both intervals rather than BCa alone.
+    """
+    d = np.asarray(diffs, dtype=float)
+    theta = float(d.mean())
+    boot = d[idx].mean(axis=1)
+    prop = float((boot < theta).mean())
+    if prop <= 0.0 or prop >= 1.0:
+        raise SystemExit(f"FAIL BCa: z0 undefined, {prop!r} of bootstrap means below observed")
+    z0 = st.NormalDist().inv_cdf(prop)
+    jack = np.array([np.delete(d, i).mean() for i in range(len(d))])
+    dev = jack.mean() - jack
+    den = 6.0 * float((dev ** 2).sum()) ** 1.5
+    if den == 0.0:
+        raise SystemExit("FAIL BCa: zero jackknife dispersion")
+    a = float((dev ** 3).sum()) / den
+    out = []
+    for q in (0.025, 0.975):
+        z = st.NormalDist().inv_cdf(q)
+        adj = z0 + (z0 + z) / (1.0 - a * (z0 + z))
+        out.append(float(np.percentile(boot, 100.0 * st.NormalDist().cdf(adj))))
+    return out[0], out[1]
+
+
+def bca_ci_python(diffs, idx) -> tuple[float, float]:
+    """Same interval, independent construction: pure-Python means, jackknife and percentile."""
+    d = [float(x) for x in diffs]
+    n = len(d)
+    theta = sum(d) / n
+    boot = sorted(sum(d[j] for j in row) / len(row) for row in idx.tolist())
+    prop = sum(1 for b in boot if b < theta) / len(boot)
+    if prop <= 0.0 or prop >= 1.0:
+        raise SystemExit(f"FAIL BCa(py): z0 undefined, prop={prop!r}")
+    z0 = st.NormalDist().inv_cdf(prop)
+    jack = [(sum(d) - d[i]) / (n - 1) for i in range(n)]
+    jbar = sum(jack) / n
+    s2 = sum((jbar - t) ** 2 for t in jack)
+    s3 = sum((jbar - t) ** 3 for t in jack)
+    den = 6.0 * (s2 ** 1.5)
+    if den == 0.0:
+        raise SystemExit("FAIL BCa(py): zero jackknife dispersion")
+    a = s3 / den
+    m = len(boot)
+
+    def pct(q):
+        pos = q / 100.0 * (m - 1)
+        lo = int(pos)
+        hi = min(lo + 1, m - 1)
+        return boot[lo] + (boot[hi] - boot[lo]) * (pos - lo)
+
+    out = []
+    for q in (0.025, 0.975):
+        z = st.NormalDist().inv_cdf(q)
+        adj = z0 + (z0 + z) / (1.0 - a * (z0 + z))
+        out.append(pct(100.0 * st.NormalDist().cdf(adj)))
+    return out[0], out[1]
+
+
 def contrast(a_vals, b_vals, idx) -> dict:
     diffs = [a - b for a, b in zip(a_vals, b_vals)]
     p1, p2 = signflip_p_itertools(diffs), signflip_p_bitmask(diffs)
@@ -149,11 +213,15 @@ def contrast(a_vals, b_vals, idx) -> dict:
     c1, c2 = boot_ci_numpy(diffs, idx), boot_ci_python(diffs, idx)
     if abs(c1[0] - c2[0]) > 1e-12 or abs(c1[1] - c2[1]) > 1e-12:
         raise SystemExit(f"FAIL second-path bootstrap CI: {c1!r} vs {c2!r}")
+    k1, k2 = bca_ci_numpy(diffs, idx), bca_ci_python(diffs, idx)
+    if abs(k1[0] - k2[0]) > 1e-12 or abs(k1[1] - k2[1]) > 1e-12:
+        raise SystemExit(f"FAIL second-path BCa CI: {k1!r} vs {k2!r}")
     m1 = float(np.mean(diffs))
     m2 = sum(diffs) / len(diffs)
     if abs(m1 - m2) > 1e-12:
         raise SystemExit(f"FAIL second-path paired mean: {m1!r} vs {m2!r}")
-    return {"diffs": diffs, "mean": m1, "p": p1, "lo": c1[0], "hi": c1[1]}
+    return {"diffs": diffs, "mean": m1, "p": p1, "lo": c1[0], "hi": c1[1],
+            "bca_lo": k1[0], "bca_hi": k1[1]}
 
 
 def main() -> int:
@@ -174,7 +242,7 @@ def main() -> int:
         b2 = [recomputed[(lo_arm, s)] for s in SEEDS]
         r1 = contrast(a1, b1, idx)
         r2 = contrast(a2, b2, idx)
-        for f in ("mean", "p", "lo", "hi"):
+        for f in ("mean", "p", "lo", "hi", "bca_lo", "bca_hi"):
             if abs(r1[f] - r2[f]) > 1e-12:
                 raise SystemExit(f"FAIL second-path {hi_arm}-{lo_arm} {f}: {r1[f]!r} vs {r2[f]!r}")
         results[(hi_arm, lo_arm)] = r1
@@ -196,8 +264,15 @@ def main() -> int:
     w("")
     w(f"Endpoint = §8b selection-split argmax, evaluated on the {N_TEST}-claim test split.")
     w("Paired by seed. `p` is the exact two-sided sign-flip over all 2^8 = 256 patterns.")
-    w(f"CI is a paired bootstrap, {BOOT_REPS:,} resamples, seed {BOOT_SEED}, percentile method.")
+    w(f"CIs are a paired bootstrap, {BOOT_REPS:,} resamples, seed {BOOT_SEED}, over the same")
+    w("resample indices: percentile and BCa, both reported per v2 §10 M2.")
     w(f"MDE (v2 §11-2, endpoint units): {MDE_ENDPOINT}")
+    w("")
+    w("**SAP deviation, corrected 2026-08-24.** v2 §10 M2 requires the percentile bootstrap CI")
+    w("*alongside* BCa. The first emission of this file (2026-08-12) carried percentile only. BCa")
+    w("has been added; no previously emitted number was removed or altered, and re-running the")
+    w("unchanged code paths reproduces every one of them. M2's reason for wanting both stands:")
+    w("BCa's acceleration constant comes from a jackknife over 8 points and is unstable at this n.")
     w("")
     w("---")
     w("")
@@ -217,7 +292,8 @@ def main() -> int:
         w(f"| paired mean | {r['mean']:+.6f} |")
         w(f"| MDE (§11-2) | {MDE_ENDPOINT} |")
         w(f"| p (exact two-sided sign-flip) | {r['p']:.6f} |")
-        w(f"| bootstrap 95% CI | [{r['lo']:+.6f}, {r['hi']:+.6f}] |")
+        w(f"| bootstrap 95% CI (percentile) | [{r['lo']:+.6f}, {r['hi']:+.6f}] |")
+        w(f"| bootstrap 95% CI (BCa) | [{r['bca_lo']:+.6f}, {r['bca_hi']:+.6f}] |")
         w("")
 
     w("---")

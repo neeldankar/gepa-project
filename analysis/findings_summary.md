@@ -7,10 +7,29 @@ substrings of the byte-proven prompt; full-object vs feedback-only signal differ
 Results below are measured on that object, not a proxy.
 
 ## Headline
-On the object the proposer actually reads, **per-example *selection* over reflection content is closed**:
-no content scorer beats constraint-identity/difficulty, and the revision outcome has no stable per-example
-target for such a scorer to predict. The remaining live lever is the **acceptance gate**, not which example
-gets reflected on.
+Two things are established, and they point the same way.
+
+**Per-example selection over reflection content is closed on IFBench**, on the byte-verified object
+the proposer actually reads: no content scorer beats constraint-identity/difficulty, and the revision
+outcome has no stable per-example target for such a scorer to predict. Mechanism is id-determinism —
+IFBench SI is nearly a deterministic function of the failed-constraint-id set.
+
+**On HoVer the channel is causally live at one step but does not reach the endpoint.** The batch-swap
+shows reflection-input identity matters (specificity +0.0274, CI [+0.0149, +0.0415], 243 events,
+8 seeds), so the IFBench null was task-scoped rather than GEPA-general. But the deployable form of the
+one surviving signal pros no detectable trajectory-level gain at equal budget: three arms x 8 paired
+seeds, T-C -0.0011 and T-B -0.0128, both underpowered nulls, on a non-degenerate selection contrast.
+
+**The boundary, not the absence, is the finding.** A real one-step effect failing to convert to
+trajectory outcomes has now been measured two independent ways on the same benchmark. One-step is not
+trajectory — that scope guard is a measured result here, not a hedge.
+
+**The live lever remains the acceptance gate** (#132), which is where the pre-registered (null, null)
+branch routes and where the noise measurements already sit: same-input accept disagreement 0.415,
+decision-flip 0.203 at b'=1 and 0.104 at b'=2.
+
+Every null below is bounded by its stated MDE/CI — evidence of a small-or-absent effect, never proof
+of zero.
 
 ## Evidence — the closed selection direction
 **Correct-object scorer screen.** Re-screening the reopened semantic scorers on the full triple (n=382
@@ -217,3 +236,92 @@ TRACEABILITY MAP (number → source doc · section)
 - lottery corrected 0.415 (>0, n=764); 0.382 mixed estimand DEPRECATED (batch_swap_v2_analysis.py:73-77); 0.32 diff corpus/rule not comparable → verification_postswap.md · Task 2
 - gate flip P=0.203 (b′=1) / 0.104 (b′=2); within-b′ disagree 0.372/0.309 → verification_postswap.md · Task 4A
 -->
+
+---
+
+## (d) State-dependent novelty selection — three-arm live experiment, (null, null)
+
+**Design.** Three arms x 8 paired seeds on HoVer, equal budget (max_metric_calls 300).
+B = baseline GEPA (b=3, uniform). C = cost-matched control (draw 6, pick 3 at random).
+T = treatment (draw 6, pick the 3 minimizing knn_emb_fb_min). Endpoint = §8b selection-split
+argmax evaluated on the frozen 150-claim test split. gepa 0.0.27, dspy 3.2.1, gpt-4.1-mini
+temp 0, cache off. Design state-dependent-design-v2.1.1-frozen.
+
+**Pre-registration.** Framing label CONFIRMATORY, MDE 0.06332 endpoint points, both written
+into plan.md §2 on 2026-08-12 BEFORE results.md was read. D = 1.4432 (235 events).
+Gate trigger 3 x (D x beta/2) = 0.08213; MDE < trigger, so GATE BITES = False.
+
+**Results.** Paired by seed, exact two-sided sign-flip over all 2^8 patterns, 10,000-resample
+paired bootstrap, seed 20260709.
+
+| contrast | paired mean | percentile 95% CI | BCa 95% CI | p | §9 labe---|---|---|---|---|---|
+| T - C (H1, confirmatory) | -0.001111 | [-0.025833, +0.031667] | [-0.022500, +0.039722] | 0.9688 | underpowered null |
+| T - B (H2, secondary) | -0.012778 | [-0.039444, +0.021118] | [-0.035556, +0.029444] | 0.4844 | underpowered null |
+| C - B (H3, anomaly overlay) | -0.011667 | [-0.023611, +0.001667] | [-0.022500, +0.003056] | 0.1328 | null, no label required |
+
+Per-arm endpoint mean (SD, ddof=1), n=8 each: B 0.599167 (0.029118), C 0.587500 (0.023576),
+T 0.586389 (0.031144).
+
+**§9 labels — how they were assigned.** Deflated planning effect = D x beta/2 = 0.0273768.
+A null is labeled underpowered when its CI cannot exclude that value. T-C fails to exclude on
+both intervals. T-B DISAGREES: BCa upper (+0.029444) fails to exclude, percentile upper
+(+0.021118) excludes. §9 does not specify which interval decides and §10 requires both be
+reported, so the design is silent here. The conservative bound was taken and T-B is labeled an
+underpowered null. This was a judgment call, not a egistered rule; the counterargument is
+M2's own stated reason for requiring both intervals, that BCa's acceleration constant is
+unstable at n=8. Recorded so the choice is visible rather than absorbed into a clean number.
+
+**Anomaly overlay did not fire.** §9 triggers it only on positive C-B by the sign criterion.
+C-B = -0.011667, p = 0.133 — null and negative, consistent with H3's pre-registered
+expectation of <= 0. No grid cell blocked.
+
+**§15-12 selection-pressure degeneracy — checked, NOT degenerate.** §9 requires this before any
+"signal does not transfer" reading. Across 235 events the within-event novelty spread is
+substantial: top3 - bottom3 mean gap median 2.28 within-run SD (mean 2.36, min 0.533, max 5.65);
+range/within-run-SD median 4.03. Zero events have exact-zero range or exact-zero top3-bottom3 gap.
+§15-12 states no numeric threshold ("near-constant" only), so this is a distributional read, not a
+criterion that fired. The knob was turned; T and C were selecting different batches.
+(analye_dep/degeneracy_descriptive.md)
+
+**§15-4 monitored descriptives — NO TESTS RUN, exploratory only.** Pre-registered as monitoring,
+not as a contrast. Per-arm means over 8 seeds:
+
+| arm | accept rate | reflection events | candidates (incl. seed) |
+|---|---|---|---|
+| B | 0.3456 | 31.25 | 11.50 |
+| C | 0.2558 | 26.00 | 7.50 |
+| T | 0.3838 | 23.38 | 9.88 |
+
+T's accept rate exceeds C's on 6 of 8 seeds, ties on 1, is lower on 1. T produced more candidates
+than C (9.88 vs 7.50) on ~10% fewer reflection events. **No test was run and none is licensed:**
+H1 is pre-registered as a policy contrast, not a mechanism contrast (R9). Two live confounds:
+accept is measured on the same minibatch the treatment manipulates (the collider, proposition §6),
+and high-novelty-feedback examples may be ones the parent scores poorly on, leaving more headroom
+to beat — a mechanical route to a higher accept rate with no bearing on revision quality. Any
+mechanism claim from these numbers requires a separate designed test.
+
+**Fragil T_seed4 (0.657778) is the largest endpoint in the table and carries +0.100 of the
+T-C paired difference. Excluding it moves the T-C mean to about -0.016. Sign pattern on T-C is
+3 positive, 5 negative. The flat mean rests on one seed. Stated as characterization; the seed is
+NOT excluded from any reported number.
+
+**Scope guards.** 8 paired seeds; max_metric_calls 300; HoVer 3-hop only; gpt-4.1-mini; local BM25;
+one benchmark. CONFIRMATORY is not well-powered — the MDE (0.06332) is 2.3x the implied one-step
+effect (0.02738), so an effect the size the screen predicts would not be reliably detected at n=8.
+The MDE assumes rho = 0 on paired seeds (§11-3 B-arm SD caveat), so it is an upper bound. Exactness
+of the sign-flip test covers T-C under the sharp null; for T-B the arms differ mechanically and
+exchangeability is an approximation (R14) — this is why H2 is secondary. The 8-cluster
+anti-conservative bootstrap caveat travels with every CI above. The endpoint estimator changed
+between Stage-1 and v2.1 (DENS.md 2026-07-22): do NOT table these endpoints alongside the
+HoVer swap specificity number without that guard.
+
+**Spend.** ~$189 program total across all gates, excluding an unrecorded dose-control pass.
+Artifact-recorded figures undercount because per-process spend meters do not span restarts.
+
+**Reading.** The selection channel is causally active on HoVer at one step (swap specificity
++0.0274, CI [+0.0149, +0.0415]) and does not produce a detectable trajectory-level endpoint gain
+at this budget. Both T-C and T-B are underpowered nulls, never evidence of absence. The
+constructive lane is the acceptance gate (#132), per the pre-registered map's (null, null) branch.
+
+(source: `analysis/state_dep/results.md`, `analysis/state_dep/degeneracy_descriptive.md`,
+`analysis/state_dep/plan.md` §2)

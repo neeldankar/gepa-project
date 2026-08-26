@@ -5,8 +5,15 @@ Emitted by `emit_results.py` from 24 run directories.
 
 Endpoint = §8b selection-split argmax, evaluated on the 150-claim test split.
 Paired by seed. `p` is the exact two-sided sign-flip over all 2^8 = 256 patterns.
-CI is a paired bootstrap, 10,000 resamples, seed 20260709, percentile method.
+CIs are a paired bootstrap, 10,000 resamples, seed 20260709, over the same
+resample indices: percentile and BCa, both reported per v2 §10 M2.
 MDE (v2 §11-2, endpoint units): 0.06332
+
+**SAP deviation, corrected 2026-08-24.** v2 §10 M2 requires the percentile bootstrap CI
+*alongside* BCa. The first emission of this file (2026-08-12) carried percentile only. BCa
+has been added; no previously emitted number was removed or altered, and re-running the
+unchanged code paths reproduces every one of them. M2's reason for wanting both stands:
+BCa's acceleration constant comes from a jackknife over 8 points and is unstable at this n.
 
 ---
 
@@ -28,7 +35,8 @@ MDE (v2 §11-2, endpoint units): 0.06332
 | paired mean | -0.011667 |
 | MDE (§11-2) | 0.06332 |
 | p (exact two-sided sign-flip) | 0.132812 |
-| bootstrap 95% CI | [-0.023611, +0.001667] |
+| bootstrap 95% CI (percentile) | [-0.023611, +0.001667] |
+| bootstrap 95% CI (BCa) | [-0.022500, +0.003056] |
 
 ## Contrast — T − C
 
@@ -48,7 +56,8 @@ MDE (v2 §11-2, endpoint units): 0.06332
 | paired mean | -0.001111 |
 | MDE (§11-2) | 0.06332 |
 | p (exact two-sided sign-flip) | 0.968750 |
-| bootstrap 95% CI | [-0.025833, +0.031667] |
+| bootstrap 95% CI (percentile) | [-0.025833, +0.031667] |
+| bootstrap 95% CI (BCa) | [-0.022500, +0.039722] |
 
 ## Contrast — T − B
 
@@ -68,7 +77,8 @@ MDE (v2 §11-2, endpoint units): 0.06332
 | paired mean | -0.012778 |
 | MDE (§11-2) | 0.06332 |
 | p (exact two-sided sign-flip) | 0.484375 |
-| bootstrap 95% CI | [-0.039444, +0.021118] |
+| bootstrap 95% CI (percentile) | [-0.039444, +0.021118] |
+| bootstrap 95% CI (BCa) | [-0.035556, +0.029444] |
 
 ---
 
@@ -137,7 +147,7 @@ MDE (v2 §11-2, endpoint units): 0.06332
 | git commit (run config) | d963929f3bc43a1754a87a83d78ab895f5bf890c |
 | design | state-dependent-design-v2.1.1-frozen |
 | mde_sim.py sha256 | `6d11de278014b7e7de41cf55cb56cad4f92680f5b5f6159e7c6583bf84bce5cc` |
-| emit_results.py sha256 | `3013421364b54bfebb1740e598f1cf4f5bf06a415090de3b7a194e99dc281b5c` |
+| emit_results.py sha256 | `c60cd689821cd8cd0d0c0087f50f4b8107fa2e6d27572c359f35c1aae9c62b8e` |
 
 ### endpoints.json mtimes
 
