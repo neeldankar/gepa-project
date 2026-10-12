@@ -325,3 +325,49 @@ constructive lane is the acceptance gate (#132), per the pre-registered map's (n
 
 (source: `analysis/state_dep/results.md`, `analysis/state_dep/degeneracy_descriptive.md`,
 `analysis/state_dep/plan.md` §2)
+
+---
+
+## Correction, 2026-10-12
+
+Append-only. No line above this heading has been edited; read the cited lines together with this
+section. Every number is cited file:line from the committed analysis docs. `ledger` =
+`analysis/findings_summary.md`; other paths are under `analysis/`.
+
+**1. `knn_emb_fb_min` does not survive calibration.** Section (b) calls it the one cell of 108 that
+"survives every criterion" (ledger:145-146), β +0.03794 (ledger:158). Under the full published rule
+(crit_b + MCB, LORO >= 7; `review_response_2026-08-26/03_permutation_calibration.md:18-22`;
+`article_todos_2026-10-08.md:24-27`), across 200 within-seed null permutations:
+- 134/200 yield at least one survivor, any β (`03_permutation_calibration.md:44`; `article_todos_2026-10-08.md:34`);
+- 43/200 yield a survivor with |β| >= 0.03794, either sign (`article_todos_2026-10-08.md:36`);
+- 20/200 yield a survivor with β >= +0.03794, same sign (`article_todos_2026-10-08.md:35`).
+
+Observed β is +0.037940 (`03_permutation_calibration.md:62`; unrounded 0.0379395028680125 at
+`article_todos_2026-10-08.md:29`). 93/200 null maxima of β across the 108 cells are >= it
+(`03_permutation_calibration.md:68`), placing it near the 53.5th percentile of the null max-β
+distribution (`WEBSITE-2026-09-28.md:189`), whose median is 0.037020 (`03_permutation_calibration.md:59`).
+
+**2. The 29% and r ≈ 0.54 figures are deprecated.** The ≈29% batch-stable share and the r ≈ 0.54
+ceiling (ledger:54-55) are derived arithmetically from the 0.32 flip rate (ledger:231). 0.32 is
+deprecated for external use (`WEBSITE-2026-09-28.md:365`); 29% and r ≈ 0.54 are deprecated with it
+(`WEBSITE-2026-09-28.md:366`).
+
+**3. The §15-12 degeneracy numbers are design-time, not realized.** The 235-event figures in section
+(d) (ledger:279-281: median 2.28, mean 2.36, min 0.533, max 5.65; range median 4.03) come from
+`dose.json`, the pre-experiment corpus, not the live runs (`review_response_2026-08-26/01_degeneracy_realized.md:7`).
+Realized arm T, 179 events, (top3 − bottom3)/within-run SD: median 1.819848, mean 1.980984, min
+0.311130, max 5.169971 (`01_degeneracy_realized.md:42`); range/within-run SD median 3.240576
+(`01_degeneracy_realized.md:41`); exact zeros 0/179 (`01_degeneracy_realized.md:46`). Design-time and
+realized side by side: `01_degeneracy_realized.md:89-100`.
+
+**4. The "MDE is an upper bound" rationale does not hold.** ledger:311 says the MDE (0.06332,
+ledger:309) is an upper bound because it assumes ρ = 0 on paired seeds. That requires ρ >= 0
+(`WEBSITE-2026-09-28.md:263-265`). Realized pairing correlations were negative: Pearson
+ρ(T,C) = −0.3542, ρ(T,B) = −0.2337 (`WEBSITE-2026-09-28.md:244-245`). The realized SD of T − C
+(0.045231) is still below the assumed 0.055446, because the per-arm SDs came in low, not because
+pairing helped (`WEBSITE-2026-09-28.md:265-267`). These are n = 8 correlations
+(`WEBSITE-2026-09-28.md:269`).
+
+**5. The three-arm endpoint is not D_pareto.** The section (d) endpoint is the argmax on the 50-claim
+§8b selection split, evaluated on the frozen 150-claim test split (`state_dep/results.md:6`,
+`state_dep/results.md:141-142`). It is not selected on D_pareto.
