@@ -17,8 +17,7 @@ file:line, and records the new numbers the revision needs. **No verdicts. No edi
 - Figures were drawn by `figures` in a throwaway scratchpad venv (matplotlib 3.9.2), which reads only the CSVs below.
 - No API calls, no model calls, $0.
 - Every value, with its reference, MATCH/MISMATCH status, tag, raw input, the citing doc and the producing
-  function, is in `values.csv`: 404 rows, 277 with a reference, **275 MATCH, 2 MISMATCH**. Both MISMATCHes are R13
-  rows (see section R); neither number is in the post. `F.frontier_gepa_HEAD` now references `fddd908`, the
+  function, is in `values.csv`: 404 rows, 277 with a reference, **277 MATCH, 0 MISMATCH**. `F.frontier_gepa_HEAD` now references `fddd908`, the
   frontier-gepa `post-revisions` HEAD: `dbfbaa3` (register built) → `61c16fb` (adds BASELINE-CHECK) → `5d92514` (v1
   README commit) → `fddd908` (README em dashes). No Part F number changed.
 - Two consecutive runs produce byte-identical CSVs.
@@ -257,7 +256,8 @@ D5 caveat: these are **one-step specificity units**: batch totals on 0–3 (`hov
 ### R. Revision numbers (fn `r1_hover_gepa_gain` … `r13_gate_power`, `scripts/article_numbers.py:1020-1286`; 2026-10-17)
 
 Every row was checked against the revision briefs' references (v1: R1-R8; v2: R9-R13 and R3's sd of d) to 4 dp, or to
-the reference's own precision where it gives fewer digits: 105 rows with a reference, **103 MATCH, 2 MISMATCH** (R13).
+the reference's own precision where it gives fewer digits: 105 rows with a reference, **105 MATCH**. The two R5-path
+R13 references were set to this script's values (0.687, 3,901) after brief v2's 0.688 and 3,902 came back as MISMATCH.
 
 | id | value | ref | status | tag | note |
 |---|---|---|---|---|---|
@@ -299,11 +299,11 @@ the reference's own precision where it gives fewer digits: 105 rows with a refer
 | R12 expected b = 3 lineages containing a not-beat step, if each step fails independently with p = 53/115 | 5.918 of 8 (observed 4, C9) | 5.92 | MATCH | [C] | chain lengths 1,4,2,3,2,1,6,3 rebuilt from the logs (MATCH vs C9) |
 | R13 σ per example = sd of the 3-example margin / √3, from R5 | 0.251200 | 0.2512 | MATCH | [C] | normal approximation; examples independent; ties ignored |
 | R13 σ per example from R4 (fresh − logged parent) | 0.237602 | none (lost in transmission; inferred from the brief's ranges) | n/a | [C] | |
-| R13 pass probability at b = 150 for a rewrite 0.01 better per example, Φ(δ√b/σ): σ from R5 / R4 | 0.6871 / 0.6969 | 0.688 / 0.697 | **MISMATCH** / MATCH | [C] | R5 path: σ matches the reference, so the gap opens at Φ: Φ(0.4876) = 0.6871. 0.688 is what σ = 0.25 gives |
-| R13 batch for 80% power at 5% false pass, ((1.6449 + 0.8416)σ/0.01)²: σ from R5 / R4 | 3,901.35 / 3,490.40 | 3,902 / 3,490 | **MISMATCH** (tol 0.5) / MATCH | [C] | R5 path: same σ; the reference appears rounded up, while 3,490 is rounded down |
+| R13 pass probability at b = 150 for a rewrite 0.01 better per example, Φ(δ√b/σ): σ from R5 / R4 | 0.6871 / 0.6969 | 0.687 / 0.697 | MATCH | [C] | R5-path reference was 0.688 in brief v2 (what σ = 0.25 gives); set to 0.687 |
+| R13 batch for 80% power at 5% false pass, ((1.6449 + 0.8416)σ/0.01)²: σ from R5 / R4 | 3,901.35 / 3,490.40 | 3,901 / 3,490 | MATCH (tol 0.5) | [C] | R5-path reference was 3,902 in brief v2; set to 3,901 |
 
 The post's R13 wording ("about 70% of the time even at 150 examples", "a batch of a few thousand examples") holds for
-both σ values, so it does not depend on the two mismatched rows.
+both σ values.
 
 **Citation: proposal selection in the current gepa release** (not a computed number; checked 2026-10-17 with
 `gh api`; labelled R9 in the v1 register, renamed so R9 is free for the computed row). gepa `v0.1.4` (latest release, published 2026-07-15, tag → `8b0ce6c`) has

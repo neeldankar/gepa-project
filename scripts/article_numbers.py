@@ -1269,7 +1269,7 @@ def r13_gate_power():
     vals = {v["id"]: float(v["value"]) for v in VALUES if v["id"] in ("R5.ifb_own_margin_sd_ddof1", "R4.sd_fresh_minus_logged_ddof1")}
     note = "normal approximation; examples treated as independent; ties ignored"
     phi = lambda z: 0.5 * (1 + math.erf(z / math.sqrt(2)))
-    for lab, sd, ref_s, ref_p, ref_b in (("R5", vals["R5.ifb_own_margin_sd_ddof1"], "0.2512", "0.688", "3902"),
+    for lab, sd, ref_s, ref_p, ref_b in (("R5", vals["R5.ifb_own_margin_sd_ddof1"], "0.2512", "0.687", "3901"),
                                          ("R4", vals["R4.sd_fresh_minus_logged_ddof1"], None, "0.697", "3490")):
         s = sd / math.sqrt(3)
         rec(f"R13.sigma_per_example_from_{lab}", s, ref_s, tag="[C]", note=f"{lab} sd of the 3-example margin / sqrt(3)")
