@@ -1,16 +1,25 @@
 # Article number register (2026-10-15)
 
+**Superseded draft (added 2026-10-17).** The published post, https://neeldankar.me/gepa-selection
+(published 2026-10-17, home_website commit `7d31a9b`), supersedes the draft `gepa-selection-short.md` that the `D:n`
+references in Table A point to. Table A is kept as the audit of that draft. Section R of Table B holds the numbers
+added for the post's line-by-line revision (home_website branch `post-revisions`), and each open question below
+now says how the published post settled it.
+
 **Purpose.** This register traces every number in the blog draft `~/Downloads/gepa-selection-short.md` (119 lines) to a committed
 file:line, and records the new numbers the revision needs. **No verdicts. No edits to the article.** The ledger
 (`analysis/findings_summary.md`), every `results.md`, the logs, the runs and the pairs are quoted, never changed.
 
 **Method**
 - Every value was recomputed from raw files by `scripts/article_numbers.py compute`, under
-  `analysis/state_dep/.venv-armT/bin/python -B` (Python 3.12, numpy only).
+  `analysis/state_dep/.venv-armT/bin/python -B` (Python 3.12, numpy only). Student-t quantiles and CDFs come from the
+  stdlib helpers `t_cdf`/`t_ppf` in the script, checked against scipy 1.18.0 by `tests/test_t_dist.py`.
 - Figures were drawn by `figures` in a throwaway scratchpad venv (matplotlib 3.9.2), which reads only the CSVs below.
 - No API calls, no model calls, $0.
 - Every value, with its reference, MATCH/MISMATCH status, tag, raw input, the citing doc and the producing
-  function, is in `values.csv`: 296 rows, 172 with a reference, **172 MATCH, 0 MISMATCH**.
+  function, is in `values.csv`: 370 rows, 244 with a reference, **243 MATCH, 1 MISMATCH**. The MISMATCH is
+  `F.frontier_gepa_HEAD`: frontier-gepa's HEAD moved from `dbfbaa3` (61c16fb committed the BASELINE-CHECK doc, then
+  its `post-revisions` branch added a README commit). No number in Part F changed; the reference is left as it was.
 - Two consecutive runs produce byte-identical CSVs.
 
 **Tags**
@@ -244,18 +253,60 @@ D5 caveat: these are **one-step specificity units**: batch totals on 0–3 (`hov
 | E3 shuffles with no full-rule survivor | 66/200 | 66 (= 200 − 134) | MATCH | [C] (`fig_screen_null_survivors.csv`) |
 | E3 shuffles whose strongest survivor has \|β\| ≥ observed | 43/200 | 43 | MATCH | [C] (the same count as E1, now per shuffle) |
 
+### R. Revision numbers (fn `r1_hover_gepa_gain` … `r8_exp3_count`, `scripts/article_numbers.py:1019-1188`; 2026-10-17)
+
+Every row was checked against the revision brief's reference to 4 dp: 72 rows with a reference, **72 MATCH**.
+
+| id | value | ref | status | tag | note |
+|---|---|---|---|---|---|
+| R1 stock GEPA's gain on HoVer (arm B, 8 runs, minus the 5 seed-prompt runs) | +0.024056 | +0.0241 | MATCH | [C] | `runs/B_seed*/endpoints.json`; `d2_seed_prompt_runs.csv` |
+| R1 Welch 95% interval | [−0.001495, +0.049607] | [−0.0015, +0.0496] | MATCH | [C] | t from `t_ppf` |
+| R1 Welch p / df | 0.062237 / 9.6945 | 0.0622 / 9.69 | MATCH | [C] | two-sided |
+| R2 per-run mean of d, s0 … s7 | +0.0074, −0.0038, −0.0041, −0.0030, +0.0031, −0.0011, +0.0014, +0.0090 | same | MATCH (8/8) | [C] | N2's 115 d, grouped by run |
+| R2 mean of run means | +0.001116 | +0.0011 | MATCH | [C] | |
+| R2 95% t-interval over the 8 run means (df 7) | [−0.003098, +0.005329] | [−0.0031, +0.0053] | MATCH | [C] | replaces N2's run-cluster bootstrap in the post |
+| R3 pooled sd of a 150-item mean | 0.013220 | 0.0132 | MATCH | [C] | per-item variance across N1's 10 seed evaluations (ddof 1), sqrt(sum)/150 |
+| R3 sd of the 115 d (ddof 1) | 0.021080 | 0.021 | MATCH | [C] | the brief's 4-dp reference was lost in transmission; checked at the post's 3 dp |
+| R3 √2 × pooled sd; √2 × N1 sd | 0.018696; 0.021406 | 0.0187; 0.0214 | MATCH | [C] | sd of a difference of two scorings |
+| R3 share of \|d\| below each | 71/115 = 0.6174; 80/115 = 0.6957 | 0.6174; 0.6957 | MATCH | [C] | |
+| R4 first `evaluation_end` per b = 3 iteration is the `candidate_selected` parent | 397/397 | 397/397 | MATCH | [C] | `logs/baseline_seed*_b3_*.jsonl` |
+| R4 same parent, same B, logged vs fresh `parent_B_sum` (382 pairs, 1/60 grid): tie / fresh above / fresh below | 174 (0.4555) / 103 (0.2696) / 105 (0.2749) | same | MATCH | [C] | `batch_swap_v2/calls.csv` |
+| R4 fresh − logged: mean / sd (ddof 1) | +0.015881 / 0.411538 | +0.0159 / 0.4115 | MATCH | [C] | batch total, 0 to 3 |
+| R5 IFBench own-batch margin (2,292, 1/60 grid): above / tie / below | 789 (0.3442) / 769 (0.3355) / 734 (0.3202) | same | MATCH | [C] | R_B: `margin_on_B`, R_Bp: `margin_on_Bp` |
+| R5 IFBench own-batch margin: mean / sd | +0.004305 / 0.435091 | +0.0043 / 0.4351 | MATCH | [C] | |
+| R5 HoVer own-batch margin (1,458, exact thirds): above / tie / below | 544 (0.3731) / 515 (0.3532) / 399 (0.2737) | same | MATCH | [C] | SAME on A_e vs logged parent; SWAP on B_e vs fresh parent |
+| R5 HoVer own-batch margin: mean | +0.044353 | +0.0444 | MATCH | [C] | |
+| R6 screen family-wise p | 43/200 = 0.215 | 0.215 | MATCH | [C] | from E1/E3 |
+| R6 IFBench swap specificity, naive-pair 95% CI | [−0.0149, +0.0257] | same | MATCH | cited | `analysis/ablation/batch_swap_v2/results.md:8` |
+| R6 HoVer swap specificity / transfer, naive-pair 95% CI | [+0.0048, +0.0501] / [−0.0149, +0.0489] | same | MATCH | cited | `analysis/ablation/hover_swap/results.md:11-12` |
+| R6 feedback ablation: gate-margin deltas; same-arm repeat flips | −0.016 (p 0.64), −0.013 (p 0.71); 32% | same | MATCH | cited | `analysis/ablation/results.md:39, 43-44` |
+| R6 sibling best-of-3: own margin of the selected draw; selection lift; its CI | +0.2298; +0.0059; [−0.0059, +0.0201] | same | MATCH | cited | `analysis/verification_postswap.md:16-18` |
+| R7 IFBench setup: n_train / n_val / max_metric_calls / gepa | 150 / 150 / 2500 / 0.1.1 | same | MATCH | [C] | `logs/baseline_seed*_b*.config.json` (10 study runs) |
+| R7 HoVer three-arm: n_train / n_val / max_metric_calls / gepa / selection / test | 100 / 10 / 300 / 0.0.27 / 50 / 150 | same | MATCH | [C] | `runs/*/config.json`, `endpoints.json`; `state_dep/results.md:141-146` |
+| R7 HoVer Stage-1: max_metric_calls / n_train / n_val | 300 / 100 / 10 | n/a / 100 / 10 | MATCH (n_train, n_val) | [C] | `scratch/hover_stage1/stage1_seed*/run_summary.json` (`mm`) |
+| R7 HoVer Stage-1 gepa version | not recorded; implied 0.0.27 | n/a | n/a | [C] | no run file records it; `run_seeds.sh:7` runs `scratch/hover_probe/.venv` (gepa 0.0.27) |
+| R8 frontier-gepa Exp 3 runs, committed, non-smoke | 12 (4 arms × 3 seeds) | 12 | MATCH | [C] | `git ls-files experiments/exp3_curriculum` |
+| R8 Exp 3 has no validation record | stated | stated | MATCH | cited | frontier-gepa `docs/BASELINE-CHECK-2026-09-29.md:231-235`; the doc does not state the count 12 |
+
+**R9. Proposal selection in the current gepa release (citation, not a computed number; checked 2026-10-17 with
+`gh api`).** gepa `v0.1.4` (latest release, published 2026-07-15, tag → `8b0ce6c`) has
+`src/gepa/strategies/proposal_selection.py`, added by PR #369 ("ReflectionLM protocol + batch-based parallel
+proposals", merged 2026-07-15). `BestImprovement` (lines 46-63) keeps the single passing proposal with the largest
+minibatch margin; `TopKImprovements` (lines 66-84) keeps the top k by that margin. The installed copies in this repo
+(0.1.1, 0.0.27) predate it.
+
 ---
 
 ## Figures
 
 | file | shows | data |
 |---|---|---|
-| `fig_gate_headroom.{png,svg}` | own-batch keep rate vs the parent's batch total, n per bin | `fig_gate_headroom.csv` (A5) |
+| `fig_gate_headroom.{png,svg}` | own-batch keep rate vs the parent's batch total, n per bin. Annotation "IFBench, 2,292 rewrites"; x-label "Parent's score on the batch the rewrite was written from (total over 3 examples, 0 to 3)", on two lines (revised 2026-10-17) | `fig_gate_headroom.csv` (A5) |
 | `fig_screen_null.{png,svg}` | histogram of the 200 null max-β, line at the observed 0.0379, "93/200 null maxima ≥ observed"; x-label "Strongest effect among 108 rules, per shuffled dataset" | `fig_screen_null.csv` (E2) |
 | `fig_screen_null_survivors.{png,svg}` | per shuffle, the strongest \|β\| among full-rule survivors: a separate bar for the 66 shuffles with no survivor, a histogram of the 134 others, and a line at the observed β annotated "43/200 shuffles ≥ observed". Bins are 0.003 wide with an edge exactly at the observed β, so the bars right of the line sum to 43 (asserted when drawing). | `fig_screen_null_survivors.csv` (E3) |
 | `fig_agreement.{png,svg}` | observed vs "expected if independent" agreement: (a) same rewrite, two batches, IFBench and HoVer; (b) sibling rewrites, same batch, IFBench and HoVer | `fig_agreement.csv` |
 | `fig_budget.{png,svg}` | IFBench metric calls split into seed / kept-beat / kept-not-beat validation + everything else; all, b = 3, b = 1 | `fig_budget.csv` (C3) |
-| `fig_budget_b3.{png,svg}` | the b = 3 bar only, with the two kept-rewrite validation segments merged into one, "validating kept rewrites" (17,250) | `fig_budget.csv` (C3) |
+| `fig_budget_b3.{png,svg}` | the b = 3 bar only, with the two kept-rewrite validation segments merged into one, "validating kept rewrites" (17,250). y tick "Three-example batches (8 runs)" (revised 2026-10-17; the CSV group label is still "b=3 (8 runs)") | `fig_budget.csv` (C3) |
 
 Style: Okabe-Ito palette, no baked-in titles, PNG at 200 dpi plus SVG.
 
@@ -268,23 +319,30 @@ These are for Neel. Nothing here is decided.
 1. **κ interval unit (D:105).** The draft's [−0.05, +0.04] matches only the 8-run cluster bootstrap. Per child it would
    be [−0.05, +0.03], and per pair [−0.06, +0.04]. Which unit does the article name? D:101 says intervals resample the
    8 runs, and 8 clusters make a percentile bootstrap optimistic.
+   - *Resolved in the post:* it gives the per-pair interval (−0.06 to +0.04) and says agreement intervals resample batch pairs.
 2. **"Coin flips" (D:7).** Chance here is independence at the observed accept rates (0.544), not 50/50. Keep the
    metaphor, or say "as if independent"?
+   - *Resolved in the post:* "as often as two independent verdicts would", and the agreement caption explains why chance is 54%, not 50%.
 3. **B2 reference reading.** I read "0.558 vs 0.565" as agreement vs chance within the exact-match stratum (n = 708),
    and it matches. The other reading, exact-match vs non-exact agreement, gives 0.558 vs 0.536.
+   - *Moot:* the post does not use B2.
 4. **Calibration comparator (D:62).** This inherits `article_todos` OQ 1: 134/200 (any survivor), 43/200 (\|β\|, either
    sign), 20/200 (same sign). The draft uses 43 with "at least as strong". Should the other two travel with it?
+   - *Resolved in the post:* it gives 134/200 (a winner at all) and 43/200 (at least as strong); the same-sign 20 is left out.
 5. **Percentile definition (E2).** Strict-below and ≤ both give 0.535 (no null maximum equals the observed value). Which
    one is the article's wording, if it is used at all?
+   - *Moot:* the post does not use the percentile.
 6. **D:64 "effect it was designed around".** The pre-registered value is 0.02738 (D = 1.4432). The realized-dose 0.0231
    is post hoc. Both are one-step units and do not compare to the 0.063 endpoint MDE. Which value, and should the
    pre-registered trigger (0.08213) be the comparator instead?
+   - *Resolved in the post:* the pre-registered 0.027 on the three-example total, "about 0.009 per example", with the units stated; the trigger is not used.
 7. **Cited, not reproduced.** Three draft numbers trace to committed documents but were not recomputed here:
    - 0.033 is a Stage-0 constant, `batch_swap_v2_analysis.py:22`.
    - 10–12 pp is a Stage-0 analytic estimate, `ablation/plan.md:39`.
    - "Five scorers, none survive" comes from `rescreen_wave1.md` via the ledger.
 
    Should they be reproduced before publication?
+   - *Still open:* the post uses all three (0.033, 10 to 12 points, five scorers) and they are still cited, not reproduced.
 8. **Ablation accept column. RESOLVED (2026-10-15).**
    - **Mechanism.** `scripts/run_ablation.py:153-155` sets `accept_today = int(c_sum > p_sum)` on the unrounded float sums, but writes both sums rounded to 4 dp.
    - **The rows.** Batch s6_it4 ties at 1.5 vs 1.5 in arms i, i_rep and iii (`calls.csv:380, 382, 383`), and float residue accepted all three. These are the only rows in the file where `accept_today` disagrees with the rounded comparison (fn `x_ablation`, `X.ablation_accept_today_disagreements`).
@@ -295,24 +353,33 @@ These are for Neel. Nothing here is decided.
    - Commit that doc before citing?
    - Is the definition used here the article's definition? It is the mean over the 21 Exp 1/1b cells with ≥ 1 accept of (best accepted D_pareto val F1 − seed) and of (returned program's test F1 − seed).
    - The draft's label "examples it optimized against" does not match that set.
+   - *Resolved:* the doc is now tracked (frontier-gepa `61c16fb`; `F.source_doc_tracked` = yes), the post links it, and the post's label is "the 75 validation examples used to choose it", a best-of score.
 10. **"Six times" (D:117).** No committed list of six such incidents was found. Which six? Each would need its own source.
+    - *Resolved in the post:* it says "More than once" and names five examples, with no count.
 11. **73/145 vs 53/115 (D:79).** Which scope does the article intend: all 10 runs, or the b = 3 runs that match its
     "three examples" framing?
+    - *Resolved in the post:* b = 3 scope. The kept-rewrite numbers use only the eight three-example runs (Details).
 12. **D:93 per-round cost.** "About twice the batch size" holds for the gate only (5.89 calls per evaluated iteration at
     b = 3). Validation is about 90% of the IFBench budget. Should the sentence say which cost it means?
+    - *Resolved in the post:* the gate costs about six metric calls per round, each kept rewrite 150 more, and validation took 83% at b = 3.
 13. **D:108 contrast label.** In the ledger, "baseline" is arm B. With seed 4 dropped, T−B is −0.027 (p 0.047, n = 7,
     post hoc), and T−B is already negative with seed 4 included (−0.0128). The −0.016 figure is T−C. Which contrast does
     the sentence mean?
+    - *Resolved in the post:* both are named, treatment vs control −0.016 (p 0.08) and treatment vs stock GEPA −0.027 (p 0.047), with the post hoc drop called illegitimate.
 14. **D3 (stock GEPA gain over the seed).** The +0.024 compares 8 unselected runs with 5 runs selected because the seed
     won. Report it at all? If so, should it carry a selection-bias caveat, or wait for a dedicated seed-prompt evaluation?
+    - *Partly resolved:* the post reports about 0.024 and Details spells out the 8-vs-5 comparison (the revision adds the Welch interval, R1). It does not state the selection bias, so that part is still open.
 15. **B4.** HoVer sibling agreement (0.691 vs 0.532) is now the fourth group in `fig_agreement`. Should D:75 cite both corpora, or stay IFBench-only?
+    - *Resolved in the post:* both corpora (IFBench 72% vs 55%, HoVer 69% vs 53%).
 16. **A1 framing.** The opening example's "thrown away" verdict is on the batch the rewrite was written from (the real
     gate). Its "kept" verdict is on the other batch. Should the article say which batch is which?
+    - *Resolved in the post:* the card names "the batch it was written from" (thrown away) and "a different batch" (would have been kept).
 
 17. **Other batch-total numbers.** The IFBench swap's +0.0054 specificity and its 0.033 MDE (D:102) are batch totals
     too: IFBench margins are summed over 3 examples (`batch_swap_v2_run.py:232-235`). The same goes for the 0–3 bin axis
     in `fig_gate_headroom`, which is labeled as such. Should D:102 carry per-example equivalents (÷ 3) like D:56 and
     D:64? Not changed here.
+    - *Resolved in the post:* a Units bullet in Details, and swap numbers say "on the three-example total".
 
 ---
 
@@ -321,11 +388,16 @@ These are for Neel. Nothing here is decided.
 From the repo root:
 
 ```sh
+analysis/state_dep/.venv-armT/bin/python -B tests/test_t_dist.py
 analysis/state_dep/.venv-armT/bin/python -B scripts/article_numbers.py compute
-python3 -m venv "$TMPDIR/figvenv" && "$TMPDIR/figvenv/bin/pip" install matplotlib==3.9.2
+python3.12 -m venv "$TMPDIR/figvenv" && "$TMPDIR/figvenv/bin/pip" install matplotlib==3.9.2
 "$TMPDIR/figvenv/bin/python" -B scripts/article_numbers.py figures
 ```
 
+- The figures venv needs Python 3.12 or 3.13: matplotlib 3.9.2 has no wheel for 3.14. On 2026-10-17 it was built from
+  the uv-managed CPython 3.12.13 that the armT venv uses, and the four unrevised figures came out byte-identical.
+- `FRONTIER_GEPA` sets the frontier-gepa checkout that Part F and R8 read. It defaults to `~/Desktop/frontier-gepa`.
+
 - The script does not read the draft. Table A was built by reading `~/Downloads/gepa-selection-short.md` by hand.
-- `compute` reads `~/Desktop/frontier-gepa` for Part F, running read-only `git log`, `git ls-files` and `git rev-parse` there.
+- `compute` reads `$FRONTIER_GEPA` (default `~/Desktop/frontier-gepa`) for Part F and R8, running read-only `git log`, `git ls-files` and `git rev-parse` there.
 - `compute` writes only `analysis/article_numbers/*.csv`. `figures` writes only `analysis/article_numbers/fig_*.{png,svg}`.

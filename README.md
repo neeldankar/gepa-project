@@ -1,5 +1,18 @@
 # gepa-si-curriculum
 
+## What it found
+
+Picking better examples for GEPA's reflection step didn't beat random on IFBench or HoVer.
+The more useful finding is about GEPA's keep-or-discard test. Judged on three examples, a
+rewrite's verdict mostly follows which examples were drawn, not the rewrite: two verdicts on
+the same rewrite agree about as often as two independent ones would. The write-up is
+[GEPA's keep-or-discard test mostly measures the examples, not the rewrite](https://neeldankar.me/gepa-selection).
+Every number in it traces to [`analysis/article_numbers/REGISTER.md`](analysis/article_numbers/REGISTER.md),
+and the pre-registered three-arm HoVer experiment is in
+[`analysis/state_dep/results.md`](analysis/state_dep/results.md).
+
+## Original plan (June 2026)
+
 A curriculum over **side-information (SI)** for [GEPA](https://github.com/gepa-ai/gepa)'s
 reflection step. GEPA currently samples its reflection minibatch uniformly at random;
 this project selects the examples whose *feedback is most useful to reflect on* — where

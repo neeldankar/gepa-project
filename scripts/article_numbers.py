@@ -41,7 +41,7 @@ IFB = "analysis/ablation/batch_swap_v2/calls.csv"
 HOVER_PAIRS = "analysis/ablation/hover_swap/pairs"
 PERM = "analysis/review_response_2026-08-26/_perm_raw.json"
 SD_RUNS = "analysis/state_dep/runs"
-FRONTIER = os.path.expanduser("~/Desktop/frontier-gepa")
+FRONTIER = os.path.expanduser(os.environ.get("FRONTIER_GEPA", "~/Desktop/frontier-gepa"))
 
 VALUES = []
 
@@ -130,6 +130,54 @@ def signflip_exact(d):
     hits = sum(abs(sum(s * x for s, x in zip(sg, d)) / n) >= abs(obs) - 1e-12
                for sg in itertools.product((1, -1), repeat=n))
     return obs, hits / 2 ** n
+
+
+def _betacf(a, b, x):
+    """Continued fraction for the regularized incomplete beta (Numerical Recipes betacf, modified Lentz)."""
+    tiny, qab, qap, qam = 1e-300, a + b, a + 1.0, a - 1.0
+    c, d = 1.0, 1.0 - qab * x / qap
+    d = 1.0 / (d if abs(d) > tiny else tiny)
+    h = d
+    for m in range(1, 1000):
+        m2 = 2 * m
+        for aa in (m * (b - m) * x / ((qam + m2) * (a + m2)), -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))):
+            d = 1.0 + aa * d
+            d = 1.0 / (d if abs(d) > tiny else tiny)
+            c = 1.0 + aa / c
+            c = c if abs(c) > tiny else tiny
+            h *= d * c
+        if abs(d * c - 1.0) < 1e-15:
+            return h
+    raise RuntimeError("betacf did not converge")
+
+
+def betai(a, b, x):
+    """Regularized incomplete beta I_x(a, b)."""
+    if x <= 0.0:
+        return 0.0
+    if x >= 1.0:
+        return 1.0
+    lbt = math.lgamma(a + b) - math.lgamma(a) - math.lgamma(b) + a * math.log(x) + b * math.log1p(-x)
+    if x < (a + 1.0) / (a + b + 2.0):
+        return math.exp(lbt) * _betacf(a, b, x) / a
+    return 1.0 - math.exp(lbt) * _betacf(b, a, 1.0 - x) / b
+
+
+def t_cdf(t, df):
+    """Student-t CDF (df may be fractional), stdlib only; tested against scipy in tests/test_t_dist.py."""
+    tail = 0.5 * betai(df / 2.0, 0.5, df / (df + t * t))
+    return 1.0 - tail if t >= 0 else tail
+
+
+def t_ppf(p, df):
+    """Student-t quantile by bisection on t_cdf (to 1e-12)."""
+    lo, hi = -1e3, 1e3
+    for _ in range(200):
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if t_cdf(mid, df) < p else (lo, mid)
+        if hi - lo < 1e-12:
+            break
+    return (lo + hi) / 2
 
 
 def load_module(name, path):
@@ -433,7 +481,8 @@ def c_validation():
         ex = {idx: exact_mean(list(e["scores_by_val_id"].values())) for idx, e in val.items()}
         row["seed_valset_mean"] = repr(float(ex[0]))
         per_run.append(row)
-        info.append(dict(run=os.path.basename(path), b=bsz, ex=ex, acc=acc, beat=beat, best=best,
+        info.append(dict(run=os.path.basename(path), b=bsz, ex=ex, acc=acc, beat=beat, best=best, ev=ev,
+                         val0=val[0]["scores_by_val_id"],
                          seed_hash=hashlib.sha256(json.dumps(st[0]["seed_candidate"], sort_keys=True).encode()).hexdigest(),
                          val_ids=tuple(sorted(val[0]["scores_by_val_id"], key=str))))
     write_csv("c_budget_by_run.csv", per_run)
@@ -504,6 +553,7 @@ def c_validation():
                          ("everything else (minibatch gate)", "other_calls")):
             fig.append(dict(group=grp, category=cat, calls=sum(r[key] for r in rs)))
     write_csv("fig_budget.csv", fig)
+    return info
 
 
 def c_lineage_noise(info, src):
@@ -949,6 +999,195 @@ def f_hotpot():
     rec("F.median_accepted_val_gain", float(np.median(allv)), "0.027", tag="[C]", raw=FRONTIER)
 
 
+# ---------------------------------------------------------------- Part R: revision numbers (post review, 2026-10-17)
+
+def _sd1(xs):
+    return _mean_sd([float(x) for x in xs])[1]
+
+
+def _t_ci(xs):
+    """Mean and 95% t-interval (df n-1) of a list of floats."""
+    n = len(xs); mu, sd = _mean_sd([float(x) for x in xs])
+    h = t_ppf(0.975, n - 1) * sd / math.sqrt(n)
+    return mu, mu - h, mu + h
+
+
+def _b3_label(r):
+    return "s" + r["run"].split("_seed")[1].split("_")[0]
+
+
+def r1_hover_gepa_gain():
+    raw = f"{SD_RUNS}/B_seed*/endpoints.json; {OUT}/d2_seed_prompt_runs.csv"
+    a = [json.load(open(f"{SD_RUNS}/B_seed{s}/endpoints.json"))["endpoint_test_mean"] for s in range(8)]
+    b = [float(r["endpoint_test_mean"]) for r in csv.DictReader(open(f"{OUT}/d2_seed_prompt_runs.csv"))]
+    assert len(a) == 8 and len(b) == 5
+    (ma, sa), (mb, sb) = _mean_sd(a), _mean_sd(b)
+    va, vb = sa ** 2 / 8, sb ** 2 / 5
+    se = math.sqrt(va + vb)
+    df = (va + vb) ** 2 / (va ** 2 / 7 + vb ** 2 / 4)
+    diff = ma - mb
+    h = t_ppf(0.975, df) * se
+    note = "Welch two-sample t, 8 arm-B runs vs the 5 runs that returned the seed prompt; t from t_ppf/t_cdf (stdlib)"
+    rec("R1.hover_gepa_gain", diff, "+0.0241", tag="[C]", raw=raw, note=note)
+    rec("R1.hover_gepa_gain_ci95_lo", diff - h, "-0.0015", tag="[C]", raw=raw, note=note)
+    rec("R1.hover_gepa_gain_ci95_hi", diff + h, "+0.0496", tag="[C]", raw=raw, note=note)
+    rec("R1.hover_gepa_gain_p_two_sided", 2 * (1 - t_cdf(abs(diff / se), df)), "0.0622", tag="[C]", raw=raw, note=note)
+    rec("R1.hover_gepa_gain_welch_df", df, "9.69", tag="[C]", raw=raw, note=note)
+
+
+def r2_kept_gain_t(info, src):
+    b3 = [r for r in info if r["b"] == 3]
+    refs = {"s0": "+0.0074", "s1": "-0.0038", "s2": "-0.0041", "s3": "-0.0030",
+            "s4": "+0.0031", "s5": "-0.0011", "s6": "+0.0014", "s7": "+0.0090"}
+    means = []
+    for r in b3:
+        d = [r["ex"][i] - r["ex"][r["acc"][i]["parent_ids"][0]] for i in sorted(r["acc"])]   # N2's d, per run
+        m = float(sum(d) / len(d)); means.append(m)
+        rec(f"R2.run_mean_child_minus_parent_{_b3_label(r)}", m, refs[_b3_label(r)], tag="[C]", raw=src,
+            note=f"{len(d)} kept children (N2's d)")
+    assert len(means) == 8
+    mu, lo, hi = _t_ci(means)
+    note = "t-interval over the 8 run means, df 7, t from t_ppf (stdlib)"
+    rec("R2.mean_of_run_means", mu, "+0.0011", tag="[C]", raw=src, note=note)
+    rec("R2.ci95_lo_t_run_means", lo, "-0.0031", tag="[C]", raw=src, note=note)
+    rec("R2.ci95_hi_t_run_means", hi, "+0.0053", tag="[C]", raw=src, note=note)
+
+
+def r3_val_noise(info, src):
+    ids = sorted(info[0]["val0"], key=str)
+    assert len(info) == 10 and len(ids) == 150 and all(sorted(r["val0"], key=str) == ids for r in info)
+    var = [_sd1([r["val0"][k] for r in info]) ** 2 for k in ids]
+    pooled = math.sqrt(sum(var)) / 150
+    rec("R3.pooled_sd_of_150_item_mean", pooled, "0.0132", tag="[C]", raw=src,
+        note="per-item variance across the 10 seed-prompt evaluations (ddof 1); sqrt(sum)/150")
+    n1 = _sd1([r["ex"][0] for r in info])                 # N1's run-level sd
+    b3 = [r for r in info if r["b"] == 3]
+    d = [float(r["ex"][i] - r["ex"][r["acc"][i]["parent_ids"][0]]) for r in b3 for i in sorted(r["acc"])]
+    assert len(d) == 115
+    rec("R3.sd_of_115_d_ddof1", _sd1(d), "0.021", tag="[C]", raw=src,
+        note="brief's 4-dp reference was cut off in the paste; checked against the post's 0.021")
+    for lab, s, ref_t, ref_n in (("pooled", pooled, "0.0187", 71), ("run_level_N1", n1, "0.0214", 80)):
+        thr = math.sqrt(2) * s
+        k = sum(abs(x) < thr for x in d)
+        rec(f"R3.sqrt2_x_{lab}_sd", thr, ref_t, tag="[C]", raw=src, note="sd of a difference of two independent scorings")
+        rec(f"R3.n_abs_d_below_sqrt2_x_{lab}_sd", k, ref_n, tag="[C]", raw=src)
+        rec(f"R3.share_abs_d_below_sqrt2_x_{lab}_sd", k / len(d), f"{ref_n / 115:.4f}", tag="[C]", raw=src,
+            note=f"{k}/115")
+
+
+def r4_parent_rescore(info, rows):
+    src = "logs/baseline_seed*_b3_*.jsonl (8 runs) + " + IFB
+    logged, checked, agree = {}, 0, 0
+    for r in [r for r in info if r["b"] == 3]:
+        sel = {e["iteration"]: e["candidate_idx"] for e in r["ev"] if e["event"] == "candidate_selected"}
+        first = {}
+        for e in r["ev"]:
+            if e["event"] == "evaluation_end" and e["iteration"] not in first:
+                first[e["iteration"]] = e
+        for it, cidx in sel.items():
+            checked += 1
+            agree += first[it]["candidate_idx"] == cidx
+            logged[f"{_b3_label(r)}_it{it}"] = sum(first[it]["scores"])
+    rec("R4.first_evaluation_end_is_selected_parent", f"{agree}/{checked}", "397/397", tag="[C]", raw=src,
+        note="first evaluation_end per b=3 iteration has candidate_selected's candidate_idx")
+    fresh = {}
+    for r in rows:
+        assert fresh.setdefault(r["B_id"], r["parent_B_sum"]) == r["parent_B_sum"]
+    assert len(fresh) == 382
+
+    def g60(x):
+        k = round(x * 60); assert abs(x * 60 - k) < 0.01, x; return k
+    diff = [g60(fresh[b]) - g60(logged[b]) for b in sorted(fresh)]
+    n = len(diff)
+    rec("R4.n_pairs", n, 382, tag="[C]", raw=src)
+    for lab, k, ref_n, ref_s in (("ties", sum(x == 0 for x in diff), 174, "0.4555"),
+                                 ("fresh_above_logged", sum(x > 0 for x in diff), 103, "0.2696"),
+                                 ("fresh_below_logged", sum(x < 0 for x in diff), 105, "0.2749")):
+        rec(f"R4.{lab}_n", k, ref_n, tag="[C]", raw=src, note="on the 1/60 grid (calls.csv is rounded to 4 dp)")
+        rec(f"R4.{lab}_share", k / n, ref_s, tag="[C]", raw=src, note=f"{k}/{n}")
+    rec("R4.mean_fresh_minus_logged", sum(diff) / 60 / n, "+0.0159", tag="[C]", raw=src, note="batch total, 0-3 scale")
+    rec("R4.sd_fresh_minus_logged_ddof1", _sd1([x / 60 for x in diff]), "0.4115", tag="[C]", raw=src)
+
+
+def r5_own_margin(rows, hrows):
+    k60 = [round(r["own_m"] * 60) for r in rows]
+    assert all(abs(r["own_m"] * 60 - k) < 0.01 for r, k in zip(rows, k60))
+    for lab, sel, ref_n, ref_s in (("above", lambda k: k > 0, 789, "0.3442"), ("tie", lambda k: k == 0, 769, "0.3355"),
+                                   ("below", lambda k: k < 0, 734, "0.3202")):
+        k = sum(map(sel, k60))
+        rec(f"R5.ifb_own_margin_{lab}_n", k, ref_n, tag="[C]", raw=IFB, note="R_B: margin_on_B, R_Bp: margin_on_Bp; 1/60 grid")
+        rec(f"R5.ifb_own_margin_{lab}_share", k / len(k60), ref_s, tag="[C]", raw=IFB, note=f"{k}/{len(k60)}")
+    rec("R5.ifb_own_margin_mean", sum(k60) / 60 / len(k60), "+0.0043", tag="[C]", raw=IFB, note="batch total, 0-3")
+    rec("R5.ifb_own_margin_sd_ddof1", _sd1([k / 60 for k in k60]), "0.4351", tag="[C]", raw=IFB)
+    raw = f"{HOVER_PAIRS}/*/draws.jsonl"
+    own = [r["margin_on_A"] if r["arm"] == "SAME" else r["margin_on_B"] for r in hrows]   # integer thirds
+    assert len(own) == 1458
+    for lab, sel, ref_n, ref_s in (("above", lambda k: k > 0, 544, "0.3731"), ("tie", lambda k: k == 0, 515, "0.3532"),
+                                   ("below", lambda k: k < 0, 399, "0.2737")):
+        k = sum(map(sel, own))
+        rec(f"R5.hover_own_margin_{lab}_n", k, ref_n, tag="[C]", raw=raw,
+            note="SAME on A_e vs A_e_parent_scores_logged; SWAP on B_e vs B_e_parent_scores_fresh; exact thirds")
+        rec(f"R5.hover_own_margin_{lab}_share", k / len(own), ref_s, tag="[C]", raw=raw, note=f"{k}/{len(own)}")
+    rec("R5.hover_own_margin_mean", sum(own) / 3 / len(own), "+0.0444", tag="[C]", raw=raw, note="batch total, 0-3")
+
+
+def r6_cited():
+    vals = {v["id"]: v["value"] for v in VALUES}
+    rec("R6.screen_familywise_p", int(vals["E1.perms_with_survivor_abs_beta_ge_obs"]) / 200, "0.215", tag="[C]", raw=PERM,
+        note="43/200 shuffles with a survivor at least as strong (E1/E3)")
+    for id_, path, ln, needle in (
+            ("R6.ifb_swap_specificity_naive_pair_ci", "analysis/ablation/batch_swap_v2/results.md", 8, "[-0.0149,+0.0257]"),
+            ("R6.hover_swap_specificity_naive_pair_ci", "analysis/ablation/hover_swap/results.md", 11, "[+0.0048, +0.0501]"),
+            ("R6.hover_swap_transfer_naive_pair_ci", "analysis/ablation/hover_swap/results.md", 12, "[-0.0149, +0.0489]"),
+            ("R6.ablation_gate_margin_deltas", "analysis/ablation/results.md", 39,
+             "Δ(i−ii)=−0.016 (p=0.64), Δ(i−iii)=−0.013 (p=0.71)"),
+            ("R6.ablation_same_arm_repeat_flips", "analysis/ablation/results.md", 44, "32%"),
+            ("R6.best_of_3_own_margin", "analysis/verification_postswap.md", 16, "+0.2298"),
+            ("R6.best_of_3_selection_lift", "analysis/verification_postswap.md", 17, "+0.0059"),
+            ("R6.best_of_3_selection_lift_ci", "analysis/verification_postswap.md", 18, "[-0.0059, +0.0201]")):
+        line = open(path).read().split("\n")[ln - 1]
+        rec(id_, needle if needle in line else "NOT FOUND", needle, tag="cited", cited=f"{path}:{ln}",
+            note="cited, not recomputed")
+
+
+def r7_setups():
+    ifb = {(c["n_train"], c["n_val"], c["max_metric_calls"], c["gepa_version"]) for _, c in ifb_runs()}
+    assert len(ifb) == 1
+    ifb = ifb.pop()
+    for nm, v, ref in zip(("n_train", "n_val", "max_metric_calls", "gepa_version"), ifb, (150, 150, 2500, "0.1.1")):
+        rec(f"R7.ifb_{nm}", v, ref, tag="[C]", raw="logs/baseline_seed*_b*.config.json (10 study runs)")
+    runs = sd_runs()
+    hv = {tuple(json.load(open(f"{d}/config.json"))[k] for k in ("n_train", "n_val", "max_metric_calls", "gepa_version"))
+          for _, d in runs.values()}
+    sp = {(e["selection_split"]["n"], e["test_split"]["n"]) for e, _ in runs.values()}
+    assert len(hv) == 1 and len(sp) == 1
+    for nm, v, ref in zip(("n_train", "n_val", "max_metric_calls", "gepa_version", "selection_n", "test_n"),
+                          hv.pop() + sp.pop(), (100, 10, 300, "0.0.27", 50, 150)):
+        rec(f"R7.hover_three_arm_{nm}", v, ref, tag="[C]", raw=f"{SD_RUNS}/*_seed*/config.json, endpoints.json",
+            cited="analysis/state_dep/results.md:141-146")
+    st = {tuple(json.load(open(f"scratch/hover_stage1/stage1_seed{s}/run_summary.json"))[k] for k in ("mm", "n_train", "n_val"))
+          for s in range(8)}
+    assert len(st) == 1
+    for nm, v, ref in zip(("max_metric_calls", "n_train", "n_val"), st.pop(), (None, 100, 10)):
+        rec(f"R7.hover_stage1_{nm}", v, ref, tag="[C]", raw="scratch/hover_stage1/stage1_seed*/run_summary.json")
+    py = open("scratch/hover_stage1/run_seeds.sh").read().split("\n")[6]
+    dist = sorted(glob.glob("scratch/hover_probe/.venv/lib/python3*/site-packages/gepa-*.dist-info"))
+    rec("R7.hover_stage1_gepa_version", "not recorded; implied " + dist[0].split("gepa-")[1].split(".dist")[0], tag="[C]",
+        raw="scratch/hover_stage1/run_seeds.sh:7 -> scratch/hover_probe/.venv",
+        note=f"no run file records a version; run_seeds.sh:7 is {py.strip()!r}")
+
+
+def r8_exp3_count():
+    files = [f for f in git("ls-files", "experiments/exp3_curriculum").split()
+             if re.search(r"/seed\d+\.json$", f) and "/smoke/" not in f]
+    rec("R8.exp3_runs_committed_non_smoke", len(files), 12, tag="[C]", raw=f"{FRONTIER}/experiments/exp3_curriculum",
+        note="4 arms x 3 seeds; git ls-files")
+    doc = open(f"{FRONTIER}/docs/BASELINE-CHECK-2026-09-29.md").read().split("\n")
+    ok = "Exp 3 has no D_pareto or per-instance test record" in doc[230]
+    rec("R8.exp3_no_validation_record", "stated" if ok else "NOT FOUND", "stated", tag="cited",
+        cited="docs/BASELINE-CHECK-2026-09-29.md:231-235 (frontier-gepa)")
+
+
 # ---------------------------------------------------------------- figures (separate venv, reads CSVs only)
 
 OKABE = {"blue": "#0072B2", "orange": "#E69F00", "green": "#009E73", "vermillion": "#D55E00",
@@ -980,10 +1219,10 @@ def figures():
     for i, r in zip(x, rows):
         ax.text(i, float(r["keep_rate_own"]) + 0.015, f"n={r['n_own']}", ha="center", fontsize=8)
     ax.set_xticks(list(x), [r["bin"] for r in rows])
-    ax.set_xlabel("Parent prompt's score on its own 3-example batch (batch total, 0–3)")
+    ax.set_xlabel("Parent's score on the batch the rewrite was written from\n(total over 3 examples, 0 to 3)")
     ax.set_ylabel("Share of rewrites kept (own-batch gate)")
     ax.set_ylim(0, max(y) * 1.18)
-    ax.text(0.99, 0.97, f"IFBench batch-swap v2, {sum(int(r['n_own']) for r in rows)} rewrites",
+    ax.text(0.99, 0.97, f"IFBench, {sum(int(r['n_own']) for r in rows):,} rewrites",
             transform=ax.transAxes, ha="right", va="top", fontsize=8, color="#444")
     save(fig, "fig_gate_headroom")
 
@@ -1048,11 +1287,12 @@ def figures():
     # fig_budget, fig_budget_b3
     bud = rd("fig_budget.csv")
     _budget(plt, save, bud, list(dict.fromkeys(r["group"] for r in bud)), "fig_budget", (6.4, 3.6))
-    _budget(plt, save, bud, ["b=3 (8 runs)"], "fig_budget_b3", (6.4, 2.0), merge=True)
+    _budget(plt, save, bud, ["b=3 (8 runs)"], "fig_budget_b3", (6.4, 2.0), merge=True,
+            ticks=["Three-example batches (8 runs)"])
     print("figures written to", OUT)
 
 
-def _budget(plt, save, bud, groups, name, size, merge=False):
+def _budget(plt, save, bud, groups, name, size, merge=False, ticks=None):
     if merge:                                        # one segment for validating every kept rewrite
         m = collections.Counter()
         for r in bud:
@@ -1073,7 +1313,7 @@ def _budget(plt, save, bud, groups, name, size, merge=False):
                 ax.text(left + v / 2, gi, f"{v:,}", ha="center", va="center", fontsize=7, color="white")
             left += v
         ax.text(left, gi, f"  {tot:,}", va="center", fontsize=8)
-    ax.set_yticks(range(len(groups)), groups)
+    ax.set_yticks(range(len(groups)), ticks or groups)
     ax.invert_yaxis()
     ax.set_xlabel("Metric calls (task-model evaluations), summed over runs")
     ax.legend(frameon=False, fontsize=7, loc="upper center", bbox_to_anchor=(0.5, -0.22 * 3.6 / size[1]), ncol=2)
@@ -1100,11 +1340,15 @@ def compute():
         dict(label="HoVer: sibling rewrites, same batch", observed=repr(hov["sib_obs"]), chance=repr(hov["sib_chance"]),
              n=hov["sib_n"], unit="cells of 3"),
     ])
-    print("== C IFBench validation cost"); c_validation()
+    print("== C IFBench validation cost"); info = c_validation()
     print("== D HoVer three-arm"); d_three_arm()
     print("== E screen calibration"); e_screen()
     print("== X extra draft numbers"); x_ablation(); x_hover_swap(m); x_mde(); x_models(); x_cost()
     print("== F HotpotQA"); f_hotpot()
+    print("== R revision numbers")
+    src = "logs/baseline_seed*_b*.jsonl (10 runs, article_todos:442-447)"
+    r1_hover_gepa_gain(); r2_kept_gain_t(info, src); r3_val_noise(info, src); r4_parent_rescore(info, rows)
+    r5_own_margin(rows, hrows); r6_cited(); r7_setups(); r8_exp3_count()
     write_csv("values.csv", VALUES)
     mism = [v["id"] for v in VALUES if v["status"] == "MISMATCH"]
     print(f"\n{len(VALUES)} values; {sum(v['status'] == 'MATCH' for v in VALUES)} MATCH; {len(mism)} MISMATCH: {mism}")
