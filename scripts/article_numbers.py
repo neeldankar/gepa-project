@@ -940,7 +940,8 @@ def x_cost():
 def f_hotpot():
     import numpy as np
     head = git("rev-parse", "HEAD").strip()
-    rec("F.frontier_gepa_HEAD", head[:7], "dbfbaa3", tag="[C]", raw=FRONTIER)
+    rec("F.frontier_gepa_HEAD", head[:7], "fddd908", tag="[C]", raw=FRONTIER,
+        note="dbfbaa3 -> 61c16fb (adds BASELINE-CHECK) -> 5d92514 (v1 README) -> fddd908 (README em dashes); data files unchanged")
     branches = git("branch", "-a", "--format=%(refname:short)").split()
     rec("F.branches_searched", ",".join(branches), tag="[C]", raw=FRONTIER)
     for s in ("0.062", "+0.062", "0.0013", "+0.0013"):
@@ -1064,8 +1065,7 @@ def r3_val_noise(info, src):
     b3 = [r for r in info if r["b"] == 3]
     d = [float(r["ex"][i] - r["ex"][r["acc"][i]["parent_ids"][0]]) for r in b3 for i in sorted(r["acc"])]
     assert len(d) == 115
-    rec("R3.sd_of_115_d_ddof1", _sd1(d), "0.021", tag="[C]", raw=src,
-        note="brief's 4-dp reference was cut off in the paste; checked against the post's 0.021")
+    rec("R3.sd_of_115_d_ddof1", _sd1(d), "0.0211", tag="[C]", raw=src)
     for lab, s, ref_t, ref_n in (("pooled", pooled, "0.0187", 71), ("run_level_N1", n1, "0.0214", 80)):
         thr = math.sqrt(2) * s
         k = sum(abs(x) < thr for x in d)
@@ -1186,6 +1186,97 @@ def r8_exp3_count():
     ok = "Exp 3 has no D_pareto or per-instance test record" in doc[230]
     rec("R8.exp3_no_validation_record", "stated" if ok else "NOT FOUND", "stated", tag="cited",
         cited="docs/BASELINE-CHECK-2026-09-29.md:231-235 (frontier-gepa)")
+
+
+def r9_first_kept_vs_seed(info, src):
+    refs = {"s0": "+0.0218", "s1": "-0.0186", "s2": "+0.0030", "s3": "+0.0469",
+            "s4": "+0.0090", "s5": "+0.0264", "s6": "+0.0017", "s7": "-0.0034"}
+    d = []
+    for r in [r for r in info if r["b"] == 3]:
+        first = min(r["acc"].values(), key=lambda e: e["iteration"])
+        assert first["parent_ids"] == [0], (r["run"], first["parent_ids"])
+        x = float(r["ex"][first["new_candidate_idx"]] - r["ex"][0]); d.append(x)
+        rec(f"R9.first_kept_minus_seed_{_b3_label(r)}", x, refs[_b3_label(r)], tag="[C]", raw=src,
+            note=f"candidate {first['new_candidate_idx']}, accepted at iteration {first['iteration']}; parent is the seed")
+    mu, lo, hi = _t_ci(d)
+    rec("R9.mean", mu, "+0.0108", tag="[C]", raw=src)
+    rec("R9.n_positive", sum(x > 0 for x in d), 6, tag="[C]", raw=src, note="of 8")
+    rec("R9.ci95_lo_t", lo, "-0.0061", tag="[C]", raw=src, note="t-interval over the 8 runs, df 7")
+    rec("R9.ci95_hi_t", hi, "+0.0278", tag="[C]", raw=src, note="t-interval over the 8 runs, df 7")
+
+
+def _cross_arm(cells):
+    """cells: list of (verdicts of arm X's 3 draws, verdicts of arm Y's 3 draws) on one batch.
+    Returns agreement over all 9 X-by-Y pairings per cell, and chance from the two arms' pooled accept rates."""
+    agree = sum(x == y for xs, ys in cells for x in xs for y in ys) / (9 * len(cells))
+    pa = sum(sum(xs) for xs, _ in cells) / (3 * len(cells))
+    pb = sum(sum(ys) for _, ys in cells) / (3 * len(cells))
+    return agree, pa * pb + (1 - pa) * (1 - pb)
+
+
+def r10_cross_arm_same_batch(rows, hrows):
+    note = "all 9 pairings of the R_B and R_Bp draws on one batch; chance from the two arms' accept rates on that batch"
+    by = collections.defaultdict(lambda: collections.defaultdict(list))
+    for r in rows:
+        by[r["B_id"]][r["arm"]].append(r)
+    cellsB = [([r["margin_on_B"] > 0 for r in a["R_B"]], [r["margin_on_B"] > 0 for r in a["R_Bp"]]) for a in by.values()]
+    cellsBp = [([r["margin_on_Bp"] > 0 for r in a["R_B"]], [r["margin_on_Bp"] > 0 for r in a["R_Bp"]]) for a in by.values()]
+    assert len(cellsB) == 382 and all(len(x) == len(y) == 3 for x, y in cellsB)
+    for lab, cells, ra, rc in (("on_B", cellsB, "0.7167", "0.5627"), ("on_Bp", cellsBp, "0.6841", "0.5306"),
+                               ("pooled", cellsB + cellsBp, "0.7004", "0.5453")):
+        ag, ch = _cross_arm(cells)
+        rec(f"R10.ifb_cross_arm_agreement_{lab}", ag, ra, tag="[C]", raw=IFB, note=note)
+        rec(f"R10.ifb_cross_arm_chance_{lab}", ch, rc, tag="[C]", raw=IFB,
+            note="pooled: accept rates of each arm over both batches" if lab == "pooled" else "")
+    hb = collections.defaultdict(lambda: collections.defaultdict(list))
+    for r in hrows:
+        hb[r["pair"]][r["arm"]].append(r)
+    hcells = ([([r["margin_on_A"] > 0 for r in a["SAME"]], [r["margin_on_A"] > 0 for r in a["SWAP"]]) for a in hb.values()]
+              + [([r["margin_on_B"] > 0 for r in a["SAME"]], [r["margin_on_B"] > 0 for r in a["SWAP"]]) for a in hb.values()])
+    assert len(hcells) == 486
+    ag, ch = _cross_arm(hcells)
+    raw = f"{HOVER_PAIRS}/*/draws.jsonl"
+    rec("R10.hover_cross_arm_agreement_pooled", ag, "0.7007", tag="[C]", raw=raw, note="SAME vs SWAP draws, A_e and B_e, exact thirds")
+    rec("R10.hover_cross_arm_chance_pooled", ch, "0.5433", tag="[C]", raw=raw, note="accept rates of each arm over both batches")
+
+
+def r11_leave_one_seed_out():
+    runs = sd_runs()
+    end = {(a, s): runs[(a, s)][0]["endpoint_test_mean"] for a in "BCT" for s in range(8)}
+    raw = f"{SD_RUNS}/*_seed*/endpoints.json"
+    for lab, x, y, rl, rh in (("T-C", "T", "C", "-0.0156", "+0.0070"), ("T-B", "T", "B", "-0.0273", "-0.0057"),
+                              ("C-B", "C", "B", "-0.0171", "-0.0083")):
+        d8 = [end[(x, s)] - end[(y, s)] for s in range(8)]
+        loo = [sum(d8[j] for j in range(8) if j != s) / 7 for s in range(8)]
+        rec(f"R11.{lab}_loo_min", min(loo), rl, tag="[C]", raw=raw, note=f"seed left out: {loo.index(min(loo))}")
+        rec(f"R11.{lab}_loo_max", max(loo), rh, tag="[C]", raw=raw, note=f"seed left out: {loo.index(max(loo))}")
+
+
+def r12_lineage_noise_expectation(info, src):
+    p = Fraction(53, 115)                               # C7: b = 3 accepted children that did not beat their parent
+    ks = []
+    for r in [r for r in info if r["b"] == 3]:
+        idx, k = r["best"], 0
+        while idx != 0:
+            idx, k = r["acc"][idx]["parent_ids"][0], k + 1
+        ks.append(k)
+    rec("R12.b3_chain_lengths", ",".join(map(str, ks)), "1,4,2,3,2,1,6,3", tag="[C]", raw=src, note="as C9")
+    rec("R12.expected_runs_with_not_beat_step", float(sum(1 - (1 - p) ** k for k in ks)), "5.92", tag="[C]", raw=src,
+        note="sum over the 8 chains of 1-(1-53/115)^k, if each step independently fails to beat its parent; observed 4 (C9)")
+
+
+def r13_gate_power():
+    vals = {v["id"]: float(v["value"]) for v in VALUES if v["id"] in ("R5.ifb_own_margin_sd_ddof1", "R4.sd_fresh_minus_logged_ddof1")}
+    note = "normal approximation; examples treated as independent; ties ignored"
+    phi = lambda z: 0.5 * (1 + math.erf(z / math.sqrt(2)))
+    for lab, sd, ref_s, ref_p, ref_b in (("R5", vals["R5.ifb_own_margin_sd_ddof1"], "0.2512", "0.688", "3902"),
+                                         ("R4", vals["R4.sd_fresh_minus_logged_ddof1"], None, "0.697", "3490")):
+        s = sd / math.sqrt(3)
+        rec(f"R13.sigma_per_example_from_{lab}", s, ref_s, tag="[C]", note=f"{lab} sd of the 3-example margin / sqrt(3)")
+        rec(f"R13.pass_prob_delta0.01_b150_sigma_{lab}", phi(0.01 * math.sqrt(150) / s), ref_p, tag="[C]",
+            note=note + "; Phi(delta*sqrt(b)/sigma)")
+        rec(f"R13.batch_80pct_power_5pct_alpha_sigma_{lab}", ((1.6449 + 0.8416) * s / 0.01) ** 2, ref_b, tol=0.5, tag="[C]",
+            note=note + "; ((z.95+z.80)*sigma/delta)^2; ref is the brief's range end")
 
 
 # ---------------------------------------------------------------- figures (separate venv, reads CSVs only)
@@ -1349,6 +1440,8 @@ def compute():
     src = "logs/baseline_seed*_b*.jsonl (10 runs, article_todos:442-447)"
     r1_hover_gepa_gain(); r2_kept_gain_t(info, src); r3_val_noise(info, src); r4_parent_rescore(info, rows)
     r5_own_margin(rows, hrows); r6_cited(); r7_setups(); r8_exp3_count()
+    r9_first_kept_vs_seed(info, src); r10_cross_arm_same_batch(rows, hrows); r11_leave_one_seed_out()
+    r12_lineage_noise_expectation(info, src); r13_gate_power()
     write_csv("values.csv", VALUES)
     mism = [v["id"] for v in VALUES if v["status"] == "MISMATCH"]
     print(f"\n{len(VALUES)} values; {sum(v['status'] == 'MATCH' for v in VALUES)} MATCH; {len(mism)} MISMATCH: {mism}")

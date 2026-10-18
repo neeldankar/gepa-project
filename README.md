@@ -15,7 +15,7 @@ and the pre-registered three-arm HoVer experiment is in
 
 A curriculum over **side-information (SI)** for [GEPA](https://github.com/gepa-ai/gepa)'s
 reflection step. GEPA currently samples its reflection minibatch uniformly at random;
-this project selects the examples whose *feedback is most useful to reflect on* — where
+this project selects the examples whose *feedback is most useful to reflect on*, where
 "useful" means **novel** and **actionable**, not merely hard.
 
 > Status: research / WIP. Read `docs/proposition.md` for the full plan.
@@ -31,10 +31,10 @@ archive-based novelty search over diagnostic descriptors.
 
 ## Scorers
 
-- **Novelty** — embedding k-NN, NCD/compression, failure-signature (SI points at a
+- **Novelty**: embedding k-NN, NCD/compression, failure-signature (SI points at a
   failure mode not yet addressed this run).
-- **Actionability** — specificity of a single SI string.
-- **Novelty × actionability** — the conjunctive hypothesis.
+- **Actionability**: specificity of a single SI string.
+- **Novelty × actionability**: the conjunctive hypothesis.
 - Difficulty / parent identity / iteration are **controls**, not treatments.
 
 ## Method (see `docs/proposition.md`)
@@ -47,11 +47,11 @@ archive-based novelty search over diagnostic descriptors.
 
 ## Build order
 
-1. **Logging hook** — capture the SI text GEPA discards (`src/.../logging/si_hook.py`).
-2. **Static SI precompute** — one fixed reference prompt over `D_feedback`.
-3. **Baselines** — ~5 random + 1–2 `b=1`, logging SI (static + faithful) and ΔU.
-4. **Offline screen** — scorers, hurdle model, LORO ranking.
-5. **Live confirm** — winner vs random, paired seeds.
+1. **Logging hook**: capture the SI text GEPA discards (`src/.../logging/si_hook.py`).
+2. **Static SI precompute**: one fixed reference prompt over `D_feedback`.
+3. **Baselines**: ~5 random + 1–2 `b=1`, logging SI (static + faithful) and ΔU.
+4. **Offline screen**: scorers, hurdle model, LORO ranking.
+5. **Live confirm**: winner vs random, paired seeds.
 
 ## Repo layout
 

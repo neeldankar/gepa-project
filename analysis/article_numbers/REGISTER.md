@@ -17,9 +17,10 @@ file:line, and records the new numbers the revision needs. **No verdicts. No edi
 - Figures were drawn by `figures` in a throwaway scratchpad venv (matplotlib 3.9.2), which reads only the CSVs below.
 - No API calls, no model calls, $0.
 - Every value, with its reference, MATCH/MISMATCH status, tag, raw input, the citing doc and the producing
-  function, is in `values.csv`: 370 rows, 244 with a reference, **243 MATCH, 1 MISMATCH**. The MISMATCH is
-  `F.frontier_gepa_HEAD`: frontier-gepa's HEAD moved from `dbfbaa3` (61c16fb committed the BASELINE-CHECK doc, then
-  its `post-revisions` branch added a README commit). No number in Part F changed; the reference is left as it was.
+  function, is in `values.csv`: 404 rows, 277 with a reference, **275 MATCH, 2 MISMATCH**. Both MISMATCHes are R13
+  rows (see section R); neither number is in the post. `F.frontier_gepa_HEAD` now references `fddd908`, the
+  frontier-gepa `post-revisions` HEAD: `dbfbaa3` (register built) → `61c16fb` (adds BASELINE-CHECK) → `5d92514` (v1
+  README commit) → `fddd908` (README em dashes). No Part F number changed.
 - Two consecutive runs produce byte-identical CSVs.
 
 **Tags**
@@ -253,9 +254,10 @@ D5 caveat: these are **one-step specificity units**: batch totals on 0–3 (`hov
 | E3 shuffles with no full-rule survivor | 66/200 | 66 (= 200 − 134) | MATCH | [C] (`fig_screen_null_survivors.csv`) |
 | E3 shuffles whose strongest survivor has \|β\| ≥ observed | 43/200 | 43 | MATCH | [C] (the same count as E1, now per shuffle) |
 
-### R. Revision numbers (fn `r1_hover_gepa_gain` … `r8_exp3_count`, `scripts/article_numbers.py:1019-1188`; 2026-10-17)
+### R. Revision numbers (fn `r1_hover_gepa_gain` … `r13_gate_power`, `scripts/article_numbers.py:1020-1286`; 2026-10-17)
 
-Every row was checked against the revision brief's reference to 4 dp: 72 rows with a reference, **72 MATCH**.
+Every row was checked against the revision briefs' references (v1: R1-R8; v2: R9-R13 and R3's sd of d) to 4 dp, or to
+the reference's own precision where it gives fewer digits: 105 rows with a reference, **103 MATCH, 2 MISMATCH** (R13).
 
 | id | value | ref | status | tag | note |
 |---|---|---|---|---|---|
@@ -266,7 +268,7 @@ Every row was checked against the revision brief's reference to 4 dp: 72 rows wi
 | R2 mean of run means | +0.001116 | +0.0011 | MATCH | [C] | |
 | R2 95% t-interval over the 8 run means (df 7) | [−0.003098, +0.005329] | [−0.0031, +0.0053] | MATCH | [C] | replaces N2's run-cluster bootstrap in the post |
 | R3 pooled sd of a 150-item mean | 0.013220 | 0.0132 | MATCH | [C] | per-item variance across N1's 10 seed evaluations (ddof 1), sqrt(sum)/150 |
-| R3 sd of the 115 d (ddof 1) | 0.021080 | 0.021 | MATCH | [C] | the brief's 4-dp reference was lost in transmission; checked at the post's 3 dp |
+| R3 sd of the 115 d (ddof 1) | 0.021080 | 0.0211 | MATCH | [C] | reference completed by brief v2 |
 | R3 √2 × pooled sd; √2 × N1 sd | 0.018696; 0.021406 | 0.0187; 0.0214 | MATCH | [C] | sd of a difference of two scorings |
 | R3 share of \|d\| below each | 71/115 = 0.6174; 80/115 = 0.6957 | 0.6174; 0.6957 | MATCH | [C] | |
 | R4 first `evaluation_end` per b = 3 iteration is the `candidate_selected` parent | 397/397 | 397/397 | MATCH | [C] | `logs/baseline_seed*_b3_*.jsonl` |
@@ -287,13 +289,105 @@ Every row was checked against the revision brief's reference to 4 dp: 72 rows wi
 | R7 HoVer Stage-1 gepa version | not recorded; implied 0.0.27 | n/a | n/a | [C] | no run file records it; `run_seeds.sh:7` runs `scratch/hover_probe/.venv` (gepa 0.0.27) |
 | R8 frontier-gepa Exp 3 runs, committed, non-smoke | 12 (4 arms × 3 seeds) | 12 | MATCH | [C] | `git ls-files experiments/exp3_curriculum` |
 | R8 Exp 3 has no validation record | stated | stated | MATCH | cited | frontier-gepa `docs/BASELINE-CHECK-2026-09-29.md:231-235`; the doc does not state the count 12 |
+| R9 first kept rewrite minus the seed prompt, per b = 3 run (parent asserted = candidate 0), s0 … s7 | +0.0218, −0.0186, +0.0030, +0.0469, +0.0090, +0.0264, +0.0017, −0.0034 | same | MATCH (8/8) | [C] | exact valset means; the one comparison where the parent was not picked on its own validation score |
+| R9 mean / positive / 95% t-interval (df 7) | +0.010847 / 6 of 8 / [−0.006110, +0.027804] | +0.0108 / 6 / [−0.0061, +0.0278] | MATCH | [C] | |
+| R10 IFBench, different arms' draws on the same batch (9 pairings per pair): on B | 0.716696 vs chance 0.562681 | 0.7167 / 0.5627 | MATCH | [C] | chance pa·pb + (1−pa)(1−pb) from the two arms' accept rates on that batch |
+| R10 IFBench, on B′ | 0.684119 vs 0.530648 | 0.6841 / 0.5306 | MATCH | [C] | |
+| R10 IFBench, pooled over B and B′ | 0.700407 vs 0.545340 | 0.7004 / 0.5453 | MATCH | [C] | pooled chance uses each arm's accept rate over both batches |
+| R10 HoVer, SAME vs SWAP draws, pooled over A_e and B_e (exact thirds) | 0.700732 vs 0.543260 | 0.7007 / 0.5433 | MATCH | [C] | |
+| R11 three-arm leave-one-seed-out paired mean (7 seeds), range: T − C / T − B / C − B | [−0.015556, +0.006984] / [−0.027302, −0.005714] / [−0.017143, −0.008254] | [−0.0156, +0.0070] / [−0.0273, −0.0057] / [−0.0171, −0.0083] | MATCH | [C] | min with seed 4 left out (T − C, T − B); `runs/*/endpoints.json` |
+| R12 expected b = 3 lineages containing a not-beat step, if each step fails independently with p = 53/115 | 5.918 of 8 (observed 4, C9) | 5.92 | MATCH | [C] | chain lengths 1,4,2,3,2,1,6,3 rebuilt from the logs (MATCH vs C9) |
+| R13 σ per example = sd of the 3-example margin / √3, from R5 | 0.251200 | 0.2512 | MATCH | [C] | normal approximation; examples independent; ties ignored |
+| R13 σ per example from R4 (fresh − logged parent) | 0.237602 | none (lost in transmission; inferred from the brief's ranges) | n/a | [C] | |
+| R13 pass probability at b = 150 for a rewrite 0.01 better per example, Φ(δ√b/σ): σ from R5 / R4 | 0.6871 / 0.6969 | 0.688 / 0.697 | **MISMATCH** / MATCH | [C] | R5 path: σ matches the reference, so the gap opens at Φ: Φ(0.4876) = 0.6871. 0.688 is what σ = 0.25 gives |
+| R13 batch for 80% power at 5% false pass, ((1.6449 + 0.8416)σ/0.01)²: σ from R5 / R4 | 3,901.35 / 3,490.40 | 3,902 / 3,490 | **MISMATCH** (tol 0.5) / MATCH | [C] | R5 path: same σ; the reference appears rounded up, while 3,490 is rounded down |
 
-**R9. Proposal selection in the current gepa release (citation, not a computed number; checked 2026-10-17 with
-`gh api`).** gepa `v0.1.4` (latest release, published 2026-07-15, tag → `8b0ce6c`) has
+The post's R13 wording ("about 70% of the time even at 150 examples", "a batch of a few thousand examples") holds for
+both σ values, so it does not depend on the two mismatched rows.
+
+**Citation: proposal selection in the current gepa release** (not a computed number; checked 2026-10-17 with
+`gh api`; labelled R9 in the v1 register, renamed so R9 is free for the computed row). gepa `v0.1.4` (latest release, published 2026-07-15, tag → `8b0ce6c`) has
 `src/gepa/strategies/proposal_selection.py`, added by PR #369 ("ReflectionLM protocol + batch-based parallel
 proposals", merged 2026-07-15). `BestImprovement` (lines 46-63) keeps the single passing proposal with the largest
 minibatch margin; `TopKImprovements` (lines 66-84) keeps the top k by that margin. The installed copies in this repo
 (0.1.1, 0.0.27) predate it.
+
+**Citation: acceptance rules in the current gepa release** (checked 2026-10-17, `gh api`, tag `v0.1.4`).
+`src/gepa/strategies/acceptance.py` defines `StrictImprovementAcceptance` (lines 44-53, accepts when
+`new_sum > old_sum`) and `ImprovementOrEqualAcceptance` (lines 56-66, `new_sum >= old_sum`), so the second accepts ties.
+
+### P. Every number in the post, in reading order
+
+The post is home_website `app/gepa-selection/page.tsx` on branch `post-revisions` after revision brief v2; its full text
+is `gepa-selection-revised.md`. "row" is a `values.csv` id; "cited" means stated in a committed file and not reproduced
+here. Units follow the post's Units bullet.
+
+| # | number in the post | source |
+|---|---|---|
+| 1 | TL;DR: three examples per gate | Table A D:7 (`runs/*/config.json` `minibatch_size`; b = 3 in all 382 swap pairs) |
+| 2 | TL;DR: 150 validation examples | R7.ifb_n_val |
+| 3 | TL;DR: beat their parent by 0.001 | N2.b3_mean_child_minus_parent (+0.0012); R2.mean_of_run_means (+0.0011) |
+| 4 | TL;DR: interval −0.003 to +0.005 | R2.ci95_lo_t_run_means, R2.ci95_hi_t_run_means |
+| 5 | card: 0 to 3; 1.08 vs 1.33 (thrown away); 1.00 vs 0.75 (would have been kept) | A1.row1_* (`calls.csv:2`), the first row in the data |
+| 6 | 2,292 rewrites; agreed 53.9%; expect 54.4% | A2.n_children, A2.agreement, A2.chance_agreement |
+| 7 | IFBench checklist "2/3", "10-th", "26-th"; HoVer "1/3" | quoted example feedback, not a result |
+| 8 | five ways to score; none of the five | **cited, not reproduced**: `analysis/rescreen_wave1.md:48-59`; `findings_summary.md:35, 226` (OQ 7) |
+| 9 | IFBench swap +0.005, interval −0.012 to +0.024 | **cited**: `analysis/ablation/batch_swap_v2/results.md:8` (+0.0054, run-cluster [−0.0116, +0.0242]) |
+| 10 | 150 batches; kept 34% / 31% / 37% | X.ablation_keep_rate_i / _ii / _iii (51, 47, 55 of 150) |
+| 11 | roughly 10 to 12 points | **cited, not reproduced**: X.ablation_MDE_pp (`ablation/plan.md:39`) |
+| 12 | asking twice flipped the verdict 32% of the time | R6.ablation_same_arm_repeat_flips (`ablation/results.md:43-44`) |
+| 13 | three articles, three search steps | task description (Table A D:54) |
+| 14 | HoVer swap +0.027, interval +0.015 to +0.042 | X.hover_spec_point, X.hover_spec_ci_lo, X.hover_spec_ci_hi |
+| 15 | one more needed article every 12 batches | derived: 1 / (3 × 0.0274) = 12.2 from X.hover_spec_point (one article = 1/3 of an example's score) |
+| 16 | +0.017, interval −0.004 to +0.037 | X.hover_transfer_point; interval `hover_swap/results.md:12` |
+| 17 | 108 rules; p = 0.0013 | X.screen_cells, X.screen_survivor_p |
+| 18 | three arms, eight paired runs; 300 metric calls | Table A D:58; R7.hover_three_arm_max_metric_calls |
+| 19 | stock draws three; control and treatment draw six and keep three | `runs/*/config.json` `minibatch_size` (3 for B, 6 for C and T); Table A D:58 |
+| 20 | 50 claims; 10-claim validation set; 150 held-out claims | R7.hover_three_arm_selection_n, _n_val, _test_n |
+| 21 | treatment vs control −0.001, −0.026 to +0.032, p 0.97 | D6.T-C_n8_mean, D6.T-C_n8_signflip_p; interval **cited** `state_dep/results.md:59` (pre-registered table) |
+| 22 | treatment vs stock GEPA −0.013, −0.039 to +0.021, p 0.48 | D6.T-B_n8_mean, D6.T-B_n8_signflip_p; interval **cited** `state_dep/results.md:80` |
+| 23 | 200 shuffles; winner in 134; 43, about 1 in 5 | E1.perms_with_any_survivor, E1.perms_with_survivor_abs_beta_ge_obs (E3 the same 43) |
+| 24 | p-value about 0.2, not 0.0013 | R6.screen_familywise_p (0.215); X.screen_survivor_p |
+| 25 | caption: 200; 43 | E3, `fig_screen_null_survivors.csv` |
+| 26 | MDE about 0.063 | X.three_arm_MDE |
+| 27 | 0.027 on the three-example total; about 0.009 per example | D5.planned_one_step_effect_1.4432xbeta/2; D5.planned_per_example |
+| 28 | about 7 times | D5.MDE_over_planned_per_example (6.94); `state_dep/plan.md:345-357` (GATE BITES: False) |
+| 29 | stock GEPA's gain about 0.024, interval −0.002 to +0.050 | R1.hover_gepa_gain, R1.hover_gepa_gain_ci95_lo/hi |
+| 30 | more than twice | derived: X.three_arm_MDE / R1.hover_gepa_gain = 2.6 |
+| 31 | 5 of the 24 runs | D2.n_seed_prompt_runs |
+| 32 | IFBench 53.9% vs 54.4%; HoVer 54.7% vs 54.3% | A2.agreement, A2.chance_agreement; B1.agreement, B1.chance_agreement |
+| 33 | siblings 72% (55%) IFBench; 69% (53%) HoVer | A3.sibling_agreement_own_batch, A3.sibling_chance_own_batch; B4.hover_sibling_* |
+| 34 | different batches, same batch: 70% on both, about 55% expected | R10.ifb_cross_arm_*_pooled, R10.hover_cross_arm_*_pooled |
+| 35 | caption: about 54%, not 50% | A2.chance_agreement, B1.chance_agreement |
+| 36 | own batch: 34% higher, 32% lower, 34% tied; HoVer 37%, 27%, 35% | R5.ifb_own_margin_*_share; R5.hover_own_margin_*_share |
+| 37 | parent under 0.5 of 3: 76% pass; 2.5 or more: 8% | A5 own-batch keep rates **0.756 and 0.081** (`fig_gate_headroom.csv`), not the all-verdict 0.728 and 0.073 |
+| 38 | about a third of verdicts are exact ties | A4.zero_margin_on_own_batch (769/2292 = 0.336) |
+| 39 | re-scored parent tied its first score 46% of the time | R4.ties_share |
+| 40 | eight IFBench runs | C1.b3_runs |
+| 41 | kept rewrites beat their parents by 0.001; 95% interval −0.003 to +0.005 | N2.b3_mean_child_minus_parent; R2.ci95_* |
+| 42 | 10 runs; starting prompt 0.505 to 0.560 | N1.seed_valset_mean_min, N1.seed_valset_mean_max |
+| 43 | standard deviation 0.021; 0.019 to 0.021 | R3.sd_of_115_d_ddof1; R3.sqrt2_x_pooled_sd, R3.sqrt2_x_run_level_N1_sd |
+| 44 | first kept rewrites: 8, by 0.011, 6 of 8, interval −0.006 to +0.028 | R9.mean, R9.n_positive, R9.ci95_lo_t, R9.ci95_hi_t |
+| 45 | HoVer gain about 0.024, interval includes zero | R1 |
+| 46 | #132, #395 | GitHub issue URLs (external) |
+| 47 | best of three: +0.23 out of 3; +0.006, interval −0.006 to +0.020 | R6.best_of_3_own_margin, R6.best_of_3_selection_lift, R6.best_of_3_selection_lift_ci |
+| 48 | gate about six metric calls per round; 150 more per kept rewrite; 83% | C5.b3_gate_calls_per_evaluated_iteration (5.89); R7.ifb_n_val; C6.b3_kept_validation_share_of_all_calls (0.830) |
+| 49 | a third of verdicts are ties; about half; 0.01 better; about 70% at 150 examples; a few thousand | A4; R13 (normal approximation, ties ignored: Φ(0) = 0.5; pass 0.687 to 0.697; batch 3,490 to 3,901) |
+| 50 | earlier study: 20-example batch; F1 0.632 vs 0.639; three runs each; starting prompt 0.632 | **cited**: frontier-gepa `docs/BASELINE-CHECK-2026-09-29.md:103` (`random` 0.6319), `:107` (`vanilla_coupled_gepa` 0.6386); starting prompt F.seed_test_f1_300 (0.6316) |
+| 51 | κ −0.01 (−0.06 to +0.04); +0.007 (−0.06 to +0.07) | A2.kappa, A2.kappa_ci95_*_resample_pairs_B_id; B1.kappa, B1.kappa_ci95_*_resample_pairs |
+| 52 | 0.033 on the three-example total | **cited, not reproduced**: X.ifb_swap_MDE_constant (`batch_swap_v2_analysis.py:22`) |
+| 53 | 10 to 12 points; 0.063; 150-claim test | see 11; X.three_arm_MDE; R7.hover_three_arm_test_n |
+| 54 | per-pair intervals −0.015 to +0.026; +0.005 to +0.050; −0.015 to +0.049 | R6.ifb_swap_specificity_naive_pair_ci; R6.hover_swap_specificity_naive_pair_ci; R6.hover_swap_transfer_naive_pair_ci |
+| 55 | Setups: 150 / 150 / 2,500 / 0.1.1; 100 / 10 / 300 / 0.0.27 / 50 / 150 | R7 |
+| 56 | two one-example IFBench runs; eight three-example runs | C1.b1_runs, C1.b3_runs |
+| 57 | seed 4: +0.100; leave-one-out −0.016 to +0.007, −0.027 to −0.006, −0.017 to −0.008 | D6.T-C_seed4_diff; R11 |
+| 58 | eight final prompts; 5 runs; two ties | D3; D2.n_seed_prompt_runs, D2.n_tie_broken_toward_index0 |
+| 59 | HotpotQA: 21 runs; 3 stock and 18 variants | F.cells_with_accept; split **cited** `BASELINE-CHECK-2026-09-29.md:200-203` and its §5.1 table |
+| 60 | a later 12-run study | R8.exp3_runs_committed_non_smoke |
+| 61 | 75 validation examples; +0.062; 300 test examples; +0.001; 11 of the 21 | F.mean_best_val_gain (note: 75 items), F.seed_test_f1_300 (300 items), F.mean_test_gain, F.cells_above_seed_on_test |
+| 62 | stock GEPA alone gained +0.007 | **cited**: `BASELINE-CHECK-2026-09-29.md:107` (Δ mean +0.0069) |
+| 63 | Qwen2.5-7B | frontier-gepa `README.md:7` |
+| 64 | five float-tie accepts on HoVer; one IFBench batch | D7.total_float_tie_accepts; X.ablation_float_tie_batches |
 
 ---
 
@@ -368,7 +462,7 @@ These are for Neel. Nothing here is decided.
     - *Resolved in the post:* both are named, treatment vs control −0.016 (p 0.08) and treatment vs stock GEPA −0.027 (p 0.047), with the post hoc drop called illegitimate.
 14. **D3 (stock GEPA gain over the seed).** The +0.024 compares 8 unselected runs with 5 runs selected because the seed
     won. Report it at all? If so, should it carry a selection-bias caveat, or wait for a dedicated seed-prompt evaluation?
-    - *Partly resolved:* the post reports about 0.024 and Details spells out the 8-vs-5 comparison (the revision adds the Welch interval, R1). It does not state the selection bias, so that part is still open.
+    - *Closed:* No selection bias: those 5 runs were picked on the 50-claim selection split, and their test scores are fresh evaluations on the separate 150-claim test split.
 15. **B4.** HoVer sibling agreement (0.691 vs 0.532) is now the fourth group in `fig_agreement`. Should D:75 cite both corpora, or stay IFBench-only?
     - *Resolved in the post:* both corpora (IFBench 72% vs 55%, HoVer 69% vs 53%).
 16. **A1 framing.** The opening example's "thrown away" verdict is on the batch the rewrite was written from (the real
